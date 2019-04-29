@@ -2,94 +2,91 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 42D5CEA15
-	for <lists+linux-ia64@lfdr.de>; Mon, 29 Apr 2019 20:28:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C6969EB5F
+	for <lists+linux-ia64@lfdr.de>; Mon, 29 Apr 2019 22:10:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729043AbfD2S2I (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 29 Apr 2019 14:28:08 -0400
-Received: from mout.kundenserver.de ([212.227.17.10]:41349 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728972AbfD2S2I (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 29 Apr 2019 14:28:08 -0400
-Received: from [192.168.1.110] ([77.9.18.117]) by mrelayeu.kundenserver.de
- (mreue106 [212.227.15.183]) with ESMTPSA (Nemesis) id
- 1N0FE1-1gWweB2srv-00xJGe; Mon, 29 Apr 2019 20:27:00 +0200
-Subject: Re: [PATCH 13/41] drivers: tty: serial: uartlite: fill mapsize and
- use it
-To:     Peter Korsgaard <peter@korsgaard.com>,
-        "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     linux-kernel@vger.kernel.org, lorenzo.pieralisi@arm.com,
-        linux-ia64@vger.kernel.org, linux-serial@vger.kernel.org,
-        andrew@aj.id.au, gregkh@linuxfoundation.org, sudeep.holla@arm.com,
-        liviu.dudau@arm.com, linux-mips@vger.kernel.org, vz@mleia.com,
-        linux@prisktech.co.nz, sparclinux@vger.kernel.org,
-        khilman@baylibre.com, macro@linux-mips.org,
-        slemieux.tyco@gmail.com, matthias.bgg@gmail.com, jacmet@sunsite.dk,
-        linux-amlogic@lists.infradead.org,
-        andriy.shevchenko@linux.intel.com, linuxppc-dev@lists.ozlabs.org,
-        davem@davemloft.net
-References: <1556369542-13247-1-git-send-email-info@metux.net>
- <1556369542-13247-14-git-send-email-info@metux.net>
- <87muk8rg82.fsf@dell.be.48ers.dk>
-From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
-Organization: metux IT consult
-Message-ID: <cb01328c-6308-d9c7-17ba-644d983b0a50@metux.net>
-Date:   Mon, 29 Apr 2019 20:26:51 +0200
-User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.2.1
+        id S1729285AbfD2UKG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 29 Apr 2019 16:10:06 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:36808 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728928AbfD2UKF (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 29 Apr 2019 16:10:05 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=8bbZyLRBS7B6cXqeb9isQNcVt7Ubs7Me5nvL1c8Ic38=; b=Bjpos/jnVGsgKNA3/A6QH5Fqv
+        3jAKzcTPg0LS0aG86fuHqbtUIILUir1hz6rBxB7r7d76Spl89Z8Gcv+dWrFTZI8otdOJIsCuWdGla
+        IsGgipLBTNfUaQmfJpybjgj5KZPwYQMNLsrgt41VqbtxdI1uyxgXqxQP/r9t7HTkpv2YTFFQFtjFj
+        c2/0WcjJjGr9y26IbUvGg3xsoMGxctAbpUyTmBJ8sWn5pt9/i7RgwGrSJulwzheWOBCwI233+GC5V
+        1ZhCLQYcffZvx8ZmGnTglQNAETu+5+3vvAuU+/8uDKGmOPm7ZReqSqA9LrrZIJhi2Lo2GoGhgj1Ek
+        g78xqD4+w==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hLCb7-0007U6-Fw; Mon, 29 Apr 2019 20:09:57 +0000
+Date:   Mon, 29 Apr 2019 13:09:57 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     "Luck, Tony" <tony.luck@intel.com>
+Cc:     Christoph Hellwig <hch@infradead.org>,
+        Meelis Roos <mroos@linux.ee>,
+        Christopher Lameter <cl@linux.com>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mikulas Patocka <mpatocka@redhat.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        LKML <linux-kernel@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "Yu, Fenghua" <fenghua.yu@intel.com>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+Subject: Re: DISCONTIGMEM is deprecated
+Message-ID: <20190429200957.GB27158@infradead.org>
+References: <20190419094335.GJ18914@techsingularity.net>
+ <20190419140521.GI7751@bombadil.infradead.org>
+ <0100016a461809ed-be5bd8fc-9925-424d-9624-4a325a7a8860-000000@email.amazonses.com>
+ <25cabb7c-9602-2e09-2fe0-cad3e54595fa@linux.ee>
+ <20190428081353.GB30901@infradead.org>
+ <3908561D78D1C84285E8C5FCA982C28F7E9140BA@ORSMSX104.amr.corp.intel.com>
 MIME-Version: 1.0
-In-Reply-To: <87muk8rg82.fsf@dell.be.48ers.dk>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:au94e1eq1t1YlnnJViJhE/K6kMah+BGDcbk5VT8+2eMOcjazNzP
- K5DjPTgP9xkJSFVa90iiUwfTMbygt1pa/q/QVqLjBcRjKGldPhF1PlUIGuwEcvTYnwNYXHD
- 4V5xXevhSRFXCoXSYK9fBGWVz8C7Tl/uH4wFGRM4rQiiRQ/9UA/oGA18KOJhfyGX6iPZWpN
- XbvZlLq2pR9jNFgvXr4Sg==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:9sF2aDxgqew=:FGiiUO8PT3ifq3hod8tMoL
- +SEtG8hOTCH9pJUceAM5iP2H5Es8lUmMB0syxlho4LBC+yxxXRhOFRB2cWsSjbWIidwwPruTU
- 0EH2VtAuQux2vVmh6WCiw729yobnsE6+P1JmGeH3xjLZdERrEdqLAdFjESsBb3Q0acApejZtZ
- zF8Viv5HEqMjOgJ1mYJhsAFbtXu1GQ8IITc7sTnty/rlKmhJexVwNJgnBjdqF5ZvLqLxecutK
- kZYcw0VOhspQU0gpK38Kxzp7r0nRLryCZTn/J1G4yqdgXd9ZksMtMoU9Aq3CF83pBTmKEuMfc
- W6iTXMoanXU5yPYQUsjPJ4X8CSucyPOh99f8HWSnnz59FeA5v7yE/kp7l1fIlr5K1u57DIYas
- R7YtCVkI4bBRX3RmDPo/y1IOHz2JqWRDKz2GpU26JYmU2yzf9ADZMm3w9nHD2iQOS21515NNx
- aQoEbBqIk+5kUHNVp2sw8kl8W5rbQ5QZSsgH/c8toQw67UhsUeuPvx425Yp7z4mplQmH4NlbT
- NgVx6Ahvz5wR9VoYhgLcei+Vz3/MqzReS6oP0JQ4aQh/MwUkU8lJwFW9tBu361Ays/BqoFyDb
- xiUN4IP0nNNMQp9V228OUBdjFFGdu4aU8k6c+QTT3D33uXP0z0uWrG8na7KNTfy7xff4cGQ0o
- TMDfGeX3+/tR9Z8ZWz8juRpzoZCUwqW4ATnaFyO1hO1XGHBPU/Tr30mlExcmRm/bx7EI73fMC
- AI9rD1w3c+BVcecBqTfQ0HHodM0p73pOlAR0KOmXf0piKKh5JjRv5OoDRY4=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7E9140BA@ORSMSX104.amr.corp.intel.com>
+User-Agent: Mutt/1.9.2 (2017-12-15)
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 29.04.19 17:19, Peter Korsgaard wrote:
->>>>>> "Enrico" == Enrico Weigelt, metux IT consult <info@metux.net> writes:
+On Mon, Apr 29, 2019 at 04:58:09PM +0000, Luck, Tony wrote:
+> > ia64 has a such a huge number of memory model choices.  Maybe we
+> > need to cut it down to a small set that actually work.
 > 
->  > Fill the struct uart_port->mapsize field and use it, insteaf of
+> SGI systems had extremely discontiguous memory (they used some high
+> order physical address bits in the tens/hundreds of terabyte range for the
+> node number ... so there would be a few GBytes of actual memory then
+> a huge gap before the next node had a few more Gbytes).
 > 
-> s/insteaf/instead/
+> I don't know of anyone still booting upstream on an SN2, so if we start doing
+> serious hack and slash the chances are high that SN2 will be broken (if it isn't
+> already).
 
-Fixed.
+When I wrote this, I thought of
 
->  > hardcoded values in many places. This makes the code layout a bit
->  > more consistent and easily allows using generic helpers for the
->  > io memory handling.
-> 
->  > Candidates for such helpers could be eg. the request+ioremap and
->  > iounmap+release combinations.
-> 
->  > Signed-off-by: Enrico Weigelt <info@metux.net>
-> 
-> Acked-by: Peter Korsgaard <peter@korsgaard.com>
+!NUMA:  flat mem
+NUMA:	sparsemem
+SN2:	discontig
 
-thanks for review.
+based on Meelis report.  But now that you mention it, I bet SN2 has
+already died slow death from bitrot.  It is so different in places, and
+it doesn't seem like anyone care - if people want room sized SGI
+machines the Origin is much more sexy (hello Thomas!) :)
 
+So maybe it it time to mark SN2 broken and see if anyone screams?
 
---mtx
-
--- 
-Enrico Weigelt, metux IT consult
-Free software and Linux embedded engineering
-info@metux.net -- +49-151-27565287
+Without SN2 the whole machvec mess could basically go away - the
+only real difference between the remaining machvecs is which iommu
+if any we set up.
