@@ -2,111 +2,142 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 64A77BDC8
-	for <lists+linux-ia64@lfdr.de>; Mon, 29 Apr 2019 00:21:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B600DA94
+	for <lists+linux-ia64@lfdr.de>; Mon, 29 Apr 2019 05:05:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726495AbfD1WVN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 28 Apr 2019 18:21:13 -0400
-Received: from mail-vs1-f42.google.com ([209.85.217.42]:44302 "EHLO
-        mail-vs1-f42.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726435AbfD1WVM (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 28 Apr 2019 18:21:12 -0400
-Received: by mail-vs1-f42.google.com with SMTP id j184so4835039vsd.11
-        for <linux-ia64@vger.kernel.org>; Sun, 28 Apr 2019 15:21:12 -0700 (PDT)
+        id S1727101AbfD2DFB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 28 Apr 2019 23:05:01 -0400
+Received: from mail-io1-f68.google.com ([209.85.166.68]:43716 "EHLO
+        mail-io1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726819AbfD2DFB (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 28 Apr 2019 23:05:01 -0400
+Received: by mail-io1-f68.google.com with SMTP id v9so7687410iol.10;
+        Sun, 28 Apr 2019 20:05:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to;
-        bh=UMoBcF/GJRpB3jLRDPiY4Ide1k3SS+GiLSoD190B2CY=;
-        b=V9mkuWfq2NZYSQ5O+x0Fgokz0cH07q9/xmzRLsAjXAftjEfdCCq4dDn3YIFyr/h18p
-         MQfcP85k49LBXIb6eltvLpDKgjyZcNgHU4gvP9zZVdazq2e1oHM2ACD1oqclZtSP+Fh4
-         rK01DT31B5gNndR9bO+CO79TwGBzS8Qv6UtbITL732U0/851b+argENHZByq3ahbFJWb
-         jrxqbWQo3upIjzhaT2ky/lreHzZoBuDWyWP0SVpgCGjF03KLCm0+RwcX0t8kZ0hrl8EC
-         Ei4C58l80WfYOKSY3dXMaba7IygHrkjYqYw+JN1aQQFpTI2I654VrcAiblqa04xU8YiR
-         /jHA==
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=dJMl90O95ELh7MccR/gotQ0iR4kxpXltz+n2rVMWVek=;
+        b=sCS33Wo854rOecdEepHQFeUD38yV4m0fx8fxGIDGiFttKs1dNNsEKXEkbVeyxlSjum
+         3xNFDFhJ2iF9Fh9LzN6/xoVy+YhiXgEoshszIQJUnps+YrJhuuw9lAxDcYmGEDff9HrD
+         TJ6Xu79Wqbtq1Tpi2wfMrvCOrwmCbJWN+8K8iOxPa9yGhqwXJHYJPfAWhw1jyiGBSsz3
+         6X4n0WUjEhAKyIGR/WesQJtN5xfG2amZp32CAU7q0+TYECzjxRQ/mdLi88A/Ti2/Vfqv
+         +JnR2yMzE207qkPhJUQQMzIyz+UetNgniIOCbX3kN+O9VLWgT/dAd33CFP0gKgTqhMkH
+         ZRgw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to;
-        bh=UMoBcF/GJRpB3jLRDPiY4Ide1k3SS+GiLSoD190B2CY=;
-        b=RqBeRfuL84yWnqs5GgkOyEW551sg7rmbQWcRsrLa9KX6NK24ydQsJSpWFJE+nYETgB
-         PX9SefFdxNCmi619v6tVpanDyVda3x42/XqGRMRaOeL2x53r1hyc1LkHSaKOzrPOXFEm
-         hF16z26hXs2o+k7nJKQC1xOObCS+3o/aMDRvQs4itW+9Rk4+hn4GZZvuOksigqQCYgi6
-         S+Pvr7m2rS/IEgvO/zzeL4EuZI2c7cDfPix9xt+PfkB4/M/tNm5DleT8eKDrcbU81dLG
-         qxmxcAruAM7TF9Q9jjrpi/bbMk8MmLH+lwedR8kDZhzt39RLpeek/ao8yOjhYylJWV/3
-         6kMQ==
-X-Gm-Message-State: APjAAAWS4VsGwSZ+j7VxZdsiV1k1kwMkL/lONbg7RD+o5OtVrvmRi1u7
-        KWRGaNZdqOgROi6gWZ0Qo0LzLOy9td5IZ2H3SfyMtA==
-X-Google-Smtp-Source: APXvYqyokwyR7ckECGODcTVleHI/BKuvMqP8J2kAUT62E77nwFzTHpRLOUugmfWbWkaAIDXKc2bKhHjNTBZRMBr1zys=
-X-Received: by 2002:a67:fe91:: with SMTP id b17mr14900863vsr.217.1556490071555;
- Sun, 28 Apr 2019 15:21:11 -0700 (PDT)
+         :message-id:subject:to:cc;
+        bh=dJMl90O95ELh7MccR/gotQ0iR4kxpXltz+n2rVMWVek=;
+        b=sAdYSg1EjYElLG7jtebHV/HI/gPxCMWKQwE5rtAZtOaaqLAgRTdjT4fVyP2UZt5hRV
+         NaQN+xpy8zlRx4uWLu+EUWSKO4oloQvhgfxFtnCHQkSUwcWQ9sYPLBZugGQQgdWTT3+m
+         VkSbXvnIr4bdZVp/F4SmAzCs4UflMy9bNmbbBIErmGADh8vkiW6ONpRozBdjY96MVIno
+         QIZEF34VLWrMdJPW12ISl1Oi0QDdyqetmMhEDgVkN4ESuxc6y41W9IaAXIFH5u70DjRZ
+         xFP8VUJKto0WAwXYvpGxH6XGdNFeu1GivYfg/5AI+dGhYjw45hO9QGurn3xhXkUc8j3b
+         bCQw==
+X-Gm-Message-State: APjAAAX1go70D3LyyGiI9BUwQjrbJ5uYCjILrqcEUFFN2AteVQB9fbY6
+        RVjS09t3in3DPJ/hB4/0IrmYCaDAC0cB9XUy/A==
+X-Google-Smtp-Source: APXvYqzeszOwZP14RtOC6mV9rY3uOhFyM1yQpZi/QDojtM4wzbayqEf6L0iWYkrbUvWs9aPmzqXndCUfaebQxYOHnc8=
+X-Received: by 2002:a6b:7d08:: with SMTP id c8mr3138801ioq.259.1556507100502;
+ Sun, 28 Apr 2019 20:05:00 -0700 (PDT)
 MIME-Version: 1.0
-References: <CAGn-Tgg9qOoFNKKrbK1=XQEKj8wwD26NWY+1G4cDHRySsJWcYQ@mail.gmail.com>
- <CAGn-TgiVjo_Ko1YXoJJEWNUtcKpAFmt6TwYv1-C_TaeU_nju=A@mail.gmail.com>
-In-Reply-To: <CAGn-TgiVjo_Ko1YXoJJEWNUtcKpAFmt6TwYv1-C_TaeU_nju=A@mail.gmail.com>
-From:   Adam Richter <adamrichter4@gmail.com>
-Date:   Sun, 28 Apr 2019 22:21:00 +0000
-Message-ID: <CAGn-TghMGi-wqWF-v9qRkZHtqh01byXXOQKfVWgAvNxm5hxMoQ@mail.gmail.com>
-Subject: [Untested patch] ia64: Eliminate goto from ftrace_modify_code
-To:     linux-ia64@vger.kernel.org
-Content-Type: multipart/mixed; boundary="000000000000cfdd9605879e95cc"
+References: <1556087581-14513-1-git-send-email-kernelfans@gmail.com>
+ <10dc5468-6cd9-85c7-ba66-1dfa5aa922b7@suse.com> <CAFgQCTstd667wP6g+maxYekz4u3iBR2R=FHUiS1V=XxTs6MKUw@mail.gmail.com>
+ <20190428083710.GA11981@dhcp-128-65.nay.redhat.com>
+In-Reply-To: <20190428083710.GA11981@dhcp-128-65.nay.redhat.com>
+From:   Pingfan Liu <kernelfans@gmail.com>
+Date:   Mon, 29 Apr 2019 11:04:49 +0800
+Message-ID: <CAFgQCTvQezGM7xgY2Q1RSUiQ7wLdxtUAeztrO3AqDfjx8f2kdg@mail.gmail.com>
+Subject: Re: [PATCHv2] kernel/crash: make parse_crashkernel()'s return value
+ more indicant
+To:     Dave Young <dyoung@redhat.com>
+Cc:     Matthias Brugger <mbrugger@suse.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        Rich Felker <dalias@libc.org>, linux-ia64@vger.kernel.org,
+        Julien Thierry <julien.thierry@arm.com>,
+        Yangtao Li <tiny.windzz@gmail.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Palmer Dabbelt <palmer@sifive.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>, x86@kernel.org,
+        linux-mips@vger.kernel.org, Paul Mackerras <paulus@samba.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-s390@vger.kernel.org,
+        Florian Fainelli <f.fainelli@gmail.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-sh@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        David Hildenbrand <david@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Ingo Molnar <mingo@redhat.com>,
+        linux-arm-kernel@lists.infradead.org,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        James Hogan <jhogan@kernel.org>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Will Deacon <will.deacon@arm.com>,
+        linuxppc-dev@lists.ozlabs.org,
+        Ananth N Mavinakayanahalli <ananth@linux.vnet.ibm.com>,
+        Borislav Petkov <bp@alien8.de>, Stefan Agner <stefan@agner.ch>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Hari Bathini <hbathini@linux.ibm.com>,
+        Jens Axboe <axboe@kernel.dk>, Tony Luck <tony.luck@intel.com>,
+        Baoquan He <bhe@redhat.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Thomas Bogendoerfer <tbogendoerfer@suse.de>,
+        Paul Burton <paul.burton@mips.com>,
+        Johannes Weiner <hannes@cmpxchg.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Greg Hackmann <ghackmann@android.com>,
+        kexec@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
---000000000000cfdd9605879e95cc
-Content-Type: text/plain; charset="UTF-8"
+On Sun, Apr 28, 2019 at 4:37 PM Dave Young <dyoung@redhat.com> wrote:
+>
+> On 04/25/19 at 04:20pm, Pingfan Liu wrote:
+> > On Wed, Apr 24, 2019 at 4:31 PM Matthias Brugger <mbrugger@suse.com> wrote:
+> > >
+> > >
+> > [...]
+> > > > @@ -139,6 +141,8 @@ static int __init parse_crashkernel_simple(char *cmdline,
+> > > >               pr_warn("crashkernel: unrecognized char: %c\n", *cur);
+> > > >               return -EINVAL;
+> > > >       }
+> > > > +     if (*crash_size == 0)
+> > > > +             return -EINVAL;
+> > >
+> > > This covers the case where I pass an argument like "crashkernel=0M" ?
+> > > Can't we fix that by using kstrtoull() in memparse and check if the return value
+> > > is < 0? In that case we could return without updating the retptr and we will be
+> > > fine.
+> > >
+> > It seems that kstrtoull() treats 0M as invalid parameter, while
+> > simple_strtoull() does not.
+> >
+> > If changed like your suggestion, then all the callers of memparse()
+> > will treats 0M as invalid parameter. This affects many components
+> > besides kexec.  Not sure this can be done or not.
+>
+> simple_strtoull is obsolete, move to kstrtoull is the right way.
+>
+> $ git grep memparse|wc
+>     158     950   10479
+>
+> Except some documentation/tools etc there are still a log of callers
+> which directly use the return value as the ull number without error
+> checking.
+>
+> So it would be good to mark memparse as obsolete as well in
+> lib/cmdline.c, and introduce a new function eg. kmemparse() to use
+> kstrtoull,  and return a real error code, and save the size in an
+> argument like &size.  Then update X86 crashkernel code to use it.
+>
+Thank for your good suggestion.
 
-The attached untested patch avoids a cppcheck warning by eliminating
-an unnecessary use of goto, which apparently caused cppcheck not to
-recognize the impossibility of a null pointer dereference in one case.
-It as a revision to my previous incorrect patch from two days ago
-("Suspected null pointer dereference in ftrace_make_nop() for ia64").
-
-Ideally, cppcheck should be enhanced to recognize "goto" usage in this
-form and do the same analysis that it does with "if" statements (and I
-intend to look into that), but, even with such a cppcheck enhancement,
-I believe it still helps maintainability to avoid using "goto"
-statements that do not provide some technical benefit.
-
-I have not built or tested this change, and I am aware that yesterday
-Greg K-H asked everyone to avoid device driver churn for untested
-code.  So, I am not requesting integration without someone else trying
-it first.  I am, however, posting this patch just in case anyone to
-try it at some point and then submit it upstream if it actually works
-and their are no complaints.
-
-I hereby release my copyright interest in this contribution to the
-public domain.  Please let me know if anyone needs me to make any
-other statements with regard to this patch.
-
-Adam
-
---000000000000cfdd9605879e95cc
-Content-Type: text/x-diff; charset="US-ASCII"; 
-	name="ia64_ftrace_modify_code.remove_goto.diff"
-Content-Disposition: attachment; 
-	filename="ia64_ftrace_modify_code.remove_goto.diff"
-Content-Transfer-Encoding: base64
-Content-ID: <f_jv1hdt5t0>
-X-Attachment-Id: f_jv1hdt5t0
-
-ZGlmZiAtLWdpdCBhL2FyY2gvaWE2NC9rZXJuZWwvZnRyYWNlLmMgYi9hcmNoL2lhNjQva2VybmVs
-L2Z0cmFjZS5jCmluZGV4IDdmYzhjOTYxYjFmNy4uNzg4ZjcwZWY1MzQ2IDEwMDY0NAotLS0gYS9h
-cmNoL2lhNjQva2VybmVsL2Z0cmFjZS5jCisrKyBiL2FyY2gvaWE2NC9rZXJuZWwvZnRyYWNlLmMK
-QEAgLTEwNiwxOCArMTA2LDE3IEBAIGZ0cmFjZV9tb2RpZnlfY29kZSh1bnNpZ25lZCBsb25nIGlw
-LCB1bnNpZ25lZCBjaGFyICpvbGRfY29kZSwKIAkgKiBrc3RvcF9tYWNoaW5lLCBvciBiZWZvcmUg
-U01QIHN0YXJ0cy4KIAkgKi8KIAotCWlmICghZG9fY2hlY2spCi0JCWdvdG8gc2tpcF9jaGVjazsK
-KwlpZiAoZG9fY2hlY2spIHsKIAotCS8qIHJlYWQgdGhlIHRleHQgd2Ugd2FudCB0byBtb2RpZnkg
-Ki8KLQlpZiAocHJvYmVfa2VybmVsX3JlYWQocmVwbGFjZWQsICh2b2lkICopaXAsIE1DT1VOVF9J
-TlNOX1NJWkUpKQotCQlyZXR1cm4gLUVGQVVMVDsKKwkJLyogcmVhZCB0aGUgdGV4dCB3ZSB3YW50
-IHRvIG1vZGlmeSAqLworCQlpZiAocHJvYmVfa2VybmVsX3JlYWQocmVwbGFjZWQsICh2b2lkICop
-aXAsIE1DT1VOVF9JTlNOX1NJWkUpKQorCQkJcmV0dXJuIC1FRkFVTFQ7CiAKLQkvKiBNYWtlIHN1
-cmUgaXQgaXMgd2hhdCB3ZSBleHBlY3QgaXQgdG8gYmUgKi8KLQlpZiAobWVtY21wKHJlcGxhY2Vk
-LCBvbGRfY29kZSwgTUNPVU5UX0lOU05fU0laRSkgIT0gMCkKLQkJcmV0dXJuIC1FSU5WQUw7CisJ
-CS8qIE1ha2Ugc3VyZSBpdCBpcyB3aGF0IHdlIGV4cGVjdCBpdCB0byBiZSAqLworCQlpZiAobWVt
-Y21wKHJlcGxhY2VkLCBvbGRfY29kZSwgTUNPVU5UX0lOU05fU0laRSkgIT0gMCkKKwkJCXJldHVy
-biAtRUlOVkFMOworCX0KIAotc2tpcF9jaGVjazoKIAkvKiByZXBsYWNlIHRoZSB0ZXh0IHdpdGgg
-dGhlIG5ldyB0ZXh0ICovCiAJaWYgKHByb2JlX2tlcm5lbF93cml0ZSgoKHZvaWQgKilpcCksIG5l
-d19jb2RlLCBNQ09VTlRfSU5TTl9TSVpFKSkKIAkJcmV0dXJuIC1FUEVSTTsK
---000000000000cfdd9605879e95cc--
+Regards,
+Pingfan
