@@ -2,32 +2,34 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B78CE0A3
-	for <lists+linux-ia64@lfdr.de>; Mon, 29 Apr 2019 12:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90679E15A
+	for <lists+linux-ia64@lfdr.de>; Mon, 29 Apr 2019 13:34:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727630AbfD2KiV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 29 Apr 2019 06:38:21 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:60859 "EHLO
+        id S1727822AbfD2LeL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 29 Apr 2019 07:34:11 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:44285 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1727621AbfD2KiV (ORCPT
+        by vger.kernel.org with ESMTP id S1727710AbfD2LeL (ORCPT
         <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 29 Apr 2019 06:38:21 -0400
+        Mon, 29 Apr 2019 07:34:11 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.85)
           with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id <1hL3ft-003IoH-Vc>; Mon, 29 Apr 2019 12:38:17 +0200
+          id <1hL4Xw-003oly-5j>; Mon, 29 Apr 2019 13:34:08 +0200
 Received: from suse-laptop.physik.fu-berlin.de ([160.45.32.140])
           by inpost2.zedat.fu-berlin.de (Exim 4.85)
           with esmtpsa (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id <1hL3ft-000vtq-Nh>; Mon, 29 Apr 2019 12:38:17 +0200
+          id <1hL4Xw-0017y1-0R>; Mon, 29 Apr 2019 13:34:08 +0200
+Subject: Re: [PATCH] ia64: fix ptrace(PTRACE_GETREGS) (unbreaks strace, gdb)
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 To:     Tony Luck <tony.luck@intel.com>
 Cc:     Sergei Trofimovich <slyfox@gentoo.org>,
         Frank Scheiner <frank.scheiner@web.de>,
         Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
         linux-kernel@vger.kernel.org
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+References: <def7f1cf-96b1-b0a9-88b8-3d24eb3b6075@physik.fu-berlin.de>
 Openpgp: preference=signencrypt
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
@@ -73,12 +75,12 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Subject: Re: [PATCH] ia64: fix ptrace(PTRACE_GETREGS) (unbreaks strace, gdb)
-Message-ID: <def7f1cf-96b1-b0a9-88b8-3d24eb3b6075@physik.fu-berlin.de>
-Date:   Mon, 29 Apr 2019 12:38:17 +0200
+Message-ID: <906b63c0-9032-995b-f1a4-4eb384e26314@physik.fu-berlin.de>
+Date:   Mon, 29 Apr 2019 13:34:07 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
+In-Reply-To: <def7f1cf-96b1-b0a9-88b8-3d24eb3b6075@physik.fu-berlin.de>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -88,18 +90,17 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hello!
+Hi!
 
-Is there a chance that Sergey's patch from [1] could get applied upstream?
+On 4/29/19 12:38 PM, John Paul Adrian Glaubitz wrote:
+> Is there a chance that Sergey's patch from [1] could get applied upstream?
 
-Currently, the kernel in Debian doesn't boot on the RX2800 and crashes very
-early directly after the bootloader. I can also confirm that both strace
-and gdb currently don't build on Debian/ia64 due to this particular bug.
+Apparently it's sufficient to rebuild the kernel with a gcc which has
+this [1] fix applied. Will give this a try and report back.
 
-Thanks,
 Adrian
 
-> [1] https://lkml.org/lkml/2018/2/2/914
+> [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=86984
 
 -- 
  .''`.  John Paul Adrian Glaubitz
