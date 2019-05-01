@@ -2,79 +2,177 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D2CBB10405
-	for <lists+linux-ia64@lfdr.de>; Wed,  1 May 2019 04:29:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A630310D10
+	for <lists+linux-ia64@lfdr.de>; Wed,  1 May 2019 21:12:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726412AbfEAC3l (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 30 Apr 2019 22:29:41 -0400
-Received: from eddie.linux-mips.org ([148.251.95.138]:50488 "EHLO
-        cvs.linux-mips.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726123AbfEAC3l (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 30 Apr 2019 22:29:41 -0400
-Received: (from localhost user: 'macro', uid#1010) by eddie.linux-mips.org
-        with ESMTP id S23990394AbfEAC3gOuPKs (ORCPT
-        <rfc822;sparclinux@vger.kernel.org> + 4 others);
-        Wed, 1 May 2019 04:29:36 +0200
-Date:   Wed, 1 May 2019 03:29:36 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@linux-mips.org>
-To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
-cc:     linux-kernel@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        andrew@aj.id.au, andriy.shevchenko@linux.intel.com, vz@mleia.com,
-        slemieux.tyco@gmail.com, khilman@baylibre.com, liviu.dudau@arm.com,
-        sudeep.holla@arm.com, lorenzo.pieralisi@arm.com,
-        "David S. Miller" <davem@davemloft.net>, jacmet@sunsite.dk,
-        linux@prisktech.co.nz, matthias.bgg@gmail.com,
-        linux-mips@vger.kernel.org, linux-serial@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-amlogic@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 06/41] drivers: tty: serial: sb1250-duart: use dev_err()
- instead of printk()
-In-Reply-To: <1556369542-13247-7-git-send-email-info@metux.net>
-Message-ID: <alpine.LFD.2.21.1905010257020.30973@eddie.linux-mips.org>
-References: <1556369542-13247-1-git-send-email-info@metux.net> <1556369542-13247-7-git-send-email-info@metux.net>
-User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+        id S1726101AbfEATMh (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 1 May 2019 15:12:37 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:36410 "EHLO
+        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726088AbfEATMh (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 1 May 2019 15:12:37 -0400
+Received: by mail-pf1-f195.google.com with SMTP id v80so4426630pfa.3
+        for <linux-ia64@vger.kernel.org>; Wed, 01 May 2019 12:12:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=AmRJhTtjfmKOoXa3/mXW1aySDkpXtExm2OlSrQR+ugY=;
+        b=KvFmuLges6lzqL86Wp4gV1PjIrKF2kIQ/Yx5XZyG3wDE/yk+PZ0IVgcKRTiSxkGLmY
+         1emllscLGeYik7SfWUbHKjEFkULGXLTyFTx9+jjwTcyIvZJasqta7kh2z2r7mjT4cSeQ
+         4hpXBEfzBwkCxMI4TwM79Gtu32AExBI1rbCo+PlgaIzg6sFgQZ1vzOM2KigHWiYPUXkV
+         QprpwrRd079y/Nxc/lpMMk7S3HRq7u7hQQfE0+wWT5en57lOtJB1ulKZXaSkWzxyQFsf
+         hIRjjYWDacbrRvIdvx85yv5+PzzwpDEUVEAE3ELVQoXlTXAWk0klZ2IZZdCPBZD3/AhY
+         hUWA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=AmRJhTtjfmKOoXa3/mXW1aySDkpXtExm2OlSrQR+ugY=;
+        b=kFebKPgZlYe8g7i0PBn+1+7nnZBHc8NxchMLimvQWSPvEa6TDzs9WXyZ3QvtVLG8Px
+         91NWJGtyKB1VCWT6NgXDXvjBwhPHYjyDSRvQKUbuTnuOkrQeU9Nzhurd1yWK5+qKWzWJ
+         yxvBDynLaUdp5p2cWvOdL4++j7mY3R0FmTQERg8SLFIvzdTRLnuq+fgqU1yZWthBZLT3
+         HTiT7eZN8FzPePHo3JnWtEeExLQ82R6tI7J/SRdyUvA/4QaVBTdsU6oUJfCy1nbaXczv
+         MGjjiaTZ199BvMaFffpkSdKziuB9VA+6J2UgmKnuHCl6JH9mVgOC+KYdebTEBOeIajmk
+         l7mA==
+X-Gm-Message-State: APjAAAXja8NOIQfe1EmUIvom/C30PAT7lqf5zFavMn6iV0tSCjQbU8zI
+        gjIoU56o6JHtm8wC+n6flpPkww==
+X-Google-Smtp-Source: APXvYqy31d2sjh8GWh1zvaBPPWQhuKan83tMATfhwqSzWvN6oZmlGEUpR+06ZSdcPU34fmyVNmOyUg==
+X-Received: by 2002:a63:66c1:: with SMTP id a184mr13541136pgc.412.1556737956127;
+        Wed, 01 May 2019 12:12:36 -0700 (PDT)
+Received: from gnomeregan.cam.corp.google.com ([2620:15c:6:14:ad22:1cbb:d8fa:7d55])
+        by smtp.googlemail.com with ESMTPSA id j12sm15835555pff.148.2019.05.01.12.12.33
+        (version=TLS1_3 cipher=AEAD-AES128-GCM-SHA256 bits=128/128);
+        Wed, 01 May 2019 12:12:35 -0700 (PDT)
+Subject: Re: [PATCH 1/2] x86, numa: always initialize all possible nodes
+To:     Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org
+Cc:     Pingfan Liu <kernelfans@gmail.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>, x86@kernel.org,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Tony Luck <tony.luck@intel.com>, linuxppc-dev@lists.ozlabs.org,
+        linux-ia64@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+        Ingo Molnar <mingo@elte.hu>, Michal Hocko <mhocko@suse.com>
+References: <20190212095343.23315-1-mhocko@kernel.org>
+ <20190212095343.23315-2-mhocko@kernel.org>
+From:   Barret Rhoden <brho@google.com>
+Message-ID: <34f96661-41c2-27cc-422d-5a7aab526f87@google.com>
+Date:   Wed, 1 May 2019 15:12:32 -0400
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <20190212095343.23315-2-mhocko@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sat, 27 Apr 2019, Enrico Weigelt, metux IT consult wrote:
+Hi -
 
-> diff --git a/drivers/tty/serial/sb1250-duart.c b/drivers/tty/serial/sb1250-duart.c
-> index 329aced..655961c 100644
-> --- a/drivers/tty/serial/sb1250-duart.c
-> +++ b/drivers/tty/serial/sb1250-duart.c
-> @@ -663,7 +663,6 @@ static void sbd_release_port(struct uart_port *uport)
->  
->  static int sbd_map_port(struct uart_port *uport)
->  {
-> -	const char *err = KERN_ERR "sbd: Cannot map MMIO\n";
->  	struct sbd_port *sport = to_sport(uport);
->  	struct sbd_duart *duart = sport->duart;
->  
-> @@ -671,7 +670,7 @@ static int sbd_map_port(struct uart_port *uport)
->  		uport->membase = ioremap_nocache(uport->mapbase,
->  						 DUART_CHANREG_SPACING);
->  	if (!uport->membase) {
-> -		printk(err);
-> +		dev_err(uport->dev, "Cannot map MMIO (base)\n");
->  		return -ENOMEM;
->  	}
->  
-> @@ -679,7 +678,7 @@ static int sbd_map_port(struct uart_port *uport)
->  		sport->memctrl = ioremap_nocache(duart->mapctrl,
->  						 DUART_CHANREG_SPACING);
->  	if (!sport->memctrl) {
-> -		printk(err);
-> +		dev_err(uport->dev, "Cannot map MMIO (ctrl)\n");
->  		iounmap(uport->membase);
->  		uport->membase = NULL;
->  		return -ENOMEM;
+This patch triggered an oops for me (more below).
 
- Hmm, what's the point to have separate messages, which consume extra 
-memory, for a hardly if at all possible error condition?
+On 2/12/19 4:53 AM, Michal Hocko wrote:
+[snip]
+> Fix the issue by reworking how x86 initializes the memory less nodes.
+> The current implementation is hacked into the workflow and it doesn't
+> allow any flexibility. There is init_memory_less_node called for each
+> offline node that has a CPU as already mentioned above. This will make
+> sure that we will have a new online node without any memory. Much later
+> on we build a zone list for this node and things seem to work, except
+> they do not (e.g. due to nr_cpus). Not to mention that it doesn't really
+> make much sense to consider an empty node as online because we just
+> consider this node whenever we want to iterate nodes to use and empty
+> node is obviously not the best candidate. This is all just too fragile.
 
-  Maciej
+The problem might be in here - I have a case with a 'memoryless' node 
+that has CPUs that get onlined during SMP boot, but that onlining 
+triggers a page fault during device registration.
+
+I'm running on a NUMA machine but I marked all of the memory on node 1 
+as type 12 (PRAM), using the memmap arg.  That makes node 1 appear to 
+have no memory.
+
+During SMP boot, the fault is in bus_add_device():
+
+	error = sysfs_create_link(&bus->p->devices_kset->kobj,
+
+bus->p is NULL.
+
+That p is the subsys_private struct, and it should have been set in
+
+	postcore_initcall(register_node_type);
+
+But that happens after SMP boot.  This fault happens during SMP boot.
+
+The old code had set this node online via alloc_node_data(), so when it 
+came time to do_cpu_up() -> try_online_node(), the node was already up 
+and nothing happened.
+
+Now, it attempts to online the node, which registers the node with 
+sysfs, but that can't happen before the 'node' subsystem is registered.
+
+My modified e820 map looks like this:
+
+> [    0.000000] user: [mem 0x0000000000000100-0x000000000009c7ff] usable
+> [    0.000000] user: [mem 0x000000000009c800-0x000000000009ffff] reserved
+> [    0.000000] user: [mem 0x00000000000e0000-0x00000000000fffff] reserved
+> [    0.000000] user: [mem 0x0000000000100000-0x0000000073216fff] usable
+> [    0.000000] user: [mem 0x0000000073217000-0x0000000075316fff] reserved
+> [    0.000000] user: [mem 0x0000000075317000-0x00000000754f8fff] ACPI data
+> [    0.000000] user: [mem 0x00000000754f9000-0x0000000076057fff] ACPI NVS
+> [    0.000000] user: [mem 0x0000000076058000-0x0000000077ae9fff] reserved
+> [    0.000000] user: [mem 0x0000000077aea000-0x0000000077ffffff] usable
+> [    0.000000] user: [mem 0x0000000078000000-0x000000008fffffff] reserved
+> [    0.000000] user: [mem 0x00000000fd000000-0x00000000fe7fffff] reserved
+> [    0.000000] user: [mem 0x00000000ff000000-0x00000000ffffffff] reserved
+> [    0.000000] user: [mem 0x0000000100000000-0x00000004ffffffff] usable
+> [    0.000000] user: [mem 0x0000000500000000-0x000000603fffffff] persistent (type 12)
+
+Which leads to an empty zone 1:
+
+> [    0.016060] Initmem setup node 0 [mem 0x0000000000001000-0x00000004ffffffff]
+> [    0.073310] Initmem setup node 1 [mem 0x0000000000000000-0x0000000000000000]
+
+The backtrace:
+
+> [    2.175327] Call Trace:
+> [    2.175327]  device_add+0x43e/0x690
+> [    2.175327]  device_register+0x107/0x110
+> [    2.175327]  __register_one_node+0x72/0x150
+> [    2.175327]  __try_online_node+0x8f/0xd0
+> [    2.175327]  try_online_node+0x2b/0x50
+> [    2.175327]  do_cpu_up+0x46/0xf0
+> [    2.175327]  cpu_up+0x13/0x20
+> [    2.175327]  smp_init+0x6e/0xd0
+> [    2.175327]  kernel_init_freeable+0xe5/0x21f
+> [    2.175327]  ? rest_init+0xb0/0xb0
+> [    2.175327]  kernel_init+0xf/0x180
+> [    2.175327]  ? rest_init+0xb0/0xb0
+> [    2.175327]  ret_from_fork+0x1f/0x30
+
+To get it booting again, I unconditionally node_set_online:
+
+arch/x86/mm/numa.c
+@@ -583,7 +583,7 @@ static int __init numa_register_memblks(struct 
+numa_meminfo *mi)
+                         continue;
+
+                 alloc_node_data(nid);
+-               if (end)
++               //if (end)
+                         node_set_online(nid);
+         }
+
+A more elegant solution may be to avoid registering with sysfs during 
+early boot, or something else entirely.  But I figured I'd ask for help 
+at this point.  =)
+
+Thanks,
+
+Barret
+
