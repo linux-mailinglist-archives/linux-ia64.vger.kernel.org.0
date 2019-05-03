@@ -2,75 +2,102 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C3EB511DEA
-	for <lists+linux-ia64@lfdr.de>; Thu,  2 May 2019 17:37:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA1D613447
+	for <lists+linux-ia64@lfdr.de>; Fri,  3 May 2019 22:02:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727233AbfEBPff (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 2 May 2019 11:35:35 -0400
-Received: from ozlabs.org ([203.11.71.1]:53831 "EHLO ozlabs.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728963AbfEBPbV (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 2 May 2019 11:31:21 -0400
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 44vzkR0Xvsz9sPk;
-        Fri,  3 May 2019 01:31:11 +1000 (AEST)
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Mike Rapoport <rppt@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Richard Kuo <rkuo@codeaurora.org>,
+        id S1726404AbfECUCU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 3 May 2019 16:02:20 -0400
+Received: from merlin.infradead.org ([205.233.59.134]:40078 "EHLO
+        merlin.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725793AbfECUCU (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 3 May 2019 16:02:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+        Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=hOhvtimHrTh0cr4202vrQ44fuTh2mxDsMXPrjDR7cxk=; b=0F/9txF1f1v4UwBMp+ybhXWZWp
+        H3eNKBsdmKBAGJVvsU3/jzw1nG+i4gWmm0yYV2X15J4gWr81/Jp709DjSDB7wBMWsdA4bwPVJuVUN
+        9bKmo0P9/ByXb6e7mL5YOttpOiqz1SNW4iwVAvtJBH4/7SwvL3Qe0xNRNTXfJAfja0/xq4SmQwb74
+        dq4Gj9va5l7IE5WyKcANUUtd9RbeEaQsm3qmVKmV+Ck0TQndPlZx6n4m3p9ZB4N7FQux9B/p67SdU
+        tC2i8z7gJ5aeTv8+hTcccoBFcFSLuyNK5TLXMuxO4/+z4knx2HMim5e2YIFCCJ6J+Q9jFOuyA8k9u
+        lJKAxmAg==;
+Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=dragon.dunlab)
+        by merlin.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hMeNp-0003ZN-Aa; Fri, 03 May 2019 20:02:13 +0000
+Subject: Re: ERROR: "paddr_to_nid" [drivers/md/raid1.ko] undefined!
+To:     kbuild test robot <lkp@intel.com>, Ming Lei <ming.lei@redhat.com>
+Cc:     kbuild-all@01.org, linux-kernel@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>, Omar Sandoval <osandov@fb.com>,
+        Christoph Hellwig <hch@lst.de>,
         Tony Luck <tony.luck@intel.com>,
+        Fengguang Wu <fengguang.wu@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Paul Burton <paul.burton@mips.com>,
-        James Hogan <jhogan@kernel.org>,
-        Ley Foon Tan <lftan@altera.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, x86@kernel.org,
-        Eric Biederman <ebiederm@xmission.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-mm@kvack.org, kexec@lists.infradead.org,
-        Mike Rapoport <rppt@linux.ibm.com>
-Subject: Re: [PATCH] memblock: make keeping memblock memory opt-in rather than opt-out
-In-Reply-To: <1556102150-32517-1-git-send-email-rppt@linux.ibm.com>
-References: <1556102150-32517-1-git-send-email-rppt@linux.ibm.com>
-Date:   Fri, 03 May 2019 01:31:10 +1000
-Message-ID: <87h8acyitd.fsf@concordia.ellerman.id.au>
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+References: <201905032019.tzlqufi0%lkp@intel.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <4e48dcb2-6e82-4bbe-3920-e1c5fd5c265a@infradead.org>
+Date:   Fri, 3 May 2019 13:02:09 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <201905032019.tzlqufi0%lkp@intel.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Mike Rapoport <rppt@linux.ibm.com> writes:
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 2d0be82..39877b9 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -143,6 +143,7 @@ config PPC
->  	select ARCH_HAS_UBSAN_SANITIZE_ALL
->  	select ARCH_HAS_ZONE_DEVICE		if PPC_BOOK3S_64
->  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
-> +	select ARCH_KEEP_MEMBLOCK
+On 5/3/19 5:54 AM, kbuild test robot wrote:
+> Hi Ming,
+> 
+> First bad commit (maybe != root cause):
+> 
+> tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> head:   ea9866793d1e925b4d320eaea409263b2a568f38
+> commit: 6dc4f100c175dd0511ae8674786e7c9006cdfbfa block: allow bio_for_each_segment_all() to iterate over multi-page bvec
+> date:   3 months ago
+> config: ia64-bigsur_defconfig (attached as .config)
+> compiler: ia64-linux-gcc (GCC) 8.1.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         git checkout 6dc4f100c175dd0511ae8674786e7c9006cdfbfa
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=8.1.0 make.cross ARCH=ia64 
+> 
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+> 
+> All errors (new ones prefixed by >>):
+> 
+>    ERROR: "paddr_to_nid" [sound/core/snd-pcm.ko] undefined!
+>    ERROR: "paddr_to_nid" [net/sunrpc/sunrpc.ko] undefined!
+>    ERROR: "paddr_to_nid" [fs/cifs/cifs.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/video/fbdev/core/fb.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/usb/mon/usbmon.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/usb/core/usbcore.ko] undefined!
+>>> ERROR: "paddr_to_nid" [drivers/md/raid1.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/md/dm-mod.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/md/dm-crypt.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/md/dm-bufio.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/ide/ide-core.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/ide/ide-cd_mod.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/gpu/drm/drm.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/char/agp/agpgart.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/block/nbd.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/block/loop.ko] undefined!
+>    ERROR: "paddr_to_nid" [drivers/block/brd.ko] undefined!
+>    ERROR: "paddr_to_nid" [crypto/ccm.ko] undefined!
+> 
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+---
+Exporting paddr_to_nid() in arch/ia64/mm/numa.c fixes all of these build errors.
+Is there a problem with doing that?
 
-cheers
+
+-- 
+~Randy
