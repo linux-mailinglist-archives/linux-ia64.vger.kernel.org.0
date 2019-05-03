@@ -2,27 +2,30 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 07D8D13451
-	for <lists+linux-ia64@lfdr.de>; Fri,  3 May 2019 22:10:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A347113464
+	for <lists+linux-ia64@lfdr.de>; Fri,  3 May 2019 22:25:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726690AbfECUKF convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Fri, 3 May 2019 16:10:05 -0400
-Received: from mga11.intel.com ([192.55.52.93]:30440 "EHLO mga11.intel.com"
+        id S1726797AbfECUZE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Fri, 3 May 2019 16:25:04 -0400
+Received: from mga09.intel.com ([134.134.136.24]:56946 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726528AbfECUKF (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 3 May 2019 16:10:05 -0400
+        id S1726302AbfECUZE (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 3 May 2019 16:25:04 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 May 2019 13:10:05 -0700
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 03 May 2019 13:25:04 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.60,427,1549958400"; 
-   d="scan'208";a="147977325"
-Received: from orsmsx102.amr.corp.intel.com ([10.22.225.129])
-  by orsmga003.jf.intel.com with ESMTP; 03 May 2019 13:10:04 -0700
+   d="scan'208";a="167373435"
+Received: from orsmsx104.amr.corp.intel.com ([10.22.225.131])
+  by fmsmga002.fm.intel.com with ESMTP; 03 May 2019 13:25:03 -0700
+Received: from orsmsx155.amr.corp.intel.com (10.22.240.21) by
+ ORSMSX104.amr.corp.intel.com (10.22.225.131) with Microsoft SMTP Server (TLS)
+ id 14.3.408.0; Fri, 3 May 2019 13:25:03 -0700
 Received: from orsmsx104.amr.corp.intel.com ([169.254.4.183]) by
- ORSMSX102.amr.corp.intel.com ([169.254.3.144]) with mapi id 14.03.0415.000;
- Fri, 3 May 2019 13:10:04 -0700
+ ORSMSX155.amr.corp.intel.com ([169.254.7.27]) with mapi id 14.03.0415.000;
+ Fri, 3 May 2019 13:25:02 -0700
 From:   "Luck, Tony" <tony.luck@intel.com>
 To:     Randy Dunlap <rdunlap@infradead.org>, lkp <lkp@intel.com>,
         Ming Lei <ming.lei@redhat.com>
@@ -35,12 +38,11 @@ CC:     "kbuild-all@01.org" <kbuild-all@01.org>,
         "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
 Subject: RE: ERROR: "paddr_to_nid" [drivers/md/raid1.ko] undefined!
 Thread-Topic: ERROR: "paddr_to_nid" [drivers/md/raid1.ko] undefined!
-Thread-Index: AQHVAesiwXBVEEk8+0alg+2byGx5m6ZZ0/yw
-Date:   Fri, 3 May 2019 20:10:03 +0000
-Message-ID: <3908561D78D1C84285E8C5FCA982C28F7E91BA9B@ORSMSX104.amr.corp.intel.com>
+Thread-Index: AQHVAesiwXBVEEk8+0alg+2byGx5m6ZZ0/ywgAAEGeA=
+Date:   Fri, 3 May 2019 20:25:02 +0000
+Message-ID: <3908561D78D1C84285E8C5FCA982C28F7E91BABF@ORSMSX104.amr.corp.intel.com>
 References: <201905032019.tzlqufi0%lkp@intel.com>
- <4e48dcb2-6e82-4bbe-3920-e1c5fd5c265a@infradead.org>
-In-Reply-To: <4e48dcb2-6e82-4bbe-3920-e1c5fd5c265a@infradead.org>
+ <4e48dcb2-6e82-4bbe-3920-e1c5fd5c265a@infradead.org> 
 Accept-Language: en-US
 Content-Language: en-US
 X-MS-Has-Attach: 
@@ -59,15 +61,14 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Randy Dunlap [mailto:rdunlap@infradead.org] 
->>    ERROR: "paddr_to_nid" [drivers/block/brd.ko] undefined!
->>    ERROR: "paddr_to_nid" [crypto/ccm.ko] undefined!
->> 
+>> Exporting paddr_to_nid() in arch/ia64/mm/numa.c fixes all of these build errors.
+>> Is there a problem with doing that?
 >
-> ---
-> Exporting paddr_to_nid() in arch/ia64/mm/numa.c fixes all of these build errors.
-> Is there a problem with doing that?
+> I don't see a problem with exporting it.
 
-I don't see a problem with exporting it.
+But I also don't see these build errors.  I'm using the same HEAD commit. I think the
+same .config (derived from arch/ia64/configs/bigsur_defconfig.
+
+Big difference is I'm doing a natinve build with a much older compiler (4.6.4)
 
 -Tony
