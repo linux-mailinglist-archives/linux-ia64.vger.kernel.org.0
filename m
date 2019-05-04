@@ -2,60 +2,107 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 777E0137CD
-	for <lists+linux-ia64@lfdr.de>; Sat,  4 May 2019 08:38:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 852F813850
+	for <lists+linux-ia64@lfdr.de>; Sat,  4 May 2019 10:44:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725823AbfEDGiQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 4 May 2019 02:38:16 -0400
-Received: from verein.lst.de ([213.95.11.211]:41684 "EHLO newverein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725808AbfEDGiQ (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sat, 4 May 2019 02:38:16 -0400
-Received: by newverein.lst.de (Postfix, from userid 2407)
-        id D473568AFE; Sat,  4 May 2019 08:37:57 +0200 (CEST)
-Date:   Sat, 4 May 2019 08:37:57 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Christoph Hellwig <hch@lst.de>, "Luck, Tony" <tony.luck@intel.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        Randy Dunlap <rdunlap@infradead.org>, lkp <lkp@intel.com>,
-        "kbuild-all@01.org" <kbuild-all@01.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Jens Axboe <axboe@kernel.dk>, Omar Sandoval <osandov@fb.com>,
-        "Wu, Fengguang" <fengguang.wu@intel.com>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
-Subject: Re: ERROR: "paddr_to_nid" [drivers/md/raid1.ko] undefined!
-Message-ID: <20190504063757.GA30617@lst.de>
-References: <201905032019.tzlqufi0%lkp@intel.com> <4e48dcb2-6e82-4bbe-3920-e1c5fd5c265a@infradead.org> <3908561D78D1C84285E8C5FCA982C28F7E91BABF@ORSMSX104.amr.corp.intel.com> <0f33a863-4371-06cb-f4bd-1f95165b18f1@physik.fu-berlin.de> <20190504062734.GA30427@lst.de> <d535e505-7dd2-d5fb-95b5-34a93c0f9322@physik.fu-berlin.de>
+        id S1726214AbfEDIor (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 4 May 2019 04:44:47 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:7153 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726178AbfEDIor (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sat, 4 May 2019 04:44:47 -0400
+Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id EAB0F5D52CC2EA261151;
+        Sat,  4 May 2019 16:44:44 +0800 (CST)
+Received: from [127.0.0.1] (10.177.23.164) by DGGEMS413-HUB.china.huawei.com
+ (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Sat, 4 May 2019
+ 16:44:39 +0800
+Subject: Re: [PATCH v6 0/1] iommu: enhance IOMMU dma mode build options
+To:     Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
+        John Garry <john.garry@huawei.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        linux-doc <linux-doc@vger.kernel.org>,
+        Sebastian Ott <sebott@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        "Martin Schwidefsky" <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "Michael Ellerman" <mpe@ellerman.id.au>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        iommu <iommu@lists.linux-foundation.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        x86 <x86@kernel.org>, linux-ia64 <linux-ia64@vger.kernel.org>
+References: <20190418135701.24668-1-thunder.leizhen@huawei.com>
+CC:     Hanjun Guo <guohanjun@huawei.com>
+From:   "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
+Message-ID: <5CCD50E7.3070505@huawei.com>
+Date:   Sat, 4 May 2019 16:44:23 +0800
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
+ Thunderbird/38.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d535e505-7dd2-d5fb-95b5-34a93c0f9322@physik.fu-berlin.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+In-Reply-To: <20190418135701.24668-1-thunder.leizhen@huawei.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.177.23.164]
+X-CFilter-Loop: Reflected
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sat, May 04, 2019 at 08:33:53AM +0200, John Paul Adrian Glaubitz wrote:
-> On 5/4/19 8:27 AM, Christoph Hellwig wrote:
-> >> Just as a heads-up: There are updated installation images available
-> >> for Debian unstable for ia64 [1]. Those install a fresh system using GRUB
-> >> as a bootloader and come with the latest versions of the toolchain.
-> > 
-> > Do we also have an x86 to ia64 cross compiler package for Debian?
-> > Those packages really help me with changes to other architectures, and
-> > the lack of them for ia64 makes compile-testing ia64 code rather painful.
-> 
-> Hmm, I just realized that building the cross-compiler for ia64 is disabled
-> at the moment because we were having issues with libunwind back then. But
-> normally, on Debian and Ubuntu, you can just install the compiler with:
-> 
-> # apt install gcc-8-$ARCH-linux-gnu
-> 
-> And that should also be the case for ia64, hence I will look into fixing this
-> as it should have been long time ago. Thanks for the reminder.
+Hi all,
+  Can anybody review or comment?
 
-Yes, and I've done that for all other architectures available, it is
-just ia64 that has been missing.
+
+On 2019/4/18 21:57, Zhen Lei wrote:
+> v5 --> v6:
+> 1. give up adding boot option iommu.dma_mode
+> 
+> v4 --> v5:
+> As Hanjun and Thomas Gleixner's suggestion:
+> 1. Keep the old ARCH specific boot options no change.
+> 2. Keep build option CONFIG_IOMMU_DEFAULT_PASSTHROUGH no change.
+> 
+> v4:
+> As Robin Murphy's suggestion:
+> "It's also not necessarily obvious to the user how this interacts with
+> IOMMU_DEFAULT_PASSTHROUGH, so if we really do go down this route, maybe it
+> would be better to refactor the whole lot into a single selection of something
+> like IOMMU_DEFAULT_MODE anyway."
+> 
+> In this version, I tried to normalize the IOMMU dma mode boot options for all
+> ARCHs. When IOMMU is enabled, there are 3 dma modes: paasthrough(bypass),
+> lazy(mapping but defer the IOTLB invalidation), strict. But currently each
+> ARCHs defined their private boot options, different with each other. For
+> example, to enable/disable "passthrough", ARM64 use iommu.passthrough=1/0,
+> X86 use iommu=pt/nopt, PPC/POWERNV use iommu=nobypass.
+> 
+> Zhen Lei (1):
+>   iommu: enhance IOMMU dma mode build options
+> 
+>  arch/ia64/kernel/pci-dma.c                |  2 +-
+>  arch/powerpc/platforms/powernv/pci-ioda.c |  3 ++-
+>  arch/s390/pci/pci_dma.c                   |  2 +-
+>  arch/x86/kernel/pci-dma.c                 |  7 ++---
+>  drivers/iommu/Kconfig                     | 44 ++++++++++++++++++++++++++-----
+>  drivers/iommu/amd_iommu_init.c            |  3 ++-
+>  drivers/iommu/intel-iommu.c               |  2 +-
+>  drivers/iommu/iommu.c                     |  3 ++-
+>  8 files changed, 48 insertions(+), 18 deletions(-)
+> 
+
+-- 
+Thanks!
+BestRegards
+
