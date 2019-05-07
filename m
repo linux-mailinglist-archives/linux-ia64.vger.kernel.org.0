@@ -2,107 +2,92 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 852F813850
-	for <lists+linux-ia64@lfdr.de>; Sat,  4 May 2019 10:44:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05BA216A6D
+	for <lists+linux-ia64@lfdr.de>; Tue,  7 May 2019 20:41:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726214AbfEDIor (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 4 May 2019 04:44:47 -0400
-Received: from szxga04-in.huawei.com ([45.249.212.190]:7153 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726178AbfEDIor (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sat, 4 May 2019 04:44:47 -0400
-Received: from DGGEMS413-HUB.china.huawei.com (unknown [172.30.72.59])
-        by Forcepoint Email with ESMTP id EAB0F5D52CC2EA261151;
-        Sat,  4 May 2019 16:44:44 +0800 (CST)
-Received: from [127.0.0.1] (10.177.23.164) by DGGEMS413-HUB.china.huawei.com
- (10.3.19.213) with Microsoft SMTP Server id 14.3.439.0; Sat, 4 May 2019
- 16:44:39 +0800
-Subject: Re: [PATCH v6 0/1] iommu: enhance IOMMU dma mode build options
-To:     Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
-        John Garry <john.garry@huawei.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-doc <linux-doc@vger.kernel.org>,
-        Sebastian Ott <sebott@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        "Martin Schwidefsky" <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "Michael Ellerman" <mpe@ellerman.id.au>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        iommu <iommu@lists.linux-foundation.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        x86 <x86@kernel.org>, linux-ia64 <linux-ia64@vger.kernel.org>
-References: <20190418135701.24668-1-thunder.leizhen@huawei.com>
-CC:     Hanjun Guo <guohanjun@huawei.com>
-From:   "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
-Message-ID: <5CCD50E7.3070505@huawei.com>
-Date:   Sat, 4 May 2019 16:44:23 +0800
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:38.0) Gecko/20100101
- Thunderbird/38.5.1
+        id S1727623AbfEGSiY (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 7 May 2019 14:38:24 -0400
+Received: from mx1.redhat.com ([209.132.183.28]:43722 "EHLO mx1.redhat.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726091AbfEGSiX (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 7 May 2019 14:38:23 -0400
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mx1.redhat.com (Postfix) with ESMTPS id 5F73F83F3C;
+        Tue,  7 May 2019 18:38:23 +0000 (UTC)
+Received: from t460s.redhat.com (ovpn-116-95.ams2.redhat.com [10.36.116.95])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 5B9301778E;
+        Tue,  7 May 2019 18:38:20 +0000 (UTC)
+From:   David Hildenbrand <david@redhat.com>
+To:     linux-mm@kvack.org
+Cc:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, akpm@linux-foundation.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        David Hildenbrand <david@redhat.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michal Hocko <mhocko@suse.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        Qian Cai <cai@lca.pw>, Wei Yang <richard.weiyang@gmail.com>,
+        Arun KS <arunks@codeaurora.org>,
+        Mathieu Malaterre <malat@debian.org>
+Subject: [PATCH v2 1/8] mm/memory_hotplug: Simplify and fix check_hotplug_memory_range()
+Date:   Tue,  7 May 2019 20:37:57 +0200
+Message-Id: <20190507183804.5512-2-david@redhat.com>
+In-Reply-To: <20190507183804.5512-1-david@redhat.com>
+References: <20190507183804.5512-1-david@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <20190418135701.24668-1-thunder.leizhen@huawei.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.177.23.164]
-X-CFilter-Loop: Reflected
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.27]); Tue, 07 May 2019 18:38:23 +0000 (UTC)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi all,
-  Can anybody review or comment?
+By converting start and size to page granularity, we actually ignore
+unaligned parts within a page instead of properly bailing out with an
+error.
 
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: Qian Cai <cai@lca.pw>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: Arun KS <arunks@codeaurora.org>
+Cc: Mathieu Malaterre <malat@debian.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+ mm/memory_hotplug.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
-On 2019/4/18 21:57, Zhen Lei wrote:
-> v5 --> v6:
-> 1. give up adding boot option iommu.dma_mode
-> 
-> v4 --> v5:
-> As Hanjun and Thomas Gleixner's suggestion:
-> 1. Keep the old ARCH specific boot options no change.
-> 2. Keep build option CONFIG_IOMMU_DEFAULT_PASSTHROUGH no change.
-> 
-> v4:
-> As Robin Murphy's suggestion:
-> "It's also not necessarily obvious to the user how this interacts with
-> IOMMU_DEFAULT_PASSTHROUGH, so if we really do go down this route, maybe it
-> would be better to refactor the whole lot into a single selection of something
-> like IOMMU_DEFAULT_MODE anyway."
-> 
-> In this version, I tried to normalize the IOMMU dma mode boot options for all
-> ARCHs. When IOMMU is enabled, there are 3 dma modes: paasthrough(bypass),
-> lazy(mapping but defer the IOTLB invalidation), strict. But currently each
-> ARCHs defined their private boot options, different with each other. For
-> example, to enable/disable "passthrough", ARM64 use iommu.passthrough=1/0,
-> X86 use iommu=pt/nopt, PPC/POWERNV use iommu=nobypass.
-> 
-> Zhen Lei (1):
->   iommu: enhance IOMMU dma mode build options
-> 
->  arch/ia64/kernel/pci-dma.c                |  2 +-
->  arch/powerpc/platforms/powernv/pci-ioda.c |  3 ++-
->  arch/s390/pci/pci_dma.c                   |  2 +-
->  arch/x86/kernel/pci-dma.c                 |  7 ++---
->  drivers/iommu/Kconfig                     | 44 ++++++++++++++++++++++++++-----
->  drivers/iommu/amd_iommu_init.c            |  3 ++-
->  drivers/iommu/intel-iommu.c               |  2 +-
->  drivers/iommu/iommu.c                     |  3 ++-
->  8 files changed, 48 insertions(+), 18 deletions(-)
-> 
-
+diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
+index 328878b6799d..202febe88b58 100644
+--- a/mm/memory_hotplug.c
++++ b/mm/memory_hotplug.c
+@@ -1050,16 +1050,11 @@ int try_online_node(int nid)
+ 
+ static int check_hotplug_memory_range(u64 start, u64 size)
+ {
+-	unsigned long block_sz = memory_block_size_bytes();
+-	u64 block_nr_pages = block_sz >> PAGE_SHIFT;
+-	u64 nr_pages = size >> PAGE_SHIFT;
+-	u64 start_pfn = PFN_DOWN(start);
+-
+ 	/* memory range must be block size aligned */
+-	if (!nr_pages || !IS_ALIGNED(start_pfn, block_nr_pages) ||
+-	    !IS_ALIGNED(nr_pages, block_nr_pages)) {
++	if (!size || !IS_ALIGNED(start, memory_block_size_bytes()) ||
++	    !IS_ALIGNED(size, memory_block_size_bytes())) {
+ 		pr_err("Block size [%#lx] unaligned hotplug range: start %#llx, size %#llx",
+-		       block_sz, start, size);
++		       memory_block_size_bytes(), start, size);
+ 		return -EINVAL;
+ 	}
+ 
 -- 
-Thanks!
-BestRegards
+2.20.1
 
