@@ -2,69 +2,123 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D0DF18289
-	for <lists+linux-ia64@lfdr.de>; Thu,  9 May 2019 01:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAD3C182F1
+	for <lists+linux-ia64@lfdr.de>; Thu,  9 May 2019 02:53:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726163AbfEHXJd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 8 May 2019 19:09:33 -0400
-Received: from smtp.nue.novell.com ([195.135.221.5]:41968 "EHLO
-        smtp.nue.novell.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725910AbfEHXJd (ORCPT
-        <rfc822;groupwise-linux-ia64@vger.kernel.org:0:0>);
-        Wed, 8 May 2019 19:09:33 -0400
-Received: from emea4-mta.ukb.novell.com ([10.120.13.87])
-        by smtp.nue.novell.com with ESMTP (TLS encrypted); Thu, 09 May 2019 01:09:31 +0200
-Received: from [192.168.1.138] (nwb-a10-snat.microfocus.com [10.120.13.201])
-        by emea4-mta.ukb.novell.com with ESMTP (TLS encrypted); Thu, 09 May 2019 00:09:14 +0100
-Message-ID: <1557356938.3028.35.camel@suse.com>
-Subject: Re: [PATCH v2 5/8] mm/memory_hotplug: Drop MHP_MEMBLOCK_API
-From:   osalvador <osalvador@suse.com>
-To:     David Hildenbrand <david@redhat.com>,
-        Dan Williams <dan.j.williams@intel.com>
-Cc:     Linux MM <linux-mm@kvack.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh <linux-sh@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Wei Yang <richard.weiyang@gmail.com>,
-        Joonsoo Kim <iamjoonsoo.kim@lge.com>, Qian Cai <cai@lca.pw>,
-        Arun KS <arunks@codeaurora.org>,
-        Mathieu Malaterre <malat@debian.org>
-Date:   Thu, 09 May 2019 01:08:58 +0200
-In-Reply-To: <edd762a1-c012-fe05-a72e-2505cd98188a@redhat.com>
-References: <20190507183804.5512-1-david@redhat.com>
-         <20190507183804.5512-6-david@redhat.com>
-         <CAPcyv4ge1pSOopfHof4USn=7Skc-UV4Xhd_s=h+M9VXSp_p1XQ@mail.gmail.com>
-         <d83fec16-ceff-2f6f-72e1-48996187d5ba@redhat.com>
-         <CAPcyv4iRQteuT9yESvbUyhp3KVVgTXDiGAo+TwPCM_4f0CzBgg@mail.gmail.com>
-         <edd762a1-c012-fe05-a72e-2505cd98188a@redhat.com>
+        id S1725778AbfEIAxX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 8 May 2019 20:53:23 -0400
+Received: from condef-04.nifty.com ([202.248.20.69]:47963 "EHLO
+        condef-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725832AbfEIAxX (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 8 May 2019 20:53:23 -0400
+Received: from conssluserg-02.nifty.com ([10.126.8.81])by condef-04.nifty.com with ESMTP id x490jNNN023777
+        for <linux-ia64@vger.kernel.org>; Thu, 9 May 2019 09:45:23 +0900
+Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172]) (authenticated)
+        by conssluserg-02.nifty.com with ESMTP id x490jGOK004911;
+        Thu, 9 May 2019 09:45:17 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com x490jGOK004911
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1557362717;
+        bh=Ru+R2ORrPqw7LLrV9WuQHOQEGZCvCvmHZGJp+XgMk80=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=vXF/soVCbtpS5f0Tu08V5muuPEeHvpraunn9QJockLtWJ1HvL/wzjYp+CSj6/9pch
+         WeBYDWIwPNnTeCRoGTkTDPZLWWmQyhGn3bhCfe8e+uHudGnI+pxKvtqm5uhZ/x8ses
+         17/rcjIXnxhu2e1TAuLSKKX5sQUU4nrc6g1LNBqVjueIXWBKpDBT5HnS+f0kyxQsQU
+         BVNU+OZgSjia4lB6um9X6+O6xemOH1+ZNSSY2y6ioZLtXNb/13tapxDVN8OLJ+Aytz
+         Wp3zGP+IuiPB4+oUA+sLGI4ZhQZCyd0BqbveQriKtOPBTXV4jeco+kqjLVaMs8WZ21
+         JNmrNDecbXClw==
+X-Nifty-SrcIP: [209.85.221.172]
+Received: by mail-vk1-f172.google.com with SMTP id d77so152114vke.13;
+        Wed, 08 May 2019 17:45:17 -0700 (PDT)
+X-Gm-Message-State: APjAAAWsxWJkAdF0jEZJFF2HhbGKRTkeeF0Jm3CHQxDwnX4NXevnqko7
+        Dp6oIly23IVYupKzhRxkFX5HR+KfevWG20UQAcg=
+X-Google-Smtp-Source: APXvYqxqigK4Zd4WROweEDNtiX9uCKXTUwALTs0K4eXUT/nrc10Jemy00RvqfCjLTOviHTVQMXpCqR0yXYzUp25OKYE=
+X-Received: by 2002:a1f:d585:: with SMTP id m127mr163317vkg.34.1557362716285;
+ Wed, 08 May 2019 17:45:16 -0700 (PDT)
+MIME-Version: 1.0
+References: <20190423204821.241925-1-ndesaulniers@google.com>
+ <CAKwvOd=ws1D95ydQjGtK0U0KQ-5poyj8Oek5Yka6-cvtCdpJ-g@mail.gmail.com> <CAKwvOd=tA3-i65B_92QHaJrpEREzBB91QkkqgRANncwfb2d-Kg@mail.gmail.com>
+In-Reply-To: <CAKwvOd=tA3-i65B_92QHaJrpEREzBB91QkkqgRANncwfb2d-Kg@mail.gmail.com>
+From:   Masahiro Yamada <yamada.masahiro@socionext.com>
+Date:   Thu, 9 May 2019 09:44:39 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAR80+TxOHUN9cqPB3iHCJcK13HkyMmaVru1wHbe-KfeGQ@mail.gmail.com>
+Message-ID: <CAK7LNAR80+TxOHUN9cqPB3iHCJcK13HkyMmaVru1wHbe-KfeGQ@mail.gmail.com>
+Subject: Re: [PATCH] ia64: require -Wl,--hash-style=sysv
+To:     Nick Desaulniers <ndesaulniers@google.com>
+Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        clang-built-linux <clang-built-linux@googlegroups.com>,
+        linux-ia64@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.26.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, 2019-05-08 at 09:39 +0200, David Hildenbrand wrote:
-> However I haven't really thought it through yet, smalles like that
-> could
-> as well just be handled by the caller of
-> arch_add_memory()/arch_remove_memory() eventually, passing it via
-> something like the altmap parameter.
-> 
-> Let's leave it in place for now, we can talk about that once we have
-> new
-> patches from Oscar.
-Hi David,
+On Thu, May 9, 2019 at 4:27 AM Nick Desaulniers <ndesaulniers@google.com> wrote:
+>
+> bumping for review, as the merge window is now open.
 
-I plan to send a new patchset once this is and Dan's are merged,
-otherwise I will have a mayhem with the conflicts.
 
-I also plan/want to review this patchset, but time is tight this week.
+ia64 is not very active these days.
 
+I applied this to my kbuild tree.
+I will send PR for this in the current MW.
+
+Thanks.
+
+
+
+
+> On Tue, Apr 30, 2019 at 1:24 PM Nick Desaulniers
+> <ndesaulniers@google.com> wrote:
+> >
+> > On Tue, Apr 23, 2019 at 1:48 PM Nick Desaulniers
+> > <ndesaulniers@google.com> wrote:
+> > >
+> > > Towards the goal of removing cc-ldoption, it seems that --hash-style=
+> > > was added to binutils 2.17.50.0.2 in 2006. The minimal required version
+> > > of binutils for the kernel according to
+> > > Documentation/process/changes.rst is 2.20.
+> > >
+> > > Link: https://gcc.gnu.org/ml/gcc/2007-01/msg01141.html
+> > > Cc: clang-built-linux@googlegroups.com
+> > > Suggested-by: Masahiro Yamada <yamada.masahiro@socionext.com>
+> > > Signed-off-by: Nick Desaulniers <ndesaulniers@google.com>
+> > > ---
+> > >  arch/ia64/kernel/Makefile.gate | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/arch/ia64/kernel/Makefile.gate b/arch/ia64/kernel/Makefile.gate
+> > > index f53faf48b7ce..846867bff6d6 100644
+> > > --- a/arch/ia64/kernel/Makefile.gate
+> > > +++ b/arch/ia64/kernel/Makefile.gate
+> > > @@ -11,7 +11,7 @@ quiet_cmd_gate = GATE    $@
+> > >        cmd_gate = $(CC) -nostdlib $(GATECFLAGS_$(@F)) -Wl,-T,$(filter-out FORCE,$^) -o $@
+> > >
+> > >  GATECFLAGS_gate.so = -shared -s -Wl,-soname=linux-gate.so.1 \
+> > > -                    $(call cc-ldoption, -Wl$(comma)--hash-style=sysv)
+> > > +                    -Wl,--hash-style=sysv
+> > >  $(obj)/gate.so: $(obj)/gate.lds $(obj)/gate.o FORCE
+> > >         $(call if_changed,gate)
+> > >
+> > > --
+> > > 2.21.0.593.g511ec345e18-goog
+> > >
+> >
+> > bumping for review
+> >
+> > --
+> > Thanks,
+> > ~Nick Desaulniers
+>
+>
+>
+> --
+> Thanks,
+> ~Nick Desaulniers
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
