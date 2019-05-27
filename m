@@ -2,99 +2,149 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 779732B2F8
-	for <lists+linux-ia64@lfdr.de>; Mon, 27 May 2019 13:13:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D87212B56E
+	for <lists+linux-ia64@lfdr.de>; Mon, 27 May 2019 14:34:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726982AbfE0LNK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 27 May 2019 07:13:10 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:39992 "EHLO mx1.redhat.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725991AbfE0LNJ (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 27 May 2019 07:13:09 -0400
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 32F0F30833BF;
-        Mon, 27 May 2019 11:13:09 +0000 (UTC)
-Received: from t460s.redhat.com (ovpn-117-89.ams2.redhat.com [10.36.117.89])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id A50CC19C7F;
-        Mon, 27 May 2019 11:13:04 +0000 (UTC)
-From:   David Hildenbrand <david@redhat.com>
-To:     linux-mm@kvack.org
-Cc:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        akpm@linux-foundation.org, Dan Williams <dan.j.williams@intel.com>,
-        Wei Yang <richard.weiyang@gmail.com>,
-        Igor Mammedov <imammedo@redhat.com>,
-        David Hildenbrand <david@redhat.com>
-Subject: [PATCH v3 11/11] mm/memory_hotplug: Remove "zone" parameter from sparse_remove_one_section
-Date:   Mon, 27 May 2019 13:11:52 +0200
-Message-Id: <20190527111152.16324-12-david@redhat.com>
-In-Reply-To: <20190527111152.16324-1-david@redhat.com>
-References: <20190527111152.16324-1-david@redhat.com>
+        id S1727265AbfE0MeW (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 27 May 2019 08:34:22 -0400
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:40779 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727117AbfE0MeU (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 27 May 2019 08:34:20 -0400
+Received: by mail-wr1-f67.google.com with SMTP id t4so8502168wrx.7
+        for <linux-ia64@vger.kernel.org>; Mon, 27 May 2019 05:34:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brauner.io; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=vqu/vuzdkEYXoKFeag0Gx7i/C6AwfCJXqtUJbGQjm2g=;
+        b=OyerzEpWHETbFpy0c+A9OY8Lt73C0idp+PGHMM5Hk+LLRx9wwPHZQozpo8l5Eb9Ku2
+         BLL+C1+bX579kmC98+XU2vwo/p2jktBSuDST+iVX7syTwLwbwx/6JX64Ub9OuDZusIdp
+         kKDJjsTRUzHPtW0urZeRIYOMxMDrYawpqD1NAjav0wkLUtufk55DmMuotx1mhFELtMN4
+         Q60vEqDPAiRagFtyMVs2GMDqFy7ESvJPNzV96xt/3RBuo6MVwbffzkmsBK2QQuquT8WB
+         BK7IAAbiz5k5ehEhuF37CxBmtc7DPqcYWzk5hOTDEz1nr5FgutMoVyt1M6U6NprWQjVX
+         RLjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=vqu/vuzdkEYXoKFeag0Gx7i/C6AwfCJXqtUJbGQjm2g=;
+        b=SKz0+KqSfKvA5XpGKR4Re3A5T+ERqwo4urCy+RysgjNyli1RtrPKOo5PciN1+NS/1t
+         1wC7xPhtnQAy+JCBWoqu7bkfJsUEaqsraRSjf2QlDyZNDGP2wlr5rFmTPTlAB5Tx3mhW
+         4sJl5SAv54c79FVMwCFnkdHLnrEI1E0ps2O1vnukb5dj62GSDc9qeh3EESDbKPnva/8t
+         nChLfwKLOfc+0t3j+83fq2mPV0Om3sf95Jk30EMLraxGjWMpt+k7c7KQhG6bYEn5dhBy
+         XpiDfNe7gFh4acUKLeDokyKKwNNIO1WvvGYKzCmPr+WEldJsVKOf3wCmdwMKn5RWfeVG
+         ykRw==
+X-Gm-Message-State: APjAAAULtHrQvV8MKRfZNsQaANR1SLtBFhOQrloNurSkC3NG6zMdPYGc
+        0y+rbOISE7kIRZD1/VOqlx+9qQ==
+X-Google-Smtp-Source: APXvYqxwrvDMfYdjYL3oXDcnUR6fu2NOHf3e/9SAIT1sxwsepQqVIryqUvD3CwCzUoQ/rcFzeIspgQ==
+X-Received: by 2002:adf:e2c7:: with SMTP id d7mr37257590wrj.272.1558960457999;
+        Mon, 27 May 2019 05:34:17 -0700 (PDT)
+Received: from brauner.io (p5097b50e.dip0.t-ipconnect.de. [80.151.181.14])
+        by smtp.gmail.com with ESMTPSA id r4sm8102395wrv.34.2019.05.27.05.34.16
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 27 May 2019 05:34:17 -0700 (PDT)
+Date:   Mon, 27 May 2019 14:34:15 +0200
+From:   Christian Brauner <christian@brauner.io>
+To:     Arnd Bergmann <arnd@arndb.de>, linux-ia64@vger.kernel.org
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Jann Horn <jannh@google.com>,
+        Florian Weimer <fweimer@redhat.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        David Howells <dhowells@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Adrian Reber <adrian@lisas.de>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        the arch/x86 maintainers <x86@kernel.org>
+Subject: Re: [PATCH 2/2] arch: wire-up clone6() syscall on x86
+Message-ID: <20190527123414.rv2r6g6de6y3ay6w@brauner.io>
+References: <20190526102612.6970-1-christian@brauner.io>
+ <20190526102612.6970-2-christian@brauner.io>
+ <CAK8P3a1Ltsna_rtKxhMU7X0t=UOXDA75tKpph6s=OZ4itJe7VQ@mail.gmail.com>
+ <20190527104528.cao7wamuj4vduh3u@brauner.io>
+ <CAK8P3a3q=5Ca0xoMp+kyCvOqNDRzDTgu28f+U8J-buMVcZcVaw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.44]); Mon, 27 May 2019 11:13:09 +0000 (UTC)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CAK8P3a3q=5Ca0xoMp+kyCvOqNDRzDTgu28f+U8J-buMVcZcVaw@mail.gmail.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-The parameter is unused, so let's drop it. Memory removal paths should
-never care about zones. This is the job of memory offlining and will
-require more refactorings.
+On Mon, May 27, 2019 at 02:28:33PM +0200, Arnd Bergmann wrote:
+> On Mon, May 27, 2019 at 12:45 PM Christian Brauner <christian@brauner.io> wrote:
+> > On Mon, May 27, 2019 at 12:02:37PM +0200, Arnd Bergmann wrote:
+> > > On Sun, May 26, 2019 at 12:27 PM Christian Brauner <christian@brauner.io> wrote:
+> > > >
+> > > > Wire up the clone6() call on x86.
+> > > >
+> > > > This patch only wires up clone6() on x86. Some of the arches look like they
+> > > > need special assembly massaging and it is probably smarter if the
+> > > > appropriate arch maintainers would do the actual wiring.
+> > >
+> > > Why do some architectures need special cases here? I'd prefer to have
+> > > new system calls always get defined in a way that avoids this, and
+> > > have a common entry point for everyone.
+> > >
+> > > Looking at the m68k sys_clone comment in
+> > > arch/m68k/kernel/process.c, it seems that this was done as an
+> > > optimization to deal with an inferior ABI. Similar code is present
+> > > in h8300, ia64, nios2, and sparc. If all of them just do this to
+> > > shave off a few cycles from the system call entry, I really
+> > > couldn't care less.
+> >
+> > I'm happy to wire all arches up at the same time in the next revision. I
+> > just wasn't sure why some of them were assemblying the living hell out
+> > of clone; especially ia64. I really didn't want to bother touching all
+> > of this just for an initial RFC.
+> 
+> Don't worry about doing all architectures for the RFC, I mainly want this
+> to be done consistently by the time it gets into linux-next.
+> 
+> One thing to figure out though is whether we need the stack_size argument
+> that a couple of architectures pass. It's usually hardwired to zero,
+> but not all the time, and I don't know the history of this.
 
-Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
- include/linux/memory_hotplug.h | 2 +-
- mm/memory_hotplug.c            | 2 +-
- mm/sparse.c                    | 4 ++--
- 3 files changed, 4 insertions(+), 4 deletions(-)
+Afaict, stack_size is *only* used on ia64:
 
-diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-index 2f1f87e13baa..1a4257c5f74c 100644
---- a/include/linux/memory_hotplug.h
-+++ b/include/linux/memory_hotplug.h
-@@ -346,7 +346,7 @@ extern void move_pfn_range_to_zone(struct zone *zone, unsigned long start_pfn,
- extern bool is_memblock_offlined(struct memory_block *mem);
- extern int sparse_add_one_section(int nid, unsigned long start_pfn,
- 				  struct vmem_altmap *altmap);
--extern void sparse_remove_one_section(struct zone *zone, struct mem_section *ms,
-+extern void sparse_remove_one_section(struct mem_section *ms,
- 		unsigned long map_offset, struct vmem_altmap *altmap);
- extern struct page *sparse_decode_mem_map(unsigned long coded_mem_map,
- 					  unsigned long pnum);
-diff --git a/mm/memory_hotplug.c b/mm/memory_hotplug.c
-index 82136c5b4c5f..e48ec7b9dee2 100644
---- a/mm/memory_hotplug.c
-+++ b/mm/memory_hotplug.c
-@@ -524,7 +524,7 @@ static void __remove_section(struct zone *zone, struct mem_section *ms,
- 	start_pfn = section_nr_to_pfn((unsigned long)scn_nr);
- 	__remove_zone(zone, start_pfn);
- 
--	sparse_remove_one_section(zone, ms, map_offset, altmap);
-+	sparse_remove_one_section(ms, map_offset, altmap);
- }
- 
- /**
-diff --git a/mm/sparse.c b/mm/sparse.c
-index d1d5e05f5b8d..1552c855d62a 100644
---- a/mm/sparse.c
-+++ b/mm/sparse.c
-@@ -800,8 +800,8 @@ static void free_section_usemap(struct page *memmap, unsigned long *usemap,
- 		free_map_bootmem(memmap);
- }
- 
--void sparse_remove_one_section(struct zone *zone, struct mem_section *ms,
--		unsigned long map_offset, struct vmem_altmap *altmap)
-+void sparse_remove_one_section(struct mem_section *ms, unsigned long map_offset,
-+			       struct vmem_altmap *altmap)
- {
- 	struct page *memmap = NULL;
- 	unsigned long *usemap = NULL;
--- 
-2.20.1
+/*
+ * sys_clone2(u64 flags, u64 ustack_base, u64 ustack_size, u64 parent_tidptr, u64 child_tidptr,
+ *	      u64 tls)
+ */
+GLOBAL_ENTRY(sys_clone2)
+	/*
+	 * Allocate 8 input registers since ptrace() may clobber them
+	 */
+	.prologue ASM_UNW_PRLG_RP|ASM_UNW_PRLG_PFS, ASM_UNW_PRLG_GRSAVE(8)
+	alloc r16=ar.pfs,8,2,6,0
+	DO_SAVE_SWITCH_STACK
+	adds r2=PT(R16)+IA64_SWITCH_STACK_SIZE+16,sp
+	mov loc0=rp
+	mov loc1=r16				// save ar.pfs across do_fork
+	.body
+	mov out1=in1
+	mov out2=in2
+	tbit.nz p6,p0=in0,CLONE_SETTLS_BIT
+	mov out3=in3	// parent_tidptr: valid only w/CLONE_PARENT_SETTID
+	;;
+(p6)	st8 [r2]=in5				// store TLS in r16 for copy_thread()
+	mov out4=in4	// child_tidptr:  valid only w/CLONE_CHILD_SETTID or CLONE_CHILD_CLEARTID
+	mov out0=in0				// out0 = clone_flags
+	br.call.sptk.many rp=do_fork
+.ret1:	.restore sp
+	adds sp=IA64_SWITCH_STACK_SIZE,sp	// pop the switch stack
+	mov ar.pfs=loc1
+	mov rp=loc0
+	br.ret.sptk.many rp
+END(sys_clone2)
 
+I'm not sure if this needs to be because of architectural constraints or
+if it just is a historic artifact.
+(Ccing ia64 now to see what they have to say.)
+
+Christian
