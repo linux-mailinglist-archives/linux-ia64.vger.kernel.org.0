@@ -2,70 +2,111 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F24E2CCBB
-	for <lists+linux-ia64@lfdr.de>; Tue, 28 May 2019 18:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7F942EEA7
+	for <lists+linux-ia64@lfdr.de>; Thu, 30 May 2019 05:49:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726830AbfE1Q4n (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 28 May 2019 12:56:43 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:41506 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726512AbfE1Q4n (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 28 May 2019 12:56:43 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=nH9/YIiBfyxeQrFyzBKKJqYNW27qg6QsbvfnYAw+DKw=; b=qav5ISjZmam7rg9EDSX9RYJQB
-        Mo5WqUiQW2Z4K+uZwuQxxH4pxqCQqWYM0fw5V7AhXgAvn2rKrXxbFYotFODXGvQKiNJHZh1Qozyyn
-        1Mf7HYGJ/x/IHFYfwvTJXDmzAQ6oOHxc/M4ybk5u3UpGNtCiuJ3zxJxWUTmPCdLSRdEN9R5df+cgs
-        GU4MY8humaAF6GjwHv5l055ocOW9NORHehesY7TMlew/7ENE7peLJsXOkMq6T0FvFXuzX2V+9zr4n
-        fpKWmGiqzL/McwSOeLKClVdelqO0z4NX4SuQtxO6vcTc3z1eOZM/HvC2oZ9lHmSUflsxQ1KuLxnuM
-        NYzYsP8Lg==;
-Received: from static-50-53-52-16.bvtn.or.frontiernet.net ([50.53.52.16] helo=midway.dunlab)
-        by bombadil.infradead.org with esmtpsa (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hVfP0-00054g-Fi; Tue, 28 May 2019 16:56:42 +0000
-Subject: Re: [PATCH - Linus please apply] ia64: fix build errors by exporting
- paddr_to_nid()
-To:     "Luck, Tony" <tony.luck@intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     lkp <lkp@intel.com>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>
-References: <20190528161430.27697-1-tony.luck@intel.com>
- <CAHk-=whaNQSnV3Mv_-T8jLmPeHQUTZieg+ZYhyUufW4wrPymfw@mail.gmail.com>
- <3908561D78D1C84285E8C5FCA982C28F7E97462E@ORSMSX104.amr.corp.intel.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <6ab98945-7163-04d8-0139-6c1c1936e455@infradead.org>
-Date:   Tue, 28 May 2019 09:56:40 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
- Thunderbird/60.6.1
+        id S1732350AbfE3DtV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 29 May 2019 23:49:21 -0400
+Received: from szxga04-in.huawei.com ([45.249.212.190]:18047 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1729827AbfE3DtU (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 29 May 2019 23:49:20 -0400
+Received: from DGGEMS403-HUB.china.huawei.com (unknown [172.30.72.58])
+        by Forcepoint Email with ESMTP id A41468F06A13BCCAA76D;
+        Thu, 30 May 2019 11:49:17 +0800 (CST)
+Received: from HGHY4L002753561.china.huawei.com (10.133.215.186) by
+ DGGEMS403-HUB.china.huawei.com (10.3.19.203) with Microsoft SMTP Server id
+ 14.3.439.0; Thu, 30 May 2019 11:49:10 +0800
+From:   Zhen Lei <thunder.leizhen@huawei.com>
+To:     Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
+        John Garry <john.garry@huawei.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        linux-doc <linux-doc@vger.kernel.org>,
+        Sebastian Ott <sebott@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        "Martin Schwidefsky" <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "Michael Ellerman" <mpe@ellerman.id.au>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        iommu <iommu@lists.linux-foundation.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        x86 <x86@kernel.org>, linux-ia64 <linux-ia64@vger.kernel.org>
+CC:     Zhen Lei <thunder.leizhen@huawei.com>,
+        Hanjun Guo <guohanjun@huawei.com>
+Subject: [PATCH v8 0/7] iommu: enhance IOMMU default DMA mode build options
+Date:   Thu, 30 May 2019 11:48:24 +0800
+Message-ID: <20190530034831.4184-1-thunder.leizhen@huawei.com>
+X-Mailer: git-send-email 2.21.0.windows.1
 MIME-Version: 1.0
-In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7E97462E@ORSMSX104.amr.corp.intel.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.133.215.186]
+X-CFilter-Loop: Reflected
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 5/28/19 9:39 AM, Luck, Tony wrote:
->> Just out of curiosity, what caused this error? It doesn't _look_ new,
->> just judging from the patch itself. Is this just a configuration that
->> nobody has noticed before, or something else that changed that caused
->> it to happen now?
-> 
-> I'm confused by the error because I don't see it using an older (4.6.4) version
-> of gcc. But Randy is building with something modern and runs into it.
-> 
-> So some aggressive optimization/inline?
-> 
-> -Tony
+v7--> v8
+1. Split into multiple small patches base on ARCHs or IOMMU drivers.
+2. Hide the unsupported build options on the related ARCH or IOMMU.
 
-kbuild test robot reported the build error.  It uses gcc 7.x.
-I am using gcc 8.1 from kernel.org crosstools.
+v6 --> v7:
+1. Fix some text editing errors
+
+v5 --> v6:
+1. give up adding boot option iommu.dma_mode
+
+v4 --> v5:
+As Hanjun and Thomas Gleixner's suggestion:
+1. Keep the old ARCH specific boot options no change.
+2. Keep build option CONFIG_IOMMU_DEFAULT_PASSTHROUGH no change.
+
+v4:
+As Robin Murphy's suggestion:
+"It's also not necessarily obvious to the user how this interacts with
+IOMMU_DEFAULT_PASSTHROUGH, so if we really do go down this route, maybe it
+would be better to refactor the whole lot into a single selection of something
+like IOMMU_DEFAULT_MODE anyway."
+
+In this version, I tried to normalize the IOMMU dma mode boot options for all
+ARCHs. When IOMMU is enabled, there are 3 dma modes: paasthrough(bypass),
+lazy(mapping but defer the IOTLB invalidation), strict. But currently each
+ARCHs defined their private boot options, different with each other. For
+example, to enable/disable "passthrough", ARM64 use iommu.passthrough=1/0,
+X86 use iommu=pt/nopt, PPC/POWERNV use iommu=nobypass.
+
+Zhen Lei (7):
+  iommu: enhance IOMMU default DMA mode build options
+  x86/dma: use IS_ENABLED() to simplify the code
+  s390/pci: add support for IOMMU default DMA mode build options
+  powernv/iommu: add support for IOMMU default DMA mode build options
+  iommu/vt-d: add support for IOMMU default DMA mode build options
+  iommu/amd: add support for IOMMU default DMA mode build options
+  ia64: hide build option IOMMU_DEFAULT_PASSTHROUGH
+
+ arch/powerpc/platforms/powernv/pci-ioda.c |  3 +-
+ arch/s390/pci/pci_dma.c                   |  2 +-
+ arch/x86/kernel/pci-dma.c                 |  7 ++---
+ drivers/iommu/Kconfig                     | 46 ++++++++++++++++++++++++++-----
+ drivers/iommu/amd_iommu_init.c            |  3 +-
+ drivers/iommu/intel-iommu.c               |  2 +-
+ drivers/iommu/iommu.c                     |  3 +-
+ 7 files changed, 49 insertions(+), 17 deletions(-)
 
 -- 
-~Randy
+1.8.3
+
+
