@@ -2,80 +2,88 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A2222FC74
-	for <lists+linux-ia64@lfdr.de>; Thu, 30 May 2019 15:39:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30DA33014A
+	for <lists+linux-ia64@lfdr.de>; Thu, 30 May 2019 19:54:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726829AbfE3Nj6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 30 May 2019 09:39:58 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:36316 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725919AbfE3Nj6 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 30 May 2019 09:39:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=1z2R00tGmVK2jShz09WQ0aSl4fghOklhUmq3MkzmZGo=; b=cO8H1JSNfCwyIOlnTHicp8Zhy
-        tdZp1B1hNurTw3WgAzPBczTGKcSpIkF2nUeFXWFXbacSglBjt8yYhoxBpvJQd2bkSo8SPeHDMVlbk
-        AmGm77WpHy+tChpRqlM72RL0yDXaK+gT4W1Kljnz/VQ/KVDugsJZ0Tc/HFFB2pHCUi7WQ8dCXvAcZ
-        squPNwIZONWngjyh6R0Q/O1CiEId8WQLaglsMjfxroLiY82v0UZBHk7vWS3/3ejIRWejmUyHZlDM1
-        gPiCoTWkidUnsD2jvuDxMSsXlKB3TaOPHa9W0ihPAK8uyAmomCO3ELcq+JfaA9MCjatOQ5PlCd63o
-        jpySg/rQw==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
-        id 1hWLHe-0001vX-Pd; Thu, 30 May 2019 13:39:54 +0000
-Date:   Thu, 30 May 2019 06:39:54 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [RFC] mm: Generalize notify_page_fault()
-Message-ID: <20190530133954.GA2024@bombadil.infradead.org>
-References: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
- <20190530110639.GC23461@bombadil.infradead.org>
- <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
+        id S1726636AbfE3RyD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 30 May 2019 13:54:03 -0400
+Received: from mail-ed1-f65.google.com ([209.85.208.65]:40037 "EHLO
+        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726601AbfE3RyC (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 30 May 2019 13:54:02 -0400
+Received: by mail-ed1-f65.google.com with SMTP id r18so9267870edo.7
+        for <linux-ia64@vger.kernel.org>; Thu, 30 May 2019 10:54:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=QlYOqgGgItn5hucl8pZOYZeRpF+/j+lyZEX0rN4v98g=;
+        b=LYlHNdAV/SNBSa2OU1jdHVGlps7i+f4ToRjbTl9D2wFgpxOnqYU6L0tHRyBKqXN8PS
+         bA20mdUlqFwilW74sDweWwxCRjLlo9fuLRBJptvvxIq+vYgZ96pbtG7pADnxLsZ5u6Ed
+         xa3CEpbgxATF5V1HpcSCSGovWdI7wIoti8PlUbQ7uPq+eFKDXrzPzbDKxcOs/rbfxHdW
+         3wcYT/Y0vSetxxTI7PMr+4dEKBZMAaPHqAJ4cafp6No1HT2gZdPpzYTqxY9BWFqu5i8v
+         c8SEsw9ZPMpf8Cmj587OTzTy+La1UCwO9pu1FiOK6SpUJ9aeYM0ra8QLMjn3GNWlh/JN
+         PXWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=QlYOqgGgItn5hucl8pZOYZeRpF+/j+lyZEX0rN4v98g=;
+        b=Ov8dZFqvS6nAbEBIlRtYdU9DJ4dfSny0AcTXvirluA0CMOK9qHZMnm0b/wP18zjmAp
+         mPTUBeLCbN6PMMWCGSKluieFMpn3VdeNyaUO/CEe0DlypIMvC+/oKwYpf2DJ90Ctg51B
+         G129LcULslFyw+xOX/gyOJaV5BZ0QHtohoPsBcvK7rveQ1wJffIo5GFonkcD/mxnPbb7
+         aXUvOSP+XK7dCPybz3m1NFmDp0Q4hZ70zHJaQNBVSvabmB8dLgDv+sTgDO+V7sD9Ysir
+         eROXZaA8xM0eJkRwfj/9AHvYE+WPs57i4eSoDAvi17ht0aNAeOihfOQdaocSpWyfyPoF
+         xKjQ==
+X-Gm-Message-State: APjAAAVRcsVS8FxUOJXlxtsiS1yxW2cpglkxWjjdofTd+pP4su1exqB4
+        WBARQSRyVInx+vIfFXOlRsjlsypqA0bycnjf5Om3PA==
+X-Google-Smtp-Source: APXvYqxJpnEky/HQoCMiqMXy5GPOyKza2hJ+52II0wfo1HpL9rVDxjuGoL3UWKguhdIYjncFwf0xnjjAWLfB3JRkG5w=
+X-Received: by 2002:a17:906:a354:: with SMTP id bz20mr4932536ejb.209.1559238840892;
+ Thu, 30 May 2019 10:54:00 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
+References: <20190527111152.16324-1-david@redhat.com> <20190527111152.16324-2-david@redhat.com>
+In-Reply-To: <20190527111152.16324-2-david@redhat.com>
+From:   Pavel Tatashin <pasha.tatashin@soleen.com>
+Date:   Thu, 30 May 2019 13:53:50 -0400
+Message-ID: <CA+CK2bBW4vH+J6bam1dOxjSwFwvoOEok0VNO0n_JjyHxpkGj+A@mail.gmail.com>
+Subject: Re: [PATCH v3 01/11] mm/memory_hotplug: Simplify and fix check_hotplug_memory_range()
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Wei Yang <richard.weiyang@gmail.com>,
+        Igor Mammedov <imammedo@redhat.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Michal Hocko <mhocko@suse.com>, Qian Cai <cai@lca.pw>,
+        Arun KS <arunks@codeaurora.org>,
+        Mathieu Malaterre <malat@debian.org>,
+        Wei Yang <richardw.yang@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, May 30, 2019 at 05:31:15PM +0530, Anshuman Khandual wrote:
-> On 05/30/2019 04:36 PM, Matthew Wilcox wrote:
-> > The two handle preemption differently.  Why is x86 wrong and this one
-> > correct?
-> 
-> Here it expects context to be already non-preemptible where as the proposed
-> generic function makes it non-preemptible with a preempt_[disable|enable]()
-> pair for the required code section, irrespective of it's present state. Is
-> not this better ?
+On Mon, May 27, 2019 at 7:12 AM David Hildenbrand <david@redhat.com> wrote:
+>
+> By converting start and size to page granularity, we actually ignore
+> unaligned parts within a page instead of properly bailing out with an
+> error.
+>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+> Cc: Qian Cai <cai@lca.pw>
+> Cc: Wei Yang <richard.weiyang@gmail.com>
+> Cc: Arun KS <arunks@codeaurora.org>
+> Cc: Mathieu Malaterre <malat@debian.org>
+> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
+> Reviewed-by: Wei Yang <richardw.yang@linux.intel.com>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-git log -p arch/x86/mm/fault.c
-
-search for 'kprobes'.
-
-tell me what you think.
+Reviewed-by: Pavel Tatashin <pasha.tatashin@soleen.com>
