@@ -2,51 +2,52 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 30DA33014A
-	for <lists+linux-ia64@lfdr.de>; Thu, 30 May 2019 19:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32171303CC
+	for <lists+linux-ia64@lfdr.de>; Thu, 30 May 2019 23:07:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726636AbfE3RyD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 30 May 2019 13:54:03 -0400
-Received: from mail-ed1-f65.google.com ([209.85.208.65]:40037 "EHLO
-        mail-ed1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726601AbfE3RyC (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 30 May 2019 13:54:02 -0400
-Received: by mail-ed1-f65.google.com with SMTP id r18so9267870edo.7
-        for <linux-ia64@vger.kernel.org>; Thu, 30 May 2019 10:54:01 -0700 (PDT)
+        id S1726541AbfE3VHV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 30 May 2019 17:07:21 -0400
+Received: from mail-ed1-f68.google.com ([209.85.208.68]:36256 "EHLO
+        mail-ed1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726610AbfE3VHS (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 30 May 2019 17:07:18 -0400
+Received: by mail-ed1-f68.google.com with SMTP id a8so11099875edx.3
+        for <linux-ia64@vger.kernel.org>; Thu, 30 May 2019 14:07:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=soleen.com; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=QlYOqgGgItn5hucl8pZOYZeRpF+/j+lyZEX0rN4v98g=;
-        b=LYlHNdAV/SNBSa2OU1jdHVGlps7i+f4ToRjbTl9D2wFgpxOnqYU6L0tHRyBKqXN8PS
-         bA20mdUlqFwilW74sDweWwxCRjLlo9fuLRBJptvvxIq+vYgZ96pbtG7pADnxLsZ5u6Ed
-         xa3CEpbgxATF5V1HpcSCSGovWdI7wIoti8PlUbQ7uPq+eFKDXrzPzbDKxcOs/rbfxHdW
-         3wcYT/Y0vSetxxTI7PMr+4dEKBZMAaPHqAJ4cafp6No1HT2gZdPpzYTqxY9BWFqu5i8v
-         c8SEsw9ZPMpf8Cmj587OTzTy+La1UCwO9pu1FiOK6SpUJ9aeYM0ra8QLMjn3GNWlh/JN
-         PXWg==
+        bh=Pv5CB4WwZj0N9C+rEj8/2lRh5EGUHdn0uj79m0rM0oo=;
+        b=VEU5u5GDrcgB8PRAclAeTaxHNWRXxNgMKQuxMFD2SFRizhpvwX2vSFrW58YKLvKdGO
+         eVuKFZtXyc1RHb9iKevkl1RKESa8X+H4JsE7X49/wDWGTTF1++R+Oi6bCGLu0qiMFC7q
+         hWo0t+OsCQNb5YJC5V+PLRuPaGXL4SH2RlhfYwJV76d+wtYGM87zkTYGJrmM5dahxIDn
+         qHnxrRKHJ981k6zXutXR8rLnD27RwSUR9gdS6t3qdzrPraAAqPEeILMrt+Xu+DkaI8aO
+         CnVCUN2x67n04/yYkoMoVaF4yzXSA1yTow1K1ywH4DmLZh4o+OnP8FcuMAvRu6sLPZIL
+         UDpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=QlYOqgGgItn5hucl8pZOYZeRpF+/j+lyZEX0rN4v98g=;
-        b=Ov8dZFqvS6nAbEBIlRtYdU9DJ4dfSny0AcTXvirluA0CMOK9qHZMnm0b/wP18zjmAp
-         mPTUBeLCbN6PMMWCGSKluieFMpn3VdeNyaUO/CEe0DlypIMvC+/oKwYpf2DJ90Ctg51B
-         G129LcULslFyw+xOX/gyOJaV5BZ0QHtohoPsBcvK7rveQ1wJffIo5GFonkcD/mxnPbb7
-         aXUvOSP+XK7dCPybz3m1NFmDp0Q4hZ70zHJaQNBVSvabmB8dLgDv+sTgDO+V7sD9Ysir
-         eROXZaA8xM0eJkRwfj/9AHvYE+WPs57i4eSoDAvi17ht0aNAeOihfOQdaocSpWyfyPoF
-         xKjQ==
-X-Gm-Message-State: APjAAAVRcsVS8FxUOJXlxtsiS1yxW2cpglkxWjjdofTd+pP4su1exqB4
-        WBARQSRyVInx+vIfFXOlRsjlsypqA0bycnjf5Om3PA==
-X-Google-Smtp-Source: APXvYqxJpnEky/HQoCMiqMXy5GPOyKza2hJ+52II0wfo1HpL9rVDxjuGoL3UWKguhdIYjncFwf0xnjjAWLfB3JRkG5w=
-X-Received: by 2002:a17:906:a354:: with SMTP id bz20mr4932536ejb.209.1559238840892;
- Thu, 30 May 2019 10:54:00 -0700 (PDT)
+        bh=Pv5CB4WwZj0N9C+rEj8/2lRh5EGUHdn0uj79m0rM0oo=;
+        b=Sffd6YvIRH7F9MOAEaQq8h0JG+/77IM7G770XgChpeU/vSZJ1ST5dM+XwD65NT66bm
+         ZH29zNtJndDUAAKcWNqxPFcxyga6alg8M26PcawWceRAX6nZiNlBIPJVXxgRNQGjP1bT
+         4m1TGNFU9ERY92+c6LB8b9AgCX+T/TaPv7KtBr7rBhK1kmXVFC9g7RDrU3wunz1ATPjc
+         doVUP2aFl4QyEwiazDg6ALAIr+0fICaHyxROOqKm/OaR+fBS1L6+tJ/8v0Xr96+v8C4+
+         DFp1Pmxs6U3ASTEtsHBnG8Rvwe4bXeKYQcyRdat5wJ0dgo79x4OsDrdetTaNPEjB7JIP
+         OOWA==
+X-Gm-Message-State: APjAAAUQmC3YRWs6qtCUw/mLm4kVb6yr8B9NwrAEAYK+prbCXuLTCuqL
+        mOXo1w2XsFYqqe+DzaNe55MY0wgT7NPHLDMvsLJG5g==
+X-Google-Smtp-Source: APXvYqzIBqcTjn5yiKx6Vr6nLGFPUVRyPMd7kuo7uA8Xmjn8HuSs90QeWcqYdxDxX2LpwL8i4qi0lXPOMCD5KRVUoAU=
+X-Received: by 2002:aa7:d711:: with SMTP id t17mr7195382edq.80.1559250436307;
+ Thu, 30 May 2019 14:07:16 -0700 (PDT)
 MIME-Version: 1.0
-References: <20190527111152.16324-1-david@redhat.com> <20190527111152.16324-2-david@redhat.com>
-In-Reply-To: <20190527111152.16324-2-david@redhat.com>
+References: <20190527111152.16324-1-david@redhat.com> <20190527111152.16324-8-david@redhat.com>
+In-Reply-To: <20190527111152.16324-8-david@redhat.com>
 From:   Pavel Tatashin <pasha.tatashin@soleen.com>
-Date:   Thu, 30 May 2019 13:53:50 -0400
-Message-ID: <CA+CK2bBW4vH+J6bam1dOxjSwFwvoOEok0VNO0n_JjyHxpkGj+A@mail.gmail.com>
-Subject: Re: [PATCH v3 01/11] mm/memory_hotplug: Simplify and fix check_hotplug_memory_range()
+Date:   Thu, 30 May 2019 17:07:05 -0400
+Message-ID: <CA+CK2bBLtZL8qxsjJt-tdaOraJCbDYfH2cbQ1ABJJ8hYif8LiQ@mail.gmail.com>
+Subject: Re: [PATCH v3 07/11] mm/memory_hotplug: Create memory block devices
+ after arch_add_memory()
 To:     David Hildenbrand <david@redhat.com>
 Cc:     linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>,
         linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
@@ -56,11 +57,15 @@ Cc:     linux-mm <linux-mm@kvack.org>, LKML <linux-kernel@vger.kernel.org>,
         Dan Williams <dan.j.williams@intel.com>,
         Wei Yang <richard.weiyang@gmail.com>,
         Igor Mammedov <imammedo@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        "mike.travis@hpe.com" <mike.travis@hpe.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Andrew Banman <andrew.banman@hpe.com>,
         Oscar Salvador <osalvador@suse.de>,
         Michal Hocko <mhocko@suse.com>, Qian Cai <cai@lca.pw>,
         Arun KS <arunks@codeaurora.org>,
-        Mathieu Malaterre <malat@debian.org>,
-        Wei Yang <richardw.yang@linux.intel.com>
+        Mathieu Malaterre <malat@debian.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
@@ -69,21 +74,39 @@ X-Mailing-List: linux-ia64@vger.kernel.org
 
 On Mon, May 27, 2019 at 7:12 AM David Hildenbrand <david@redhat.com> wrote:
 >
-> By converting start and size to page granularity, we actually ignore
-> unaligned parts within a page instead of properly bailing out with an
-> error.
+> Only memory to be added to the buddy and to be onlined/offlined by
+> user space using /sys/devices/system/memory/... needs (and should have!)
+> memory block devices.
 >
+> Factor out creation of memory block devices. Create all devices after
+> arch_add_memory() succeeded. We can later drop the want_memblock parameter,
+> because it is now effectively stale.
+>
+> Only after memory block devices have been added, memory can be onlined
+> by user space. This implies, that memory is not visible to user space at
+> all before arch_add_memory() succeeded.
+>
+> While at it
+> - use WARN_ON_ONCE instead of BUG_ON in moved unregister_memory()
+> - introduce find_memory_block_by_id() to search via block id
+> - Use find_memory_block_by_id() in init_memory_block() to catch
+>   duplicates
+>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: "mike.travis@hpe.com" <mike.travis@hpe.com>
 > Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: Andrew Banman <andrew.banman@hpe.com>
 > Cc: Oscar Salvador <osalvador@suse.de>
 > Cc: Michal Hocko <mhocko@suse.com>
-> Cc: David Hildenbrand <david@redhat.com>
 > Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
 > Cc: Qian Cai <cai@lca.pw>
 > Cc: Wei Yang <richard.weiyang@gmail.com>
 > Cc: Arun KS <arunks@codeaurora.org>
 > Cc: Mathieu Malaterre <malat@debian.org>
-> Reviewed-by: Dan Williams <dan.j.williams@intel.com>
-> Reviewed-by: Wei Yang <richardw.yang@linux.intel.com>
 > Signed-off-by: David Hildenbrand <david@redhat.com>
 
+LGTM
 Reviewed-by: Pavel Tatashin <pasha.tatashin@soleen.com>
