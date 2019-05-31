@@ -2,144 +2,103 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8104630CC5
-	for <lists+linux-ia64@lfdr.de>; Fri, 31 May 2019 12:43:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD92D31422
+	for <lists+linux-ia64@lfdr.de>; Fri, 31 May 2019 19:48:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726240AbfEaKnP (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 31 May 2019 06:43:15 -0400
-Received: from szxga06-in.huawei.com ([45.249.212.32]:43848 "EHLO huawei.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726158AbfEaKnO (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 31 May 2019 06:43:14 -0400
-Received: from DGGEMS409-HUB.china.huawei.com (unknown [172.30.72.58])
-        by Forcepoint Email with ESMTP id 9228C33A72539724796A;
-        Fri, 31 May 2019 18:43:10 +0800 (CST)
-Received: from [127.0.0.1] (10.202.227.238) by DGGEMS409-HUB.china.huawei.com
- (10.3.19.209) with Microsoft SMTP Server id 14.3.439.0; Fri, 31 May 2019
- 18:42:59 +0800
-Subject: Re: [PATCH v8 1/7] iommu: enhance IOMMU default DMA mode build
- options
-To:     "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>,
-        "Jean-Philippe Brucker" <jean-philippe.brucker@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        linux-doc <linux-doc@vger.kernel.org>,
-        Sebastian Ott <sebott@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        "Martin Schwidefsky" <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        id S1726428AbfEaRs6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 31 May 2019 13:48:58 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:40476 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725934AbfEaRs6 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 31 May 2019 13:48:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=ox5SYttOkOuRXfS7cs3JsHQ+R0GLTw4N6BHjQRoaW9E=; b=EAUDatB5hW46G9M1Ux5rKjKdO
+        2gatVjjYZRPlz/Y8yieBJl+NTOqpgatgBKBU0KD4TsTPRHuOAOdASb97lecou22eiM2OapeLCzPgp
+        B0i0qPk66SspAy6OJFa1NIO4ol3ItewiiFaxYuuw7LLCg6ihQcITsomL18HAh28KsH655hSpvEaXK
+        xELWZ9GoG8dKe0FlwT+BYKfNw7vVZDolyKXu+JXuRall/zajJ1hcm3jvaxeoZ0nnxHMg7OjxSwtOg
+        5Emd9DEvLQB4DtO5nEcmw84mXxgWLl2OJrNXW+ggkep9wq+uTLg1JfxZNt1MTnoW7sdnu4+jS5Uxt
+        sHxXOWYlg==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.90_1 #2 (Red Hat Linux))
+        id 1hWleA-0002Ni-V0; Fri, 31 May 2019 17:48:54 +0000
+Date:   Fri, 31 May 2019 10:48:54 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Paul Mackerras <paulus@samba.org>,
-        "Michael Ellerman" <mpe@ellerman.id.au>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        iommu <iommu@lists.linux-foundation.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        x86 <x86@kernel.org>, linux-ia64 <linux-ia64@vger.kernel.org>
-References: <20190530034831.4184-1-thunder.leizhen@huawei.com>
- <20190530034831.4184-2-thunder.leizhen@huawei.com>
- <645bd526-4eb0-4a36-2dda-023f009247ab@huawei.com>
- <030bafab-58f5-8bb1-0533-2977d6e138b2@huawei.com>
-CC:     Hanjun Guo <guohanjun@huawei.com>, Linuxarm <linuxarm@huawei.com>
-From:   John Garry <john.garry@huawei.com>
-Message-ID: <55d0e30c-5bca-41fc-5bf0-4366dc387afd@huawei.com>
-Date:   Fri, 31 May 2019 11:42:45 +0100
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:45.0) Gecko/20100101
- Thunderbird/45.3.0
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [RFC] mm: Generalize notify_page_fault()
+Message-ID: <20190531174854.GA31852@bombadil.infradead.org>
+References: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
+ <20190530110639.GC23461@bombadil.infradead.org>
+ <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
+ <20190530133954.GA2024@bombadil.infradead.org>
+ <f1995445-d5ab-f292-d26c-809581002184@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <030bafab-58f5-8bb1-0533-2977d6e138b2@huawei.com>
-Content-Type: text/plain; charset="utf-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.202.227.238]
-X-CFilter-Loop: Reflected
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f1995445-d5ab-f292-d26c-809581002184@arm.com>
+User-Agent: Mutt/1.9.2 (2017-12-15)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+On Fri, May 31, 2019 at 02:17:43PM +0530, Anshuman Khandual wrote:
+> On 05/30/2019 07:09 PM, Matthew Wilcox wrote:
+> > On Thu, May 30, 2019 at 05:31:15PM +0530, Anshuman Khandual wrote:
+> >> On 05/30/2019 04:36 PM, Matthew Wilcox wrote:
+> >>> The two handle preemption differently.  Why is x86 wrong and this one
+> >>> correct?
+> >>
+> >> Here it expects context to be already non-preemptible where as the proposed
+> >> generic function makes it non-preemptible with a preempt_[disable|enable]()
+> >> pair for the required code section, irrespective of it's present state. Is
+> >> not this better ?
+> > 
+> > git log -p arch/x86/mm/fault.c
+> > 
+> > search for 'kprobes'.
+> > 
+> > tell me what you think.
+> 
+> Are you referring to these following commits
+> 
+> a980c0ef9f6d ("x86/kprobes: Refactor kprobes_fault() like kprobe_exceptions_notify()")
+> b506a9d08bae ("x86: code clarification patch to Kprobes arch code")
+> 
+> In particular the later one (b506a9d08bae). It explains how the invoking context
+> in itself should be non-preemptible for the kprobes processing context irrespective
+> of whether kprobe_running() or perhaps smp_processor_id() is safe or not. Hence it
+> does not make much sense to continue when original invoking context is preemptible.
+> Instead just bail out earlier. This seems to be making more sense than preempt
+> disable-enable pair. If there are no concerns about this change from other platforms,
+> I will change the preemption behavior in proposed generic function next time around.
 
->>> -config IOMMU_DEFAULT_PASSTHROUGH
->>> -    bool "IOMMU passthrough by default"
->>> +choice
->>> +    prompt "IOMMU default DMA mode"
->>>      depends on IOMMU_API
->>> -        help
->>> -      Enable passthrough by default, removing the need to pass in
->>> -      iommu.passthrough=on or iommu=pt through command line. If this
->>> -      is enabled, you can still disable with iommu.passthrough=off
->>> -      or iommu=nopt depending on the architecture.
->>> +    default IOMMU_DEFAULT_STRICT
->>> +    help
->>> +      This option allows IOMMU DMA mode to be chose at build time, to
->>
->> As before:
->> /s/chose/chosen/, /s/allows IOMMU/allows an IOMMU/
-> I'm sorry that the previous version was not modified.
->
->>
->>> +      override the default DMA mode of each ARCHs, removing the need to
->>
->> Again, as before:
->> ARCHs should be singular
-> OK
->
->>
->>> +      pass in kernel parameters through command line. You can still use
->>> +      ARCHs specific boot options to override this option again.
+Exactly.
 
-*
-
->>> +
->>> +config IOMMU_DEFAULT_PASSTHROUGH
->>> +    bool "passthrough"
->>> +    help
->>> +      In this mode, the DMA access through IOMMU without any addresses
->>> +      translation. That means, the wrong or illegal DMA access can not
->>> +      be caught, no error information will be reported.
->>>
->>>        If unsure, say N here.
->>>
->>> +config IOMMU_DEFAULT_LAZY
->>> +    bool "lazy"
->>> +    help
->>> +      Support lazy mode, where for every IOMMU DMA unmap operation, the
->>> +      flush operation of IOTLB and the free operation of IOVA are deferred.
->>> +      They are only guaranteed to be done before the related IOVA will be
->>> +      reused.
->>
->> why no advisory on how to set if unsure?
-> Because the LAZY and STRICT have their own advantages and disadvantages.
->
-> Should I say: If unsure, keep the default。
-
-Maybe. So you could put this in the help for the choice, * above, and 
-remove the advisory on IOMMU_DEFAULT_PASSTHROUGH.
-
-However the maintainer may have a different view.
-
-Thanks,
-John
-
->
->>
->>> +
->>> +config IOMMU_DEFAULT_STRICT
->>> +    bool "strict"
->>> +    help
->>> +      For every IOMMU DMA unmap operation, the flush operation of IOTLB and
->>> +      the free operation of IOVA are guaranteed to be done in the unmap
->>> +      function.
->>> +
->>> +      This mode is safer than the two above, but it maybe slower in some
->>> +      high performace scenarios.
->>
->> and here?
-
+So, any of the arch maintainers know of a reason they behave differently
+from x86 in this regard?  Or can Anshuman use the x86 implementation
+for all the architectures supporting kprobes?
