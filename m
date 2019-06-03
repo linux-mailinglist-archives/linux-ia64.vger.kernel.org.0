@@ -2,118 +2,96 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id F3114327D3
-	for <lists+linux-ia64@lfdr.de>; Mon,  3 Jun 2019 06:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BA5D32E31
+	for <lists+linux-ia64@lfdr.de>; Mon,  3 Jun 2019 13:08:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726223AbfFCExU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 3 Jun 2019 00:53:20 -0400
-Received: from usa-sjc-mx-foss1.foss.arm.com ([217.140.101.70]:44420 "EHLO
-        foss.arm.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726221AbfFCExT (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 3 Jun 2019 00:53:19 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A87D1341;
-        Sun,  2 Jun 2019 21:53:18 -0700 (PDT)
-Received: from [10.162.40.144] (p8cg001049571a15.blr.arm.com [10.162.40.144])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CC0BB3F5AF;
-        Sun,  2 Jun 2019 21:53:11 -0700 (PDT)
-Subject: Re: [RFC] mm: Generalize notify_page_fault()
-To:     Matthew Wilcox <willy@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>
-References: <1559195713-6956-1-git-send-email-anshuman.khandual@arm.com>
- <20190530110639.GC23461@bombadil.infradead.org>
- <4f9a610d-e856-60f6-4467-09e9c3836771@arm.com>
- <20190530133954.GA2024@bombadil.infradead.org>
- <f1995445-d5ab-f292-d26c-809581002184@arm.com>
- <20190531174854.GA31852@bombadil.infradead.org>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <6338fef8-e097-a76e-5c07-455d0d9b6e24@arm.com>
-Date:   Mon, 3 Jun 2019 10:23:26 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <20190531174854.GA31852@bombadil.infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1727780AbfFCLIA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 3 Jun 2019 07:08:00 -0400
+Received: from mx1.tq-group.com ([62.157.118.193]:21981 "EHLO mx1.tq-group.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726825AbfFCLIA (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 3 Jun 2019 07:08:00 -0400
+X-Greylist: delayed 587 seconds by postgrey-1.27 at vger.kernel.org; Mon, 03 Jun 2019 07:08:00 EDT
+X-IronPort-AV: E=Sophos;i="5.60,546,1549926000"; 
+   d="scan'208";a="7665930"
+Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
+  by mx1-pgp.tq-group.com with ESMTP; 03 Jun 2019 12:58:11 +0200
+Received: from mx1.tq-group.com ([192.168.6.7])
+  by tq-pgp-pr1.tq-net.de (PGP Universal service);
+  Mon, 03 Jun 2019 12:58:12 +0200
+X-PGP-Universal: processed;
+        by tq-pgp-pr1.tq-net.de on Mon, 03 Jun 2019 12:58:12 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1559559491; x=1591095491;
+  h=from:to:cc:subject:date:message-id;
+  bh=W9GQMQ3nEmL01MlgBQ683CPdonwLrFB8qrhTZhg3YNw=;
+  b=jXTnxI2NcbxsldYXEqjnpH16mc0K29vGBYKrtdwRiTYt1qVA6byxqnqb
+   QT/5J2fK0vhpWv8bUzKzn+4nubKl1fDaZPM1VUTsztEbgcb0It5P8//L2
+   Mtc4VxfIWBhCPcqr34rTtcn61qXZxoS5GImvPGlOek1tD5JtfnjfTgg/N
+   vN4CMfWQ0tHNTYmMzYqdUwLyKbNTBuomp7lyjj/XPDzRllUL+wr4F1X66
+   EHcsK6cUDrjkHA8Y6nhGZEdI6lC9KLqizs9YidCamoiOLmAOtk7mK2Pfg
+   O6CW4funJEgBcGVe6wgjYKZSyNV1dfsnn4L8vu+OsU0i73+l/SGR7qJUH
+   A==;
+X-IronPort-AV: E=Sophos;i="5.60,546,1549926000"; 
+   d="scan'208";a="7665929"
+Received: from vtuxmail01.tq-net.de ([10.115.0.20])
+  by mx1.tq-group.com with ESMTP; 03 Jun 2019 12:58:11 +0200
+Received: from schifferm-ubuntu4.tq-net.de (schifferm-ubuntu4.tq-net.de [10.117.49.26])
+        by vtuxmail01.tq-net.de (Postfix) with ESMTPA id 5EBEA280074;
+        Mon,  3 Jun 2019 12:58:15 +0200 (CEST)
+From:   Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+To:     Russell King <linux@armlinux.org.uk>, Jessica Yu <jeyu@kernel.org>
+Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org,
+        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Subject: [PATCH modules 0/2] Fix handling of exit unwinding sections (on ARM)
+Date:   Mon,  3 Jun 2019 12:57:24 +0200
+Message-Id: <20190603105726.22436-1-matthias.schiffer@ew.tq-group.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+For some time (050d18d1c651 "ARM: 8650/1: module: handle negative
+R_ARM_PREL31 addends correctly", v4.11+), building a kernel without
+CONFIG_MODULE_UNLOAD would lead to module loads failing on ARM systems with
+certain memory layouts, with messages like:
+
+  imx_sdma: section 16 reloc 0 sym '': relocation 42 out of range
+  (0x7f015260 -> 0xc0f5a5e8)
+
+(0x7f015260 is in the module load area, 0xc0f5a5e8 a regular vmalloc
+address; relocation 42 is R_ARM_PREL31)
+
+This is caused by relocatiosn in the .ARM.extab.exit.text and
+.ARM.exidx.exit.text sections referencing the .exit.text section. As the
+module loader will omit loading .exit.text without CONFIG_MODULE_UNLOAD,
+there will be relocations from loaded to unloaded sections; the resulting
+huge offsets trigger the sanity checks added in 050d18d1c651.
+
+IA64 might be affected by a similar issue - sections with names like
+.IA_64.unwind.exit.text and .IA_64.unwind_info.exit.text appear in the ld
+script - but I don't know much about that arch.
+
+Also, I'm not sure if this is stable-worthy - just enabling
+CONFIG_MODULE_UNLOAD should be a viable workaround on affected kernels.
 
 
-On 05/31/2019 11:18 PM, Matthew Wilcox wrote:
-> On Fri, May 31, 2019 at 02:17:43PM +0530, Anshuman Khandual wrote:
->> On 05/30/2019 07:09 PM, Matthew Wilcox wrote:
->>> On Thu, May 30, 2019 at 05:31:15PM +0530, Anshuman Khandual wrote:
->>>> On 05/30/2019 04:36 PM, Matthew Wilcox wrote:
->>>>> The two handle preemption differently.  Why is x86 wrong and this one
->>>>> correct?
->>>>
->>>> Here it expects context to be already non-preemptible where as the proposed
->>>> generic function makes it non-preemptible with a preempt_[disable|enable]()
->>>> pair for the required code section, irrespective of it's present state. Is
->>>> not this better ?
->>>
->>> git log -p arch/x86/mm/fault.c
->>>
->>> search for 'kprobes'.
->>>
->>> tell me what you think.
->>
->> Are you referring to these following commits
->>
->> a980c0ef9f6d ("x86/kprobes: Refactor kprobes_fault() like kprobe_exceptions_notify()")
->> b506a9d08bae ("x86: code clarification patch to Kprobes arch code")
->>
->> In particular the later one (b506a9d08bae). It explains how the invoking context
->> in itself should be non-preemptible for the kprobes processing context irrespective
->> of whether kprobe_running() or perhaps smp_processor_id() is safe or not. Hence it
->> does not make much sense to continue when original invoking context is preemptible.
->> Instead just bail out earlier. This seems to be making more sense than preempt
->> disable-enable pair. If there are no concerns about this change from other platforms,
->> I will change the preemption behavior in proposed generic function next time around.
-> 
-> Exactly.
-> 
-> So, any of the arch maintainers know of a reason they behave differently
-> from x86 in this regard?  Or can Anshuman use the x86 implementation
-> for all the architectures supporting kprobes?
+Kind regards,
+Matthias
 
-So the generic notify_page_fault() will be like this.
 
-int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
-{
-        int ret = 0;
+Matthias Schiffer (2):
+  module: allow arch overrides for .exit section names
+  ARM: module: recognize unwind exit sections
 
-        /*
-         * To be potentially processing a kprobe fault and to be allowed
-         * to call kprobe_running(), we have to be non-preemptible.
-         */
-        if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
-                if (kprobe_running() && kprobe_fault_handler(regs, trap))
-                        ret = 1;
-        }
-        return ret;
-}
+ arch/arm/include/asm/module.h | 11 +++++++++++
+ include/linux/moduleloader.h  |  8 ++++++++
+ kernel/module.c               |  2 +-
+ 3 files changed, 20 insertions(+), 1 deletion(-)
+
+-- 
+2.17.1
+
