@@ -2,105 +2,107 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 92C3B32E36
-	for <lists+linux-ia64@lfdr.de>; Mon,  3 Jun 2019 13:08:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5915D32EFA
+	for <lists+linux-ia64@lfdr.de>; Mon,  3 Jun 2019 13:51:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727803AbfFCLII (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 3 Jun 2019 07:08:08 -0400
-Received: from mx1.tq-group.com ([62.157.118.193]:21981 "EHLO mx1.tq-group.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726587AbfFCLII (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 3 Jun 2019 07:08:08 -0400
-X-Greylist: delayed 587 seconds by postgrey-1.27 at vger.kernel.org; Mon, 03 Jun 2019 07:08:00 EDT
-X-IronPort-AV: E=Sophos;i="5.60,546,1549926000"; 
-   d="scan'208";a="7665934"
-Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
-  by mx1-pgp.tq-group.com with ESMTP; 03 Jun 2019 12:58:11 +0200
-Received: from mx1.tq-group.com ([192.168.6.7])
-  by tq-pgp-pr1.tq-net.de (PGP Universal service);
-  Mon, 03 Jun 2019 12:58:12 +0200
-X-PGP-Universal: processed;
-        by tq-pgp-pr1.tq-net.de on Mon, 03 Jun 2019 12:58:12 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1559559491; x=1591095491;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references;
-  bh=ZLG5fX7UU9AzbSEEnsbZKEWE/R7gaNCrk+0uE58Tc7U=;
-  b=juhs5WdzDM2DBEOm5b2EiUWdwABpa2u190ZtJk0AJaYgwkmMFUoagyLb
-   nIenGCdGGIsEIOnls41TMpRKSzzsTlbwAQAECSOPkkweWxhP0AA5jKTgz
-   L1JkD36A1oCeKC8Hqo9+RliSfb/JL/voucNluCyaeieWb8dBNvEvmAn3y
-   9Bwxq2+godqdd72MLGjTE0krX2KjEqQmACYi58KAX/2u1jmeABp1kl2c5
-   It2a4JBE0yKvS1OLpp60s0hPo+ldTVibgtQDrY2JMRPsK32NBN/0mZesT
-   PcoMs29Z+YJXxpK0H0kLV8OLc1APOwtKprYpEV1rrZW9DzIv7bnqwqrkT
-   g==;
-X-IronPort-AV: E=Sophos;i="5.60,546,1549926000"; 
-   d="scan'208";a="7665933"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 03 Jun 2019 12:58:11 +0200
-Received: from schifferm-ubuntu4.tq-net.de (schifferm-ubuntu4.tq-net.de [10.117.49.26])
-        by vtuxmail01.tq-net.de (Postfix) with ESMTPA id A18CA280077;
-        Mon,  3 Jun 2019 12:58:15 +0200 (CEST)
-From:   Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-To:     Russell King <linux@armlinux.org.uk>, Jessica Yu <jeyu@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Subject: [PATCH modules 2/2] ARM: module: recognize unwind exit sections
-Date:   Mon,  3 Jun 2019 12:57:26 +0200
-Message-Id: <20190603105726.22436-3-matthias.schiffer@ew.tq-group.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190603105726.22436-1-matthias.schiffer@ew.tq-group.com>
-References: <20190603105726.22436-1-matthias.schiffer@ew.tq-group.com>
+        id S1726973AbfFCLvQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 3 Jun 2019 07:51:16 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:36440 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726269AbfFCLvP (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 3 Jun 2019 07:51:15 -0400
+Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x53BmiiH110958
+        for <linux-ia64@vger.kernel.org>; Mon, 3 Jun 2019 07:51:14 -0400
+Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 2sw1m5usuu-1
+        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
+        for <linux-ia64@vger.kernel.org>; Mon, 03 Jun 2019 07:51:13 -0400
+Received: from localhost
+        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
+        for <linux-ia64@vger.kernel.org> from <sebott@linux.ibm.com>;
+        Mon, 3 Jun 2019 12:51:11 +0100
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
+        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
+        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
+        Mon, 3 Jun 2019 12:51:05 +0100
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x53Bp4TO59768908
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 3 Jun 2019 11:51:04 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 398195204E;
+        Mon,  3 Jun 2019 11:51:04 +0000 (GMT)
+Received: from dyn-9-152-212-90.boeblingen.de.ibm.com (unknown [9.152.212.90])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 6A9A252050;
+        Mon,  3 Jun 2019 11:51:03 +0000 (GMT)
+Date:   Mon, 3 Jun 2019 13:51:02 +0200 (CEST)
+From:   Sebastian Ott <sebott@linux.ibm.com>
+X-X-Sender: sebott@schleppi
+To:     Zhen Lei <thunder.leizhen@huawei.com>
+cc:     Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
+        John Garry <john.garry@huawei.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        linux-doc <linux-doc@vger.kernel.org>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        iommu <iommu@lists.linux-foundation.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        x86 <x86@kernel.org>, linux-ia64 <linux-ia64@vger.kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>
+Subject: Re: [PATCH v8 3/7] s390/pci: add support for IOMMU default DMA mode
+ build options
+In-Reply-To: <20190530034831.4184-4-thunder.leizhen@huawei.com>
+References: <20190530034831.4184-1-thunder.leizhen@huawei.com> <20190530034831.4184-4-thunder.leizhen@huawei.com>
+User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
+Organization: =?ISO-8859-15?Q?=22IBM_Deutschland_Research_&_Development_GmbH?=
+ =?ISO-8859-15?Q?_=2F_Vorsitzende_des_Aufsichtsrats=3A_Matthias?=
+ =?ISO-8859-15?Q?_Hartmann_Gesch=E4ftsf=FChrung=3A_Dirk_Wittkopp?=
+ =?ISO-8859-15?Q?_Sitz_der_Gesellschaft=3A_B=F6blingen_=2F_Reg?=
+ =?ISO-8859-15?Q?istergericht=3A_Amtsgericht_Stuttgart=2C_HRB_2432?=
+ =?ISO-8859-15?Q?94=22?=
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+X-TM-AS-GCONF: 00
+x-cbid: 19060311-0016-0000-0000-000002832141
+X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
+x-cbparentid: 19060311-0017-0000-0000-000032E02A71
+Message-Id: <alpine.LFD.2.21.1906031350240.18543@schleppi>
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-03_10:,,
+ signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
+ clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
+ mlxlogscore=635 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.0.1-1810050000 definitions=main-1906030087
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-In addition to the prefix ".exit", ".ARM.extab.exit" and ".ARM.exidx.exit"
-must be recognizes as exit sections as well. Otherwise, loading modules can
-fail without CONFIG_MODULE_UNLOAD depending on the memory layout, when
-relocations for the unwind sections refer to the .exit.text section:
 
-  imx_sdma: section 16 reloc 0 sym '': relocation 42 out of range
-  (0x7f015260 -> 0xc0f5a5e8)
+On Thu, 30 May 2019, Zhen Lei wrote:
+> The default DMA mode is LAZY on s390, this patch make it can be set to
+> STRICT at build time. It can be overridden by boot option.
+> 
+> There is no functional change.
+> 
+> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
 
-where 0x7F000000 is the module load area and 0xC0000000 is the vmalloc
-area. Relocation 42 refers to R_ARM_PREL31, which is limited to signed
-31bit offsets.
-
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
----
- arch/arm/include/asm/module.h | 11 +++++++++++
- 1 file changed, 11 insertions(+)
-
-diff --git a/arch/arm/include/asm/module.h b/arch/arm/include/asm/module.h
-index 182163b55546..f3401758d711 100644
---- a/arch/arm/include/asm/module.h
-+++ b/arch/arm/include/asm/module.h
-@@ -4,6 +4,8 @@
- 
- #include <asm-generic/module.h>
- 
-+#include <linux/string.h>
-+
- struct unwind_table;
- 
- #ifdef CONFIG_ARM_UNWIND
-@@ -72,4 +74,13 @@ static inline unsigned long kallsyms_symbol_value(const Elf_Sym *sym)
- }
- #endif
- 
-+#define HAVE_ARCH_MODULE_EXIT_SECTION
-+static inline bool module_exit_section(const char *name)
-+{
-+	return strstarts(name, ".exit") ||
-+		strstarts(name, ".ARM.extab.exit") ||
-+		strstarts(name, ".ARM.exidx.exit");
-+
-+}
-+
- #endif /* _ASM_ARM_MODULE_H */
--- 
-2.17.1
+Acked-by: Sebastian Ott <sebott@linux.ibm.com>
 
