@@ -2,107 +2,152 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5915D32EFA
-	for <lists+linux-ia64@lfdr.de>; Mon,  3 Jun 2019 13:51:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F21C3339EF
+	for <lists+linux-ia64@lfdr.de>; Mon,  3 Jun 2019 23:41:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726973AbfFCLvQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 3 Jun 2019 07:51:16 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:36440 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726269AbfFCLvP (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 3 Jun 2019 07:51:15 -0400
-Received: from pps.filterd (m0098420.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x53BmiiH110958
-        for <linux-ia64@vger.kernel.org>; Mon, 3 Jun 2019 07:51:14 -0400
-Received: from e06smtp04.uk.ibm.com (e06smtp04.uk.ibm.com [195.75.94.100])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2sw1m5usuu-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-ia64@vger.kernel.org>; Mon, 03 Jun 2019 07:51:13 -0400
-Received: from localhost
-        by e06smtp04.uk.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-ia64@vger.kernel.org> from <sebott@linux.ibm.com>;
-        Mon, 3 Jun 2019 12:51:11 +0100
-Received: from b06cxnps3074.portsmouth.uk.ibm.com (9.149.109.194)
-        by e06smtp04.uk.ibm.com (192.168.101.134) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Mon, 3 Jun 2019 12:51:05 +0100
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x53Bp4TO59768908
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Mon, 3 Jun 2019 11:51:04 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 398195204E;
-        Mon,  3 Jun 2019 11:51:04 +0000 (GMT)
-Received: from dyn-9-152-212-90.boeblingen.de.ibm.com (unknown [9.152.212.90])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 6A9A252050;
-        Mon,  3 Jun 2019 11:51:03 +0000 (GMT)
-Date:   Mon, 3 Jun 2019 13:51:02 +0200 (CEST)
-From:   Sebastian Ott <sebott@linux.ibm.com>
-X-X-Sender: sebott@schleppi
-To:     Zhen Lei <thunder.leizhen@huawei.com>
-cc:     Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
-        John Garry <john.garry@huawei.com>,
-        Robin Murphy <robin.murphy@arm.com>,
+        id S1726055AbfFCVln (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 3 Jun 2019 17:41:43 -0400
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:34499 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725956AbfFCVln (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 3 Jun 2019 17:41:43 -0400
+Received: by mail-ed1-f67.google.com with SMTP id c26so18724437edt.1;
+        Mon, 03 Jun 2019 14:41:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:reply-to:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=yhLYhpx5r94UcNbu2SZQmZBVQeUmPq6PVimIkeEn7pk=;
+        b=scIwGBKI357lkVXW52kw03XCI4+Ae6ho42noCT0DWTtPRkLPw37gVYJBmgatjte/fr
+         txxL6xswgG2bwv4dcBi9ilccueJ2EbcEKZtiqgVr0w/zR7p00TQxQ68X081DlJksiVJp
+         bQq/Q6WuN9RqstqJonmfHCKtiFMA7q9w/UyTa+NDl7ayqnpxpJkR/MsE/cnrEjpN5UnF
+         pDmYt0I6nf0M8NtJy0pn3MNogc07CPwCXpJcmFU/YcoTOESdyv+YzC8Zd1MT32D8/vBb
+         qcdBZinoMMfM8+8dbAMFVV623Db3nfb+VmQu9rZFXZf1rykogdgYpXDWtPbozhqhF8So
+         ROsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
+         :references:mime-version:content-disposition:in-reply-to:user-agent;
+        bh=yhLYhpx5r94UcNbu2SZQmZBVQeUmPq6PVimIkeEn7pk=;
+        b=MCmId1Zl9qj25uQBhO7pU+QGGm+BalZm3MMtSR0MyE2UQwVeo7EVnJheXrdAdW7ReD
+         9kINWPVKyoR4V9KG0Wsz+SDo9y1crj1LVDJHp/Y0ViasgdINNDpsU08mvyv9SnwM96Aw
+         ZmkJKft6FQPMpPjHonkDQoDGzHtjBoeyvC9glRGKd04zt0U5Re7DmVKeJm1oO8GZFws0
+         cTFrrIxohqkxgGbf105j4gvB2d5aioqoPaA1JVZZDiJS2pZVpdUgx7IC+N4/7ctx9vZ7
+         n7eBsokzz/Pg0lXbTC/IaBxkhpABUokwbTDiRYKkd6MYEfJPMPFXAktX90yde7TswSFN
+         gmQA==
+X-Gm-Message-State: APjAAAV6roatVNc05VRAgbj8aaNJJz7LKbX75DAe+UWpfWwbwwlIe9NI
+        kAo1nxv85NEXGlaYZKqe1BU=
+X-Google-Smtp-Source: APXvYqwCMUWcithGJqx45+EgRmxCCI6sjYqisr91FRxovWqn6/a/0IS0IDUQUvDAHCpQkkCQxu0u/A==
+X-Received: by 2002:a17:907:20d0:: with SMTP id qq16mr14587748ejb.244.1559598100632;
+        Mon, 03 Jun 2019 14:41:40 -0700 (PDT)
+Received: from localhost ([185.92.221.13])
+        by smtp.gmail.com with ESMTPSA id e45sm4208929edb.12.2019.06.03.14.41.39
+        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
+        Mon, 03 Jun 2019 14:41:39 -0700 (PDT)
+Date:   Mon, 3 Jun 2019 21:41:39 +0000
+From:   Wei Yang <richard.weiyang@gmail.com>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, akpm@linux-foundation.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        Wei Yang <richard.weiyang@gmail.com>,
+        Igor Mammedov <imammedo@redhat.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        linux-doc <linux-doc@vger.kernel.org>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        David Woodhouse <dwmw2@infradead.org>,
-        iommu <iommu@lists.linux-foundation.org>,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        x86 <x86@kernel.org>, linux-ia64 <linux-ia64@vger.kernel.org>,
-        Hanjun Guo <guohanjun@huawei.com>
-Subject: Re: [PATCH v8 3/7] s390/pci: add support for IOMMU default DMA mode
- build options
-In-Reply-To: <20190530034831.4184-4-thunder.leizhen@huawei.com>
-References: <20190530034831.4184-1-thunder.leizhen@huawei.com> <20190530034831.4184-4-thunder.leizhen@huawei.com>
-User-Agent: Alpine 2.21 (LFD 202 2017-01-01)
-Organization: =?ISO-8859-15?Q?=22IBM_Deutschland_Research_&_Development_GmbH?=
- =?ISO-8859-15?Q?_=2F_Vorsitzende_des_Aufsichtsrats=3A_Matthias?=
- =?ISO-8859-15?Q?_Hartmann_Gesch=E4ftsf=FChrung=3A_Dirk_Wittkopp?=
- =?ISO-8859-15?Q?_Sitz_der_Gesellschaft=3A_B=F6blingen_=2F_Reg?=
- =?ISO-8859-15?Q?istergericht=3A_Amtsgericht_Stuttgart=2C_HRB_2432?=
- =?ISO-8859-15?Q?94=22?=
+        Mark Rutland <mark.rutland@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Chintan Pandya <cpandya@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Jun Yao <yaojun8558363@gmail.com>, Yu Zhao <yuzhao@google.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH v3 04/11] arm64/mm: Add temporary arch_remove_memory()
+ implementation
+Message-ID: <20190603214139.mercn5hol2yyfl2s@master>
+Reply-To: Wei Yang <richard.weiyang@gmail.com>
+References: <20190527111152.16324-1-david@redhat.com>
+ <20190527111152.16324-5-david@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-TM-AS-GCONF: 00
-x-cbid: 19060311-0016-0000-0000-000002832141
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19060311-0017-0000-0000-000032E02A71
-Message-Id: <alpine.LFD.2.21.1906031350240.18543@schleppi>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-03_10:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=3 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1011 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=635 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906030087
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190527111152.16324-5-david@redhat.com>
+User-Agent: NeoMutt/20170113 (1.7.2)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+On Mon, May 27, 2019 at 01:11:45PM +0200, David Hildenbrand wrote:
+>A proper arch_remove_memory() implementation is on its way, which also
+>cleanly removes page tables in arch_add_memory() in case something goes
+>wrong.
 
-On Thu, 30 May 2019, Zhen Lei wrote:
-> The default DMA mode is LAZY on s390, this patch make it can be set to
-> STRICT at build time. It can be overridden by boot option.
-> 
-> There is no functional change.
-> 
-> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+Would this be better to understand?
 
-Acked-by: Sebastian Ott <sebott@linux.ibm.com>
+    removes page tables created in arch_add_memory
 
+>
+>As we want to use arch_remove_memory() in case something goes wrong
+>during memory hotplug after arch_add_memory() finished, let's add
+>a temporary hack that is sufficient enough until we get a proper
+>implementation that cleans up page table entries.
+>
+>We will remove CONFIG_MEMORY_HOTREMOVE around this code in follow up
+>patches.
+>
+>Cc: Catalin Marinas <catalin.marinas@arm.com>
+>Cc: Will Deacon <will.deacon@arm.com>
+>Cc: Mark Rutland <mark.rutland@arm.com>
+>Cc: Andrew Morton <akpm@linux-foundation.org>
+>Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+>Cc: Chintan Pandya <cpandya@codeaurora.org>
+>Cc: Mike Rapoport <rppt@linux.ibm.com>
+>Cc: Jun Yao <yaojun8558363@gmail.com>
+>Cc: Yu Zhao <yuzhao@google.com>
+>Cc: Robin Murphy <robin.murphy@arm.com>
+>Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+>Signed-off-by: David Hildenbrand <david@redhat.com>
+>---
+> arch/arm64/mm/mmu.c | 19 +++++++++++++++++++
+> 1 file changed, 19 insertions(+)
+>
+>diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>index a1bfc4413982..e569a543c384 100644
+>--- a/arch/arm64/mm/mmu.c
+>+++ b/arch/arm64/mm/mmu.c
+>@@ -1084,4 +1084,23 @@ int arch_add_memory(int nid, u64 start, u64 size,
+> 	return __add_pages(nid, start >> PAGE_SHIFT, size >> PAGE_SHIFT,
+> 			   restrictions);
+> }
+>+#ifdef CONFIG_MEMORY_HOTREMOVE
+>+void arch_remove_memory(int nid, u64 start, u64 size,
+>+			struct vmem_altmap *altmap)
+>+{
+>+	unsigned long start_pfn = start >> PAGE_SHIFT;
+>+	unsigned long nr_pages = size >> PAGE_SHIFT;
+>+	struct zone *zone;
+>+
+>+	/*
+>+	 * FIXME: Cleanup page tables (also in arch_add_memory() in case
+>+	 * adding fails). Until then, this function should only be used
+>+	 * during memory hotplug (adding memory), not for memory
+>+	 * unplug. ARCH_ENABLE_MEMORY_HOTREMOVE must not be
+>+	 * unlocked yet.
+>+	 */
+>+	zone = page_zone(pfn_to_page(start_pfn));
+
+Compared with arch_remove_memory in x86. If altmap is not NULL, zone will be
+retrieved from page related to altmap. Not sure why this is not the same?
+
+>+	__remove_pages(zone, start_pfn, nr_pages, altmap);
+>+}
+>+#endif
+> #endif
+>-- 
+>2.20.1
+
+-- 
+Wei Yang
+Help you, Help me
