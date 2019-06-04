@@ -2,102 +2,143 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C88D63413D
-	for <lists+linux-ia64@lfdr.de>; Tue,  4 Jun 2019 10:12:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C42DB34F04
+	for <lists+linux-ia64@lfdr.de>; Tue,  4 Jun 2019 19:36:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727118AbfFDIMG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 4 Jun 2019 04:12:06 -0400
-Received: from foss.arm.com ([217.140.101.70]:37106 "EHLO foss.arm.com"
+        id S1726341AbfFDRgL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 4 Jun 2019 13:36:11 -0400
+Received: from foss.arm.com ([217.140.101.70]:48706 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726637AbfFDIMG (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 4 Jun 2019 04:12:06 -0400
+        id S1726173AbfFDRgL (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 4 Jun 2019 13:36:11 -0400
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 22F87A78;
-        Tue,  4 Jun 2019 01:12:06 -0700 (PDT)
-Received: from [10.162.40.144] (p8cg001049571a15.blr.arm.com [10.162.40.144])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 82BA43F246;
-        Tue,  4 Jun 2019 01:11:55 -0700 (PDT)
-Subject: Re: [RFC V2] mm: Generalize notify_page_fault()
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Russell King <linux@armlinux.org.uk>,
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 523C980D;
+        Tue,  4 Jun 2019 10:36:10 -0700 (PDT)
+Received: from [10.1.196.75] (e110467-lin.cambridge.arm.com [10.1.196.75])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0002F3F5AF;
+        Tue,  4 Jun 2019 10:36:05 -0700 (PDT)
+Subject: Re: [PATCH v3 04/11] arm64/mm: Add temporary arch_remove_memory()
+ implementation
+To:     David Hildenbrand <david@redhat.com>,
+        Wei Yang <richard.weiyang@gmail.com>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, akpm@linux-foundation.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        Igor Mammedov <imammedo@redhat.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-References: <1559630046-12940-1-git-send-email-anshuman.khandual@arm.com>
- <20190604065401.GE3402@hirez.programming.kicks-ass.net>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <afe886e5-8420-0c33-ed2f-159cd3d55882@arm.com>
-Date:   Tue, 4 Jun 2019 13:42:10 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        Mark Rutland <mark.rutland@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Chintan Pandya <cpandya@codeaurora.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Jun Yao <yaojun8558363@gmail.com>, Yu Zhao <yuzhao@google.com>,
+        Anshuman Khandual <anshuman.khandual@arm.com>
+References: <20190527111152.16324-1-david@redhat.com>
+ <20190527111152.16324-5-david@redhat.com>
+ <20190603214139.mercn5hol2yyfl2s@master>
+ <5059f68d-45d2-784e-0770-ee67060773c7@redhat.com>
+From:   Robin Murphy <robin.murphy@arm.com>
+Message-ID: <7a5b8c8d-f1bb-9c7e-9809-405af374fecd@arm.com>
+Date:   Tue, 4 Jun 2019 18:36:04 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190604065401.GE3402@hirez.programming.kicks-ass.net>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+In-Reply-To: <5059f68d-45d2-784e-0770-ee67060773c7@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-GB
 Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-
-
-On 06/04/2019 12:24 PM, Peter Zijlstra wrote:
-> On Tue, Jun 04, 2019 at 12:04:06PM +0530, Anshuman Khandual wrote:
->> diff --git a/mm/memory.c b/mm/memory.c
->> index ddf20bd..b6bae8f 100644
->> --- a/mm/memory.c
->> +++ b/mm/memory.c
->> @@ -52,6 +52,7 @@
->>  #include <linux/pagemap.h>
->>  #include <linux/memremap.h>
->>  #include <linux/ksm.h>
->> +#include <linux/kprobes.h>
->>  #include <linux/rmap.h>
->>  #include <linux/export.h>
->>  #include <linux/delayacct.h>
->> @@ -141,6 +142,21 @@ static int __init init_zero_pfn(void)
->>  core_initcall(init_zero_pfn);
->>  
->>  
->> +int __kprobes notify_page_fault(struct pt_regs *regs, unsigned int trap)
->> +{
->> +	int ret = 0;
->> +
->> +	/*
->> +	 * To be potentially processing a kprobe fault and to be allowed
->> +	 * to call kprobe_running(), we have to be non-preemptible.
->> +	 */
->> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
->> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
->> +			ret = 1;
->> +	}
->> +	return ret;
->> +}
+On 04/06/2019 07:56, David Hildenbrand wrote:
+> On 03.06.19 23:41, Wei Yang wrote:
+>> On Mon, May 27, 2019 at 01:11:45PM +0200, David Hildenbrand wrote:
+>>> A proper arch_remove_memory() implementation is on its way, which also
+>>> cleanly removes page tables in arch_add_memory() in case something goes
+>>> wrong.
+>>
+>> Would this be better to understand?
+>>
+>>      removes page tables created in arch_add_memory
 > 
-> That thing should be called kprobe_page_fault() or something,
-> notify_page_fault() is a horribly crap name for this function.
+> That's not what this sentence expresses. Have a look at
+> arch_add_memory(), in case  __add_pages() fails, the page tables are not
+> removed. This will also be fixed by Anshuman in the same shot.
+> 
+>>
+>>>
+>>> As we want to use arch_remove_memory() in case something goes wrong
+>>> during memory hotplug after arch_add_memory() finished, let's add
+>>> a temporary hack that is sufficient enough until we get a proper
+>>> implementation that cleans up page table entries.
+>>>
+>>> We will remove CONFIG_MEMORY_HOTREMOVE around this code in follow up
+>>> patches.
+>>>
+>>> Cc: Catalin Marinas <catalin.marinas@arm.com>
+>>> Cc: Will Deacon <will.deacon@arm.com>
+>>> Cc: Mark Rutland <mark.rutland@arm.com>
+>>> Cc: Andrew Morton <akpm@linux-foundation.org>
+>>> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+>>> Cc: Chintan Pandya <cpandya@codeaurora.org>
+>>> Cc: Mike Rapoport <rppt@linux.ibm.com>
+>>> Cc: Jun Yao <yaojun8558363@gmail.com>
+>>> Cc: Yu Zhao <yuzhao@google.com>
+>>> Cc: Robin Murphy <robin.murphy@arm.com>
+>>> Cc: Anshuman Khandual <anshuman.khandual@arm.com>
+>>> Signed-off-by: David Hildenbrand <david@redhat.com>
+>>> ---
+>>> arch/arm64/mm/mmu.c | 19 +++++++++++++++++++
+>>> 1 file changed, 19 insertions(+)
+>>>
+>>> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
+>>> index a1bfc4413982..e569a543c384 100644
+>>> --- a/arch/arm64/mm/mmu.c
+>>> +++ b/arch/arm64/mm/mmu.c
+>>> @@ -1084,4 +1084,23 @@ int arch_add_memory(int nid, u64 start, u64 size,
+>>> 	return __add_pages(nid, start >> PAGE_SHIFT, size >> PAGE_SHIFT,
+>>> 			   restrictions);
+>>> }
+>>> +#ifdef CONFIG_MEMORY_HOTREMOVE
+>>> +void arch_remove_memory(int nid, u64 start, u64 size,
+>>> +			struct vmem_altmap *altmap)
+>>> +{
+>>> +	unsigned long start_pfn = start >> PAGE_SHIFT;
+>>> +	unsigned long nr_pages = size >> PAGE_SHIFT;
+>>> +	struct zone *zone;
+>>> +
+>>> +	/*
+>>> +	 * FIXME: Cleanup page tables (also in arch_add_memory() in case
+>>> +	 * adding fails). Until then, this function should only be used
+>>> +	 * during memory hotplug (adding memory), not for memory
+>>> +	 * unplug. ARCH_ENABLE_MEMORY_HOTREMOVE must not be
+>>> +	 * unlocked yet.
+>>> +	 */
+>>> +	zone = page_zone(pfn_to_page(start_pfn));
+>>
+>> Compared with arch_remove_memory in x86. If altmap is not NULL, zone will be
+>> retrieved from page related to altmap. Not sure why this is not the same?
+> 
+> This is a minimal implementation, sufficient for this use case here. A
+> full implementation is in the works. For now, this function will not be
+> used with an altmap (ZONE_DEVICE is not esupported for arm64 yet).
 
-Agreed. kprobe_page_fault() sounds good.
+FWIW the other pieces of ZONE_DEVICE are now due to land in parallel, 
+but as long as we don't throw the ARCH_ENABLE_MEMORY_HOTREMOVE switch 
+then there should still be no issue. Besides, given that we should 
+consistently ignore the altmap everywhere at the moment, it may even 
+work out regardless.
+
+One thing stands out about the failure path thing, though - if 
+__add_pages() did fail, can it still be guaranteed to have initialised 
+the memmap such that page_zone() won't return nonsense? Last time I 
+looked that was still a problem when removing memory which had been 
+successfully added, but never onlined (although I do know that 
+particular case was already being discussed at the time, and I've not 
+been paying the greatest attention since).
+
+Robin.
