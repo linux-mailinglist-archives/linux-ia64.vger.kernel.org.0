@@ -2,68 +2,73 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 93245340DA
-	for <lists+linux-ia64@lfdr.de>; Tue,  4 Jun 2019 09:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC819340F5
+	for <lists+linux-ia64@lfdr.de>; Tue,  4 Jun 2019 10:00:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726878AbfFDH4r (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 4 Jun 2019 03:56:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52852 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726711AbfFDH4r (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 4 Jun 2019 03:56:47 -0400
-Received: from PC-kkoz.proceq.com (unknown [213.160.61.66])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0DAB32423F;
-        Tue,  4 Jun 2019 07:56:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559635007;
-        bh=D0Qrq4sKFLskuFYhwur8nTIHFHwug4s9KfA3AH5IIkQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=xVvKMrYOtaWwKFKs5IwkiB4m0cHwnsQelrIeHfhtADtWIS60x6+6qZRFfGUQz4FDH
-         PFhJEWEMXMZPudRv3VJGfTyBO9hYUMOq6s+4f8YUnknaOeK3FT5QPb9Rctj00z/GI4
-         yHM347w1mtdA1/dS0RCXjQ40w/xBq2ovo/Psung4=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Geert Uytterhoeven <geert+renesas@glider.be>
-Subject: [PATCH] ia64: configs: Remove useless UEVENT_HELPER_PATH
-Date:   Tue,  4 Jun 2019 09:56:42 +0200
-Message-Id: <1559635002-20533-1-git-send-email-krzk@kernel.org>
-X-Mailer: git-send-email 2.7.4
+        id S1726925AbfFDIAD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 4 Jun 2019 04:00:03 -0400
+Received: from mail-lj1-f195.google.com ([209.85.208.195]:35899 "EHLO
+        mail-lj1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726792AbfFDIAD (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 4 Jun 2019 04:00:03 -0400
+Received: by mail-lj1-f195.google.com with SMTP id i21so4185198ljj.3;
+        Tue, 04 Jun 2019 01:00:01 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=S0nzKAfA25Nd/B5b94/lEffHmOkj3bNdRwQPedDI7ZE=;
+        b=OI/PEGCG0AW9iBzeH4rrpP65/tY/38N/Je3OZbYMqonc+zG3X3g4NtbmU5KUJERQcj
+         JOGmW/GRK6VVJ6FN4jgzN0r4F3B/4rL8+gbUnTnhQQGByo6lIk2qun9ZA6N6+hTRz6fn
+         k6rWz3FuOTJribtuNNGd/mLz1AZlndbHL1vL6dxkXqDaBrRNMfBna2Z5UqjaTp5kTRoA
+         viB+BNzbacpVRyULXkwQKLrOrAwp8dyTTBLk1pLv9iKuBMqkg3SEhfg+bTVipIqFp4ki
+         wJPALzZGS0T1lzy6fXbkPBAS8x0AVDFRHfWWe6EgzNDG8zzn1bq5biwzZNdKNG7svRwx
+         QFtw==
+X-Gm-Message-State: APjAAAVzKPFvBQ0RvFK7b2hNRShG83Kr9IshtD5O+6SxspmS+7MpmxjG
+        Xtb0fbGyOwc4y3M3bC236yhaTfOTWQMB0yHyW2Q=
+X-Google-Smtp-Source: APXvYqyoBaVAxOjrtV2Ji+hWa5waNuOxjEdz1mUYrMwlgc6CSvMY+lU2zMT8JWn9CFnYIjBvKQS+A9XR8Ls2/8HbLK0=
+X-Received: by 2002:a2e:960e:: with SMTP id v14mr16250077ljh.31.1559635201102;
+ Tue, 04 Jun 2019 01:00:01 -0700 (PDT)
+MIME-Version: 1.0
+References: <1559635002-20533-1-git-send-email-krzk@kernel.org>
+In-Reply-To: <1559635002-20533-1-git-send-email-krzk@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Tue, 4 Jun 2019 09:59:49 +0200
+Message-ID: <CAMuHMdWkuhJ+Y+RTu=TK0CN4xKDQ0hRDY-FJc3EKRvJwz8f5rQ@mail.gmail.com>
+Subject: Re: [PATCH] ia64: configs: Remove useless UEVENT_HELPER_PATH
+To:     Krzysztof Kozlowski <krzk@kernel.org>
+Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Remove the CONFIG_UEVENT_HELPER_PATH because:
-1. It is disabled since commit 1be01d4a5714 ("driver: base: Disable
-   CONFIG_UEVENT_HELPER by default") as its dependency (UEVENT_HELPER) was
-   made default to 'n',
-2. It is not recommended (help message: "This should not be used today
-   [...] creates a high system load") and was kept only for ancient
-   userland,
-3. Certain userland specifically requests it to be disabled (systemd
-   README: "Legacy hotplug slows down the system and confuses udev").
+On Tue, Jun 4, 2019 at 9:56 AM Krzysztof Kozlowski <krzk@kernel.org> wrote:
+> Remove the CONFIG_UEVENT_HELPER_PATH because:
+> 1. It is disabled since commit 1be01d4a5714 ("driver: base: Disable
+>    CONFIG_UEVENT_HELPER by default") as its dependency (UEVENT_HELPER) was
+>    made default to 'n',
+> 2. It is not recommended (help message: "This should not be used today
+>    [...] creates a high system load") and was kept only for ancient
+>    userland,
+> 3. Certain userland specifically requests it to be disabled (systemd
+>    README: "Legacy hotplug slows down the system and confuses udev").
+>
+> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
 
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
----
- arch/ia64/configs/generic_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-diff --git a/arch/ia64/configs/generic_defconfig b/arch/ia64/configs/generic_defconfig
-index 81f686dee53c..e7b5927e7b86 100644
---- a/arch/ia64/configs/generic_defconfig
-+++ b/arch/ia64/configs/generic_defconfig
-@@ -37,7 +37,6 @@ CONFIG_INET=y
- CONFIG_IP_MULTICAST=y
- CONFIG_SYN_COOKIES=y
- # CONFIG_IPV6 is not set
--CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
- CONFIG_CONNECTOR=y
- # CONFIG_PNP_DEBUG_MESSAGES is not set
- CONFIG_BLK_DEV_LOOP=m
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.7.4
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
