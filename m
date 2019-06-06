@@ -2,91 +2,129 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D55636A1C
-	for <lists+linux-ia64@lfdr.de>; Thu,  6 Jun 2019 04:40:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0726C36DF5
+	for <lists+linux-ia64@lfdr.de>; Thu,  6 Jun 2019 09:59:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726519AbfFFCkX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 5 Jun 2019 22:40:23 -0400
-Received: from foss.arm.com ([217.140.101.70]:40040 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725783AbfFFCkX (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 5 Jun 2019 22:40:23 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.72.51.249])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B927480D;
-        Wed,  5 Jun 2019 19:40:22 -0700 (PDT)
-Received: from [10.162.43.122] (p8cg001049571a15.blr.arm.com [10.162.43.122])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 881D23F690;
-        Wed,  5 Jun 2019 19:40:12 -0700 (PDT)
-Subject: Re: [RFC V2] mm: Generalize notify_page_fault()
-To:     Matthew Wilcox <willy@infradead.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-References: <1559630046-12940-1-git-send-email-anshuman.khandual@arm.com>
- <87sgsomg91.fsf@concordia.ellerman.id.au>
- <20190605112328.GB2025@bombadil.infradead.org>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <bc89341a-a2b6-bd34-d342-b46f6e902a7c@arm.com>
-Date:   Thu, 6 Jun 2019 08:10:28 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S1725782AbfFFH70 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 6 Jun 2019 03:59:26 -0400
+Received: from mx2.suse.de ([195.135.220.15]:55304 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725769AbfFFH70 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 6 Jun 2019 03:59:26 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 36976AF9A;
+        Thu,  6 Jun 2019 07:59:24 +0000 (UTC)
+Date:   Thu, 6 Jun 2019 09:59:23 +0200
+From:   Petr Mladek <pmladek@suse.com>
+To:     Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+Cc:     Sergey Senozhatsky <sergey.senozhatsky.work@gmail.com>,
+        Dmitry Safonov <dima@arista.com>, linux-kernel@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jslaby@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>, x86@kernel.org,
+        linux-ia64@vger.kernel.org, kgdb-bugreport@lists.sourceforge.net
+Subject: Re: [RFC] printk: Introduce per context console loglevel.
+Message-ID: <20190606075923.suhcxfu7yprhdp7i@pathway.suse.cz>
+References: <20190528002412.1625-1-dima@arista.com>
+ <20190528041500.GB26865@jagdpanzerIV>
+ <20190528044619.GA3429@jagdpanzerIV>
+ <20190528134227.xyb3622gjwu52q4r@pathway.suse.cz>
+ <82605abd-14d9-376a-446c-48475ae305dc@i-love.sakura.ne.jp>
+ <c265f674-e293-332b-a037-895025354a69@i-love.sakura.ne.jp>
 MIME-Version: 1.0
-In-Reply-To: <20190605112328.GB2025@bombadil.infradead.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c265f674-e293-332b-a037-895025354a69@i-love.sakura.ne.jp>
+User-Agent: NeoMutt/20170912 (1.9.0)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-
-
-On 06/05/2019 04:53 PM, Matthew Wilcox wrote:
-> On Wed, Jun 05, 2019 at 09:19:22PM +1000, Michael Ellerman wrote:
->> Anshuman Khandual <anshuman.khandual@arm.com> writes:
->>> Similar notify_page_fault() definitions are being used by architectures
->>> duplicating much of the same code. This attempts to unify them into a
->>> single implementation, generalize it and then move it to a common place.
->>> kprobes_built_in() can detect CONFIG_KPROBES, hence notify_page_fault()
->>> need not be wrapped again within CONFIG_KPROBES. Trap number argument can
->>> now contain upto an 'unsigned int' accommodating all possible platforms.
->> ...
->>
->> You've changed several of the architectures from something like above,
->> where it disables preemption around the call into the below:
->>
->>
->> Which skips everything if we're preemptible. Is that an equivalent
->> change? If so can you please explain why in more detail.
+On Sun 2019-06-02 15:13:35, Tetsuo Handa wrote:
+> Dmitry Safonov proposed KERN_UNSUPPRESSED loglevel which pretends as if
+> ignore_loglevel was specified for per printk() basis, for we can fail to
+> apply temporarily manipulated console loglevel because console loglevel
+> is evaluated when the message is printed to consoles rather than when
+> the message is stored into the buffer [1].
 > 
-> See the discussion in v1 of this patch, which you were cc'd on.
-> 
-> I agree the description here completely fails to mention why the change.
-> It should mention commit a980c0ef9f6d8c.
+> Temporary manipulation of console loglevel for SysRq is applied to only
+> the header line.
 
-I will update the commit message to include an explanation for this new
-preempt behavior in the generic definition.
+We should ask why this this is handled this way.
+
+My understanding is to give user feedback that something is going
+to happen when the system is not responsive and sysrq is the last
+chance to get some information, sync, and reboot.
+
+Maybe, it is not needed these days when the console loglevel
+might be manipulated by sysrq as well.
+
+> At first I though that we also want to apply temporary
+> manipulation of console loglevel for SysRq to the body lines, for showing
+> only the header line is hardly helpful. But I realized that we should not
+> force showing the body lines because some users might be triggering SysRq
+>  from /proc and reading via syslog rather than via console output. Users
+> who need to read via console output should be able to manipulate console
+> loglevel by triggering SysRq from console.
+
+Sounds reasonable.
+
+> Since we currently defer storing of the messages from NMI context and
+> recursive context, we would need to explicitly pass KERN_UNSUPPRESSED.
+> But Sergey Senozhatsky thinks that it might be fine to automatically
+> apply KERN_UNSUPPRESSED to printk() from NMI context and recursive
+> context, for messages from these contexts are likely important [2].
+
+I do not agree with this. Nobody cared about printk() deadlocks in NMI
+for a long time. The idea was that people just should not print
+anything there.
+
+Reality shown that people just printed from this context and we needed
+to make printk() safe there.
+
+IMHO, expecting that all messages in NMI context are super important
+is a similar mistake.
+
+Also sysrq-l prints all backtraces from NMI context. It is huge
+amount of output. People might want just store it into the logbuffer.
+It is the same as with sysrq-t mentioned above.
+
+> Then, we could avoid explicitly passing KERN_UNSUPPRESSED, by introducing
+> per context console loglevel.
+> 
+> This patch introduces per CPU console loglevel (for in_nmi(), in_irq() and
+> in_serving_softirq()) and per thread console loglevel (for in_task()), and
+> replaces temporary manipulation of global console_loglevel with temporary
+> manipulation of per context console_loglevel based on an assumption that
+> users who are temporarily manipulating global console_loglevel needs to
+> apply it to only current context. (Note that triggering SysRq-t from /proc
+> runs in in_task() context, and it should not disable preemption because it
+> may take long period. Thus, per thread console loglevel is used.)
+
+This is too generic and complicated.
+
+Only the single pr_info() in __handle_sysrq() seems to be called with
+interrupts enabled. And it happens only when it is triggered via
+/proc/sysrq-trigger. Manipulating the console loglevel is
+questionable there.
+
+Using the existing printk_context is good enough.
+
+Also the final output is either LOG_ALWAYS_CON or LOG_NEVER_CON.
+The API should not pretend that it supports any loglevel granularity.
+
+If we end up with the two states, the API should consist of three
+functions, e.g.
+
+   int set_console_verbose(unsigned long *flags);
+   int set_console_quiet(unsigned long *flags);
+   restore_console_loglevel(int loglevel, unsigned long flags);
+
+Where the first two functions should return the original loglevel
+and irqflags.
+
+Best Regards,
+Petr
