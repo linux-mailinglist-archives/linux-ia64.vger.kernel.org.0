@@ -2,122 +2,104 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 68F2536E42
-	for <lists+linux-ia64@lfdr.de>; Thu,  6 Jun 2019 10:15:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77AC83776E
+	for <lists+linux-ia64@lfdr.de>; Thu,  6 Jun 2019 17:09:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727064AbfFFIO6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 6 Jun 2019 04:14:58 -0400
-Received: from mx1.tq-group.com ([62.157.118.193]:53222 "EHLO mx1.tq-group.com"
+        id S1727559AbfFFPJw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 6 Jun 2019 11:09:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:36308 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726924AbfFFIO5 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 6 Jun 2019 04:14:57 -0400
-X-IronPort-AV: E=Sophos;i="5.60,558,1549926000"; 
-   d="scan'208";a="7719743"
-Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
-  by mx1-pgp.tq-group.com with ESMTP; 06 Jun 2019 10:14:55 +0200
-Received: from mx1.tq-group.com ([192.168.6.7])
-  by tq-pgp-pr1.tq-net.de (PGP Universal service);
-  Thu, 06 Jun 2019 10:14:55 +0200
-X-PGP-Universal: processed;
-        by tq-pgp-pr1.tq-net.de on Thu, 06 Jun 2019 10:14:55 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1559808895; x=1591344895;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=gidmcEXWd6Fs9Jm1YrLEtSu1pDj6rxSgxAoUC5x632M=;
-  b=Zf957eeRwDVqFX58P4ouQ+lHOtr5F0uv+gAZpioj0rzkycSca9xzfIfv
-   qHpfpUq+bjV/HpJ1JtvAG8riB7JQql2EBVGc3o4qNXwn3Zs3+NCYhVJ+0
-   lPF9us9u+JD5RL1xCY860HkUIa9HI5RxWbYWODoWSez3hJ+nQvTHr8QHa
-   HUfoeamWPtbDjHvC7fywDx77ERXMfrnD7q2tEaihI4nWV/IbvUpVJXA9N
-   DEBOKU7FnisGp9yUiKV5tOsd9VmEq+bxEz8SDYR5rUUvwELpfVdCpQf1z
-   bIRAcKu/byIfTXKZJA1w0pg6YgGTLJL8ZbJwlliIT1GXfhgNlpyrPo9Y8
-   w==;
-X-IronPort-AV: E=Sophos;i="5.60,558,1549926000"; 
-   d="scan'208";a="7719742"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 06 Jun 2019 10:14:55 +0200
-Received: from schifferm-ubuntu4.tq-net.de (schifferm-ubuntu4.tq-net.de [10.117.49.26])
-        by vtuxmail01.tq-net.de (Postfix) with ESMTPA id 9F20E280074;
-        Thu,  6 Jun 2019 10:15:01 +0200 (CEST)
-Message-ID: <61f233518ba863f9d5783dd10e468ee5bf22b69a.camel@ew.tq-group.com>
-Subject: Re: [PATCH modules 0/2] Fix handling of exit unwinding sections (on
- ARM)
-From:   Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-To:     Russell King <linux@armlinux.org.uk>, Jessica Yu <jeyu@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        id S1727309AbfFFPJw (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 6 Jun 2019 11:09:52 -0400
+Received: from linux-8ccs (ip5f5ade8c.dynamic.kabel-deutschland.de [95.90.222.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E293F2083E;
+        Thu,  6 Jun 2019 15:09:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559833791;
+        bh=SXQbPAaM9RvZp3lW3NXitKVEdsSpDOda2A6XmXtgK9A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=m8AchtX68ZQEgL43k9PKAyaIxr1puxpZjBpfXaJsM3G9UTVi4Ft5mQBKClINjsF7f
+         /ojTk+8Da4VDAsJvPi5rbkfU5CMy32hmzLpjxaXv6GYYMnzJH7SKeqT4oSt1fRGlAf
+         ablifYRY+8cU+hXFTvzyKkX6LywgYOcx8DdAj2CY=
+Date:   Thu, 6 Jun 2019 17:09:46 +0200
+From:   Jessica Yu <jeyu@kernel.org>
+To:     Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-ia64@vger.kernel.org
-Date:   Thu, 06 Jun 2019 10:14:44 +0200
-In-Reply-To: <20190603105726.22436-1-matthias.schiffer@ew.tq-group.com>
+Subject: Re: [PATCH modules 1/2] module: allow arch overrides for .exit
+ section names
+Message-ID: <20190606150946.GA27669@linux-8ccs>
 References: <20190603105726.22436-1-matthias.schiffer@ew.tq-group.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
+ <20190603105726.22436-2-matthias.schiffer@ew.tq-group.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20190603105726.22436-2-matthias.schiffer@ew.tq-group.com>
+X-OS:   Linux linux-8ccs 5.1.0-rc1-lp150.12.28-default+ x86_64
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, 2019-06-03 at 12:57 +0200, Matthias Schiffer wrote:
-> For some time (050d18d1c651 "ARM: 8650/1: module: handle negative
-> R_ARM_PREL31 addends correctly", v4.11+), building a kernel without
-> CONFIG_MODULE_UNLOAD would lead to module loads failing on ARM
-> systems with
-> certain memory layouts, with messages like:
-> 
->   imx_sdma: section 16 reloc 0 sym '': relocation 42 out of range
->   (0x7f015260 -> 0xc0f5a5e8)
-> 
-> (0x7f015260 is in the module load area, 0xc0f5a5e8 a regular vmalloc
-> address; relocation 42 is R_ARM_PREL31)
-> 
-> This is caused by relocatiosn in the .ARM.extab.exit.text and
-> .ARM.exidx.exit.text sections referencing the .exit.text section. As
-> the
-> module loader will omit loading .exit.text without
-> CONFIG_MODULE_UNLOAD,
-> there will be relocations from loaded to unloaded sections; the
-> resulting
-> huge offsets trigger the sanity checks added in 050d18d1c651.
-> 
-> IA64 might be affected by a similar issue - sections with names like
-> .IA_64.unwind.exit.text and .IA_64.unwind_info.exit.text appear in
-> the ld
-> script - but I don't know much about that arch.
-> 
-> Also, I'm not sure if this is stable-worthy - just enabling
-> CONFIG_MODULE_UNLOAD should be a viable workaround on affected
-> kernels.
-> 
-> 
-> Kind regards,
-> Matthias
++++ Matthias Schiffer [03/06/19 12:57 +0200]:
+>Some archs like ARM store unwind information for .exit.text in sections
+>with unusual names. As this unwind information refers to .exit.text, it
+>must not be loaded when .exit.text is not loaded (when CONFIG_MODULE_UNLOAD
+>is unset); otherwise, loading a module can fail due to relocation failures.
+>
+>Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+>---
+> include/linux/moduleloader.h | 8 ++++++++
+> kernel/module.c              | 2 +-
+> 2 files changed, 9 insertions(+), 1 deletion(-)
+>
+>diff --git a/include/linux/moduleloader.h b/include/linux/moduleloader.h
+>index 31013c2effd3..cddbd85fb659 100644
+>--- a/include/linux/moduleloader.h
+>+++ b/include/linux/moduleloader.h
+>@@ -5,6 +5,7 @@
+>
+> #include <linux/module.h>
+> #include <linux/elf.h>
+>+#include <linux/string.h>
+>
+> /* These may be implemented by architectures that need to hook into the
+>  * module loader code.  Architectures that don't need to do anything special
+>@@ -93,4 +94,11 @@ void module_arch_freeing_init(struct module *mod);
+> #define MODULE_ALIGN PAGE_SIZE
+> #endif
+>
+>+#ifndef HAVE_ARCH_MODULE_EXIT_SECTION
+>+static inline bool module_exit_section(const char *name)
+>+{
+>+	return strstarts(name, ".exit");
+>+}
+>+#endif
+>+
 
+Hi Matthias,
 
-Hi,
-any comments on these patches? If not, who is going to take them in
-their tree?
+For sake of consistency, could we implement this as an arch-overridable
+__weak symbol like the rest of the module arch-overrides in moduleloader.h?
 
-Note that I'll be out of office for the next week, and I won't be able
-to read my mail during this period.
-
-
-Kind regards,
-Matthias
-
-
-
-
-> 
-> 
-> Matthias Schiffer (2):
->   module: allow arch overrides for .exit section names
->   ARM: module: recognize unwind exit sections
-> 
->  arch/arm/include/asm/module.h | 11 +++++++++++
->  include/linux/moduleloader.h  |  8 ++++++++
->  kernel/module.c               |  2 +-
->  3 files changed, 20 insertions(+), 1 deletion(-)
-> 
-
+> #endif
+>diff --git a/kernel/module.c b/kernel/module.c
+>index 6e6712b3aaf5..e8e4cd0a471f 100644
+>--- a/kernel/module.c
+>+++ b/kernel/module.c
+>@@ -2924,7 +2924,7 @@ static int rewrite_section_headers(struct load_info *info, int flags)
+>
+> #ifndef CONFIG_MODULE_UNLOAD
+> 		/* Don't load .exit sections */
+>-		if (strstarts(info->secstrings+shdr->sh_name, ".exit"))
+>+		if (module_exit_section(info->secstrings+shdr->sh_name))
+> 			shdr->sh_flags &= ~(unsigned long)SHF_ALLOC;
+> #endif
+> 	}
+>-- 
+>2.17.1
+>
