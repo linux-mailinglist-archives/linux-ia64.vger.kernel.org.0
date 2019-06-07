@@ -2,141 +2,92 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 448ED377D1
-	for <lists+linux-ia64@lfdr.de>; Thu,  6 Jun 2019 17:27:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AD3D38588
+	for <lists+linux-ia64@lfdr.de>; Fri,  7 Jun 2019 09:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729135AbfFFP1R (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 6 Jun 2019 11:27:17 -0400
-Received: from mx1.tq-group.com ([62.157.118.193]:47512 "EHLO mx1.tq-group.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729077AbfFFP1R (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 6 Jun 2019 11:27:17 -0400
-X-IronPort-AV: E=Sophos;i="5.60,559,1549926000"; 
-   d="scan'208";a="7729995"
-Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
-  by mx1-pgp.tq-group.com with ESMTP; 06 Jun 2019 17:27:15 +0200
-Received: from mx1.tq-group.com ([192.168.6.7])
-  by tq-pgp-pr1.tq-net.de (PGP Universal service);
-  Thu, 06 Jun 2019 17:27:15 +0200
-X-PGP-Universal: processed;
-        by tq-pgp-pr1.tq-net.de on Thu, 06 Jun 2019 17:27:15 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1559834835; x=1591370835;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=umqEwzb8oK5WtqI9yBT0F9jXzaGIhXB44Au/hCBtBs8=;
-  b=ZChRgcFw7UzOc9rbXEfwLchuZ0/ellpXnHkPlHEpklCREXdKLBLabKEJ
-   6t03FegynYm2nVJvI1eJchD58VDBuWvCbkSps4rny6tMGvV3smC2c4kTc
-   T/Xk2gl1hHt6Vfq8QDWvPjVuitT5wrIhHAb8PNnFwNcNHsv+uHFSBLCQm
-   2pGrVHlkP7xLYCtdsLYyjyzRyeGg/iJALy6AQWF8YUfnZ5cm89GLrT0cz
-   KI6iZn00QI0TB1ENhJ0ELOEgnGbQgw95evctYzDh/mXEglNaDYT1LFHSN
-   SZjzC34zR2d40ERgt+0T8AWC7V1C9MPX2St3MlmiVfEr+dCSWUIEltyB2
-   w==;
-X-IronPort-AV: E=Sophos;i="5.60,559,1549926000"; 
-   d="scan'208";a="7729994"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 06 Jun 2019 17:27:15 +0200
-Received: from schifferm-ubuntu4.tq-net.de (schifferm-ubuntu4.tq-net.de [10.117.49.26])
-        by vtuxmail01.tq-net.de (Postfix) with ESMTPA id 7FB7C280074;
-        Thu,  6 Jun 2019 17:27:21 +0200 (CEST)
-Message-ID: <004bda07469769f8a6e0609efd0327f184307493.camel@ew.tq-group.com>
-Subject: Re: [PATCH modules 1/2] module: allow arch overrides for .exit
- section names
-From:   Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-To:     Jessica Yu <jeyu@kernel.org>
-Cc:     Russell King <linux@armlinux.org.uk>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org
-Date:   Thu, 06 Jun 2019 17:27:12 +0200
-In-Reply-To: <20190606150946.GA27669@linux-8ccs>
-References: <20190603105726.22436-1-matthias.schiffer@ew.tq-group.com>
-         <20190603105726.22436-2-matthias.schiffer@ew.tq-group.com>
-         <20190606150946.GA27669@linux-8ccs>
-Content-Type: text/plain; charset="UTF-8"
-X-Mailer: Evolution 3.28.5-0ubuntu0.18.04.1 
-Mime-Version: 1.0
+        id S1727126AbfFGHqM (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 7 Jun 2019 03:46:12 -0400
+Received: from smtp4.iitb.ac.in ([103.21.127.18]:49872 "EHLO smtp1.iitb.ac.in"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1725497AbfFGHqM (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 7 Jun 2019 03:46:12 -0400
+X-Greylist: delayed 4120 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 Jun 2019 03:46:10 EDT
+Received: from ldns2.iitb.ac.in (ldns2.iitb.ac.in [10.200.12.2])
+        by smtp1.iitb.ac.in (Postfix) with SMTP id 18FD11058AF8
+        for <linux-ia64@vger.kernel.org>; Fri,  7 Jun 2019 12:01:54 +0530 (IST)
+Received: (qmail 29995 invoked by uid 510); 7 Jun 2019 12:01:34 +0530
+X-Qmail-Scanner-Diagnostics: from 10.200.1.25 by ldns2 (envelope-from <rws@aero.iitb.ac.in>, uid 501) with qmail-scanner-2.11
+ spamassassin: 3.4.1. mhr: 1.0. {clamdscan: 0.100.0/25472} 
+ Clear:RC:1(10.200.1.25):SA:0(1.5/7.0):. Processed in 3.224183 secs; 07 Jun 2019 12:01:34 +0530
+X-Spam-Checker-Version: SpamAssassin 3.4.1 (2015-04-28) on ldns2.iitb.ac.in
+X-Spam-Level: *
+X-Spam-Status: No, score=1.5 required=7.0 tests=BAYES_50,IITB_ORIG,
+        MISSING_HEADERS,PROPER_IITB_MSGID autolearn=disabled version=3.4.1
+X-Spam-Pyzor: Reported 1 times.
+X-Envelope-From: rws@aero.iitb.ac.in
+X-Qmail-Scanner-Mime-Attachments: |
+X-Qmail-Scanner-Zip-Files: |
+Received: from unknown (HELO ldns2.iitb.ac.in) (10.200.1.25)
+  by ldns2.iitb.ac.in with SMTP; 7 Jun 2019 12:01:31 +0530
+Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
+        by ldns2.iitb.ac.in (Postfix) with ESMTP id CB958341965;
+        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 9509A8902E52F;
+        Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
+        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id 3VnK-_U7b-vs; Fri,  7 Jun 2019 12:01:17 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 5DAB88902E54D;
+        Fri,  7 Jun 2019 12:01:14 +0530 (IST)
+X-Virus-Scanned: amavisd-new at aero.iitb.ac.in
+Received: from vayu.aero.iitb.ac.in ([127.0.0.1])
+        by localhost (vayu.aero.iitb.ac.in [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id TgJiwoMo_EHZ; Fri,  7 Jun 2019 12:01:14 +0530 (IST)
+Received: from vayu.aero.iitb.ac.in (vayu.aero.iitb.ac.in [10.101.1.1])
+        by vayu.aero.iitb.ac.in (Postfix) with ESMTP id 0EEE684310111;
+        Fri,  7 Jun 2019 12:01:10 +0530 (IST)
+Date:   Fri, 7 Jun 2019 12:01:09 +0530 (IST)
+From:   Martins Henry <rws@aero.iitb.ac.in>
+Message-ID: <412557711.60336.1559889069980.JavaMail.zimbra@aero.iitb.ac.in>
+Subject: Thanks and I wait for your answer
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.101.1.5]
+X-Mailer: Zimbra 8.8.12_GA_3803 (ZimbraWebClient - FF11 (Win)/8.8.12_GA_3794)
+Thread-Index: SsslhYkcLNFU69da/wYft5cO9/ZYnA==
+Thread-Topic: Thanks and I wait for your answer
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, 2019-06-06 at 17:09 +0200, Jessica Yu wrote:
-> +++ Matthias Schiffer [03/06/19 12:57 +0200]:
-> > Some archs like ARM store unwind information for .exit.text in
-> > sections
-> > with unusual names. As this unwind information refers to
-> > .exit.text, it
-> > must not be loaded when .exit.text is not loaded (when
-> > CONFIG_MODULE_UNLOAD
-> > is unset); otherwise, loading a module can fail due to relocation
-> > failures.
-> > 
-> > Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com
-> > >
-> > ---
-> > include/linux/moduleloader.h | 8 ++++++++
-> > kernel/module.c              | 2 +-
-> > 2 files changed, 9 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/include/linux/moduleloader.h
-> > b/include/linux/moduleloader.h
-> > index 31013c2effd3..cddbd85fb659 100644
-> > --- a/include/linux/moduleloader.h
-> > +++ b/include/linux/moduleloader.h
-> > @@ -5,6 +5,7 @@
-> > 
-> > #include <linux/module.h>
-> > #include <linux/elf.h>
-> > +#include <linux/string.h>
-> > 
-> > /* These may be implemented by architectures that need to hook into
-> > the
-> >  * module loader code.  Architectures that don't need to do
-> > anything special
-> > @@ -93,4 +94,11 @@ void module_arch_freeing_init(struct module
-> > *mod);
-> > #define MODULE_ALIGN PAGE_SIZE
-> > #endif
-> > 
-> > +#ifndef HAVE_ARCH_MODULE_EXIT_SECTION
-> > +static inline bool module_exit_section(const char *name)
-> > +{
-> > +	return strstarts(name, ".exit");
-> > +}
-> > +#endif
-> > +
-> 
-> Hi Matthias,
-> 
-> For sake of consistency, could we implement this as an arch-
-> overridable
-> __weak symbol like the rest of the module arch-overrides in
-> moduleloader.h?
+Hello,
 
-Fine with me - making such a tiny function inlineable just seemed more
-appropriate to me. I can send a v2 tomorrow.
+I am Martin Henry, An American Citizen; I am the personal secretary to
+Mr. Donald Railton, the controller of a Lottery Company. Please I am
+having big problem now, I have a 6yrs old daughter who has leukemia, a
+disease of the blood, and she needs a bone marrow transplant or she
+will die.
 
+Please I am only asking for your help and you will benefit from it
+also. As an insider with Lottery Firm, working as the personal
+secretary to the controller, I want you to send me your name to play,
+I have some numbers that are going to win, stored in his secret data
+system in the office. The Lottery is an online entry with credit card
+anywhere with a name and address. All I want you to do is to send your
+name to play it and I will send confirmation to you.
 
-> 
-> > #endif
-> > diff --git a/kernel/module.c b/kernel/module.c
-> > index 6e6712b3aaf5..e8e4cd0a471f 100644
-> > --- a/kernel/module.c
-> > +++ b/kernel/module.c
-> > @@ -2924,7 +2924,7 @@ static int rewrite_section_headers(struct
-> > load_info *info, int flags)
-> > 
-> > #ifndef CONFIG_MODULE_UNLOAD
-> > 		/* Don't load .exit sections */
-> > -		if (strstarts(info->secstrings+shdr->sh_name, ".exit"))
-> > +		if (module_exit_section(info->secstrings+shdr-
-> > >sh_name))
-> > 			shdr->sh_flags &= ~(unsigned long)SHF_ALLOC;
-> > #endif
-> > 	}
-> > -- 
-> > 2.17.1
-> > 
+I will play with my card on your name and the Prize will be shared
+equally between us. Immediately the results are released they will
+contact you for payment as the oversea winner. The lotto can be played
+with 9.00 dollars, or 50 dollars but the prize will be Millions.
+Remember that I am playing on your name with my card; I just want to
+front you for this, because I need this money to save the life of my
+little daughter.
 
+Thanks and I wait for your answer
+Martin Henry.
