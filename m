@@ -2,97 +2,119 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B88C038839
-	for <lists+linux-ia64@lfdr.de>; Fri,  7 Jun 2019 12:49:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C8C8389AA
+	for <lists+linux-ia64@lfdr.de>; Fri,  7 Jun 2019 14:04:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728283AbfFGKtl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 7 Jun 2019 06:49:41 -0400
-Received: from mx1.tq-group.com ([62.157.118.193]:44337 "EHLO mx1.tq-group.com"
+        id S1728497AbfFGMEV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 7 Jun 2019 08:04:21 -0400
+Received: from ozlabs.org ([203.11.71.1]:46453 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728269AbfFGKtk (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 7 Jun 2019 06:49:40 -0400
-X-IronPort-AV: E=Sophos;i="5.60,562,1549926000"; 
-   d="scan'208";a="7741352"
-Received: from unknown (HELO tq-pgp-pr1.tq-net.de) ([192.168.6.15])
-  by mx1-pgp.tq-group.com with ESMTP; 07 Jun 2019 12:49:39 +0200
-Received: from mx1.tq-group.com ([192.168.6.7])
-  by tq-pgp-pr1.tq-net.de (PGP Universal service);
-  Fri, 07 Jun 2019 12:49:39 +0200
-X-PGP-Universal: processed;
-        by tq-pgp-pr1.tq-net.de on Fri, 07 Jun 2019 12:49:39 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
-  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
-  t=1559904579; x=1591440579;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references;
-  bh=zT95b/achx15JXRT8jtCbEqeZxzU7o/BMcswA2iPOao=;
-  b=q5Xy3O5MVHv287lIWXVkHKQb4YzZSGbEch60r4F9IzEHO7SXrL5E5iov
-   4Hj+Yd42ZbXPCEEeuzFXXASh8cCtIoD7o7B18a9GXN2DewB8fccNewqBJ
-   FZWF6wFoCII/DwrqdG24yo/y2sqN9yIy9w3zRog67jryJMLqLaM6BDSF3
-   +O7m3UOV61zB8o6/AeeNVx3Je2cLl8ni46tQZYKHooybsbI3Fqr2OaLWn
-   WlVOCM1pMKyskFrA9FWDpWxa2Rwd3NbHKbfnNB+KY6pvCjFgFpX3yHdWw
-   I/yWEZHnLZIo/WwTJc0gZZKNi7GdRx85XP7UUPffqNobrq4TGp11LjD1k
-   w==;
-X-IronPort-AV: E=Sophos;i="5.60,562,1549926000"; 
-   d="scan'208";a="7741351"
-Received: from vtuxmail01.tq-net.de ([10.115.0.20])
-  by mx1.tq-group.com with ESMTP; 07 Jun 2019 12:49:39 +0200
-Received: from schifferm-ubuntu4.tq-net.de (schifferm-ubuntu4.tq-net.de [10.117.49.26])
-        by vtuxmail01.tq-net.de (Postfix) with ESMTPA id 7E995280075;
-        Fri,  7 Jun 2019 12:49:46 +0200 (CEST)
-From:   Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-To:     Russell King <linux@armlinux.org.uk>, Jessica Yu <jeyu@kernel.org>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org,
-        Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
-Subject: [PATCH modules v2 2/2] ARM: module: recognize unwind exit sections
-Date:   Fri,  7 Jun 2019 12:49:12 +0200
-Message-Id: <20190607104912.6252-3-matthias.schiffer@ew.tq-group.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20190607104912.6252-1-matthias.schiffer@ew.tq-group.com>
-References: <20190607104912.6252-1-matthias.schiffer@ew.tq-group.com>
+        id S1727452AbfFGMEV (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 7 Jun 2019 08:04:21 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 45L1Qt4FFfz9sNd;
+        Fri,  7 Jun 2019 22:04:06 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=canb.auug.org.au;
+        s=201702; t=1559909057;
+        bh=SVse233ZP/gfWiwAkphdAiPtrWGA02EH5CK05uTxdco=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=shBn+/bZp4+i7ILKYT0rkicAc6qcmmQP1VlZ3saK03LKB9zc/NDFJ5cjhXqlEHyPz
+         2nllWsT+DJ6D5zDFTOmqEnjXbNpqikUY4YWSMMSeJwu5ucFQSEtL4eZUc6HVdKK4TE
+         qeoWLj3UUE4M9QEUmDXWh2ARrdai0SPhHQww77UvDoWOKjYJt4Bb67lNhTHgNKLPBy
+         6p7Lz1Bv/DqsVATPnHpr/EbevipmxUHrPDNyWaHhD6m4citn/ZVKw/Yu0UerC8T4Bm
+         d5uAfepi6bZG8PmazXKqBSrkpabcAFZqyXErnjGLWQxR8X21ypmE9ZV6+vmRkEQUdV
+         qL0IogG/ZPB0Q==
+Date:   Fri, 7 Jun 2019 22:03:26 +1000
+From:   Stephen Rothwell <sfr@canb.auug.org.au>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+Subject: Re: [RFC V3] mm: Generalize and rename notify_page_fault() as
+ kprobe_page_fault()
+Message-ID: <20190607220326.1e21fc9c@canb.auug.org.au>
+In-Reply-To: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
+References: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ boundary="Sig_/f4dkIceQ5ZrfVlbLmfAkblH"; protocol="application/pgp-signature"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-In addition to the prefix ".exit", ".ARM.extab.exit" and ".ARM.exidx.exit"
-must be recognized as exit sections as well. Otherwise, loading modules can
-fail without CONFIG_MODULE_UNLOAD depending on the memory layout, when
-relocations for the unwind sections refer to the .exit.text section:
+--Sig_/f4dkIceQ5ZrfVlbLmfAkblH
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-  imx_sdma: section 16 reloc 0 sym '': relocation 42 out of range
-  (0x7f015260 -> 0xc0f5a5e8)
+Hi Anshuman,
 
-where 0x7F000000 is the module load area and 0xC0000000 is the vmalloc
-area. Relocation 42 refers to R_ARM_PREL31, which is limited to signed
-31bit offsets.
+On Fri,  7 Jun 2019 16:04:15 +0530 Anshuman Khandual <anshuman.khandual@arm=
+.com> wrote:
+>
+> +static nokprobe_inline bool kprobe_page_fault(struct pt_regs *regs,
+> +					      unsigned int trap)
+> +{
+> +	int ret =3D 0;
+> +
+> +	/*
+> +	 * To be potentially processing a kprobe fault and to be allowed
+> +	 * to call kprobe_running(), we have to be non-preemptible.
+> +	 */
+> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
+> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
+> +			ret =3D 1;
+> +	}
+> +	return ret;
+> +}
 
-Signed-off-by: Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
----
-v2: Use __weak function as suggested by Jessica
+Since this is now declared as "bool" (thanks for that), you should make
+"ret" be bool and use true and false;
 
- arch/arm/kernel/module.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+--=20
+Cheers,
+Stephen Rothwell
 
-diff --git a/arch/arm/kernel/module.c b/arch/arm/kernel/module.c
-index 3ff571c2c71c..692001aabb0f 100644
---- a/arch/arm/kernel/module.c
-+++ b/arch/arm/kernel/module.c
-@@ -58,6 +58,13 @@ void *module_alloc(unsigned long size)
- }
- #endif
- 
-+bool module_exit_section(const char *name)
-+{
-+	return strstarts(name, ".exit") ||
-+		strstarts(name, ".ARM.extab.exit") ||
-+		strstarts(name, ".ARM.exidx.exit");
-+}
-+
- int
- apply_relocate(Elf32_Shdr *sechdrs, const char *strtab, unsigned int symindex,
- 	       unsigned int relindex, struct module *module)
--- 
-2.17.1
+--Sig_/f4dkIceQ5ZrfVlbLmfAkblH
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAlz6Uo4ACgkQAVBC80lX
+0GwAlwgAndGNjcRg/+OZtSy1kiUIeIc3sDi7Ok5AjcBz7eTGTC6rACK7/CqF74Ff
+Hw76yMUeoSjtJWLlhqmY0XI4ib30yQJSvSSWJyDvZpmgkDbNO69BK4rT4CO/d2YX
+sCodILuUU462hNmmfr9N6uWJGSeDWdEvbfitkR2PEzQAUSsQacEA8UB+bqf+zQ13
+xwBTJEE0YFg5UCqOcsE3bSTh/e+p7djYHrQIiZX0ntJOra+nJZuz/GfJQUmx4WYn
+AHgcP+Marnv0/MW4JDWYDtetq+Fmr96wk01Ex4gMytm7TcpL0asnQ0IEVwljvVr/
+HFKp+ZJLlwZP8lyt90zY76EEDgViPQ==
+=7Lk0
+-----END PGP SIGNATURE-----
+
+--Sig_/f4dkIceQ5ZrfVlbLmfAkblH--
