@@ -2,156 +2,102 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 10B023967F
-	for <lists+linux-ia64@lfdr.de>; Fri,  7 Jun 2019 22:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70CF839EDD
+	for <lists+linux-ia64@lfdr.de>; Sat,  8 Jun 2019 13:53:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729450AbfFGUMH (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 7 Jun 2019 16:12:07 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:47690 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728724AbfFGUMH (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 7 Jun 2019 16:12:07 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
-        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-         bh=V+gSVnIv9QBKq1mZboB8NpBLa64Y8lrKysJJF3r5Di4=; b=G2TH77zwcRW+ghgSutS9pXWwx
-        q06PFG90kLdW9nSZ8eT0zhsmJkCONTk9ihOiwCD/vOWRCH7+RiVotuRpO+PXMPtB8viY749wFWiHD
-        e35WP8ojqL7BLHfJjBicKoWZKTv7dWog/hIuqMTYYTk2e38Bi6ed1zJgJ9LV8EZFY6S7kzQtNbxWR
-        dq2EVJjEtvyg+7uncwjU/GfOave+g4SmAyk4QaIqVw/cBAp5JROl4fss5kOmhhd48m/zKN/BT2Kne
-        4r7aT25INlQYUt07MKB6e3JiljH56Bv5dF61FNPZ9GAePTzIrq6vFfaE5EIdtGfqYacXVUhZ0+nnV
-        aWTdDN8VA==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
-        id 1hZLDX-0002mb-5b; Fri, 07 Jun 2019 20:12:03 +0000
-Date:   Fri, 7 Jun 2019 13:12:03 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
+        id S1728077AbfFHLlL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 8 Jun 2019 07:41:11 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58522 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728070AbfFHLlK (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sat, 8 Jun 2019 07:41:10 -0400
+Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 618D8214D8;
+        Sat,  8 Jun 2019 11:41:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1559994070;
+        bh=KXuYvw3/D0vv9vxod8xwf7/qWzRXSE1mlN6grdo9A7o=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=SzoPawAcNxK/JvDK5p99uUz/OIs6QxfVA+PGhT/RiB5L6J+nLbmN0VUfl/kE0TdaX
+         9LMQ5Jsjd3ZaXfQgpqIKzAIVujR12U4ImvZuvKMdfoXnI4lHXvPX0IPTtqKbKlCVjv
+         1RNigrAjx4nOHBL+JjJqoatWZb5OMZ2nHUXky8gE=
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        kbuild test robot <lkp@intel.com>,
         Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-Subject: Re: [RFC V3] mm: Generalize and rename notify_page_fault() as
- kprobe_page_fault()
-Message-ID: <20190607201202.GA32656@bombadil.infradead.org>
-References: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.1 47/70] ia64: fix build errors by exporting paddr_to_nid()
+Date:   Sat,  8 Jun 2019 07:39:26 -0400
+Message-Id: <20190608113950.8033-47-sashal@kernel.org>
+X-Mailer: git-send-email 2.20.1
+In-Reply-To: <20190608113950.8033-1-sashal@kernel.org>
+References: <20190608113950.8033-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
-User-Agent: Mutt/1.9.2 (2017-12-15)
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Before:
+From: Randy Dunlap <rdunlap@infradead.org>
 
-> @@ -46,23 +46,6 @@ kmmio_fault(struct pt_regs *regs, unsigned long addr)
->  	return 0;
->  }
->  
-> -static nokprobe_inline int kprobes_fault(struct pt_regs *regs)
-> -{
-> -	if (!kprobes_built_in())
-> -		return 0;
-> -	if (user_mode(regs))
-> -		return 0;
-> -	/*
-> -	 * To be potentially processing a kprobe fault and to be allowed to call
-> -	 * kprobe_running(), we have to be non-preemptible.
-> -	 */
-> -	if (preemptible())
-> -		return 0;
-> -	if (!kprobe_running())
-> -		return 0;
-> -	return kprobe_fault_handler(regs, X86_TRAP_PF);
-> -}
+[ Upstream commit 9a626c4a6326da4433a0d4d4a8a7d1571caf1ed3 ]
 
-After:
+Fix build errors on ia64 when DISCONTIGMEM=y and NUMA=y by
+exporting paddr_to_nid().
 
-> +++ b/include/linux/kprobes.h
-> @@ -458,4 +458,20 @@ static inline bool is_kprobe_optinsn_slot(unsigned long addr)
->  }
->  #endif
->  
-> +static nokprobe_inline bool kprobe_page_fault(struct pt_regs *regs,
-> +					      unsigned int trap)
-> +{
-> +	int ret = 0;
-> +
-> +	/*
-> +	 * To be potentially processing a kprobe fault and to be allowed
-> +	 * to call kprobe_running(), we have to be non-preemptible.
-> +	 */
-> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
-> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
-> +			ret = 1;
-> +	}
-> +	return ret;
-> +}
+Fixes these build errors:
 
-Do you really think this is easier to read?
+ERROR: "paddr_to_nid" [sound/core/snd-pcm.ko] undefined!
+ERROR: "paddr_to_nid" [net/sunrpc/sunrpc.ko] undefined!
+ERROR: "paddr_to_nid" [fs/cifs/cifs.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/video/fbdev/core/fb.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/usb/mon/usbmon.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/usb/core/usbcore.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/md/raid1.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/md/dm-mod.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/md/dm-crypt.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/md/dm-bufio.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/ide/ide-core.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/ide/ide-cd_mod.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/gpu/drm/drm.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/char/agp/agpgart.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/block/nbd.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/block/loop.ko] undefined!
+ERROR: "paddr_to_nid" [drivers/block/brd.ko] undefined!
+ERROR: "paddr_to_nid" [crypto/ccm.ko] undefined!
 
-Why not just move the x86 version to include/linux/kprobes.h, and replace
-the int with bool?
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: linux-ia64@vger.kernel.org
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/ia64/mm/numa.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-On Fri, Jun 07, 2019 at 04:04:15PM +0530, Anshuman Khandual wrote:
-> Very similar definitions for notify_page_fault() are being used by multiple
-> architectures duplicating much of the same code. This attempts to unify all
-> of them into a generic implementation, rename it as kprobe_page_fault() and
-> then move it to a common header.
-
-I think this description suffers from having been written for v1 of
-this patch.  It describes what you _did_, but it's not what this patch
-currently _is_.
-
-Why not something like:
-
-Architectures which support kprobes have very similar boilerplate around
-calling kprobe_fault_handler().  Use a helper function in kprobes.h to
-unify them, based on the x86 code.
-
-This changes the behaviour for other architectures when preemption
-is enabled.  Previously, they would have disabled preemption while
-calling the kprobe handler.  However, preemption would be disabled
-if this fault was due to a kprobe, so we know the fault was not due
-to a kprobe handler and can simply return failure.  This behaviour was
-introduced in commit a980c0ef9f6d ("x86/kprobes: Refactor kprobes_fault()
-like kprobe_exceptions_notify()")
-
->  arch/arm/mm/fault.c      | 24 +-----------------------
->  arch/arm64/mm/fault.c    | 24 +-----------------------
->  arch/ia64/mm/fault.c     | 24 +-----------------------
->  arch/powerpc/mm/fault.c  | 23 ++---------------------
->  arch/s390/mm/fault.c     | 16 +---------------
->  arch/sh/mm/fault.c       | 18 ++----------------
->  arch/sparc/mm/fault_64.c | 16 +---------------
->  arch/x86/mm/fault.c      | 21 ++-------------------
->  include/linux/kprobes.h  | 16 ++++++++++++++++
-
-What about arc and mips?
+diff --git a/arch/ia64/mm/numa.c b/arch/ia64/mm/numa.c
+index a03803506b0c..5e1015eb6d0d 100644
+--- a/arch/ia64/mm/numa.c
++++ b/arch/ia64/mm/numa.c
+@@ -55,6 +55,7 @@ paddr_to_nid(unsigned long paddr)
+ 
+ 	return (i < num_node_memblks) ? node_memblk[i].nid : (num_node_memblks ? -1 : 0);
+ }
++EXPORT_SYMBOL(paddr_to_nid);
+ 
+ #if defined(CONFIG_SPARSEMEM) && defined(CONFIG_NUMA)
+ /*
+-- 
+2.20.1
 
