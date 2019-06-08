@@ -2,27 +2,27 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 19A9A39E9F
-	for <lists+linux-ia64@lfdr.de>; Sat,  8 Jun 2019 13:51:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 739E139E6F
+	for <lists+linux-ia64@lfdr.de>; Sat,  8 Jun 2019 13:49:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729700AbfFHLsf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 8 Jun 2019 07:48:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37302 "EHLO mail.kernel.org"
+        id S1730007AbfFHLtF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 8 Jun 2019 07:49:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37862 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728745AbfFHLsd (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sat, 8 Jun 2019 07:48:33 -0400
+        id S1728806AbfFHLtE (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sat, 8 Jun 2019 07:49:04 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id C0604216F4;
-        Sat,  8 Jun 2019 11:48:31 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id A210A21537;
+        Sat,  8 Jun 2019 11:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559994512;
+        s=default; t=1559994543;
         bh=fDNyOUPjelSpPgLUi2TrZQecZSYzHvaqm4qqfpsOkfI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tlw/6zmSLGMsj7F5+AkI3bYKB2UrBmHn/eEjtyUn7qRHDOKi1H+ncLpGNokeIBbhP
-         7m2wfzfG5myjRbPp8ghEJalCCTTZBBWrVb42Kf4WXF38Dvb8ih3HXD97E0M/9yB5nc
-         Ck13OU8CdyhP0uyhr776cPbvcboysHm3V5JxL3rA=
+        b=Cfap/F7I4wz09YQ1tzEZpxZ+6c6qoP2N4rAgBJm7T68/UADdnnZptv5d5tBEMSqlD
+         UiacRC8f4zYxrWDf3ZxTvwYgQK+drPHVMbh1mG9fyE3QM0mpvyIOS/4nNvp1NkWRVq
+         jBQVqCDcqtmIyoGq/ozw9IPyZJrW5ndqf3sH/YSk=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Randy Dunlap <rdunlap@infradead.org>,
@@ -31,12 +31,12 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>,
         Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 13/20] ia64: fix build errors by exporting paddr_to_nid()
-Date:   Sat,  8 Jun 2019 07:47:49 -0400
-Message-Id: <20190608114756.9742-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 09/13] ia64: fix build errors by exporting paddr_to_nid()
+Date:   Sat,  8 Jun 2019 07:48:41 -0400
+Message-Id: <20190608114847.9973-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190608114756.9742-1-sashal@kernel.org>
-References: <20190608114756.9742-1-sashal@kernel.org>
+In-Reply-To: <20190608114847.9973-1-sashal@kernel.org>
+References: <20190608114847.9973-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
