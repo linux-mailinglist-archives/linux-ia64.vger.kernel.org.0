@@ -2,102 +2,91 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 739E139E6F
-	for <lists+linux-ia64@lfdr.de>; Sat,  8 Jun 2019 13:49:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C70473ACEB
+	for <lists+linux-ia64@lfdr.de>; Mon, 10 Jun 2019 04:23:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730007AbfFHLtF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 8 Jun 2019 07:49:05 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37862 "EHLO mail.kernel.org"
+        id S2387405AbfFJCXG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 9 Jun 2019 22:23:06 -0400
+Received: from foss.arm.com ([217.140.110.172]:35064 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728806AbfFHLtE (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sat, 8 Jun 2019 07:49:04 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id A210A21537;
-        Sat,  8 Jun 2019 11:49:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1559994543;
-        bh=fDNyOUPjelSpPgLUi2TrZQecZSYzHvaqm4qqfpsOkfI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cfap/F7I4wz09YQ1tzEZpxZ+6c6qoP2N4rAgBJm7T68/UADdnnZptv5d5tBEMSqlD
-         UiacRC8f4zYxrWDf3ZxTvwYgQK+drPHVMbh1mG9fyE3QM0mpvyIOS/4nNvp1NkWRVq
-         jBQVqCDcqtmIyoGq/ozw9IPyZJrW5ndqf3sH/YSk=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        kbuild test robot <lkp@intel.com>,
+        id S2387400AbfFJCXG (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 9 Jun 2019 22:23:06 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7520A337;
+        Sun,  9 Jun 2019 19:23:05 -0700 (PDT)
+Received: from [10.162.42.131] (p8cg001049571a15.blr.arm.com [10.162.42.131])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 19D773F557;
+        Sun,  9 Jun 2019 19:22:56 -0700 (PDT)
+Subject: Re: [RFC V3] mm: Generalize and rename notify_page_fault() as
+ kprobe_page_fault()
+To:     Stephen Rothwell <sfr@canb.auug.org.au>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Andrey Konovalov <andreyknvl@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will.deacon@arm.com>,
         Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.4 09/13] ia64: fix build errors by exporting paddr_to_nid()
-Date:   Sat,  8 Jun 2019 07:48:41 -0400
-Message-Id: <20190608114847.9973-9-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190608114847.9973-1-sashal@kernel.org>
-References: <20190608114847.9973-1-sashal@kernel.org>
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>
+References: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
+ <20190607220326.1e21fc9c@canb.auug.org.au>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <632eae55-92f5-1bfc-bfe4-24673558e1d8@arm.com>
+Date:   Mon, 10 Jun 2019 07:53:15 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190607220326.1e21fc9c@canb.auug.org.au>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 9a626c4a6326da4433a0d4d4a8a7d1571caf1ed3 ]
 
-Fix build errors on ia64 when DISCONTIGMEM=y and NUMA=y by
-exporting paddr_to_nid().
+On 06/07/2019 05:33 PM, Stephen Rothwell wrote:
+> Hi Anshuman,
+> 
+> On Fri,  7 Jun 2019 16:04:15 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+>>
+>> +static nokprobe_inline bool kprobe_page_fault(struct pt_regs *regs,
+>> +					      unsigned int trap)
+>> +{
+>> +	int ret = 0;
+>> +
+>> +	/*
+>> +	 * To be potentially processing a kprobe fault and to be allowed
+>> +	 * to call kprobe_running(), we have to be non-preemptible.
+>> +	 */
+>> +	if (kprobes_built_in() && !preemptible() && !user_mode(regs)) {
+>> +		if (kprobe_running() && kprobe_fault_handler(regs, trap))
+>> +			ret = 1;
+>> +	}
+>> +	return ret;
+>> +}
+> 
+> Since this is now declared as "bool" (thanks for that), you should make
+> "ret" be bool and use true and false;
 
-Fixes these build errors:
-
-ERROR: "paddr_to_nid" [sound/core/snd-pcm.ko] undefined!
-ERROR: "paddr_to_nid" [net/sunrpc/sunrpc.ko] undefined!
-ERROR: "paddr_to_nid" [fs/cifs/cifs.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/video/fbdev/core/fb.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/usb/mon/usbmon.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/usb/core/usbcore.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/md/raid1.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/md/dm-mod.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/md/dm-crypt.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/md/dm-bufio.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/ide/ide-core.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/ide/ide-cd_mod.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/gpu/drm/drm.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/char/agp/agpgart.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/block/nbd.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/block/loop.ko] undefined!
-ERROR: "paddr_to_nid" [drivers/block/brd.ko] undefined!
-ERROR: "paddr_to_nid" [crypto/ccm.ko] undefined!
-
-Reported-by: kbuild test robot <lkp@intel.com>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: linux-ia64@vger.kernel.org
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/ia64/mm/numa.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/arch/ia64/mm/numa.c b/arch/ia64/mm/numa.c
-index aa19b7ac8222..476c7b4be378 100644
---- a/arch/ia64/mm/numa.c
-+++ b/arch/ia64/mm/numa.c
-@@ -49,6 +49,7 @@ paddr_to_nid(unsigned long paddr)
- 
- 	return (i < num_node_memblks) ? node_memblk[i].nid : (num_node_memblks ? -1 : 0);
- }
-+EXPORT_SYMBOL(paddr_to_nid);
- 
- #if defined(CONFIG_SPARSEMEM) && defined(CONFIG_NUMA)
- /*
--- 
-2.20.1
-
+Sure, done.
