@@ -2,33 +2,24 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A457241B82
-	for <lists+linux-ia64@lfdr.de>; Wed, 12 Jun 2019 07:16:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BD2A41C2D
+	for <lists+linux-ia64@lfdr.de>; Wed, 12 Jun 2019 08:27:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730553AbfFLFQe (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 12 Jun 2019 01:16:34 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:35156 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725958AbfFLFQe (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 12 Jun 2019 01:16:34 -0400
-Received: from zn.tnic (p200300EC2F0A6800EC6A653BF86B372A.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:6800:ec6a:653b:f86b:372a])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BA42D1EC0997;
-        Wed, 12 Jun 2019 07:16:31 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1560316591;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=uZvUrReB+RHLzSd6kF/1jCDl/jkPW47i90g2lP+OZWI=;
-        b=rneOP3I/FIcX/zUChYjTMNqLmHOhJ9uhQISz3P+01lalYd8uNCQcDcblA+dzdoRgiLRlzz
-        DF6tlZQzEX3JOpUeN5oXSy45m3PJqlH7D/Vuz7dsX+ZgGRJB1IJmgDnx3BvoXK3lDQfFIj
-        +JvMJTzNX1N/CKAPKQpaI/76LsvEzBk=
-Date:   Wed, 12 Jun 2019 07:16:24 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Zhen Lei <thunder.leizhen@huawei.com>
-Cc:     Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
+        id S1730940AbfFLG07 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 12 Jun 2019 02:26:59 -0400
+Received: from szxga05-in.huawei.com ([45.249.212.191]:18137 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726010AbfFLG07 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 12 Jun 2019 02:26:59 -0400
+Received: from DGGEMS402-HUB.china.huawei.com (unknown [172.30.72.59])
+        by Forcepoint Email with ESMTP id 81C41E146AD85FC4BB65;
+        Wed, 12 Jun 2019 14:26:54 +0800 (CST)
+Received: from [127.0.0.1] (10.133.215.186) by DGGEMS402-HUB.china.huawei.com
+ (10.3.19.202) with Microsoft SMTP Server id 14.3.439.0; Wed, 12 Jun 2019
+ 14:26:46 +0800
+Subject: Re: [PATCH v8 2/7] x86/dma: use IS_ENABLED() to simplify the code
+To:     Borislav Petkov <bp@alien8.de>
+CC:     Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
         John Garry <john.garry@huawei.com>,
         Robin Murphy <robin.murphy@arm.com>,
         Will Deacon <will.deacon@arm.com>,
@@ -37,11 +28,11 @@ Cc:     Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
         linux-doc <linux-doc@vger.kernel.org>,
         Sebastian Ott <sebott@linux.ibm.com>,
         Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        "Martin Schwidefsky" <schwidefsky@de.ibm.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        "Michael Ellerman" <mpe@ellerman.id.au>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
         Thomas Gleixner <tglx@linutronix.de>,
@@ -54,60 +45,71 @@ Cc:     Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
         x86 <x86@kernel.org>, linux-ia64 <linux-ia64@vger.kernel.org>,
         Hanjun Guo <guohanjun@huawei.com>
-Subject: Re: [PATCH v8 2/7] x86/dma: use IS_ENABLED() to simplify the code
-Message-ID: <20190612051624.GF32652@zn.tnic>
 References: <20190530034831.4184-1-thunder.leizhen@huawei.com>
  <20190530034831.4184-3-thunder.leizhen@huawei.com>
+ <20190612051624.GF32652@zn.tnic>
+From:   "Leizhen (ThunderTown)" <thunder.leizhen@huawei.com>
+Message-ID: <bd743433-73e9-3cf1-c159-4371abebd989@huawei.com>
+Date:   Wed, 12 Jun 2019 14:26:43 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.7.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20190530034831.4184-3-thunder.leizhen@huawei.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20190612051624.GF32652@zn.tnic>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.133.215.186]
+X-CFilter-Loop: Reflected
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, May 30, 2019 at 11:48:26AM +0800, Zhen Lei wrote:
-> This patch removes the ifdefs around CONFIG_IOMMU_DEFAULT_PASSTHROUGH to
-> improve readablity.
 
-Avoid having "This patch" or "This commit" in the commit message. It is
-tautologically useless.
 
-Also, do
-
-$ git grep 'This patch' Documentation/process
-
-for more details.
-
-> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
-> ---
->  arch/x86/kernel/pci-dma.c | 7 ++-----
->  1 file changed, 2 insertions(+), 5 deletions(-)
+On 2019/6/12 13:16, Borislav Petkov wrote:
+> On Thu, May 30, 2019 at 11:48:26AM +0800, Zhen Lei wrote:
+>> This patch removes the ifdefs around CONFIG_IOMMU_DEFAULT_PASSTHROUGH to
+>> improve readablity.
 > 
-> diff --git a/arch/x86/kernel/pci-dma.c b/arch/x86/kernel/pci-dma.c
-> index dcd272dbd0a9330..9f2b19c35a060df 100644
-> --- a/arch/x86/kernel/pci-dma.c
-> +++ b/arch/x86/kernel/pci-dma.c
-> @@ -43,11 +43,8 @@
->   * It is also possible to disable by default in kernel config, and enable with
->   * iommu=nopt at boot time.
->   */
-> -#ifdef CONFIG_IOMMU_DEFAULT_PASSTHROUGH
-> -int iommu_pass_through __read_mostly = 1;
-> -#else
-> -int iommu_pass_through __read_mostly;
-> -#endif
-> +int iommu_pass_through __read_mostly =
-> +			IS_ENABLED(CONFIG_IOMMU_DEFAULT_PASSTHROUGH);
+> Avoid having "This patch" or "This commit" in the commit message. It is
+> tautologically useless.
 
-Let that line stick out.
+OK, thanks.
 
-Thx.
+> 
+> Also, do
+> 
+> $ git grep 'This patch' Documentation/process
+> 
+> for more details.
+> 
+>> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+>> ---
+>>  arch/x86/kernel/pci-dma.c | 7 ++-----
+>>  1 file changed, 2 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/arch/x86/kernel/pci-dma.c b/arch/x86/kernel/pci-dma.c
+>> index dcd272dbd0a9330..9f2b19c35a060df 100644
+>> --- a/arch/x86/kernel/pci-dma.c
+>> +++ b/arch/x86/kernel/pci-dma.c
+>> @@ -43,11 +43,8 @@
+>>   * It is also possible to disable by default in kernel config, and enable with
+>>   * iommu=nopt at boot time.
+>>   */
+>> -#ifdef CONFIG_IOMMU_DEFAULT_PASSTHROUGH
+>> -int iommu_pass_through __read_mostly = 1;
+>> -#else
+>> -int iommu_pass_through __read_mostly;
+>> -#endif
+>> +int iommu_pass_through __read_mostly =
+>> +			IS_ENABLED(CONFIG_IOMMU_DEFAULT_PASSTHROUGH);
+> 
+> Let that line stick out.
 
--- 
-Regards/Gruss,
-    Boris.
+OK, I will merge them on the same line.
 
-Good mailing practices for 400: avoid top-posting and trim the reply.
+> 
+> Thx.
+> 
+
