@@ -2,166 +2,112 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D79853D438
-	for <lists+linux-ia64@lfdr.de>; Tue, 11 Jun 2019 19:31:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A457241B82
+	for <lists+linux-ia64@lfdr.de>; Wed, 12 Jun 2019 07:16:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406314AbfFKRbh (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 11 Jun 2019 13:31:37 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:55574 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S2406191AbfFKRbh (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 11 Jun 2019 13:31:37 -0400
-Received: from pps.filterd (m0098419.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.27/8.16.0.27) with SMTP id x5BHJvoO109487
-        for <linux-ia64@vger.kernel.org>; Tue, 11 Jun 2019 13:31:36 -0400
-Received: from e13.ny.us.ibm.com (e13.ny.us.ibm.com [129.33.205.203])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 2t2emjem84-1
-        (version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=NOT)
-        for <linux-ia64@vger.kernel.org>; Tue, 11 Jun 2019 13:31:36 -0400
-Received: from localhost
-        by e13.ny.us.ibm.com with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted
-        for <linux-ia64@vger.kernel.org> from <leonardo@linux.ibm.com>;
-        Tue, 11 Jun 2019 18:31:35 +0100
-Received: from b01cxnp22035.gho.pok.ibm.com (9.57.198.25)
-        by e13.ny.us.ibm.com (146.89.104.200) with IBM ESMTP SMTP Gateway: Authorized Use Only! Violators will be prosecuted;
-        (version=TLSv1/SSLv3 cipher=AES256-GCM-SHA384 bits=256/256)
-        Tue, 11 Jun 2019 18:31:27 +0100
-Received: from b01ledav004.gho.pok.ibm.com (b01ledav004.gho.pok.ibm.com [9.57.199.109])
-        by b01cxnp22035.gho.pok.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id x5BHVPUl15401272
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 11 Jun 2019 17:31:25 GMT
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 5393F112061;
-        Tue, 11 Jun 2019 17:31:25 +0000 (GMT)
-Received: from b01ledav004.gho.pok.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 89B10112065;
-        Tue, 11 Jun 2019 17:31:18 +0000 (GMT)
-Received: from leobras.br.ibm.com (unknown [9.86.24.233])
-        by b01ledav004.gho.pok.ibm.com (Postfix) with ESMTP;
-        Tue, 11 Jun 2019 17:31:18 +0000 (GMT)
-Subject: Re: [RFC V3] mm: Generalize and rename notify_page_fault() as
- kprobe_page_fault()
-From:   Leonardo Bras <leonardo@linux.ibm.com>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
-        linux-s390@vger.kernel.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>, x86@kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Matthew Wilcox <willy@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Andrey Konovalov <andreyknvl@google.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
+        id S1730553AbfFLFQe (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 12 Jun 2019 01:16:34 -0400
+Received: from mail.skyhub.de ([5.9.137.197]:35156 "EHLO mail.skyhub.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725958AbfFLFQe (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 12 Jun 2019 01:16:34 -0400
+Received: from zn.tnic (p200300EC2F0A6800EC6A653BF86B372A.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:6800:ec6a:653b:f86b:372a])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id BA42D1EC0997;
+        Wed, 12 Jun 2019 07:16:31 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1560316591;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=uZvUrReB+RHLzSd6kF/1jCDl/jkPW47i90g2lP+OZWI=;
+        b=rneOP3I/FIcX/zUChYjTMNqLmHOhJ9uhQISz3P+01lalYd8uNCQcDcblA+dzdoRgiLRlzz
+        DF6tlZQzEX3JOpUeN5oXSy45m3PJqlH7D/Vuz7dsX+ZgGRJB1IJmgDnx3BvoXK3lDQfFIj
+        +JvMJTzNX1N/CKAPKQpaI/76LsvEzBk=
+Date:   Wed, 12 Jun 2019 07:16:24 +0200
+From:   Borislav Petkov <bp@alien8.de>
+To:     Zhen Lei <thunder.leizhen@huawei.com>
+Cc:     Jean-Philippe Brucker <jean-philippe.brucker@arm.com>,
+        John Garry <john.garry@huawei.com>,
+        Robin Murphy <robin.murphy@arm.com>,
         Will Deacon <will.deacon@arm.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-arm-kernel@lists.infradead.org,
-        Tony Luck <tony.luck@intel.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        linux-doc <linux-doc@vger.kernel.org>,
+        Sebastian Ott <sebott@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-Date:   Tue, 11 Jun 2019 14:31:12 -0300
-In-Reply-To: <7b0a7afd-2776-0d95-19c5-3e15959744eb@arm.com>
-References: <1559903655-5609-1-git-send-email-anshuman.khandual@arm.com>
-         <ec764ff4-f68a-fce5-ac1e-a4664e1123c7@c-s.fr>
-         <97e9c9b3-89c8-d378-4730-841a900e6800@arm.com>
-         <8dd6168592437378ff4a7c204e0f2962d002b44f.camel@linux.ibm.com>
-         <7b0a7afd-2776-0d95-19c5-3e15959744eb@arm.com>
-Content-Type: multipart/signed; micalg="pgp-sha256";
-        protocol="application/pgp-signature"; boundary="=-+TvBOjv046XEorglXBMQ"
-User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        iommu <iommu@lists.linux-foundation.org>,
+        linux-kernel <linux-kernel@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        x86 <x86@kernel.org>, linux-ia64 <linux-ia64@vger.kernel.org>,
+        Hanjun Guo <guohanjun@huawei.com>
+Subject: Re: [PATCH v8 2/7] x86/dma: use IS_ENABLED() to simplify the code
+Message-ID: <20190612051624.GF32652@zn.tnic>
+References: <20190530034831.4184-1-thunder.leizhen@huawei.com>
+ <20190530034831.4184-3-thunder.leizhen@huawei.com>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-x-cbid: 19061117-0064-0000-0000-000003ECE701
-X-IBM-SpamModules-Scores: 
-X-IBM-SpamModules-Versions: BY=3.00011247; HX=3.00000242; KW=3.00000007;
- PH=3.00000004; SC=3.00000286; SDB=6.01216523; UDB=6.00639641; IPR=6.00997622;
- MB=3.00027266; MTD=3.00000008; XFM=3.00000015; UTC=2019-06-11 17:31:34
-X-IBM-AV-DETECTION: SAVI=unused REMOTE=unused XFE=unused
-x-cbparentid: 19061117-0065-0000-0000-00003DDA7110
-Message-Id: <bec5983d50e37953b3962a6e53fca0a243c7158b.camel@linux.ibm.com>
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-06-11_08:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- malwarescore=0 suspectscore=0 phishscore=0 bulkscore=0 spamscore=0
- clxscore=1015 lowpriorityscore=0 mlxscore=0 impostorscore=0
- mlxlogscore=675 adultscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.0.1-1810050000 definitions=main-1906110111
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20190530034831.4184-3-thunder.leizhen@huawei.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+On Thu, May 30, 2019 at 11:48:26AM +0800, Zhen Lei wrote:
+> This patch removes the ifdefs around CONFIG_IOMMU_DEFAULT_PASSTHROUGH to
+> improve readablity.
 
---=-+TvBOjv046XEorglXBMQ
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Avoid having "This patch" or "This commit" in the commit message. It is
+tautologically useless.
 
-On Tue, 2019-06-11 at 10:44 +0530, Anshuman Khandual wrote:
->=20
-> On 06/10/2019 08:57 PM, Leonardo Bras wrote:
-> > On Mon, 2019-06-10 at 08:09 +0530, Anshuman Khandual wrote:
-> > > > > +    /*
-> > > > > +     * To be potentially processing a kprobe fault and to be all=
-owed
-> > > > > +     * to call kprobe_running(), we have to be non-preemptible.
-> > > > > +     */
-> > > > > +    if (kprobes_built_in() && !preemptible() && !user_mode(regs)=
-) {
-> > > > > +        if (kprobe_running() && kprobe_fault_handler(regs, trap)=
-)
-> > > >=20
-> > > > don't need an 'if A if B', can do 'if A && B'
-> > >=20
-> > > Which will make it a very lengthy condition check.
-> >=20
-> > Well, is there any problem line-breaking the if condition?
-> >=20
-> > if (A && B && C &&
-> >     D && E )
-> >=20
-> > Also, if it's used only to decide the return value, maybe would be fine
-> > to do somethink like that:
-> >=20
-> > return (A && B && C &&
-> >         D && E );=20
->=20
-> Got it. But as Dave and Matthew had pointed out earlier, the current x86
-> implementation has better readability. Hence will probably stick with it.
->=20
-Sure, I agree with them. It's way more readable.
+Also, do
 
---=-+TvBOjv046XEorglXBMQ
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-Content-Transfer-Encoding: 7bit
+$ git grep 'This patch' Documentation/process
 
------BEGIN PGP SIGNATURE-----
+for more details.
 
-iQIzBAABCAAdFiEEMdeUgIzgjf6YmUyOlQYWtz9SttQFAlz/5WAACgkQlQYWtz9S
-ttSg4A/6A45T2BOxIm5qp+PJ+LwF0fbX0ZI762cE3X6nXDk5fJuRrjyQifBfrD0V
-IVWSUrnOXqarYOmPT3CxT33rW05vGtDWObX+OI6J/QW6qU7jSOD1Db1ZUHL0W3WL
-7B27RA3gNmEMugnjmM+JvtMkf5SwTdk3ZLr2IA22revoOBxOF5b8iICzA0HfaXg6
-8lFSegTY8C2nNQipkeSS4d3KiObNEA1TVJUFqhwJ/VA6qYMnOpKD6WR58QCOxFaF
-NIP4ln+HJccwleioGnQ+Q7jFGRD8Hb9zqLKNccpN1MfuZdE9OXcbFB5MXVuPyE/h
-JVYbITwMXbIxpZe8o6/Yoc875Tz1phA2GeprZlEF3FDbw/tH0tyb6U5o+8UNpOXp
-YdrNxy1oJRK6ZzhW0+FqgMJVo/BBh/8OV3r9ECwYxR3o8ELPVFAcyqrx2XEU7E6p
-fBWN/cYXuZFizM0/b2yKd3kO/JIemEdz58/aPOTgJevEb996p7JohS8H8/3lm4gu
-VcnlAsH9ivKDmkoFzz6JuXWJB19OSohPW8j2p9fqP5LA5snz8o+ehsewTjaVQsPJ
-eNlp1HQzVumviM07wrZmXzVc0zoUb3YhWHrUL26xcfvtfDZVQ+gIOCH9baNsgcoe
-U0uI1HQuuUreC4L10sgC2qrlYqbWMUmK5uj6T8fjTRaHlzP1UX8=
-=i2hD
------END PGP SIGNATURE-----
+> Signed-off-by: Zhen Lei <thunder.leizhen@huawei.com>
+> ---
+>  arch/x86/kernel/pci-dma.c | 7 ++-----
+>  1 file changed, 2 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/x86/kernel/pci-dma.c b/arch/x86/kernel/pci-dma.c
+> index dcd272dbd0a9330..9f2b19c35a060df 100644
+> --- a/arch/x86/kernel/pci-dma.c
+> +++ b/arch/x86/kernel/pci-dma.c
+> @@ -43,11 +43,8 @@
+>   * It is also possible to disable by default in kernel config, and enable with
+>   * iommu=nopt at boot time.
+>   */
+> -#ifdef CONFIG_IOMMU_DEFAULT_PASSTHROUGH
+> -int iommu_pass_through __read_mostly = 1;
+> -#else
+> -int iommu_pass_through __read_mostly;
+> -#endif
+> +int iommu_pass_through __read_mostly =
+> +			IS_ENABLED(CONFIG_IOMMU_DEFAULT_PASSTHROUGH);
 
---=-+TvBOjv046XEorglXBMQ--
+Let that line stick out.
 
+Thx.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+Good mailing practices for 400: avoid top-posting and trim the reply.
