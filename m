@@ -2,30 +2,25 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F50B44CE9
-	for <lists+linux-ia64@lfdr.de>; Thu, 13 Jun 2019 22:04:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7BF49453E0
+	for <lists+linux-ia64@lfdr.de>; Fri, 14 Jun 2019 07:15:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726876AbfFMUEM (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 13 Jun 2019 16:04:12 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43706 "EHLO mail.kernel.org"
+        id S1725835AbfFNFPi (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 14 Jun 2019 01:15:38 -0400
+Received: from foss.arm.com ([217.140.110.172]:54888 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728752AbfFMUEM (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 13 Jun 2019 16:04:12 -0400
-Received: from akpm3.svl.corp.google.com (unknown [104.133.8.65])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1E84021537;
-        Thu, 13 Jun 2019 20:04:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1560456250;
-        bh=STyJgmmKr944RjOkqQ8HWC3xeSyqe7HVqnGI2LWRsD8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=N2gTptqwNshky9t39zHrhF/tFwNwxgbkrbTJor+tak1vLqX97uKewRk8bUnzrn4Ko
-         U5IaH0MfRPlK77bT7Yc/4PbSrlc3n6J8M0GsjcRBoXIwR5bmuZZez1tgkNHDFM277/
-         c+zGeW7mHjTeucDkGZEHLB7VbopRA5mQ7/vZdAH4=
-Date:   Thu, 13 Jun 2019 13:04:08 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
+        id S1725801AbfFNFPi (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 14 Jun 2019 01:15:38 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 29721367;
+        Thu, 13 Jun 2019 22:15:37 -0700 (PDT)
+Received: from [10.162.41.168] (p8cg001049571a15.blr.arm.com [10.162.41.168])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B446E3F246;
+        Thu, 13 Jun 2019 22:15:25 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH] mm: Generalize and rename notify_page_fault() as
+ kprobe_page_fault()
+To:     Andrew Morton <akpm@linux-foundation.org>
 Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
@@ -57,55 +52,66 @@ Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
         James Hogan <jhogan@kernel.org>,
         Paul Burton <paul.burton@mips.com>,
         Ralf Baechle <ralf@linux-mips.org>
-Subject: Re: [PATCH] mm: Generalize and rename notify_page_fault() as
- kprobe_page_fault()
-Message-Id: <20190613130408.3091869d8e50d0524157523f@linux-foundation.org>
-In-Reply-To: <1560420444-25737-1-git-send-email-anshuman.khandual@arm.com>
 References: <1560420444-25737-1-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ <20190613130408.3091869d8e50d0524157523f@linux-foundation.org>
+Message-ID: <c3316aca-2005-e092-80f6-ebd7652bd04f@arm.com>
+Date:   Fri, 14 Jun 2019 10:45:44 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <20190613130408.3091869d8e50d0524157523f@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, 13 Jun 2019 15:37:24 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 
-> Architectures which support kprobes have very similar boilerplate around
-> calling kprobe_fault_handler(). Use a helper function in kprobes.h to unify
-> them, based on the x86 code.
+On 06/14/2019 01:34 AM, Andrew Morton wrote:
+> On Thu, 13 Jun 2019 15:37:24 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
 > 
-> This changes the behaviour for other architectures when preemption is
-> enabled. Previously, they would have disabled preemption while calling the
-> kprobe handler. However, preemption would be disabled if this fault was
-> due to a kprobe, so we know the fault was not due to a kprobe handler and
-> can simply return failure.
+>> Architectures which support kprobes have very similar boilerplate around
+>> calling kprobe_fault_handler(). Use a helper function in kprobes.h to unify
+>> them, based on the x86 code.
+>>
+>> This changes the behaviour for other architectures when preemption is
+>> enabled. Previously, they would have disabled preemption while calling the
+>> kprobe handler. However, preemption would be disabled if this fault was
+>> due to a kprobe, so we know the fault was not due to a kprobe handler and
+>> can simply return failure.
+>>
+>> This behaviour was introduced in the commit a980c0ef9f6d ("x86/kprobes:
+>> Refactor kprobes_fault() like kprobe_exceptions_notify()")
+>>
+>> ...
+>>
+>> --- a/arch/arm/mm/fault.c
+>> +++ b/arch/arm/mm/fault.c
+>> @@ -30,28 +30,6 @@
+>>  
+>>  #ifdef CONFIG_MMU
+>>  
+>> -#ifdef CONFIG_KPROBES
+>> -static inline int notify_page_fault(struct pt_regs *regs, unsigned int fsr)
 > 
-> This behaviour was introduced in the commit a980c0ef9f6d ("x86/kprobes:
-> Refactor kprobes_fault() like kprobe_exceptions_notify()")
+> Some architectures make this `static inline'.  Others make it
+> `nokprobes_inline', others make it `static inline __kprobes'.  The
+> latter seems weird - why try to put an inline function into
+> .kprobes.text?
 > 
-> ...
->
-> --- a/arch/arm/mm/fault.c
-> +++ b/arch/arm/mm/fault.c
-> @@ -30,28 +30,6 @@
->  
->  #ifdef CONFIG_MMU
->  
-> -#ifdef CONFIG_KPROBES
-> -static inline int notify_page_fault(struct pt_regs *regs, unsigned int fsr)
+> So..  what's the best thing to do here?  You chose `static
+> nokprobe_inline' - is that the best approach, if so why?  Does
+> kprobe_page_fault() actually need to be inlined?
 
-Some architectures make this `static inline'.  Others make it
-`nokprobes_inline', others make it `static inline __kprobes'.  The
-latter seems weird - why try to put an inline function into
-.kprobes.text?
+Matthew had suggested that (nokprobe_-inline) based on current x86
+implementation. But every architecture already had an inlined definition
+which I did not want to deviate from.
 
-So..  what's the best thing to do here?  You chose `static
-nokprobe_inline' - is that the best approach, if so why?  Does
-kprobe_page_fault() actually need to be inlined?
+> 
+> Also, some architectures had notify_page_fault returning int, others
+> bool.  You chose bool and that seems appropriate and all callers are OK
+> with that.
 
-Also, some architectures had notify_page_fault returning int, others
-bool.  You chose bool and that seems appropriate and all callers are OK
-with that.
+I would believe so. No one has complained yet :)
