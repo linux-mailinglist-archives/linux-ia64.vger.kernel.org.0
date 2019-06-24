@@ -2,65 +2,96 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 17D0A4F6E1
-	for <lists+linux-ia64@lfdr.de>; Sat, 22 Jun 2019 18:28:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFBB950AB6
+	for <lists+linux-ia64@lfdr.de>; Mon, 24 Jun 2019 14:32:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726416AbfFVQ2x (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 22 Jun 2019 12:28:53 -0400
-Received: from sonic301-3.consmr.mail.bf2.yahoo.com ([74.6.129.42]:41602 "EHLO
-        sonic301-3.consmr.mail.bf2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726397AbfFVQ2u (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Sat, 22 Jun 2019 12:28:50 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1561220929; bh=3fXYToOZXvh5MOJ1JSawYDThjnynC/Ekt2gucIg6zZg=; h=Date:From:Reply-To:Subject:From:Subject; b=FwrBLUl7u665XwQeVPTq5hUQ4Ptv5qPcwgE0MfCyAxPjQW66W+sBKlTITy95Xiak8M/9mL3k87XvuhuNYmdzjOXFqAsXXJ7ZeR0tr0xQhaR4qpp9+I79zHB4JVXDeOtUnrv/ni1DEn3m49tSMIml9+1SbDvUcui/xLYzcB7mOtvlwJJC6bBkcbOwJW8drH7WnSKYQVlUvO9PRg8+IWYABo4m/HoTrmg3JSd7+tfq1bmdsTjreC9G6uwJClVG1p8XyGEOijmNqXv9Ivunj8UzUvxVldTIg/taTAKdSlSG3i+xbnz28LKLpxSK2+M63p52Vf+hNJ0OycyVj1TkO+H8OQ==
-X-YMail-OSG: BClZlNgVM1mJa1pSUAMlnjmDwJQUKDn0osVKNVIeZ6AC0JZQ8NzrV_.P2vPToBw
- lk4l1yMYy0P1wu9iKWHPF1vwWtED.NCcY6jE.jXdELnZdUngnDzcX.f1Ik7TcPjN._6dUftCNvSG
- 0ilPDIIh6JKut3rld3EDzfXqVTEprJFL10dLfXEmdNXy8_9HzWnLN9Uxxh6FWr8nj4DbExyF48M8
- b8CzHn8AtWzh0fDjJqMRXb5UR1L1fHF.mq4wk_41bl8VHLLREhO8D9AiMB_Iou.TvP.xektI4Uzf
- lBotEg54S8nbe5a5a2eamKaLSiD6XaCIzSQkrGwkgk9qzk7J4361PG1C2lAWhSULJjGYH.uKi9SH
- 8omXh8MvwuZmVU7umqXbA4eIFWV8ruRR3qRFWtA.2B0Eer.D49EbNovsAu.wRPm8yYyL6YMdaoys
- 3vYAkjype1yPgR0gHAH3zObnNPMrtMzQfsTzcaha59dNYsVWPRo5EvcFgAIKXVIUqnKnooWuODru
- O4SgrdrM8PGEZGs5dJS.h.dJB3gwQ.0I1wf1Q_CLgJhbPMrumaMiWl3ifhN9G_CCxrGhRPRltqdB
- RyAvAXGENXKEJswzM.sYWHkLQyblOWaGX5TLKzeDGaJCZVu7CtZvQ0aNcyWtqrf4SAtE7MK9SqUH
- 7phABBxeBrGdyDkvdUQOX_EPh25.Hb3SncDKllMEIHjvEdwbQcMGmqMEDVCI8Jh0nfgpjh259ODl
- q.bGW_sz63_QvjPWXygjUQ4RzfXiei1bHIkvbkPAHc04dS.Qr8LP1Jyxp2QD0wtNtJgo5RScK99X
- P5NPqcNAR8eez8YgXpk3cKLQCR9JSylhL6QyUVACODhQSLMO_l73eEDpWzNQUeEQLrEwA53TFUO9
- BXx4lR26gADp4OeWMANR3pTNDn8J7Oc5G1l.tF8AqVFtdsoB5vgCdw0tzoX9_22cJzNNteihaN9H
- ktOSXaCeUY26x9DWNkYi7HTOCc9F4vHnioRwelB9Lv.KGDeGPUJBBPmfcn0xXC8MB2YTlUFeVHzN
- FJsHhvFz9eJx.VwEAdhJs3DHW6xmbj9a_RSOf.BoLPiAvMAdoBe_1sVY8nFOqhuBwpkbj17TOzIW
- ts0JEWafkyantIFw8kEnIr0AHDEAK4aB1fgOVS8TQpbEaj2tB4pKHPa4OOjXszQAPBozr7PYVj2f
- 6AcwHFYhcmsrFfliX20p43dgFMRY8GMXgvUWeegBAeAuOTxCoUC9WvAdL
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.bf2.yahoo.com with HTTP; Sat, 22 Jun 2019 16:28:49 +0000
-Date:   Sat, 22 Jun 2019 16:28:46 +0000 (UTC)
-From:   "Miss.Fatima Yusuf" <fatimayusuf5@outlook.fr>
-Reply-To: miss.fmayusuf11@gmail.com
-Message-ID: <270302503.296556.1561220926635@mail.yahoo.com>
-Subject: From:Miss: Fatima Yusuf.
+        id S1728347AbfFXMcF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 24 Jun 2019 08:32:05 -0400
+Received: from mail.kernel.org ([198.145.29.99]:43302 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726453AbfFXMcF (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 24 Jun 2019 08:32:05 -0400
+Received: from linux-8ccs (nat.nue.novell.com [195.135.221.2])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 5F2E8205C9;
+        Mon, 24 Jun 2019 12:32:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1561379524;
+        bh=a3K3DY7Vl1R9i4uY3YJgDprYWQNpO5K3lg8iFltccQg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=iLycqTq+aNbxd3gjPjNE9eolP7uheTaiE+2YXket8RcX0W8qyre9yJudYBufPfpKm
+         jUvfAJJrJXmZeGmgaflV39AQzCx0zIiY52gWJ3gnVpF8VcEWbtYqYnKXHsBz1END0/
+         P3jMzy4V3tkHZRmIVZqd5LCLKdT6/vx5oRoZkvgM=
+Date:   Mon, 24 Jun 2019 14:32:00 +0200
+From:   Jessica Yu <jeyu@kernel.org>
+To:     Matthias Schiffer <matthias.schiffer@ew.tq-group.com>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org
+Subject: Re: [PATCH modules v2 0/2] Fix handling of exit unwinding sections
+ (on ARM)
+Message-ID: <20190624123200.GB22519@linux-8ccs>
+References: <20190607104912.6252-1-matthias.schiffer@ew.tq-group.com>
+ <c52edcd84b01970113fc046d11c38276d51886e0.camel@ew.tq-group.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-To:     unlisted-recipients:; (no To-header on input)
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <c52edcd84b01970113fc046d11c38276d51886e0.camel@ew.tq-group.com>
+X-OS:   Linux linux-8ccs 5.1.0-rc1-lp150.12.28-default+ x86_64
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
++++ Matthias Schiffer [21/06/19 14:35 +0200]:
+>On Fri, 2019-06-07 at 12:49 +0200, Matthias Schiffer wrote:
+>> For some time (050d18d1c651 "ARM: 8650/1: module: handle negative
+>> R_ARM_PREL31 addends correctly", v4.11+), building a kernel without
+>> CONFIG_MODULE_UNLOAD would lead to module loads failing on ARM
+>> systems with
+>> certain memory layouts, with messages like:
+>>
+>>   imx_sdma: section 16 reloc 0 sym '': relocation 42 out of range
+>>   (0x7f015260 -> 0xc0f5a5e8)
+>>
+>> (0x7f015260 is in the module load area, 0xc0f5a5e8 a regular vmalloc
+>> address; relocation 42 is R_ARM_PREL31)
+>>
+>> This is caused by relocatiosn in the .ARM.extab.exit.text and
+>> .ARM.exidx.exit.text sections referencing the .exit.text section. As
+>> the
+>> module loader will omit loading .exit.text without
+>> CONFIG_MODULE_UNLOAD,
+>> there will be relocations from loaded to unloaded sections; the
+>> resulting
+>> huge offsets trigger the sanity checks added in 050d18d1c651.
+>>
+>> IA64 might be affected by a similar issue - sections with names like
+>> .IA_64.unwind.exit.text and .IA_64.unwind_info.exit.text appear in
+>> the ld
+>> script - but I don't know much about that arch.
+>>
+>> Also, I'm not sure if this is stable-worthy - just enabling
+>> CONFIG_MODULE_UNLOAD should be a viable workaround on affected
+>> kernels.
+>>
+>> v2: Use __weak function as suggested by Jessica
+>
+>Hi Russell,
+>
+>this patch series is still waiting for your thoughts - in reponse to
+>v1, Jessica already offered to take it through her tree if you give
+>your Acked-by.
+>
+>Thanks,
+>
+>Matthias
 
+Hi Matthias,
 
-From:Miss: Fatima Yusuf.
+There doesn't seem to be any complaints and I think the patchset looks
+good, so I've taken it up the modules-next tree. Thanks!
 
-For sure this mail would definitely come to you as a surprise, but do take your good time to go through it, My name is Ms. Fatima Yusuf,i am from Ivory Coast.
-
-I lost my parents a year and couple of months ago. My father was a serving director of the Agro-exporting board until his death. He was assassinated by his business partners.Before his death, he made a deposit of US$9.7 Million Dollars here in Cote d'ivoire which was for the purchase of cocoa processing machine and development of another factory before his untimely death.
-
-Being that this part of the world experiences political and crises time without number, there is no guarantee of lives and properties. I cannot invest this money here any long, despite the fact it had been my late father's industrial plans.
-
-I want you to do me a favor to receive this funds into your country or any safer place as the beneficiary, I have plans to invest this money in continuation with the investment vision of my late father, but not in this place again rather in your country. I have the vision of going into real estate and industrial production or any profitable business venture.
-
-I will be ready to compensate you with 20% of the total Amount, now all my hope is banked on you and i really wants to invest this money in your country, where there is stability of Government, political and economic welfare.
-
-My greatest worry now is how to move out of this country because my uncle is threatening to kill me as he killed my father,Please do not let anybody hear about this, it is between me and you alone because of my security reason.
-
-I am waiting to hear from you.
-Yours Sincerely,
-Miss.Fatima Yusuf.
+Jessica
