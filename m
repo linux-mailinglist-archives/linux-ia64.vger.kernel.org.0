@@ -2,192 +2,39 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C3E5592F5
-	for <lists+linux-ia64@lfdr.de>; Fri, 28 Jun 2019 06:45:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2400459435
+	for <lists+linux-ia64@lfdr.de>; Fri, 28 Jun 2019 08:31:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726682AbfF1EpL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 28 Jun 2019 00:45:11 -0400
-Received: from foss.arm.com ([217.140.110.172]:40244 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726420AbfF1EpL (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 28 Jun 2019 00:45:11 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 0B5DA344;
-        Thu, 27 Jun 2019 21:45:10 -0700 (PDT)
-Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com [10.162.40.144])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 805AA3F706;
-        Thu, 27 Jun 2019 21:45:06 -0700 (PDT)
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-To:     linux-mm@kvack.org
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will.deacon@arm.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-Subject: [RFC 1/2] mm/sparsemem: Add vmem_altmap support in vmemmap_populate_basepages()
-Date:   Fri, 28 Jun 2019 10:14:42 +0530
-Message-Id: <1561697083-7329-2-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1561697083-7329-1-git-send-email-anshuman.khandual@arm.com>
-References: <1561697083-7329-1-git-send-email-anshuman.khandual@arm.com>
+        id S1726827AbfF1Gbx (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 28 Jun 2019 02:31:53 -0400
+Received: from verein.lst.de ([213.95.11.210]:45504 "EHLO newverein.lst.de"
+        rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726749AbfF1Gbx (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 28 Jun 2019 02:31:53 -0400
+X-Greylist: delayed 330 seconds by postgrey-1.27 at vger.kernel.org; Fri, 28 Jun 2019 02:31:52 EDT
+Received: by newverein.lst.de (Postfix, from userid 2407)
+        id EE3B668CFE; Fri, 28 Jun 2019 08:26:19 +0200 (CEST)
+Date:   Fri, 28 Jun 2019 08:26:19 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Frank Scheiner <frank.scheiner@web.de>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        linux-ia64@vger.kernel.org, James Clarke <jrtc27@debian.org>,
+        Jason Duerstock <jason.duerstock@gmail.com>,
+        tony.luck@gmail.com
+Subject: Re: Regression in 543cea9a - was: Re: Kernel problem on rx2800 i2
+Message-ID: <20190628062619.GA27873@lst.de>
+References: <60d38f5f-4867-ee1d-783c-ae162e25bea9@web.de> <20190625103232.GA2132@lst.de> <e6b720e2-e603-a867-e738-f9e6b9f906e1@web.de> <20190625104702.GA2569@lst.de> <a2ab92b3-e89d-a610-91d1-5ea626be4995@web.de> <0f76468f-8648-62d8-68d2-455c74c19328@physik.fu-berlin.de> <20190625120024.GA3979@lst.de> <000348b4-0786-9ebc-e79e-28815fa9890c@web.de> <20190625144009.GA7281@lst.de> <80470803-d475-815a-c95a-f9961fde5d97@web.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <80470803-d475-815a-c95a-f9961fde5d97@web.de>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Generic vmemmap_populate_basepages() is used across platforms for vmemmap
-as standard or as fallback when huge pages mapping fails. On arm64 it is
-used for configs with ARM64_SWAPPER_USES_SECTION_MAPS applicable both for
-ARM64_16K_PAGES and ARM64_64K_PAGES which cannot use huge pages because of
-alignment requirements.
-
-This prevents those configs from allocating from device memory for vmemap
-mapping as vmemmap_populate_basepages() does not support vmem_altmap. This
-enables that required support. Each architecture should evaluate and decide
-on enabling device based base page allocation when appropriate. Hence this
-keeps it disabled for all architectures to preserve the existing semantics.
-
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will.deacon@arm.com>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-ia64@vger.kernel.org
-Cc: x86@kernel.org
-Cc: linux-kernel@vger.kernel.org
-
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- arch/arm64/mm/mmu.c      |  2 +-
- arch/ia64/mm/discontig.c |  2 +-
- arch/x86/mm/init_64.c    |  4 ++--
- include/linux/mm.h       |  5 +++--
- mm/sparse-vmemmap.c      | 16 +++++++++++-----
- 5 files changed, 18 insertions(+), 11 deletions(-)
-
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 194c84e..39e18d1 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -982,7 +982,7 @@ static void remove_pagetable(unsigned long start, unsigned long end,
- int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
- 		struct vmem_altmap *altmap)
- {
--	return vmemmap_populate_basepages(start, end, node);
-+	return vmemmap_populate_basepages(start, end, node, NULL);
- }
- #else	/* !ARM64_SWAPPER_USES_SECTION_MAPS */
- int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
-diff --git a/arch/ia64/mm/discontig.c b/arch/ia64/mm/discontig.c
-index 05490dd..faefd7e 100644
---- a/arch/ia64/mm/discontig.c
-+++ b/arch/ia64/mm/discontig.c
-@@ -660,7 +660,7 @@ void arch_refresh_nodedata(int update_node, pg_data_t *update_pgdat)
- int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
- 		struct vmem_altmap *altmap)
- {
--	return vmemmap_populate_basepages(start, end, node);
-+	return vmemmap_populate_basepages(start, end, node, NULL);
- }
- 
- void vmemmap_free(unsigned long start, unsigned long end,
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 8335ac6..c67ad5d 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1509,7 +1509,7 @@ static int __meminit vmemmap_populate_hugepages(unsigned long start,
- 			vmemmap_verify((pte_t *)pmd, node, addr, next);
- 			continue;
- 		}
--		if (vmemmap_populate_basepages(addr, next, node))
-+		if (vmemmap_populate_basepages(addr, next, node, NULL))
- 			return -ENOMEM;
- 	}
- 	return 0;
-@@ -1527,7 +1527,7 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
- 				__func__);
- 		err = -ENOMEM;
- 	} else
--		err = vmemmap_populate_basepages(start, end, node);
-+		err = vmemmap_populate_basepages(start, end, node, NULL);
- 	if (!err)
- 		sync_global_pgds(start, end - 1);
- 	return err;
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index c6ae9eb..dda9bd4 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2758,14 +2758,15 @@ pgd_t *vmemmap_pgd_populate(unsigned long addr, int node);
- p4d_t *vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node);
- pud_t *vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node);
- pmd_t *vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node);
--pte_t *vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node);
-+pte_t *vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
-+			    struct vmem_altmap *altmap);
- void *vmemmap_alloc_block(unsigned long size, int node);
- struct vmem_altmap;
- void *vmemmap_alloc_block_buf(unsigned long size, int node);
- void *altmap_alloc_block_buf(unsigned long size, struct vmem_altmap *altmap);
- void vmemmap_verify(pte_t *, int, unsigned long, unsigned long);
- int vmemmap_populate_basepages(unsigned long start, unsigned long end,
--			       int node);
-+			       int node, struct vmem_altmap *altmap);
- int vmemmap_populate(unsigned long start, unsigned long end, int node,
- 		struct vmem_altmap *altmap);
- void vmemmap_populate_print_last(void);
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index 7fec057..d333b75 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -140,12 +140,18 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
- 			start, end - 1);
- }
- 
--pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node)
-+pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
-+				       struct vmem_altmap *altmap)
- {
- 	pte_t *pte = pte_offset_kernel(pmd, addr);
- 	if (pte_none(*pte)) {
- 		pte_t entry;
--		void *p = vmemmap_alloc_block_buf(PAGE_SIZE, node);
-+		void *p;
-+
-+		if (altmap)
-+			p = altmap_alloc_block_buf(PAGE_SIZE, altmap);
-+		else
-+			p = vmemmap_alloc_block_buf(PAGE_SIZE, node);
- 		if (!p)
- 			return NULL;
- 		entry = pfn_pte(__pa(p) >> PAGE_SHIFT, PAGE_KERNEL);
-@@ -213,8 +219,8 @@ pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
- 	return pgd;
- }
- 
--int __meminit vmemmap_populate_basepages(unsigned long start,
--					 unsigned long end, int node)
-+int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
-+					 int node, struct vmem_altmap *altmap)
- {
- 	unsigned long addr = start;
- 	pgd_t *pgd;
-@@ -236,7 +242,7 @@ int __meminit vmemmap_populate_basepages(unsigned long start,
- 		pmd = vmemmap_pmd_populate(pud, addr, node);
- 		if (!pmd)
- 			return -ENOMEM;
--		pte = vmemmap_pte_populate(pmd, addr, node);
-+		pte = vmemmap_pte_populate(pmd, addr, node, altmap);
- 		if (!pte)
- 			return -ENOMEM;
- 		vmemmap_verify(pte, node, addr, addr + PAGE_SIZE);
--- 
-2.7.4
-
+Btw, as a workaround you could try to disable CONFIG_NUMA in
+your .config - as far as I can tell the rx2800 i2 is not actually
+a NUMA system.
