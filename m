@@ -2,110 +2,118 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 808166E435
-	for <lists+linux-ia64@lfdr.de>; Fri, 19 Jul 2019 12:25:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F82F6E450
+	for <lists+linux-ia64@lfdr.de>; Fri, 19 Jul 2019 12:29:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726853AbfGSKZN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 19 Jul 2019 06:25:13 -0400
-Received: from mail-wm1-f65.google.com ([209.85.128.65]:51827 "EHLO
+        id S1727604AbfGSK3v (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 19 Jul 2019 06:29:51 -0400
+Received: from mail-wm1-f65.google.com ([209.85.128.65]:56319 "EHLO
         mail-wm1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726858AbfGSKZJ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 19 Jul 2019 06:25:09 -0400
-Received: by mail-wm1-f65.google.com with SMTP id 207so28284125wma.1
-        for <linux-ia64@vger.kernel.org>; Fri, 19 Jul 2019 03:25:08 -0700 (PDT)
+        with ESMTP id S1727616AbfGSK3v (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 19 Jul 2019 06:29:51 -0400
+Received: by mail-wm1-f65.google.com with SMTP id a15so28277281wmj.5
+        for <linux-ia64@vger.kernel.org>; Fri, 19 Jul 2019 03:29:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=brauner.io; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to:user-agent;
-        bh=RE4XO5hCXlohQ4XzzvHFXjCbWVs/5lisfj2a/CobVwA=;
-        b=MZ2aiez9s7BuxY5oOnftVgW6/0s5yYSqpSbqe/ZNv3lt5LuholHgjz0i39qo8Pb0+s
-         dUHj8OzB1751pSlS+bD850Lcgh+d8aH6A7FbvldJGeqflGt9mdQ3K9seLKwicoLqwQ+d
-         tz1i1dKD8ZtjTj6HOhBQwoUqx7yeEfPggSJpjIPNpaWe7qAEjLIhf5XCP08LbyDVcqeT
-         nhiijiJFqkzAOKLfKEPbmncCRHEmoTQk78GjVjUIlEohS6z2VaOxyaskDx/c9UFuVNsS
-         76v0yrZB3v8iiyYGR6QerPQlNbPj5wCdUlCwXoY99RFcl3RFg/Y9ivAj9zDavuf71YiC
-         eiQg==
+        bh=/54Z+i2NAAKKYqTyaHCknB2yONX433P+mrrcxDIdMKQ=;
+        b=JAjsDhcTKFikvYch2sdYf3M1YIU4lD8gtr6ULD+m66RVXVuqlNpAWJ5aCmwhzsJqfu
+         NYMs/ngfnZnIR8qK+5gnlfw/LTN1DoKaojW4kG3ixmkDG7tw9PX3Gi1H6Z3rJyqaYFRY
+         gtdhUxjOR3aQahCtFDINrBG/OSP8pnsgZFupRZsDuzUdLCVJo0FcPvznY5c5cU461qY8
+         z6fVQ/+Mbzs3h37QWljm/AYaqqO87pyj8pyd6RorqrMiW7iIeyvakf6A7A7GAM2bH4rw
+         cbSgv5bCTz5aSE0toZ8ZOUCkVQ0c1BjSzCzQ1F1IbaB+eNv/4FBgS3Np35nlQBPDWp48
+         Qe+g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=RE4XO5hCXlohQ4XzzvHFXjCbWVs/5lisfj2a/CobVwA=;
-        b=FtCvHPw9RVOoUaOcXkGJkJspcUcrvniDq0MgywWwFqLCM2bE+4Y1SSgIsxcmMsd3/j
-         +CKEeA3GpGFm7dBNbk0NXNy16Dde7t+ZQL1qmo7QoduvTgsRt+9yQhkdwM0WHSpaL4Mh
-         +lx/huBsDx7nWHsbEb60yMsv6I9naD5wWvL4eMhOELl4+rEmHql/biuAwoFIemILk584
-         pFuJhN7QlS3hL7hyt1p5xft5tOk4s+fwn2vZXk2OOR/dv3fNHQ/d0Pvit5SsiyDsyE4l
-         cV+muQ7pGguiJhh0qY4OXMCXZKq8Xob1EZhrFZdl5QFFq/G1J+jLwDKbg5+SYgvCCXiy
-         KeCA==
-X-Gm-Message-State: APjAAAXEwprywvI1v1qedo8xrB0YDKhRi2ycz2rRw3pAFkhV6yazsm6F
-        7VqPSvF08b6sfJtg5HYzWLY=
-X-Google-Smtp-Source: APXvYqzFtX39u/LTTf9LpX1rQ8jjc8aXLaIGj170otP1O/m4fuBpUKB7NENA3hws+MMAj1mFVzZ+GQ==
-X-Received: by 2002:a7b:cbcb:: with SMTP id n11mr45928859wmi.146.1563531907454;
-        Fri, 19 Jul 2019 03:25:07 -0700 (PDT)
-Received: from brauner.io ([81.92.17.145])
-        by smtp.gmail.com with ESMTPSA id x24sm30020307wmh.5.2019.07.19.03.25.05
+        bh=/54Z+i2NAAKKYqTyaHCknB2yONX433P+mrrcxDIdMKQ=;
+        b=bq4fES5h6EXSCh1SiiElNCOWcLhTHIFrMY0TWYy6mfPIOFzL4c06gVizth+/MkyYaC
+         0lTD9TtqwBG4sDdD33qGmnutAyxb14uAFVwMnLttCWG76L8uFbePEKCVpJNBR8CgSaTu
+         5i12Og8RBWI0U9LKc+tRknXOI/UMlCtBWeT4et5/lAq8y3OeImRvt6ht8me+ZYutLbRq
+         Edybhz0WANPyYlA7SwB/zsRzZlJHyYRG2kih9U1sCSx2UhFVGVfTao/subMO8iAdNvUb
+         jv/LeQ19HkFS3QuzF9Ng7SsRieDpdXlHVKtFpZw2ljU3KMa7wSMbcyd+i+VKxKjOm0Rr
+         i5Eg==
+X-Gm-Message-State: APjAAAXwYgw19ZNTD4UVBrROZljUCMTFqYesCPRb3cvYF8WY6hehsVly
+        FRNsCqnIihxif5viG9h/6rA=
+X-Google-Smtp-Source: APXvYqynzSxRaiMvY03x+MCUOq/ut+wmSYg6CTggvreuOHjcm6imyyhYbJGXSWZ87v9KsAJECqBb6Q==
+X-Received: by 2002:a1c:c145:: with SMTP id r66mr47654238wmf.139.1563532189209;
+        Fri, 19 Jul 2019 03:29:49 -0700 (PDT)
+Received: from brauner.io ([81.92.17.140])
+        by smtp.gmail.com with ESMTPSA id v4sm25167633wmg.22.2019.07.19.03.29.47
         (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
-        Fri, 19 Jul 2019 03:25:06 -0700 (PDT)
-Date:   Fri, 19 Jul 2019 12:25:04 +0200
+        Fri, 19 Jul 2019 03:29:49 -0700 (PDT)
+Date:   Fri, 19 Jul 2019 12:29:41 +0200
 From:   Christian Brauner <christian@brauner.io>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Christian Borntraeger <borntraeger@de.ibm.com>,
-        linux-kernel@vger.kernel.org, arnd@arndb.de,
-        linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>
-Subject: Re: [PATCH 1/2] arch: mark syscall number 435 reserved for clone3
-Message-ID: <20190719102503.tm3ahvkh4rwykmws@brauner.io>
-References: <20190714192205.27190-1-christian@brauner.io>
- <20190714192205.27190-2-christian@brauner.io>
- <e14eb2f9-43cb-0b9d-dec4-b7e7dcd62091@de.ibm.com>
- <20190716130631.tohj4ub54md25dys@brauner.io>
- <874l3i8h0l.fsf@concordia.ellerman.id.au>
+To:     "Dmitry V. Levin" <ldv@altlinux.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Aleksa Sarai <cyphar@cyphar.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux FS-devel Mailing List <linux-fsdevel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org,
+        sparclinux <sparclinux@vger.kernel.org>
+Subject: Re: [PATCH v9 08/10] open: openat2(2) syscall
+Message-ID: <20190719102932.274pvmxnrbjcc6gu@brauner.io>
+References: <20190706145737.5299-1-cyphar@cyphar.com>
+ <20190706145737.5299-9-cyphar@cyphar.com>
+ <CAK8P3a33rGhPDFfRBAQyLTMG_WoEgX_toDgWR2O7rSwxKsZG+w@mail.gmail.com>
+ <20190718161231.xcno272nvqpln3wj@yavin>
+ <CAK8P3a3MiYK4bJiA3G_m5H-TpfN5__--b+=szsJBhG7_it+NQg@mail.gmail.com>
+ <20190719021218.GB18022@altlinux.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <874l3i8h0l.fsf@concordia.ellerman.id.au>
+In-Reply-To: <20190719021218.GB18022@altlinux.org>
 User-Agent: NeoMutt/20180716
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Jul 19, 2019 at 08:18:02PM +1000, Michael Ellerman wrote:
-> Christian Brauner <christian@brauner.io> writes:
-> > On Mon, Jul 15, 2019 at 03:56:04PM +0200, Christian Borntraeger wrote:
-> >> I think Vasily already has a clone3 patch for s390x with 435. 
-> >
-> > A quick follow-up on this. Helge and Michael have asked whether there
-> > are any tests for clone3. Yes, there will be and I try to have them
-> > ready by the end of the this or next week for review. In the meantime I
-> > hope the following minimalistic test program that just verifies very
-> > very basic functionality (It's not pretty.) will help you test:
+On Fri, Jul 19, 2019 at 05:12:18AM +0300, Dmitry V. Levin wrote:
+> On Thu, Jul 18, 2019 at 11:29:50PM +0200, Arnd Bergmann wrote:
+> [...]
+> > 5. you get the same problem with seccomp and strace that
+> >    clone3() has -- these and others only track the register
+> >    arguments by default.
 > 
-> Hi Christian,
-> 
-> Thanks for the test.
-> 
-> This actually oopses on powerpc, it hits the BUG_ON in CHECK_FULL_REGS
-> in process.c around line 1633:
-> 
-> 	} else {
-> 		/* user thread */
-> 		struct pt_regs *regs = current_pt_regs();
-> 		CHECK_FULL_REGS(regs);
-> 		*childregs = *regs;
-> 		if (usp)
-> 
-> 
-> So I'll have to dig into how we fix that before we wire up clone3.
-> 
-> Turns out testing is good! :)
+> Just for the record, this is definitely not the case for strace:
+> it decodes arrays, structures, netlink messages, and so on by default.
 
-Indeed. I have a test-suite for clone3 in mind and I hope to have it
-ready by the end of next week. It's just always the finding the time
-part that is annoying. :)
+There sure is value in trying to design syscalls that can be handled
+nicely by seccomp but that shouldn't become a burden on designing
+extensible syscalls.
+I suggested a session for Ksummit where we can discuss if and how we can
+make seccomp more compatible with pointer-args in syscalls.
 
-Thanks for digging into this, Michael!
 Christian
