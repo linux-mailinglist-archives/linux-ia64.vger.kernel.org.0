@@ -2,110 +2,64 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D62506ECED
-	for <lists+linux-ia64@lfdr.de>; Sat, 20 Jul 2019 02:10:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A989A6F434
+	for <lists+linux-ia64@lfdr.de>; Sun, 21 Jul 2019 18:52:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733095AbfGTAK2 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 19 Jul 2019 20:10:28 -0400
-Received: from mx1.mailbox.org ([80.241.60.212]:35184 "EHLO mx1.mailbox.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730015AbfGTAK2 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 19 Jul 2019 20:10:28 -0400
-Received: from smtp2.mailbox.org (smtp2.mailbox.org [80.241.60.241])
-        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
-        (No client certificate requested)
-        by mx1.mailbox.org (Postfix) with ESMTPS id 503C9501CC;
-        Sat, 20 Jul 2019 02:10:21 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at heinlein-support.de
-Received: from smtp2.mailbox.org ([80.241.60.241])
-        by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de [80.241.56.123]) (amavisd-new, port 10030)
-        with ESMTP id wYoKm814sQqS; Sat, 20 Jul 2019 02:10:12 +0200 (CEST)
-Date:   Sat, 20 Jul 2019 10:09:30 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     shuah <shuah@kernel.org>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>,
-        Christian Brauner <christian@brauner.io>,
-        Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v10 8/9] kselftest: save-and-restore errno to allow for
- %m formatting
-Message-ID: <20190720000930.g3jyjupgimptuubl@yavin>
-References: <20190719164225.27083-1-cyphar@cyphar.com>
- <20190719164225.27083-9-cyphar@cyphar.com>
- <b32d95a1-8a49-65ef-4ddd-fe86a7ca01d5@kernel.org>
+        id S1726251AbfGUQwM (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 21 Jul 2019 12:52:12 -0400
+Received: from smtp01.smtpout.orange.fr ([80.12.242.123]:39746 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726247AbfGUQwL (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 21 Jul 2019 12:52:11 -0400
+Received: from localhost.localdomain ([92.140.204.221])
+        by mwinf5d01 with ME
+        id fUs72000e4n7eLC03Us8GN; Sun, 21 Jul 2019 18:52:09 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Sun, 21 Jul 2019 18:52:09 +0200
+X-ME-IP: 92.140.204.221
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     tony.luck@intel.com, fenghua.yu@intel.com, david@redhat.com,
+        tglx@linutronix.de, gregkh@linuxfoundation.org,
+        akpm@linux-foundation.org
+Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ia64: perfmon: Fix a typo
+Date:   Sun, 21 Jul 2019 18:51:44 +0200
+Message-Id: <20190721165144.3152-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="636rtrosv3xeor7c"
-Content-Disposition: inline
-In-Reply-To: <b32d95a1-8a49-65ef-4ddd-fe86a7ca01d5@kernel.org>
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+s/permfon.h/perfmon.h/
 
---636rtrosv3xeor7c
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+The reference to perfmon.h should maybe be just removed because I've found
+no information about the increasing order to respect.
+This is maybe now in another file?
+---
+ arch/ia64/kernel/perfmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-On 2019-07-19, shuah <shuah@kernel.org> wrote:
-> On 7/19/19 10:42 AM, Aleksa Sarai wrote:
-> > Previously, using "%m" in a ksft_* format string can result in strange
-> > output because the errno value wasn't saved before calling other libc
-> > functions. The solution is to simply save and restore the errno before
-> > we format the user-supplied format string.
-> >=20
-> > Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-> [...]
-> Hi Aleksa,
->=20
-> Can you send this patch separate from the patch series. I will apply
-> this as bug fix to 5.3-rc2 or rc3.
->=20
-> This isn't part of this series anyway and I would like to get this in
-> right away.
+diff --git a/arch/ia64/kernel/perfmon.c b/arch/ia64/kernel/perfmon.c
+index 58a6337c0690..22795b420b10 100644
+--- a/arch/ia64/kernel/perfmon.c
++++ b/arch/ia64/kernel/perfmon.c
+@@ -4550,7 +4550,7 @@ pfm_exit_thread(struct task_struct *task)
+ }
+ 
+ /*
+- * functions MUST be listed in the increasing order of their index (see permfon.h)
++ * functions MUST be listed in the increasing order of their index (see perfmon.h)
+  */
+ #define PFM_CMD(name, flags, arg_count, arg_type, getsz) { name, #name, flags, arg_count, sizeof(arg_type), getsz }
+ #define PFM_CMD_S(name, flags) { name, #name, flags, 0, 0, NULL }
+-- 
+2.20.1
 
-Done, and I'll drop it in v11 after the rest gets reviewed.
-
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
-
---636rtrosv3xeor7c
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXTJbtgAKCRCdlLljIbnQ
-ErjeAQDm5ltY062NGtOMR1eaop8IvTWe5GYu7R+vym5BewUWYgD9HGmujOKl8CQ5
-rJXhxSxnaze1/BDj2gUmfSjSP3IJNwo=
-=CHUB
------END PGP SIGNATURE-----
-
---636rtrosv3xeor7c--
