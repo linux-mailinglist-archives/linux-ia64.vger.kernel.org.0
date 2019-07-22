@@ -2,84 +2,137 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 533D76F9CB
-	for <lists+linux-ia64@lfdr.de>; Mon, 22 Jul 2019 08:56:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 020296F9D4
+	for <lists+linux-ia64@lfdr.de>; Mon, 22 Jul 2019 08:58:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727568AbfGVG4r (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 22 Jul 2019 02:56:47 -0400
-Received: from mout.kundenserver.de ([212.227.126.131]:52307 "EHLO
+        id S1727222AbfGVG6Q (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 22 Jul 2019 02:58:16 -0400
+Received: from mout.kundenserver.de ([212.227.126.135]:45575 "EHLO
         mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725920AbfGVG4r (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 22 Jul 2019 02:56:47 -0400
+        with ESMTP id S1725920AbfGVG6Q (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 22 Jul 2019 02:58:16 -0400
 Received: from [192.168.1.110] ([77.2.59.209]) by mrelayeu.kundenserver.de
- (mreue010 [212.227.15.167]) with ESMTPSA (Nemesis) id
- 1Mow06-1iDF8x0XgE-00qTUg; Mon, 22 Jul 2019 08:56:33 +0200
-Subject: Re: [PATCH] ia64: perfmon: Fix a typo
-To:     Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        tony.luck@intel.com, fenghua.yu@intel.com, david@redhat.com,
-        tglx@linutronix.de, gregkh@linuxfoundation.org,
-        akpm@linux-foundation.org
-Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kernel-janitors@vger.kernel.org
-References: <20190721165144.3152-1-christophe.jaillet@wanadoo.fr>
+ (mreue012 [212.227.15.167]) with ESMTPSA (Nemesis) id
+ 1MidPj-1iJXhV0B5r-00fkTH; Mon, 22 Jul 2019 08:58:10 +0200
+Subject: Re: [PATCH] ia64: tioca: fix spelling mistake in macros
+ CA_APERATURE_{BASE|SIZE}
+To:     Colin King <colin.king@canonical.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
+Cc:     kernel-janitors@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20190721205921.9960-1-colin.king@canonical.com>
 From:   "Enrico Weigelt, metux IT consult" <lkml@metux.net>
 Organization: metux IT consult
-Message-ID: <6bc78765-fc54-8af9-18ad-7ed268a27439@metux.net>
-Date:   Mon, 22 Jul 2019 08:56:28 +0200
+Message-ID: <c62e488f-38b9-304d-f9d6-5502c25b84b7@metux.net>
+Date:   Mon, 22 Jul 2019 08:58:05 +0200
 User-Agent: Mozilla/5.0 (X11; Linux i686 on x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.6.1
 MIME-Version: 1.0
-In-Reply-To: <20190721165144.3152-1-christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20190721205921.9960-1-colin.king@canonical.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:oMInqEll8Am+s4bDdCpGJEUj+H4PvNyxN1BZ6eIgIEUA+xiQjNg
- tlzgVf2KVvVDJ3hgNVywJQTx4Nd9cAx2zysPvmjF1tWWL5VE3onKexooY8QAgfH1KxRs0ow
- 5BVbA/zwNcsTbU+xE9RuDVNMY4hDgzXdUoRqXkvfR0HYRFOxaGz+OH+vggwTLnQqKYPdDKf
- fZSW5R+b5gVGVNcIkorJQ==
+X-Provags-ID: V03:K1:6Cz69RqLT0dFKL3GeeZxgqGnJtSxgvnVxPk/WTbGqZGWTx0LFw7
+ 7ARXE6t+4WwyoWIEOjArQFZ6VBHRI+3FUKlcyrFWOItioRv1fIBzOZ52bRh87zpinFjcFyN
+ seWLNr2nip6A0e32Jz/DMtyaiC/O4hmxe27SqU4P8BPzp7O3owiN+cNrgLn/NDtKgoRifkW
+ hSiZ/Aqad5quh4Ld1jtwQ==
 X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:l8x6OU4UfjA=:VqFYd4addRDPIWw+F2Ickn
- 3H+3o7Fp4KE8/kSIfZOjmxYU4uycL70nUFuc3QUOCKH0/KHJcAMtFzstnfFs740sCV9fCcLpN
- DorFw+6z/eAO4D7lyQjEsFJH9/bSLMHFVh8bNAPJDUM9Ph4NpSCwBINnzEQe4ioS/v+sYMaqR
- 7UNcn+46Ktgx45W7/VYWK9fDuYjvmUK7gliKu2POL95bJ+OC/Rsl0ic2V71noetow9U0iKNu6
- UTp4jJimAYa2Dx7p6OpHx4un0gOh35njXiRaeuYg5n4i2/DRF8DEVWg/1CLqzP4Tvfcvy0kOg
- vSy/UZVZrFnG0pjusEz7OksSeBEneGR3M6gmwV7JwdJTfDpVebpxettieUIY2PWFI5aZP67+K
- jyO0LHgJwhtw+wJWA9vT283ZeTQ6MbCDYfDm8DkWhW3lyRio18IjlHbPWafvOUMTVljxZ+meV
- Kl75Uy0koRjg1q0MZjJCblypD1djc22n8IRjr2hK+TYo20Uecr5iABtTvAT86+Mh0S9YEzMLA
- 1Flg2SNdv06f1lNx1DsLYheCGrVqgfAL2S+p/+MLHc/7hherLWyMhDCycUrQTt0VSlB8+YgX5
- 6M1SwOTFkB692RRdY/TbkfWQI9jbelgdXrEz6zA+G4ZmOMtUPGQofXxKrMOT4fDeD9nVKae6n
- bMVyu4nZysGiJ5WbYHxUoLCOwLtQY1TPnpR1tBN1FrhYAA04XL4A6D+dzctgzUDZ6UwNPdgLH
- rtTm/r8IroJNApJn8s7euctoG6LKClJa9gfM+cOU92VY3TCUpjc7L93J1fI=
+X-UI-Out-Filterresults: notjunk:1;V03:K0:fDfb8F7oJqw=:EZzhv07YxlCmIWvOHTo6TU
+ O4FG/vR3+G9+REBTbncXrfVqyot4wAza6ebqLqCoFdUKacVom5Em7fISK+erX+u5cRqsobQNj
+ TAAvEOXfpgb7SYhlxBGxWj7DkT4vQOjVlOmaiHqHCWryp73Wa7mGevGf8CsKn8XP8VfN9PoQ7
+ HhVr1iDmkPn6zWQPZ9f2hv/xv5wU95vTTS/s8TafLKx3HVGXhJ+lR1GvaJ6z8b4Jrnvhr1Fhl
+ x8vRdL6pYBIxtty1/iwKirvg2ZkoevNefVgVKl+IlGDzl49jmKUphDPBjR67LRTYJvRrODmTF
+ 9RA/TW2MOgNg+RV9xUkXyAnU73lNSOhY1/AkaY8LIItCxcpnWjsCf0NN2cyy9AVIVt8spfrRB
+ ZhlRMg0ZjbRpxlSJ6HFn1lgZWu0awf/kXbe0bTeDRyB4Cr7XliSnj7gzioZK6j5FTygQSL3nx
+ FBvcd++hg8gNk+5VTwYwuPx8Dqy7vc29DJrMLAftxvcAy9bCDE7/PAso7V7LzDUP+AaZxddQK
+ frxEg9HYkaVgHKC9UZWJOPzn1u98s/QdjX/LDrm5FabBVx2DEprcgB1MAU+3bD0wv8pJRtLZC
+ EyMaX4PqMe3Tex3u8TS3Zueete4YC1olcuHIeCCW55jVxV/RjTbTalbZa7L819HreuYj14bEn
+ GMyzfqCk+WkYUpZwB0a5nHRe/5EkREZILBfIYjgkviYIbW3bvyHBkrO0yZCQcBzk7nLkj8Hmt
+ 8FNqPRuCncME+1GY5vezEpsayMeLmHgodlI3Az6BgCa3/S5syDWrPIJSP10=
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 21.07.19 18:51, Christophe JAILLET wrote:
-> s/permfon.h/perfmon.h/
+On 21.07.19 22:59, Colin King wrote:
+> From: Colin Ian King <colin.king@canonical.com>
 > 
-> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-> ---
-> The reference to perfmon.h should maybe be just removed because I've found
-> no information about the increasing order to respect.
-> This is maybe now in another file?
-> ---
->   arch/ia64/kernel/perfmon.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> The two macros CA_APERATURE_BASE and CA_APERATURE_SIZE contain
+> a spelling mistake, APERATURE should be APERTURE, so fix these.
 > 
-> diff --git a/arch/ia64/kernel/perfmon.c b/arch/ia64/kernel/perfmon.c
-> index 58a6337c0690..22795b420b10 100644
-> --- a/arch/ia64/kernel/perfmon.c
-> +++ b/arch/ia64/kernel/perfmon.c
-> @@ -4550,7 +4550,7 @@ pfm_exit_thread(struct task_struct *task)
->   }
+> Signed-off-by: Colin Ian King <colin.king@canonical.com>
+> ---
+>   arch/ia64/include/asm/sn/tioca.h  |  4 ++--
+>   arch/ia64/sn/pci/tioca_provider.c | 14 +++++++-------
+>   2 files changed, 9 insertions(+), 9 deletions(-)
+> 
+> diff --git a/arch/ia64/include/asm/sn/tioca.h b/arch/ia64/include/asm/sn/tioca.h
+> index 666222d7f0f6..4529fb11c86c 100644
+> --- a/arch/ia64/include/asm/sn/tioca.h
+> +++ b/arch/ia64/include/asm/sn/tioca.h
+> @@ -590,7 +590,7 @@ struct tioca {
+>   #define CA_AGP_DIRECT_BASE	0x40000000UL	/* 2GB */
+>   #define CA_AGP_DIRECT_SIZE	0x40000000UL
 >   
->   /*
-> - * functions MUST be listed in the increasing order of their index (see permfon.h)
-> + * functions MUST be listed in the increasing order of their index (see perfmon.h)
->    */
->   #define PFM_CMD(name, flags, arg_count, arg_type, getsz) { name, #name, flags, arg_count, sizeof(arg_type), getsz }
->   #define PFM_CMD_S(name, flags) { name, #name, flags, 0, 0, NULL }
+> -#define CA_APERATURE_BASE	(CA_AGP_MAPPED_BASE)
+> -#define CA_APERATURE_SIZE	(CA_AGP_MAPPED_SIZE+CA_PCI32_MAPPED_SIZE)
+> +#define CA_APERTURE_BASE	(CA_AGP_MAPPED_BASE)
+> +#define CA_APERTURE_SIZE	(CA_AGP_MAPPED_SIZE+CA_PCI32_MAPPED_SIZE)
+>   
+>   #endif  /* _ASM_IA64_SN_TIO_TIOCA_H */
+> diff --git a/arch/ia64/sn/pci/tioca_provider.c b/arch/ia64/sn/pci/tioca_provider.c
+> index a70b11fd57d6..07832f5e8718 100644
+> --- a/arch/ia64/sn/pci/tioca_provider.c
+> +++ b/arch/ia64/sn/pci/tioca_provider.c
+> @@ -55,7 +55,7 @@ tioca_gart_init(struct tioca_kernel *tioca_kern)
+>   	 * Validate aperature size
+>   	 */
+>   
+> -	switch (CA_APERATURE_SIZE >> 20) {
+> +	switch (CA_APERTURE_SIZE >> 20) {
+>   	case 4:
+>   		ap_reg |= (0x3ff << CA_GART_AP_SIZE_SHFT);	/* 4MB */
+>   		break;
+> @@ -90,8 +90,8 @@ tioca_gart_init(struct tioca_kernel *tioca_kern)
+>   		ap_reg |= (0x000 << CA_GART_AP_SIZE_SHFT);	/* 4 GB */
+>   		break;
+>   	default:
+> -		printk(KERN_ERR "%s:  Invalid CA_APERATURE_SIZE "
+> -		       "0x%lx\n", __func__, (ulong) CA_APERATURE_SIZE);
+> +		printk(KERN_ERR "%s:  Invalid CA_APERTURE_SIZE "
+> +		       "0x%lx\n", __func__, (ulong) CA_APERTURE_SIZE);
+>   		return -1;
+>   	}
+>   
+> @@ -106,8 +106,8 @@ tioca_gart_init(struct tioca_kernel *tioca_kern)
+>   		tioca_kern->ca_ap_pagesize = 4096;
+>   	}
+>   
+> -	tioca_kern->ca_ap_size = CA_APERATURE_SIZE;
+> -	tioca_kern->ca_ap_bus_base = CA_APERATURE_BASE;
+> +	tioca_kern->ca_ap_size = CA_APERTURE_SIZE;
+> +	tioca_kern->ca_ap_bus_base = CA_APERTURE_BASE;
+>   	tioca_kern->ca_gart_entries =
+>   	    tioca_kern->ca_ap_size / tioca_kern->ca_ap_pagesize;
+>   
+> @@ -141,7 +141,7 @@ tioca_gart_init(struct tioca_kernel *tioca_kern)
+>   	 * Compute PCI/AGP convenience fields
+>   	 */
+>   
+> -	offset = CA_PCI32_MAPPED_BASE - CA_APERATURE_BASE;
+> +	offset = CA_PCI32_MAPPED_BASE - CA_APERTURE_BASE;
+>   	tioca_kern->ca_pciap_base = CA_PCI32_MAPPED_BASE;
+>   	tioca_kern->ca_pciap_size = CA_PCI32_MAPPED_SIZE;
+>   	tioca_kern->ca_pcigart_start = offset / tioca_kern->ca_ap_pagesize;
+> @@ -159,7 +159,7 @@ tioca_gart_init(struct tioca_kernel *tioca_kern)
+>   		return -1;
+>   	}
+>   
+> -	offset = CA_AGP_MAPPED_BASE - CA_APERATURE_BASE;
+> +	offset = CA_AGP_MAPPED_BASE - CA_APERTURE_BASE;
+>   	tioca_kern->ca_gfxap_base = CA_AGP_MAPPED_BASE;
+>   	tioca_kern->ca_gfxap_size = CA_AGP_MAPPED_SIZE;
+>   	tioca_kern->ca_gfxgart_start = offset / tioca_kern->ca_ap_pagesize;
 > 
 Reviewed-By: Enrico Weigelt <info@metux.net>
 
