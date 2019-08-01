@@ -2,87 +2,54 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B5E0B7D38E
-	for <lists+linux-ia64@lfdr.de>; Thu,  1 Aug 2019 05:08:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D4DFD7D96D
+	for <lists+linux-ia64@lfdr.de>; Thu,  1 Aug 2019 12:33:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728469AbfHADI2 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 31 Jul 2019 23:08:28 -0400
-Received: from foss.arm.com ([217.140.110.172]:57394 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728217AbfHADI1 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 31 Jul 2019 23:08:27 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E54F5344;
-        Wed, 31 Jul 2019 20:08:26 -0700 (PDT)
-Received: from [10.163.1.81] (unknown [10.163.1.81])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E31B33F575;
-        Wed, 31 Jul 2019 20:08:20 -0700 (PDT)
-Subject: Re: [RFC 1/2] mm/sparsemem: Add vmem_altmap support in
- vmemmap_populate_basepages()
-To:     Will Deacon <will@kernel.org>
-Cc:     linux-mm@kvack.org, Fenghua Yu <fenghua.yu@intel.com>,
-        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Will Deacon <will.deacon@arm.com>, x86@kernel.org,
-        linux-kernel@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-arm-kernel@lists.infradead.org
-References: <1561697083-7329-1-git-send-email-anshuman.khandual@arm.com>
- <1561697083-7329-2-git-send-email-anshuman.khandual@arm.com>
- <20190731161047.ypye54x5c5jje5sq@willie-the-truck>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <a753a841-c344-c708-fccd-39d838637bcb@arm.com>
-Date:   Thu, 1 Aug 2019 08:39:01 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S1730071AbfHAKdZ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 1 Aug 2019 06:33:25 -0400
+Received: from mail.vodokanal.poltava.ua ([91.219.220.27]:48234 "EHLO
+        mail.vodokanal.poltava.ua" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1729266AbfHAKdZ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 1 Aug 2019 06:33:25 -0400
+Received: by mail.vodokanal.poltava.ua (Postfix, from userid 80)
+        id 0264A229A40; Thu,  1 Aug 2019 13:28:10 +0300 (EEST)
+Received: from 192.168.0.119
+        (SquirrelMail authenticated user test@vodokanal.poltava.ua)
+        by mail.vodokanal.poltava.ua with HTTP;
+        Thu, 1 Aug 2019 11:28:10 +0100
+Message-ID: <d6281b85415e143396a1b1573a3242ae.squirrel@mail.vodokanal.poltava.ua>
+Date:   Thu, 1 Aug 2019 11:28:10 +0100
+Subject: LOANS !!!
+From:   "DIAL DIRECT LOANS SA" <dialdirect@info.org>
+Reply-To: dialdirectloanssa@mail2consultant.com
+User-Agent: SquirrelMail/1.4.21
 MIME-Version: 1.0
-In-Reply-To: <20190731161047.ypye54x5c5jje5sq@willie-the-truck>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7BIT
+X-Priority: 3 (Normal)
+Importance: Normal
+To:     undisclosed-recipients:;
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
 
+Dial Direct Loan SA
 
-On 07/31/2019 09:40 PM, Will Deacon wrote:
-> On Fri, Jun 28, 2019 at 10:14:42AM +0530, Anshuman Khandual wrote:
->> Generic vmemmap_populate_basepages() is used across platforms for vmemmap
->> as standard or as fallback when huge pages mapping fails. On arm64 it is
->> used for configs with ARM64_SWAPPER_USES_SECTION_MAPS applicable both for
->> ARM64_16K_PAGES and ARM64_64K_PAGES which cannot use huge pages because of
->> alignment requirements.
->>
->> This prevents those configs from allocating from device memory for vmemap
->> mapping as vmemmap_populate_basepages() does not support vmem_altmap. This
->> enables that required support. Each architecture should evaluate and decide
->> on enabling device based base page allocation when appropriate. Hence this
->> keeps it disabled for all architectures to preserve the existing semantics.
-> 
-> This commit message doesn't really make sense to me. There's a huge amount
-> of arm64-specific detail, followed by vague references to "this" and
-> "those" and "that" and I lost track of what you're trying to solve.
 
-Hmm, will clean up.
+Consolidate your debts with Dial Direct Loan SA for your peace of
+mind at a fixed interest rate of 4.75%,personal and business loans
+are also welcome.For details  file in your applications by sending an email
+to:dialdirectloanssa@mail2consultant.com.
 
-> 
-> However, I puzzled through the code and I think it does make sense, so:
-> 
-> Acked-by: Will Deacon <will@kernel.org>
-> 
-> assuming you rewrite the commit message.
 
-Thanks, will do.
 
-> 
-> However, this has a dependency on your hot remove series which has open
-> comments from Mark Rutland afaict.
+Yours in Service,
+Susan Muller (Mrs.),
+Senior Consultant,
+Loan Application Team
+Dial Direct Loan SA
+Tel No: +27717231058
 
-Yeah it has dependency on the hot-remove series. The only outstanding issue
-there being whether to call free_empty_tables() in vmemmap tear down path
-or not. Mark had asked for more details regarding the implications in cases
-where free_empty_tables() is called or is not called. I did evaluate those
-details recently and we should be able to take a decision sooner.
+
