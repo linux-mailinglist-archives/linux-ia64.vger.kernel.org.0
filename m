@@ -2,54 +2,103 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 417F2812C2
-	for <lists+linux-ia64@lfdr.de>; Mon,  5 Aug 2019 09:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D95868131F
+	for <lists+linux-ia64@lfdr.de>; Mon,  5 Aug 2019 09:27:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726394AbfHEHKR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 5 Aug 2019 03:10:17 -0400
-Received: from verein.lst.de ([213.95.11.211]:43602 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726375AbfHEHKQ (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 5 Aug 2019 03:10:16 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 904E468B05; Mon,  5 Aug 2019 09:10:12 +0200 (CEST)
-Date:   Mon, 5 Aug 2019 09:10:12 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Frank Scheiner <frank.scheiner@web.de>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        linux-ia64@vger.kernel.org, James Clarke <jrtc27@debian.org>,
-        Jason Duerstock <jason.duerstock@gmail.com>,
-        tony.luck@gmail.com
-Subject: Re: Regression in 543cea9a - was: Re: Kernel problem on rx2800 i2
-Message-ID: <20190805071012.GA15366@lst.de>
-References: <e6b720e2-e603-a867-e738-f9e6b9f906e1@web.de> <20190625104702.GA2569@lst.de> <a2ab92b3-e89d-a610-91d1-5ea626be4995@web.de> <0f76468f-8648-62d8-68d2-455c74c19328@physik.fu-berlin.de> <20190625120024.GA3979@lst.de> <000348b4-0786-9ebc-e79e-28815fa9890c@web.de> <20190625144009.GA7281@lst.de> <80470803-d475-815a-c95a-f9961fde5d97@web.de> <20190628062619.GA27873@lst.de> <6ecf5f63-6b77-2836-79ee-258438ba4bd0@web.de>
+        id S1727632AbfHEH1H (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 5 Aug 2019 03:27:07 -0400
+Received: from mail-pf1-f196.google.com ([209.85.210.196]:33225 "EHLO
+        mail-pf1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726423AbfHEH1G (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 5 Aug 2019 03:27:06 -0400
+Received: by mail-pf1-f196.google.com with SMTP id g2so39179284pfq.0;
+        Mon, 05 Aug 2019 00:27:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0kexfm7iH3i/VSJOwC3FuVy5N6LFfHFxQSV+3oxaWZQ=;
+        b=dJaEB+8qJn0QJtz/DJ3fkifzpjMhNhP7Ip6R3bWOUO5sV3RGwnD1HHdfHzlRGLPkZk
+         xfof7rzNGH3bt9HfHe4EDHfDhT7wLwDoUwaVzW5JwCKbjKpQu8X/sHqheIPhMcdPC4hY
+         2IgYzu3PmznaI1mecw3zg2x0M1sbXGXFPbyk9nxY2QqMz3OknkNaNGMTeK0rkd6dRgop
+         UF6FXd1AkZLw0aZ7xdUppCbhP9rL9QwgHKQH2W9HDMnvbuJzCt/2t5SbzSGqNUFb1kZn
+         kYk4GoLoCWK/PS0JN/JE1pIRvFSo+Np/FD4AdHM2uSLRtJk8Wps4WDwJq5LyYdZzMSF+
+         iUwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=0kexfm7iH3i/VSJOwC3FuVy5N6LFfHFxQSV+3oxaWZQ=;
+        b=nn5X+5c8WGOlLbZU9Jij/FakT0JgEDRkhRh2dBcXQzDsyoa61zU+Q5blaTWJgIqyY1
+         UAbg1S8cZUnqNzJToMc3K/iFvql8hy5fieR/8cxp5gmeUMJXZu26nY3u+Jn1X0M4kMSF
+         fh6nyNP2ssLHrQHac67Vxa37XhLfL5IioZv0wWq/zm93UD0+Yjl1X9pSGnQDmfMr04BF
+         inG+ZPaMInbQ1ouNTJP/K0m707lSH7Pqni3nopZlogztB6mqbmVXj4GE3TBCjWVcYKE3
+         LFcRz8DDbEEdlIsYGjukQZfca/8Ey/LLi0VPtNRM+3oU7AA3g2vN37zkjSgS2s0jRcm0
+         GKnw==
+X-Gm-Message-State: APjAAAXuHGssKrTVtQ3UdDDAnt+JkPAa+G2dnuwZ6zCo9uV0QYrOVr1U
+        TKW2URt7Tf7u3/ZKDWjVXF8=
+X-Google-Smtp-Source: APXvYqwr8wyNYy9oYI9NOwS4OQLaD5zm0ijr5UzV59jmk+rn8vspVToRE09Z07ImmiAnY7uL2haDqw==
+X-Received: by 2002:a63:1b56:: with SMTP id b22mr18210606pgm.265.1564990026218;
+        Mon, 05 Aug 2019 00:27:06 -0700 (PDT)
+Received: from suzukaze.ipads-lab.se.sjtu.edu.cn ([89.31.126.54])
+        by smtp.gmail.com with ESMTPSA id e13sm102354383pff.45.2019.08.05.00.27.03
+        (version=TLS1_3 cipher=AEAD-AES256-GCM-SHA384 bits=256/256);
+        Mon, 05 Aug 2019 00:27:05 -0700 (PDT)
+From:   Chuhong Yuan <hslester96@gmail.com>
+Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Chuhong Yuan <hslester96@gmail.com>
+Subject: [PATCH 1/2] ia64: hp-sim: Replace strncmp with str_has_prefix
+Date:   Mon,  5 Aug 2019 15:26:59 +0800
+Message-Id: <20190805072659.32745-1-hslester96@gmail.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6ecf5f63-6b77-2836-79ee-258438ba4bd0@web.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Seems like we dropped the ball on this..
+strncmp(str, const, len) is error-prone since the len is
+easy to be wrong because of counting error or sizeof(const)
+without - 1.
 
-Did I give you a patch like this (for 5.2 and probably earlier, won't
-apply to 5.3-rc) to test before as that is anther idea?
+Use the newly introduced str_has_prefix() to substitute
+it to make code better.
 
-diff --git a/kernel/dma/direct.c b/kernel/dma/direct.c
-index 2c2772e9702a..e471158c7c6e 100644
---- a/kernel/dma/direct.c
-+++ b/kernel/dma/direct.c
-@@ -119,7 +119,8 @@ struct page *__dma_direct_alloc_pages(struct device *dev, size_t size,
- 		}
- 	}
- 	if (!page)
--		page = alloc_pages_node(dev_to_node(dev), gfp, page_order);
-+		page = alloc_pages_node(local_memory_node(dev_to_node(dev)),
-+				gfp, page_order);
+Signed-off-by: Chuhong Yuan <hslester96@gmail.com>
+---
+ arch/ia64/hp/sim/boot/bootloader.c | 2 +-
+ arch/ia64/hp/sim/simeth.c          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/ia64/hp/sim/boot/bootloader.c b/arch/ia64/hp/sim/boot/bootloader.c
+index 6d804608dc81..bcb7af27466c 100644
+--- a/arch/ia64/hp/sim/boot/bootloader.c
++++ b/arch/ia64/hp/sim/boot/bootloader.c
+@@ -112,7 +112,7 @@ start_bootloader (void)
+ 	ssc((long) &stat, 0, 0, 0, SSC_WAIT_COMPLETION);
  
- 	if (page && !dma_coherent_ok(dev, page_to_phys(page), size)) {
- 		__free_pages(page, page_order);
+ 	elf = (struct elfhdr *) mem;
+-	if (elf->e_ident[0] == 0x7f && strncmp(elf->e_ident + 1, "ELF", 3) != 0) {
++	if (elf->e_ident[0] == 0x7f && !str_has_prefix(elf->e_ident + 1, "ELF", 3)) {
+ 		cons_write("not an ELF file\n");
+ 		return;
+ 	}
+diff --git a/arch/ia64/hp/sim/simeth.c b/arch/ia64/hp/sim/simeth.c
+index f39ef2b4ed72..9ad812cd8d0e 100644
+--- a/arch/ia64/hp/sim/simeth.c
++++ b/arch/ia64/hp/sim/simeth.c
+@@ -248,7 +248,7 @@ simeth_open(struct net_device *dev)
+ /* copied from lapbether.c */
+ static __inline__ int dev_is_ethdev(struct net_device *dev)
+ {
+-       return ( dev->type == ARPHRD_ETHER && strncmp(dev->name, "dummy", 5));
++       return (dev->type == ARPHRD_ETHER && !str_has_prefix(dev->name, "dummy"));
+ }
+ 
+ 
+-- 
+2.20.1
+
