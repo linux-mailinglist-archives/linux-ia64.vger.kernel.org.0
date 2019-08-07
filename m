@@ -2,64 +2,73 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B263384DCC
-	for <lists+linux-ia64@lfdr.de>; Wed,  7 Aug 2019 15:44:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24150852CC
+	for <lists+linux-ia64@lfdr.de>; Wed,  7 Aug 2019 20:16:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388207AbfHGNoF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 7 Aug 2019 09:44:05 -0400
-Received: from verein.lst.de ([213.95.11.211]:37842 "EHLO verein.lst.de"
+        id S2389043AbfHGSP5 convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Wed, 7 Aug 2019 14:15:57 -0400
+Received: from mga05.intel.com ([192.55.52.43]:48039 "EHLO mga05.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388240AbfHGNoE (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 7 Aug 2019 09:44:04 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 986EA68B20; Wed,  7 Aug 2019 15:44:01 +0200 (CEST)
-Date:   Wed, 7 Aug 2019 15:44:01 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Christoph Hellwig <hch@lst.de>, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
+        id S2388612AbfHGSP5 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 7 Aug 2019 14:15:57 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Aug 2019 11:15:57 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,358,1559545200"; 
+   d="scan'208";a="198752340"
+Received: from orsmsx108.amr.corp.intel.com ([10.22.240.6])
+  by fmsmga004.fm.intel.com with ESMTP; 07 Aug 2019 11:15:56 -0700
+Received: from orsmsx115.amr.corp.intel.com ([169.254.4.6]) by
+ ORSMSX108.amr.corp.intel.com ([169.254.2.65]) with mapi id 14.03.0439.000;
+ Wed, 7 Aug 2019 11:15:56 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Christoph Hellwig <hch@lst.de>,
+        "Yu, Fenghua" <fenghua.yu@intel.com>
+CC:     Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: RFC: remove sn2, hpsim and ia64 machvecs
-Message-ID: <20190807134401.GA14792@lst.de>
-References: <20190807133049.20893-1-hch@lst.de> <0b5ef759-06c7-4f12-5e8b-ce35d2f25b5c@physik.fu-berlin.de>
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: remove sn2, hpsim and ia64 machvecs
+Thread-Topic: remove sn2, hpsim and ia64 machvecs
+Thread-Index: AQHVTSRfz+iOhLFk9UKAwDm9GuTPAKbv/SBA
+Date:   Wed, 7 Aug 2019 18:15:55 +0000
+Message-ID: <3908561D78D1C84285E8C5FCA982C28F7F41388B@ORSMSX115.amr.corp.intel.com>
+References: <20190807133049.20893-1-hch@lst.de>
+In-Reply-To: <20190807133049.20893-1-hch@lst.de>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMDQ3YzgwMjYtNDcwNi00NmM4LWI2NDEtMmE3NDhjYWIyNmNiIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiS21ic3BtbkNTWVhab2NzZ1owaGlqd2NQMVVMWDFVXC8zb29nXC9jWGNRbGs5cmg0MmFBNnptXC85WEhiUmtJQlBSWiJ9
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.140]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0b5ef759-06c7-4f12-5e8b-ce35d2f25b5c@physik.fu-berlin.de>
-User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Aug 07, 2019 at 03:35:37PM +0200, John Paul Adrian Glaubitz wrote:
-> Hi Christoph!
-> 
-> On 8/7/19 3:30 PM, Christoph Hellwig wrote:
-> > let me know what you think of this series.  This drops the pretty much
-> > dead sn2 and hpsim support, which then allows us to build a single ia64
-> > kernel image that supports all remaining systems without extra indirections
-> > in the fast path.
-> 
-> Interesting. Does that mean Debian no longer needs to maintain two different
-> kernels for ia64, currently named "itanium" and "mckinley"?
+I like the idea ... and it sure gets rid of a lot of code.
 
-I don't think so.  Assumeing one of them sets CONFIG_ITANIUM and the
-other just CONFIG_MCKINLEY, the first one already covers everything that
-the second can.  But assuming both set CONFIG_IA64_GENERIC they should
-both get a little faster as a lot of indirect calls there just exist for
-SN2 are gone with this.  And if my memory serves me right indirect calls
-have always been rather expensive on ia64 vs other architectures (at least
-before spectre mitigations made others slower as well).
+> A git tree is also available at:
+>
+>    git://git.infradead.org/users/hch/misc.git ia64-remove-machvecs
 
-> 
-> Adrian
-> 
-> -- 
->  .''`.  John Paul Adrian Glaubitz
-> : :' :  Debian Developer - glaubitz@debian.org
-> `. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
->   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
----end quoted text---
+I grabbed this tree and ran though my build scripts.  I found that
+vmlinux.gz doesn't get built.  Which is odd, because I don't see that
+you changed the "compressed" target in the Makefile.
+
+Even if I explicitly run:
+
+$ make compressed
+
+It still doesn't build it.  Weird.
+
+-Tony
