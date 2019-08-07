@@ -2,38 +2,38 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B47C84D20
+	by mail.lfdr.de (Postfix) with ESMTP id A989384D21
 	for <lists+linux-ia64@lfdr.de>; Wed,  7 Aug 2019 15:33:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388457AbfHGNbX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 7 Aug 2019 09:31:23 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:60564 "EHLO
+        id S2388481AbfHGNba (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 7 Aug 2019 09:31:30 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:60596 "EHLO
         bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388450AbfHGNbX (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 7 Aug 2019 09:31:23 -0400
+        with ESMTP id S2388450AbfHGNb3 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 7 Aug 2019 09:31:29 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
         MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
         :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
         :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
         List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=/V4tPXaRpXMKjj3d0tsI2bUq9cJgoFX3TcAbWCZoMQo=; b=sSjycQWX5WCHe2eFInO9Sa5T2r
-        0D1bjZl19kUJ8qPp7TocnrMryQDiHUhYL9ItMmxzvhyKSfEeODiH8feAVWCST34jXA0SnuMSethS9
-        kptDI3x//r5Mzn1OSjYBb/Te4IPVXD/7Ssj0BnpzRJGq2P0wVdH5f2dRz/4joPE49MywDB+qWi41V
-        B1Ll5fD9sKK5BR/9/iLpvU05A9dB+EzTGg865AeGy/NmZ/nThSjDYF3lo1qJrmUaSy+46Jk+nGbJR
-        v++H89EgMcHLkC8pveQrlGEc8ml63Kx5ZWXXWEFADEMlGi5gd/IIQDUJfEf+BWkcmKOLNrlPrfAtz
-        sLT1jZuQ==;
+        bh=kretIwKkWxye/psg+87LaplK6rnUq+TvEVUnHaHn8vY=; b=tTdwHlDoYsf+gZct1YtEdRsV06
+        wM6KafdPKrn9Ykk+qfbtyLl23lB6HCPCKtAVSEEAkMUmeYwHpiQ1hfXCwt0ymyf4a2WxJu0pubLDt
+        MgYHtECpW3hNHfuIxZdlsF6SLz5tBEBKh3IjQS5NoACGHHU3k8lhZ8VaS0r2TQHIThGPDQq9RogTQ
+        jqcpBYrbdWpum6GjncHmnKpCxYra/zx/nX5CSb65W/9uGMayq4dtikm0ZYZFk82qNssmcEj0zLhFC
+        KsY5ul9nhPXlJKheLY+Gyls7qJxes4GlI6ByBc21WEubrbV5RA3U0cAYgmEpOZ59Te6oVjWdfJqqz
+        4iCdXYpw==;
 Received: from [195.167.85.94] (helo=localhost)
         by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hvM2D-00085w-Fc; Wed, 07 Aug 2019 13:31:21 +0000
+        id 1hvM2J-00086w-3n; Wed, 07 Aug 2019 13:31:27 +0000
 From:   Christoph Hellwig <hch@lst.de>
 To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>
 Cc:     Arnd Bergmann <arnd@arndb.de>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 09/29] char/mspec: remove SGI SN2 support
-Date:   Wed,  7 Aug 2019 16:30:29 +0300
-Message-Id: <20190807133049.20893-10-hch@lst.de>
+Subject: [PATCH 11/29] qla1280: remove SGI SN2 support
+Date:   Wed,  7 Aug 2019 16:30:31 +0300
+Message-Id: <20190807133049.20893-12-hch@lst.de>
 X-Mailer: git-send-email 2.20.1
 In-Reply-To: <20190807133049.20893-1-hch@lst.de>
 References: <20190807133049.20893-1-hch@lst.de>
@@ -50,264 +50,107 @@ specific to it from this driver.
 
 Signed-off-by: Christoph Hellwig <hch@lst.de>
 ---
- drivers/char/mspec.c | 155 +++----------------------------------------
- 1 file changed, 11 insertions(+), 144 deletions(-)
+ drivers/scsi/qla1280.c | 37 -------------------------------------
+ drivers/scsi/qla1280.h |  3 ---
+ 2 files changed, 40 deletions(-)
 
-diff --git a/drivers/char/mspec.c b/drivers/char/mspec.c
-index e75c9df7c2d8..a9d9f074fbd6 100644
---- a/drivers/char/mspec.c
-+++ b/drivers/char/mspec.c
-@@ -9,11 +9,8 @@
-  *
-  * This driver exports the SN special memory (mspec) facility to user
-  * processes.
-- * There are three types of memory made available thru this driver:
-- * fetchops, uncached and cached.
-- *
-- * Fetchops are atomic memory operations that are implemented in the
-- * memory controller on SGI SN hardware.
-+ * There are two types of memory made available thru this driver:
-+ * uncached and cached.
-  *
-  * Uncached are used for memory write combining feature of the ia64
-  * cpu.
-@@ -46,16 +43,8 @@
- #include <linux/atomic.h>
- #include <asm/tlbflush.h>
- #include <asm/uncached.h>
--#include <asm/sn/addrs.h>
--#include <asm/sn/arch.h>
--#include <asm/sn/mspec.h>
--#include <asm/sn/sn_cpuid.h>
+diff --git a/drivers/scsi/qla1280.c b/drivers/scsi/qla1280.c
+index e5760c4a27f0..832af4213046 100644
+--- a/drivers/scsi/qla1280.c
++++ b/drivers/scsi/qla1280.c
+@@ -357,10 +357,6 @@
+ #include <scsi/scsi_host.h>
+ #include <scsi/scsi_tcq.h>
+ 
+-#if defined(CONFIG_IA64_GENERIC) || defined(CONFIG_IA64_SGI_SN2)
 -#include <asm/sn/io.h>
--#include <asm/sn/bte.h>
--#include <asm/sn/shubio.h>
- 
- 
--#define FETCHOP_ID	"SGI Fetchop,"
- #define CACHED_ID	"Cached,"
- #define UNCACHED_ID	"Uncached"
- #define REVISION	"4.0"
-@@ -65,17 +54,10 @@
-  * Page types allocated by the device.
-  */
- enum mspec_page_type {
--	MSPEC_FETCHOP = 1,
--	MSPEC_CACHED,
-+	MSPEC_CACHED = 2,
- 	MSPEC_UNCACHED
- };
- 
--#ifdef CONFIG_SGI_SN
--static int is_sn2;
--#else
--#define is_sn2		0
 -#endif
 -
+ 
  /*
-  * One of these structures is allocated when an mspec region is mmaped. The
-  * structure is pointed to by the vma->vm_private_data field in the vma struct.
-@@ -96,39 +78,6 @@ struct vma_data {
- 	unsigned long maddr[0];	/* Array of MSPEC addresses. */
- };
+  * Compile time Options:
+@@ -380,11 +376,6 @@
  
--/* used on shub2 to clear FOP cache in the HUB */
--static unsigned long scratch_page[MAX_NUMNODES];
--#define SH2_AMO_CACHE_ENTRIES	4
--
--static inline int
--mspec_zero_block(unsigned long addr, int len)
--{
--	int status;
--
--	if (is_sn2) {
--		if (is_shub2()) {
--			int nid;
--			void *p;
--			int i;
--
--			nid = nasid_to_cnodeid(get_node_number(__pa(addr)));
--			p = (void *)TO_AMO(scratch_page[nid]);
--
--			for (i=0; i < SH2_AMO_CACHE_ENTRIES; i++) {
--				FETCHOP_LOAD_OP(p, FETCHOP_LOAD);
--				p += FETCHOP_VAR_SIZE;
--			}
--		}
--
--		status = bte_copy(0, addr & ~__IA64_UNCACHED_OFFSET, len,
--				  BTE_WACQUIRE | BTE_ZERO_FILL, NULL);
--	} else {
--		memset((char *) addr, 0, len);
--		status = 0;
--	}
--	return status;
--}
--
- /*
-  * mspec_open
-  *
-@@ -173,11 +122,8 @@ mspec_close(struct vm_area_struct *vma)
- 		 */
- 		my_page = vdata->maddr[index];
- 		vdata->maddr[index] = 0;
--		if (!mspec_zero_block(my_page, PAGE_SIZE))
--			uncached_free_page(my_page, 1);
--		else
--			printk(KERN_WARNING "mspec_close(): "
--			       "failed to zero page %ld\n", my_page);
-+		memset((char *)my_page, 0, PAGE_SIZE);
-+		uncached_free_page(my_page, 1);
- 	}
+ #define NVRAM_DELAY()			udelay(500)	/* 2 microseconds */
  
- 	kvfree(vdata);
-@@ -213,11 +159,7 @@ mspec_fault(struct vm_fault *vmf)
- 		spin_unlock(&vdata->lock);
- 	}
- 
--	if (vdata->type == MSPEC_FETCHOP)
--		paddr = TO_AMO(maddr);
--	else
--		paddr = maddr & ~__IA64_UNCACHED_OFFSET;
+-#if defined(__ia64__) && !defined(ia64_platform_is)
+-#define ia64_platform_is(foo)		(!strcmp(x, platform_name))
+-#endif
 -
-+	paddr = maddr & ~__IA64_UNCACHED_OFFSET;
- 	pfn = paddr >> PAGE_SHIFT;
- 
- 	return vmf_insert_pfn(vmf->vma, vmf->address, pfn);
-@@ -269,19 +211,13 @@ mspec_mmap(struct file *file, struct vm_area_struct *vma,
- 	vma->vm_private_data = vdata;
- 
- 	vma->vm_flags |= VM_IO | VM_PFNMAP | VM_DONTEXPAND | VM_DONTDUMP;
--	if (vdata->type == MSPEC_FETCHOP || vdata->type == MSPEC_UNCACHED)
-+	if (vdata->type == MSPEC_UNCACHED)
- 		vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
- 	vma->vm_ops = &mspec_vm_ops;
- 
- 	return 0;
- }
- 
--static int
--fetchop_mmap(struct file *file, struct vm_area_struct *vma)
--{
--	return mspec_mmap(file, vma, MSPEC_FETCHOP);
--}
 -
- static int
- cached_mmap(struct file *file, struct vm_area_struct *vma)
- {
-@@ -294,18 +230,6 @@ uncached_mmap(struct file *file, struct vm_area_struct *vma)
- 	return mspec_mmap(file, vma, MSPEC_UNCACHED);
- }
+ #define IS_ISP1040(ha) (ha->pdev->device == PCI_DEVICE_ID_QLOGIC_ISP1020)
+ #define IS_ISP1x40(ha) (ha->pdev->device == PCI_DEVICE_ID_QLOGIC_ISP1020 || \
+ 			ha->pdev->device == PCI_DEVICE_ID_QLOGIC_ISP1240)
+@@ -1427,15 +1418,6 @@ qla1280_initialize_adapter(struct scsi_qla_host *ha)
+ 	ha->flags.reset_active = 0;
+ 	ha->flags.abort_isp_active = 0;
  
--static const struct file_operations fetchop_fops = {
--	.owner = THIS_MODULE,
--	.mmap = fetchop_mmap,
--	.llseek = noop_llseek,
--};
--
--static struct miscdevice fetchop_miscdev = {
--	.minor = MISC_DYNAMIC_MINOR,
--	.name = "sgi_fetchop",
--	.fops = &fetchop_fops
--};
--
- static const struct file_operations cached_fops = {
- 	.owner = THIS_MODULE,
- 	.mmap = cached_mmap,
-@@ -339,89 +263,32 @@ static int __init
- mspec_init(void)
- {
- 	int ret;
--	int nid;
--
--	/*
--	 * The fetchop device only works on SN2 hardware, uncached and cached
--	 * memory drivers should both be valid on all ia64 hardware
--	 */
--#ifdef CONFIG_SGI_SN
+-#if defined(CONFIG_IA64_GENERIC) || defined(CONFIG_IA64_SGI_SN2)
 -	if (ia64_platform_is("sn2")) {
--		is_sn2 = 1;
--		if (is_shub2()) {
--			ret = -ENOMEM;
--			for_each_node_state(nid, N_ONLINE) {
--				int actual_nid;
--				int nasid;
--				unsigned long phys;
--
--				scratch_page[nid] = uncached_alloc_page(nid, 1);
--				if (scratch_page[nid] == 0)
--					goto free_scratch_pages;
--				phys = __pa(scratch_page[nid]);
--				nasid = get_node_number(phys);
--				actual_nid = nasid_to_cnodeid(nasid);
--				if (actual_nid != nid)
--					goto free_scratch_pages;
--			}
--		}
- 
--		ret = misc_register(&fetchop_miscdev);
--		if (ret) {
--			printk(KERN_ERR
--			       "%s: failed to register device %i\n",
--			       FETCHOP_ID, ret);
--			goto free_scratch_pages;
--		}
+-		printk(KERN_INFO "scsi(%li): Enabling SN2 PCI DMA "
+-		       "dual channel lockup workaround\n", ha->host_no);
+-		ha->flags.use_pci_vchannel = 1;
+-		driver_setup.no_nvram = 1;
 -	}
 -#endif
- 	ret = misc_register(&cached_miscdev);
- 	if (ret) {
- 		printk(KERN_ERR "%s: failed to register device %i\n",
- 		       CACHED_ID, ret);
--		if (is_sn2)
--			misc_deregister(&fetchop_miscdev);
--		goto free_scratch_pages;
-+		return ret;
- 	}
- 	ret = misc_register(&uncached_miscdev);
- 	if (ret) {
- 		printk(KERN_ERR "%s: failed to register device %i\n",
- 		       UNCACHED_ID, ret);
- 		misc_deregister(&cached_miscdev);
--		if (is_sn2)
--			misc_deregister(&fetchop_miscdev);
--		goto free_scratch_pages;
-+		return ret;
- 	}
- 
--	printk(KERN_INFO "%s %s initialized devices: %s %s %s\n",
--	       MSPEC_BASENAME, REVISION, is_sn2 ? FETCHOP_ID : "",
--	       CACHED_ID, UNCACHED_ID);
-+	printk(KERN_INFO "%s %s initialized devices: %s %s\n",
-+	       MSPEC_BASENAME, REVISION, CACHED_ID, UNCACHED_ID);
- 
- 	return 0;
 -
-- free_scratch_pages:
--	for_each_node(nid) {
--		if (scratch_page[nid] != 0)
--			uncached_free_page(scratch_page[nid], 1);
+ 	/* TODO: implement support for the 1040 nvram format */
+ 	if (IS_ISP1040(ha))
+ 		driver_setup.no_nvram = 1;
+@@ -2251,13 +2233,6 @@ qla1280_nvram_config(struct scsi_qla_host *ha)
+ 	mb[1] = nv->firmware_feature.f.enable_fast_posting;
+ 	mb[1] |= nv->firmware_feature.f.report_lvd_bus_transition << 1;
+ 	mb[1] |= nv->firmware_feature.f.disable_synchronous_backoff << 5;
+-#if defined(CONFIG_IA64_GENERIC) || defined (CONFIG_IA64_SGI_SN2)
+-	if (ia64_platform_is("sn2")) {
+-		printk(KERN_INFO "scsi(%li): Enabling SN2 PCI DMA "
+-		       "workaround\n", ha->host_no);
+-		mb[1] |= nv->firmware_feature.f.unused_9 << 9; /* XXX */
 -	}
--	return ret;
- }
+-#endif
+ 	status |= qla1280_mailbox_command(ha, BIT_1 | BIT_0, mb);
  
- static void __exit
- mspec_exit(void)
- {
--	int nid;
--
- 	misc_deregister(&uncached_miscdev);
- 	misc_deregister(&cached_miscdev);
--	if (is_sn2) {
--		misc_deregister(&fetchop_miscdev);
--
--		for_each_node(nid) {
--			if (scratch_page[nid] != 0)
--				uncached_free_page(scratch_page[nid], 1);
--		}
--	}
- }
+ 	/* Retry count and delay. */
+@@ -2888,12 +2863,6 @@ qla1280_64bit_start_scsi(struct scsi_qla_host *ha, struct srb * sp)
+ 				break;
  
- module_init(mspec_init);
+ 			dma_handle = sg_dma_address(s);
+-#if defined(CONFIG_IA64_GENERIC) || defined(CONFIG_IA64_SGI_SN2)
+-			if (ha->flags.use_pci_vchannel)
+-				sn_pci_set_vchan(ha->pdev,
+-						 (unsigned long *)&dma_handle,
+-						 SCSI_BUS_32(cmd));
+-#endif
+ 			*dword_ptr++ =
+ 				cpu_to_le32(lower_32_bits(dma_handle));
+ 			*dword_ptr++ =
+@@ -2950,12 +2919,6 @@ qla1280_64bit_start_scsi(struct scsi_qla_host *ha, struct srb * sp)
+ 				if (cnt == 5)
+ 					break;
+ 				dma_handle = sg_dma_address(s);
+-#if defined(CONFIG_IA64_GENERIC) || defined(CONFIG_IA64_SGI_SN2)
+-				if (ha->flags.use_pci_vchannel)
+-					sn_pci_set_vchan(ha->pdev,
+-							 (unsigned long *)&dma_handle,
+-							 SCSI_BUS_32(cmd));
+-#endif
+ 				*dword_ptr++ =
+ 					cpu_to_le32(lower_32_bits(dma_handle));
+ 				*dword_ptr++ =
+diff --git a/drivers/scsi/qla1280.h b/drivers/scsi/qla1280.h
+index b496206362a9..a1a8aefc7cc3 100644
+--- a/drivers/scsi/qla1280.h
++++ b/drivers/scsi/qla1280.h
+@@ -1055,9 +1055,6 @@ struct scsi_qla_host {
+ 		uint32_t reset_active:1;		/* 3 */
+ 		uint32_t abort_isp_active:1;		/* 4 */
+ 		uint32_t disable_risc_code_load:1;	/* 5 */
+-#ifdef __ia64__
+-		uint32_t use_pci_vchannel:1;
+-#endif
+ 	} flags;
+ 
+ 	struct nvram nvram;
 -- 
 2.20.1
 
