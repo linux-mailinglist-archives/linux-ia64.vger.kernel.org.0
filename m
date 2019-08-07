@@ -2,65 +2,58 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4556C837E9
-	for <lists+linux-ia64@lfdr.de>; Tue,  6 Aug 2019 19:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D1E6B84D64
+	for <lists+linux-ia64@lfdr.de>; Wed,  7 Aug 2019 15:33:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1733288AbfHFRbY convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Tue, 6 Aug 2019 13:31:24 -0400
-Received: from mga03.intel.com ([134.134.136.65]:55792 "EHLO mga03.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729161AbfHFRbX (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 6 Aug 2019 13:31:23 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by orsmga103.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 06 Aug 2019 10:23:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,353,1559545200"; 
-   d="scan'208";a="179214381"
-Received: from orsmsx108.amr.corp.intel.com ([10.22.240.6])
-  by orsmga006.jf.intel.com with ESMTP; 06 Aug 2019 10:23:39 -0700
-Received: from orsmsx155.amr.corp.intel.com (10.22.240.21) by
- ORSMSX108.amr.corp.intel.com (10.22.240.6) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Tue, 6 Aug 2019 10:23:39 -0700
-Received: from orsmsx115.amr.corp.intel.com ([169.254.4.6]) by
- ORSMSX155.amr.corp.intel.com ([169.254.7.34]) with mapi id 14.03.0439.000;
- Tue, 6 Aug 2019 10:23:39 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     chenzefeng <chenzefeng2@huawei.com>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>
-CC:     "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH] ia64:unwind: fix double free for
- mod->arch.init_unw_table
-Thread-Topic: [PATCH] ia64:unwind: fix double free for
- mod->arch.init_unw_table
-Thread-Index: AQHVTCsnpSjwlBwy9U2ONZj4lwwDRqbuXtsg
-Date:   Tue, 6 Aug 2019 17:23:39 +0000
-Message-ID: <3908561D78D1C84285E8C5FCA982C28F7F410413@ORSMSX115.amr.corp.intel.com>
-References: <1565077593-72480-1-git-send-email-chenzefeng2@huawei.com>
-In-Reply-To: <1565077593-72480-1-git-send-email-chenzefeng2@huawei.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMDc1NDQxMjYtZjMwYS00ZjBjLTllZTgtZTEyNzMxMmFjOWEwIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiTmVNallFWXNzN3NvWW1CK2xCNWoyUmpOc0hZa3V3eVNVVWpZOFwvOG5JYnJUR3ZtK3FLeU93bHVuaEZQVWlKZ1YifQ==
-x-ctpclassification: CTP_NT
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.140]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S2388339AbfHGNa5 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 7 Aug 2019 09:30:57 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:60184 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2388270AbfHGNa5 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 7 Aug 2019 09:30:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=3ckEXQQQWe0VyUcKIbErhvAUX+jxDacyLSy6gj/b2Og=; b=jHqJHhQLgqMSB2hRFu1qWolUP
+        GIU2eQFAkl05c5ThRJ7LdSqlPxn+h+ei4beu4clpNhEFLx/qeTGsck+G3br2aFK4RtLaLDPrDMtqr
+        OIJtT56W/LcN4GOIz9bWoJS9EVFYT/i3s02LagQCFNVuH73iaGDfWKeLdCH8fvrbwBfPA2nkmrs25
+        emGISoNfwRFIwNCVZ+jk9Ysj2+rIovZxt8Hu8J5bbG3YMYlmckQyZQ3VnmVfmN0PUEv8CPzokZ3ik
+        4CwkDjkniHjdJ1rsIqvrI5/eW/1lf6nEseunIeIZraTGnZzaYYiztVmV2z039KHW7Uth+HB/4NsKG
+        2TK+ChC1w==;
+Received: from [195.167.85.94] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hvM1k-0007oT-4Z; Wed, 07 Aug 2019 13:30:52 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: RFC: remove sn2, hpsim and ia64 machvecs
+Date:   Wed,  7 Aug 2019 16:30:20 +0300
+Message-Id: <20190807133049.20893-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-> Here, set mod->arch.init_unw_table = NULL after remove the unwind
-> table to avoid double free.
+Hi Tony,
 
-Applied. Thanks.
+let me know what you think of this series.  This drops the pretty much
+dead sn2 and hpsim support, which then allows us to build a single ia64
+kernel image that supports all remaining systems without extra indirections
+in the fast path.
 
--Tony
+A git tree is also available at:
+
+    git://git.infradead.org/users/hch/misc.git ia64-remove-machvecs
+
+Gitweb:
+
+    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/ia64-remove-machvecs
