@@ -2,48 +2,70 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 603F4853D1
-	for <lists+linux-ia64@lfdr.de>; Wed,  7 Aug 2019 21:42:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6221585477
+	for <lists+linux-ia64@lfdr.de>; Wed,  7 Aug 2019 22:26:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388601AbfHGTm2 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 7 Aug 2019 15:42:28 -0400
-Received: from [69.44.143.24] ([69.44.143.24]:58777 "EHLO shortcreed.icu"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S2388369AbfHGTm2 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 7 Aug 2019 15:42:28 -0400
-X-Greylist: delayed 601 seconds by postgrey-1.27 at vger.kernel.org; Wed, 07 Aug 2019 15:42:27 EDT
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=mail; d=shortcreed.icu;
- h=From:Date:MIME-Version:To:Subject:Message-ID:Content-Type:Content-Transfer-Encoding; i=nail@shortcreed.icu;
- bh=Bx4SoQUNGa1qqa30U9SeyBpqZEI=;
- b=uIDue2AhJPsaAWbwNsaCtunlVvF0c6AsOX8xe35UwJZvuX3o0/HX3Tlt2EJcpTG19Xm1+ilx+WLT
-   Lq6TeDxS6sI7TBJmz0heBdUHf5o7QGp6Kb1ul+Hf5AOqVDlsGdra8vBTzsA0Dit+R4P5dUR+CPnX
-   7Ln1ofmVe3l/TVTA1FY=
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=mail; d=shortcreed.icu;
- b=i/CDIC0Fc3GTw4/6twEffrzom8lUOcHtTEa6zeGN6O37V/PVLmeBVdFSqbu7eZcwJXku5CBbj7VF
-   ovvgzE0RFLCGYwwIE7YH9LoUGXpwF4pI0T0YmCb8Nm5hhQx/abzPh4y3noZIGT5x/YBiiBHKK1l8
-   HQV6FgzkuDangpUW1Oc=;
-From:   " Marie" <nail@shortcreed.icu>
-Date:   Wed, 07 Aug 2019 14:24:29 -0500
+        id S1730182AbfHGU0T convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Wed, 7 Aug 2019 16:26:19 -0400
+Received: from mga14.intel.com ([192.55.52.115]:43937 "EHLO mga14.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729804AbfHGU0T (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 7 Aug 2019 16:26:19 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 07 Aug 2019 13:26:18 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.64,358,1559545200"; 
+   d="scan'208";a="168747316"
+Received: from orsmsx108.amr.corp.intel.com ([10.22.240.6])
+  by orsmga008.jf.intel.com with ESMTP; 07 Aug 2019 13:26:18 -0700
+Received: from orsmsx124.amr.corp.intel.com (10.22.240.120) by
+ ORSMSX108.amr.corp.intel.com (10.22.240.6) with Microsoft SMTP Server (TLS)
+ id 14.3.439.0; Wed, 7 Aug 2019 13:26:18 -0700
+Received: from orsmsx115.amr.corp.intel.com ([169.254.4.6]) by
+ ORSMSX124.amr.corp.intel.com ([169.254.2.63]) with mapi id 14.03.0439.000;
+ Wed, 7 Aug 2019 13:26:18 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     'Christoph Hellwig' <hch@lst.de>,
+        "Yu, Fenghua" <fenghua.yu@intel.com>
+CC:     'Arnd Bergmann' <arnd@arndb.de>,
+        'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
+        "'linux-ia64@vger.kernel.org'" <linux-ia64@vger.kernel.org>,
+        "'linux-kernel@vger.kernel.org'" <linux-kernel@vger.kernel.org>
+Subject: RE: remove sn2, hpsim and ia64 machvecs
+Thread-Topic: remove sn2, hpsim and ia64 machvecs
+Thread-Index: AQHVTSRfz+iOhLFk9UKAwDm9GuTPAKbv/SBAgAAkXyA=
+Date:   Wed, 7 Aug 2019 20:26:17 +0000
+Message-ID: <3908561D78D1C84285E8C5FCA982C28F7F4143CB@ORSMSX115.amr.corp.intel.com>
+References: <20190807133049.20893-1-hch@lst.de>
+ <3908561D78D1C84285E8C5FCA982C28F7F41388B@ORSMSX115.amr.corp.intel.com>
+In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7F41388B@ORSMSX115.amr.corp.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-titus-metadata-40: eyJDYXRlZ29yeUxhYmVscyI6IiIsIk1ldGFkYXRhIjp7Im5zIjoiaHR0cDpcL1wvd3d3LnRpdHVzLmNvbVwvbnNcL0ludGVsMyIsImlkIjoiMDQ3YzgwMjYtNDcwNi00NmM4LWI2NDEtMmE3NDhjYWIyNmNiIiwicHJvcHMiOlt7Im4iOiJDVFBDbGFzc2lmaWNhdGlvbiIsInZhbHMiOlt7InZhbHVlIjoiQ1RQX05UIn1dfV19LCJTdWJqZWN0TGFiZWxzIjpbXSwiVE1DVmVyc2lvbiI6IjE3LjEwLjE4MDQuNDkiLCJUcnVzdGVkTGFiZWxIYXNoIjoiS21ic3BtbkNTWVhab2NzZ1owaGlqd2NQMVVMWDFVXC8zb29nXC9jWGNRbGs5cmg0MmFBNnptXC85WEhiUmtJQlBSWiJ9
+x-ctpclassification: CTP_NT
+dlp-product: dlpe-windows
+dlp-version: 11.2.0.6
+dlp-reaction: no-action
+x-originating-ip: [10.22.254.140]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-To:     <linux-ia64@vger.kernel.org>
-Subject: Why is this WiFi booster so popular across the World?
-Message-ID: <ozrDi3MHemSBakPa6bAKHYjwcDwelxI2pSEQH8vVAI4.wTQeDEuLkRi9rtb2F29JFJSOfG9MFeZ-dS5X1w2YQvw@shortcreed.icu>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Internet providers make big money by overcharging you for faster internet lines. Could this little device really be the one solution that we've all been waiting for?
+> Even if I explicitly run:
+>
+> $ make compressed
+>
+> It still doesn't build it.  Weird.
 
-Frequency: 2.4Ghz
-Wireless Rate: 300Mbps
-Interface: 1 10/100Mbps WAN/LAN RJ45 Ports
+Ugh! The rule to do the compression was in arch/ia64/hp/sim/boot/Makefile
+which went away as part of the deletion of hpsim.
 
-Amazing new technology find out here! http://bit.ly/asdf411gt
-
-------------------------
-If you'd prefer not to receive future emails, Unsubscribe Here http://bit.ly/itr4fgy
-11041 Santa Monica Blvd. #301 Los Angeles, CA 90025
-
+-Tony
