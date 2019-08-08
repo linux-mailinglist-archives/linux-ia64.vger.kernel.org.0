@@ -2,48 +2,48 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 167CB85933
-	for <lists+linux-ia64@lfdr.de>; Thu,  8 Aug 2019 06:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0B9E85B12
+	for <lists+linux-ia64@lfdr.de>; Thu,  8 Aug 2019 08:51:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726721AbfHHEZW (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 8 Aug 2019 00:25:22 -0400
-Received: from [69.44.143.37] ([69.44.143.37]:33139 "EHLO swearnight.icu"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1725270AbfHHEZW (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 8 Aug 2019 00:25:22 -0400
-X-Greylist: delayed 607 seconds by postgrey-1.27 at vger.kernel.org; Thu, 08 Aug 2019 00:25:21 EDT
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=mail; d=swearnight.icu;
- h=From:Date:MIME-Version:To:Subject:Message-ID:Content-Type:Content-Transfer-Encoding; i=nail@swearnight.icu;
- bh=Bx4SoQUNGa1qqa30U9SeyBpqZEI=;
- b=B8H8tQDTMWrsS8FO8dErhRPMYtB32M2ibOoxT/XolUav4GqSIfeIru4RwJD4Q6dxZ+nixsO7XVOi
-   o95FUpGrSL2Xo624idaLUa6qO6ov0Um4hccUbojE56VzkCiC8VDBjoH9bzUhTMoz5EZyJFqf6vhj
-   m0/hTBFUnrE+f+oZdWI=
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=mail; d=swearnight.icu;
- b=DFcYo2MEVsz7MisI9np1CHttZtjBaEGRegC2nKudhiOZ5wRwr7VdL7jae9cs7aeKooU0FsxpOwzJ
-   wiOXV/NqDzfn7MVtKfaI8n95MldEZSEUTX5FzW+ayXbkzcfJBZbHN5UUrYeCYmYJoDvVzOqSsMyM
-   5xBbkstruvY/kT9zaco=;
-From:   " Sharon Barnes" <nail@swearnight.icu>
-Date:   Wed, 07 Aug 2019 23:07:20 -0500
+        id S1731048AbfHHGv1 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 8 Aug 2019 02:51:27 -0400
+Received: from verein.lst.de ([213.95.11.211]:43709 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1730887AbfHHGv1 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 8 Aug 2019 02:51:27 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id A7C05227A81; Thu,  8 Aug 2019 08:51:23 +0200 (CEST)
+Date:   Thu, 8 Aug 2019 08:51:23 +0200
+From:   'Christoph Hellwig' <hch@lst.de>
+To:     "Luck, Tony" <tony.luck@intel.com>
+Cc:     'Christoph Hellwig' <hch@lst.de>,
+        "Yu, Fenghua" <fenghua.yu@intel.com>,
+        'Arnd Bergmann' <arnd@arndb.de>,
+        'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
+        "'linux-ia64@vger.kernel.org'" <linux-ia64@vger.kernel.org>,
+        "'linux-kernel@vger.kernel.org'" <linux-kernel@vger.kernel.org>
+Subject: Re: remove sn2, hpsim and ia64 machvecs
+Message-ID: <20190808065123.GA29146@lst.de>
+References: <20190807133049.20893-1-hch@lst.de> <3908561D78D1C84285E8C5FCA982C28F7F41388B@ORSMSX115.amr.corp.intel.com> <3908561D78D1C84285E8C5FCA982C28F7F4143CB@ORSMSX115.amr.corp.intel.com> <20190807230737.GA11458@agluck-desk2.amr.corp.intel.com>
 MIME-Version: 1.0
-To:     <linux-ia64@vger.kernel.org>
-Subject: Why is this WiFi booster so popular across the World?
-Message-ID: <UA62pSRIejh2dieV8Umkf2-2vz5GjoP6QfVuFB_y1fU.jnooHK3SEFe4Gk106jCcn2EtyOu_k-iSPMOG_W46alI@swearnight.icu>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20190807230737.GA11458@agluck-desk2.amr.corp.intel.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Internet providers make big money by overcharging you for faster internet lines. Could this little device really be the one solution that we've all been waiting for?
+On Wed, Aug 07, 2019 at 04:07:37PM -0700, Luck, Tony wrote:
+> On Wed, Aug 07, 2019 at 01:26:17PM -0700, Luck, Tony wrote:
+> > Ugh! The rule to do the compression was in arch/ia64/hp/sim/boot/Makefile
+> > which went away as part of the deletion of hpsim.
+> 
+> This fixes it ... should fold into the patch that dropped the
+> arch/ia64/hp/sim/boot/Makefile
+> 
+> I just cut/pasted in those cmd_gzip and cmd_objcopy definitions
+> from elsewhere in the tree. It might be possible to simplify them.
 
-Frequency: 2.4Ghz
-Wireless Rate: 300Mbps
-Interface: 1 10/100Mbps WAN/LAN RJ45 Ports
-
-Amazing new technology find out here! http://bit.ly/asdf411gt
-
-------------------------
-If you'd prefer not to receive future emails, Unsubscribe Here http://bit.ly/itr4fgy
-11041 Santa Monica Blvd. #301 Los Angeles, CA 90025
-
+Lets keep it simple.  I've picked this up for the hpsim removal patch.
