@@ -2,50 +2,84 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id AD98287705
-	for <lists+linux-ia64@lfdr.de>; Fri,  9 Aug 2019 12:16:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56D1287710
+	for <lists+linux-ia64@lfdr.de>; Fri,  9 Aug 2019 12:17:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2406160AbfHIKQV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 9 Aug 2019 06:16:21 -0400
-Received: from www.fiberserver.net.tr ([185.136.204.160]:44037 "EHLO
-        sailoreven.icu" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726091AbfHIKQU (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 9 Aug 2019 06:16:20 -0400
-X-Greylist: delayed 601 seconds by postgrey-1.27 at vger.kernel.org; Fri, 09 Aug 2019 06:16:19 EDT
-DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=mail; d=sailoreven.icu;
- h=From:Date:MIME-Version:To:Subject:Message-ID:Content-Type:Content-Transfer-Encoding; i=representative@sailoreven.icu;
- bh=JWO4eM7YZl4ooFLJK1H2gWIXFt0=;
- b=jSfbQ2r4xxbHn3v8tNApyFzx1hoepWJSaVh7k8xLo1W2YZkhTi0vBxUyVv1iNG5eIY+OW4fvmRkD
-   uzylNRccx4EIEe2wOe3iSrfoRgzoW7g0ncKDTFKz70yIuc6ssFX82P9A9q6nMGqZh6hK3hPfh18V
-   CGGL/aLvJIPHZ+61+m4=
-DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=mail; d=sailoreven.icu;
- b=MvoJQdJNvMpZqCv0QyD/LqUoMydhR4tuouRL4PqBykRVub+Akhbu/AdzcVBa5H/zwc8oENU7SV8U
-   kElVZzgcGMDQSFQ5peCxt7xjvDlZqFGKfPPyBLxu6ZvQKvoTzZaEkvkfYAexxfpy0DOesWnF6d25
-   M5QA6W9SyBhhwrPOnJc=;
-From:   " Henry Stewart" <representative@sailoreven.icu>
-Date:   Fri, 09 Aug 2019 05:02:38 -0500
+        id S2406218AbfHIKRI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 9 Aug 2019 06:17:08 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:52306 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726091AbfHIKRH (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 9 Aug 2019 06:17:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=qtavp7CPHfZNeNkYBrPvAtPsbANfqFLQtCdliW3pDao=; b=pag4yExuYAml6RAwW8ClSI/8O
+        4SvhyG05DRb/VW/V9CDsF+zHeZ5UXFBZuSEmH6L2R/TkkFTUdvg0G5X+mChPhSDo0bv/G81bqVcOE
+        H0+ebgEssg+HPPdNYRmJesf50lZppQPNOWSyxdr7otHpaF8cn8K9ckBUuEcdXQR2moiTTpd1jGx/f
+        vjh5YbK7fMXAxAHvYpu7bjS0cCBSZ//FEHycRa1QcZu/mYorpr133FpqiXnyp7o6RFhVYguPt/B8f
+        P2fGNwRrQbpxYk76nYUeyruj+MAsigriKyn6idQDkNDTkIb9YC0oHITHhwpJDVUNGhDUhHSp0NaMd
+        UOTH8wydQ==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92 #3 (Red Hat Linux))
+        id 1hw1wn-0006xR-4P; Fri, 09 Aug 2019 10:16:33 +0000
+Date:   Fri, 9 Aug 2019 03:16:33 -0700
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC V2 0/1] mm/debug: Add tests for architecture exported page
+ table helpers
+Message-ID: <20190809101632.GM5482@bombadil.infradead.org>
+References: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
 MIME-Version: 1.0
-To:     <linux-ia64@vger.kernel.org>
-Subject: Slow internet? Don't miss out on this WiFi booster
-Message-ID: <b97lPHr8BiKXQcVu53PwPmZvcTcRaVi_cFcPdML_Bfg.l3RC_QhyuQGJ2A4TiDrxHSjA3yEpUQ-ayO7aaB2IM60@sailoreven.icu>
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Internet providers make big money by overcharging you for faster internet lines. Could this little device really be the one solution that we've all been waiting for?
+On Fri, Aug 09, 2019 at 01:03:17PM +0530, Anshuman Khandual wrote:
+> Should alloc_gigantic_page() be made available as an interface for general
+> use in the kernel. The test module here uses very similar implementation from
+> HugeTLB to allocate a PUD aligned memory block. Similar for mm_alloc() which
+> needs to be exported through a header.
 
-Frequency: 2.4Ghz
-Wireless Rate: 300Mbps
-Interface: 1 10/100Mbps WAN/LAN RJ45 Ports
-
-Amazing new technology find out here!
-http://www.sailoreven.icu/kjbwa/hebhwtts33241yulzamit/MVb27eq6xlpAGSWV1aw47naMP4B8lUSBNCZWiTnpRD8/StCcX3RF8SopVY4PGBvBcAr91z41zi7aRYySPWYpCzeAXFP0IfN4hXLvHq_qEqjlVd35K400c3Fgu37GhG4VPGm5tGfY2JIhS3BcGUmRJlSR3cRnsYuA3gbPAnAbQvlOYB7m2_s__L2YjOfiQAfK7Q
-
-------------------------
-If you'd prefer not to receive future emails, Unsubscribe Here 
-http://www.sailoreven.icu/smwmrida/Q7KfAQifOjY2L__s_2m7BYOlvQbAnAPbg3AuYsnRc3RSlJRmUGcB3ShIJ2YfGt5mGPV4GhG73ugF3c004K53dVljqEq_qHvLXh4NfI0PFXAezCpYWPSyYRa7iz14z19rAcBvBGP4YVpoS8FR3XcCtS.8DRpnTiWZCNBSUl8B4PMan74wa1VWSGAplx6qe72bVM
-538 Cherry Rd. Schaumburg, IL 60193
-
+Why are you allocating memory at all instead of just using some
+known-to-exist PFNs like I suggested?
