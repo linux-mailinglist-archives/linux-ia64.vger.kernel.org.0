@@ -2,48 +2,37 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 729CA8A9E0
-	for <lists+linux-ia64@lfdr.de>; Mon, 12 Aug 2019 23:52:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A809E8AB9E
+	for <lists+linux-ia64@lfdr.de>; Tue, 13 Aug 2019 01:59:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727243AbfHLVwL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 12 Aug 2019 17:52:11 -0400
-Received: from verein.lst.de ([213.95.11.211]:51633 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726721AbfHLVwL (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 12 Aug 2019 17:52:11 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 5693C68B20; Mon, 12 Aug 2019 23:52:07 +0200 (CEST)
-Date:   Mon, 12 Aug 2019 23:52:07 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     "Luck, Tony" <tony.luck@intel.com>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: fix misc compiler warnings in the ia64 build
-Message-ID: <20190812215207.GA21391@lst.de>
-References: <20190812065524.19959-1-hch@lst.de> <3908561D78D1C84285E8C5FCA982C28F7F41C3D7@ORSMSX115.amr.corp.intel.com>
+        id S1726767AbfHLX7B (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 12 Aug 2019 19:59:01 -0400
+Received: from [157.230.164.221] ([157.230.164.221]:59988 "EHLO
+        9389689244-jhnabhfbn.localdomain" rhost-flags-FAIL-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1726453AbfHLX7A (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 12 Aug 2019 19:59:00 -0400
+Received: from localhost (9389689244-jhnabhfbn [127.0.0.1])
+        by 9389689244-jhnabhfbn.localdomain (Postfix) with SMTP id D1FF6B19295;
+        Sun, 11 Aug 2019 13:49:12 +0000 (UTC)
+Received: from [21.65.247.83] by localhost id erWJISch6r5U; Sun, 11 Aug 2019 07:49:18 -0700
+Message-ID: <3$$0$av5$3ydw1s7-99p8vd1nf@5qp9.gn9>
+From:   "RECEIVE AND SECURE THIS MONEY FOR ME" <fta447447@gmail.com>
+Reply-To: "RECEIVE AND SECURE THIS MONEY FOR ME" <fta447447@gmail.com>
+To:     webmaster@channelwest.com
+Subject: RECEIVE AND KEEP THIS MONEY FOR ME IN YOUR BANK ACCOUNT,REPLY TO fta447447@gmail.com FOR DETAILS
+Date:   Sun, 11 Aug 19 07:49:18 GMT
+X-Mailer: The Bat! (v1.52f) Business
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7F41C3D7@ORSMSX115.amr.corp.intel.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: multipart/alternative;
+        boundary="9DC2FBD4_8.0114__A3..8C"
+X-Priority: 3
+X-MSMail-Priority: Normal
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Aug 12, 2019 at 09:47:40PM +0000, Luck, Tony wrote:
-> > this little series fixes various warnings I see in ia64 builds.
-> 
-> Applied. Thanks.
-> 
-> [I assume you are using some up-to-date version of gcc that generates these
->  warnings ... I'm not seeing them, but I'm still using a compiler from the stone
->  age]
 
-This is with the gcc 8.1 x86 to ia64 binary from
+--9DC2FBD4_8.0114__A3..8C--
 
-http://kernel.mirror.ac.za/tools/crosstool/ that I found recently.  But
-at least the fork.c and kprobes.c ones should probably show up with any
-supported compiler, the switch ones are fairly new.
