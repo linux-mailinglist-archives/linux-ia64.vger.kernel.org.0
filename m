@@ -2,75 +2,182 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id BB21D8976B
-	for <lists+linux-ia64@lfdr.de>; Mon, 12 Aug 2019 08:55:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 207A78A1EE
+	for <lists+linux-ia64@lfdr.de>; Mon, 12 Aug 2019 17:06:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726992AbfHLGzj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 12 Aug 2019 02:55:39 -0400
-Received: from bombadil.infradead.org ([198.137.202.133]:40728 "EHLO
-        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726974AbfHLGzj (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 12 Aug 2019 02:55:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
-        MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender
-        :Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From
-        :Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
-        List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=JIXHQp9s2CVKIRUydQ4Mw0MR2l1VaY1/v2KS1Lf2mlI=; b=AmB2oLLkWobqAZTUGGzUVYYcsW
-        AyKI21+qdSeWWM6l/MjdX574V7uUIZCnoTByOZ00FtFd/hBPT+c6YoGs/8U9JClmhDluYoMwYRDwX
-        kfDQfbufZ7msUl5mNu1xJk1VBbqWKHL2FoQI0WO2R/YgByxXIFODsZX5b15SnCmdPqOiVSZP/nMZZ
-        Fd/iFub55uJZecnjyyG9KLsBUUgCzKKZrHMVK2qzW051bXB+7Q9egGvFy9wT9eqc0x9zZ5LM6iFw0
-        bcxuLGomxWkFu69/gdj9EqP0PC0BBB75w2jZUqXzMREpEBXtQZ+JKpEeIO91CCzuJRN5HlHUiWK00
-        UQH6UetA==;
-Received: from [2001:4bb8:180:1ec3:c70:4a89:bc61:2] (helo=localhost)
-        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
-        id 1hx4F0-0000G5-8k; Mon, 12 Aug 2019 06:55:38 +0000
-From:   Christoph Hellwig <hch@lst.de>
-To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>
-Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 4/4] kernel: only define task_struct_whitelist conditionally
-Date:   Mon, 12 Aug 2019 08:55:24 +0200
-Message-Id: <20190812065524.19959-5-hch@lst.de>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190812065524.19959-1-hch@lst.de>
-References: <20190812065524.19959-1-hch@lst.de>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+        id S1726966AbfHLPFa (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 12 Aug 2019 11:05:30 -0400
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:32839 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726954AbfHLPFP (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 12 Aug 2019 11:05:15 -0400
+Received: by mail-wm1-f66.google.com with SMTP id p77so213086wme.0
+        for <linux-ia64@vger.kernel.org>; Mon, 12 Aug 2019 08:05:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references;
+        bh=+lKE3M766VSXcFdd93gVKyp3DvIcJdKpewtir+tTjtY=;
+        b=Rrv303O43OyEKz36qcqnSKBIfjcfCb4HWfW9FX3qbTTUFSZeHD+ZEYxD7FWdJO01zz
+         FKjj+3TTv8OMK34lkqrRP70oXLRXYegXR2wmS6GFWKdXJ8RhFF8xNpEgrd4ArJ66lAne
+         Df3gipPgc8ZqMSg/hfMqlZSVy8Wpp4lrs6k8RECYjSvtmMAG9aEa1YWTgSp2LpukgMfd
+         cvJLKlHTQgz3yMgZ6dZzdEekD+kYNDOxIWQMzkldeg4Hl4VZ3VvzTgRjlERwT3IoTcTS
+         rLpOef9qj2iPFTtYP0zWJTxAkjxl50ehZ2ynJBH1NUnA5OrFcZRQqohI+FRQWsf50tP0
+         1LWQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references;
+        bh=+lKE3M766VSXcFdd93gVKyp3DvIcJdKpewtir+tTjtY=;
+        b=M6BbhxXumCACfe33vB9y7BHYdjWiTz4kyxAfKUaWQyo+rE8G1F4/CQZYu1W1eZMx3e
+         Ybwsa37VROdub0yb52OJ9/4jJnRxS/eZl1Ocbn6y2S6LWxnQ7UUsibsRrIOCPSm8t+wT
+         OulM6wUDofi+Vf9UPq0auX/7K+LrHIu+J9wV7FRup2Wxvkx/WGEE9Otlk/bo2aO/3eaR
+         MoYYbp3hHhmASDc50lOxwZbwe/JwqFaE7iR3nV7G08O8OHk2K30gI6mluxw473z8sL77
+         tKYwUZw6sdrf5EvoJDRWcr3CiD3gdCPpI/ibPp/YKlDZFQxasLru6i03GJPSlb2uuLsd
+         YQ+g==
+X-Gm-Message-State: APjAAAUjgK4+NyD2TVvJsvEbmGK4TDnvli8rQTiwLe8euLNuWKR3gjRP
+        iUl+/rzBI+F+j2vea8uEoYYxig==
+X-Google-Smtp-Source: APXvYqzcfsQYwW8Tw9+tg9Rj9NNGvQbwgKwQN797396Gxxe9KHJsy6RUFJgGTaEQx6oGR08Ep5OU6g==
+X-Received: by 2002:a1c:f618:: with SMTP id w24mr22373421wmc.112.1565622312740;
+        Mon, 12 Aug 2019 08:05:12 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:587:a407:da00:1c0e:f938:89a1:8e17])
+        by smtp.gmail.com with ESMTPSA id h97sm31027269wrh.74.2019.08.12.08.05.10
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 12 Aug 2019 08:05:12 -0700 (PDT)
+From:   Ard Biesheuvel <ard.biesheuvel@linaro.org>
+To:     linux-efi@vger.kernel.org, Ingo Molnar <mingo@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>
+Cc:     Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        linux-kernel@vger.kernel.org, James Morse <james.morse@arm.com>,
+        Mario Limonciello <mario.limonciello@dell.com>,
+        Narendra K <Narendra.K@dell.com>,
+        Xiaofei Tan <tanxiaofei@huawei.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
+Subject: [PATCH 3/5] efi: ia64: move SAL systab handling out of generic EFI code
+Date:   Mon, 12 Aug 2019 18:04:50 +0300
+Message-Id: <20190812150452.27983-4-ard.biesheuvel@linaro.org>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20190812150452.27983-1-ard.biesheuvel@linaro.org>
+References: <20190812150452.27983-1-ard.biesheuvel@linaro.org>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-If CONFIG_ARCH_TASK_STRUCT_ALLOCATOR is set task_struct_whitelist is
-never called, and thus generates a compiler warning.
+The SAL systab is an Itanium specific EFI configuration table, so
+move its handling into arch/ia64 where it belongs.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
+Cc; Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: linux-ia64@vger.kernel.org
+Signed-off-by: Ard Biesheuvel <ard.biesheuvel@linaro.org>
 ---
- kernel/fork.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/ia64/include/asm/sal.h       | 1 +
+ arch/ia64/include/asm/sn/sn_sal.h | 2 +-
+ arch/ia64/kernel/efi.c            | 3 +++
+ arch/ia64/kernel/setup.c          | 2 +-
+ arch/x86/platform/efi/efi.c       | 1 -
+ drivers/firmware/efi/efi.c        | 2 --
+ include/linux/efi.h               | 1 -
+ 7 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/fork.c b/kernel/fork.c
-index 2852d0e76ea3..f79e3da0caaf 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -768,6 +768,7 @@ static void set_max_threads(unsigned int max_threads_suggested)
- int arch_task_struct_size __read_mostly;
- #endif
+diff --git a/arch/ia64/include/asm/sal.h b/arch/ia64/include/asm/sal.h
+index 588f33156da6..08f5b6aaed73 100644
+--- a/arch/ia64/include/asm/sal.h
++++ b/arch/ia64/include/asm/sal.h
+@@ -43,6 +43,7 @@
+ #include <asm/pal.h>
+ #include <asm/fpu.h>
  
-+#ifndef CONFIG_ARCH_TASK_STRUCT_ALLOCATOR
- static void task_struct_whitelist(unsigned long *offset, unsigned long *size)
++extern unsigned long sal_systab_phys;
+ extern spinlock_t sal_lock;
+ 
+ /* SAL spec _requires_ eight args for each call. */
+diff --git a/arch/ia64/include/asm/sn/sn_sal.h b/arch/ia64/include/asm/sn/sn_sal.h
+index 1f5ff470a5a1..5142c444652d 100644
+--- a/arch/ia64/include/asm/sn/sn_sal.h
++++ b/arch/ia64/include/asm/sn/sn_sal.h
+@@ -167,7 +167,7 @@
+ static inline u32
+ sn_sal_rev(void)
  {
- 	/* Fetch thread_struct whitelist for the architecture. */
-@@ -782,6 +783,7 @@ static void task_struct_whitelist(unsigned long *offset, unsigned long *size)
- 	else
- 		*offset += offsetof(struct task_struct, thread);
+-	struct ia64_sal_systab *systab = __va(efi.sal_systab);
++	struct ia64_sal_systab *systab = __va(sal_systab_phys);
+ 
+ 	return (u32)(systab->sal_b_rev_major << 8 | systab->sal_b_rev_minor);
  }
-+#endif /* CONFIG_ARCH_TASK_STRUCT_ALLOCATOR */
+diff --git a/arch/ia64/kernel/efi.c b/arch/ia64/kernel/efi.c
+index 3795d18276c4..0a34dcc435c6 100644
+--- a/arch/ia64/kernel/efi.c
++++ b/arch/ia64/kernel/efi.c
+@@ -47,8 +47,11 @@
  
- void __init fork_init(void)
- {
+ static __initdata unsigned long palo_phys;
+ 
++unsigned long sal_systab_phys = EFI_INVALID_TABLE_ADDR;
++
+ static __initdata efi_config_table_type_t arch_tables[] = {
+ 	{PROCESSOR_ABSTRACTION_LAYER_OVERWRITE_GUID, "PALO", &palo_phys},
++	{SAL_SYSTEM_TABLE_GUID, "SALsystab", &sal_systab_phys},
+ 	{NULL_GUID, NULL, 0},
+ };
+ 
+diff --git a/arch/ia64/kernel/setup.c b/arch/ia64/kernel/setup.c
+index c9cfa760cd57..0e1b4eb149b4 100644
+--- a/arch/ia64/kernel/setup.c
++++ b/arch/ia64/kernel/setup.c
+@@ -572,7 +572,7 @@ setup_arch (char **cmdline_p)
+ 	find_memory();
+ 
+ 	/* process SAL system table: */
+-	ia64_sal_init(__va(efi.sal_systab));
++	ia64_sal_init(__va(sal_systab_phys));
+ 
+ #ifdef CONFIG_ITANIUM
+ 	ia64_patch_rse((u64) __start___rse_patchlist, (u64) __end___rse_patchlist);
+diff --git a/arch/x86/platform/efi/efi.c b/arch/x86/platform/efi/efi.c
+index 9866a3584765..6697c109c449 100644
+--- a/arch/x86/platform/efi/efi.c
++++ b/arch/x86/platform/efi/efi.c
+@@ -70,7 +70,6 @@ static const unsigned long * const efi_tables[] = {
+ 	&efi.acpi20,
+ 	&efi.smbios,
+ 	&efi.smbios3,
+-	&efi.sal_systab,
+ 	&efi.boot_info,
+ 	&efi.hcdp,
+ 	&efi.uga,
+diff --git a/drivers/firmware/efi/efi.c b/drivers/firmware/efi/efi.c
+index 4dfd873373bd..801925c5bcfb 100644
+--- a/drivers/firmware/efi/efi.c
++++ b/drivers/firmware/efi/efi.c
+@@ -39,7 +39,6 @@ struct efi __read_mostly efi = {
+ 	.acpi20			= EFI_INVALID_TABLE_ADDR,
+ 	.smbios			= EFI_INVALID_TABLE_ADDR,
+ 	.smbios3		= EFI_INVALID_TABLE_ADDR,
+-	.sal_systab		= EFI_INVALID_TABLE_ADDR,
+ 	.boot_info		= EFI_INVALID_TABLE_ADDR,
+ 	.hcdp			= EFI_INVALID_TABLE_ADDR,
+ 	.uga			= EFI_INVALID_TABLE_ADDR,
+@@ -456,7 +455,6 @@ static __initdata efi_config_table_type_t common_tables[] = {
+ 	{ACPI_TABLE_GUID, "ACPI", &efi.acpi},
+ 	{HCDP_TABLE_GUID, "HCDP", &efi.hcdp},
+ 	{MPS_TABLE_GUID, "MPS", &efi.mps},
+-	{SAL_SYSTEM_TABLE_GUID, "SALsystab", &efi.sal_systab},
+ 	{SMBIOS_TABLE_GUID, "SMBIOS", &efi.smbios},
+ 	{SMBIOS3_TABLE_GUID, "SMBIOS 3.0", &efi.smbios3},
+ 	{UGA_IO_PROTOCOL_GUID, "UGA", &efi.uga},
+diff --git a/include/linux/efi.h b/include/linux/efi.h
+index 171bb1005a10..f88318b85fb0 100644
+--- a/include/linux/efi.h
++++ b/include/linux/efi.h
+@@ -984,7 +984,6 @@ extern struct efi {
+ 	unsigned long acpi20;		/* ACPI table  (ACPI 2.0) */
+ 	unsigned long smbios;		/* SMBIOS table (32 bit entry point) */
+ 	unsigned long smbios3;		/* SMBIOS table (64 bit entry point) */
+-	unsigned long sal_systab;	/* SAL system table */
+ 	unsigned long boot_info;	/* boot info table */
+ 	unsigned long hcdp;		/* HCDP table */
+ 	unsigned long uga;		/* UGA table */
 -- 
-2.20.1
+2.17.1
 
