@@ -2,50 +2,45 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DE3687D12
-	for <lists+linux-ia64@lfdr.de>; Fri,  9 Aug 2019 16:45:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8D1889763
+	for <lists+linux-ia64@lfdr.de>; Mon, 12 Aug 2019 08:55:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2407201AbfHIOpg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 9 Aug 2019 10:45:36 -0400
-Received: from verein.lst.de ([213.95.11.211]:55785 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726157AbfHIOpf (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 9 Aug 2019 10:45:35 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 384BC68BFE; Fri,  9 Aug 2019 16:45:32 +0200 (CEST)
-Date:   Fri, 9 Aug 2019 16:45:31 +0200
-From:   'Christoph Hellwig' <hch@lst.de>
-To:     "Luck, Tony" <tony.luck@intel.com>
-Cc:     'Christoph Hellwig' <hch@lst.de>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>,
-        'Arnd Bergmann' <arnd@arndb.de>,
-        'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>,
-        "'linux-ia64@vger.kernel.org'" <linux-ia64@vger.kernel.org>,
-        "'linux-kernel@vger.kernel.org'" <linux-kernel@vger.kernel.org>
-Subject: Re: remove sn2, hpsim and ia64 machvecs
-Message-ID: <20190809144531.GA10398@lst.de>
-References: <20190807133049.20893-1-hch@lst.de> <3908561D78D1C84285E8C5FCA982C28F7F41388B@ORSMSX115.amr.corp.intel.com> <3908561D78D1C84285E8C5FCA982C28F7F4143CB@ORSMSX115.amr.corp.intel.com> <20190807230737.GA11458@agluck-desk2.amr.corp.intel.com> <20190808065123.GA29146@lst.de> <20190808180129.GA18553@agluck-desk2.amr.corp.intel.com>
+        id S1725901AbfHLGz2 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 12 Aug 2019 02:55:28 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:40702 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725819AbfHLGz2 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 12 Aug 2019 02:55:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=N9izlud1X1M8isjNbanP7dBva6cNYDlshJZyLYo2uvE=; b=ouMzO47aI+rXkMG5/+u5g0/Gq
+        WsuVVX+4lw8Fbvmg7azW4oWnYqyHRQIN8o2bo2DbHxQz3mbazMFFi/NG4aM06gUY4Re6mKbJcsf1j
+        cVbL5Hde6+H9CeHgYlKX98R2u+FC3S3ZllUNzu2xYefnkZlOqIefDUQmYyrHjLOHg2Wbr+OdDxXOP
+        YjA5TtV3dBwisUkKzdiUJHp+Ek/yolZqF+N00hv8EEY7yLq06Rio6nIhfVRD6tzSIyh2gzM7+Aa3l
+        ek0gPZas8iAPfG8cMvy8C3ozh3/GKvRvrbCz2hSffIG1ymdssIzg30ecZzNS5R31bKKJ3WafI2l4G
+        YgzDsoMSA==;
+Received: from [2001:4bb8:180:1ec3:c70:4a89:bc61:2] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1hx4Ep-0000Ev-5W; Mon, 12 Aug 2019 06:55:27 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>
+Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: fix misc compiler warnings in the ia64 build
+Date:   Mon, 12 Aug 2019 08:55:20 +0200
+Message-Id: <20190812065524.19959-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190808180129.GA18553@agluck-desk2.amr.corp.intel.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Aug 08, 2019 at 11:01:30AM -0700, Luck, Tony wrote:
-> So most configs now build, and the generic one boots on my Tukwila system.
-> 
-> But a config based on arch/ia64/configs/zx1_defconfig gets a bunch
-> of build errors from different files complaining about 'max_mapnr'
-> 
-> arch/ia64/mm/init.c:198:8: error: 'max_mapnr' undeclared (first use in this function) 
-> ./include/linux/dma-mapping.h:359:6: error: 'max_mapnr' undeclared (first use in this function)
-> kernel/dma/mapping.c:126:8: error: 'max_mapnr' undeclared (first use in this function)
-> kernel/dma/mapping.c:181:8: error: 'max_mapnr' undeclared (first use in this function)
-> mm/internal.h:393:8: error: 'max_mapnr' undeclared (first use in this function)
+Hi Tony,
 
-Looks like we somehow lost the indirect mm.h include for those builds,
-I'll take a look at fixing this up.
+this little series fixes various warnings I see in ia64 builds.
