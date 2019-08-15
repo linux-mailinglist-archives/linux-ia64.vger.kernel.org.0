@@ -2,24 +2,24 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A10328E45B
-	for <lists+linux-ia64@lfdr.de>; Thu, 15 Aug 2019 07:05:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BB088E512
+	for <lists+linux-ia64@lfdr.de>; Thu, 15 Aug 2019 08:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730095AbfHOFFf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 15 Aug 2019 01:05:35 -0400
-Received: from mga18.intel.com ([134.134.136.126]:36254 "EHLO mga18.intel.com"
+        id S1730477AbfHOG4p (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 15 Aug 2019 02:56:45 -0400
+Received: from mga11.intel.com ([192.55.52.93]:41130 "EHLO mga11.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1730092AbfHOFFe (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 15 Aug 2019 01:05:34 -0400
+        id S1726098AbfHOG4o (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 15 Aug 2019 02:56:44 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga106.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Aug 2019 22:05:34 -0700
+  by fmsmga102.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Aug 2019 23:56:44 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.64,388,1559545200"; 
-   d="scan'208";a="171013666"
+   d="scan'208";a="171034750"
 Received: from allen-box.sh.intel.com (HELO [10.239.159.136]) ([10.239.159.136])
-  by orsmga008.jf.intel.com with ESMTP; 14 Aug 2019 22:05:30 -0700
+  by orsmga008.jf.intel.com with ESMTP; 14 Aug 2019 23:56:40 -0700
 Cc:     baolu.lu@linux.intel.com, corbet@lwn.net, tony.luck@intel.com,
         fenghua.yu@intel.com, tglx@linutronix.de, mingo@redhat.com,
         bp@alien8.de, hpa@zytor.com, x86@kernel.org,
@@ -27,17 +27,17 @@ Cc:     baolu.lu@linux.intel.com, corbet@lwn.net, tony.luck@intel.com,
         iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
         Thomas.Lendacky@amd.com, Suravee.Suthikulpanit@amd.com,
         Joerg Roedel <jroedel@suse.de>
-Subject: Re: [PATCH 07/10] iommu: Print default domain type on boot
+Subject: Re: [PATCH 08/10] iommu: Set default domain type at runtime
 To:     Joerg Roedel <joro@8bytes.org>
 References: <20190814133841.7095-1-joro@8bytes.org>
- <20190814133841.7095-8-joro@8bytes.org>
+ <20190814133841.7095-9-joro@8bytes.org>
 From:   Lu Baolu <baolu.lu@linux.intel.com>
-Message-ID: <39163f22-0c22-ccae-84df-e65f53aa1a82@linux.intel.com>
-Date:   Thu, 15 Aug 2019 13:04:30 +0800
+Message-ID: <a8e804dd-a8ae-2e0d-6b3c-698fbc96bf75@linux.intel.com>
+Date:   Thu, 15 Aug 2019 14:55:39 +0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190814133841.7095-8-joro@8bytes.org>
+In-Reply-To: <20190814133841.7095-9-joro@8bytes.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -51,77 +51,68 @@ Hi,
 On 8/14/19 9:38 PM, Joerg Roedel wrote:
 > From: Joerg Roedel <jroedel@suse.de>
 > 
-> Introduce a subsys_initcall for IOMMU code and use it to
-> print the default domain type at boot.
+> Set the default domain-type at runtime, not at compile-time.
+> This keeps default domain type setting in one place when we
+> have to change it at runtime.
 > 
 > Signed-off-by: Joerg Roedel <jroedel@suse.de>
 > ---
->   drivers/iommu/iommu.c | 30 +++++++++++++++++++++++++++++-
->   1 file changed, 29 insertions(+), 1 deletion(-)
+>   drivers/iommu/iommu.c | 23 +++++++++++++++--------
+>   1 file changed, 15 insertions(+), 8 deletions(-)
 > 
 > diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index e1feb4061b8b..233bc22b487e 100644
+> index 233bc22b487e..96cc7cc8ab21 100644
 > --- a/drivers/iommu/iommu.c
 > +++ b/drivers/iommu/iommu.c
-> @@ -93,12 +93,40 @@ struct iommu_group_attribute iommu_group_attr_##_name =		\
->   static LIST_HEAD(iommu_device_list);
->   static DEFINE_SPINLOCK(iommu_device_lock);
+> @@ -26,11 +26,8 @@
 >   
-> +/*
-> + * Use a function instead of an array here because the domain-type is a
-> + * bit-field, so an array would waste memory.
-> + */
-> +static const char *iommu_domain_type_str(unsigned int t)
-> +{
-> +	switch (t) {
-> +		case IOMMU_DOMAIN_BLOCKED:
-> +			return "Blocked";
-> +		case IOMMU_DOMAIN_IDENTITY:
-> +			return "Passthrough";
-> +		case IOMMU_DOMAIN_UNMANAGED:
-> +			return "Unmanaged";
-> +		case IOMMU_DOMAIN_DMA:
-> +			return "Translated";
-> +		default:
-> +			return "Unknown";
-> +	}
-> +}
+>   static struct kset *iommu_group_kset;
+>   static DEFINE_IDA(iommu_group_ida);
+> -#ifdef CONFIG_IOMMU_DEFAULT_PASSTHROUGH
+> -static unsigned int iommu_def_domain_type = IOMMU_DOMAIN_IDENTITY;
+> -#else
+> -static unsigned int iommu_def_domain_type = IOMMU_DOMAIN_DMA;
+> -#endif
+> +
+> +static unsigned int iommu_def_domain_type __read_mostly;
+>   static bool iommu_dma_strict __read_mostly = true;
+>   static u32 iommu_cmd_line __read_mostly;
+>   
+> @@ -76,7 +73,7 @@ static void iommu_set_cmd_line_dma_api(void)
+>   	iommu_cmd_line |= IOMMU_CMD_LINE_DMA_API;
+>   }
+>   
+> -static bool __maybe_unused iommu_cmd_line_dma_api(void)
+> +static bool iommu_cmd_line_dma_api(void)
+>   {
+>   	return !!(iommu_cmd_line & IOMMU_CMD_LINE_DMA_API);
+>   }
+> @@ -115,8 +112,18 @@ static const char *iommu_domain_type_str(unsigned int t)
+>   
+>   static int __init iommu_subsys_init(void)
+>   {
+> -	pr_info("Default domain type: %s\n",
+> -		iommu_domain_type_str(iommu_def_domain_type));
+> +	bool cmd_line = iommu_cmd_line_dma_api();
+> +
+> +	if (!cmd_line) {
+> +		if (IS_ENABLED(CONFIG_IOMMU_DEFAULT_PASSTHROUGH))
+> +			iommu_set_default_passthrough();
+> +		else
+> +			iommu_set_default_translated();
 
-Run scripts/checkpatch.pl:
-
-ERROR: switch and case should be at the same indent
-#28: FILE: drivers/iommu/iommu.c:102:
-+	switch (t) {
-+		case IOMMU_DOMAIN_BLOCKED:
-[...]
-+		case IOMMU_DOMAIN_IDENTITY:
-[...]
-+		case IOMMU_DOMAIN_UNMANAGED:
-[...]
-+		case IOMMU_DOMAIN_DMA:
-[...]
-+		default:
+This overrides kernel parameters parsed in iommu_setup(), for example,
+iommu=pt won't work anymore.
 
 Best regards,
 Lu Baolu
 
+> +	}
 > +
-> +static int __init iommu_subsys_init(void)
-> +{
-> +	pr_info("Default domain type: %s\n",
-> +		iommu_domain_type_str(iommu_def_domain_type));
-> +
-> +	return 0;
-> +}
-> +subsys_initcall(iommu_subsys_init);
-> +
->   int iommu_device_register(struct iommu_device *iommu)
->   {
->   	spin_lock(&iommu_device_lock);
->   	list_add_tail(&iommu->list, &iommu_device_list);
->   	spin_unlock(&iommu_device_lock);
-> -
+> +	pr_info("Default domain type: %s %s\n",
+> +		iommu_domain_type_str(iommu_def_domain_type),
+> +		cmd_line ? "(set via kernel command line)" : "");
+>   
 >   	return 0;
 >   }
->   
 > 
