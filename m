@@ -2,43 +2,41 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F1A58E42C
-	for <lists+linux-ia64@lfdr.de>; Thu, 15 Aug 2019 06:49:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C54C8E43C
+	for <lists+linux-ia64@lfdr.de>; Thu, 15 Aug 2019 06:54:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726302AbfHOErF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 15 Aug 2019 00:47:05 -0400
-Received: from mga01.intel.com ([192.55.52.88]:5118 "EHLO mga01.intel.com"
+        id S1726317AbfHOEyd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 15 Aug 2019 00:54:33 -0400
+Received: from mga06.intel.com ([134.134.136.31]:30799 "EHLO mga06.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725911AbfHOErF (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 15 Aug 2019 00:47:05 -0400
+        id S1726252AbfHOEyc (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 15 Aug 2019 00:54:32 -0400
 X-Amp-Result: SKIPPED(no attachment in message)
 X-Amp-File-Uploaded: False
 Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Aug 2019 21:47:05 -0700
+  by orsmga104.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 14 Aug 2019 21:54:32 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.64,387,1559545200"; 
-   d="scan'208";a="171009770"
+X-IronPort-AV: E=Sophos;i="5.64,388,1559545200"; 
+   d="scan'208";a="171011114"
 Received: from allen-box.sh.intel.com (HELO [10.239.159.136]) ([10.239.159.136])
-  by orsmga008.jf.intel.com with ESMTP; 14 Aug 2019 21:47:01 -0700
-Cc:     baolu.lu@linux.intel.com, corbet@lwn.net, tony.luck@intel.com,
-        fenghua.yu@intel.com, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, hpa@zytor.com, x86@kernel.org,
-        linux-doc@vger.kernel.org, linux-ia64@vger.kernel.org,
-        iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-        Thomas.Lendacky@amd.com, Suravee.Suthikulpanit@amd.com,
-        Joerg Roedel <jroedel@suse.de>
-Subject: Re: [PATCH 03/10] iommu/vt-d: Request passthrough mode from IOMMU
- core
+  by orsmga008.jf.intel.com with ESMTP; 14 Aug 2019 21:54:28 -0700
+Cc:     baolu.lu@linux.intel.com, fenghua.yu@intel.com,
+        tony.luck@intel.com, linux-ia64@vger.kernel.org, corbet@lwn.net,
+        Joerg Roedel <jroedel@suse.de>, x86@kernel.org,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        iommu@lists.linux-foundation.org, mingo@redhat.com, bp@alien8.de,
+        Thomas.Lendacky@amd.com, hpa@zytor.com, tglx@linutronix.de
+Subject: Re: [PATCH 04/10] x86/dma: Get rid of iommu_pass_through
 To:     Joerg Roedel <joro@8bytes.org>
 References: <20190814133841.7095-1-joro@8bytes.org>
- <20190814133841.7095-4-joro@8bytes.org>
+ <20190814133841.7095-5-joro@8bytes.org>
 From:   Lu Baolu <baolu.lu@linux.intel.com>
-Message-ID: <77ee40c6-392c-5094-c945-a63dc370188d@linux.intel.com>
-Date:   Thu, 15 Aug 2019 12:46:01 +0800
+Message-ID: <ef941cbd-07dc-ac93-e5b2-f30ac4a55bc2@linux.intel.com>
+Date:   Thu, 15 Aug 2019 12:53:28 +0800
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190814133841.7095-4-joro@8bytes.org>
+In-Reply-To: <20190814133841.7095-5-joro@8bytes.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -47,35 +45,73 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Joerg,
+Hi,
 
 On 8/14/19 9:38 PM, Joerg Roedel wrote:
 > From: Joerg Roedel <jroedel@suse.de>
 > 
-> Get rid of the iommu_pass_through variable and request
-> passthrough mode via the new iommu core function.
+> This variable has no users anymore. Remove it and tell the
+> IOMMU code via its new functions about requested DMA modes.
 > 
 > Signed-off-by: Joerg Roedel <jroedel@suse.de>
 
-Looks good to me.
+This will also simplify the procedures in iommu_probe_device() on x86
+platforms.
 
 Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
 
 > ---
->   drivers/iommu/intel-iommu.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+>   arch/x86/include/asm/iommu.h |  1 -
+>   arch/x86/kernel/pci-dma.c    | 11 +++--------
+>   2 files changed, 3 insertions(+), 9 deletions(-)
 > 
-> diff --git a/drivers/iommu/intel-iommu.c b/drivers/iommu/intel-iommu.c
-> index bdaed2da8a55..234bc2b55c59 100644
-> --- a/drivers/iommu/intel-iommu.c
-> +++ b/drivers/iommu/intel-iommu.c
-> @@ -3267,7 +3267,7 @@ static int __init init_dmars(void)
->   		iommu->flush.flush_iotlb(iommu, 0, 0, 0, DMA_TLB_GLOBAL_FLUSH);
->   	}
+> diff --git a/arch/x86/include/asm/iommu.h b/arch/x86/include/asm/iommu.h
+> index baedab8ac538..b91623d521d9 100644
+> --- a/arch/x86/include/asm/iommu.h
+> +++ b/arch/x86/include/asm/iommu.h
+> @@ -4,7 +4,6 @@
 >   
-> -	if (iommu_pass_through)
-> +	if (iommu_default_passthrough())
->   		iommu_identity_mapping |= IDENTMAP_ALL;
+>   extern int force_iommu, no_iommu;
+>   extern int iommu_detected;
+> -extern int iommu_pass_through;
 >   
->   #ifdef CONFIG_INTEL_IOMMU_BROKEN_GFX_WA
+>   /* 10 seconds */
+>   #define DMAR_OPERATION_TIMEOUT ((cycles_t) tsc_khz*10*1000)
+> diff --git a/arch/x86/kernel/pci-dma.c b/arch/x86/kernel/pci-dma.c
+> index f62b498b18fb..a6fd479d4a71 100644
+> --- a/arch/x86/kernel/pci-dma.c
+> +++ b/arch/x86/kernel/pci-dma.c
+> @@ -1,6 +1,7 @@
+>   // SPDX-License-Identifier: GPL-2.0
+>   #include <linux/dma-direct.h>
+>   #include <linux/dma-debug.h>
+> +#include <linux/iommu.h>
+>   #include <linux/dmar.h>
+>   #include <linux/export.h>
+>   #include <linux/memblock.h>
+> @@ -43,12 +44,6 @@ int iommu_detected __read_mostly = 0;
+>    * It is also possible to disable by default in kernel config, and enable with
+>    * iommu=nopt at boot time.
+>    */
+> -#ifdef CONFIG_IOMMU_DEFAULT_PASSTHROUGH
+> -int iommu_pass_through __read_mostly = 1;
+> -#else
+> -int iommu_pass_through __read_mostly;
+> -#endif
+> -
+>   extern struct iommu_table_entry __iommu_table[], __iommu_table_end[];
+>   
+>   void __init pci_iommu_alloc(void)
+> @@ -120,9 +115,9 @@ static __init int iommu_setup(char *p)
+>   			swiotlb = 1;
+>   #endif
+>   		if (!strncmp(p, "pt", 2))
+> -			iommu_pass_through = 1;
+> +			iommu_set_default_passthrough();
+>   		if (!strncmp(p, "nopt", 4))
+> -			iommu_pass_through = 0;
+> +			iommu_set_default_translated();
+>   
+>   		gart_parse_options(p);
+>   
 > 
