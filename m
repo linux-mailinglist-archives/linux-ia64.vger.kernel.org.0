@@ -2,62 +2,101 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 37B5291FE6
-	for <lists+linux-ia64@lfdr.de>; Mon, 19 Aug 2019 11:18:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2ED7D924AF
+	for <lists+linux-ia64@lfdr.de>; Mon, 19 Aug 2019 15:23:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727397AbfHSJSx (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 19 Aug 2019 05:18:53 -0400
-Received: from verein.lst.de ([213.95.11.211]:45965 "EHLO verein.lst.de"
+        id S1727635AbfHSNXA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 19 Aug 2019 09:23:00 -0400
+Received: from 8bytes.org ([81.169.241.247]:50272 "EHLO theia.8bytes.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727172AbfHSJSw (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 19 Aug 2019 05:18:52 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 6A7AE68B05; Mon, 19 Aug 2019 11:18:46 +0200 (CEST)
-Date:   Mon, 19 Aug 2019 11:18:46 +0200
-From:   Christoph Hellwig <hch@lst.de>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Christoph Hellwig <hch@lst.de>, Arnd Bergmann <arnd@arndb.de>,
-        Guo Ren <guoren@kernel.org>, Michal Simek <monstr@monstr.eu>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        linux-mips@vger.kernel.org, nios2-dev@lists.rocketboards.org,
-        Openrisc <openrisc@lists.librecores.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-riscv@lists.infradead.org,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org,
-        MTD Maling List <linux-mtd@lists.infradead.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 08/26] m68k: simplify ioremap_nocache
-Message-ID: <20190819091846.GA27890@lst.de>
-References: <20190817073253.27819-1-hch@lst.de> <20190817073253.27819-9-hch@lst.de> <CAMuHMdWyXGjokWi7tn9JHCTz9YMb_vHn6XKeE7KzH5n-54Sy0A@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdWyXGjokWi7tn9JHCTz9YMb_vHn6XKeE7KzH5n-54Sy0A@mail.gmail.com>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+        id S1727424AbfHSNXA (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 19 Aug 2019 09:23:00 -0400
+Received: by theia.8bytes.org (Postfix, from userid 1000)
+        id D15E3309; Mon, 19 Aug 2019 15:22:58 +0200 (CEST)
+From:   Joerg Roedel <joro@8bytes.org>
+To:     Joerg Roedel <joro@8bytes.org>
+Cc:     corbet@lwn.net, tony.luck@intel.com, fenghua.yu@intel.com,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+        x86@kernel.org, linux-doc@vger.kernel.org,
+        linux-ia64@vger.kernel.org, iommu@lists.linux-foundation.org,
+        linux-kernel@vger.kernel.org, Thomas.Lendacky@amd.com,
+        Suravee.Suthikulpanit@amd.com, Joerg Roedel <jroedel@suse.de>
+Subject: [PATCH 00/11 v3] Cleanup IOMMU passthrough setting (and disable IOMMU Passthrough when SME is active)
+Date:   Mon, 19 Aug 2019 15:22:45 +0200
+Message-Id: <20190819132256.14436-1-joro@8bytes.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Aug 19, 2019 at 10:56:02AM +0200, Geert Uytterhoeven wrote:
-> BTW, shouldn't we get rid of the sole user of ioremap_uc(), too?
-> Seems to make a difference on x86 only, where it is "strongly uncached"
-> (whatever that may mean ;-)
+From: Joerg Roedel <jroedel@suse.de>
 
-Yes, we probably should.  However that actually seems worth a discussion
-so I wanted to defer it until after this already huge series.
+Hi,
 
-Another thing we can do after this series is to kill of ioremap_nocache.
+This patch-set started out small to overwrite the default passthrough
+setting (through CONFIG_IOMMU_DEFAULT_PASSTHROUGH=y) when SME is active.
+
+But on the way to that Tom reminded me that the current ways to
+configure passthrough/no-passthrough modes for IOMMU on x86 is a mess.
+So I added a few more patches to clean that up a bit, getting rid of the
+iommu_pass_through variable on the way.This information is now kept only
+in iommu code, with helpers to change that setting from architecture
+code.
+
+And of course this patch-set still disables IOMMU Passthrough mode when
+SME is active even when CONFIG_IOMMU_DEFAULT_PASSTHROUGH=y is set.
+
+The reason for that change is that SME with passthrough mode turned out
+to be fragile with devices requiring SWIOTLB, mainly because SWIOTLB has
+a maximum allocation size of 256kb and a limit overall size of the
+bounce buffer.
+
+Therefore having IOMMU in translation mode by default is better when SME
+is active on a system.
+
+Please review.
+
+Thanks,
+
+	Joerg
+
+Changes since v2:
+
+	- Added 'bool cmd_line' parameter to iommu_set_default_*()
+	  functions, so that we correctly recognize iommu=pt/nopt
+	  command line parameters
+
+Changes since v1:
+
+	- Cleaned up the kernel command line parameters to
+	  configure passthrough/translated mode, getting rid
+	  of the global iommu_pass_through variable
+
+Joerg Roedel (11):
+  iommu: Remember when default domain type was set on kernel command line
+  iommu: Add helpers to set/get default domain type
+  iommu: Use Functions to set default domain type in iommu_set_def_domain_type()
+  iommu/amd: Request passthrough mode from IOMMU core
+  iommu/vt-d: Request passthrough mode from IOMMU core
+  x86/dma: Get rid of iommu_pass_through
+  ia64: Get rid of iommu_pass_through
+  iommu: Print default domain type on boot
+  iommu: Set default domain type at runtime
+  iommu: Disable passthrough mode when SME is active
+  Documentation: Update Documentation for iommu.passthrough
+
+ Documentation/admin-guide/kernel-parameters.txt |  2 +-
+ arch/ia64/include/asm/iommu.h                   |  2 -
+ arch/ia64/kernel/pci-dma.c                      |  2 -
+ arch/x86/include/asm/iommu.h                    |  1 -
+ arch/x86/kernel/pci-dma.c                       | 20 +-----
+ drivers/iommu/amd_iommu.c                       |  6 +-
+ drivers/iommu/intel-iommu.c                     |  2 +-
+ drivers/iommu/iommu.c                           | 93 +++++++++++++++++++++++--
+ include/linux/iommu.h                           | 16 +++++
+ 9 files changed, 110 insertions(+), 34 deletions(-)
+
+-- 
+2.16.4
+
