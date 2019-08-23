@@ -2,62 +2,93 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 58D0D9A9D3
-	for <lists+linux-ia64@lfdr.de>; Fri, 23 Aug 2019 10:12:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0496B9B166
+	for <lists+linux-ia64@lfdr.de>; Fri, 23 Aug 2019 15:55:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2390869AbfHWIMj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 23 Aug 2019 04:12:39 -0400
-Received: from 8bytes.org ([81.169.241.247]:51010 "EHLO theia.8bytes.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389496AbfHWIMj (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 23 Aug 2019 04:12:39 -0400
-Received: by theia.8bytes.org (Postfix, from userid 1000)
-        id 46A6D1C7; Fri, 23 Aug 2019 10:12:37 +0200 (CEST)
-Date:   Fri, 23 Aug 2019 10:12:37 +0200
-From:   Joerg Roedel <joro@8bytes.org>
-To:     corbet@lwn.net, tony.luck@intel.com, fenghua.yu@intel.com,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
-        x86@kernel.org, linux-doc@vger.kernel.org,
-        linux-ia64@vger.kernel.org, iommu@lists.linux-foundation.org,
-        linux-kernel@vger.kernel.org, Thomas.Lendacky@amd.com,
-        Suravee.Suthikulpanit@amd.com, Joerg Roedel <jroedel@suse.de>
-Subject: Re: [PATCH 00/11 v3] Cleanup IOMMU passthrough setting (and disable
- IOMMU Passthrough when SME is active)
-Message-ID: <20190823081236.GE30332@8bytes.org>
-References: <20190819132256.14436-1-joro@8bytes.org>
+        id S2405741AbfHWNzn (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 23 Aug 2019 09:55:43 -0400
+Received: from mail-pg1-f194.google.com ([209.85.215.194]:41098 "EHLO
+        mail-pg1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2405737AbfHWNzm (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 23 Aug 2019 09:55:42 -0400
+Received: by mail-pg1-f194.google.com with SMTP id x15so5833674pgg.8;
+        Fri, 23 Aug 2019 06:55:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=BUAiw1OCmJxcFhDfFwk6vJ4atOusYa0enlexPK5RdcM=;
+        b=p1kpl17yQ70OZJjj0Ex1dhmfo2/01ZSY1fOdxj+J/0LKK1tvqbyWGApNp+RopSCBU9
+         F4JDgPHlcLiS1iW8iLa6+Oz3hvJ93YLeeZOw8VI/PWR7yXZkQ2Y3BWj/9xw0zvYm8PgM
+         xCORxywfStYr2iObddDIvw4uxyyFDzJ4nH8mOJxihZGgGGvOFtqX5rLKfVLumbHnUiDf
+         cp+XG0kMNbLUq5HT5W+hUh/PxuwaBDz2hVRJ6ISjeckQ/denHk7F5JHtEBhHBSkgw5OY
+         5pVQ0XdibEupNYaM8DhPTT4HkPLbYUHv2fszhaDZIjemQ/II2oo6OpoSBdKla1hplbzS
+         Zchg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=BUAiw1OCmJxcFhDfFwk6vJ4atOusYa0enlexPK5RdcM=;
+        b=kyI8hKE6xwD1miMcxQhJ+N6et5/it34fgxP+jY87dG79FVgNdi8fLjDi8QmZ4nkgoB
+         nTlFliEP5SQru9OKHzP1546LxcoHXp4i/4N/teJS+UaIrQWg3WPH3Ha/FUWe7iVAm3v0
+         6yjysqqcNmD0HLU2M1fPUPVt9/qjZOR+K52iE5AxC8IC8OOXMIiRVWfd4GiIamKRXl6I
+         aRxY7WXrurlWubMc2/CPVtGv3kNKf6uTUmZnrY9G+Ovu+Bgdp6+7q1tiUunPwfdOlq2m
+         Bd0wESKEBDk7kKmgmAsIFO97Bo2oCy2tD+MIrL0Kmd9y3+ZdTDvvxRV49T61ScieMkM6
+         DgRg==
+X-Gm-Message-State: APjAAAWm7fM6AeWfFuDb7obirUbcPCSNWq4rH4Ahk3rv3VD6ytxpY1Za
+        6f//agm1SwXBtjp37K7cDJST23+sS8w=
+X-Google-Smtp-Source: APXvYqzeZA+QEa5Xq4+pVCPW2H7vItZxat4J0/SQ1XBxiBF3Po4TqLpUuSgHOh67wlOMVyJ/4CHLaQ==
+X-Received: by 2002:a17:90a:aa90:: with SMTP id l16mr5454982pjq.73.1566568541762;
+        Fri, 23 Aug 2019 06:55:41 -0700 (PDT)
+Received: from localhost (g75.222-224-160.ppp.wakwak.ne.jp. [222.224.160.75])
+        by smtp.gmail.com with ESMTPSA id z13sm2477619pjn.32.2019.08.23.06.55.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Aug 2019 06:55:41 -0700 (PDT)
+Date:   Fri, 23 Aug 2019 22:55:39 +0900
+From:   Stafford Horne <shorne@gmail.com>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 05/26] openrisc: map as uncached in ioremap
+Message-ID: <20190823135539.GC24874@lianli.shorne-pla.net>
+References: <20190817073253.27819-1-hch@lst.de>
+ <20190817073253.27819-6-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190819132256.14436-1-joro@8bytes.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20190817073253.27819-6-hch@lst.de>
+User-Agent: Mutt/1.11.4 (2019-03-13)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Aug 19, 2019 at 03:22:45PM +0200, Joerg Roedel wrote:
-> Joerg Roedel (11):
->   iommu: Remember when default domain type was set on kernel command line
->   iommu: Add helpers to set/get default domain type
->   iommu: Use Functions to set default domain type in iommu_set_def_domain_type()
->   iommu/amd: Request passthrough mode from IOMMU core
->   iommu/vt-d: Request passthrough mode from IOMMU core
->   x86/dma: Get rid of iommu_pass_through
->   ia64: Get rid of iommu_pass_through
->   iommu: Print default domain type on boot
->   iommu: Set default domain type at runtime
->   iommu: Disable passthrough mode when SME is active
->   Documentation: Update Documentation for iommu.passthrough
+On Sat, Aug 17, 2019 at 09:32:32AM +0200, Christoph Hellwig wrote:
+> Openrisc is the only architecture not mapping ioremap as uncached,
+> which has been the default since the Linux 2.6.x days.  Switch it
+> over to implement uncached semantics by default.
 > 
->  Documentation/admin-guide/kernel-parameters.txt |  2 +-
->  arch/ia64/include/asm/iommu.h                   |  2 -
->  arch/ia64/kernel/pci-dma.c                      |  2 -
->  arch/x86/include/asm/iommu.h                    |  1 -
->  arch/x86/kernel/pci-dma.c                       | 20 +-----
->  drivers/iommu/amd_iommu.c                       |  6 +-
->  drivers/iommu/intel-iommu.c                     |  2 +-
->  drivers/iommu/iommu.c                           | 93 +++++++++++++++++++++++--
->  include/linux/iommu.h                           | 16 +++++
->  9 files changed, 110 insertions(+), 34 deletions(-)
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/openrisc/include/asm/io.h      | 20 +++-----------------
+>  arch/openrisc/include/asm/pgtable.h |  2 +-
+>  arch/openrisc/mm/ioremap.c          |  8 ++++----
+>  3 files changed, 8 insertions(+), 22 deletions(-)
 
-Applied.
+Acked-by: Stafford Horne <shorne@gmail.com>
+
+Thanks,
+ -Stafford 
