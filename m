@@ -2,132 +2,116 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AF919BFF9
-	for <lists+linux-ia64@lfdr.de>; Sat, 24 Aug 2019 22:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 905B09C743
+	for <lists+linux-ia64@lfdr.de>; Mon, 26 Aug 2019 04:29:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727753AbfHXUSL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 24 Aug 2019 16:18:11 -0400
-Received: from mail-ua1-f67.google.com ([209.85.222.67]:33019 "EHLO
-        mail-ua1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727619AbfHXUSL (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 24 Aug 2019 16:18:11 -0400
-Received: by mail-ua1-f67.google.com with SMTP id g11so4470620uak.0
-        for <linux-ia64@vger.kernel.org>; Sat, 24 Aug 2019 13:18:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=0zfEO+Of97f0VCldvVRJl3jzEF01O6soGli/loZclzk=;
-        b=CiJfEFfo1GhUFTvULOmIWC5bky0UhNotA9EofhxO4+2Cd9KvnmBRPB6hGuQFhuAXwJ
-         Mf7+XdP/Zb4xXtjIaOfMfbMaQpe98nHR1WFAIDUqUl6lSfoh5N6YkchHMEss2Z7wmXRv
-         mIN1BXAFZpi+SynQvspsYrZxrH8jV01EUoqVt4oI5oVTwO6tctGVNu+Gx+DZX4YcnnWT
-         pUO0Oeafs9qrk8HXoIhQUWukfn1efWZ6t1CZQkpVU6dxRoB/3gD8bO7d0APRfzkEuP01
-         6A3Oop2AiXmYSlChvGG9uj5KK5z6ZoLIIlfJYts9owMo4k3T92eSIqfy7wB0W5m6uFPz
-         fndA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=0zfEO+Of97f0VCldvVRJl3jzEF01O6soGli/loZclzk=;
-        b=MEsPfkJwmm2lbkhg2/iMXq7j78AwGrENzGVfUOrLHXP0qWKR7+DJVRAzVmGNm1xIH4
-         ieNPhjbntRxzfM1vqAg6ILnVXQl3RRCsZPbn0nv2FYm93RHh9EDw0Cy8F7nqnN1AG3Dy
-         hDJtvrWkRxj0gX3q4mBLgk7lCW4FlcN1j4hLdtsMprPmkYZgzmFISoLstwKaQEBtq27k
-         dmop9JlcmWfzyvL0ediZtbK11uM78DNsEdjA79BYD4Oehm1yA6wIpWJWZmvNCRIkAGYd
-         vWpeYYxB9IKa0D58vke13d81iM8n+fzO6dMbZFqwfLeaV/De8LsQiFeuJxNM2sOlcLO9
-         ooJw==
-X-Gm-Message-State: APjAAAVQDf7i3JRDFPiKomK91bYVSLzJ3WiX83aoLTXAJ/Z8HLHOa6uo
-        vLmFBwGTYP595B2WKNlAG5vltCAP1hGwqmWjfCvY1Q==
-X-Google-Smtp-Source: APXvYqxjVPBCRB+CRwr4t5I/R3fEcc9xAf9hOK0mmX0eHtTD2rTNJ8/siW0Z/MdtMGoJdUYWfX/KXqMK5Snr1pytTE0=
-X-Received: by 2002:a9f:230c:: with SMTP id 12mr5623819uae.85.1566677889720;
- Sat, 24 Aug 2019 13:18:09 -0700 (PDT)
-MIME-Version: 1.0
-References: <20190820033406.29796-1-cyphar@cyphar.com> <20190820033406.29796-8-cyphar@cyphar.com>
-In-Reply-To: <20190820033406.29796-8-cyphar@cyphar.com>
-From:   Daniel Colascione <dancol@google.com>
-Date:   Sat, 24 Aug 2019 13:17:33 -0700
-Message-ID: <CAKOZuesfxRBJe314rkTKXtjXdz6ki3uAUBYVbu5Q2rd3=ADphQ@mail.gmail.com>
-Subject: Re: [PATCH RESEND v11 7/8] open: openat2(2) syscall
-To:     Aleksa Sarai <cyphar@cyphar.com>
-Cc:     Al Viro <viro@zeniv.linux.org.uk>,
-        Jeff Layton <jlayton@kernel.org>,
-        "J. Bruce Fields" <bfields@fieldses.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        David Howells <dhowells@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Shuah Khan <skhan@linuxfoundation.org>,
-        Christian Brauner <christian@brauner.io>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexei Starovoitov <ast@kernel.org>,
+        id S1726434AbfHZC3o (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 25 Aug 2019 22:29:44 -0400
+Received: from foss.arm.com ([217.140.110.172]:52414 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726265AbfHZC3n (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 25 Aug 2019 22:29:43 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 77760344;
+        Sun, 25 Aug 2019 19:29:42 -0700 (PDT)
+Received: from [10.162.43.136] (p8cg001049571a15.blr.arm.com [10.162.43.136])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8EB213F718;
+        Sun, 25 Aug 2019 19:29:32 -0700 (PDT)
+Subject: Re: [RFC V2 0/1] mm/debug: Add tests for architecture exported page
+ table helpers
+To:     Mark Rutland <mark.rutland@arm.com>,
+        Matthew Wilcox <willy@infradead.org>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
         Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
-        David Drysdale <drysdale@google.com>,
-        Chanho Min <chanho.min@lge.com>,
-        Oleg Nesterov <oleg@redhat.com>, Aleksa Sarai <asarai@suse.de>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
-        Linux API <linux-api@vger.kernel.org>,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        linux-kernel <linux-kernel@vger.kernel.org>,
-        "open list:KERNEL SELFTEST FRAMEWORK" 
-        <linux-kselftest@vger.kernel.org>, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+References: <1565335998-22553-1-git-send-email-anshuman.khandual@arm.com>
+ <20190809101632.GM5482@bombadil.infradead.org>
+ <20190809114450.GF48423@lakrids.cambridge.arm.com>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <652ae041-2033-1cf8-e559-6dcf85dd2fdd@arm.com>
+Date:   Mon, 26 Aug 2019 07:59:36 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
+MIME-Version: 1.0
+In-Reply-To: <20190809114450.GF48423@lakrids.cambridge.arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Aug 19, 2019 at 8:37 PM Aleksa Sarai <cyphar@cyphar.com> wrote:
->
-> The most obvious syscall to add support for the new LOOKUP_* scoping
-> flags would be openat(2). However, there are a few reasons why this is
-> not the best course of action:
->
->  * The new LOOKUP_* flags are intended to be security features, and
->    openat(2) will silently ignore all unknown flags. This means that
->    users would need to avoid foot-gunning themselves constantly when
->    using this interface if it were part of openat(2). This can be fixed
->    by having userspace libraries handle this for users[1], but should be
->    avoided if possible.
->
->  * Resolution scoping feels like a different operation to the existing
->    O_* flags. And since openat(2) has limited flag space, it seems to be
->    quite wasteful to clutter it with 5 flags that are all
->    resolution-related. Arguably O_NOFOLLOW is also a resolution flag but
->    its entire purpose is to error out if you encounter a trailing
->    symlink -- not to scope resolution.
->
->  * Other systems would be able to reimplement this syscall allowing for
->    cross-OS standardisation rather than being hidden amongst O_* flags
->    which may result in it not being used by all the parties that might
->    want to use it (file servers, web servers, container runtimes, etc).
->
->  * It gives us the opportunity to iterate on the O_PATH interface. In
->    particular, the new @how->upgrade_mask field for fd re-opening is
->    only possible because we have a clean slate without needing to re-use
->    the ACC_MODE flag design nor the existing openat(2) @mode semantics.
->
-> To this end, we introduce the openat2(2) syscall. It provides all of the
-> features of openat(2) through the @how->flags argument, but also
-> also provides a new @how->resolve argument which exposes RESOLVE_* flags
-> that map to our new LOOKUP_* flags. It also eliminates the long-standing
-> ugliness of variadic-open(2) by embedding it in a struct.
->
-> In order to allow for userspace to lock down their usage of file
-> descriptor re-opening, openat2(2) has the ability for users to disallow
-> certain re-opening modes through @how->upgrade_mask. At the moment,
-> there is no UPGRADE_NOEXEC. The open_how struct is padded to 64 bytes
-> for future extensions (all of the reserved bits must be zeroed).
 
-Why pad the structure when new functionality (perhaps accommodated via
-a larger structure) could be signaled by passing a new flag? Adding
-reserved fields to a structure with a size embedded in the ABI makes a
-lot of sense --- e.g., pthread_mutex_t can't grow. But this structure
-can grow, so the reservation seems needless to me.
+
+On 08/09/2019 05:14 PM, Mark Rutland wrote:
+> On Fri, Aug 09, 2019 at 03:16:33AM -0700, Matthew Wilcox wrote:
+>> On Fri, Aug 09, 2019 at 01:03:17PM +0530, Anshuman Khandual wrote:
+>>> Should alloc_gigantic_page() be made available as an interface for general
+>>> use in the kernel. The test module here uses very similar implementation from
+>>> HugeTLB to allocate a PUD aligned memory block. Similar for mm_alloc() which
+>>> needs to be exported through a header.
+>>
+>> Why are you allocating memory at all instead of just using some
+>> known-to-exist PFNs like I suggested?
+> 
+> IIUC the issue is that there aren't necessarily known-to-exist PFNs that
+> are sufficiently aligned -- they may not even exist.
+> 
+> For example, with 64K pages, a PMD covers 512M. The kernel image is
+> (generally) smaller than 512M, and will be mapped at page granularity.
+> In that case, any PMD entry for a kernel symbol address will point to
+> the PTE level table, and that will only necessarily be page-aligned, as
+> any P?D level table is only necessarily page-aligned.
+
+Right.
+
+> 
+> In the same configuration, you could have less than 512M of total
+> memory, and none of this memory is necessarily aligned to 512M. So
+> beyond the PTE level, I don't think you can guarantee a known-to-exist
+> valid PFN.
+Right a PMD aligned valid PFN might not even exist. This proposed patch
+which attempts to allocate memory chunk with required alignment will just
+fail indicating that such a valid PFN does not exist and hence will skip
+any relevant tests. At present this is done for PUD aligned allocation
+failure but we can similarly skip PMD relevant tests as well if PMD
+aligned memory chunk is not allocated.
+
+> 
+> I also believe that synthetic PFNs could fail pfn_valid(), so that might
+> cause us pain too...
+
+Agreed. So do we have an agreement that it is better to use allocated
+memory with required alignment for the tests than known-to-exist PFNs ?
+
+- Anshuman
