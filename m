@@ -2,62 +2,49 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14406A3B79
-	for <lists+linux-ia64@lfdr.de>; Fri, 30 Aug 2019 18:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47BE1A3BB1
+	for <lists+linux-ia64@lfdr.de>; Fri, 30 Aug 2019 18:12:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727991AbfH3QHJ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 30 Aug 2019 12:07:09 -0400
-Received: from verein.lst.de ([213.95.11.211]:56912 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727884AbfH3QHJ (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 30 Aug 2019 12:07:09 -0400
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 5D5BB227A8A; Fri, 30 Aug 2019 18:07:05 +0200 (CEST)
-Date:   Fri, 30 Aug 2019 18:07:05 +0200
+        id S1728042AbfH3QMp (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 30 Aug 2019 12:12:45 -0400
+Received: from bombadil.infradead.org ([198.137.202.133]:37994 "EHLO
+        bombadil.infradead.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727891AbfH3QMp (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 30 Aug 2019 12:12:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+        Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+         bh=/Ems5+NJMUxWSrs5tQGH8GZAPOE1hkwEvIaWWxY9zNA=; b=PEDN4ZCP7oVn+maWknVbOFIM/
+        MZ8worfWRVsNTy5/Isi3f++qmLJ1NboW7PDVLSArwNqjJCXFrV7b3HhDGq8bekJkdpG/7yG+EQ/DX
+        lpHImaSzD1NFAWiHxHagPWGhZuarxlRRjYtNvNt+PD0bqflOkcMAGwhykno1RNujCK/7BZdHSh+02
+        iTEHbX40qwGAkt8f2XuXrMlF3e4ReFkAzulstt+GrF6sgjH6ve9EHoPBA66I0/EtQ6mH+tLTYyZcy
+        YViGOV0Nu9tJyCPDH5Q36BQg8JZpeV6HsYUjtkRqHD3/7qvTNTglL4c3ndQcOdUNhQkX5/++oy2oz
+        CqmJg27Jw==;
+Received: from [2001:4bb8:180:3f4c:863:2ead:e9d4:da9f] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92 #3 (Red Hat Linux))
+        id 1i3jVv-0000kW-Id; Fri, 30 Aug 2019 16:12:39 +0000
 From:   Christoph Hellwig <hch@lst.de>
-To:     Stafford Horne <shorne@gmail.com>
-Cc:     Christoph Hellwig <hch@lst.de>, Arnd Bergmann <arnd@arndb.de>,
-        Guo Ren <guoren@kernel.org>, Michal Simek <monstr@monstr.eu>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
+To:     Michal Simek <monstr@monstr.eu>, Tony Luck <tony.luck@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     linux-m68k@lists.linux-m68k.org, linux-ia64@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 05/26] openrisc: map as uncached in ioremap
-Message-ID: <20190830160705.GF26887@lst.de>
-References: <20190817073253.27819-1-hch@lst.de> <20190817073253.27819-6-hch@lst.de> <20190823135539.GC24874@lianli.shorne-pla.net>
+Subject: ioremap cleanups
+Date:   Fri, 30 Aug 2019 18:12:34 +0200
+Message-Id: <20190830161237.23033-1-hch@lst.de>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190823135539.GC24874@lianli.shorne-pla.net>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Aug 23, 2019 at 10:55:39PM +0900, Stafford Horne wrote:
-> On Sat, Aug 17, 2019 at 09:32:32AM +0200, Christoph Hellwig wrote:
-> > Openrisc is the only architecture not mapping ioremap as uncached,
-> > which has been the default since the Linux 2.6.x days.  Switch it
-> > over to implement uncached semantics by default.
-> > 
-> > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > ---
-> >  arch/openrisc/include/asm/io.h      | 20 +++-----------------
-> >  arch/openrisc/include/asm/pgtable.h |  2 +-
-> >  arch/openrisc/mm/ioremap.c          |  8 ++++----
-> >  3 files changed, 8 insertions(+), 22 deletions(-)
-> 
-> Acked-by: Stafford Horne <shorne@gmail.com>
+Hi all,
 
-Can you send this one to Linus for 5.4?  That would help with the
-possibility to remove ioremap_nocache after that.
+these are three cleanups from my generic ioremap series that needed
+a few edits, and which I'd like you to pick up through your respective
+arch trees for 5.4 if possible.
