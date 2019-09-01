@@ -2,84 +2,52 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 18F1DA4552
-	for <lists+linux-ia64@lfdr.de>; Sat, 31 Aug 2019 18:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 330F8A47F2
+	for <lists+linux-ia64@lfdr.de>; Sun,  1 Sep 2019 08:53:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728314AbfHaQ3r (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 31 Aug 2019 12:29:47 -0400
-Received: from mail.kernel.org ([198.145.29.99]:51240 "EHLO mail.kernel.org"
+        id S1728724AbfIAGxZ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 1 Sep 2019 02:53:25 -0400
+Received: from eipet.com ([103.227.62.76]:53149 "EHLO eipet.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728244AbfHaQ3q (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sat, 31 Aug 2019 12:29:46 -0400
-Received: from willie-the-truck (236.31.169.217.in-addr.arpa [217.169.31.236])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2253522D37;
-        Sat, 31 Aug 2019 16:29:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1567268985;
-        bh=oCFqDXfnxrqpiBFRCwyD8nHXvoMvSjbxCsJhrxHTYqM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=vX6b95IdsVrDjTXh55KZNhoPNMKUITWlit4Ldb9kHZhxWpNoqZwiOB5EF5DJcLfuZ
-         wmt8nfF1pggofVEAUJWY4K2cI3w83kg0ds8vBO0zGI/+b8iJT5NQEI4dH3G3L57NyD
-         AwNlHxXQFvARoZXdkRSB9gHwMtmjWPnHQrjl8Gx4=
-Date:   Sat, 31 Aug 2019 17:29:38 +0100
-From:   Will Deacon <will@kernel.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Guo Ren <guoren@kernel.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 19/26] arm64: remove __iounmap
-Message-ID: <20190831162937.5ybulvaa4eq7mybs@willie-the-truck>
-References: <20190817073253.27819-1-hch@lst.de>
- <20190817073253.27819-20-hch@lst.de>
- <20190819073601.4yxjvmyjtpi7tk56@willie-the-truck>
- <20190830160515.GC26887@lst.de>
+        id S1728693AbfIAGxZ (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 1 Sep 2019 02:53:25 -0400
+X-Greylist: delayed 515 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Sep 2019 02:53:24 EDT
+Received: by eipet.com (Postfix, from userid 10002)
+        id 8AA9E821DC; Sun,  1 Sep 2019 12:14:47 +0530 (IST)
+To:     linux-ia64@vger.kernel.org
+Subject: Message sent from Eipet
+X-PHP-Originating-Script: 10002:simple-basic-contact-form.php
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20190830160515.GC26887@lst.de>
-User-Agent: NeoMutt/20170113 (1.7.2)
+From:   Charleslot <linux-ia64@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-PPP-Message-ID: <20190901064447.5568.64511@localhost.localdomain>
+X-PPP-Vhost: eipet.com
+Message-Id: <20190901064447.8AA9E821DC@eipet.com>
+Date:   Sun,  1 Sep 2019 12:14:47 +0530 (IST)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Christoph,
+Hello admin, 
 
-On Fri, Aug 30, 2019 at 06:05:15PM +0200, Christoph Hellwig wrote:
-> On Mon, Aug 19, 2019 at 08:36:02AM +0100, Will Deacon wrote:
-> > On Sat, Aug 17, 2019 at 09:32:46AM +0200, Christoph Hellwig wrote:
-> > > No need to indirect iounmap for arm64.
-> > > 
-> > > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > > ---
-> > >  arch/arm64/include/asm/io.h | 3 +--
-> > >  arch/arm64/mm/ioremap.c     | 4 ++--
-> > >  2 files changed, 3 insertions(+), 4 deletions(-)
-> > 
-> > Not sure why we did it like this...
-> > 
-> > Acked-by: Will Deacon <will@kernel.org>
-> 
-> Can you just pick this one up through the arm64 tree for 5.4?
+You are being contacted via EIPET: 
 
-Unfortunately, it doesn't apply because the tree you've based it on has
-removed ioremap_wt(). If you send a version based on mainline, I can
-queue it.
+Name: Charleslot
+Email: linux-ia64@vger.kernel.org
+Message: 
 
-Cheers,
+10 Best DE Dating Sites 2019: https://hec.su/lgyw?zyhlPJljD3
 
-Will
+-----------------------
+
+Additional Information: 
+
+Site: EIPET
+URL: http://eipet.com/contact-us/
+Date: September 1, 2019 @ 8:44 am
+IP: 85.10.56.254
+Host: 85-10-56-254.croweb.host
+Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36 OPR/53.0.2907.68
+
+
