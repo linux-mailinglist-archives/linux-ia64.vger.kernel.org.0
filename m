@@ -2,52 +2,51 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 330F8A47F2
-	for <lists+linux-ia64@lfdr.de>; Sun,  1 Sep 2019 08:53:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDFB2A484E
+	for <lists+linux-ia64@lfdr.de>; Sun,  1 Sep 2019 10:02:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728724AbfIAGxZ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 1 Sep 2019 02:53:25 -0400
-Received: from eipet.com ([103.227.62.76]:53149 "EHLO eipet.com"
+        id S1725854AbfIAICd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 1 Sep 2019 04:02:33 -0400
+Received: from verein.lst.de ([213.95.11.211]:40658 "EHLO verein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728693AbfIAGxZ (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 1 Sep 2019 02:53:25 -0400
-X-Greylist: delayed 515 seconds by postgrey-1.27 at vger.kernel.org; Sun, 01 Sep 2019 02:53:24 EDT
-Received: by eipet.com (Postfix, from userid 10002)
-        id 8AA9E821DC; Sun,  1 Sep 2019 12:14:47 +0530 (IST)
-To:     linux-ia64@vger.kernel.org
-Subject: Message sent from Eipet
-X-PHP-Originating-Script: 10002:simple-basic-contact-form.php
+        id S1727083AbfIAICd (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 1 Sep 2019 04:02:33 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id F351D227A8A; Sun,  1 Sep 2019 10:02:27 +0200 (CEST)
+Date:   Sun, 1 Sep 2019 10:02:27 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Paul Walmsley <paul.walmsley@sifive.com>
+Cc:     Christoph Hellwig <hch@lst.de>, Arnd Bergmann <arnd@arndb.de>,
+        Guo Ren <guoren@kernel.org>, Michal Simek <monstr@monstr.eu>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org,
+        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-mips@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        openrisc@lists.librecores.org, linux-mtd@lists.infradead.org,
+        linux-alpha@vger.kernel.org, sparclinux@vger.kernel.org,
+        nios2-dev@lists.rocketboards.org, linux-riscv@lists.infradead.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 24/26] riscv: use the generic ioremap code
+Message-ID: <20190901080227.GB12035@lst.de>
+References: <20190817073253.27819-1-hch@lst.de> <20190817073253.27819-25-hch@lst.de> <alpine.DEB.2.21.9999.1908171421560.4130@viisi.sifive.com>
 MIME-Version: 1.0
-From:   Charleslot <linux-ia64@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-PPP-Message-ID: <20190901064447.5568.64511@localhost.localdomain>
-X-PPP-Vhost: eipet.com
-Message-Id: <20190901064447.8AA9E821DC@eipet.com>
-Date:   Sun,  1 Sep 2019 12:14:47 +0530 (IST)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.21.9999.1908171421560.4130@viisi.sifive.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hello admin, 
+On Sat, Aug 17, 2019 at 02:22:15PM -0700, Paul Walmsley wrote:
+> Reviewed-by: Paul Walmsley <paul.walmsley@sifive.com>
+> Tested-by: Paul Walmsley <paul.walmsley@sifive.com> # rv32, rv64 boot
+> Acked-by: Paul Walmsley <paul.walmsley@sifive.com> # arch/riscv
 
-You are being contacted via EIPET: 
-
-Name: Charleslot
-Email: linux-ia64@vger.kernel.org
-Message: 
-
-10 Best DE Dating Sites 2019: https://hec.su/lgyw?zyhlPJljD3
-
------------------------
-
-Additional Information: 
-
-Site: EIPET
-URL: http://eipet.com/contact-us/
-Date: September 1, 2019 @ 8:44 am
-IP: 85.10.56.254
-Host: 85-10-56-254.croweb.host
-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Safari/537.36 OPR/53.0.2907.68
-
-
+Can you also take a look at the patch adding the generic code?
