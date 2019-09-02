@@ -2,66 +2,56 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id B3927A5907
-	for <lists+linux-ia64@lfdr.de>; Mon,  2 Sep 2019 16:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 740FCA5919
+	for <lists+linux-ia64@lfdr.de>; Mon,  2 Sep 2019 16:19:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726436AbfIBORO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 2 Sep 2019 10:17:14 -0400
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:33897 "EHLO
-        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731240AbfIBORM (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 2 Sep 2019 10:17:12 -0400
-Received: by mail-wr1-f68.google.com with SMTP id s18so14247899wrn.1
-        for <linux-ia64@vger.kernel.org>; Mon, 02 Sep 2019 07:17:08 -0700 (PDT)
+        id S1730562AbfIBOTV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 2 Sep 2019 10:19:21 -0400
+Received: from mail-wm1-f67.google.com ([209.85.128.67]:37940 "EHLO
+        mail-wm1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730153AbfIBOTV (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 2 Sep 2019 10:19:21 -0400
+Received: by mail-wm1-f67.google.com with SMTP id o184so14799918wme.3
+        for <linux-ia64@vger.kernel.org>; Mon, 02 Sep 2019 07:19:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=monstr-eu.20150623.gappssmtp.com; s=20150623;
         h=reply-to:subject:to:cc:references:from:openpgp:autocrypt:message-id
          :date:user-agent:mime-version:in-reply-to;
-        bh=wHLGtYkZTmnf/Q+NJRht7CodjM3w+dg+9ES/vSM0RcI=;
-        b=afYPXPQLzvFAj1lVnwBQn3TA5rDlPS9rxLsQKmLyUEVYYqLvv2di5vklel8nyDuIlj
-         IagBthy5dYLukTgWxTT/3ztKBRs9PTOZ66iuza579Dfj5UnylogGKx0AMzEUMimvbUWZ
-         v0Jple7LvgR/plVjamH/3QMW3Vb3p+g8yC6PXiSurp6qQqqA/N9J6twCJEbcgPkvIwyL
-         WsQO4HxJE3vbkuodjs3S68y25OtneQYX4b8YKVWUaflWKRlIMn5V5CKAAS7VvPy3RMkl
-         oDTh3MMO0lQA3AxaolW6Uh96p9mpUIjQPq9teH1xMncYapsZ1Q7Az7UhWut9STf4/cGK
-         RxUA==
+        bh=4zpswzraS6mwfLBLxLHQKZIqxS4nesDwUxuSAM2hk4s=;
+        b=PwrK8qaTXDGlXnG2TIQ/3smxJbIu6IeMDkp2H4MdrqOuLVZJHDA8BJGUzkPga04xmf
+         ybI3sWyiePQJ4Qna128rzRsRWV+fmZxflwKpiC140LA0aE6rlbwmSiW4zmbhD95E+GnU
+         f/DwE28h53VTbGrSAuqLAZ7f9LRPj/ycZsbUhrzOigT900guHaf8crFYXy9REwiIY2JR
+         RT3GNXzMgVwl19F2VA680EYM1KImd8iMev979TAX9w2UnzEpSFAy2YC9CvaUkYXfyL60
+         BKTIJsg5OjYpe15MxpPMVipjNH2Ok6gvpDxeCm6rPSD/Gn6tk/3ww0BPjypM7c58iUuM
+         mCfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:reply-to:subject:to:cc:references:from:openpgp
          :autocrypt:message-id:date:user-agent:mime-version:in-reply-to;
-        bh=wHLGtYkZTmnf/Q+NJRht7CodjM3w+dg+9ES/vSM0RcI=;
-        b=QBpbbmbQGFcHDwJmzjExOExOdu/lU+I619MaBevV4W/ruuu/kbqSIr37fvHvKq3DWN
-         30L1WLTOhTlty3dGGCaR6KkFwImfr05VXUrJWc5CHXkipP8Lhgy2UPttjIY1vgGqx0kD
-         ybXumPNIZ+NgvIbF4C+II6lzTBthXOMrl2OunJZz2zADiJBoWe9v99J08MmusWuxC6am
-         YBYZ26MHhaj4x3uZDILKdNlJk/DdzS2kGkMSiq1mZHRm7f07shEj6tx5b1Gl5myMsVeg
-         dKPPkK6S7JPKBj7LPiFYL/5Z+IYYqX/LF78zNyelFHa+dmLgEHf3sBn8xiKjYtiBo5pE
-         atCg==
-X-Gm-Message-State: APjAAAXQ0XXiEemiHoBkQxBClkmZZcjA14MZz7T2Xx+HOyU/XvcDMk+i
-        rHt8lohNmIbxFIRc1dd6/7GAVg==
-X-Google-Smtp-Source: APXvYqyShqgEJwFOtJFr9Fq0w6BS1apJDW9A6yIMdA+d8V9PFj9RZCN2SBDb4+Bki1KAn/644PK6KQ==
-X-Received: by 2002:adf:dd04:: with SMTP id a4mr5388204wrm.340.1567433828197;
-        Mon, 02 Sep 2019 07:17:08 -0700 (PDT)
+        bh=4zpswzraS6mwfLBLxLHQKZIqxS4nesDwUxuSAM2hk4s=;
+        b=ZG+fppd2j5xCTlUG+B1Uhg9i9HfyQUS7DyKZ4jz3+DTLmOgxYsbey0jnGJH7kSeghU
+         Q6ZMXpx4pHQxfjzpT/5O/wVLTKWDUah4A7wyO++V9ZetOSDlQjE4Nef0D9PYlMO9H0py
+         4IyOU71XlxhsLIS0ZDoYCs8KL77d7PkkCsV54u1WAlID6bMEzD2zWkigDdA4ohrRBl5+
+         qYzAylt653hVcvVNLoueqrDKI0VNmazgl+ffoB52YClxOZ5b0JV/pgJ0g8PdUtGT555x
+         5GHfLV5kocGpseOFhp7vtf4yUv+9o+p1yL4EEKwmONk8bniCqoTMXdNZmynzsFaaDocI
+         /0hg==
+X-Gm-Message-State: APjAAAXdpf8rEDFAh+8t3AeVXcTIBK/YyNHowdpTMJWXvW9EjBmZY6mL
+        7JA5B7OnDnSj8+yZEX6bc8qY3A==
+X-Google-Smtp-Source: APXvYqwohrLK4eRRbjVYd1GkTOfS/7dCh1jYjDi8h9qrG+L0oDCipek7Q7r84ZxTtEEon/is+AoR6Q==
+X-Received: by 2002:a7b:c857:: with SMTP id c23mr38255016wml.51.1567433957539;
+        Mon, 02 Sep 2019 07:19:17 -0700 (PDT)
 Received: from [74.125.133.108] ([149.199.62.131])
-        by smtp.gmail.com with ESMTPSA id r17sm13933233wrt.68.2019.09.02.07.16.58
+        by smtp.gmail.com with ESMTPSA id 74sm18296883wma.15.2019.09.02.07.19.14
         (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
-        Mon, 02 Sep 2019 07:17:07 -0700 (PDT)
+        Mon, 02 Sep 2019 07:19:16 -0700 (PDT)
 Reply-To: monstr@monstr.eu
-Subject: Re: [PATCH 03/26] m68k, microblaze: remove ioremap_fullcache
-To:     Christoph Hellwig <hch@lst.de>, Arnd Bergmann <arnd@arndb.de>,
-        Guo Ren <guoren@kernel.org>, Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Guan Xuetao <gxt@pku.edu.cn>, x86@kernel.org
-Cc:     linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        nios2-dev@lists.rocketboards.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-mtd@lists.infradead.org, linux-arch@vger.kernel.org,
+Subject: Re: [PATCH 2/3] microblaze: remove ioremap_fullcache
+To:     Christoph Hellwig <hch@lst.de>, Tony Luck <tony.luck@intel.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     linux-m68k@lists.linux-m68k.org, linux-ia64@vger.kernel.org,
         linux-kernel@vger.kernel.org
-References: <20190817073253.27819-1-hch@lst.de>
- <20190817073253.27819-4-hch@lst.de>
+References: <20190830161237.23033-1-hch@lst.de>
+ <20190830161237.23033-3-hch@lst.de>
 From:   Michal Simek <monstr@monstr.eu>
 Openpgp: preference=signencrypt
 Autocrypt: addr=monstr@monstr.eu; prefer-encrypt=mutual; keydata=
@@ -153,80 +143,49 @@ Autocrypt: addr=monstr@monstr.eu; prefer-encrypt=mutual; keydata=
  EwIAdQuPb2h1QLk5KnknUNikjdIZa9yRC5OnUDwV3ffG4Gsb+xtEL7eTLlbFPgBRUmvy6QbE
  9GjRSSvlab6Mj5tocPBA0CSsonfLCiHlOLvjdMsdmX5NDUpDCo5QMSNEfHEmV3p+A/NOQ/Hk
  Qg41tpHgK85MlNXw6MBWLgdXBSGdD0zVX4S4Gz+vwyY1
-Message-ID: <9a11ddb0-0799-c64a-f5aa-0504c564998f@monstr.eu>
-Date:   Mon, 2 Sep 2019 16:16:52 +0200
+Message-ID: <1e5e6ca9-3b09-df10-12e8-828d13590660@monstr.eu>
+Date:   Mon, 2 Sep 2019 16:19:08 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
  Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20190817073253.27819-4-hch@lst.de>
+In-Reply-To: <20190830161237.23033-3-hch@lst.de>
 Content-Type: multipart/signed; micalg=pgp-sha1;
  protocol="application/pgp-signature";
- boundary="sxrD5DzuLHXmSTexCf4xoEovzaJstmsXm"
+ boundary="mfBAq2Hw8KEYFIQ59QLhb5U3IQWVJJCJo"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
 This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---sxrD5DzuLHXmSTexCf4xoEovzaJstmsXm
-Content-Type: multipart/mixed; boundary="Gv98DqTDPDXpgdAS8uye8pnF1A8XQfxBm";
+--mfBAq2Hw8KEYFIQ59QLhb5U3IQWVJJCJo
+Content-Type: multipart/mixed; boundary="TsTbQ6Zq4dCF3p6vuwBULinZWnl3VOqZ2";
  protected-headers="v1"
 From: Michal Simek <monstr@monstr.eu>
 Reply-To: monstr@monstr.eu
-To: Christoph Hellwig <hch@lst.de>, Arnd Bergmann <arnd@arndb.de>,
- Guo Ren <guoren@kernel.org>, Greentime Hu <green.hu@gmail.com>,
- Vincent Chen <deanbo422@gmail.com>, Guan Xuetao <gxt@pku.edu.cn>,
- x86@kernel.org
-Cc: linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
- linux-arm-kernel@lists.infradead.org, linux-hexagon@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, nios2-dev@lists.rocketboards.org,
- openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
- linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
- linux-xtensa@linux-xtensa.org, linux-mtd@lists.infradead.org,
- linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Message-ID: <9a11ddb0-0799-c64a-f5aa-0504c564998f@monstr.eu>
-Subject: Re: [PATCH 03/26] m68k, microblaze: remove ioremap_fullcache
-References: <20190817073253.27819-1-hch@lst.de>
- <20190817073253.27819-4-hch@lst.de>
-In-Reply-To: <20190817073253.27819-4-hch@lst.de>
+To: Christoph Hellwig <hch@lst.de>, Tony Luck <tony.luck@intel.com>,
+ Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: linux-m68k@lists.linux-m68k.org, linux-ia64@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Message-ID: <1e5e6ca9-3b09-df10-12e8-828d13590660@monstr.eu>
+Subject: Re: [PATCH 2/3] microblaze: remove ioremap_fullcache
+References: <20190830161237.23033-1-hch@lst.de>
+ <20190830161237.23033-3-hch@lst.de>
+In-Reply-To: <20190830161237.23033-3-hch@lst.de>
 
---Gv98DqTDPDXpgdAS8uye8pnF1A8XQfxBm
+--TsTbQ6Zq4dCF3p6vuwBULinZWnl3VOqZ2
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: quoted-printable
 
-On 17. 08. 19 9:32, Christoph Hellwig wrote:
+On 30. 08. 19 18:12, Christoph Hellwig wrote:
 > No callers of this function.
 >=20
 > Signed-off-by: Christoph Hellwig <hch@lst.de>
 > ---
->  arch/m68k/include/asm/kmap.h     | 7 -------
 >  arch/microblaze/include/asm/io.h | 1 -
->  2 files changed, 8 deletions(-)
+>  1 file changed, 1 deletion(-)
 >=20
-> diff --git a/arch/m68k/include/asm/kmap.h b/arch/m68k/include/asm/kmap.=
-h
-> index aac7f045f7f0..03d904fe6087 100644
-> --- a/arch/m68k/include/asm/kmap.h
-> +++ b/arch/m68k/include/asm/kmap.h
-> @@ -43,13 +43,6 @@ static inline void __iomem *ioremap_wt(unsigned long=
- physaddr,
->  	return __ioremap(physaddr, size, IOMAP_WRITETHROUGH);
->  }
-> =20
-> -#define ioremap_fullcache ioremap_fullcache
-> -static inline void __iomem *ioremap_fullcache(unsigned long physaddr,
-> -					      unsigned long size)
-> -{
-> -	return __ioremap(physaddr, size, IOMAP_FULL_CACHING);
-> -}
-> -
->  #define memset_io memset_io
->  static inline void memset_io(volatile void __iomem *addr, unsigned cha=
-r val,
->  			     int count)
 > diff --git a/arch/microblaze/include/asm/io.h b/arch/microblaze/include=
 /asm/io.h
 > index c7968139486f..86c95b2a1ce1 100644
@@ -243,7 +202,7 @@ r val,
 > =20
 >=20
 
-Acked-by: Michal Simek <monstr@monstr.eu> (for Microblaze)
+This single patch applied for v5.4 via microblaze tree.
 
 Thanks,
 Michal
@@ -257,18 +216,18 @@ U-Boot custodian - Xilinx Microblaze/Zynq/ZynqMP/Versal SoCs
 
 
 
---Gv98DqTDPDXpgdAS8uye8pnF1A8XQfxBm--
+--TsTbQ6Zq4dCF3p6vuwBULinZWnl3VOqZ2--
 
---sxrD5DzuLHXmSTexCf4xoEovzaJstmsXm
+--mfBAq2Hw8KEYFIQ59QLhb5U3IQWVJJCJo
 Content-Type: application/pgp-signature; name="signature.asc"
 Content-Description: OpenPGP digital signature
 Content-Disposition: attachment; filename="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EARECAB0WIQQbPNTMvXmYlBPRwx7KSWXLKUoMIQUCXW0kVQAKCRDKSWXLKUoM
-IUCIAJ0dq35U3Gq44M2ocYgcj4SW3Em/1wCfajAs22UIYAGzwTZZyZTvB5OFi1I=
-=essT
+iF0EARECAB0WIQQbPNTMvXmYlBPRwx7KSWXLKUoMIQUCXW0k3AAKCRDKSWXLKUoM
+Ic+tAJ4vGoKGabf+eZaw4Gche0V48YIrBACePFT26bcMWKEmEmc8Z6Bv5WH6EW0=
+=rtJ9
 -----END PGP SIGNATURE-----
 
---sxrD5DzuLHXmSTexCf4xoEovzaJstmsXm--
+--mfBAq2Hw8KEYFIQ59QLhb5U3IQWVJJCJo--
