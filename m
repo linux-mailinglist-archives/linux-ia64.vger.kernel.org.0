@@ -2,38 +2,38 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id EE04FBA522
-	for <lists+linux-ia64@lfdr.de>; Sun, 22 Sep 2019 20:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 953E2BAB62
+	for <lists+linux-ia64@lfdr.de>; Sun, 22 Sep 2019 21:55:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408052AbfIVSyy (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 22 Sep 2019 14:54:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55660 "EHLO mail.kernel.org"
+        id S2389428AbfIVTiG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 22 Sep 2019 15:38:06 -0400
+Received: from mail.kernel.org ([198.145.29.99]:41306 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2408048AbfIVSyx (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:54:53 -0400
+        id S2389370AbfIVSph (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:45:37 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 7B45C208C2;
-        Sun, 22 Sep 2019 18:54:52 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id DC3982186A;
+        Sun, 22 Sep 2019 18:45:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178493;
+        s=default; t=1569177936;
         bh=NJLxmO+sPDzSi40Zm+6uwJ9bnxqS9Qk6TiNQiFwfxvk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p2gIJeGFjodUuGdtytvFUXyymUVm1WdXz0HFUjqqSAmkRLeV3MdrxvYUSRleVa5Qc
-         aXtpYGNHkSOHR5t+2jMxOtd8OpzUJuMUhFrfL5Wv1plytnx5ZhkfnuUDVCt3Q0lfgl
-         tcLDvGJKzaJaSWRE8ZtF+kY9UkEZOGM2H9rFrkwk=
+        b=AyBahuBq9QU4pVtIf8i1p6k+DwBXOjHOwOCOZqVHcav99qpnqV1ET6RRoP/5NAaf+
+         E3PRsnKIlm353qPmjiwWo8s6PVITYvn2nwCHSMDrtbpQ3a4fvkMygI3vxrNVQAiah1
+         SZTfuO4y/HXxz7IFpioVRvHyvS8+16/NQUKz79Z4=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     chenzefeng <chenzefeng2@huawei.com>,
         Tony Luck <tony.luck@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 027/128] ia64:unwind: fix double free for mod->arch.init_unw_table
-Date:   Sun, 22 Sep 2019 14:52:37 -0400
-Message-Id: <20190922185418.2158-27-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.3 046/203] ia64:unwind: fix double free for mod->arch.init_unw_table
+Date:   Sun, 22 Sep 2019 14:41:12 -0400
+Message-Id: <20190922184350.30563-46-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922185418.2158-1-sashal@kernel.org>
-References: <20190922185418.2158-1-sashal@kernel.org>
+In-Reply-To: <20190922184350.30563-1-sashal@kernel.org>
+References: <20190922184350.30563-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
