@@ -2,38 +2,38 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 953E2BAB62
-	for <lists+linux-ia64@lfdr.de>; Sun, 22 Sep 2019 21:55:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7FA4BBA940
+	for <lists+linux-ia64@lfdr.de>; Sun, 22 Sep 2019 21:51:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389428AbfIVTiG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 22 Sep 2019 15:38:06 -0400
-Received: from mail.kernel.org ([198.145.29.99]:41306 "EHLO mail.kernel.org"
+        id S2391762AbfIVTNB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 22 Sep 2019 15:13:01 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60462 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2389370AbfIVSph (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 22 Sep 2019 14:45:37 -0400
+        id S2438589AbfIVS5u (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 22 Sep 2019 14:57:50 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id DC3982186A;
-        Sun, 22 Sep 2019 18:45:35 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 8495E206C2;
+        Sun, 22 Sep 2019 18:57:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569177936;
-        bh=NJLxmO+sPDzSi40Zm+6uwJ9bnxqS9Qk6TiNQiFwfxvk=;
+        s=default; t=1569178670;
+        bh=VdKhJwRbFbfM5bBeuH5EBQiicL+atLU1WRNr50An8iE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AyBahuBq9QU4pVtIf8i1p6k+DwBXOjHOwOCOZqVHcav99qpnqV1ET6RRoP/5NAaf+
-         E3PRsnKIlm353qPmjiwWo8s6PVITYvn2nwCHSMDrtbpQ3a4fvkMygI3vxrNVQAiah1
-         SZTfuO4y/HXxz7IFpioVRvHyvS8+16/NQUKz79Z4=
+        b=H7Mw9S60CX8H9GXs8xU3LCTAp0KjY14ZN7xirI8WqNllzJBnhSoqwoS0o918t4RA/
+         7c/Clfrn24OIhT48bfgU4AtuFalSCfsF645k1eKTayMqOHrT04p2wMHlAnkFi2hBsF
+         +5JML4DtSuTcecYuKBI7xiAZFNjMLInc/lAx5Ehg=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     chenzefeng <chenzefeng2@huawei.com>,
         Tony Luck <tony.luck@intel.com>,
         Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.3 046/203] ia64:unwind: fix double free for mod->arch.init_unw_table
-Date:   Sun, 22 Sep 2019 14:41:12 -0400
-Message-Id: <20190922184350.30563-46-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 21/89] ia64:unwind: fix double free for mod->arch.init_unw_table
+Date:   Sun, 22 Sep 2019 14:56:09 -0400
+Message-Id: <20190922185717.3412-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922184350.30563-1-sashal@kernel.org>
-References: <20190922184350.30563-1-sashal@kernel.org>
+In-Reply-To: <20190922185717.3412-1-sashal@kernel.org>
+References: <20190922185717.3412-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -71,10 +71,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 6 insertions(+), 2 deletions(-)
 
 diff --git a/arch/ia64/kernel/module.c b/arch/ia64/kernel/module.c
-index 326448f9df160..1a42ba885188a 100644
+index 853b5611a894d..95e8d130e1235 100644
 --- a/arch/ia64/kernel/module.c
 +++ b/arch/ia64/kernel/module.c
-@@ -914,10 +914,14 @@ module_finalize (const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs, struct module *mo
+@@ -913,8 +913,12 @@ module_finalize (const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs, struct module *mo
  void
  module_arch_cleanup (struct module *mod)
  {
@@ -89,8 +89,6 @@ index 326448f9df160..1a42ba885188a 100644
 +		mod->arch.core_unw_table = NULL;
 +	}
  }
- 
- void *dereference_module_function_descriptor(struct module *mod, void *ptr)
 -- 
 2.20.1
 
