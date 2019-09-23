@@ -2,93 +2,137 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 582FBBA87A
-	for <lists+linux-ia64@lfdr.de>; Sun, 22 Sep 2019 21:50:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 91563BADC3
+	for <lists+linux-ia64@lfdr.de>; Mon, 23 Sep 2019 08:27:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729800AbfIVTEL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 22 Sep 2019 15:04:11 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37666 "EHLO mail.kernel.org"
+        id S2393089AbfIWG1Y (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 23 Sep 2019 02:27:24 -0400
+Received: from foss.arm.com ([217.140.110.172]:37482 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729096AbfIVTB0 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 22 Sep 2019 15:01:26 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 49ACA206C2;
-        Sun, 22 Sep 2019 19:01:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1569178886;
-        bh=tZ0vg3dZimMEgTi2SUGe7lP4Vh6YFUj0YqBXkUubxTs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iXmpPvh0HWGT1Irgw5JbB2kQKHDiSzJYwkvQhSpFdGjolmUk2R2faqqcbP7FkBf+f
-         Z9HdHdwpYgzTe9buKY4QkjTrfcBpEGItUbS/wzPDG6YPg/4g+up/5yx0se8lou/bij
-         ejf9wpqcmu4SUD5XFy89vpjji5co/9xdeuJ2hOVo=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     chenzefeng <chenzefeng2@huawei.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 16/44] ia64:unwind: fix double free for mod->arch.init_unw_table
-Date:   Sun, 22 Sep 2019 15:00:34 -0400
-Message-Id: <20190922190103.4906-16-sashal@kernel.org>
-X-Mailer: git-send-email 2.20.1
-In-Reply-To: <20190922190103.4906-1-sashal@kernel.org>
-References: <20190922190103.4906-1-sashal@kernel.org>
+        id S2387519AbfIWG1X (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 23 Sep 2019 02:27:23 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86A51337;
+        Sun, 22 Sep 2019 23:27:22 -0700 (PDT)
+Received: from [10.162.40.137] (p8cg001049571a15.blr.arm.com [10.162.40.137])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7248C3F59C;
+        Sun, 22 Sep 2019 23:29:45 -0700 (PDT)
+Subject: Re: [PATCH V3 2/2] mm/pgtable/debug: Add test validating architecture
+ page table helpers
+To:     kbuild test robot <lkp@intel.com>
+Cc:     Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
+        linux-sh@vger.kernel.org,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        James Hogan <jhogan@kernel.org>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
+        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        linux-s390@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
+        x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Matthew Wilcox <willy@infradead.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org,
+        Kees Cook <keescook@chromium.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Mark Brown <broonie@kernel.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Dave Hansen <dave.hansen@intel.com>,
+        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
+        linux-kernel@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Paul Burton <paul.burton@mips.com>, kbuild-all@01.org,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>
+References: <20190921160049.GB13569@xsang-OptiPlex-9020>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <ab7c36ae-0942-d2e3-2a46-924c13a3d999@arm.com>
+Date:   Mon, 23 Sep 2019 11:57:29 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20190921160049.GB13569@xsang-OptiPlex-9020>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: chenzefeng <chenzefeng2@huawei.com>
 
-[ Upstream commit c5e5c48c16422521d363c33cfb0dcf58f88c119b ]
 
-The function free_module in file kernel/module.c as follow:
+On 09/21/2019 09:30 PM, kbuild test robot wrote:
+> Hi Anshuman,
+> 
+> Thank you for the patch! Yet something to improve:
+> 
+> [auto build test ERROR on linus/master]
+> [cannot apply to v5.3 next-20190919]
+> [if your patch is applied to the wrong git tree, please drop us a note to help
+> improve the system. BTW, we also suggest to use '--base' option to specify the
+> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
+> 
+> url:    https://github.com/0day-ci/linux/commits/Anshuman-Khandual/mm-debug-Add-tests-for-architecture-exported-page-table-helpers/20190920-143746
+> config: ia64-allmodconfig (attached as .config)
+> compiler: ia64-linux-gcc (GCC) 7.4.0
+> reproduce:
+>         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
+>         chmod +x ~/bin/make.cross
+>         # save the attached .config to linux build tree
+>         GCC_VERSION=7.4.0 make.cross ARCH=ia64 
+> :::::: branch date: 3 hours ago
+> :::::: commit date: 3 hours ago
+> 
+> If you fix the issue, kindly add following tag
+> Reported-by: kbuild test robot <lkp@intel.com>
+> 
+> All error/warnings (new ones prefixed by >>):
+> 
+>    In file included from include/asm-generic/pgtable-nopud.h:8:0,
+>                     from arch/ia64/include/asm/pgtable.h:591,
+>                     from include/linux/mm.h:99,
+>                     from include/linux/highmem.h:8,
+>                     from mm/arch_pgtable_test.c:14:
+>    mm/arch_pgtable_test.c: In function 'pud_clear_tests':
+>>> include/asm-generic/pgtable-nop4d-hack.h:47:32: error: implicit declaration of function '__pgd'; did you mean '__p4d'? [-Werror=implicit-function-declaration]
+>     #define __pud(x)    ((pud_t) { __pgd(x) })
+>                                    ^
+>>> mm/arch_pgtable_test.c:162:8: note: in expansion of macro '__pud'
+>      pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
+>            ^~~~~
+>>> include/asm-generic/pgtable-nop4d-hack.h:47:22: warning: missing braces around initializer [-Wmissing-braces]
+>     #define __pud(x)    ((pud_t) { __pgd(x) })
+>                          ^
+>>> mm/arch_pgtable_test.c:162:8: note: in expansion of macro '__pud'
+>      pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
+>            ^~~~~
+>    cc1: some warnings being treated as errors
+> 
+> # https://github.com/0day-ci/linux/commit/49047f93b076974eefa5b019311bd3b734d61f8c
+> git remote add linux-review https://github.com/0day-ci/linux
+> git remote update linux-review
+> git checkout 49047f93b076974eefa5b019311bd3b734d61f8c
+> vim +47 include/asm-generic/pgtable-nop4d-hack.h
+> 
+> 30ec842660bd0d Kirill A. Shutemov 2017-03-09  45  
+> 30ec842660bd0d Kirill A. Shutemov 2017-03-09  46  #define pud_val(x)				(pgd_val((x).pgd))
+> 30ec842660bd0d Kirill A. Shutemov 2017-03-09 @47  #define __pud(x)				((pud_t) { __pgd(x) })
 
-void free_module(struct module *mod) {
-	......
-	module_arch_cleanup(mod);
-	......
-	module_arch_freeing_init(mod);
-	......
-}
+I had mentioned about this build failure in the cover letter. The same
+problem also exists on arm32 platform.
 
-Both module_arch_cleanup and module_arch_freeing_init function
-would free the mod->arch.init_unw_table, which cause double free.
-
-Here, set mod->arch.init_unw_table = NULL after remove the unwind
-table to avoid double free.
-
-Signed-off-by: chenzefeng <chenzefeng2@huawei.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/ia64/kernel/module.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/arch/ia64/kernel/module.c b/arch/ia64/kernel/module.c
-index 36b2c94a8eb5d..14c7184daaf64 100644
---- a/arch/ia64/kernel/module.c
-+++ b/arch/ia64/kernel/module.c
-@@ -912,8 +912,12 @@ module_finalize (const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs, struct module *mo
- void
- module_arch_cleanup (struct module *mod)
- {
--	if (mod->arch.init_unw_table)
-+	if (mod->arch.init_unw_table) {
- 		unw_remove_unwind_table(mod->arch.init_unw_table);
--	if (mod->arch.core_unw_table)
-+		mod->arch.init_unw_table = NULL;
-+	}
-+	if (mod->arch.core_unw_table) {
- 		unw_remove_unwind_table(mod->arch.core_unw_table);
-+		mod->arch.core_unw_table = NULL;
-+	}
- }
--- 
-2.20.1
-
+- Anshuman
