@@ -2,137 +2,130 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 91563BADC3
-	for <lists+linux-ia64@lfdr.de>; Mon, 23 Sep 2019 08:27:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0DDEBC733
+	for <lists+linux-ia64@lfdr.de>; Tue, 24 Sep 2019 13:51:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393089AbfIWG1Y (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 23 Sep 2019 02:27:24 -0400
-Received: from foss.arm.com ([217.140.110.172]:37482 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2387519AbfIWG1X (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 23 Sep 2019 02:27:23 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 86A51337;
-        Sun, 22 Sep 2019 23:27:22 -0700 (PDT)
-Received: from [10.162.40.137] (p8cg001049571a15.blr.arm.com [10.162.40.137])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7248C3F59C;
-        Sun, 22 Sep 2019 23:29:45 -0700 (PDT)
-Subject: Re: [PATCH V3 2/2] mm/pgtable/debug: Add test validating architecture
- page table helpers
-To:     kbuild test robot <lkp@intel.com>
-Cc:     Mark Rutland <mark.rutland@arm.com>, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        James Hogan <jhogan@kernel.org>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Michal Hocko <mhocko@kernel.org>, linux-mm@kvack.org,
-        Paul Mackerras <paulus@samba.org>, sparclinux@vger.kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        linux-s390@vger.kernel.org, Michael Ellerman <mpe@ellerman.id.au>,
-        x86@kernel.org, Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Matthew Wilcox <willy@infradead.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        Kees Cook <keescook@chromium.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Mark Brown <broonie@kernel.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Dan Williams <dan.j.williams@intel.com>,
+        id S2440863AbfIXLvG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 24 Sep 2019 07:51:06 -0400
+Received: from mail-ed1-f66.google.com ([209.85.208.66]:39568 "EHLO
+        mail-ed1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2440844AbfIXLvC (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 24 Sep 2019 07:51:02 -0400
+Received: by mail-ed1-f66.google.com with SMTP id a15so1549534edt.6
+        for <linux-ia64@vger.kernel.org>; Tue, 24 Sep 2019 04:51:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=shutemov-name.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=/6kM5ATWnIRmId0RwOcRfnLcpIWKP734aWDaVWhsGUo=;
+        b=ga2DmRzWY94J19ywTXc7aJlINJ/KRYQ8PGtndpIW2otrRhhwz0vdOk+0aZyvFf12zM
+         XpRveudYGeGkFKJSHG8HcySuK12YIGpCUEC2wkOTV45q1k8LT1ifI5j18tohQF7m/PA+
+         6K8RlpcUkVPR9/+LLhQ4mzvuJBoUuyuUhlcKKiXhgp+n7PTRkv6s71hrNtmrwMJbpl7m
+         e1KH2/aooSfrmq/GY1oql/dqAZBTTajifnl7uEJSb86NOqby7WFhLm7p3odLbtelzM4m
+         ZVwvJJ/+RmqA5b79C+mbE04M3aieJOA2xjgY+3pjxmiSzVw2GC4lYm0cvsm1rZytvgPU
+         ruog==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=/6kM5ATWnIRmId0RwOcRfnLcpIWKP734aWDaVWhsGUo=;
+        b=pgJGsTjPVScvPFbig19MWdWgjVHZ0Oyf/DMjvj+Tf2tJ6rsQld3jHNHqATUUuQunyH
+         6vpNmJrAI8uwMK4C4pzKEOb8KV/2joDSIOPHy622EFBD79sysUPCMQ6AOPCKXwnmLqRt
+         JwYf+aRef3hAKDkxhzrDAYbgkslHzb5AvKmKmM/+uN5dk7xcATIxLZBvChbvYAz+UsjE
+         qKkdUSMTurJChoz4+bCsFJ3VcXl2tPpHYP1aNKWLX4iFSDJGI9lEnW3/YrQ34raKcLX8
+         zOqrImE05nevuiy3kNx3QMUEZ4LWey07/IWTHqOYL9xhLRlG53W6HeBFDY6SvIIDPSvc
+         kmdw==
+X-Gm-Message-State: APjAAAVF8gDq/cndWnmo2yIQbXJtJsVyrdksxNs86LrKDzSyeXClAH+l
+        97zyVuougRoQvDoOr2AutCuPPw==
+X-Google-Smtp-Source: APXvYqxJMR8XXzMM+ktrv2ws01Rr8qKWI/iP6Q9Wd6fsMeCMuUxQBVCNuUcjqBIbwcds2k2WtfZxLA==
+X-Received: by 2002:a50:9fe5:: with SMTP id c92mr2202655edf.280.1569325860692;
+        Tue, 24 Sep 2019 04:51:00 -0700 (PDT)
+Received: from box.localdomain ([86.57.175.117])
+        by smtp.gmail.com with ESMTPSA id r18sm319556edx.94.2019.09.24.04.50.59
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 24 Sep 2019 04:51:00 -0700 (PDT)
+Received: by box.localdomain (Postfix, from userid 1000)
+        id 60C621022A6; Tue, 24 Sep 2019 14:51:01 +0300 (+03)
+Date:   Tue, 24 Sep 2019 14:51:01 +0300
+From:   "Kirill A. Shutemov" <kirill@shutemov.name>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
         Vlastimil Babka <vbabka@suse.cz>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Dave Hansen <dave.hansen@intel.com>,
-        linux-mips@vger.kernel.org, Ralf Baechle <ralf@linux-mips.org>,
-        linux-kernel@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Paul Burton <paul.burton@mips.com>, kbuild-all@01.org,
-        Vineet Gupta <vgupta@synopsys.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
         Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org,
-        "David S. Miller" <davem@davemloft.net>
-References: <20190921160049.GB13569@xsang-OptiPlex-9020>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <ab7c36ae-0942-d2e3-2a46-924c13a3d999@arm.com>
-Date:   Mon, 23 Sep 2019 11:57:29 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH V3 0/2] mm/debug: Add tests for architecture exported
+ page table helpers
+Message-ID: <20190924115101.p6y7vpbtgmj5qjku@box>
+References: <1568961203-18660-1-git-send-email-anshuman.khandual@arm.com>
 MIME-Version: 1.0
-In-Reply-To: <20190921160049.GB13569@xsang-OptiPlex-9020>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1568961203-18660-1-git-send-email-anshuman.khandual@arm.com>
+User-Agent: NeoMutt/20180716
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+On Fri, Sep 20, 2019 at 12:03:21PM +0530, Anshuman Khandual wrote:
+> This series adds a test validation for architecture exported page table
+> helpers. Patch in the series adds basic transformation tests at various
+> levels of the page table. Before that it exports gigantic page allocation
+> function from HugeTLB.
+> 
+> This test was originally suggested by Catalin during arm64 THP migration
+> RFC discussion earlier. Going forward it can include more specific tests
+> with respect to various generic MM functions like THP, HugeTLB etc and
+> platform specific tests.
+> 
+> https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
+> 
+> Testing:
+> 
+> Successfully build and boot tested on both arm64 and x86 platforms without
+> any test failing. Only build tested on some other platforms. Build failed
+> on some platforms (known) in pud_clear_tests() as there were no available
+> __pgd() definitions.
+> 
+> - ARM32
+> - IA64
+
+Hm. Grep shows __pgd() definitions for both of them. Is it for specific
+config?
 
 
-On 09/21/2019 09:30 PM, kbuild test robot wrote:
-> Hi Anshuman,
-> 
-> Thank you for the patch! Yet something to improve:
-> 
-> [auto build test ERROR on linus/master]
-> [cannot apply to v5.3 next-20190919]
-> [if your patch is applied to the wrong git tree, please drop us a note to help
-> improve the system. BTW, we also suggest to use '--base' option to specify the
-> base tree in git format-patch, please see https://stackoverflow.com/a/37406982]
-> 
-> url:    https://github.com/0day-ci/linux/commits/Anshuman-Khandual/mm-debug-Add-tests-for-architecture-exported-page-table-helpers/20190920-143746
-> config: ia64-allmodconfig (attached as .config)
-> compiler: ia64-linux-gcc (GCC) 7.4.0
-> reproduce:
->         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
->         chmod +x ~/bin/make.cross
->         # save the attached .config to linux build tree
->         GCC_VERSION=7.4.0 make.cross ARCH=ia64 
-> :::::: branch date: 3 hours ago
-> :::::: commit date: 3 hours ago
-> 
-> If you fix the issue, kindly add following tag
-> Reported-by: kbuild test robot <lkp@intel.com>
-> 
-> All error/warnings (new ones prefixed by >>):
-> 
->    In file included from include/asm-generic/pgtable-nopud.h:8:0,
->                     from arch/ia64/include/asm/pgtable.h:591,
->                     from include/linux/mm.h:99,
->                     from include/linux/highmem.h:8,
->                     from mm/arch_pgtable_test.c:14:
->    mm/arch_pgtable_test.c: In function 'pud_clear_tests':
->>> include/asm-generic/pgtable-nop4d-hack.h:47:32: error: implicit declaration of function '__pgd'; did you mean '__p4d'? [-Werror=implicit-function-declaration]
->     #define __pud(x)    ((pud_t) { __pgd(x) })
->                                    ^
->>> mm/arch_pgtable_test.c:162:8: note: in expansion of macro '__pud'
->      pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
->            ^~~~~
->>> include/asm-generic/pgtable-nop4d-hack.h:47:22: warning: missing braces around initializer [-Wmissing-braces]
->     #define __pud(x)    ((pud_t) { __pgd(x) })
->                          ^
->>> mm/arch_pgtable_test.c:162:8: note: in expansion of macro '__pud'
->      pud = __pud(pud_val(pud) | RANDOM_ORVALUE);
->            ^~~~~
->    cc1: some warnings being treated as errors
-> 
-> # https://github.com/0day-ci/linux/commit/49047f93b076974eefa5b019311bd3b734d61f8c
-> git remote add linux-review https://github.com/0day-ci/linux
-> git remote update linux-review
-> git checkout 49047f93b076974eefa5b019311bd3b734d61f8c
-> vim +47 include/asm-generic/pgtable-nop4d-hack.h
-> 
-> 30ec842660bd0d Kirill A. Shutemov 2017-03-09  45  
-> 30ec842660bd0d Kirill A. Shutemov 2017-03-09  46  #define pud_val(x)				(pgd_val((x).pgd))
-> 30ec842660bd0d Kirill A. Shutemov 2017-03-09 @47  #define __pud(x)				((pud_t) { __pgd(x) })
-
-I had mentioned about this build failure in the cover letter. The same
-problem also exists on arm32 platform.
-
-- Anshuman
+-- 
+ Kirill A. Shutemov
