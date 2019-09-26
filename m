@@ -2,124 +2,167 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F688BD6C1
-	for <lists+linux-ia64@lfdr.de>; Wed, 25 Sep 2019 05:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 603DDBF88C
+	for <lists+linux-ia64@lfdr.de>; Thu, 26 Sep 2019 19:58:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2411571AbfIYDgS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 24 Sep 2019 23:36:18 -0400
-Received: from foss.arm.com ([217.140.110.172]:40906 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404947AbfIYDgS (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 24 Sep 2019 23:36:18 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 06DD8337;
-        Tue, 24 Sep 2019 20:36:17 -0700 (PDT)
-Received: from [10.162.41.120] (p8cg001049571a15.blr.arm.com [10.162.41.120])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DB6CB3F694;
-        Tue, 24 Sep 2019 20:36:05 -0700 (PDT)
-Subject: Re: [PATCH V3 0/2] mm/debug: Add tests for architecture exported page
- table helpers
-To:     Mike Rapoport <rppt@linux.ibm.com>,
-        "Kirill A. Shutemov" <kirill@shutemov.name>
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <1568961203-18660-1-git-send-email-anshuman.khandual@arm.com>
- <20190924115101.p6y7vpbtgmj5qjku@box> <20190924123146.GC5202@linux.ibm.com>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <a5acc1cc-d046-e1d8-f39b-e3e785588d5e@arm.com>
-Date:   Wed, 25 Sep 2019 09:06:23 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
-MIME-Version: 1.0
-In-Reply-To: <20190924123146.GC5202@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        id S1728023AbfIZR55 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 26 Sep 2019 13:57:57 -0400
+Received: from mail-pf1-f193.google.com ([209.85.210.193]:44091 "EHLO
+        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727998AbfIZR4W (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 26 Sep 2019 13:56:22 -0400
+Received: by mail-pf1-f193.google.com with SMTP id q21so2232463pfn.11
+        for <linux-ia64@vger.kernel.org>; Thu, 26 Sep 2019 10:56:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id;
+        bh=QEG/EaNbne2aV7OKhHfoYngDByBBcJ0cppuY/pozywQ=;
+        b=C+3Ew31NmGJo/s34rbNfqjLTRqvYTUPk4Fzn1v6DxaCv0bUz5Itel2G7bPEbzOO7la
+         fZED90J+wL+qVcUlkffN4PYCPS/j/nBCQCnH3CopXImwLAl74lL+UhVoxl4VitCgKmD2
+         8kak6FLso8A712fVwjhhMVHLwKEZrzvyynFis=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=QEG/EaNbne2aV7OKhHfoYngDByBBcJ0cppuY/pozywQ=;
+        b=ZPqJj30yGPWuSUm84RWBOz/X//XLXKEhTTdPMspx2VGm/mU0A0t4vtgTLvcbugophv
+         Zwjgzc7WXRgvZlKykw4krnNeg0qgzAjg6BeqgO92rlJ8ujmF0Z+36iiknKqdiXmP+jxD
+         lLEOuVUGI9/4HGicz8ibV+m1ekx4ynjNdNLQAqDl1pTeHTu6B1EsaDsEbsKDJMvcgEFk
+         KU9QEHHtZDu/PAIK8MNNWOvcfJrCsAq8D9U5yCmQW2hRcydhgab1ve+YR4Q8xObQlooL
+         SxPeX/7T4nGFkfn4K5wsXNMVjVWr9/zPe7/ku9bI/Mq8wairawQrMs81twkIIb8//puI
+         jfkg==
+X-Gm-Message-State: APjAAAXWQygXFO0syU+5NDM4ZVClA+i5IFFzgg5kUviqz2PtvH4cDnBo
+        EQPGvZW/r4bdp0FaJFmYhYvw5w==
+X-Google-Smtp-Source: APXvYqyGBYTkR69ROZhnYj3Ai7+SxN5uk+xjkc2oWKjzkLJSeo/f2CV0bxk4Z/YCXLw5XMrEqBkdJw==
+X-Received: by 2002:a63:355:: with SMTP id 82mr4552661pgd.81.1569520580971;
+        Thu, 26 Sep 2019 10:56:20 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id q3sm2995021pgj.54.2019.09.26.10.56.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Sep 2019 10:56:17 -0700 (PDT)
+From:   Kees Cook <keescook@chromium.org>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-c6x-dev@linux-c6x.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, x86@kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH 00/29] vmlinux.lds.h: Refactor EXCEPTION_TABLE and NOTES
+Date:   Thu, 26 Sep 2019 10:55:33 -0700
+Message-Id: <20190926175602.33098-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+This series works to move the linker sections for NOTES and
+EXCEPTION_TABLE into the RO_DATA area, where they belong on most
+(all?) architectures. The problem being addressed was the discovery
+by Rick Edgecombe that the exception table was accidentally marked
+executable while he was developing his execute-only-memory series. When
+permissions were flipped from readable-and-executable to only-executable,
+the exception table became unreadable, causing things to explode rather
+badly. :)
 
+Roughly speaking, the steps are:
 
-On 09/24/2019 06:01 PM, Mike Rapoport wrote:
-> On Tue, Sep 24, 2019 at 02:51:01PM +0300, Kirill A. Shutemov wrote:
->> On Fri, Sep 20, 2019 at 12:03:21PM +0530, Anshuman Khandual wrote:
->>> This series adds a test validation for architecture exported page table
->>> helpers. Patch in the series adds basic transformation tests at various
->>> levels of the page table. Before that it exports gigantic page allocation
->>> function from HugeTLB.
->>>
->>> This test was originally suggested by Catalin during arm64 THP migration
->>> RFC discussion earlier. Going forward it can include more specific tests
->>> with respect to various generic MM functions like THP, HugeTLB etc and
->>> platform specific tests.
->>>
->>> https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
->>>
->>> Testing:
->>>
->>> Successfully build and boot tested on both arm64 and x86 platforms without
->>> any test failing. Only build tested on some other platforms. Build failed
->>> on some platforms (known) in pud_clear_tests() as there were no available
->>> __pgd() definitions.
->>>
->>> - ARM32
->>> - IA64
->>
->> Hm. Grep shows __pgd() definitions for both of them. Is it for specific
->> config?
->  
-> For ARM32 it's defined only for 3-lelel page tables, i.e with LPAE on.
-> For IA64 it's defined for !STRICT_MM_TYPECHECKS which is even not a config
-> option, but a define in arch/ia64/include/asm/page.h
+- regularize the linker names for PT_NOTE and PT_LOAD program headers
+  (to "note" and "text" respectively)
+- regularize restoration of linker section to program header assignment
+  (when PT_NOTE exists)
+- move NOTES into RO_DATA
+- finish macro naming conversions for RO_DATA and RW_DATA
+- move EXCEPTION_TABLE into RO_DATA on architectures where this is clear
+- clean up some x86-specific reporting of kernel memory resources
+- switch x86 linker fill byte from x90 (NOP) to 0xcc (INT3), just because
+  I finally realized what that trailing ": 0x9090" meant -- and we should
+  trap, not slide, if execution lands in section padding
 
-Right. So now where we go from here ! We will need help from platform folks to
-fix this unless its trivial. I did propose this on last thread (v2), wondering if
-it will be a better idea to restrict DEBUG_ARCH_PGTABLE_TEST among architectures
-which have fixed all pending issues whether build or run time. Though enabling all
-platforms where the test builds at the least might make more sense, we might have
-to just exclude arm32 and ia64 for now. Then run time problems can be fixed later
-platform by platform. Any thoughts ?
+Since these changes are treewide, I'd love to get architecture-maintainer
+Acks and either have this live in x86 -tip or in my own tree, however
+people think it should go.
 
-BTW the test is known to run successfully on arm64, x86, ppc32 platforms. Gerald
-has been trying to get it working on s390. in the meantime., if there are other
-volunteers to test this on ppc64, sparc, riscv, mips, m68k etc platforms, it will
-be really helpful.
+Thanks!
 
-- Anshuman
+-Kees
+
+Kees Cook (29):
+  powerpc: Rename "notes" PT_NOTE to "note"
+  powerpc: Remove PT_NOTE workaround
+  powerpc: Rename PT_LOAD identifier "kernel" to "text"
+  alpha: Rename PT_LOAD identifier "kernel" to "text"
+  ia64: Rename PT_LOAD identifier "code" to "text"
+  s390: Move RO_DATA into "text" PT_LOAD Program Header
+  x86: Restore "text" Program Header with dummy section
+  vmlinux.lds.h: Provide EMIT_PT_NOTE to indicate export of .notes
+  vmlinux.lds.h: Move Program Header restoration into NOTES macro
+  vmlinux.lds.h: Move NOTES into RO_DATA
+  vmlinux.lds.h: Replace RODATA with RO_DATA
+  vmlinux.lds.h: Replace RO_DATA_SECTION with RO_DATA
+  vmlinux.lds.h: Replace RW_DATA_SECTION with RW_DATA
+  vmlinux.lds.h: Allow EXCEPTION_TABLE to live in RO_DATA
+  x86: Actually use _etext for end of text segment
+  x86: Move EXCEPTION_TABLE to RO_DATA segment
+  alpha: Move EXCEPTION_TABLE to RO_DATA segment
+  arm64: Move EXCEPTION_TABLE to RO_DATA segment
+  c6x: Move EXCEPTION_TABLE to RO_DATA segment
+  h8300: Move EXCEPTION_TABLE to RO_DATA segment
+  ia64: Move EXCEPTION_TABLE to RO_DATA segment
+  microblaze: Move EXCEPTION_TABLE to RO_DATA segment
+  parisc: Move EXCEPTION_TABLE to RO_DATA segment
+  powerpc: Move EXCEPTION_TABLE to RO_DATA segment
+  xtensa: Move EXCEPTION_TABLE to RO_DATA segment
+  x86/mm: Remove redundant &s on addresses
+  x86/mm: Report which part of kernel image is freed
+  x86/mm: Report actual image regions in /proc/iomem
+  x86: Use INT3 instead of NOP for linker fill bytes
+
+ arch/alpha/kernel/vmlinux.lds.S      | 18 +++++-----
+ arch/arc/kernel/vmlinux.lds.S        |  6 ++--
+ arch/arm/kernel/vmlinux-xip.lds.S    |  4 +--
+ arch/arm/kernel/vmlinux.lds.S        |  4 +--
+ arch/arm64/kernel/vmlinux.lds.S      |  9 ++---
+ arch/c6x/kernel/vmlinux.lds.S        |  8 ++---
+ arch/csky/kernel/vmlinux.lds.S       |  5 ++-
+ arch/h8300/kernel/vmlinux.lds.S      |  9 ++---
+ arch/hexagon/kernel/vmlinux.lds.S    |  5 ++-
+ arch/ia64/kernel/vmlinux.lds.S       | 20 +++++------
+ arch/m68k/kernel/vmlinux-nommu.lds   |  4 +--
+ arch/m68k/kernel/vmlinux-std.lds     |  2 +-
+ arch/m68k/kernel/vmlinux-sun3.lds    |  2 +-
+ arch/microblaze/kernel/vmlinux.lds.S |  8 ++---
+ arch/mips/kernel/vmlinux.lds.S       | 15 ++++----
+ arch/nds32/kernel/vmlinux.lds.S      |  5 ++-
+ arch/nios2/kernel/vmlinux.lds.S      |  5 ++-
+ arch/openrisc/kernel/vmlinux.lds.S   |  7 ++--
+ arch/parisc/kernel/vmlinux.lds.S     | 11 +++---
+ arch/powerpc/kernel/vmlinux.lds.S    | 37 ++++---------------
+ arch/riscv/kernel/vmlinux.lds.S      |  5 ++-
+ arch/s390/kernel/vmlinux.lds.S       | 12 +++----
+ arch/sh/kernel/vmlinux.lds.S         |  3 +-
+ arch/sparc/kernel/vmlinux.lds.S      |  3 +-
+ arch/um/include/asm/common.lds.S     |  3 +-
+ arch/unicore32/kernel/vmlinux.lds.S  |  5 ++-
+ arch/x86/include/asm/processor.h     |  2 +-
+ arch/x86/include/asm/sections.h      |  1 -
+ arch/x86/kernel/setup.c              | 12 ++++++-
+ arch/x86/kernel/vmlinux.lds.S        | 16 ++++-----
+ arch/x86/mm/init.c                   |  8 ++---
+ arch/x86/mm/init_64.c                | 16 +++++----
+ arch/x86/mm/pti.c                    |  2 +-
+ arch/xtensa/kernel/vmlinux.lds.S     |  8 ++---
+ include/asm-generic/vmlinux.lds.h    | 53 ++++++++++++++++++++--------
+ 35 files changed, 159 insertions(+), 174 deletions(-)
+
+-- 
+2.17.1
+
