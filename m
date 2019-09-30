@@ -2,50 +2,63 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 55117C0E9A
-	for <lists+linux-ia64@lfdr.de>; Sat, 28 Sep 2019 01:43:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 23BF8C27E5
+	for <lists+linux-ia64@lfdr.de>; Mon, 30 Sep 2019 23:04:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728336AbfI0XnQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 27 Sep 2019 19:43:16 -0400
-Received: from mail-lf1-f67.google.com ([209.85.167.67]:35327 "EHLO
-        mail-lf1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725306AbfI0XnQ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 27 Sep 2019 19:43:16 -0400
-Received: by mail-lf1-f67.google.com with SMTP id w6so3116459lfl.2;
-        Fri, 27 Sep 2019 16:43:13 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=c8uGLij7T5Lhd9NNM8IRpienFCfZLI1fF2YsMfwjMb0=;
-        b=nGEy3BShGtH9jG0mH+ZtDfICSzXbZwOQWP3jeLcW93g20Qkt/JnkUI6i/1tsHCXtQq
-         5mAoANpqa1BecDWxVjyr6VZkOS0xU69VvudDeerrU1SJlAjtkmfBqoIUNfOAdtffnEhE
-         muVvtwrXJZ7q+f+tGWt3q6xnFFSEFJlcmZlPS7sAYm2L92Hy9g9Q1tHwwOLte1K3e/KJ
-         qg+R2okbKGnfOEB4wF3h91EF9ey9x2YUhje6aSw/jaVb+sXU1Hzj+IbrdnOVCoISAv9c
-         bpCTkxGJVqijAc0U22vuNZ7U1So4HNUfhva14qO2qxIhHPiMl7k8XH9s0T4bIuk7ufse
-         LUUg==
-X-Gm-Message-State: APjAAAWaqLjk8krkp7T8bzcPm61xAYWxTdyPgbmKapb5dRQr/WVEYTiC
-        qEUt/KnkRFuDjUHlq94YDZNuey8rsTY=
-X-Google-Smtp-Source: APXvYqxaiyRdOlpBwWGF862QfV4eTAG1q+uwD8zL+weLda64/duQKMgTc/QRXQANLb7+8tTLId6QQQ==
-X-Received: by 2002:ac2:4c8f:: with SMTP id d15mr4785336lfl.74.1569627792625;
-        Fri, 27 Sep 2019 16:43:12 -0700 (PDT)
-Received: from localhost.localdomain (broadband-188-32-48-208.ip.moscow.rt.ru. [188.32.48.208])
-        by smtp.googlemail.com with ESMTPSA id b67sm788812ljf.5.2019.09.27.16.43.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2019 16:43:12 -0700 (PDT)
-From:   Denis Efremov <efremov@linux.com>
-To:     Bjorn Helgaas <bhelgaas@google.com>
-Cc:     Denis Efremov <efremov@linux.com>, linux-kernel@vger.kernel.org,
-        linux-pci@vger.kernel.org, linux-hyperv@vger.kernel.org,
-        x86@kernel.org, linux-s390@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: [PATCH RESEND v3 01/26] PCI: Add define for the number of standard PCI BARs
-Date:   Sat, 28 Sep 2019 02:43:08 +0300
-Message-Id: <20190927234308.23935-1-efremov@linux.com>
-X-Mailer: git-send-email 2.21.0
-In-Reply-To: <20190916204158.6889-3-efremov@linux.com>
-References: <20190916204158.6889-3-efremov@linux.com>
+        id S1732197AbfI3VDX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 30 Sep 2019 17:03:23 -0400
+Received: from mx2.mailbox.org ([80.241.60.215]:16818 "EHLO mx2.mailbox.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1732010AbfI3VDV (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 30 Sep 2019 17:03:21 -0400
+Received: from smtp2.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mx2.mailbox.org (Postfix) with ESMTPS id 2F5DAA17EF;
+        Mon, 30 Sep 2019 20:34:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.240])
+        by spamfilter02.heinlein-hosting.de (spamfilter02.heinlein-hosting.de [80.241.56.116]) (amavisd-new, port 10030)
+        with ESMTP id u0_dV-SPLAXA; Mon, 30 Sep 2019 20:34:31 +0200 (CEST)
+From:   Aleksa Sarai <cyphar@cyphar.com>
+To:     Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     Aleksa Sarai <cyphar@cyphar.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Christian Brauner <christian@brauner.io>,
+        Aleksa Sarai <asarai@suse.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, libc-alpha@sourceware.org,
+        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: [PATCH v13 0/9] namei: openat2(2) path resolution restrictions
+Date:   Tue,  1 Oct 2019 04:33:07 +1000
+Message-Id: <20190930183316.10190-1-cyphar@cyphar.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
@@ -53,176 +66,213 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Code that iterates over all standard PCI BARs typically uses
-PCI_STD_RESOURCE_END. However, it requires the "unusual" loop condition
-"i <= PCI_STD_RESOURCE_END" rather than something more standard like
-"i < PCI_STD_NUM_BARS".
+This patchset is being developed here:
+  <https://github.com/cyphar/linux/tree/resolveat/master>
 
-This patch adds the definition PCI_STD_NUM_BARS which is equivalent to
-"PCI_STD_RESOURCE_END + 1". To iterate through all possible BARs, loop
-conditions changed to the *number* of BARs "i < PCI_STD_NUM_BARS",
-instead of the index of the last valid BAR "i <= PCI_STD_RESOURCE_END"
-or PCI_ROM_RESOURCE. The magic constant (6) is also replaced with new
-define PCI_STD_NUM_BARS.
+It depends on the copy_struct_from_user() helpers being developed here:
+  <https://github.com/cyphar/linux/tree/copy_struct_from_user/master>
+and posted here:
+  <https://lore.kernel.org/lkml/20190930182810.6090-1-cyphar@cyphar.com/>
 
-Signed-off-by: Denis Efremov <efremov@linux.com>
----
- drivers/pci/pci-sysfs.c       |  4 ++--
- drivers/pci/pci.c             | 13 +++++++------
- drivers/pci/proc.c            |  4 ++--
- drivers/pci/quirks.c          |  4 ++--
- include/linux/pci.h           |  2 +-
- include/uapi/linux/pci_regs.h |  1 +
- 6 files changed, 15 insertions(+), 13 deletions(-)
+Patch changelog:
+ v13:
+  * Fix race with the magic-link mode semantics by recomputing the mode during
+    ->get_link() and storing it with nd_jump_link(). A selftest was added for
+    this attack scenario as well. [Jann Horn]
+  * Fix gap in RESOLVE_NO_XDEV with magic-links -- now magic-link resolution is
+    only permitted if the link doesn't jump vfsmounts.
+  * Remove path_is_under() checks for ".." resolution (due to the possibility
+    of O(m*n) lookup behaviour). Instead, return -EAGAIN if a racing rename or
+    mount occurs. Userspace is then encouraged to retry or have another
+    fallback (if after several tries, it still fails it's likely that there is
+    an attack going on -- though failures will occur spuriously because
+    &{rename,mount}_lock are both global). [Linus Torvalds]
+  * Move copy_struct_from_user() to a separate series so it can be merged
+    separately. [Christian Brauner]
+  * Small test improvements (mainly making the TAP output more readable and
+    adding a few new minor test cases). Now the openat2(2) self-tests have ~271
+    overall test cases.
+  * Expand on changes to path-lookup in the kernel docs.
+  * Kernel-doc fixes. [Randy Dunlap]
+ v12: <https://lore.kernel.org/lkml/20190904201933.10736-1-cyphar@cyphar.com/>
+ v11: <https://lore.kernel.org/lkml/20190820033406.29796-1-cyphar@cyphar.com/>
+      <https://lore.kernel.org/lkml/20190728010207.9781-1-cyphar@cyphar.com/>
+ v10: <https://lore.kernel.org/lkml/20190719164225.27083-1-cyphar@cyphar.com/>
+ v09: <https://lore.kernel.org/lkml/20190706145737.5299-1-cyphar@cyphar.com/>
+ v08: <https://lore.kernel.org/lkml/20190520133305.11925-1-cyphar@cyphar.com/>
+ v07: <https://lore.kernel.org/lkml/20190507164317.13562-1-cyphar@cyphar.com/>
+ v06: <https://lore.kernel.org/lkml/20190506165439.9155-1-cyphar@cyphar.com/>
+ v05: <https://lore.kernel.org/lkml/20190320143717.2523-1-cyphar@cyphar.com/>
+ v04: <https://lore.kernel.org/lkml/20181112142654.341-1-cyphar@cyphar.com/>
+ v03: <https://lore.kernel.org/lkml/20181009070230.12884-1-cyphar@cyphar.com/>
+ v02: <https://lore.kernel.org/lkml/20181009065300.11053-1-cyphar@cyphar.com/>
+ v01: <https://lore.kernel.org/lkml/20180929103453.12025-1-cyphar@cyphar.com/>
 
-diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index 965c72104150..3e26b8e03bd5 100644
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -1257,7 +1257,7 @@ static void pci_remove_resource_files(struct pci_dev *pdev)
- {
- 	int i;
- 
--	for (i = 0; i < PCI_ROM_RESOURCE; i++) {
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
- 		struct bin_attribute *res_attr;
- 
- 		res_attr = pdev->res_attr[i];
-@@ -1328,7 +1328,7 @@ static int pci_create_resource_files(struct pci_dev *pdev)
- 	int retval;
- 
- 	/* Expose the PCI resources from this device as files */
--	for (i = 0; i < PCI_ROM_RESOURCE; i++) {
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
- 
- 		/* skip empty resources */
- 		if (!pci_resource_len(pdev, i))
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 1b27b5af3d55..7d543986026b 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -674,7 +674,7 @@ struct resource *pci_find_resource(struct pci_dev *dev, struct resource *res)
- {
- 	int i;
- 
--	for (i = 0; i < PCI_ROM_RESOURCE; i++) {
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
- 		struct resource *r = &dev->resource[i];
- 
- 		if (r->start && resource_contains(r, res))
-@@ -3768,7 +3768,7 @@ void pci_release_selected_regions(struct pci_dev *pdev, int bars)
- {
- 	int i;
- 
--	for (i = 0; i < 6; i++)
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++)
- 		if (bars & (1 << i))
- 			pci_release_region(pdev, i);
- }
-@@ -3779,7 +3779,7 @@ static int __pci_request_selected_regions(struct pci_dev *pdev, int bars,
- {
- 	int i;
- 
--	for (i = 0; i < 6; i++)
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++)
- 		if (bars & (1 << i))
- 			if (__pci_request_region(pdev, i, res_name, excl))
- 				goto err_out;
-@@ -3827,7 +3827,7 @@ EXPORT_SYMBOL(pci_request_selected_regions_exclusive);
- 
- void pci_release_regions(struct pci_dev *pdev)
- {
--	pci_release_selected_regions(pdev, (1 << 6) - 1);
-+	pci_release_selected_regions(pdev, (1 << PCI_STD_NUM_BARS) - 1);
- }
- EXPORT_SYMBOL(pci_release_regions);
- 
-@@ -3846,7 +3846,8 @@ EXPORT_SYMBOL(pci_release_regions);
-  */
- int pci_request_regions(struct pci_dev *pdev, const char *res_name)
- {
--	return pci_request_selected_regions(pdev, ((1 << 6) - 1), res_name);
-+	return pci_request_selected_regions(pdev,
-+			((1 << PCI_STD_NUM_BARS) - 1), res_name);
- }
- EXPORT_SYMBOL(pci_request_regions);
- 
-@@ -3868,7 +3869,7 @@ EXPORT_SYMBOL(pci_request_regions);
- int pci_request_regions_exclusive(struct pci_dev *pdev, const char *res_name)
- {
- 	return pci_request_selected_regions_exclusive(pdev,
--					((1 << 6) - 1), res_name);
-+				((1 << PCI_STD_NUM_BARS) - 1), res_name);
- }
- EXPORT_SYMBOL(pci_request_regions_exclusive);
- 
-diff --git a/drivers/pci/proc.c b/drivers/pci/proc.c
-index fe7fe678965b..cb61ec2c24e8 100644
---- a/drivers/pci/proc.c
-+++ b/drivers/pci/proc.c
-@@ -248,13 +248,13 @@ static int proc_bus_pci_mmap(struct file *file, struct vm_area_struct *vma)
- 	}
- 
- 	/* Make sure the caller is mapping a real resource for this device */
--	for (i = 0; i < PCI_ROM_RESOURCE; i++) {
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
- 		if (dev->resource[i].flags & res_bit &&
- 		    pci_mmap_fits(dev, i, vma,  PCI_MMAP_PROCFS))
- 			break;
- 	}
- 
--	if (i >= PCI_ROM_RESOURCE)
-+	if (i >= PCI_STD_NUM_BARS)
- 		return -ENODEV;
- 
- 	if (fpriv->mmap_state == pci_mmap_mem &&
-diff --git a/drivers/pci/quirks.c b/drivers/pci/quirks.c
-index 44c4ae1abd00..998454b0ae8d 100644
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -475,7 +475,7 @@ static void quirk_extend_bar_to_page(struct pci_dev *dev)
- {
- 	int i;
- 
--	for (i = 0; i <= PCI_STD_RESOURCE_END; i++) {
-+	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
- 		struct resource *r = &dev->resource[i];
- 
- 		if (r->flags & IORESOURCE_MEM && resource_size(r) < PAGE_SIZE) {
-@@ -1810,7 +1810,7 @@ static void quirk_alder_ioapic(struct pci_dev *pdev)
- 	 * The next five BARs all seem to be rubbish, so just clean
- 	 * them out.
- 	 */
--	for (i = 1; i < 6; i++)
-+	for (i = 1; i < PCI_STD_NUM_BARS; i++)
- 		memset(&pdev->resource[i], 0, sizeof(pdev->resource[i]));
- }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_INTEL,	PCI_DEVICE_ID_INTEL_EESSC,	quirk_alder_ioapic);
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 82e4cd1b7ac3..cf7d16305243 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -76,7 +76,7 @@ enum pci_mmap_state {
- enum {
- 	/* #0-5: standard PCI resources */
- 	PCI_STD_RESOURCES,
--	PCI_STD_RESOURCE_END = 5,
-+	PCI_STD_RESOURCE_END = PCI_STD_RESOURCES + PCI_STD_NUM_BARS - 1,
- 
- 	/* #6: expansion ROM resource */
- 	PCI_ROM_RESOURCE,
-diff --git a/include/uapi/linux/pci_regs.h b/include/uapi/linux/pci_regs.h
-index f28e562d7ca8..68b571d491eb 100644
---- a/include/uapi/linux/pci_regs.h
-+++ b/include/uapi/linux/pci_regs.h
-@@ -34,6 +34,7 @@
-  * of which the first 64 bytes are standardized as follows:
-  */
- #define PCI_STD_HEADER_SIZEOF	64
-+#define PCI_STD_NUM_BARS	6	/* Number of standard BARs */
- #define PCI_VENDOR_ID		0x00	/* 16 bits */
- #define PCI_DEVICE_ID		0x02	/* 16 bits */
- #define PCI_COMMAND		0x04	/* 16 bits */
+The need for some sort of control over VFS's path resolution (to avoid
+malicious paths resulting in inadvertent breakouts) has been a very
+long-standing desire of many userspace applications. This patchset is a
+revival of Al Viro's old AT_NO_JUMPS[1,2] patchset (which was a variant
+of David Drysdale's O_BENEATH patchset[3] which was a spin-off of the
+Capsicum project[4]) with a few additions and changes made based on the
+previous discussion within [5] as well as others I felt were useful.
+
+In line with the conclusions of the original discussion of AT_NO_JUMPS,
+the flag has been split up into separate flags. However, instead of
+being an openat(2) flag it is provided through a new syscall openat2(2)
+which provides several other improvements to the openat(2) interface (see the
+patch description for more details). The following new LOOKUP_* flags are
+added:
+
+  * LOOKUP_NO_XDEV blocks all mountpoint crossings (upwards, downwards,
+    or through absolute links). Absolute pathnames alone in openat(2) do not
+    trigger this. Magic-link traversal which implies a vfsmount jump is also
+    blocked (though magic-link jumps on the same vfsmount are permitted).
+
+  * LOOKUP_NO_MAGICLINKS blocks resolution through /proc/$pid/fd-style
+    links. This is done by blocking the usage of nd_jump_link() during
+    resolution in a filesystem. The term "magic-links" is used to match
+    with the only reference to these links in Documentation/, but I'm
+    happy to change the name.
+
+    It should be noted that this is different to the scope of
+    ~LOOKUP_FOLLOW in that it applies to all path components. However,
+    you can do openat2(NO_FOLLOW|NO_MAGICLINKS) on a magic-link and it
+    will *not* fail (assuming that no parent component was a
+    magic-link), and you will have an fd for the magic-link.
+
+  * LOOKUP_BENEATH disallows escapes to outside the starting dirfd's
+    tree, using techniques such as ".." or absolute links. Absolute
+    paths in openat(2) are also disallowed. Conceptually this flag is to
+    ensure you "stay below" a certain point in the filesystem tree --
+    but this requires some additional to protect against various races
+    that would allow escape using "..".
+
+    Currently LOOKUP_BENEATH implies LOOKUP_NO_MAGICLINKS, because it
+    can trivially beam you around the filesystem (breaking the
+    protection). In future, there might be similar safety checks done as
+    in LOOKUP_IN_ROOT, but that requires more discussion.
+
+In addition, two new flags are added that expand on the above ideas:
+
+  * LOOKUP_NO_SYMLINKS does what it says on the tin. No symlink
+    resolution is allowed at all, including magic-links. Just as with
+    LOOKUP_NO_MAGICLINKS this can still be used with NOFOLLOW to open an
+    fd for the symlink as long as no parent path had a symlink
+    component.
+
+  * LOOKUP_IN_ROOT is an extension of LOOKUP_BENEATH that, rather than
+    blocking attempts to move past the root, forces all such movements
+    to be scoped to the starting point. This provides chroot(2)-like
+    protection but without the cost of a chroot(2) for each filesystem
+    operation, as well as being safe against race attacks that chroot(2)
+    is not.
+
+    If a race is detected (as with LOOKUP_BENEATH) then an error is
+    generated, and similar to LOOKUP_BENEATH it is not permitted to cross
+    magic-links with LOOKUP_IN_ROOT.
+
+    The primary need for this is from container runtimes, which
+    currently need to do symlink scoping in userspace[6] when opening
+    paths in a potentially malicious container. There is a long list of
+    CVEs that could have bene mitigated by having RESOLVE_THIS_ROOT
+    (such as CVE-2017-1002101, CVE-2017-1002102, CVE-2018-15664, and
+    CVE-2019-5736, just to name a few).
+
+And further, several semantics of file descriptor "re-opening" are now
+changed to prevent attacks like CVE-2019-5736 by restricting how
+magic-links can be resolved (based on their mode). This required some
+other changes to the semantics of the modes of O_PATH file descriptor's
+associated /proc/self/fd magic-links. openat2(2) has the ability to
+further restrict re-opening of its own O_PATH fds, so that users can
+make even better use of this feature.
+
+Finally, O_EMPTYPATH was added so that users can do /proc/self/fd-style
+re-opening without depending on procfs. The new restricted semantics for
+magic-links are applied here too.
+
+In order to make all of the above more usable, I'm working on
+libpathrs[7] which is a C-friendly library for safe path resolution. It
+features a userspace-emulated backend if the kernel doesn't support
+openat2(2). Hopefully we can get userspace to switch to using it, and
+thus get openat2(2) support for free once it's ready.
+
+[1]: https://lwn.net/Articles/721443/
+[2]: https://lore.kernel.org/patchwork/patch/784221/
+[3]: https://lwn.net/Articles/619151/
+[4]: https://lwn.net/Articles/603929/
+[5]: https://lwn.net/Articles/723057/
+[6]: https://github.com/cyphar/filepath-securejoin
+[7]: https://github.com/openSUSE/libpathrs
+
+Aleksa Sarai (9):
+  namei: obey trailing magic-link DAC permissions
+  procfs: switch magic-link modes to be more sane
+  open: O_EMPTYPATH: procfs-less file descriptor re-opening
+  namei: O_BENEATH-style path resolution flags
+  namei: LOOKUP_IN_ROOT: chroot-like path resolution
+  namei: permit ".." resolution with LOOKUP_{IN_ROOT,BENEATH}
+  open: openat2(2) syscall
+  selftests: add openat2(2) selftests
+  Documentation: update path-lookup to mention trailing magic-links
+
+ Documentation/filesystems/path-lookup.rst     |  80 ++-
+ arch/alpha/include/uapi/asm/fcntl.h           |   1 +
+ arch/alpha/kernel/syscalls/syscall.tbl        |   1 +
+ arch/arm/tools/syscall.tbl                    |   1 +
+ arch/arm64/include/asm/unistd.h               |   2 +-
+ arch/arm64/include/asm/unistd32.h             |   2 +
+ arch/ia64/kernel/syscalls/syscall.tbl         |   1 +
+ arch/m68k/kernel/syscalls/syscall.tbl         |   1 +
+ arch/microblaze/kernel/syscalls/syscall.tbl   |   1 +
+ arch/mips/kernel/syscalls/syscall_n32.tbl     |   1 +
+ arch/mips/kernel/syscalls/syscall_n64.tbl     |   1 +
+ arch/mips/kernel/syscalls/syscall_o32.tbl     |   1 +
+ arch/parisc/include/uapi/asm/fcntl.h          |  39 +-
+ arch/parisc/kernel/syscalls/syscall.tbl       |   1 +
+ arch/powerpc/kernel/syscalls/syscall.tbl      |   1 +
+ arch/s390/kernel/syscalls/syscall.tbl         |   1 +
+ arch/sh/kernel/syscalls/syscall.tbl           |   1 +
+ arch/sparc/include/uapi/asm/fcntl.h           |   1 +
+ arch/sparc/kernel/syscalls/syscall.tbl        |   1 +
+ arch/x86/entry/syscalls/syscall_32.tbl        |   1 +
+ arch/x86/entry/syscalls/syscall_64.tbl        |   1 +
+ arch/xtensa/kernel/syscalls/syscall.tbl       |   1 +
+ fs/fcntl.c                                    |   2 +-
+ fs/internal.h                                 |   1 +
+ fs/namei.c                                    | 286 +++++++--
+ fs/open.c                                     | 100 ++-
+ fs/proc/base.c                                |  69 +-
+ fs/proc/fd.c                                  |  45 +-
+ fs/proc/internal.h                            |   2 +-
+ fs/proc/namespaces.c                          |   4 +-
+ include/linux/fcntl.h                         |  21 +-
+ include/linux/fs.h                            |   8 +-
+ include/linux/namei.h                         |  15 +-
+ include/linux/syscalls.h                      |  14 +-
+ include/uapi/asm-generic/fcntl.h              |   4 +
+ include/uapi/asm-generic/unistd.h             |   5 +-
+ include/uapi/linux/fcntl.h                    |  42 ++
+ security/apparmor/apparmorfs.c                |   2 +-
+ tools/testing/selftests/Makefile              |   1 +
+ tools/testing/selftests/memfd/memfd_test.c    |   7 +-
+ tools/testing/selftests/openat2/.gitignore    |   1 +
+ tools/testing/selftests/openat2/Makefile      |   8 +
+ tools/testing/selftests/openat2/helpers.c     |  98 +++
+ tools/testing/selftests/openat2/helpers.h     | 114 ++++
+ .../testing/selftests/openat2/linkmode_test.c | 590 ++++++++++++++++++
+ .../testing/selftests/openat2/openat2_test.c  | 152 +++++
+ .../selftests/openat2/rename_attack_test.c    | 149 +++++
+ .../testing/selftests/openat2/resolve_test.c  | 522 ++++++++++++++++
+ 48 files changed, 2258 insertions(+), 145 deletions(-)
+ create mode 100644 tools/testing/selftests/openat2/.gitignore
+ create mode 100644 tools/testing/selftests/openat2/Makefile
+ create mode 100644 tools/testing/selftests/openat2/helpers.c
+ create mode 100644 tools/testing/selftests/openat2/helpers.h
+ create mode 100644 tools/testing/selftests/openat2/linkmode_test.c
+ create mode 100644 tools/testing/selftests/openat2/openat2_test.c
+ create mode 100644 tools/testing/selftests/openat2/rename_attack_test.c
+ create mode 100644 tools/testing/selftests/openat2/resolve_test.c
+
 -- 
-2.21.0
+2.23.0
 
