@@ -2,32 +2,48 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 98820D2FEA
-	for <lists+linux-ia64@lfdr.de>; Thu, 10 Oct 2019 20:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 615F9D34B3
+	for <lists+linux-ia64@lfdr.de>; Fri, 11 Oct 2019 01:57:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726387AbfJJSDf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 10 Oct 2019 14:03:35 -0400
-Received: from mail.skyhub.de ([5.9.137.197]:55890 "EHLO mail.skyhub.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726323AbfJJSDf (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 10 Oct 2019 14:03:35 -0400
-Received: from zn.tnic (p200300EC2F0A6300D1C0EB70E9B309BA.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:6300:d1c0:eb70:e9b3:9ba])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 9C0E51EC090E;
-        Thu, 10 Oct 2019 20:03:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
-        t=1570730613;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
-        bh=1UJ85wrxUTh6ZjmKP+WxNvKm5uhVcmHwuihzVVphUA0=;
-        b=nU1pP2YSMQ1D+YbJ1lqIUj3fIbqXmRei9IrwE7casgVZ3bf6uvckQOYFEy6VxgMByJdLas
-        gfLhF2deNPAW3vJXpynsBSp1uVNCkCK3TGs2a02YYiWnywAPZqOojj1vdVy9ucSV/QlrU6
-        X6II6ljlFaBt+0oSrDlytkAJMAR1SFQ=
-Date:   Thu, 10 Oct 2019 20:03:31 +0200
-From:   Borislav Petkov <bp@alien8.de>
-To:     Kees Cook <keescook@chromium.org>
+        id S1726631AbfJJX5j (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 10 Oct 2019 19:57:39 -0400
+Received: from mail-pg1-f196.google.com ([209.85.215.196]:33523 "EHLO
+        mail-pg1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726317AbfJJX5i (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 10 Oct 2019 19:57:38 -0400
+Received: by mail-pg1-f196.google.com with SMTP id i76so4693272pgc.0
+        for <linux-ia64@vger.kernel.org>; Thu, 10 Oct 2019 16:57:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=JDPAnamTFIBp8EbgTewpJ7Tw/YLIi8XdRk99n5ihTZ0=;
+        b=Db/oz2S5lstBws+DqElygyxc81UBHBsr+H3aP9d7X1Exv8x5nrqyE8LlbCfAHNDI33
+         C0Lez0UyqONC9IaOea8gT8nPL1/x5uCEuR2jRaabo/Im85fb5YQ8dXKHBhHzlSwEU26t
+         LMRAjaDuj9AVfrjyE4E00p9tS9qPnDSjC8rv8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=JDPAnamTFIBp8EbgTewpJ7Tw/YLIi8XdRk99n5ihTZ0=;
+        b=YDJ97QhrMOx2/ZQH8F4qbWUg27937myy6V3HaNeD2E+ksOxiyQSzuUWUDEsmBy6lxI
+         Yug/woZqdjS2RfWG+NIWx51qxZ2ADTlA0pG5B//rP8bM2peP4mPPRsFTM01JZ6oSdH3I
+         NQsDT4Dixu1O4hvWBkqkAol0tiDK8kttojqB8WzNupBXE0ZTSECrlAFG30/qIQL4NKhy
+         APN83ne2lcd0ICZFr77ud4Zy1xW81D/D9PEuMGEuKvIAM0oPsbyRYzMs6jmq0MMv2lWC
+         ai7dvspYYikj8ttOXVCPx4g4yUq8rfBLEztKZHbxaR2UhBeDRnEIkScMR+aMRjpYpjJ+
+         9UMQ==
+X-Gm-Message-State: APjAAAU5273st8qIsTrrOVhJ4rESuxbLthvJ7n1Jo6vJrTEz8d/N6pts
+        F0MHOvj4rscNrzdfQK2fPGezEw==
+X-Google-Smtp-Source: APXvYqxc417dQnyKwr23xDZjX8PoZldCbCNE524Aqa25++NjX1n3K1nM+hIHdvRdzpYCGpdnTHOJmw==
+X-Received: by 2002:a17:90a:cc12:: with SMTP id b18mr13644961pju.141.1570751858072;
+        Thu, 10 Oct 2019 16:57:38 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id b4sm5035339pju.16.2019.10.10.16.57.36
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 10 Oct 2019 16:57:37 -0700 (PDT)
+Date:   Thu, 10 Oct 2019 16:57:36 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Borislav Petkov <bp@alien8.de>
 Cc:     Thomas Gleixner <tglx@linutronix.de>,
         Rick Edgecombe <rick.p.edgecombe@intel.com>,
         Ingo Molnar <mingo@redhat.com>,
@@ -43,55 +59,56 @@ Cc:     Thomas Gleixner <tglx@linutronix.de>,
         linux-xtensa@linux-xtensa.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 00/29] vmlinux.lds.h: Refactor EXCEPTION_TABLE and NOTES
-Message-ID: <20191010180331.GI7658@zn.tnic>
+Message-ID: <201910101657.234CB71E53@keescook>
 References: <20190926175602.33098-1-keescook@chromium.org>
+ <20191010180331.GI7658@zn.tnic>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20190926175602.33098-1-keescook@chromium.org>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20191010180331.GI7658@zn.tnic>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Sep 26, 2019 at 10:55:33AM -0700, Kees Cook wrote:
-> This series works to move the linker sections for NOTES and
-> EXCEPTION_TABLE into the RO_DATA area, where they belong on most
-> (all?) architectures. The problem being addressed was the discovery
-> by Rick Edgecombe that the exception table was accidentally marked
-> executable while he was developing his execute-only-memory series. When
-> permissions were flipped from readable-and-executable to only-executable,
-> the exception table became unreadable, causing things to explode rather
-> badly. :)
+On Thu, Oct 10, 2019 at 08:03:31PM +0200, Borislav Petkov wrote:
+> On Thu, Sep 26, 2019 at 10:55:33AM -0700, Kees Cook wrote:
+> > This series works to move the linker sections for NOTES and
+> > EXCEPTION_TABLE into the RO_DATA area, where they belong on most
+> > (all?) architectures. The problem being addressed was the discovery
+> > by Rick Edgecombe that the exception table was accidentally marked
+> > executable while he was developing his execute-only-memory series. When
+> > permissions were flipped from readable-and-executable to only-executable,
+> > the exception table became unreadable, causing things to explode rather
+> > badly. :)
+> > 
+> > Roughly speaking, the steps are:
+> > 
+> > - regularize the linker names for PT_NOTE and PT_LOAD program headers
+> >   (to "note" and "text" respectively)
+> > - regularize restoration of linker section to program header assignment
+> >   (when PT_NOTE exists)
+> > - move NOTES into RO_DATA
+> > - finish macro naming conversions for RO_DATA and RW_DATA
+> > - move EXCEPTION_TABLE into RO_DATA on architectures where this is clear
+> > - clean up some x86-specific reporting of kernel memory resources
+> > - switch x86 linker fill byte from x90 (NOP) to 0xcc (INT3), just because
+> >   I finally realized what that trailing ": 0x9090" meant -- and we should
+> >   trap, not slide, if execution lands in section padding
 > 
-> Roughly speaking, the steps are:
+> Yap, nice patchset overall.
+
+Thanks!
+
+> > Since these changes are treewide, I'd love to get architecture-maintainer
+> > Acks and either have this live in x86 -tip or in my own tree, however
+> > people think it should go.
 > 
-> - regularize the linker names for PT_NOTE and PT_LOAD program headers
->   (to "note" and "text" respectively)
-> - regularize restoration of linker section to program header assignment
->   (when PT_NOTE exists)
-> - move NOTES into RO_DATA
-> - finish macro naming conversions for RO_DATA and RW_DATA
-> - move EXCEPTION_TABLE into RO_DATA on architectures where this is clear
-> - clean up some x86-specific reporting of kernel memory resources
-> - switch x86 linker fill byte from x90 (NOP) to 0xcc (INT3), just because
->   I finally realized what that trailing ": 0x9090" meant -- and we should
->   trap, not slide, if execution lands in section padding
+> Sure, I don't mind taking v2 through tip once I get ACKs from the
+> respective arch maintainers.
 
-Yap, nice patchset overall.
-
-> Since these changes are treewide, I'd love to get architecture-maintainer
-> Acks and either have this live in x86 -tip or in my own tree, however
-> people think it should go.
-
-Sure, I don't mind taking v2 through tip once I get ACKs from the
-respective arch maintainers.
-
-Thx.
+Okay, excellent. I've only had acks from arm64, but I'll call it out
+again in v2. Thanks for the review!
 
 -- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+Kees Cook
