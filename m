@@ -2,42 +2,42 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 167DED3573
-	for <lists+linux-ia64@lfdr.de>; Fri, 11 Oct 2019 02:13:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D89F0D3577
+	for <lists+linux-ia64@lfdr.de>; Fri, 11 Oct 2019 02:13:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727717AbfJKANV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 10 Oct 2019 20:13:21 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:39896 "EHLO
+        id S1727715AbfJKANB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 10 Oct 2019 20:13:01 -0400
+Received: from mail-pf1-f195.google.com ([209.85.210.195]:40641 "EHLO
         mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727721AbfJKANC (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 10 Oct 2019 20:13:02 -0400
-Received: by mail-pf1-f195.google.com with SMTP id v4so4954753pff.6
+        with ESMTP id S1727692AbfJKANB (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 10 Oct 2019 20:13:01 -0400
+Received: by mail-pf1-f195.google.com with SMTP id x127so4948326pfb.7
         for <linux-ia64@vger.kernel.org>; Thu, 10 Oct 2019 17:13:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=from:to:cc:subject:date:message-id:in-reply-to:references;
-        bh=CyoXOdP2RSQBzcYa2ar7sJXCOKRhNFJ5bhxtCWldzm0=;
-        b=Lj7QNKSFAWUpBfpzOt7+g6iG1nZwQWiy2Yx2COX4rHzLDwe7zAeBtuvEmbHCBjMdVS
-         f7OItuAMoBx4ANIxisnsIuIzLX/n/2wSchdTwd5gBy79nJpGqvgOWz8QIjj/yjSDeyUu
-         Nk/yU3k7rraRoC3ReBbUSn8UR29/tNR/sk7J8=
+        bh=Wn91QvvOWXGcdAukdBFPOsAS+V9wjbJFfxE/dszqFsM=;
+        b=TKF/H7IXE7UJDzb3rMUleub9owN4KR+Kc5MridCe/6j0nlzZqoEI/zttKy0QHihDrJ
+         2ZeHmtUNHexo6bQLRtT0gDvTipRD0K5TGW8Q7FVWpvhcmLBUGnPT1TySO+nYDUITKTZu
+         3WNoDW0bVMFt0uCMT6eBCSnH00RkY54ViUTLk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
          :references;
-        bh=CyoXOdP2RSQBzcYa2ar7sJXCOKRhNFJ5bhxtCWldzm0=;
-        b=boa3MDH0SlejxdeSvn1RE+/nWfc+rT9HS/zv0gFIM1BxzixDzCBgHPfB2IiNPfGV2m
-         3XMf2UdICPxBYRp4n2iNEAH5es36lk6Dll64tmRzyoyD+A2a3uRhjqKJQPhdn2qrx2Hj
-         8PN9KPmz0/uySjp1GbH+3YN9YYkyi8nk8q0WJe6RF/0eeR5yZpQcElK8+So84OEjIS0T
-         jNMnsyMar2pBmpn5aCVi6szDSj4HYFF89uC0RTRXVXY9dhfK8uQgLaY1kkR39ik1bCb4
-         ql8fI4onyKSVb4J3u6CtT8mloBtuSFR1Sw4puPT6T/pUiw5WifHSjxzvuLQjLNT/LOAj
-         n+7A==
-X-Gm-Message-State: APjAAAXzQm/AM9fjKYDRyWeaWWnK58X1LQ3D+uhk++lkKk6AabqrIPaQ
-        EbiBTdm6l85gpwwb+/KeS2Nx+w==
-X-Google-Smtp-Source: APXvYqzvlppGYfKVE9ugq/bM5vvDAuSQD7dhWwgiw+2wssyvKHG8+r3B0+BR11AxbHRgVxFlF3OFFg==
-X-Received: by 2002:aa7:9907:: with SMTP id z7mr13951279pff.192.1570752781298;
-        Thu, 10 Oct 2019 17:13:01 -0700 (PDT)
+        bh=Wn91QvvOWXGcdAukdBFPOsAS+V9wjbJFfxE/dszqFsM=;
+        b=dGFjh/NXwDZlxlayNmMNWXb7K2a5k7waF9q+k0O75/MHXZfd5GDLQmFvui2P6k/Byi
+         IsGwOcrfJ/NdYV4DAUGjU5Lnktk8ob3c+AtAqjn3/fxwUAcD7+U3UrWs6UZc/QH1VrNH
+         ocZfVAXVKGrZpIMNLEQ0TMZFrNO244JbBURGPnxaV/RU4cYXIUnHXY/uLiYTtPEky1wN
+         bXOdkJEdrSlg5v072MTd7p8NnZf0Il6MF0ZqhIcEiJc8hkQcOLDxhEA4TfS+QhiGAIPc
+         5LeBs2NmfHXwLMLyi3ybfY2AneifTXuDu4ULiZvVQ069SbgSV//eHSaadNvhJI80oC7E
+         4hWg==
+X-Gm-Message-State: APjAAAWbk9l2OsIwukh5RYvDsmKlfVANrk/So64Gttjz21M6yu1q55Ro
+        DwyqwbZCwbjPuRcIPXbyEUoAuw==
+X-Google-Smtp-Source: APXvYqwhzx8QmNWMryCruzS69inQpCD817u3s0gzfMeJwk1Bb2iOQgca7Hto534MUkNuyGvUJAkyfA==
+X-Received: by 2002:a17:90a:ff0f:: with SMTP id ce15mr14913883pjb.14.1570752780484;
+        Thu, 10 Oct 2019 17:13:00 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id t12sm5458788pjq.18.2019.10.10.17.12.55
+        by smtp.gmail.com with ESMTPSA id y144sm7993803pfb.188.2019.10.10.17.12.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 10 Oct 2019 17:12:56 -0700 (PDT)
 From:   Kees Cook <keescook@chromium.org>
@@ -58,9 +58,9 @@ Cc:     Kees Cook <keescook@chromium.org>,
         Michal Simek <monstr@monstr.eu>, linux-parisc@vger.kernel.org,
         linux-xtensa@linux-xtensa.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH v2 27/29] x86/mm: Report which part of kernel image is freed
-Date:   Thu, 10 Oct 2019 17:06:07 -0700
-Message-Id: <20191011000609.29728-28-keescook@chromium.org>
+Subject: [PATCH v2 29/29] x86: Use INT3 instead of NOP for linker fill bytes
+Date:   Thu, 10 Oct 2019 17:06:09 -0700
+Message-Id: <20191011000609.29728-30-keescook@chromium.org>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20191011000609.29728-1-keescook@chromium.org>
 References: <20191011000609.29728-1-keescook@chromium.org>
@@ -69,92 +69,58 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-The memory freeing report wasn't very useful for figuring out which
-parts of the kernel image were being freed. Add the details for clearer
-reporting in dmesg.
+Instead of using 0x90 (NOP) to fill bytes between functions, which makes
+it easier to sloppily target functions in function pointer overwrite
+attacks, fill with 0xCC (INT3) to force a trap. Also drop the space
+between "=" and the value to better match the binutils documentation
+https://sourceware.org/binutils/docs/ld/Output-Section-Fill.html#Output-Section-Fill
 
-Before:
+Example "objdump -d" before:
 
-[    2.150450] Freeing unused kernel image memory: 1348K
-[    2.154574] Write protecting the kernel read-only data: 20480k
-[    2.157641] Freeing unused kernel image memory: 2040K
-[    2.158827] Freeing unused kernel image memory: 172K
+...
+ffffffff810001e0 <start_cpu0>:
+ffffffff810001e0:       48 8b 25 e1 b1 51 01    mov 0x151b1e1(%rip),%rsp        # ffffffff8251b3c8 <initial_stack>
+ffffffff810001e7:       e9 d5 fe ff ff          jmpq   ffffffff810000c1 <secondary_startup_64+0x91>
+ffffffff810001ec:       90                      nop
+ffffffff810001ed:       90                      nop
+ffffffff810001ee:       90                      nop
+ffffffff810001ef:       90                      nop
+
+ffffffff810001f0 <__startup_64>:
+...
 
 After:
 
-[    2.329678] Freeing unused kernel image (initmem) memory: 1348K
-[    2.331953] Write protecting the kernel read-only data: 20480k
-[    2.335361] Freeing unused kernel image (text/rodata gap) memory: 2040K
-[    2.336927] Freeing unused kernel image (rodata/data gap) memory: 172K
+...
+ffffffff810001e0 <start_cpu0>:
+ffffffff810001e0:       48 8b 25 41 79 53 01    mov 0x1537941(%rip),%rsp        # ffffffff82537b28 <initial_stack>
+ffffffff810001e7:       e9 d5 fe ff ff          jmpq   ffffffff810000c1 <secondary_startup_64+0x91>
+ffffffff810001ec:       cc                      int3
+ffffffff810001ed:       cc                      int3
+ffffffff810001ee:       cc                      int3
+ffffffff810001ef:       cc                      int3
+
+ffffffff810001f0 <__startup_64>:
+...
 
 Signed-off-by: Kees Cook <keescook@chromium.org>
 ---
- arch/x86/include/asm/processor.h | 2 +-
- arch/x86/mm/init.c               | 8 ++++----
- arch/x86/mm/init_64.c            | 6 ++++--
- 3 files changed, 9 insertions(+), 7 deletions(-)
+ arch/x86/kernel/vmlinux.lds.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 6e0a3b43d027..790f250d39a8 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -958,7 +958,7 @@ static inline uint32_t hypervisor_cpuid_base(const char *sig, uint32_t leaves)
- 
- extern unsigned long arch_align_stack(unsigned long sp);
- void free_init_pages(const char *what, unsigned long begin, unsigned long end);
--extern void free_kernel_image_pages(void *begin, void *end);
-+extern void free_kernel_image_pages(const char *what, void *begin, void *end);
- 
- void default_idle(void);
- #ifdef	CONFIG_XEN
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index fd10d91a6115..e7bb483557c9 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -829,14 +829,13 @@ void free_init_pages(const char *what, unsigned long begin, unsigned long end)
-  * used for the kernel image only.  free_init_pages() will do the
-  * right thing for either kind of address.
-  */
--void free_kernel_image_pages(void *begin, void *end)
-+void free_kernel_image_pages(const char *what, void *begin, void *end)
- {
- 	unsigned long begin_ul = (unsigned long)begin;
- 	unsigned long end_ul = (unsigned long)end;
- 	unsigned long len_pages = (end_ul - begin_ul) >> PAGE_SHIFT;
- 
--
--	free_init_pages("unused kernel image", begin_ul, end_ul);
-+	free_init_pages(what, begin_ul, end_ul);
- 
- 	/*
- 	 * PTI maps some of the kernel into userspace.  For performance,
-@@ -865,7 +864,8 @@ void __ref free_initmem(void)
- 
- 	mem_encrypt_free_decrypted_mem();
- 
--	free_kernel_image_pages(&__init_begin, &__init_end);
-+	free_kernel_image_pages("unused kernel image (initmem)",
-+				&__init_begin, &__init_end);
- }
- 
- #ifdef CONFIG_BLK_DEV_INITRD
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index e67ddca8b7a8..dcb9bc961b39 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1334,8 +1334,10 @@ void mark_rodata_ro(void)
- 	set_memory_ro(start, (end-start) >> PAGE_SHIFT);
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index b06d6e1188de..3a1a819da137 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -144,7 +144,7 @@ SECTIONS
+ 		*(.text.__x86.indirect_thunk)
+ 		__indirect_thunk_end = .;
  #endif
+-	} :text = 0x9090
++	} :text =0xcccc
  
--	free_kernel_image_pages((void *)text_end, (void *)rodata_start);
--	free_kernel_image_pages((void *)rodata_end, (void *)_sdata);
-+	free_kernel_image_pages("unused kernel image (text/rodata gap)",
-+				(void *)text_end, (void *)rodata_start);
-+	free_kernel_image_pages("unused kernel image (rodata/data gap)",
-+				(void *)rodata_end, (void *)_sdata);
- 
- 	debug_checkwx();
- }
+ 	/* End of text section, which should occupy whole number of pages */
+ 	_etext = .;
 -- 
 2.17.1
 
