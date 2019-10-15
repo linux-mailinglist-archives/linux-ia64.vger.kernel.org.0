@@ -2,92 +2,130 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FB26D7DEC
-	for <lists+linux-ia64@lfdr.de>; Tue, 15 Oct 2019 19:36:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED0B1D7E85
+	for <lists+linux-ia64@lfdr.de>; Tue, 15 Oct 2019 20:09:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388391AbfJORgZ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 15 Oct 2019 13:36:25 -0400
-Received: from mail-pf1-f195.google.com ([209.85.210.195]:33946 "EHLO
-        mail-pf1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388276AbfJORgY (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 15 Oct 2019 13:36:24 -0400
-Received: by mail-pf1-f195.google.com with SMTP id b128so12947658pfa.1
-        for <linux-ia64@vger.kernel.org>; Tue, 15 Oct 2019 10:36:24 -0700 (PDT)
+        id S1727967AbfJOSJt (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 15 Oct 2019 14:09:49 -0400
+Received: from mail-qt1-f195.google.com ([209.85.160.195]:42912 "EHLO
+        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2389106AbfJOSJs (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 15 Oct 2019 14:09:48 -0400
+Received: by mail-qt1-f195.google.com with SMTP id w14so31886797qto.9
+        for <linux-ia64@vger.kernel.org>; Tue, 15 Oct 2019 11:09:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=m+oSkq2BGDVnMXCTCZOGBY+AVAcaQgizlBaC3TfYgbk=;
-        b=JV+TKEsIejeoGguft/smdhcOhD8TznOS3FDgaThCNzjFd/zO9Gf+USti5K/cmcvGGL
-         VL+DN5u7ePo4IWynJI4kZyUxYCOiGUo31kRO4IGsw0RDA7MEE9P0Lx+Gh5T4vmOLDPmO
-         nAWj+aCJO3XdoGRVZfY2JbnQgqczJYP20lPBE=
+        d=lca.pw; s=google;
+        h=message-id:subject:from:to:cc:date:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=0qwLtcxPALcuAsItN1B8qx8pI5MyvooMsDhjXlcFVYU=;
+        b=OnJVDC5hcrBKYzJ0aaZLxRkdp1U3qCbQgu81veLGc4CM3Zb6t5hcOJCBpTdvyBdixF
+         VWur9qZ4L56kK+G5lLndae4M48fKcE348SEdyWD92O4lDLHkfxe5ub5wW2//gFbMdbTi
+         iE/SuY24OOqYt++fDwkOv1/GwgIUIlLUQjLQSRUD9o8GbrJtA9JJHM6yNqLJ6MTwQsp1
+         dfxkcvx1nTD9OtgmSDJrI8pHgij5k8GqR5jvJV2yqTmJQajvA0gKezgdBIJXSTBKmtgD
+         Bn30ldSgF22fHm04r+hQGzlUE6CW7jcqmMjIT04sV5F04SskgoCcXMGW7VfjZDMID4ld
+         SbxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=m+oSkq2BGDVnMXCTCZOGBY+AVAcaQgizlBaC3TfYgbk=;
-        b=RVEohiCdyKfLwLF4rHa9jExg0AeC/6zwFFGP2mBN1JvkseLLWqQGp7se4LrlmI1pHp
-         /UP/JWaZJ6TRY5AdzxNLQQUmq8kQcb3oDb+IAyZ/RSsXGkeN1A3W/HhJTR/Q0hF+u59J
-         JpdZTr3qOmaZXJn+mrqAwotb7Iq3FRG/fm4KzECOLEPBj/qSbgaMKGkCFXdYrQVv7gH6
-         ifynFycLI5Oy8yM92/n7GEQr8fvF4xH0v0KGaQMXebkP7d19x1Pf+c0pPFBtJMpP+dJl
-         3lZqPlPsWN8w4ytthkHfngWVVjupryjMnc9+ji7Wc+lU1PdgbW1m1dNfbHgLVAzr3HeZ
-         dM7A==
-X-Gm-Message-State: APjAAAUm/Liq1gY15953O89PrQOwUgoie0Amm0+Y231CS/EEWZthAgaT
-        pxK69pOUkMHx0kQEC0WkLuXVQA==
-X-Google-Smtp-Source: APXvYqyiR4aQoe1gYk78ERJu5vF+BWIQdBY7ufngAKMkxwambAKLD5Wy/+2CK6+2hmVn878fjUO5OQ==
-X-Received: by 2002:a62:b504:: with SMTP id y4mr39162264pfe.124.1571160984162;
-        Tue, 15 Oct 2019 10:36:24 -0700 (PDT)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id f74sm25484564pfa.34.2019.10.15.10.36.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 15 Oct 2019 10:36:23 -0700 (PDT)
-Date:   Tue, 15 Oct 2019 10:36:21 -0700
-From:   Kees Cook <keescook@chromium.org>
-To:     Borislav Petkov <bp@alien8.de>
-Cc:     Segher Boessenkool <segher@kernel.crashing.org>,
-        linux-arch@vger.kernel.org, linux-s390@vger.kernel.org,
-        Michal Simek <monstr@monstr.eu>, x86@kernel.org,
-        linux-ia64@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        linux-xtensa@linux-xtensa.org,
-        Dave Hansen <dave.hansen@linux.intel.com>,
+        h=x-gm-message-state:message-id:subject:from:to:cc:date:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=0qwLtcxPALcuAsItN1B8qx8pI5MyvooMsDhjXlcFVYU=;
+        b=bhlQ5gOoFyU6oB5Pr29v1ZseuIYpTMIg7HLnewSp+xqlkXX+Awn4+JWZ0Lrif8FU4F
+         AJdxDt5i0buzup3WbA4+daTE+DW+7E7KXQ8bo9WUphRIQcOmvX+hB2NrV7s7opDklFyu
+         NPyLexwbEvVBvCh/KDyYOodlFvzey8xIYfRgp6pVVGmnooCBB+dGkcqNMFhyU2Sc6J5+
+         DMhLicpl3rUnKK5YdoE2RmC0vrKYBRrPyVcNLHHs+P4hrcsk0kvqHcpfDCPxXHcgznTL
+         8IJoLd7gxlZ3nYrfpRTv6eHrsqGC+Ut7O9R7E+TdrhweAsUkXgxH8IwowMJFLcE6l0Uw
+         1f7w==
+X-Gm-Message-State: APjAAAVz56MR8Xv2Wp9WDlXLPP5mysoqTYcO9EA3oTqv0QoRNjLCz+cF
+        M9goKmeEk184EHdTF4tkWtr35w==
+X-Google-Smtp-Source: APXvYqyVLYUWTIAK6GzhvgdzZLJE6+q5wD4mjw+q975FciP9rpwUqd4etcurLcTJHzy5ZkDdOjbnKA==
+X-Received: by 2002:ac8:7289:: with SMTP id v9mr39571710qto.139.1571162985818;
+        Tue, 15 Oct 2019 11:09:45 -0700 (PDT)
+Received: from dhcp-41-57.bos.redhat.com (nat-pool-bos-t.redhat.com. [66.187.233.206])
+        by smtp.gmail.com with ESMTPSA id k54sm15559033qtf.28.2019.10.15.11.09.42
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 15 Oct 2019 11:09:45 -0700 (PDT)
+Message-ID: <1571162982.5937.42.camel@lca.pw>
+Subject: Re: [PATCH V6 2/2] mm/debug: Add tests validating architecture page
+ table helpers
+From:   Qian Cai <cai@lca.pw>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-parisc@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Will Deacon <will@kernel.org>,
-        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org
-Subject: Re: [PATCH v2 01/29] powerpc: Rename "notes" PT_NOTE to "note"
-Message-ID: <201910151034.A21FDCA32@keescook>
-References: <20191011000609.29728-1-keescook@chromium.org>
- <20191011000609.29728-2-keescook@chromium.org>
- <20191011082519.GI9749@gate.crashing.org>
- <201910110910.48270FC97@keescook>
- <20191011162552.GK9749@gate.crashing.org>
- <20191015165412.GD596@zn.tnic>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191015165412.GD596@zn.tnic>
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+Date:   Tue, 15 Oct 2019 14:09:42 -0400
+In-Reply-To: <1571131302-32290-3-git-send-email-anshuman.khandual@arm.com>
+References: <1571131302-32290-1-git-send-email-anshuman.khandual@arm.com>
+         <1571131302-32290-3-git-send-email-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.22.6 (3.22.6-10.el7) 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Oct 15, 2019 at 06:54:13PM +0200, Borislav Petkov wrote:
-> On Fri, Oct 11, 2019 at 11:25:52AM -0500, Segher Boessenkool wrote:
-> > Names *matter*, internal names doubly so.  So why replace a good name with
-> > a worse name?  Because it is slightly less work for you?
-> 
-> So if we agree on the name "notes" and we decide to rename the other
-> arches, this should all be done in a separate patchset anyway, and ontop
-> of this one. And I believe Kees wouldn't mind doing it ontop since he's
-> gotten his hands dirty already. :-P
+On Tue, 2019-10-15 at 14:51 +0530, Anshuman Khandual wrote:
+> +static unsigned long __init get_random_vaddr(void)
+> +{
+> +	unsigned long random_vaddr, random_pages, total_user_pages;
+> +
+> +	total_user_pages = (TASK_SIZE - FIRST_USER_ADDRESS) / PAGE_SIZE;
+> +
+> +	random_pages = get_random_long() % total_user_pages;
+> +	random_vaddr = FIRST_USER_ADDRESS + random_pages * PAGE_SIZE;
+> +
+> +	WARN_ON(random_vaddr > TASK_SIZE);
+> +	WARN_ON(random_vaddr < FIRST_USER_ADDRESS);
 
-Yeah, I'm fine with that. I would prefer to do it as a separate step,
-just to minimize the logical steps each patch takes. Shall I spin a v3
-with the Acks added and a final rename for this?
+It would be nice if this patch does not introduce a new W=1 GCC warning here on
+x86 because FIRST_USER_ADDRESS is 0, and GCC think the code is dumb because
+"random_vaddr" is unsigned,
 
--- 
-Kees Cook
+In file included from ./arch/x86/include/asm/bug.h:83,
+                 from ./include/linux/bug.h:5,
+                 from ./include/linux/mmdebug.h:5,
+                 from ./include/linux/gfp.h:5,
+                 from mm/debug_vm_pgtable.c:13:
+mm/debug_vm_pgtable.c: In function ‘get_random_vaddr’:
+mm/debug_vm_pgtable.c:359:23: warning: comparison of unsigned expression < 0 is
+always false [-Wtype-limits]
+  WARN_ON(random_vaddr < FIRST_USER_ADDRESS);
+                       ^
+./include/asm-generic/bug.h:113:25: note: in definition of macro ‘WARN_ON’
+  int __ret_warn_on = !!(condition);    \
+                         ^~~~~~~~~
