@@ -2,65 +2,91 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7969ED933D
-	for <lists+linux-ia64@lfdr.de>; Wed, 16 Oct 2019 16:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56F3FD9880
+	for <lists+linux-ia64@lfdr.de>; Wed, 16 Oct 2019 19:30:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2393752AbfJPOBs (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 16 Oct 2019 10:01:48 -0400
-Received: from mx1.redhat.com ([209.132.183.28]:39878 "EHLO mx1.redhat.com"
+        id S1729674AbfJPRag (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 16 Oct 2019 13:30:36 -0400
+Received: from mga09.intel.com ([134.134.136.24]:44105 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388087AbfJPOBs (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 16 Oct 2019 10:01:48 -0400
-Received: from smtp.corp.redhat.com (int-mx03.intmail.prod.int.phx2.redhat.com [10.5.11.13])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mx1.redhat.com (Postfix) with ESMTPS id 477112A09B1;
-        Wed, 16 Oct 2019 14:01:48 +0000 (UTC)
-Received: from [10.36.116.19] (ovpn-116-19.ams2.redhat.com [10.36.116.19])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id B60E160605;
-        Wed, 16 Oct 2019 14:01:45 +0000 (UTC)
-Subject: Re: [PATCH v6 06/10] mm/memory_hotplug: Poison memmap in
- remove_pfn_range_from_zone()
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        x86@kernel.org, Andrew Morton <akpm@linux-foundation.org>,
-        Oscar Salvador <osalvador@suse.de>,
-        Michal Hocko <mhocko@suse.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Dan Williams <dan.j.williams@intel.com>
-References: <20191006085646.5768-1-david@redhat.com>
- <20191006085646.5768-7-david@redhat.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat GmbH
-Message-ID: <f5159e91-cef3-de65-af59-7c81e7c84d6d@redhat.com>
-Date:   Wed, 16 Oct 2019 16:01:44 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.1.1
+        id S1728901AbfJPRaf (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 16 Oct 2019 13:30:35 -0400
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 16 Oct 2019 10:21:24 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.67,304,1566889200"; 
+   d="scan'208";a="395964943"
+Received: from chenyian-desk1.amr.corp.intel.com (HELO [10.3.52.63]) ([10.3.52.63])
+  by fmsmga005.fm.intel.com with ESMTP; 16 Oct 2019 10:21:24 -0700
+Subject: Re: [PATCH] iommu/vt-d: Check VT-d RMRR region in BIOS is reported as
+ reserved
+To:     Joerg Roedel <joro@8bytes.org>
+Cc:     "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        "Raj, Ashok" <ashok.raj@intel.com>,
+        "Mehta, Sohil" <sohil.mehta@intel.com>,
+        "Luck, Tony" <tony.luck@intel.com>
+References: <20191015164932.18185-1-yian.chen@intel.com>
+ <20191016075120.GB32232@8bytes.org>
+From:   "Chen, Yian" <yian.chen@intel.com>
+Message-ID: <b1ebbf77-ced7-be22-d8d8-a7d4e19ad261@intel.com>
+Date:   Wed, 16 Oct 2019 10:21:24 -0700
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:60.0) Gecko/20100101
+ Thunderbird/60.8.0
 MIME-Version: 1.0
-In-Reply-To: <20191006085646.5768-7-david@redhat.com>
+In-Reply-To: <20191016075120.GB32232@8bytes.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.13
-X-Greylist: Sender IP whitelisted, not delayed by milter-greylist-4.5.16 (mx1.redhat.com [10.5.110.38]); Wed, 16 Oct 2019 14:01:48 +0000 (UTC)
+Content-Language: en-US
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 06.10.19 10:56, David Hildenbrand wrote:
-> Let's poison the pages similar to when adding new memory in
-> sparse_add_section(). Also call remove_pfn_range_from_zone() from
-> memunmap_pages(), so we can poison the memmap from there as well.
-> 
-> While at it, calculate the pfn in memunmap_pages() only once.
 
-FWIW, this comment is stale and could be dropped :)
 
--- 
+On 10/16/2019 12:51 AM, Joerg Roedel wrote:
+> Hi,
+>
+> On Tue, Oct 15, 2019 at 09:49:32AM -0700, Yian Chen wrote:
+>> VT-d RMRR (Reserved Memory Region Reporting) regions are reserved
+>> for device use only and should not be part of allocable memory pool of OS.
+>>
+>> BIOS e820_table reports complete memory map to OS, including OS usable
+>> memory ranges and BIOS reserved memory ranges etc.
+>>
+>> x86 BIOS may not be trusted to include RMRR regions as reserved type
+>> of memory in its e820 memory map, hence validate every RMRR entry
+>> with the e820 memory map to make sure the RMRR regions will not be
+>> used by OS for any other purposes.
+> Are there real systems in the wild where this is a problem?
+Firmware reports e820 and RMRR in separate structure. The system will 
+not work stably
+if RMRR is not in the e820 table as reserved type mem and can be used 
+for other purposes.
+In system engineering phase, I practiced with some kind bugs from BIOS, 
+but not yet exactly same as
+the one here. Please consider this is a generic patch to avoid 
+subsequent failure at runtime.
+>> +static inline int __init
+>> +arch_rmrr_sanity_check(struct acpi_dmar_reserved_memory *rmrr)
+>> +{
+>> +	u64 start = rmrr->base_address;
+>> +	u64 end = rmrr->end_address + 1;
+>> +
+>> +	if (e820__mapped_all(start, end, E820_TYPE_RESERVED))
+>> +		return 0;
+>> +
+>> +	pr_err(FW_BUG "No firmware reserved region can cover this RMRR [%#018Lx-%#018Lx], contact BIOS vendor for fixes\n",
+>> +	       start, end - 1);
+>> +	return -EFAULT;
+>> +}
+> Why -EFAULT, there is no fault involved? Usibg -EINVAL seems to be a better choice.
+-EFAULT could be used for address related errors.
+For this case, I agree, -EINVAL seems better while
+consider it as an input problem from firmware. I will make change.
 
-Thanks,
-
-David / dhildenb
