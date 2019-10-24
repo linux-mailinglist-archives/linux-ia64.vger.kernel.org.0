@@ -2,70 +2,211 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C6FFDE26F3
-	for <lists+linux-ia64@lfdr.de>; Thu, 24 Oct 2019 01:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04E4FE2AE6
+	for <lists+linux-ia64@lfdr.de>; Thu, 24 Oct 2019 09:15:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2408018AbfJWXUI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 23 Oct 2019 19:20:08 -0400
-Received: from relay5-d.mail.gandi.net ([217.70.183.197]:58441 "EHLO
-        relay5-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2404151AbfJWXUH (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 23 Oct 2019 19:20:07 -0400
-X-Originating-IP: 86.202.229.42
-Received: from localhost (lfbn-lyo-1-146-42.w86-202.abo.wanadoo.fr [86.202.229.42])
-        (Authenticated sender: alexandre.belloni@bootlin.com)
-        by relay5-d.mail.gandi.net (Postfix) with ESMTPSA id 9E9D81C0002;
-        Wed, 23 Oct 2019 23:20:04 +0000 (UTC)
-Date:   Thu, 24 Oct 2019 01:20:04 +0200
-From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
-To:     "Luck, Tony" <tony.luck@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>,
-        Stephane Eranian <eranian@google.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/2] rtc/ia64: remove legacy efirtc driver
-Message-ID: <20191023232004.GV3125@piout.net>
-References: <20191023150311.844123-1-arnd@arndb.de>
- <20191023184616.GA17078@agluck-desk2.amr.corp.intel.com>
- <20191023200135.GT3125@piout.net>
- <3908561D78D1C84285E8C5FCA982C28F7F4AD7F7@ORSMSX115.amr.corp.intel.com>
+        id S2437943AbfJXHPi (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 24 Oct 2019 03:15:38 -0400
+Received: from mout-p-102.mailbox.org ([80.241.56.152]:11570 "EHLO
+        mout-p-102.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2437940AbfJXHPh (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 24 Oct 2019 03:15:37 -0400
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mout-p-102.mailbox.org (Postfix) with ESMTPS id 46zJFS55d2zKmhs;
+        Thu, 24 Oct 2019 09:06:36 +0200 (CEST)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by gerste.heinlein-support.de (gerste.heinlein-support.de [91.198.250.173]) (amavisd-new, port 10030)
+        with ESMTP id DAIjq9oYK49d; Thu, 24 Oct 2019 09:06:30 +0200 (CEST)
+Date:   Thu, 24 Oct 2019 18:06:04 +1100
+From:   Aleksa Sarai <cyphar@cyphar.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        David Drysdale <drysdale@google.com>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Christian Brauner <christian@brauner.io>,
+        Aleksa Sarai <asarai@suse.de>,
+        Linux Containers <containers@lists.linux-foundation.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        GNU C Library <libc-alpha@sourceware.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "open list:KERNEL SELFTEST FRAMEWORK" 
+        <linux-kselftest@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v14 2/6] namei: LOOKUP_IN_ROOT: chroot-like path
+ resolution
+Message-ID: <20191024070604.howuh6x6qrzd5jsm@yavin.dot.cyphar.com>
+References: <20191010054140.8483-1-cyphar@cyphar.com>
+ <20191010054140.8483-3-cyphar@cyphar.com>
+ <CAHk-=wh8L50f31vW8BwRUXhLiq3eoCQ3tg8ER4Yp2dzuU1w5rQ@mail.gmail.com>
+ <20191012040815.gnc43cfmo5mnv67u@yavin.dot.cyphar.com>
+ <20191012041541.milbmfbjpj5bcl5a@yavin.dot.cyphar.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="i56sxfhksaspu3tw"
 Content-Disposition: inline
-In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7F4AD7F7@ORSMSX115.amr.corp.intel.com>
-User-Agent: Mutt/1.12.1 (2019-06-15)
+In-Reply-To: <20191012041541.milbmfbjpj5bcl5a@yavin.dot.cyphar.com>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 23/10/2019 21:30:29+0000, Luck, Tony wrote:
-> >> rtc-efi rtc-efi: setting system clock to 2019-10-23T18:30:23 UTC (1571855423)
-> 
-> > You can remove CONFIG_RTC_HCTOSYS, this line will disappear, systemd
-> > will not like that but efirtc was not setting the system time anyway so
-> > this shouldn't change the behaviour.
-> 
-> 
-> Wait ... that message says "setting system clock"
-> 
-> but then you say " efirtc was not setting the system time anyway".
-> 
-> So did the time get set, or not?
-> 
-> If it wasn't set, why does the message say that it was set?
-> 
 
-What I meant was that drivers/char/efirtc.c was not setting the system
-time but when using drivers/rtc/rtc-efi.c with CONFIG_RTC_HCTOSYS, the
-kernel will use the rtc to set the system time.
+--i56sxfhksaspu3tw
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
+On 2019-10-12, Aleksa Sarai <cyphar@cyphar.com> wrote:
+> On 2019-10-12, Aleksa Sarai <cyphar@cyphar.com> wrote:
+> > On 2019-10-10, Linus Torvalds <torvalds@linux-foundation.org> wrote:
+> > > On Wed, Oct 9, 2019 at 10:42 PM Aleksa Sarai <cyphar@cyphar.com> wrot=
+e:
+> > > >
+> > > > --- a/fs/namei.c
+> > > > +++ b/fs/namei.c
+> > > > @@ -2277,6 +2277,11 @@ static const char *path_init(struct nameidat=
+a *nd, unsigned flags)
+> > > >
+> > > >         nd->m_seq =3D read_seqbegin(&mount_lock);
+> > > >
+> > > > +       /* LOOKUP_IN_ROOT treats absolute paths as being relative-t=
+o-dirfd. */
+> > > > +       if (flags & LOOKUP_IN_ROOT)
+> > > > +               while (*s =3D=3D '/')
+> > > > +                       s++;
+> > > > +
+> > > >         /* Figure out the starting path and root (if needed). */
+> > > >         if (*s =3D=3D '/') {
+> > > >                 error =3D nd_jump_root(nd);
+> > >=20
+> > > Hmm. Wouldn't this make more sense all inside the if (*s =3D- '/') te=
+st?
+> > > That way if would be where we check for "should we start at the root",
+> > > which seems to make more sense conceptually.
+> >=20
+> > I don't really agree (though I do think that both options are pretty
+> > ugly). Doing it before the block makes it clear that absolute paths are
+> > just treated relative-to-dirfd -- doing it inside the block makes it
+> > look more like "/" is a special-case for nd_jump_root(). And while that
+>=20
+> Sorry, I meant "special-case for LOOKUP_IN_ROOT".
+>=20
+> > is somewhat true, this is just a side-effect of making the code more
+> > clean -- my earlier versions reworked the dirfd handling to always grab
+> > nd->root first if LOOKUP_IS_SCOPED. I switched to this method based on
+> > Al's review.
+> >=20
+> > In fairness, I do agree that the lonely while loop looks ugly.
+>=20
+> And with the old way I did it (where we grabbed nd->root first) the
+> semantics were slightly more clear -- stripping leading "/"s doesn't
+> really look as "clearly obvious" as grabbing nd->root beforehand and
+> treating "/"s normally. But the code was also needlessly more complex.
+>=20
+> > > That test for '/' currently has a "} else if (..)", but that's
+> > > pointless since it ends with a "return" anyway. So the "else" logic is
+> > > just noise.
+> >=20
+> > This depends on the fact that LOOKUP_BENEATH always triggers -EXDEV for
+> > nd_jump_root() -- if we ever add another "scoped lookup" flag then the
+> > logic will have to be further reworked.
+> >=20
+> > (It should be noted that the new version doesn't always end with a
+> > "return", but you could change it to act that way given the above
+> > assumption.)
+> >=20
+> > > And if you get rid of the unnecessary else, moving the LOOKUP_IN_ROOT
+> > > inside the if-statement works fine.
+> > >=20
+> > > So this could be something like
+> > >=20
+> > >     --- a/fs/namei.c
+> > >     +++ b/fs/namei.c
+> > >     @@ -2194,11 +2196,19 @@ static const char *path_init(struct
+> > > nameidata *nd, unsigned flags)
+> > >=20
+> > >         nd->m_seq =3D read_seqbegin(&mount_lock);
+> > >         if (*s =3D=3D '/') {
+> > >     -           set_root(nd);
+> > >     -           if (likely(!nd_jump_root(nd)))
+> > >     -                   return s;
+> > >     -           return ERR_PTR(-ECHILD);
+> > >     -   } else if (nd->dfd =3D=3D AT_FDCWD) {
+> > >     +           /* LOOKUP_IN_ROOT treats absolute paths as being
+> > > relative-to-dirfd. */
+> > >     +           if (!(flags & LOOKUP_IN_ROOT)) {
+> > >     +                   set_root(nd);
+> > >     +                   if (likely(!nd_jump_root(nd)))
+> > >     +                           return s;
+> > >     +                   return ERR_PTR(-ECHILD);
+> > >     +           }
+> > >     +
+> > >     +           /* Skip initial '/' for LOOKUP_IN_ROOT */
+> > >     +           do { s++; } while (*s =3D=3D '/');
+> > >     +   }
+> > >     +
+> > >     +   if (nd->dfd =3D=3D AT_FDCWD) {
+> > >                 if (flags & LOOKUP_RCU) {
+> > >                         struct fs_struct *fs =3D current->fs;
+> > >                         unsigned seq;
+> > >=20
+> > > instead. The patch ends up slightly bigger (due to the re-indentation)
+> > > but now it handles all the "start at root" in the same place. Doesn't
+> > > that make sense?
+> >=20
+> > It is correct (though I'd need to clean it up a bit to handle
+> > nd_jump_root() correctly), and if you really would like me to change it
+> > I will -- but I just don't agree that it's cleaner.
 
--- 
-Alexandre Belloni, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Linus, did you still want me to make your proposed change?
+
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--i56sxfhksaspu3tw
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXbFNWQAKCRCdlLljIbnQ
+Ert5AP0aC5CrGCVvHOpelKBjUDOS5duq76VaVyiiUWcy3eeeFwD/aQEQPqkGREqr
+5Lo0df+nvE9H+89b7vJGbcaEZNxkTQc=
+=rtfF
+-----END PGP SIGNATURE-----
+
+--i56sxfhksaspu3tw--
