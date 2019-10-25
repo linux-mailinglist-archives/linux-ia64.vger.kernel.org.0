@@ -2,155 +2,94 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 90081E4830
-	for <lists+linux-ia64@lfdr.de>; Fri, 25 Oct 2019 12:10:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13168E48B6
+	for <lists+linux-ia64@lfdr.de>; Fri, 25 Oct 2019 12:42:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409017AbfJYKKT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 25 Oct 2019 06:10:19 -0400
-Received: from foss.arm.com ([217.140.110.172]:38382 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2409013AbfJYKKS (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 25 Oct 2019 06:10:18 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4365B28;
-        Fri, 25 Oct 2019 03:10:17 -0700 (PDT)
-Received: from [10.162.41.137] (p8cg001049571a15.blr.arm.com [10.162.41.137])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 7FC723F6C4;
-        Fri, 25 Oct 2019 03:10:05 -0700 (PDT)
-Subject: Re: [PATCH V7] mm/debug: Add tests validating architecture page table
- helpers
-To:     Christophe Leroy <christophe.leroy@c-s.fr>, Qian Cai <cai@lca.pw>
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <Mark.Rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <ccdd4f7a-c7dc-ca10-d30c-0bc05c7136c7@arm.com>
- <69256008-2235-4AF1-A3BA-0146C82CCB93@lca.pw>
- <3cfec421-4006-4159-ca32-313ff5196ff9@c-s.fr>
- <763d58b4-f532-0bba-bf2b-71433ac514fb@arm.com>
- <d811622e-0d35-3bc6-9568-36abc1bee355@c-s.fr>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <78d13292-0cfe-31b6-7a9c-daf7fb7f3d23@arm.com>
-Date:   Fri, 25 Oct 2019 15:40:36 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S2392756AbfJYKmI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 25 Oct 2019 06:42:08 -0400
+Received: from mout.kundenserver.de ([212.227.126.133]:53835 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730471AbfJYKmI (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 25 Oct 2019 06:42:08 -0400
+Received: from mail-qk1-f182.google.com ([209.85.222.182]) by
+ mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
+ id 1N1u2b-1hzrbb2og5-012Ep5; Fri, 25 Oct 2019 12:42:06 +0200
+Received: by mail-qk1-f182.google.com with SMTP id f18so1290312qkm.1;
+        Fri, 25 Oct 2019 03:42:06 -0700 (PDT)
+X-Gm-Message-State: APjAAAVLC2FIsJIdM1fMSJDuCck3en4dmzQqmmPcMOz9f8gqIBP/vBN1
+        WmledsWWy6iTJLG9ffbx9oNnPXZ+40kAGe14FN4=
+X-Google-Smtp-Source: APXvYqxI6dezxK6sXX9nX4PhPDdDApdJ0O4YhP9ibTLjyxglotNogMKPpNlF6D2BCoswO2YF56qq9iWcNTYt5q0q+Uw=
+X-Received: by 2002:a05:620a:4f:: with SMTP id t15mr2285922qkt.286.1572000125364;
+ Fri, 25 Oct 2019 03:42:05 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <d811622e-0d35-3bc6-9568-36abc1bee355@c-s.fr>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+References: <20191023150311.844123-1-arnd@arndb.de> <20191023184616.GA17078@agluck-desk2.amr.corp.intel.com>
+ <20191023200135.GT3125@piout.net> <3908561D78D1C84285E8C5FCA982C28F7F4AD7F7@ORSMSX115.amr.corp.intel.com>
+ <20191023232004.GV3125@piout.net> <CAK8P3a2=9dw2YN-sc7yxwwnRi-6Bos32==523qPaqW=avLs60Q@mail.gmail.com>
+ <3908561D78D1C84285E8C5FCA982C28F7F4AEDED@ORSMSX115.amr.corp.intel.com>
+In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7F4AEDED@ORSMSX115.amr.corp.intel.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Fri, 25 Oct 2019 12:41:49 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a28aRv5TpRn1xhjZFO9n=+CBG6V276Roqm=bE_eQZkw_w@mail.gmail.com>
+Message-ID: <CAK8P3a28aRv5TpRn1xhjZFO9n=+CBG6V276Roqm=bE_eQZkw_w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rtc/ia64: remove legacy efirtc driver
+To:     "Luck, Tony" <tony.luck@intel.com>
+Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
+        Alessandro Zummo <a.zummo@towertech.it>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "Yu, Fenghua" <fenghua.yu@intel.com>,
+        Stephane Eranian <eranian@google.com>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:AQJYad2nzIMeigdvbY44ZK9T/iQdV1L1xSiR8DuyrfaDgPZfSJ4
+ knCb7zpCXzcBxbKCZQQntmOnld6x/aBxTci6ZXjbXGlOP8In5kbzG1/nTVDdAsbhbiy/jZo
+ zBcUOod4JMtuQ1FoHdrdFNAHuGPrLXaho/cDsF8CqIhrxyY+oFlSE/UuLzDAAb5UD0AzoJ7
+ 59LrVLPnUUOyxon66pOLA==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:AKUuhn2oHmo=:RN18oMQsgWRk+4XLcDS3hH
+ relJMhlrq8wGAgjG8wmwyZ85ZOl2Ha8FLKSX41TBRHnYAd5wsOhMq4CzqivRfeCgBjzfLWyVG
+ AGaXeHXtNeqVROGCj1OhNFSIcNVlLgfhaAPiJ4Mn0B+n6XkgxRc7bTyxdl3FHKr9poP6dytde
+ pCCQBbUDtGeEwABgfCHOD5+VjgurfeG+ycWvauVB5AqZZUyd6ea+1b9m4fzH91kT0fqahU6en
+ vrVmo6h5WZZIk6WOS3cFIqEO8T0jlyW7WVE++mMDitbfvCtFF9Wjm/qrL/pl6Bn84f0L/TepN
+ hAmfoBpPigD+BwvWOIKLJwrCLzL6rOfdzQsMHg8NlBkBls/Jz1kmIc6HJBaftC3au/44tQXYC
+ LYD4r6Mgo+n5Wk8hXyxqAw8sFSfMygVJ0gyyM9Sd3xzpQ87TOtHx7CKkgCnKvhhFoHONfQUMC
+ 1AOXJKNYQZw6hwP0AHPhopPDlltlvq2vMfCjZ8rgyJ4yDljhX8PVAVwTmkU4QGnCE5As1yDYx
+ P3apa/tOHcQltQR38ojnnmk0BV1IUD8lgla+6AuXXAVvm487jIjAkR/ALwicB97E30lmOqdT3
+ i09BuodtDMxsCzBsDDrryJJyyDDkf8oyRVxGywHFEKT2fMqfDQFTXTb0JfsfZ9cEGvEhULEWi
+ OoH1Y8QFeQs6p1KvW2SCXdPmrjTUhHL/O47Mewp8F5ch9N2+MEJame44wDmkETUTYLsHruuXI
+ 0aemIABVYyXObB86WTXolthxUYNignlOzp119VYCN+HG1gPcSOn/+NSRJoRPLxa+9xggX/q0M
+ nHNdTcpznQCOuyujC2pVPdTfGXET0k4eg2J1Qhr8i3iVntKSg5ljKyl0mmhc4Hx3GeG3L5uhV
+ zr/iBR1AR5HDAW/SchFQ==
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+On Thu, Oct 24, 2019 at 6:57 PM Luck, Tony <tony.luck@intel.com> wrote:
+>
+> > arch/ia64 has a read_persistent_clock64() function, so it ends up reading
+> > the system time regardless of the RTC driver or CONFIG_RTC_HCTOSYS.
+> >
+> > As ia64 sets neither ARCH_HIBERNATION_POSSIBLE nor
+> > ARCH_SUSPEND_POSSIBLE, so we could just remove the
+> > read_persistent_clock64() and efi_gettimeofday(), relying instead
+> > on user space (/sbin/hwclock) or CONFIG_RTC_HCTOSYS.
+>
+> Seems weird. ia64 has always assumed from day 1 that it is running
+> on a UEFI capable platorm (well at day 1 it was called "EFI", the "U"
+> came later).
+>
+> So read_persistent_clock64() just calls EFI directly to get the time.
+>
+> Seems simpler than worrying about having the right drivers and CONFIG
+> bits set.
 
+It would just be a little more consistent. Most architectures cannot
+implement  read_persistent_clock64()  or CONFIG_RTC_HCTOSYS
+when the RTC driver is a loadable module, so distros normally have to
+set the system time after loading modules already. If some architectures
+have a reliable platform interface that allows setting the time at early
+boot, that doesn't mean we have to rely on that.
 
-On 10/25/2019 02:22 PM, Christophe Leroy wrote:
-> 
-> 
-> Le 25/10/2019 à 10:24, Anshuman Khandual a écrit :
->>
->>
->> On 10/25/2019 12:41 PM, Christophe Leroy wrote:
->>>
->>>
->>> Le 25/10/2019 à 07:52, Qian Cai a écrit :
->>>>
->>>>
->>>>> On Oct 24, 2019, at 11:45 PM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
->>>>>
->>>>> Nothing specific. But just tested this with x86 defconfig with relevant configs
->>>>> which are required for this test. Not sure if it involved W=1.
->>>>
->>>> No, it will not. It needs to run like,
->>>>
->>>> make W=1 -j 64 2>/tmp/warns
->>>>
->>>
->>> Are we talking about this peace of code ?
->>>
->>> +static unsigned long __init get_random_vaddr(void)
->>> +{
->>> +    unsigned long random_vaddr, random_pages, total_user_pages;
->>> +
->>> +    total_user_pages = (TASK_SIZE - FIRST_USER_ADDRESS) / PAGE_SIZE;
->>> +
->>> +    random_pages = get_random_long() % total_user_pages;
->>> +    random_vaddr = FIRST_USER_ADDRESS + random_pages * PAGE_SIZE;
->>> +
->>> +    WARN_ON((random_vaddr > TASK_SIZE) ||
->>> +        (random_vaddr < FIRST_USER_ADDRESS));
->>> +    return random_vaddr;
->>> +}
->>> +
->>>
->>> ramdom_vaddr is unsigned,
->>> random_pages is unsigned and lower than total_user_pages
->>>
->>> So the max value random_vaddr can get is FIRST_USER_ADDRESS + ((TASK_SIZE - FIRST_USER_ADDRESS - 1) / PAGE_SIZE) * PAGE_SIZE = TASK_SIZE - 1
->>> And the min value random_vaddr can get is FIRST_USER_ADDRESS (that's when random_pages = 0)
->>
->> That's right.
->>
->>>
->>> So the WARN_ON() is just unneeded, isn't it ?
->>
->> It is just a sanity check on possible vaddr values before it's corresponding
->> page table mappings could be created. If it's worth to drop this in favor of
->> avoiding these unwanted warning messages on x86, will go ahead with it as it
->> is not super important.
->>
-> 
-> But you are checking what ? That the compiler does calculation correctly or what ?
-
-IIRC, probably this was for later if and when the vaddr calculation becomes
-dependent on other factors rather than this simple arithmetic involving start
-and end of process address space on a platform.
-
-> As mentionned just above, based on the calculation done, what you are testing cannot happen, so I'm having a hard time understanding what kind of sanity check it can be.
-
-You are right.
-
-> 
-> Can you give an exemple of a situation which could trigger the warning ?
-
-I was mistaken. We dont need those checks for now, hence will drop them next time.
-
-> 
-> Christophe
-> 
+       Arnd
