@@ -2,94 +2,305 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 13168E48B6
-	for <lists+linux-ia64@lfdr.de>; Fri, 25 Oct 2019 12:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C42B6E4B19
+	for <lists+linux-ia64@lfdr.de>; Fri, 25 Oct 2019 14:33:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392756AbfJYKmI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 25 Oct 2019 06:42:08 -0400
-Received: from mout.kundenserver.de ([212.227.126.133]:53835 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1730471AbfJYKmI (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 25 Oct 2019 06:42:08 -0400
-Received: from mail-qk1-f182.google.com ([209.85.222.182]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1N1u2b-1hzrbb2og5-012Ep5; Fri, 25 Oct 2019 12:42:06 +0200
-Received: by mail-qk1-f182.google.com with SMTP id f18so1290312qkm.1;
-        Fri, 25 Oct 2019 03:42:06 -0700 (PDT)
-X-Gm-Message-State: APjAAAVLC2FIsJIdM1fMSJDuCck3en4dmzQqmmPcMOz9f8gqIBP/vBN1
-        WmledsWWy6iTJLG9ffbx9oNnPXZ+40kAGe14FN4=
-X-Google-Smtp-Source: APXvYqxI6dezxK6sXX9nX4PhPDdDApdJ0O4YhP9ibTLjyxglotNogMKPpNlF6D2BCoswO2YF56qq9iWcNTYt5q0q+Uw=
-X-Received: by 2002:a05:620a:4f:: with SMTP id t15mr2285922qkt.286.1572000125364;
- Fri, 25 Oct 2019 03:42:05 -0700 (PDT)
+        id S2504469AbfJYMdM (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 25 Oct 2019 08:33:12 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:43902 "EHLO
+        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2440243AbfJYMdL (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 25 Oct 2019 08:33:11 -0400
+Received: from [185.240.52.243] (helo=localhost.localdomain)
+        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        (Exim 4.86_2)
+        (envelope-from <christian.brauner@ubuntu.com>)
+        id 1iNym9-0007oa-U4; Fri, 25 Oct 2019 12:33:05 +0000
+From:   Christian Brauner <christian.brauner@ubuntu.com>
+To:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, torvalds@linux-foundation.org,
+        fweimer@redhat.com
+Cc:     jannh@google.com, oleg@redhat.com, tglx@linutronix.de,
+        arnd@arndb.de, shuah@kernel.org, dhowells@redhat.com,
+        tkjos@android.com, ldv@altlinux.org, miklos@szeredi.hu,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-api@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@vger.kernel.org, x86@kernel.org
+Subject: [REVIEW PATCH v5 2/3] arch: wire-up close_range()
+Date:   Fri, 25 Oct 2019 14:28:50 +0200
+Message-Id: <20191025122851.30182-3-christian.brauner@ubuntu.com>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20191025122851.30182-1-christian.brauner@ubuntu.com>
+References: <20191025122851.30182-1-christian.brauner@ubuntu.com>
 MIME-Version: 1.0
-References: <20191023150311.844123-1-arnd@arndb.de> <20191023184616.GA17078@agluck-desk2.amr.corp.intel.com>
- <20191023200135.GT3125@piout.net> <3908561D78D1C84285E8C5FCA982C28F7F4AD7F7@ORSMSX115.amr.corp.intel.com>
- <20191023232004.GV3125@piout.net> <CAK8P3a2=9dw2YN-sc7yxwwnRi-6Bos32==523qPaqW=avLs60Q@mail.gmail.com>
- <3908561D78D1C84285E8C5FCA982C28F7F4AEDED@ORSMSX115.amr.corp.intel.com>
-In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7F4AEDED@ORSMSX115.amr.corp.intel.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 25 Oct 2019 12:41:49 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a28aRv5TpRn1xhjZFO9n=+CBG6V276Roqm=bE_eQZkw_w@mail.gmail.com>
-Message-ID: <CAK8P3a28aRv5TpRn1xhjZFO9n=+CBG6V276Roqm=bE_eQZkw_w@mail.gmail.com>
-Subject: Re: [PATCH 1/2] rtc/ia64: remove legacy efirtc driver
-To:     "Luck, Tony" <tony.luck@intel.com>
-Cc:     Alexandre Belloni <alexandre.belloni@bootlin.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-rtc@vger.kernel.org" <linux-rtc@vger.kernel.org>,
-        Alessandro Zummo <a.zummo@towertech.it>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>,
-        Stephane Eranian <eranian@google.com>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:AQJYad2nzIMeigdvbY44ZK9T/iQdV1L1xSiR8DuyrfaDgPZfSJ4
- knCb7zpCXzcBxbKCZQQntmOnld6x/aBxTci6ZXjbXGlOP8In5kbzG1/nTVDdAsbhbiy/jZo
- zBcUOod4JMtuQ1FoHdrdFNAHuGPrLXaho/cDsF8CqIhrxyY+oFlSE/UuLzDAAb5UD0AzoJ7
- 59LrVLPnUUOyxon66pOLA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:AKUuhn2oHmo=:RN18oMQsgWRk+4XLcDS3hH
- relJMhlrq8wGAgjG8wmwyZ85ZOl2Ha8FLKSX41TBRHnYAd5wsOhMq4CzqivRfeCgBjzfLWyVG
- AGaXeHXtNeqVROGCj1OhNFSIcNVlLgfhaAPiJ4Mn0B+n6XkgxRc7bTyxdl3FHKr9poP6dytde
- pCCQBbUDtGeEwABgfCHOD5+VjgurfeG+ycWvauVB5AqZZUyd6ea+1b9m4fzH91kT0fqahU6en
- vrVmo6h5WZZIk6WOS3cFIqEO8T0jlyW7WVE++mMDitbfvCtFF9Wjm/qrL/pl6Bn84f0L/TepN
- hAmfoBpPigD+BwvWOIKLJwrCLzL6rOfdzQsMHg8NlBkBls/Jz1kmIc6HJBaftC3au/44tQXYC
- LYD4r6Mgo+n5Wk8hXyxqAw8sFSfMygVJ0gyyM9Sd3xzpQ87TOtHx7CKkgCnKvhhFoHONfQUMC
- 1AOXJKNYQZw6hwP0AHPhopPDlltlvq2vMfCjZ8rgyJ4yDljhX8PVAVwTmkU4QGnCE5As1yDYx
- P3apa/tOHcQltQR38ojnnmk0BV1IUD8lgla+6AuXXAVvm487jIjAkR/ALwicB97E30lmOqdT3
- i09BuodtDMxsCzBsDDrryJJyyDDkf8oyRVxGywHFEKT2fMqfDQFTXTb0JfsfZ9cEGvEhULEWi
- OoH1Y8QFeQs6p1KvW2SCXdPmrjTUhHL/O47Mewp8F5ch9N2+MEJame44wDmkETUTYLsHruuXI
- 0aemIABVYyXObB86WTXolthxUYNignlOzp119VYCN+HG1gPcSOn/+NSRJoRPLxa+9xggX/q0M
- nHNdTcpznQCOuyujC2pVPdTfGXET0k4eg2J1Qhr8i3iVntKSg5ljKyl0mmhc4Hx3GeG3L5uhV
- zr/iBR1AR5HDAW/SchFQ==
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Oct 24, 2019 at 6:57 PM Luck, Tony <tony.luck@intel.com> wrote:
->
-> > arch/ia64 has a read_persistent_clock64() function, so it ends up reading
-> > the system time regardless of the RTC driver or CONFIG_RTC_HCTOSYS.
-> >
-> > As ia64 sets neither ARCH_HIBERNATION_POSSIBLE nor
-> > ARCH_SUSPEND_POSSIBLE, so we could just remove the
-> > read_persistent_clock64() and efi_gettimeofday(), relying instead
-> > on user space (/sbin/hwclock) or CONFIG_RTC_HCTOSYS.
->
-> Seems weird. ia64 has always assumed from day 1 that it is running
-> on a UEFI capable platorm (well at day 1 it was called "EFI", the "U"
-> came later).
->
-> So read_persistent_clock64() just calls EFI directly to get the time.
->
-> Seems simpler than worrying about having the right drivers and CONFIG
-> bits set.
+This wires up the close_range() syscall into all arches at once.
 
-It would just be a little more consistent. Most architectures cannot
-implement  read_persistent_clock64()  or CONFIG_RTC_HCTOSYS
-when the RTC driver is a loadable module, so distros normally have to
-set the system time after loading modules already. If some architectures
-have a reliable platform interface that allows setting the time at early
-boot, that doesn't mean we have to rely on that.
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
+Reviewed-by: Oleg Nesterov <oleg@redhat.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Cc: Jann Horn <jannh@google.com>
+Cc: David Howells <dhowells@redhat.com>
+Cc: Dmitry V. Levin <ldv@altlinux.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: Florian Weimer <fweimer@redhat.com>
+Cc: linux-api@vger.kernel.org
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-sh@vger.kernel.org
+Cc: sparclinux@vger.kernel.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-arch@vger.kernel.org
+Cc: x86@kernel.org
+---
+/* v2 */
+not present
 
-       Arnd
+/* v3 */
+not present
+
+/* v4 */
+introduced
+- Arnd Bergmann <arnd@arndb.de>:
+  - split into two patches:
+    1. add close_range()
+    2. add syscall to all arches at once
+  - bump __NR_compat_syscalls in arch/arm64/include/asm/unistd.h
+
+/* v5 */
+- Christian Brauner <christian.brauner@ubuntu.com>:
+---
+ arch/alpha/kernel/syscalls/syscall.tbl      | 1 +
+ arch/arm/tools/syscall.tbl                  | 1 +
+ arch/arm64/include/asm/unistd.h             | 2 +-
+ arch/arm64/include/asm/unistd32.h           | 2 ++
+ arch/ia64/kernel/syscalls/syscall.tbl       | 1 +
+ arch/m68k/kernel/syscalls/syscall.tbl       | 1 +
+ arch/microblaze/kernel/syscalls/syscall.tbl | 1 +
+ arch/mips/kernel/syscalls/syscall_n32.tbl   | 1 +
+ arch/mips/kernel/syscalls/syscall_n64.tbl   | 1 +
+ arch/mips/kernel/syscalls/syscall_o32.tbl   | 1 +
+ arch/parisc/kernel/syscalls/syscall.tbl     | 1 +
+ arch/powerpc/kernel/syscalls/syscall.tbl    | 1 +
+ arch/s390/kernel/syscalls/syscall.tbl       | 1 +
+ arch/sh/kernel/syscalls/syscall.tbl         | 1 +
+ arch/sparc/kernel/syscalls/syscall.tbl      | 1 +
+ arch/x86/entry/syscalls/syscall_32.tbl      | 1 +
+ arch/x86/entry/syscalls/syscall_64.tbl      | 1 +
+ arch/xtensa/kernel/syscalls/syscall.tbl     | 1 +
+ include/uapi/asm-generic/unistd.h           | 4 +++-
+ 19 files changed, 22 insertions(+), 2 deletions(-)
+
+diff --git a/arch/alpha/kernel/syscalls/syscall.tbl b/arch/alpha/kernel/syscalls/syscall.tbl
+index 728fe028c02c..f08906efa5ff 100644
+--- a/arch/alpha/kernel/syscalls/syscall.tbl
++++ b/arch/alpha/kernel/syscalls/syscall.tbl
+@@ -475,3 +475,4 @@
+ 543	common	fspick				sys_fspick
+ 544	common	pidfd_open			sys_pidfd_open
+ # 545 reserved for clone3
++546	common	close_range			sys_close_range
+diff --git a/arch/arm/tools/syscall.tbl b/arch/arm/tools/syscall.tbl
+index 6da7dc4d79cc..f25716576d13 100644
+--- a/arch/arm/tools/syscall.tbl
++++ b/arch/arm/tools/syscall.tbl
+@@ -449,3 +449,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ 435	common	clone3				sys_clone3
++436	common	close_range			sys_close_range
+diff --git a/arch/arm64/include/asm/unistd.h b/arch/arm64/include/asm/unistd.h
+index 2629a68b8724..368761302768 100644
+--- a/arch/arm64/include/asm/unistd.h
++++ b/arch/arm64/include/asm/unistd.h
+@@ -38,7 +38,7 @@
+ #define __ARM_NR_compat_set_tls		(__ARM_NR_COMPAT_BASE + 5)
+ #define __ARM_NR_COMPAT_END		(__ARM_NR_COMPAT_BASE + 0x800)
+ 
+-#define __NR_compat_syscalls		436
++#define __NR_compat_syscalls		437
+ #endif
+ 
+ #define __ARCH_WANT_SYS_CLONE
+diff --git a/arch/arm64/include/asm/unistd32.h b/arch/arm64/include/asm/unistd32.h
+index 94ab29cf4f00..c1309f52c8ac 100644
+--- a/arch/arm64/include/asm/unistd32.h
++++ b/arch/arm64/include/asm/unistd32.h
+@@ -879,6 +879,8 @@ __SYSCALL(__NR_fspick, sys_fspick)
+ __SYSCALL(__NR_pidfd_open, sys_pidfd_open)
+ #define __NR_clone3 435
+ __SYSCALL(__NR_clone3, sys_clone3)
++#define __NR_close_range 436
++__SYSCALL(__NR_close_range, sys_close_range)
+ 
+ /*
+  * Please add new compat syscalls above this comment and update
+diff --git a/arch/ia64/kernel/syscalls/syscall.tbl b/arch/ia64/kernel/syscalls/syscall.tbl
+index 36d5faf4c86c..151f4fd234be 100644
+--- a/arch/ia64/kernel/syscalls/syscall.tbl
++++ b/arch/ia64/kernel/syscalls/syscall.tbl
+@@ -356,3 +356,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++436	common	close_range			sys_close_range
+diff --git a/arch/m68k/kernel/syscalls/syscall.tbl b/arch/m68k/kernel/syscalls/syscall.tbl
+index a88a285a0e5f..adff06c08d2f 100644
+--- a/arch/m68k/kernel/syscalls/syscall.tbl
++++ b/arch/m68k/kernel/syscalls/syscall.tbl
+@@ -435,3 +435,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++436	common	close_range			sys_close_range
+diff --git a/arch/microblaze/kernel/syscalls/syscall.tbl b/arch/microblaze/kernel/syscalls/syscall.tbl
+index 09b0cd7dab0a..84aa70453704 100644
+--- a/arch/microblaze/kernel/syscalls/syscall.tbl
++++ b/arch/microblaze/kernel/syscalls/syscall.tbl
+@@ -441,3 +441,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ 435	common	clone3				sys_clone3
++436	common	close_range			sys_close_range
+diff --git a/arch/mips/kernel/syscalls/syscall_n32.tbl b/arch/mips/kernel/syscalls/syscall_n32.tbl
+index e7c5ab38e403..0c1fdfc01ebb 100644
+--- a/arch/mips/kernel/syscalls/syscall_n32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n32.tbl
+@@ -374,3 +374,4 @@
+ 433	n32	fspick				sys_fspick
+ 434	n32	pidfd_open			sys_pidfd_open
+ 435	n32	clone3				__sys_clone3
++436	n32	close_range			sys_close_range
+diff --git a/arch/mips/kernel/syscalls/syscall_n64.tbl b/arch/mips/kernel/syscalls/syscall_n64.tbl
+index 13cd66581f3b..d1284f1ce329 100644
+--- a/arch/mips/kernel/syscalls/syscall_n64.tbl
++++ b/arch/mips/kernel/syscalls/syscall_n64.tbl
+@@ -350,3 +350,4 @@
+ 433	n64	fspick				sys_fspick
+ 434	n64	pidfd_open			sys_pidfd_open
+ 435	n64	clone3				__sys_clone3
++436	n64	close_range			sys_close_range
+diff --git a/arch/mips/kernel/syscalls/syscall_o32.tbl b/arch/mips/kernel/syscalls/syscall_o32.tbl
+index 353539ea4140..7e4118d8d2ca 100644
+--- a/arch/mips/kernel/syscalls/syscall_o32.tbl
++++ b/arch/mips/kernel/syscalls/syscall_o32.tbl
+@@ -423,3 +423,4 @@
+ 433	o32	fspick				sys_fspick
+ 434	o32	pidfd_open			sys_pidfd_open
+ 435	o32	clone3				__sys_clone3
++436	o32	close_range			sys_close_range
+diff --git a/arch/parisc/kernel/syscalls/syscall.tbl b/arch/parisc/kernel/syscalls/syscall.tbl
+index 285ff516150c..d07f75996382 100644
+--- a/arch/parisc/kernel/syscalls/syscall.tbl
++++ b/arch/parisc/kernel/syscalls/syscall.tbl
+@@ -433,3 +433,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ 435	common	clone3				sys_clone3_wrapper
++436	common	close_range			sys_close_range
+diff --git a/arch/powerpc/kernel/syscalls/syscall.tbl b/arch/powerpc/kernel/syscalls/syscall.tbl
+index 43f736ed47f2..093d91114ea8 100644
+--- a/arch/powerpc/kernel/syscalls/syscall.tbl
++++ b/arch/powerpc/kernel/syscalls/syscall.tbl
+@@ -517,3 +517,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ 435	nospu	clone3				ppc_clone3
++436	common	close_range			sys_close_range
+diff --git a/arch/s390/kernel/syscalls/syscall.tbl b/arch/s390/kernel/syscalls/syscall.tbl
+index 3054e9c035a3..74565cf327ce 100644
+--- a/arch/s390/kernel/syscalls/syscall.tbl
++++ b/arch/s390/kernel/syscalls/syscall.tbl
+@@ -438,3 +438,4 @@
+ 433  common	fspick			sys_fspick			sys_fspick
+ 434  common	pidfd_open		sys_pidfd_open			sys_pidfd_open
+ 435  common	clone3			sys_clone3			sys_clone3
++436  common	close_range		sys_close_range			sys_close_range
+diff --git a/arch/sh/kernel/syscalls/syscall.tbl b/arch/sh/kernel/syscalls/syscall.tbl
+index b5ed26c4c005..11c9e5626fdd 100644
+--- a/arch/sh/kernel/syscalls/syscall.tbl
++++ b/arch/sh/kernel/syscalls/syscall.tbl
+@@ -438,3 +438,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++436	common	close_range			sys_close_range
+diff --git a/arch/sparc/kernel/syscalls/syscall.tbl b/arch/sparc/kernel/syscalls/syscall.tbl
+index 8c8cc7537fb2..7928240b3966 100644
+--- a/arch/sparc/kernel/syscalls/syscall.tbl
++++ b/arch/sparc/kernel/syscalls/syscall.tbl
+@@ -481,3 +481,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ # 435 reserved for clone3
++436	common	close_range			sys_close_range
+diff --git a/arch/x86/entry/syscalls/syscall_32.tbl b/arch/x86/entry/syscalls/syscall_32.tbl
+index 3fe02546aed3..cb56003ccf2d 100644
+--- a/arch/x86/entry/syscalls/syscall_32.tbl
++++ b/arch/x86/entry/syscalls/syscall_32.tbl
+@@ -440,3 +440,4 @@
+ 433	i386	fspick			sys_fspick			__ia32_sys_fspick
+ 434	i386	pidfd_open		sys_pidfd_open			__ia32_sys_pidfd_open
+ 435	i386	clone3			sys_clone3			__ia32_sys_clone3
++436	i386	close_range		sys_close_range			__ia32_sys_close_range
+diff --git a/arch/x86/entry/syscalls/syscall_64.tbl b/arch/x86/entry/syscalls/syscall_64.tbl
+index c29976eca4a8..0c8be7197ca2 100644
+--- a/arch/x86/entry/syscalls/syscall_64.tbl
++++ b/arch/x86/entry/syscalls/syscall_64.tbl
+@@ -357,6 +357,7 @@
+ 433	common	fspick			__x64_sys_fspick
+ 434	common	pidfd_open		__x64_sys_pidfd_open
+ 435	common	clone3			__x64_sys_clone3/ptregs
++436	common	close_range		__x64_sys_close_range
+ 
+ #
+ # x32-specific system call numbers start at 512 to avoid cache impact
+diff --git a/arch/xtensa/kernel/syscalls/syscall.tbl b/arch/xtensa/kernel/syscalls/syscall.tbl
+index 25f4de729a6d..2526f37a6cac 100644
+--- a/arch/xtensa/kernel/syscalls/syscall.tbl
++++ b/arch/xtensa/kernel/syscalls/syscall.tbl
+@@ -406,3 +406,4 @@
+ 433	common	fspick				sys_fspick
+ 434	common	pidfd_open			sys_pidfd_open
+ 435	common	clone3				sys_clone3
++436	common	close_range			sys_close_range
+diff --git a/include/uapi/asm-generic/unistd.h b/include/uapi/asm-generic/unistd.h
+index 1fc8faa6e973..53c57ffb3bd6 100644
+--- a/include/uapi/asm-generic/unistd.h
++++ b/include/uapi/asm-generic/unistd.h
+@@ -850,9 +850,11 @@ __SYSCALL(__NR_pidfd_open, sys_pidfd_open)
+ #define __NR_clone3 435
+ __SYSCALL(__NR_clone3, sys_clone3)
+ #endif
++#define __NR_close_range 436
++__SYSCALL(__NR_close_range, sys_close_range)
+ 
+ #undef __NR_syscalls
+-#define __NR_syscalls 436
++#define __NR_syscalls 437
+ 
+ /*
+  * 32 bit systems traditionally used different
+-- 
+2.23.0
+
