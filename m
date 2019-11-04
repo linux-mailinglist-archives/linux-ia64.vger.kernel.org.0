@@ -2,118 +2,78 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 14DB0ED7A8
-	for <lists+linux-ia64@lfdr.de>; Mon,  4 Nov 2019 03:15:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65EDDEDAEE
+	for <lists+linux-ia64@lfdr.de>; Mon,  4 Nov 2019 09:59:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728390AbfKDCPl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 3 Nov 2019 21:15:41 -0500
-Received: from foss.arm.com ([217.140.110.172]:34396 "EHLO foss.arm.com"
+        id S1727913AbfKDI70 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 4 Nov 2019 03:59:26 -0500
+Received: from mail.skyhub.de ([5.9.137.197]:48792 "EHLO mail.skyhub.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1728227AbfKDCPk (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 3 Nov 2019 21:15:40 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E7F6631F;
-        Sun,  3 Nov 2019 18:15:39 -0800 (PST)
-Received: from [10.163.1.23] (unknown [10.163.1.23])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6E4893F67D;
-        Sun,  3 Nov 2019 18:15:22 -0800 (PST)
-Subject: Re: [PATCH V8] mm/debug: Add tests validating architecture page table
- helpers
-To:     Qian Cai <cai@lca.pw>
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <Mark.Rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        id S1726100AbfKDI70 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 4 Nov 2019 03:59:26 -0500
+Received: from zn.tnic (p200300EC2F0AFA00A5208D92F28E6777.dip0.t-ipconnect.de [IPv6:2003:ec:2f0a:fa00:a520:8d92:f28e:6777])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.skyhub.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id ACC701EC090E;
+        Mon,  4 Nov 2019 09:59:23 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=dkim;
+        t=1572857963;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:in-reply-to:in-reply-to:  references:references;
+        bh=3Gglep10uhUlKdGt/9F9KI4CEHNO3URUde1zRbFYs6c=;
+        b=mZ979Q+RwEfYln6X7+2rMbzRQnkLl+SkKWMqTuum8Tfx9zcfxzhHK1nSgWY4G/USMPwuyj
+        TAvt+OQ42PFam14XDo4uiLhSRHIQatiruA2gvrK8hu1adymNxCtv2b2SHOWgjrd8YbtKXZ
+        N++brJBjeqC7MRe0dmxwetGoUBIRqC8=
+Date:   Mon, 4 Nov 2019 09:59:18 +0100
+From:   Borislav Petkov <bp@alien8.de>
+To:     Segher Boessenkool <segher@kernel.crashing.org>
+Cc:     Kees Cook <keescook@chromium.org>, linux-arch@vger.kernel.org,
+        linux-s390@vger.kernel.org, Michal Simek <monstr@monstr.eu>,
+        x86@kernel.org, linux-ia64@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, linux-xtensa@linux-xtensa.org,
+        Dave Hansen <dave.hansen@linux.intel.com>,
         Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Ingo Molnar <mingo@kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org
-References: <1572240562-23630-1-git-send-email-anshuman.khandual@arm.com>
- <B6AAFA3F-745D-48E2-98CC-CFB30934CE39@lca.pw>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <fdb72ac1-5f21-bcf1-ebab-411f56e67b56@arm.com>
-Date:   Mon, 4 Nov 2019 07:45:56 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        linuxppc-dev@lists.ozlabs.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-parisc@vger.kernel.org, Andy Lutomirski <luto@kernel.org>,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Will Deacon <will@kernel.org>,
+        linux-arm-kernel@lists.infradead.org, linux-c6x-dev@linux-c6x.org
+Subject: Re: [PATCH v2 01/29] powerpc: Rename "notes" PT_NOTE to "note"
+Message-ID: <20191104085918.GA7862@zn.tnic>
+References: <20191011000609.29728-1-keescook@chromium.org>
+ <20191011000609.29728-2-keescook@chromium.org>
+ <20191011082519.GI9749@gate.crashing.org>
+ <201910110910.48270FC97@keescook>
+ <20191011162552.GK9749@gate.crashing.org>
+ <20191015165412.GD596@zn.tnic>
+ <201910291414.F29F738B7@keescook>
+ <20191030010117.GJ28442@gate.crashing.org>
 MIME-Version: 1.0
-In-Reply-To: <B6AAFA3F-745D-48E2-98CC-CFB30934CE39@lca.pw>
 Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20191030010117.GJ28442@gate.crashing.org>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+On Tue, Oct 29, 2019 at 08:01:17PM -0500, Segher Boessenkool wrote:
+> I am still not convinced the worse name is a better name, no :-)  But if
+> you don't want to do the work, and instead prefer the much smaller change,
+> that is of course a fine decision.  Thank you!
+>
+> (I would be happy with such a 30/29 as well, of course.)
 
+Ok, thanks.
 
-On 10/29/2019 04:01 PM, Qian Cai wrote:
-> 
-> 
->> On Oct 28, 2019, at 1:29 AM, Anshuman Khandual <Anshuman.Khandual@arm.com> wrote:
->>
->> This adds tests which will validate architecture page table helpers and
->> other accessors in their compliance with expected generic MM semantics.
->> This will help various architectures in validating changes to existing
->> page table helpers or addition of new ones.
->>
->> This test covers basic page table entry transformations including but not
->> limited to old, young, dirty, clean, write, write protect etc at various
->> level along with populating intermediate entries with next page table page
->> and validating them.
->>
->> Test page table pages are allocated from system memory with required size
->> and alignments. The mapped pfns at page table levels are derived from a
->> real pfn representing a valid kernel text symbol. This test gets called
->> right after page_alloc_init_late().
->>
->> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
->> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
->> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
->> arm64. Going forward, other architectures too can enable this after fixing
->> build or runtime problems (if any) with their page table helpers.
->>
->> Folks interested in making sure that a given platform's page table helpers
->> conform to expected generic MM semantics should enable the above config
->> which will just trigger this test during boot. Any non conformity here will
->> be reported as an warning which would need to be fixed. This test will help
->> catch any changes to the agreed upon semantics expected from generic MM and
->> enable platforms to accommodate it thereafter.
-> 
-> This looks like a perfect candidate to streamline with the new kunit framework, no?
+I'll start picking up the pile and the renaming patch can then go ontop.
 
-I have not been following the kunit test framework. But being highly dependent on
-existing MM accessors (generic or platform) and very much page table modification
-centric, mm/ is the best place for this test IMHO. It is now also part of DEBUG_VM
-set of tests. Probably in future all existing MM tests (mm/ or lib/) might move to
-kunit framework but for now it should remain with DEBUG_VM set of tests.
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
