@@ -2,117 +2,99 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 56884F7A7D
-	for <lists+linux-ia64@lfdr.de>; Mon, 11 Nov 2019 19:09:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CC229F7FC5
+	for <lists+linux-ia64@lfdr.de>; Mon, 11 Nov 2019 20:24:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726949AbfKKSJF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 11 Nov 2019 13:09:05 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:40280 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726845AbfKKSJF (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 11 Nov 2019 13:09:05 -0500
-Received: by mail-ot1-f67.google.com with SMTP id m15so12001148otq.7;
-        Mon, 11 Nov 2019 10:09:03 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=pB6c4pFOe94ggxtiHB2kKLTOBOYOEpvnXnv9wnKmZAU=;
-        b=luYxNq6bcrrIs2W4O7SePDvZw1OC5S0MQ7G6zJ7sw5xfflJdnihMEzrsTOQqV/S32q
-         a0QXYP7RqbnI6I+OmlIZlrcadOAWHXz4RoYRe/taKivpl5SF2k6ovB+B1/5f/JMP4VTk
-         MSI8Ci0xTrmkqAixhwXODH/oB9TFmsCw57Ku50KLb1zp8qsmS0kRj4cTMJPOAkp0Vjoq
-         nQ1Bd0yXzm4t5B1AErOJwFXz+zNsxjrJ4t4AAJ1e8s1feMDIusXg/p29e8i8Sgj8gqli
-         wQiv3vx4iFOP5vMVqoWA6IpOF+UXvlvvnHv75qvjrowOm/nOul9i4OWVBGIKzKV6takV
-         IJsQ==
-X-Gm-Message-State: APjAAAUvX2rzovSYfe6TAWedBo6muyJ2GzckAFLigVv/ZrqOxFka0ndO
-        fDc69Tbk9tjbOUwTKAbZJfxP/QF+U+nCAReRqZw=
-X-Google-Smtp-Source: APXvYqwz3yURFWyrc4txNYG5Aijjty7ogMGADNC5Z1wYd4gVa5brKlAgJqkxDayccnlPhvVhacX5bel06VJjIpOaGlc=
-X-Received: by 2002:a05:6830:2363:: with SMTP id r3mr22934879oth.39.1573495742542;
- Mon, 11 Nov 2019 10:09:02 -0800 (PST)
-MIME-Version: 1.0
-References: <20191011000609.29728-1-keescook@chromium.org> <20191011000609.29728-12-keescook@chromium.org>
- <CAMuHMdXfPyti1wFBb0hhf3CeDSQ=zVv7cV-taeYCmDswMQkXPQ@mail.gmail.com> <201911110922.17A2112B0@keescook>
-In-Reply-To: <201911110922.17A2112B0@keescook>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 11 Nov 2019 19:08:51 +0100
-Message-ID: <CAMuHMdUJ8QPvqf51nVmOg1Zm20SNT7pXR72z=qmco=ecwawZ7A@mail.gmail.com>
-Subject: Re: [PATCH v2 11/29] vmlinux.lds.h: Replace RODATA with RO_DATA
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
+        id S1727418AbfKKTXr (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 11 Nov 2019 14:23:47 -0500
+Received: from mout.kundenserver.de ([212.227.126.130]:34355 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726910AbfKKTXr (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 11 Nov 2019 14:23:47 -0500
+Received: from threadripper.lan ([149.172.19.189]) by mrelayeu.kundenserver.de
+ (mreue011 [212.227.15.129]) with ESMTPA (Nemesis) id
+ 1MTi9N-1iK6p22quT-00Tzhu; Mon, 11 Nov 2019 20:23:05 +0100
+From:   Arnd Bergmann <arnd@arndb.de>
+To:     Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>
+Cc:     Christoph Hellwig <hch@lst.de>, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, linux-ia64@vger.kernel.org,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
         Arnd Bergmann <arnd@arndb.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        Will Deacon <will@kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        linux-c6x-dev@linux-c6x.org,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Michal Simek <monstr@monstr.eu>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-xtensa@linux-xtensa.org,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Souptick Joarder <jrdr.linux@gmail.com>,
+        dri-devel@lists.freedesktop.org, linux-fbdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] video: fbdev: atyfb: only use ioremap_uc() on i386 and ia64
+Date:   Mon, 11 Nov 2019 20:22:50 +0100
+Message-Id: <20191111192258.2234502-1-arnd@arndb.de>
+X-Mailer: git-send-email 2.20.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Provags-ID: V03:K1:G7fVZrN2su3CbpdSj/kq71EeeeKTYZoe6x6zvxOtFZEbiSWv0zR
+ Xw+By6rp1RvmAwdIceDuVMJG6W49a4GYU5M7TsOb4PVcuFbmtc4zDHnbboKsEbR9a/vwmVG
+ gMfZ9mqmc9EZcj6sVDak1e2jRHvgU1GfZC4GJJZ+6geK8zKloktS54pQoixLcw3apObAvgo
+ 37ky04f59Xwy19jvSnR4Q==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:gTxDTasTuXo=:DtDj9YCkmH7bphqvBqN2kc
+ y2HCCFlcKtkkxIT1zvuffgBD/NjjOrR4LAaUWC38J7zAv3ccLY7YoCKr7esjNGTPU4Bm7vfNW
+ 3+Sj80/UK2nG5u3ic8f7jrj5w+4S1r9X4YsEQ+46xyqiQsao7J6xBlOrqgR1IrpM3fwT9OBuB
+ oqdwG3t6hG3AqDJxC09ls/SRfvVndfBmyO3ruCNtKApuxM5M2kjSBPYq1ZCt18nmkxnwNm5h9
+ 48Ra3ulZBQxlDoJJ4ceP+De+h+EU0nZknsRvpNuVJLPZw8nqgksAWCComGiuatMGtr3RsPXrO
+ NxMgDA0DFe2/FUx21eVhAt2TD39hUOHS2W4/RPBFZ1nrffYh6we0SK+AWn75lOjkzTiz5jdBt
+ sFKRUSl2edXQXlZStoDBByKUF7qMwQBvn6ZKt8Q0+Is0FyaGCUyCxVA8QzH5cH87e8eHdKQB/
+ pXGZpoJGuNGDlhIg7LO38RnKy0xfTlWMsZcFT0CcHuD14fzrXfQ4EJfQi3VlONjX2pMKmTYoy
+ uYRBC9HrfTpInyi+GMPZOE3NoNWZ15CzZC7vEsPxb63kNjQyglrGrjnLHq/z39MNcVvaIY/9G
+ T17lcEpSTAVBSOo85r2PPWOI6B8f9PKLpVlW4lvn8MGWYqz3UMX8v2Y6hMYvCfpjCMMInNxF1
+ B408DQyNh/c7kt24ojj+STA80/0IuB8tVTbT6BCwyDzwBq615+5FIHAe37/brRYdCA5WJHYhJ
+ aboiguFX21swpruRbFolY595RugViK+R8oN9ovjz9pLuBYx0eF7TMmxkMk9A3LUZTTOK9pRSh
+ KgVlttJjfHZ2lQelvU3AwaGH06fVl23G9NaclTxJ8k1DV1iUcl4W6Y2Cy2WrPO32aqWaY3ZqG
+ QuRPIIlhHo3Yt4D6gr9w==
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Kees,
+ioremap_uc() is only meaningful on old x86-32 systems with the PAT
+extension, and on ia64 with its slightly unconventional ioremap()
+behavior, everywhere else this is the same as ioremap() anyway.
 
-On Mon, Nov 11, 2019 at 6:23 PM Kees Cook <keescook@chromium.org> wrote:
-> On Mon, Nov 11, 2019 at 05:58:06PM +0100, Geert Uytterhoeven wrote:
-> > On Fri, Oct 11, 2019 at 2:07 AM Kees Cook <keescook@chromium.org> wrote:
-> > > There's no reason to keep the RODATA macro: replace the callers with
-> > > the expected RO_DATA macro.
-> > >
-> > > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > > ---
-> > >  arch/alpha/kernel/vmlinux.lds.S      | 2 +-
-> > >  arch/ia64/kernel/vmlinux.lds.S       | 2 +-
-> > >  arch/microblaze/kernel/vmlinux.lds.S | 2 +-
-> > >  arch/mips/kernel/vmlinux.lds.S       | 2 +-
-> > >  arch/um/include/asm/common.lds.S     | 2 +-
-> > >  arch/xtensa/kernel/vmlinux.lds.S     | 2 +-
-> > >  include/asm-generic/vmlinux.lds.h    | 4 +---
-> > >  7 files changed, 7 insertions(+), 9 deletions(-)
-> >
-> > Somehow you missed:
-> >
-> >     arch/m68k/kernel/vmlinux-std.lds:  RODATA
-> >     arch/m68k/kernel/vmlinux-sun3.lds:      RODATA
->
-> Argh. I've sent a patch; sorry and thanks for catching this. For my own
-> cross-build testing, which defconfig targets will hit these two linker
-> scripts?
+Change the only driver that still references ioremap_uc() to only do so
+on x86-32/ia64 in order to allow removing that interface at some
+point in the future for the other architectures.
 
-vmlinux-sun3.lds: sun3_defconfig
-vmlinux-std.lds: All other classic 680x0 targets with an MMU, e.g. plain
-                 defconfig aka multi_defconfig.
+On some architectures, ioremap_uc() just returns NULL, changing
+the driver to call ioremap() means that they now have a chance
+of working correctly.
 
-> > Leading to build failures in next-20191111:
-> >
-> >     /opt/cross/kisskb/gcc-4.6.3-nolibc/m68k-linux/bin/m68k-linux-ld:./arch/m68k/kernel/vmlinux.lds:29:
-> > syntax error
-> >     make[1]: *** [/kisskb/src/Makefile:1075: vmlinux] Error 1
-> >
-> > Reported-by: noreply@ellerman.id.au
-> > http://kisskb.ellerman.id.au/kisskb/buildresult/14022846/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ drivers/video/fbdev/aty/atyfb_base.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/video/fbdev/aty/atyfb_base.c b/drivers/video/fbdev/aty/atyfb_base.c
+index 79d548746efd..bdbaca7200b2 100644
+--- a/drivers/video/fbdev/aty/atyfb_base.c
++++ b/drivers/video/fbdev/aty/atyfb_base.c
+@@ -3420,11 +3420,15 @@ static int atyfb_setup_generic(struct pci_dev *pdev, struct fb_info *info,
+ 	}
+ 
+ 	info->fix.mmio_start = raddr;
++#if defined(__i386__) || defined(__ia64__)
+ 	/*
+ 	 * By using strong UC we force the MTRR to never have an
+ 	 * effect on the MMIO region on both non-PAT and PAT systems.
+ 	 */
+ 	par->ati_regbase = ioremap_uc(info->fix.mmio_start, 0x1000);
++#else
++	par->ati_regbase = ioremap(info->fix.mmio_start, 0x1000);
++#endif
+ 	if (par->ati_regbase == NULL)
+ 		return -ENOMEM;
+ 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.20.0
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
