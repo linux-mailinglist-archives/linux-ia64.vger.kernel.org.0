@@ -2,65 +2,107 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A25EF775B
-	for <lists+linux-ia64@lfdr.de>; Mon, 11 Nov 2019 16:06:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F17EF7946
+	for <lists+linux-ia64@lfdr.de>; Mon, 11 Nov 2019 17:58:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726949AbfKKPGi (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 11 Nov 2019 10:06:38 -0500
-Received: from 8bytes.org ([81.169.241.247]:51336 "EHLO theia.8bytes.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726843AbfKKPGi (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 11 Nov 2019 10:06:38 -0500
-Received: by theia.8bytes.org (Postfix, from userid 1000)
-        id 872C61E6; Mon, 11 Nov 2019 16:06:32 +0100 (CET)
-Date:   Mon, 11 Nov 2019 16:06:31 +0100
-From:   Joerg Roedel <joro@8bytes.org>
-To:     Yian Chen <yian.chen@intel.com>
-Cc:     iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, David Woodhouse <dwmw2@infradead.org>,
-        Ashok Raj <ashok.raj@intel.com>,
-        Sohil Mehta <sohil.mehta@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Ravi Shankar <ravi.v.shankar@intel.com>
-Subject: Re: [PATCH v2] iommu/vt-d: Check VT-d RMRR region in BIOS is
- reported as reserved
-Message-ID: <20191111150630.GF18333@8bytes.org>
-References: <20191017113919.25424-1-yian.chen@intel.com>
+        id S1726916AbfKKQ6S (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 11 Nov 2019 11:58:18 -0500
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:38250 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726879AbfKKQ6S (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 11 Nov 2019 11:58:18 -0500
+Received: by mail-oi1-f196.google.com with SMTP id a14so12092567oid.5;
+        Mon, 11 Nov 2019 08:58:17 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=N5Vcj3yE2rkXP4doP0O2V7gRihUnv+nSjX4pf/13Rw8=;
+        b=CBQ8W26nBhfvyynYKCEr3k8TGOtrtm34pDWrxm8OKM7Um9zQELtwz7Umd1M/a6q8Mi
+         Onlte7cJBZM/IajBJgyVCrO1wacbaIh/ws+ue+BsmgLhbtThvvFKBs602VdJbQkt/CXu
+         CmWa51IaSDH4hnQUuJpCm2FcvVpAXPYVqoDA8mWAFIRfCnxU9gKgBFR2QJ1aZfoWWhiz
+         WoIdYP+9++Y2feuBw5/gKL2Ke8sd2f6XlgPYionZf2kwaaityTsdGBnoMNtP12Y2XWFF
+         RLAkdyR+pOj1alVTcfuWhByYoYDkHMH1MgKwbB9k63qBkauP4Yor8yI9HM/Yr8ZLo6MR
+         bs0w==
+X-Gm-Message-State: APjAAAUHXO2fEm89dRaWb3V9JHhwcK3sJ+QcJL7RokoyXfyCOgZip+hS
+        JiDyK5/jBvsdjxM3r2XN9eFHc5BwGqc8LxHCzOw=
+X-Google-Smtp-Source: APXvYqy/vMjYcYeqIvTqdLd5GGnLez7ZmWGDKl5AqUc+6PF8GisVTiuTjJisyx2dw7CZpTj+GRrxuJBIdtOSyrbYjfw=
+X-Received: by 2002:aca:fc92:: with SMTP id a140mr23499698oii.153.1573491497306;
+ Mon, 11 Nov 2019 08:58:17 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20191017113919.25424-1-yian.chen@intel.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20191011000609.29728-1-keescook@chromium.org> <20191011000609.29728-12-keescook@chromium.org>
+In-Reply-To: <20191011000609.29728-12-keescook@chromium.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 11 Nov 2019 17:58:06 +0100
+Message-ID: <CAMuHMdXfPyti1wFBb0hhf3CeDSQ=zVv7cV-taeYCmDswMQkXPQ@mail.gmail.com>
+Subject: Re: [PATCH v2 11/29] vmlinux.lds.h: Replace RODATA with RO_DATA
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Borislav Petkov <bp@alien8.de>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Will Deacon <will@kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        linux-c6x-dev@linux-c6x.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Michal Simek <monstr@monstr.eu>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-xtensa@linux-xtensa.org,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Oct 17, 2019 at 04:39:19AM -0700, Yian Chen wrote:
-> VT-d RMRR (Reserved Memory Region Reporting) regions are reserved
-> for device use only and should not be part of allocable memory pool of OS.
-> 
-> BIOS e820_table reports complete memory map to OS, including OS usable
-> memory ranges and BIOS reserved memory ranges etc.
-> 
-> x86 BIOS may not be trusted to include RMRR regions as reserved type
-> of memory in its e820 memory map, hence validate every RMRR entry
-> with the e820 memory map to make sure the RMRR regions will not be
-> used by OS for any other purposes.
-> 
-> ia64 EFI is working fine so implement RMRR validation as a dummy function
-> 
-> Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-> Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
-> Signed-off-by: Yian Chen <yian.chen@intel.com>
-> ---
-> v2:
-> - return -EINVAL instead of -EFAULT when there is an error
-> ---
->  arch/ia64/include/asm/iommu.h |  5 +++++
->  arch/x86/include/asm/iommu.h  | 18 ++++++++++++++++++
->  drivers/iommu/intel-iommu.c   |  8 +++++++-
->  3 files changed, 30 insertions(+), 1 deletion(-)
+Hi Kees,
 
-Applied, thanks.
+On Fri, Oct 11, 2019 at 2:07 AM Kees Cook <keescook@chromium.org> wrote:
+> There's no reason to keep the RODATA macro: replace the callers with
+> the expected RO_DATA macro.
+>
+> Signed-off-by: Kees Cook <keescook@chromium.org>
+> ---
+>  arch/alpha/kernel/vmlinux.lds.S      | 2 +-
+>  arch/ia64/kernel/vmlinux.lds.S       | 2 +-
+>  arch/microblaze/kernel/vmlinux.lds.S | 2 +-
+>  arch/mips/kernel/vmlinux.lds.S       | 2 +-
+>  arch/um/include/asm/common.lds.S     | 2 +-
+>  arch/xtensa/kernel/vmlinux.lds.S     | 2 +-
+>  include/asm-generic/vmlinux.lds.h    | 4 +---
+>  7 files changed, 7 insertions(+), 9 deletions(-)
+
+Somehow you missed:
+
+    arch/m68k/kernel/vmlinux-std.lds:  RODATA
+    arch/m68k/kernel/vmlinux-sun3.lds:      RODATA
+
+Leading to build failures in next-20191111:
+
+    /opt/cross/kisskb/gcc-4.6.3-nolibc/m68k-linux/bin/m68k-linux-ld:./arch/m68k/kernel/vmlinux.lds:29:
+syntax error
+    make[1]: *** [/kisskb/src/Makefile:1075: vmlinux] Error 1
+
+Reported-by: noreply@ellerman.id.au
+http://kisskb.ellerman.id.au/kisskb/buildresult/14022846/
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
