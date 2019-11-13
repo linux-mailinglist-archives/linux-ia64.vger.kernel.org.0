@@ -2,94 +2,132 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 06A99FAB1E
-	for <lists+linux-ia64@lfdr.de>; Wed, 13 Nov 2019 08:38:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F2B5FAB3C
+	for <lists+linux-ia64@lfdr.de>; Wed, 13 Nov 2019 08:48:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726957AbfKMHie (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 13 Nov 2019 02:38:34 -0500
-Received: from mout.kundenserver.de ([212.227.126.135]:37961 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726057AbfKMHie (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 13 Nov 2019 02:38:34 -0500
-Received: from mail-qk1-f179.google.com ([209.85.222.179]) by
- mrelayeu.kundenserver.de (mreue009 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1N2m7Q-1hlbYi1CaC-0137fL; Wed, 13 Nov 2019 08:38:32 +0100
-Received: by mail-qk1-f179.google.com with SMTP id 205so932969qkk.1;
-        Tue, 12 Nov 2019 23:38:31 -0800 (PST)
-X-Gm-Message-State: APjAAAXGQYi04OOQNCrBGvn2xoysEPQnFSxIE/CFAZkUilJ01zgCeokZ
-        7afjgaI9TdCm1mlYRUi/aVdWxEHjH7v4EVSi828=
-X-Google-Smtp-Source: APXvYqwcv3J/m3EiKMnljDoadHXNfb1emGEfcNt/Ep/L32JdSlabgCsOT3L46pVsDG+wtjusUmekE0tuUmfRXOb/k7g=
-X-Received: by 2002:a37:9d8c:: with SMTP id g134mr1350982qke.352.1573630711029;
- Tue, 12 Nov 2019 23:38:31 -0800 (PST)
+        id S1726276AbfKMHsf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 13 Nov 2019 02:48:35 -0500
+Received: from mout-p-201.mailbox.org ([80.241.56.171]:42266 "EHLO
+        mout-p-201.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726107AbfKMHsf (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 13 Nov 2019 02:48:35 -0500
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [IPv6:2001:67c:2050:105:465:1:2:0])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mout-p-201.mailbox.org (Postfix) with ESMTPS id 47CcDY3vdYzQlBb;
+        Wed, 13 Nov 2019 08:48:29 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp2.mailbox.org ([80.241.60.241])
+        by spamfilter05.heinlein-hosting.de (spamfilter05.heinlein-hosting.de [80.241.56.123]) (amavisd-new, port 10030)
+        with ESMTP id 3hMGDl1msr0T; Wed, 13 Nov 2019 08:48:23 +0100 (CET)
+Date:   Wed, 13 Nov 2019 18:47:57 +1100
+From:   Aleksa Sarai <cyphar@cyphar.com>
+To:     Al Viro <viro@zeniv.linux.org.uk>
+Cc:     Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Christian Brauner <christian.brauner@ubuntu.com>,
+        David Drysdale <drysdale@google.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, Tycho Andersen <tycho@tycho.ws>,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Christian Brauner <christian@brauner.io>,
+        Aleksa Sarai <asarai@suse.de>,
+        containers@lists.linux-foundation.org, linux-alpha@vger.kernel.org,
+        linux-api@vger.kernel.org, libc-alpha@sourceware.org,
+        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v15 4/9] namei: LOOKUP_BENEATH: O_BENEATH-like scoped
+ resolution
+Message-ID: <20191113074757.5b4u5vlyx2u6pbn6@yavin.dot.cyphar.com>
+References: <20191105090553.6350-1-cyphar@cyphar.com>
+ <20191105090553.6350-5-cyphar@cyphar.com>
+ <20191113015534.GA26530@ZenIV.linux.org.uk>
 MIME-Version: 1.0
-References: <20191111192258.2234502-1-arnd@arndb.de> <20191112105507.GA7122@lst.de>
- <CAKMK7uEEz1n+zuTs29rbPHU74Dspaib=prpMge63L_-rUk_o4A@mail.gmail.com>
- <20191112140631.GA10922@lst.de> <CAKMK7uFaA607rOS6x_FWjXQ2+Qdm8dQ1dQ+Oi-9if_Qh_wHWPg@mail.gmail.com>
- <20191112222423.GO11244@42.do-not-panic.com> <20191113072708.GA3213@lst.de>
-In-Reply-To: <20191113072708.GA3213@lst.de>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Wed, 13 Nov 2019 08:38:15 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3OpiWAep86tOiN1Fj2W7ud5hQ1OLTkBR8ueAKsMHk-dA@mail.gmail.com>
-Message-ID: <CAK8P3a3OpiWAep86tOiN1Fj2W7ud5hQ1OLTkBR8ueAKsMHk-dA@mail.gmail.com>
-Subject: Re: [PATCH] video: fbdev: atyfb: only use ioremap_uc() on i386 and ia64
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Luis Chamberlain <mcgrof@kernel.org>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Juergen Gross <jgross@suse.com>,
-        Tuowen Zhao <ztuowen@gmail.com>,
-        AceLan Kao <acelan.kao@canonical.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Roman Gilg <subdiff@gmail.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        "Luis R. Rodriguez" <mcgrof@suse.com>,
-        Bartlomiej Zolnierkiewicz <b.zolnierkie@samsung.com>,
-        X86 ML <x86@kernel.org>, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>, linux-ia64@vger.kernel.org,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Souptick Joarder <jrdr.linux@gmail.com>,
-        dri-devel <dri-devel@lists.freedesktop.org>,
-        Linux Fbdev development list <linux-fbdev@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:Do/PBleJlliJ44JByLFQnpZN2MQGaavDxduA2RSMxk2d9XUxsDz
- MhNR5O+o1KT6lT83QyJAmtDSKFlm/ce6UmbkAMg+XBt9e/OhZEKqo7QKIngpZLrFB/z5PTA
- uOUWPFC59rpiPD5SF82eIySRIxXNu8s+jrZv4J9IUmR+sha1wqGaUJeGPl3auuBcqLyeOGO
- JwaLXFIsVd84PLj3vk5mQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:PVVKeHkrBOg=:GISnJR2636PIoqlQ6oiTK4
- LUiw2rVMbscaedCzhdvuDn2f7jVxQVbHR1SNVaYrIVLfw9AgiAMW/bDd75IcTNb+X/G1WysFe
- jPf3tkjKMdBj+QGL8vavmpLQfLz9UVth2BTqShUsf1WzKHJE3QDmc45AnnWQsM14X8nU7yafo
- 7z9Wh/8Jq7McfnOqcOtepb/onoAUwnJ6URZ7NXOAfqcT4rWaxwdAOT35xPGim5zomJChhHwvn
- uwQy+FMT/tx+Rhqo+eaUzpsWTwUVUTPqM56P4BXyqhUgamrwTobnE5gnPg51EzvXqyyk/nRIF
- IhNrFYRxzOs80y3pxllQ4FkrBtXFYAczozVNuRRKrEN0UK4zdnvIFt8Ln0K1/b+0CBMl0+iQy
- hQgu7ERZrgiZNnsqE7KdFdq447lc/+J+R2LcA9WFXAZ5MI7nHF1Ox4b6H5BcqwPMb4af/WC70
- VTLqjPllVv8f4j5o+m4AYrxEXubEc5YVrx5xtFpeRrrncT4oOs0lIGCiYIh7yvviSKKoJTACF
- H8wzErg/JhbdI9xQ1VpwDEQuNWf9k6ExpdNzVmJisfiHjqiVCWXdXR3oShJ1SPBF6q+oTxV86
- bq1rcsMCdUCO0ZOmGihaGBfk3L3Msh54gpSluu2Yduz/NDjDF57df+szP0Z2Da/SoC6nuqdxl
- iWIbPnPqYf7pTzymhxcuvU7lyKfZR+OCe7JIICF/MsPAiNZKqgTR/JieNb1e/Hx41CHL+/jGF
- pGeiiCXyMUzn1iCpYHEaj1k5jPNb7pD9Gk4i0umKYXCm5cXQUwH19N+w2sv59HqnMkFlUd94Z
- n8fa5jhdn2tMjwgV5wA4cDVTh2XNulT9pFsP2K7secTs7odLobr/aiDSWC+SSVUVMyme+7NjE
- BODK4Sg9piOzxbtIiPhg==
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="odomi6wtik4yoblv"
+Content-Disposition: inline
+In-Reply-To: <20191113015534.GA26530@ZenIV.linux.org.uk>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Nov 13, 2019 at 8:27 AM Christoph Hellwig <hch@lst.de> wrote:
->
-> On Tue, Nov 12, 2019 at 10:24:23PM +0000, Luis Chamberlain wrote:
-> > I think this would be possible if we could flop ioremap_nocache() to UC
-> > instead of UC- on x86. Otherwise, I can't see how we can remove this by
-> > still not allowing direct MTRR calls.
->
-> If everything goes well ioremap_nocache will be gone as of 5.5.
 
-As ioremap_nocache() just an alias for ioremap(), I suppose the idea would
-then be to make x86 ioremap be UC instead of UC-, again matching what the
-other architectures do already.
+--odomi6wtik4yoblv
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-      Arnd
+On 2019-11-13, Al Viro <viro@zeniv.linux.org.uk> wrote:
+> Minor nit here - I'd split "move the conditional call of set_root()
+> into nd_jump_root()" into a separate patch before that one.  Makes
+> for fewer distractions in this one.  I'd probably fold "and be
+> ready for errors other than -ECHILD" into the same preliminary
+> patch.
+
+Will do.
+
+> > +			/* Not currently safe for scoped-lookups. */
+> > +			if (unlikely(nd->flags & LOOKUP_IS_SCOPED))
+> > +				return ERR_PTR(-EXDEV);
+>=20
+> Also a candidate for doing in nd_jump_link()...
+>=20
+> > @@ -1373,8 +1403,11 @@ static int follow_dotdot_rcu(struct nameidata *n=
+d)
+> >  	struct inode *inode =3D nd->inode;
+> > =20
+> >  	while (1) {
+> > -		if (path_equal(&nd->path, &nd->root))
+> > +		if (path_equal(&nd->path, &nd->root)) {
+> > +			if (unlikely(nd->flags & LOOKUP_BENEATH))
+> > +				return -EXDEV;
+>=20
+> Umm...  Are you sure it's not -ECHILD?
+
+It wouldn't hurt to be -ECHILD -- though it's not clear to me how likely
+a success would be in REF-walk if the parent components didn't already
+trigger an unlazy_walk() in RCU-walk.
+
+I guess that also means LOOKUP_NO_XDEV should trigger -ECHILD in
+follow_dotdot_rcu()?
+
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--odomi6wtik4yoblv
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXcu1KgAKCRCdlLljIbnQ
+EpYSAQDaNIB4LkhLlbFgkuRPiavU6vZ03HuSIHKseqaD6uMARwD+OcGzTDahyjJ6
+YeuKal+s33ETzSjupl7K2mKfYQpA2Q0=
+=nyQ8
+-----END PGP SIGNATURE-----
+
+--odomi6wtik4yoblv--
