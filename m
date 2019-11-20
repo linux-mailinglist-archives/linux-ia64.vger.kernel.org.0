@@ -2,65 +2,73 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C41B010362F
-	for <lists+linux-ia64@lfdr.de>; Wed, 20 Nov 2019 09:46:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7BEE1037E2
+	for <lists+linux-ia64@lfdr.de>; Wed, 20 Nov 2019 11:49:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727834AbfKTIqS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 20 Nov 2019 03:46:18 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55672 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726687AbfKTIqS (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 20 Nov 2019 03:46:18 -0500
-Received: from p5b06da22.dip0.t-ipconnect.de ([91.6.218.34] helo=nanos)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tglx@linutronix.de>)
-        id 1iXLcr-0002U3-Hh; Wed, 20 Nov 2019 09:46:13 +0100
-Date:   Wed, 20 Nov 2019 09:46:12 +0100 (CET)
-From:   Thomas Gleixner <tglx@linutronix.de>
-To:     Qais Yousef <qais.yousef@arm.com>
-cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        id S1728839AbfKTKti (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 20 Nov 2019 05:49:38 -0500
+Received: from foss.arm.com ([217.140.110.172]:37176 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728760AbfKTKti (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 20 Nov 2019 05:49:38 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7FBDA1FB;
+        Wed, 20 Nov 2019 02:49:37 -0800 (PST)
+Received: from e107158-lin.cambridge.arm.com (e107158-lin.cambridge.arm.com [10.1.195.21])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 9B6D73F6C4;
+        Wed, 20 Nov 2019 02:49:36 -0800 (PST)
+Date:   Wed, 20 Nov 2019 10:49:34 +0000
+From:   Qais Yousef <qais.yousef@arm.com>
+To:     Thomas Gleixner <tglx@linutronix.de>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 04/12] ia64: Replace cpu_down with
- freeze_secondary_cpus
-In-Reply-To: <20191119231912.viwqgcyzttoo5eou@e107158-lin.cambridge.arm.com>
-Message-ID: <alpine.DEB.2.21.1911200944590.6731@nanos.tec.linutronix.de>
-References: <20191030153837.18107-1-qais.yousef@arm.com> <20191030153837.18107-5-qais.yousef@arm.com> <alpine.DEB.2.21.1911192318400.6731@nanos.tec.linutronix.de> <20191119223234.ov323rcln4slj7br@e107158-lin.cambridge.arm.com>
- <alpine.DEB.2.21.1911192344110.6731@nanos.tec.linutronix.de> <20191119231912.viwqgcyzttoo5eou@e107158-lin.cambridge.arm.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+Subject: Re: [PATCH 04/12] ia64: Replace cpu_down with freeze_secondary_cpus
+Message-ID: <20191120104933.e6gkdjwkzulm6uak@e107158-lin.cambridge.arm.com>
+References: <20191030153837.18107-1-qais.yousef@arm.com>
+ <20191030153837.18107-5-qais.yousef@arm.com>
+ <alpine.DEB.2.21.1911192318400.6731@nanos.tec.linutronix.de>
+ <20191119223234.ov323rcln4slj7br@e107158-lin.cambridge.arm.com>
+ <alpine.DEB.2.21.1911192344110.6731@nanos.tec.linutronix.de>
+ <20191119231912.viwqgcyzttoo5eou@e107158-lin.cambridge.arm.com>
+ <alpine.DEB.2.21.1911200944590.6731@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.21.1911200944590.6731@nanos.tec.linutronix.de>
+User-Agent: NeoMutt/20171215
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, 19 Nov 2019, Qais Yousef wrote:
-> On 11/19/19 23:59, Thomas Gleixner wrote:
-> > On Tue, 19 Nov 2019, Qais Yousef wrote:
-> > > My plan was to simply make freeze_secondary_cpus() available and protected by
-> > > CONFIG_SMP only instead.
+On 11/20/19 09:46, Thomas Gleixner wrote:
+> On Tue, 19 Nov 2019, Qais Yousef wrote:
+> > On 11/19/19 23:59, Thomas Gleixner wrote:
+> > > On Tue, 19 Nov 2019, Qais Yousef wrote:
+> > > > My plan was to simply make freeze_secondary_cpus() available and protected by
+> > > > CONFIG_SMP only instead.
+> > > > 
+> > > > Good plan?
 > > > 
-> > > Good plan?
+> > > No. freeze_secondary_cpus() is really for hibernation. Look at the exit
+> > > conditions there.
 > > 
-> > No. freeze_secondary_cpus() is really for hibernation. Look at the exit
-> > conditions there.
+> > Hmm do you mean the pm_wakeup_pending() abort?
+> > 
+> > In arm64 we machine_shutdown() calls disable_nonboot_cpus(), which in turn
+> > a wrapper around freeze_secondary_cpus() with 0 passed as an argument.
+> > 
+> > IIUC this means arm64 could fail to offline all CPUs on machine_shutdown(),
+> > correct?
 > 
-> Hmm do you mean the pm_wakeup_pending() abort?
-> 
-> In arm64 we machine_shutdown() calls disable_nonboot_cpus(), which in turn
-> a wrapper around freeze_secondary_cpus() with 0 passed as an argument.
-> 
-> IIUC this means arm64 could fail to offline all CPUs on machine_shutdown(),
-> correct?
+> Looks like.
 
-Looks like.
+Okay I'll double check and introduce a new function to be called from
+machine_down() for arm64 and ia64 if necessary.
 
-Thanks,
+Thanks
 
-	tglx
+--
+Qais Yousef
