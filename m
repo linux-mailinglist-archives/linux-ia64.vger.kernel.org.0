@@ -2,129 +2,89 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6305C103825
-	for <lists+linux-ia64@lfdr.de>; Wed, 20 Nov 2019 12:00:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9D58104D9E
+	for <lists+linux-ia64@lfdr.de>; Thu, 21 Nov 2019 09:15:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728032AbfKTLAx (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 20 Nov 2019 06:00:53 -0500
-Received: from cloudserver094114.home.pl ([79.96.170.134]:64928 "EHLO
-        cloudserver094114.home.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727374AbfKTLAx (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 20 Nov 2019 06:00:53 -0500
-Received: from 79.184.253.244.ipv4.supernova.orange.pl (79.184.253.244) (HELO kreacher.localnet)
- by serwer1319399.home.pl (79.96.170.134) with SMTP (IdeaSmtpServer 0.83.292)
- id a3504edb7f1d7620; Wed, 20 Nov 2019 12:00:49 +0100
-From:   "Rafael J. Wysocki" <rjw@rjwysocki.net>
-To:     Sean Christopherson <sean.j.christopherson@intel.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, Len Brown <len.brown@intel.com>,
-        Pavel Machek <pavel@ucw.cz>, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Nadav Amit <namit@vmware.com>,
-        "VMware, Inc." <pv-drivers@vmware.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Cezary Rojewski <cezary.rojewski@intel.com>,
-        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
-        Jie Yang <yang.jie@linux.intel.com>,
-        Mark Brown <broonie@kernel.org>,
-        Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
-Subject: Re: [PATCH 12/12] x86/ACPI/sleep: Move acpi_wakeup_address() definition into sleep.c
-Date:   Wed, 20 Nov 2019 12:00:48 +0100
-Message-ID: <1707133.c5szpGgj5A@kreacher>
-In-Reply-To: <20191119002121.4107-13-sean.j.christopherson@intel.com>
-References: <20191119002121.4107-1-sean.j.christopherson@intel.com> <20191119002121.4107-13-sean.j.christopherson@intel.com>
+        id S1726623AbfKUIPF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 21 Nov 2019 03:15:05 -0500
+Received: from mail-wr1-f67.google.com ([209.85.221.67]:40216 "EHLO
+        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726502AbfKUIPF (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 21 Nov 2019 03:15:05 -0500
+Received: by mail-wr1-f67.google.com with SMTP id q15so3185568wrw.7
+        for <linux-ia64@vger.kernel.org>; Thu, 21 Nov 2019 00:15:04 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1C1QmRBY5rUzr8610O1JPTW5yINhKV4J9GK9i0/L/pM=;
+        b=qIGvJTxTXDmbwIyDtlqIYYAUXIaYtGdTJGR7lqgnG+xb8D3OIIyXfIcKdYl74G6n1V
+         6AIH/lJeNSVwczClPC49lgFaJqVZ0/r65Z7PNX1A3vOtgmoUBYb1zaecNbeEWdUfW0xx
+         dH5a3QAg/Nq1/hqOvmMlLWj3Jt0oUX3+yMRr6O/ApH7azB2wkbGOdeDT5tk8xisFc37d
+         OHPVDlHHnFFapo/g4fkgHh8hnkBeMXY44RksbqPzFmAWk0GNHtrN3LEHqk3oyL1TIxXo
+         aSwoLS+o0Ltg8uyiqc3iFKIcrqF0VubpE5vU8fQao1QuzOpmVekeae0wxhhSLQV5npoQ
+         EtJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=1C1QmRBY5rUzr8610O1JPTW5yINhKV4J9GK9i0/L/pM=;
+        b=LHdEr2gkP5g86E2679E6qDsa5xOGUpiaC4wFPS2IZMD6ZUIpsY7yKQnbvlRCMecfsw
+         BLdlHa6j1t7EDPL7PrOgTGzLdb3RqDLvVqaQERBgag955jfySQHekZ5IkZOZAcOieYpQ
+         Etiu7OLqS3LJqWC/z9aUKLhwXilZttsR1OE3C30C0Cvhio6HNnWHS3AqV7SO0DQ1gI4W
+         mE4QNhBlST3B8UUY50N44kl9GsHEOiMdYZRSawbpQrQjOjWxgl2jBUOmBn/OUSpTYTU7
+         mk7Fwwx4NsaSAetgQTbR5Fg8p8w7UwdljcFdWtbVBvbXUoJr1u8VFUYI/BVDrmGTtWm8
+         /ClA==
+X-Gm-Message-State: APjAAAX4+j+MX1qqXP0HQ+C5wxijRyTb5j70ALnMW1c2+cppN5IbaZKu
+        OaZCps0uHNIapbsnAhK4e3qEzA==
+X-Google-Smtp-Source: APXvYqztb8qVXOxAbIRwJqdhDfpu1ArT0UyVuERd3YmJJq8AVG/TvHC6mWHqdly95ZzHd3gTlu9/lA==
+X-Received: by 2002:a5d:5444:: with SMTP id w4mr8741914wrv.164.1574324103362;
+        Thu, 21 Nov 2019 00:15:03 -0800 (PST)
+Received: from localhost.localdomain ([51.15.160.169])
+        by smtp.googlemail.com with ESMTPSA id w13sm2315075wrm.8.2019.11.21.00.15.02
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Thu, 21 Nov 2019 00:15:02 -0800 (PST)
+From:   Corentin Labbe <clabbe@baylibre.com>
+To:     airlied@redhat.com, airlied@linux.ie, arnd@arndb.de,
+        fenghua.yu@intel.com, gregkh@linuxfoundation.org,
+        tony.luck@intel.com
+Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Corentin Labbe <clabbe@baylibre.com>
+Subject: [PATCH v2 0/5] agp: minor fixes
+Date:   Thu, 21 Nov 2019 08:14:40 +0000
+Message-Id: <1574324085-4338-1-git-send-email-clabbe@baylibre.com>
+X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tuesday, November 19, 2019 1:21:21 AM CET Sean Christopherson wrote:
-> Move the definition of acpi_wakeup_address() into sleep.c to break
-> linux/acpi.h's dependency (by way of asm/acpi.h) on asm/realmode.h.
-> Everyone and their mother includes linux/acpi.h, i.e. modifying
-> realmode.h results in a full kernel rebuild, which makes the already
-> inscrutable real mode boot code even more difficult to understand and is
-> positively rage inducing when trying to make changes to x86's boot flow.
-> 
-> Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
+Hello
 
-Acked-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This patch serie fixes some minor problem found in the agp subsystem
+There are no change since v1 (posted two years ago)
+This is simply a repost for trying to get an answer (gentle ping 6 month
+ago got no answer also).
 
-> ---
->  arch/x86/include/asm/acpi.h  |  6 +-----
->  arch/x86/kernel/acpi/sleep.c | 11 +++++++++++
->  2 files changed, 12 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/x86/include/asm/acpi.h b/arch/x86/include/asm/acpi.h
-> index 57788ec6fa82..0cae3f773d44 100644
-> --- a/arch/x86/include/asm/acpi.h
-> +++ b/arch/x86/include/asm/acpi.h
-> @@ -13,7 +13,6 @@
->  #include <asm/processor.h>
->  #include <asm/mmu.h>
->  #include <asm/mpspec.h>
-> -#include <asm/realmode.h>
->  #include <asm/x86_init.h>
->  
->  #ifdef CONFIG_ACPI_APEI
-> @@ -62,10 +61,7 @@ static inline void acpi_disable_pci(void)
->  extern int (*acpi_suspend_lowlevel)(void);
->  
->  /* Physical address to resume after wakeup */
-> -static inline unsigned long acpi_wakeup_address(void)
-> -{
-> -	return ((unsigned long)(real_mode_header->wakeup_start));
-> -}
-> +unsigned long acpi_wakeup_address(void);
->  
->  /*
->   * Check if the CPU can handle C2 and deeper
-> diff --git a/arch/x86/kernel/acpi/sleep.c b/arch/x86/kernel/acpi/sleep.c
-> index ca13851f0570..44d3fb1a1de3 100644
-> --- a/arch/x86/kernel/acpi/sleep.c
-> +++ b/arch/x86/kernel/acpi/sleep.c
-> @@ -26,6 +26,17 @@ unsigned long acpi_realmode_flags;
->  static char temp_stack[4096];
->  #endif
->  
-> +/**
-> + * acpi_wakeup_address - provide physical address for S3 wakeup
-> + *
-> + * Returns the physical address where the kernel should be resumed after the
-> + * system awakes from S3, e.g. for programming into the firmware waking vector.
-> + */
-> +unsigned long acpi_wakeup_address(void)
-> +{
-> +	return ((unsigned long)(real_mode_header->wakeup_start));
-> +}
-> +
->  /**
->   * x86_acpi_enter_sleep_state - enter sleep state
->   * @state: Sleep state to enter.
-> 
+Regards
 
+Corentin Labbe (5):
+  agp: remove unused variable size in agp_generic_create_gatt_table
+  agp: move AGPGART_MINOR to include/linux/miscdevice.h
+  agp: remove unused variable num_segments
+  agp: Add bridge parameter documentation
+  ia64: agp: Replace empty define with do while
 
+ arch/ia64/include/asm/agp.h |  4 ++--
+ drivers/char/agp/frontend.c |  3 +--
+ drivers/char/agp/generic.c  | 12 +++++-------
+ include/linux/agpgart.h     |  2 --
+ include/linux/miscdevice.h  |  1 +
+ 5 files changed, 9 insertions(+), 13 deletions(-)
 
+-- 
+2.23.0
 
