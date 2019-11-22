@@ -2,73 +2,98 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C48E104EAE
-	for <lists+linux-ia64@lfdr.de>; Thu, 21 Nov 2019 10:05:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E92AF105E7C
+	for <lists+linux-ia64@lfdr.de>; Fri, 22 Nov 2019 03:11:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726014AbfKUJF3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 21 Nov 2019 04:05:29 -0500
-Received: from mout.kundenserver.de ([212.227.126.134]:38977 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726638AbfKUJF3 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 21 Nov 2019 04:05:29 -0500
-Received: from mail-qk1-f176.google.com ([209.85.222.176]) by
- mrelayeu.kundenserver.de (mreue012 [212.227.15.129]) with ESMTPSA (Nemesis)
- id 1N5UoU-1hn3q1383u-016zQ7; Thu, 21 Nov 2019 10:05:27 +0100
-Received: by mail-qk1-f176.google.com with SMTP id i19so2421090qki.2;
-        Thu, 21 Nov 2019 01:05:27 -0800 (PST)
-X-Gm-Message-State: APjAAAU0bkXovOvsue0t6dKL0RblfZySFbsNASSdJ3+ye3M9viOM5dDy
-        CbhyrKBNnFbEd75QZlpGkTsSWpf89WH5QJlQVrE=
-X-Google-Smtp-Source: APXvYqxPau0CX4F09LDtOmesj5Cd1TIi8AUcjqmj4PrzO97ZFhgjrYRZu9sWl6NpnLAieV7VsBLNzitahZrLPdgO8Pg=
-X-Received: by 2002:a37:44d:: with SMTP id 74mr6687555qke.3.1574327126576;
- Thu, 21 Nov 2019 01:05:26 -0800 (PST)
-MIME-Version: 1.0
-References: <1574324085-4338-1-git-send-email-clabbe@baylibre.com>
-In-Reply-To: <1574324085-4338-1-git-send-email-clabbe@baylibre.com>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Thu, 21 Nov 2019 10:05:10 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a2a6PWRUsxNWfXWaeiU-JMA=wCZ9tZLkj8EpTijQ4eR0w@mail.gmail.com>
-Message-ID: <CAK8P3a2a6PWRUsxNWfXWaeiU-JMA=wCZ9tZLkj8EpTijQ4eR0w@mail.gmail.com>
-Subject: Re: [PATCH v2 0/5] agp: minor fixes
-To:     Corentin Labbe <clabbe@baylibre.com>
-Cc:     Dave Airlie <airlied@redhat.com>, David Airlie <airlied@linux.ie>,
+        id S1726500AbfKVCLi (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 21 Nov 2019 21:11:38 -0500
+Received: from mail.kernel.org ([198.145.29.99]:42816 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726329AbfKVCLi (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 21 Nov 2019 21:11:38 -0500
+Received: from oasis.local.home (unknown [66.170.99.95])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 160052068F;
+        Fri, 22 Nov 2019 02:11:36 +0000 (UTC)
+Date:   Thu, 21 Nov 2019 21:11:34 -0500
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Sean Christopherson <sean.j.christopherson@intel.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>,
+        Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
-        gregkh <gregkh@linuxfoundation.org>,
-        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:VTV/KpKjZo2VrtXBuOfeRR8CDFabdqXdNLHf6RYcZl5ZWctNafs
- ge0v7J5T2ZswmU58jF9y3fslMfxdHHKTo6qrzPhMxcev1f3RI/rbC8sVxkMcteNl6JvX2RS
- vgkpICNDWBF4pEKw6LPZaTASS6sXOPkGsDBG/qE+WoKEXV2fLJiw9B7q+a28Gqik97/6i4D
- /eySsnDwxT9vBh9f0F2EA==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:lPCBiYB0Gjw=:s+t44hQTYuW7+s9tuNYdLY
- rOHPv7O42gKMmMo5d0ujsYaTTzZ31yMtnI7c35Lkci7J9w6OhHGeMvqeWGVmS/XqTbJqBVETK
- PvddKHKH7XaGJGpPc84uI2Pw5jpJ2oVByc/nKfE+KvllFn85lrbSX0FqUybraQfy/4GowMtNw
- TkrIlo9Zct3BTfX8D88mrOBqadOUzzoXElYqQqqxvF0OasRDqGg8HlMwCfnPWfwCd3Taq2PGi
- t3jzDL97Rz81ZLmVNlBCqr02ZGddYyuyIQ74Mqe/DhJwI+5epk3W2GKmJF0R8KGADDzxOoCbF
- 8mv98TGE7fb2NsdWLjBuhqD077K6Z2a46PW6EeGvpdhZQNS+MALvLDrCAOenHoxHlStECVHfG
- iPlXFPblSZ6xGG+FgusoBsDDdaoIhG/yhsRipT188KQFU9i5lOXBz3GDqLQux2DEYdCewhlKx
- SVPYxdqMxkB8BpziRGrGzVd5A9kXQCAZs8Fyb1m2Gvy+jiu+5CIMueij7Fuli+qy3ZZNSyb3e
- KVEZXxzcwT/X6pfA9WzBL73zH6v8ceTYfak+FQ0h8uU5ALXAE7LVD0Ra860c9keDPx8q9lhVU
- 0UPBwYq6vBTzHY4sSq/YAyVX1fjPIqlzDBR3MRgXYyArNP/2AFlvmhKHKw4pVUHVWe1Nd1ecc
- JtcE13jkEZynuBLjcZUpPOjX7kSrtCCzxdEpOdBaJR67+pNqah0O5IcrKWdu8Ug5x1bh9QapJ
- CDYFZcay1f6zFj708v37qmiaVWKNynOMZl5LVbGBW7cvrlzWc1fqjTWYYnP3U0MHTWBOUoFeY
- 4RuvTb65wUY0jkDz7nBe3Flt1Uw/8keNOvNzv+TiZ9eky4f7Rh2/rvkLnlkw+OZXG/GF8V6ay
- 2HugApcyAbAgIktgVbVg==
+        Peter Zijlstra <peterz@infradead.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ard Biesheuvel <ardb@kernel.org>,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Nadav Amit <namit@vmware.com>,
+        "VMware, Inc." <pv-drivers@vmware.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Cezary Rojewski <cezary.rojewski@intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Liam Girdwood <liam.r.girdwood@linux.intel.com>,
+        Jie Yang <yang.jie@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
+        Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.com>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-efi@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        linux-acpi@vger.kernel.org, alsa-devel@alsa-project.org
+Subject: Re: [PATCH 03/12] x86/ftrace: Explicitly include vmalloc.h for
+ set_vm_flush_reset_perms()
+Message-ID: <20191121211134.5938b2d9@oasis.local.home>
+In-Reply-To: <20191119002121.4107-4-sean.j.christopherson@intel.com>
+References: <20191119002121.4107-1-sean.j.christopherson@intel.com>
+        <20191119002121.4107-4-sean.j.christopherson@intel.com>
+X-Mailer: Claws Mail 3.17.3 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Nov 21, 2019 at 9:15 AM Corentin Labbe <clabbe@baylibre.com> wrote:
->
-> Hello
->
-> This patch serie fixes some minor problem found in the agp subsystem
-> There are no change since v1 (posted two years ago)
-> This is simply a repost for trying to get an answer (gentle ping 6 month
-> ago got no answer also).
+On Mon, 18 Nov 2019 16:21:12 -0800
+Sean Christopherson <sean.j.christopherson@intel.com> wrote:
 
-Looks all good to me,
+> The inclusion of linux/vmalloc.h, which is required for its definition
+> of set_vm_flush_reset_perms(), is somehow dependent on asm/realmode.h
+> being included by asm/acpi.h.  Explicitly include linux/vmalloc.h so
+> that a future patch can drop the realmode.h include from asm/acpi.h
+> without breaking the build.
+> 
+> Fixes: 7fdfe1e40b225 ("x86/ftrace: Use vmalloc special flag")
+> Signed-off-by: Sean Christopherson <sean.j.christopherson@intel.com>
 
-Acked-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+
+-- Steve
+
+> ---
+>  arch/x86/kernel/ftrace.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/x86/kernel/ftrace.c b/arch/x86/kernel/ftrace.c
+> index 2a179fb35cd1..681eae0fb64d 100644
+> --- a/arch/x86/kernel/ftrace.c
+> +++ b/arch/x86/kernel/ftrace.c
+> @@ -23,6 +23,7 @@
+>  #include <linux/list.h>
+>  #include <linux/module.h>
+>  #include <linux/memory.h>
+> +#include <linux/vmalloc.h>
+>  
+>  #include <trace/syscall.h>
+>  
+
