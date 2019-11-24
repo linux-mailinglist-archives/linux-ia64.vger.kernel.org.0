@@ -2,66 +2,320 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A13B5107E4C
-	for <lists+linux-ia64@lfdr.de>; Sat, 23 Nov 2019 13:09:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D40210830B
+	for <lists+linux-ia64@lfdr.de>; Sun, 24 Nov 2019 12:04:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726705AbfKWMJR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 23 Nov 2019 07:09:17 -0500
-Received: from server.lionleather100.site ([68.66.241.200]:44966 "EHLO
-        server.lionleather100.site" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726368AbfKWMJQ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Sat, 23 Nov 2019 07:09:16 -0500
-X-Greylist: delayed 515 seconds by postgrey-1.27 at vger.kernel.org; Sat, 23 Nov 2019 07:09:16 EST
-Received: from 39.52.219.190 (unknown [39.52.221.210])
-        by server.lionleather100.site (Postfix) with ESMTPSA id DB00915A7E81
-        for <linux-ia64@vger.kernel.org>; Sat, 23 Nov 2019 06:59:50 -0500 (EST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lionleather100.site;
-        s=default; t=1574510391;
-        bh=+7JXRIBigxC5+w6HaZ1xnDAkDhHPDHNihJwlPrB5K18=; h=From:To:Subject;
-        b=cAbREu0QeIYZxY3G8ExfNCGLgjuf5bmxWsyM6ClVYXMeDsam5MhVga50fqQc9kInt
-         r+7sfO5gdnPg/V/FPaKJybiWuZ0qtxRHtXb5glAL52+8nvWuqdhMQ5v56GNkdv+3Zj
-         thAkDNkgdaGCOw5WYzCsqZYkpra0vrNDmtimTVEc=
-Authentication-Results: server.lionleather100.site;
-        spf=pass (sender IP is 39.52.221.210) smtp.mailfrom=hassan@lionleather100.site smtp.helo=39.52.219.190
-Received-SPF: pass (server.lionleather100.site: connection is authenticated)
+        id S1726713AbfKXLEG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 24 Nov 2019 06:04:06 -0500
+Received: from mx2.suse.de ([195.135.220.15]:33292 "EHLO mx1.suse.de"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726705AbfKXLEG (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 24 Nov 2019 06:04:06 -0500
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.220.254])
+        by mx1.suse.de (Postfix) with ESMTP id 6C6AEAC8C;
+        Sun, 24 Nov 2019 11:04:03 +0000 (UTC)
+Subject: Re: [PATCH] ia64: remove stale paravirt leftovers
+To:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
+Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>
+References: <20191021100415.7642-1-jgross@suse.com>
+From:   =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Message-ID: <5724dc57-2e1c-7ff4-c8df-758840aeae81@suse.com>
+Date:   Sun, 24 Nov 2019 12:04:02 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.2.1
 MIME-Version: 1.0
-From:   "Lion Leather" <hassan@lionleather100.site>
-Reply-To: lionleather101@gmail.com
-To:     linux-ia64@vger.kernel.org
-Subject: Juggling Ball manufacturer
-Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
-X-Mailer: Smart_Send_2_0_138
-Date:   Sat, 23 Nov 2019 16:59:45 +0500
-Message-ID: <65963528685682930319246@DESKTOP-NVQ8BB8>
+In-Reply-To: <20191021100415.7642-1-jgross@suse.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hello,
+Ping?
 
-We are Juggling ball supplier, Vendor of many Juggling Brands. Whether you =
-are interested in=3F
-=20
-Here you can find catalog of our juggling ball in Google drive link given b=
-elow.
+On 21.10.19 12:04, Juergen Gross wrote:
+> Remove the last leftovers from IA64 Xen pv-guest support.
+> 
+> PARAVIRT is long gone from IA64 Kconfig and Xen IA64 support, too.
+> 
+> Due to lack of infrastructure no testing done.
+> 
+> Signed-off-by: Juergen Gross <jgross@suse.com>
+> ---
+>   arch/ia64/include/asm/irqflags.h          |  4 ---
+>   arch/ia64/include/uapi/asm/gcc_intrin.h   | 24 +++++++--------
+>   arch/ia64/include/uapi/asm/intel_intrin.h | 32 +++++++++----------
+>   arch/ia64/include/uapi/asm/intrinsics.h   | 51 ++++---------------------------
+>   4 files changed, 34 insertions(+), 77 deletions(-)
+> 
+> diff --git a/arch/ia64/include/asm/irqflags.h b/arch/ia64/include/asm/irqflags.h
+> index d97f8435be4f..1dc30f12e545 100644
+> --- a/arch/ia64/include/asm/irqflags.h
+> +++ b/arch/ia64/include/asm/irqflags.h
+> @@ -36,11 +36,7 @@ static inline void arch_maybe_save_ip(unsigned long flags)
+>   static inline unsigned long arch_local_save_flags(void)
+>   {
+>   	ia64_stop();
+> -#ifdef CONFIG_PARAVIRT
+> -	return ia64_get_psr_i();
+> -#else
+>   	return ia64_getreg(_IA64_REG_PSR);
+> -#endif
+>   }
+>   
+>   static inline unsigned long arch_local_irq_save(void)
+> diff --git a/arch/ia64/include/uapi/asm/gcc_intrin.h b/arch/ia64/include/uapi/asm/gcc_intrin.h
+> index c60696fd1e37..ecfa3eadb217 100644
+> --- a/arch/ia64/include/uapi/asm/gcc_intrin.h
+> +++ b/arch/ia64/include/uapi/asm/gcc_intrin.h
+> @@ -31,7 +31,7 @@ extern void ia64_bad_param_for_setreg (void);
+>   extern void ia64_bad_param_for_getreg (void);
+>   
+>   
+> -#define ia64_native_setreg(regnum, val)						\
+> +#define ia64_setreg(regnum, val)						\
+>   ({										\
+>   	switch (regnum) {							\
+>   	    case _IA64_REG_PSR_L:						\
+> @@ -60,7 +60,7 @@ extern void ia64_bad_param_for_getreg (void);
+>   	}									\
+>   })
+>   
+> -#define ia64_native_getreg(regnum)						\
+> +#define ia64_getreg(regnum)							\
+>   ({										\
+>   	__u64 ia64_intri_res;							\
+>   										\
+> @@ -384,7 +384,7 @@ extern void ia64_bad_param_for_getreg (void);
+>   
+>   #define ia64_invala() asm volatile ("invala" ::: "memory")
+>   
+> -#define ia64_native_thash(addr)							\
+> +#define ia64_thash(addr)							\
+>   ({										\
+>   	unsigned long ia64_intri_res;						\
+>   	asm volatile ("thash %0=%1" : "=r"(ia64_intri_res) : "r" (addr));	\
+> @@ -437,10 +437,10 @@ extern void ia64_bad_param_for_getreg (void);
+>   #define ia64_set_pmd(index, val)						\
+>   	asm volatile ("mov pmd[%0]=%1" :: "r"(index), "r"(val) : "memory")
+>   
+> -#define ia64_native_set_rr(index, val)							\
+> +#define ia64_set_rr(index, val)							\
+>   	asm volatile ("mov rr[%0]=%1" :: "r"(index), "r"(val) : "memory");
+>   
+> -#define ia64_native_get_cpuid(index)							\
+> +#define ia64_get_cpuid(index)								\
+>   ({											\
+>   	unsigned long ia64_intri_res;							\
+>   	asm volatile ("mov %0=cpuid[%r1]" : "=r"(ia64_intri_res) : "rO"(index));	\
+> @@ -476,33 +476,33 @@ extern void ia64_bad_param_for_getreg (void);
+>   })
+>   
+>   
+> -#define ia64_native_get_pmd(index)						\
+> +#define ia64_get_pmd(index)							\
+>   ({										\
+>   	unsigned long ia64_intri_res;						\
+>   	asm volatile ("mov %0=pmd[%1]" : "=r"(ia64_intri_res) : "r"(index));	\
+>   	ia64_intri_res;								\
+>   })
+>   
+> -#define ia64_native_get_rr(index)						\
+> +#define ia64_get_rr(index)							\
+>   ({										\
+>   	unsigned long ia64_intri_res;						\
+>   	asm volatile ("mov %0=rr[%1]" : "=r"(ia64_intri_res) : "r" (index));	\
+>   	ia64_intri_res;								\
+>   })
+>   
+> -#define ia64_native_fc(addr)	asm volatile ("fc %0" :: "r"(addr) : "memory")
+> +#define ia64_fc(addr)	asm volatile ("fc %0" :: "r"(addr) : "memory")
+>   
+>   
+>   #define ia64_sync_i()	asm volatile (";; sync.i" ::: "memory")
+>   
+> -#define ia64_native_ssm(mask)	asm volatile ("ssm %0":: "i"((mask)) : "memory")
+> -#define ia64_native_rsm(mask)	asm volatile ("rsm %0":: "i"((mask)) : "memory")
+> +#define ia64_ssm(mask)	asm volatile ("ssm %0":: "i"((mask)) : "memory")
+> +#define ia64_rsm(mask)	asm volatile ("rsm %0":: "i"((mask)) : "memory")
+>   #define ia64_sum(mask)	asm volatile ("sum %0":: "i"((mask)) : "memory")
+>   #define ia64_rum(mask)	asm volatile ("rum %0":: "i"((mask)) : "memory")
+>   
+>   #define ia64_ptce(addr)	asm volatile ("ptc.e %0" :: "r"(addr))
+>   
+> -#define ia64_native_ptcga(addr, size)						\
+> +#define ia64_ptcga(addr, size)							\
+>   do {										\
+>   	asm volatile ("ptc.ga %0,%1" :: "r"(addr), "r"(size) : "memory");	\
+>   	ia64_dv_serialize_data();						\
+> @@ -607,7 +607,7 @@ do {										\
+>           }								\
+>   })
+>   
+> -#define ia64_native_intrin_local_irq_restore(x)			\
+> +#define ia64_intrin_local_irq_restore(x)			\
+>   do {								\
+>   	asm volatile (";;   cmp.ne p6,p7=%0,r0;;"		\
+>   		      "(p6) ssm psr.i;"				\
+> diff --git a/arch/ia64/include/uapi/asm/intel_intrin.h b/arch/ia64/include/uapi/asm/intel_intrin.h
+> index ab649691545a..dc1884dc54b5 100644
+> --- a/arch/ia64/include/uapi/asm/intel_intrin.h
+> +++ b/arch/ia64/include/uapi/asm/intel_intrin.h
+> @@ -17,8 +17,8 @@
+>   		 	 * intrinsic
+>   		 	 */
+>   
+> -#define ia64_native_getreg	__getReg
+> -#define ia64_native_setreg	__setReg
+> +#define ia64_getreg		__getReg
+> +#define ia64_setreg		__setReg
+>   
+>   #define ia64_hint		__hint
+>   #define ia64_hint_pause		__hint_pause
+> @@ -40,10 +40,10 @@
+>   #define ia64_invala_fr		__invala_fr
+>   #define ia64_nop		__nop
+>   #define ia64_sum		__sum
+> -#define ia64_native_ssm		__ssm
+> +#define ia64_ssm		__ssm
+>   #define ia64_rum		__rum
+> -#define ia64_native_rsm		__rsm
+> -#define ia64_native_fc 		__fc
+> +#define ia64_rsm		__rsm
+> +#define ia64_fc			__fc
+>   
+>   #define ia64_ldfs		__ldfs
+>   #define ia64_ldfd		__ldfd
+> @@ -89,17 +89,17 @@
+>   		__setIndReg(_IA64_REG_INDR_PMC, index, val)
+>   #define ia64_set_pmd(index, val)	\
+>   		__setIndReg(_IA64_REG_INDR_PMD, index, val)
+> -#define ia64_native_set_rr(index, val)	\
+> +#define ia64_set_rr(index, val)		\
+>   		__setIndReg(_IA64_REG_INDR_RR, index, val)
+>   
+> -#define ia64_native_get_cpuid(index)	\
+> +#define ia64_get_cpuid(index)	\
+>   		__getIndReg(_IA64_REG_INDR_CPUID, index)
+>   #define __ia64_get_dbr(index)		__getIndReg(_IA64_REG_INDR_DBR, index)
+>   #define ia64_get_ibr(index)		__getIndReg(_IA64_REG_INDR_IBR, index)
+>   #define ia64_get_pkr(index)		__getIndReg(_IA64_REG_INDR_PKR, index)
+>   #define ia64_get_pmc(index)		__getIndReg(_IA64_REG_INDR_PMC, index)
+> -#define ia64_native_get_pmd(index)	__getIndReg(_IA64_REG_INDR_PMD, index)
+> -#define ia64_native_get_rr(index)	__getIndReg(_IA64_REG_INDR_RR, index)
+> +#define ia64_get_pmd(index)		__getIndReg(_IA64_REG_INDR_PMD, index)
+> +#define ia64_get_rr(index)		__getIndReg(_IA64_REG_INDR_RR, index)
+>   
+>   #define ia64_srlz_d		__dsrlz
+>   #define ia64_srlz_i		__isrlz
+> @@ -121,16 +121,16 @@
+>   #define ia64_ld8_acq		__ld8_acq
+>   
+>   #define ia64_sync_i		__synci
+> -#define ia64_native_thash	__thash
+> -#define ia64_native_ttag	__ttag
+> +#define ia64_thash		__thash
+> +#define ia64_ttag		__ttag
+>   #define ia64_itcd		__itcd
+>   #define ia64_itci		__itci
+>   #define ia64_itrd		__itrd
+>   #define ia64_itri		__itri
+>   #define ia64_ptce		__ptce
+>   #define ia64_ptcl		__ptcl
+> -#define ia64_native_ptcg	__ptcg
+> -#define ia64_native_ptcga	__ptcga
+> +#define ia64_ptcg		__ptcg
+> +#define ia64_ptcga		__ptcga
+>   #define ia64_ptri		__ptri
+>   #define ia64_ptrd		__ptrd
+>   #define ia64_dep_mi		_m64_dep_mi
+> @@ -147,13 +147,13 @@
+>   #define ia64_lfetch_fault	__lfetch_fault
+>   #define ia64_lfetch_fault_excl	__lfetch_fault_excl
+>   
+> -#define ia64_native_intrin_local_irq_restore(x)		\
+> +#define ia64_intrin_local_irq_restore(x)		\
+>   do {							\
+>   	if ((x) != 0) {					\
+> -		ia64_native_ssm(IA64_PSR_I);		\
+> +		ia64_ssm(IA64_PSR_I);			\
+>   		ia64_srlz_d();				\
+>   	} else {					\
+> -		ia64_native_rsm(IA64_PSR_I);		\
+> +		ia64_rsm(IA64_PSR_I);			\
+>   	}						\
+>   } while (0)
+>   
+> diff --git a/arch/ia64/include/uapi/asm/intrinsics.h b/arch/ia64/include/uapi/asm/intrinsics.h
+> index aecc217eca63..a0e0a064f5b1 100644
+> --- a/arch/ia64/include/uapi/asm/intrinsics.h
+> +++ b/arch/ia64/include/uapi/asm/intrinsics.h
+> @@ -21,15 +21,13 @@
+>   #endif
+>   #include <asm/cmpxchg.h>
+>   
+> -#define ia64_native_get_psr_i()	(ia64_native_getreg(_IA64_REG_PSR) & IA64_PSR_I)
+> -
+> -#define ia64_native_set_rr0_to_rr4(val0, val1, val2, val3, val4)	\
+> +#define ia64_set_rr0_to_rr4(val0, val1, val2, val3, val4)		\
+>   do {									\
+> -	ia64_native_set_rr(0x0000000000000000UL, (val0));		\
+> -	ia64_native_set_rr(0x2000000000000000UL, (val1));		\
+> -	ia64_native_set_rr(0x4000000000000000UL, (val2));		\
+> -	ia64_native_set_rr(0x6000000000000000UL, (val3));		\
+> -	ia64_native_set_rr(0x8000000000000000UL, (val4));		\
+> +	ia64_set_rr(0x0000000000000000UL, (val0));			\
+> +	ia64_set_rr(0x2000000000000000UL, (val1));			\
+> +	ia64_set_rr(0x4000000000000000UL, (val2));			\
+> +	ia64_set_rr(0x6000000000000000UL, (val3));			\
+> +	ia64_set_rr(0x8000000000000000UL, (val4));			\
+>   } while (0)
+>   
+>   /*
+> @@ -85,41 +83,4 @@ extern unsigned long __bad_increment_for_ia64_fetch_and_add (void);
+>   
+>   #endif
+>   
+> -
+> -#ifndef __ASSEMBLY__
+> -
+> -#define IA64_INTRINSIC_API(name)	ia64_native_ ## name
+> -#define IA64_INTRINSIC_MACRO(name)	ia64_native_ ## name
+> -
+> -
+> -/************************************************/
+> -/* Instructions paravirtualized for correctness */
+> -/************************************************/
+> -/* fc, thash, get_cpuid, get_pmd, get_eflags, set_eflags */
+> -/* Note that "ttag" and "cover" are also privilege-sensitive; "ttag"
+> - * is not currently used (though it may be in a long-format VHPT system!)
+> - */
+> -#define ia64_fc				IA64_INTRINSIC_API(fc)
+> -#define ia64_thash			IA64_INTRINSIC_API(thash)
+> -#define ia64_get_cpuid			IA64_INTRINSIC_API(get_cpuid)
+> -#define ia64_get_pmd			IA64_INTRINSIC_API(get_pmd)
+> -
+> -
+> -/************************************************/
+> -/* Instructions paravirtualized for performance */
+> -/************************************************/
+> -#define ia64_ssm			IA64_INTRINSIC_MACRO(ssm)
+> -#define ia64_rsm			IA64_INTRINSIC_MACRO(rsm)
+> -#define ia64_getreg			IA64_INTRINSIC_MACRO(getreg)
+> -#define ia64_setreg			IA64_INTRINSIC_API(setreg)
+> -#define ia64_set_rr			IA64_INTRINSIC_API(set_rr)
+> -#define ia64_get_rr			IA64_INTRINSIC_API(get_rr)
+> -#define ia64_ptcga			IA64_INTRINSIC_API(ptcga)
+> -#define ia64_get_psr_i			IA64_INTRINSIC_API(get_psr_i)
+> -#define ia64_intrin_local_irq_restore	\
+> -	IA64_INTRINSIC_API(intrin_local_irq_restore)
+> -#define ia64_set_rr0_to_rr4		IA64_INTRINSIC_API(set_rr0_to_rr4)
+> -
+> -#endif /* !__ASSEMBLY__ */
+> -
+>   #endif /* _UAPI_ASM_IA64_INTRINSICS_H */
+> 
 
-https://drive.google.com/open=3Fid=3D0B5meiXXKee54Y1RYaU9OczRlUjQ
-
-Price list is available on request.
-
-For quick communication you also can whatsaap   0092-3006122353
-
-PS: If you are already our customer then please ignore this email. Thanks!
-
-With Best Regards
-Hassan=20
-
----
-
-Lion Leather
-Sialkot Pakistan
-Mob: 0092-3006122353=20
-Whats Ap: 00923006122353  Viber: 00923006122353  =20
