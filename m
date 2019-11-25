@@ -2,31 +2,71 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D40210830B
-	for <lists+linux-ia64@lfdr.de>; Sun, 24 Nov 2019 12:04:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0175E1087E0
+	for <lists+linux-ia64@lfdr.de>; Mon, 25 Nov 2019 05:27:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726713AbfKXLEG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 24 Nov 2019 06:04:06 -0500
-Received: from mx2.suse.de ([195.135.220.15]:33292 "EHLO mx1.suse.de"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1726705AbfKXLEG (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 24 Nov 2019 06:04:06 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.220.254])
-        by mx1.suse.de (Postfix) with ESMTP id 6C6AEAC8C;
-        Sun, 24 Nov 2019 11:04:03 +0000 (UTC)
-Subject: Re: [PATCH] ia64: remove stale paravirt leftovers
-To:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
-Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>
-References: <20191021100415.7642-1-jgross@suse.com>
-From:   =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
-Message-ID: <5724dc57-2e1c-7ff4-c8df-758840aeae81@suse.com>
-Date:   Sun, 24 Nov 2019 12:04:02 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.1
+        id S1727071AbfKYE1i (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 24 Nov 2019 23:27:38 -0500
+Received: from foss.arm.com ([217.140.110.172]:44392 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726990AbfKYE1h (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 24 Nov 2019 23:27:37 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 948E431B;
+        Sun, 24 Nov 2019 20:27:36 -0800 (PST)
+Received: from [192.168.0.10] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 03E013F6C4;
+        Sun, 24 Nov 2019 20:27:21 -0800 (PST)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH V10] mm/debug: Add tests validating architecture page
+ table helpers
+To:     linux-mm@kvack.org
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Ingo Molnar <mingo@kernel.org>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+References: <1574227906-20550-1-git-send-email-anshuman.khandual@arm.com>
+Message-ID: <d20b95b2-369c-bcb8-3bf0-f7ce32d0fb12@arm.com>
+Date:   Mon, 25 Nov 2019 09:58:06 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-In-Reply-To: <20191021100415.7642-1-jgross@suse.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+In-Reply-To: <1574227906-20550-1-git-send-email-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
@@ -34,288 +74,109 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Ping?
-
-On 21.10.19 12:04, Juergen Gross wrote:
-> Remove the last leftovers from IA64 Xen pv-guest support.
+On 11/20/2019 11:01 AM, Anshuman Khandual wrote:
+> This adds tests which will validate architecture page table helpers and
+> other accessors in their compliance with expected generic MM semantics.
+> This will help various architectures in validating changes to existing
+> page table helpers or addition of new ones.
 > 
-> PARAVIRT is long gone from IA64 Kconfig and Xen IA64 support, too.
+> This test covers basic page table entry transformations including but not
+> limited to old, young, dirty, clean, write, write protect etc at various
+> level along with populating intermediate entries with next page table page
+> and validating them.
 > 
-> Due to lack of infrastructure no testing done.
+> Test page table pages are allocated from system memory with required size
+> and alignments. The mapped pfns at page table levels are derived from a
+> real pfn representing a valid kernel text symbol. This test gets called
+> right after page_alloc_init_late().
 > 
-> Signed-off-by: Juergen Gross <jgross@suse.com>
+> This gets build and run when CONFIG_DEBUG_VM_PGTABLE is selected along with
+> CONFIG_VM_DEBUG. Architectures willing to subscribe this test also need to
+> select CONFIG_ARCH_HAS_DEBUG_VM_PGTABLE which for now is limited to x86 and
+> arm64. Going forward, other architectures too can enable this after fixing
+> build or runtime problems (if any) with their page table helpers.
+> 
+> Folks interested in making sure that a given platform's page table helpers
+> conform to expected generic MM semantics should enable the above config
+> which will just trigger this test during boot. Any non conformity here will
+> be reported as an warning which would need to be fixed. This test will help
+> catch any changes to the agreed upon semantics expected from generic MM and
+> enable platforms to accommodate it thereafter.
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Vlastimil Babka <vbabka@suse.cz>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Mike Rapoport <rppt@linux.vnet.ibm.com>
+> Cc: Jason Gunthorpe <jgg@ziepe.ca>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Michal Hocko <mhocko@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Mark Brown <broonie@kernel.org>
+> Cc: Steven Price <Steven.Price@arm.com>
+> Cc: Ard Biesheuvel <ard.biesheuvel@linaro.org>
+> Cc: Masahiro Yamada <yamada.masahiro@socionext.com>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>
+> Cc: Matthew Wilcox <willy@infradead.org>
+> Cc: Sri Krishna chowdary <schowdary@nvidia.com>
+> Cc: Dave Hansen <dave.hansen@intel.com>
+> Cc: Russell King - ARM Linux <linux@armlinux.org.uk>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Martin Schwidefsky <schwidefsky@de.ibm.com>
+> Cc: Heiko Carstens <heiko.carstens@de.ibm.com>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Vineet Gupta <vgupta@synopsys.com>
+> Cc: James Hogan <jhogan@kernel.org>
+> Cc: Paul Burton <paul.burton@mips.com>
+> Cc: Ralf Baechle <ralf@linux-mips.org>
+> Cc: Kirill A. Shutemov <kirill@shutemov.name>
+> Cc: Gerald Schaefer <gerald.schaefer@de.ibm.com>
+> Cc: Christophe Leroy <christophe.leroy@c-s.fr>
+> Cc: Ingo Molnar <mingo@kernel.org>
+> Cc: linux-snps-arc@lists.infradead.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: x86@kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> 
+> Tested-by: Christophe Leroy <christophe.leroy@c-s.fr>		#PPC32
+> Reviewed-by: Ingo Molnar <mingo@kernel.org>
+> Suggested-by: Catalin Marinas <catalin.marinas@arm.com>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
->   arch/ia64/include/asm/irqflags.h          |  4 ---
->   arch/ia64/include/uapi/asm/gcc_intrin.h   | 24 +++++++--------
->   arch/ia64/include/uapi/asm/intel_intrin.h | 32 +++++++++----------
->   arch/ia64/include/uapi/asm/intrinsics.h   | 51 ++++---------------------------
->   4 files changed, 34 insertions(+), 77 deletions(-)
+> This adds a test validation for architecture exported page table helpers.
+> Patch adds basic transformation tests at various levels of the page table.
 > 
-> diff --git a/arch/ia64/include/asm/irqflags.h b/arch/ia64/include/asm/irqflags.h
-> index d97f8435be4f..1dc30f12e545 100644
-> --- a/arch/ia64/include/asm/irqflags.h
-> +++ b/arch/ia64/include/asm/irqflags.h
-> @@ -36,11 +36,7 @@ static inline void arch_maybe_save_ip(unsigned long flags)
->   static inline unsigned long arch_local_save_flags(void)
->   {
->   	ia64_stop();
-> -#ifdef CONFIG_PARAVIRT
-> -	return ia64_get_psr_i();
-> -#else
->   	return ia64_getreg(_IA64_REG_PSR);
-> -#endif
->   }
->   
->   static inline unsigned long arch_local_irq_save(void)
-> diff --git a/arch/ia64/include/uapi/asm/gcc_intrin.h b/arch/ia64/include/uapi/asm/gcc_intrin.h
-> index c60696fd1e37..ecfa3eadb217 100644
-> --- a/arch/ia64/include/uapi/asm/gcc_intrin.h
-> +++ b/arch/ia64/include/uapi/asm/gcc_intrin.h
-> @@ -31,7 +31,7 @@ extern void ia64_bad_param_for_setreg (void);
->   extern void ia64_bad_param_for_getreg (void);
->   
->   
-> -#define ia64_native_setreg(regnum, val)						\
-> +#define ia64_setreg(regnum, val)						\
->   ({										\
->   	switch (regnum) {							\
->   	    case _IA64_REG_PSR_L:						\
-> @@ -60,7 +60,7 @@ extern void ia64_bad_param_for_getreg (void);
->   	}									\
->   })
->   
-> -#define ia64_native_getreg(regnum)						\
-> +#define ia64_getreg(regnum)							\
->   ({										\
->   	__u64 ia64_intri_res;							\
->   										\
-> @@ -384,7 +384,7 @@ extern void ia64_bad_param_for_getreg (void);
->   
->   #define ia64_invala() asm volatile ("invala" ::: "memory")
->   
-> -#define ia64_native_thash(addr)							\
-> +#define ia64_thash(addr)							\
->   ({										\
->   	unsigned long ia64_intri_res;						\
->   	asm volatile ("thash %0=%1" : "=r"(ia64_intri_res) : "r" (addr));	\
-> @@ -437,10 +437,10 @@ extern void ia64_bad_param_for_getreg (void);
->   #define ia64_set_pmd(index, val)						\
->   	asm volatile ("mov pmd[%0]=%1" :: "r"(index), "r"(val) : "memory")
->   
-> -#define ia64_native_set_rr(index, val)							\
-> +#define ia64_set_rr(index, val)							\
->   	asm volatile ("mov rr[%0]=%1" :: "r"(index), "r"(val) : "memory");
->   
-> -#define ia64_native_get_cpuid(index)							\
-> +#define ia64_get_cpuid(index)								\
->   ({											\
->   	unsigned long ia64_intri_res;							\
->   	asm volatile ("mov %0=cpuid[%r1]" : "=r"(ia64_intri_res) : "rO"(index));	\
-> @@ -476,33 +476,33 @@ extern void ia64_bad_param_for_getreg (void);
->   })
->   
->   
-> -#define ia64_native_get_pmd(index)						\
-> +#define ia64_get_pmd(index)							\
->   ({										\
->   	unsigned long ia64_intri_res;						\
->   	asm volatile ("mov %0=pmd[%1]" : "=r"(ia64_intri_res) : "r"(index));	\
->   	ia64_intri_res;								\
->   })
->   
-> -#define ia64_native_get_rr(index)						\
-> +#define ia64_get_rr(index)							\
->   ({										\
->   	unsigned long ia64_intri_res;						\
->   	asm volatile ("mov %0=rr[%1]" : "=r"(ia64_intri_res) : "r" (index));	\
->   	ia64_intri_res;								\
->   })
->   
-> -#define ia64_native_fc(addr)	asm volatile ("fc %0" :: "r"(addr) : "memory")
-> +#define ia64_fc(addr)	asm volatile ("fc %0" :: "r"(addr) : "memory")
->   
->   
->   #define ia64_sync_i()	asm volatile (";; sync.i" ::: "memory")
->   
-> -#define ia64_native_ssm(mask)	asm volatile ("ssm %0":: "i"((mask)) : "memory")
-> -#define ia64_native_rsm(mask)	asm volatile ("rsm %0":: "i"((mask)) : "memory")
-> +#define ia64_ssm(mask)	asm volatile ("ssm %0":: "i"((mask)) : "memory")
-> +#define ia64_rsm(mask)	asm volatile ("rsm %0":: "i"((mask)) : "memory")
->   #define ia64_sum(mask)	asm volatile ("sum %0":: "i"((mask)) : "memory")
->   #define ia64_rum(mask)	asm volatile ("rum %0":: "i"((mask)) : "memory")
->   
->   #define ia64_ptce(addr)	asm volatile ("ptc.e %0" :: "r"(addr))
->   
-> -#define ia64_native_ptcga(addr, size)						\
-> +#define ia64_ptcga(addr, size)							\
->   do {										\
->   	asm volatile ("ptc.ga %0,%1" :: "r"(addr), "r"(size) : "memory");	\
->   	ia64_dv_serialize_data();						\
-> @@ -607,7 +607,7 @@ do {										\
->           }								\
->   })
->   
-> -#define ia64_native_intrin_local_irq_restore(x)			\
-> +#define ia64_intrin_local_irq_restore(x)			\
->   do {								\
->   	asm volatile (";;   cmp.ne p6,p7=%0,r0;;"		\
->   		      "(p6) ssm psr.i;"				\
-> diff --git a/arch/ia64/include/uapi/asm/intel_intrin.h b/arch/ia64/include/uapi/asm/intel_intrin.h
-> index ab649691545a..dc1884dc54b5 100644
-> --- a/arch/ia64/include/uapi/asm/intel_intrin.h
-> +++ b/arch/ia64/include/uapi/asm/intel_intrin.h
-> @@ -17,8 +17,8 @@
->   		 	 * intrinsic
->   		 	 */
->   
-> -#define ia64_native_getreg	__getReg
-> -#define ia64_native_setreg	__setReg
-> +#define ia64_getreg		__getReg
-> +#define ia64_setreg		__setReg
->   
->   #define ia64_hint		__hint
->   #define ia64_hint_pause		__hint_pause
-> @@ -40,10 +40,10 @@
->   #define ia64_invala_fr		__invala_fr
->   #define ia64_nop		__nop
->   #define ia64_sum		__sum
-> -#define ia64_native_ssm		__ssm
-> +#define ia64_ssm		__ssm
->   #define ia64_rum		__rum
-> -#define ia64_native_rsm		__rsm
-> -#define ia64_native_fc 		__fc
-> +#define ia64_rsm		__rsm
-> +#define ia64_fc			__fc
->   
->   #define ia64_ldfs		__ldfs
->   #define ia64_ldfd		__ldfd
-> @@ -89,17 +89,17 @@
->   		__setIndReg(_IA64_REG_INDR_PMC, index, val)
->   #define ia64_set_pmd(index, val)	\
->   		__setIndReg(_IA64_REG_INDR_PMD, index, val)
-> -#define ia64_native_set_rr(index, val)	\
-> +#define ia64_set_rr(index, val)		\
->   		__setIndReg(_IA64_REG_INDR_RR, index, val)
->   
-> -#define ia64_native_get_cpuid(index)	\
-> +#define ia64_get_cpuid(index)	\
->   		__getIndReg(_IA64_REG_INDR_CPUID, index)
->   #define __ia64_get_dbr(index)		__getIndReg(_IA64_REG_INDR_DBR, index)
->   #define ia64_get_ibr(index)		__getIndReg(_IA64_REG_INDR_IBR, index)
->   #define ia64_get_pkr(index)		__getIndReg(_IA64_REG_INDR_PKR, index)
->   #define ia64_get_pmc(index)		__getIndReg(_IA64_REG_INDR_PMC, index)
-> -#define ia64_native_get_pmd(index)	__getIndReg(_IA64_REG_INDR_PMD, index)
-> -#define ia64_native_get_rr(index)	__getIndReg(_IA64_REG_INDR_RR, index)
-> +#define ia64_get_pmd(index)		__getIndReg(_IA64_REG_INDR_PMD, index)
-> +#define ia64_get_rr(index)		__getIndReg(_IA64_REG_INDR_RR, index)
->   
->   #define ia64_srlz_d		__dsrlz
->   #define ia64_srlz_i		__isrlz
-> @@ -121,16 +121,16 @@
->   #define ia64_ld8_acq		__ld8_acq
->   
->   #define ia64_sync_i		__synci
-> -#define ia64_native_thash	__thash
-> -#define ia64_native_ttag	__ttag
-> +#define ia64_thash		__thash
-> +#define ia64_ttag		__ttag
->   #define ia64_itcd		__itcd
->   #define ia64_itci		__itci
->   #define ia64_itrd		__itrd
->   #define ia64_itri		__itri
->   #define ia64_ptce		__ptce
->   #define ia64_ptcl		__ptcl
-> -#define ia64_native_ptcg	__ptcg
-> -#define ia64_native_ptcga	__ptcga
-> +#define ia64_ptcg		__ptcg
-> +#define ia64_ptcga		__ptcga
->   #define ia64_ptri		__ptri
->   #define ia64_ptrd		__ptrd
->   #define ia64_dep_mi		_m64_dep_mi
-> @@ -147,13 +147,13 @@
->   #define ia64_lfetch_fault	__lfetch_fault
->   #define ia64_lfetch_fault_excl	__lfetch_fault_excl
->   
-> -#define ia64_native_intrin_local_irq_restore(x)		\
-> +#define ia64_intrin_local_irq_restore(x)		\
->   do {							\
->   	if ((x) != 0) {					\
-> -		ia64_native_ssm(IA64_PSR_I);		\
-> +		ia64_ssm(IA64_PSR_I);			\
->   		ia64_srlz_d();				\
->   	} else {					\
-> -		ia64_native_rsm(IA64_PSR_I);		\
-> +		ia64_rsm(IA64_PSR_I);			\
->   	}						\
->   } while (0)
->   
-> diff --git a/arch/ia64/include/uapi/asm/intrinsics.h b/arch/ia64/include/uapi/asm/intrinsics.h
-> index aecc217eca63..a0e0a064f5b1 100644
-> --- a/arch/ia64/include/uapi/asm/intrinsics.h
-> +++ b/arch/ia64/include/uapi/asm/intrinsics.h
-> @@ -21,15 +21,13 @@
->   #endif
->   #include <asm/cmpxchg.h>
->   
-> -#define ia64_native_get_psr_i()	(ia64_native_getreg(_IA64_REG_PSR) & IA64_PSR_I)
-> -
-> -#define ia64_native_set_rr0_to_rr4(val0, val1, val2, val3, val4)	\
-> +#define ia64_set_rr0_to_rr4(val0, val1, val2, val3, val4)		\
->   do {									\
-> -	ia64_native_set_rr(0x0000000000000000UL, (val0));		\
-> -	ia64_native_set_rr(0x2000000000000000UL, (val1));		\
-> -	ia64_native_set_rr(0x4000000000000000UL, (val2));		\
-> -	ia64_native_set_rr(0x6000000000000000UL, (val3));		\
-> -	ia64_native_set_rr(0x8000000000000000UL, (val4));		\
-> +	ia64_set_rr(0x0000000000000000UL, (val0));			\
-> +	ia64_set_rr(0x2000000000000000UL, (val1));			\
-> +	ia64_set_rr(0x4000000000000000UL, (val2));			\
-> +	ia64_set_rr(0x6000000000000000UL, (val3));			\
-> +	ia64_set_rr(0x8000000000000000UL, (val4));			\
->   } while (0)
->   
->   /*
-> @@ -85,41 +83,4 @@ extern unsigned long __bad_increment_for_ia64_fetch_and_add (void);
->   
->   #endif
->   
-> -
-> -#ifndef __ASSEMBLY__
-> -
-> -#define IA64_INTRINSIC_API(name)	ia64_native_ ## name
-> -#define IA64_INTRINSIC_MACRO(name)	ia64_native_ ## name
-> -
-> -
-> -/************************************************/
-> -/* Instructions paravirtualized for correctness */
-> -/************************************************/
-> -/* fc, thash, get_cpuid, get_pmd, get_eflags, set_eflags */
-> -/* Note that "ttag" and "cover" are also privilege-sensitive; "ttag"
-> - * is not currently used (though it may be in a long-format VHPT system!)
-> - */
-> -#define ia64_fc				IA64_INTRINSIC_API(fc)
-> -#define ia64_thash			IA64_INTRINSIC_API(thash)
-> -#define ia64_get_cpuid			IA64_INTRINSIC_API(get_cpuid)
-> -#define ia64_get_pmd			IA64_INTRINSIC_API(get_pmd)
-> -
-> -
-> -/************************************************/
-> -/* Instructions paravirtualized for performance */
-> -/************************************************/
-> -#define ia64_ssm			IA64_INTRINSIC_MACRO(ssm)
-> -#define ia64_rsm			IA64_INTRINSIC_MACRO(rsm)
-> -#define ia64_getreg			IA64_INTRINSIC_MACRO(getreg)
-> -#define ia64_setreg			IA64_INTRINSIC_API(setreg)
-> -#define ia64_set_rr			IA64_INTRINSIC_API(set_rr)
-> -#define ia64_get_rr			IA64_INTRINSIC_API(get_rr)
-> -#define ia64_ptcga			IA64_INTRINSIC_API(ptcga)
-> -#define ia64_get_psr_i			IA64_INTRINSIC_API(get_psr_i)
-> -#define ia64_intrin_local_irq_restore	\
-> -	IA64_INTRINSIC_API(intrin_local_irq_restore)
-> -#define ia64_set_rr0_to_rr4		IA64_INTRINSIC_API(set_rr0_to_rr4)
-> -
-> -#endif /* !__ASSEMBLY__ */
-> -
->   #endif /* _UAPI_ASM_IA64_INTRINSICS_H */
+> This test was originally suggested by Catalin during arm64 THP migration
+> RFC discussion earlier. Going forward it can include more specific tests
+> with respect to various generic MM functions like THP, HugeTLB etc and
+> platform specific tests.
 > 
+> https://lore.kernel.org/linux-mm/20190628102003.GA56463@arrakis.emea.arm.com/
+> 
+> Needs to be applied on linux-next (next-20191108).
+> 
+> Changes in V10:
+> 
+> - Always enable DEBUG_VM_PGTABLE when DEBUG_VM is enabled per Ingo
+> - Added tags from Ingo
 
+Hello Andrew,
+
+There has not been any further comments on the previous version (V9) or this version
+(V10) of the patch which accommodated a comment from Ingo Molnar regarding making
+DEBUG_VM_PGTABLE always enabled when DEBUG_VM is selected. If this version looks okay,
+then would you please consider merging ? But if there is anything which still needs
+to be improved, please do let me know. I will try to incorporate that. Thank you.
+
+- Anshuman
