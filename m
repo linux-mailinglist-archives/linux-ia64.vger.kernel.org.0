@@ -2,110 +2,62 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BD03112BB2
-	for <lists+linux-ia64@lfdr.de>; Wed,  4 Dec 2019 13:43:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80D0211344B
+	for <lists+linux-ia64@lfdr.de>; Wed,  4 Dec 2019 19:23:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727880AbfLDMnC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 4 Dec 2019 07:43:02 -0500
-Received: from mail-qt1-f195.google.com ([209.85.160.195]:42232 "EHLO
-        mail-qt1-f195.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727852AbfLDMnA (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 4 Dec 2019 07:43:00 -0500
-Received: by mail-qt1-f195.google.com with SMTP id j5so7534142qtq.9
-        for <linux-ia64@vger.kernel.org>; Wed, 04 Dec 2019 04:42:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
-        b=AkbuvF8WWOeGkFuNbpEiUPeHs0D9XYCrvYJnn3sJBPk0l/N+bAJ+lU7by52a8c0/XL
-         X5y/+uJVi5SRPzgKpD7LZp2RSO63H/dWhNB+Sgv8CnTmnW6HnNvEkrD3pvFKiHue+ji0
-         Cyct4Vs7hozR5hYKDh8cJJMkT72K9aPHj93bK1Ew++bIIM698i5hGwNXpwVN8RyOlTlg
-         ekVZP06isuUhwZwFxkLwU0Sye3HMnEDkq9yUmWZzxA1JTm8RzibEufZxYTJilauyHwzc
-         pKJFDkaXtzzvkeOyU7ajhljX9QykaA8Ur2FHYJunK1Sxosbxld4ODKAYs9j7AB06Aipc
-         jW5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=SWzs3svZdfoJNhQZue5B0UPApGf3QNVhTsPQAsjB3v0=;
-        b=UUTO2SL/DCjj1qFkQhCAGw42AUcRKwPuFnnLhPmKKBsOxU5XY+9ZIbucpinVdnnray
-         VqOrZ/yjXSJ4ODW95b8GtcAkcmwNRAT//98SPm4DaKYVwILZUvB4wut5QnAkQpj21KYA
-         Mlmhuu00o8znyXlMK41Rs48RBVBlqaEjxczqakGiiBZmYEOv2YIA5uXIRpq8QW1+oMhZ
-         N9yQKW/i3CMmSnV1ejTWic/AmjeUy6iMHsJPtmLG1BKnltXhipe7XCCzDxa6NbOaks8e
-         D8Ljvc+hFD0vZm47qJ9dvXP8QjDPf9nt3PwhTTHXuq2m0HeH0jYiWa/QlfjeA9zk6VcG
-         KfSQ==
-X-Gm-Message-State: APjAAAVw5KQ3b9rnC5XwbKy2xz5YOGXr5rnFSLk112GCUOoqMnDRjOEd
-        sH0Uwy/6f6J3OknLWx8dbv5THpqA/mirxIAwok4=
-X-Google-Smtp-Source: APXvYqzw3gCG5cnmI6368TWfhjS/+LLSHd6b95oZCOsPTpsAjIN23auDStB1pQ1PTnMah1qk6gl8uYsnTPaZ7k01uH0=
-X-Received: by 2002:ac8:4a81:: with SMTP id l1mr2434940qtq.357.1575463377714;
- Wed, 04 Dec 2019 04:42:57 -0800 (PST)
+        id S1729024AbfLDSXd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 4 Dec 2019 13:23:33 -0500
+Received: from mga09.intel.com ([134.134.136.24]:53437 "EHLO mga09.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728716AbfLDSX2 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 4 Dec 2019 13:23:28 -0500
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+X-Amp-File-Uploaded: False
+Received: from fmsmga004.fm.intel.com ([10.253.24.48])
+  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 04 Dec 2019 10:23:27 -0800
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.69,278,1571727600"; 
+   d="scan'208";a="236378875"
+Received: from agluck-desk2.sc.intel.com (HELO agluck-desk2.amr.corp.intel.com) ([10.3.52.68])
+  by fmsmga004.fm.intel.com with ESMTP; 04 Dec 2019 10:23:27 -0800
+Date:   Wed, 4 Dec 2019 10:23:27 -0800
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-ia64@vger.kernel.org
+Subject: [GIT PULL] ia64 changes for v5.5
+Message-ID: <20191204182327.GA17103@agluck-desk2.amr.corp.intel.com>
 MIME-Version: 1.0
-Received: by 2002:ac8:2f0c:0:0:0:0:0 with HTTP; Wed, 4 Dec 2019 04:42:57 -0800 (PST)
-Reply-To: moneygram.1820@outlook.fr
-From:   "Rev.Dr Emmanuel Okoye CEO Ecobank-benin" 
-        <westernunion.benin982@gmail.com>
-Date:   Wed, 4 Dec 2019 13:42:57 +0100
-Message-ID: <CAP=nHBJXiPmPL21x=_0BHWRk_3N3Yax+tTxcFi=t=AhN7g==1Q@mail.gmail.com>
-Subject: God has remembered your prayers I have already sent you Money Gram
- payment of $5000.00 today, MG 1029-8096
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.12.1 (2019-06-15)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Attn, dear Beneficiary.
 
-God has remembered your prayers
-I have already sent you Money Gram payment of $5000.00 today, MG 1029-8096
-This is because we have finally concluded to effect your transfer
-funds of $4.8,000.000usd
-through MONEY GRAM International Fund transfer Service
-Each payment will be sending to you by $5000.00 daily until the
-($4.8,000.000usd) is completely transferred
-we have this morning sent  MONEY GRAM payment of $5,000.00 in your name today
-So contact the MONEY GRAM Agent to pick up this first payment of $5000 now
+The following changes since commit 219d54332a09e8d8741c1e1982f5eae56099de85:
 
-Contact person Mrs. Alan Ude
-Dir. MONEY GRAM Service,Benin
-Phone number: +229 98856728
-E-mail: moneygram.1820@outlook.fr
+  Linux 5.4 (2019-11-24 16:32:01 -0800)
 
-Ask him to give you the complete mtcn, sender name, question and
-answer to enable you
-pick up the $5000.00 sent today,
-Also you are instructed to re-confirm your information's
-to Mrs.Alan Ude as listed below to avoid wrong transactions.
+are available in the Git repository at:
 
-(1Your Full name:............................................
-(2 Phone number.....................................................
-(3 Contact address:.....................................
-(4 Age:..................................................................
-(5 Country..............................................
-(6) Sex .................................................................
-(7) your occupation...........................................
+  git://git.kernel.org/pub/scm/linux/kernel/git/aegl/linux.git tags/please-pull-misc-5.5
 
-(8)Passport/By Attach or Drivers License Number:
-Contact Mrs. Alan Ude for your MONEY GRAM payment of $4.8,000.000usd
-Note please: I have paid service fees for you but the only money you
-are required
-to send to Mrs. Alan Ude is $90.00 only Transfer fee before you can
-pick up your transfer today.
+for you to fetch changes up to 240b62d381fe5b66c496a6fd55edff3976a9be51:
 
-Send it to via Money Gram
-Receiver's Name-----Alan Ude
-Country----------Benin
-Address-----------Cotonou
-Quest--------Honest
-Ans-----------Trust
+  ia64: remove stale paravirt leftovers (2019-12-02 14:18:12 -0800)
 
-I done all my best for you to receive your transfer now ok.
-We need your urgent reply
-Best Regards
-Rev.Dr Emmanuel Okoye
-CEO Ecobank-benin
+----------------------------------------------------------------
+Cleanup some leftover para-virtualization pieces
 
-If we did not receive it urgent from you today,
-I will go ahead and release you funds to Mrs. Lyndia Ppaulson as your
-representative.
+----------------------------------------------------------------
+Juergen Gross (1):
+      ia64: remove stale paravirt leftovers
+
+ arch/ia64/include/asm/irqflags.h          |  4 ---
+ arch/ia64/include/uapi/asm/gcc_intrin.h   | 24 +++++++--------
+ arch/ia64/include/uapi/asm/intel_intrin.h | 32 +++++++++----------
+ arch/ia64/include/uapi/asm/intrinsics.h   | 51 ++++---------------------------
+ 4 files changed, 34 insertions(+), 77 deletions(-)
