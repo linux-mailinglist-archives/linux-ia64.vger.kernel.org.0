@@ -2,154 +2,101 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id E6B6011380A
-	for <lists+linux-ia64@lfdr.de>; Thu,  5 Dec 2019 00:18:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B29E211438F
+	for <lists+linux-ia64@lfdr.de>; Thu,  5 Dec 2019 16:29:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728100AbfLDXST (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 4 Dec 2019 18:18:19 -0500
-Received: from mail-pl1-f193.google.com ([209.85.214.193]:44027 "EHLO
-        mail-pl1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727989AbfLDXSS (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 4 Dec 2019 18:18:18 -0500
-Received: by mail-pl1-f193.google.com with SMTP id q16so367358plr.10
-        for <linux-ia64@vger.kernel.org>; Wed, 04 Dec 2019 15:18:18 -0800 (PST)
+        id S1729839AbfLEP3u (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 5 Dec 2019 10:29:50 -0500
+Received: from mail-wm1-f66.google.com ([209.85.128.66]:53941 "EHLO
+        mail-wm1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726028AbfLEP3u (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 5 Dec 2019 10:29:50 -0500
+Received: by mail-wm1-f66.google.com with SMTP id n9so3804016wmd.3
+        for <linux-ia64@vger.kernel.org>; Thu, 05 Dec 2019 07:29:49 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=bMFgfwVDLyNfP+n9tPTAj8QY4bC2HsMSOAGKRA9gakw=;
-        b=MtSlA/OgS15E0uba3TIek4yo6Dv72Ih5Vz8TtayNLcYj9ko9Y5pcJja4pXlDi+U5B2
-         OzrIhaayNaSUVeiGvMc3+qo1sSa3EgJ+AupbHkkOI9WA9YMvGRb8L6EbA1y0nROXEUzq
-         DLekXMbit5LGIAikGGF/a6V21GXdqB1vVViqVj9DWbn3bDTmE1RQTdmSpi3ceBVwG8X4
-         +RdlDSRJZH67fNHiUDPIpFR2b9qTJvdcCugWSM4lang0P7FFhrNPfmnNSsvwOGYMAa/t
-         Da8KmVghIDsNP9WG/dmjuj/U+HPlXUbXm2G7PwKgGY8EAOc1R7+MLdFwE4WaevwUll23
-         YYAA==
+        d=baylibre-com.20150623.gappssmtp.com; s=20150623;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=cP+oM3NA7KncqmbMbjVli5611B4S2UpI7p/XGvy4+VM=;
+        b=ABix7BZQE6/oBKIKzeq9oQL81G5DErroX9yrN0/xNE9ctYSu1ppRCD8sQMK77lOdts
+         Mfr15V5jwVQ2rcMIcysM2MiH6VZLtLggMq0L0SRa1qBRPmMnHNXiOVbnOHvMqyCmHKRo
+         6FOfi054BSOc5EOTe54VmuigHJSnbORH6oTtwGSAZ62YJOXkuowcArCg5VWS+hry7iqA
+         BYAUeO6RGrCTf9WYI7VME/NZ8tbhZ9ObrWccYrSxw8c/16qUUnKIE2p4AArXHFhDovwA
+         2FRNRjaSfG+YETDxzNHli16KZ1Pf0ZSSGdK2F/Pi7gjD94kcwr4bWPw9FAao/PFHNcVh
+         925A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=bMFgfwVDLyNfP+n9tPTAj8QY4bC2HsMSOAGKRA9gakw=;
-        b=VI/cIkvrBC66knYefzVqDSmYxk65avHOa2MO/8bY2F3QpWzHDtG0+g7xucQU+XovRN
-         ISmi3ewxljWrdH9YLr0bnEYaTEKVE97tId7z+2YZd7UiQBU7QIGHiYCvNDc30njnOr+Y
-         YUWL0yxcpTk7D8zbCQzRBW8nj/hRVgbmk4+fBSc8RrSCAJ6Djhrtr1GQTYAMx3vCR8IY
-         zXMcqf0+EcoRbjm6da290hKRh2HfPItPVge0MduPumx1DqdAAhwAaCPB7nGJUMpyD1gk
-         2jYoeB+BmFAuKFUtNxz8JTCVritkpTZOb0gieY2Kx7fP/MbGCdx7uL/iFoPdxL9oE4m+
-         FGPg==
-X-Gm-Message-State: APjAAAUO1WLVpcVorhHd+CqIgLhBfC/obqf6Wx8S6QM8pkfRrlr2zaLV
-        0diKhuWuaHlIoXAruqfUoMFHBMQKu6OATHpPZ1PWOg==
-X-Google-Smtp-Source: APXvYqxyypwjL3djnDA4vB8jmSAsCckKucoAckitJOpn/REINR7zthvw1tWILnDJLcTdY3b7XdQhBRvlBPMCVLzrJ40=
-X-Received: by 2002:a17:902:8216:: with SMTP id x22mr5812405pln.179.1575501497559;
- Wed, 04 Dec 2019 15:18:17 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=cP+oM3NA7KncqmbMbjVli5611B4S2UpI7p/XGvy4+VM=;
+        b=HdZhxvNuvtBTCfu8+ABK69nlUxIIM92VpLxj5EBu99QByCFtLTWEUiqaol7s15xTpd
+         S9OAW5ap/N3QTaLZVD/Sw9KBtKCpaEUSnebTZFfvu3ZSXW/SLGMOIIAuOPfl/kbxTNUy
+         BX73WMPA4v6q6tPIwe18Od7jJ7gMPYCxxATTlczbz5VWUmeQ0HCS1dkXK8FFHwCiZGWu
+         XyMElFHBprN8MzGjFjVK4z+DcnrYhYxIHVnvxQpb4wLIGsLmWqEAUK1WKlIYD9cIxA8h
+         db38LJEIIRmXleHP22rm4FQvJ968onkXzKsQ9pWMpuwMrWk/MLZOJjEyCUgO+pVnDaH3
+         RmNw==
+X-Gm-Message-State: APjAAAWGf0xS+tAJ6LpNxzXkJq8FDMhQz/sb0L45EWFqWlMTaIXrJhgC
+        iZOb+RlWb4HR8lGWbf8MBH6ygQ==
+X-Google-Smtp-Source: APXvYqwg7r5WIGyCZhCUyuc9pK/Q411mfTgj34TL5oqoEJcHF0kVbf5N6U5FZZj3N86LNm+WlNwMbQ==
+X-Received: by 2002:a1c:61d7:: with SMTP id v206mr5704907wmb.13.1575559788631;
+        Thu, 05 Dec 2019 07:29:48 -0800 (PST)
+Received: from Red ([2a01:cb1d:147:7200:2e56:dcff:fed2:c6d6])
+        by smtp.googlemail.com with ESMTPSA id z64sm176283wmg.30.2019.12.05.07.29.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Dec 2019 07:29:47 -0800 (PST)
+Date:   Thu, 5 Dec 2019 16:29:45 +0100
+From:   LABBE Corentin <clabbe@baylibre.com>
+To:     David Airlie <airlied@redhat.com>
+Cc:     airlied <airlied@linux.ie>, arnd@arndb.de, fenghua.yu@intel.com,
+        "KH, Greg" <gregkh@linuxfoundation.org>,
+        "Luck, Tony" <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
+        linux-kernel <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 0/5] agp: minor fixes, does the maintainer still there
+ ?
+Message-ID: <20191205152945.GB10549@Red>
+References: <1574324085-4338-1-git-send-email-clabbe@baylibre.com>
+ <20191202133254.GA21550@Red>
+ <CAMwc25obOebugXGSNVWd1bjPN+tR82wwFJ6PgqnvZXK4O6xAFw@mail.gmail.com>
 MIME-Version: 1.0
-References: <20191204225446.202981-1-dima@golovin.in>
-In-Reply-To: <20191204225446.202981-1-dima@golovin.in>
-From:   Nick Desaulniers <ndesaulniers@google.com>
-Date:   Wed, 4 Dec 2019 15:18:05 -0800
-Message-ID: <CAKwvOdm-bhuJMRRN3tyNdb88+_TFd4m3b-7gX0-91VG4djzp+Q@mail.gmail.com>
-Subject: Re: [PATCH] x86/boot: kbuild: allow readelf executable to be specified
-To:     Dmitry Golovin <dima@golovin.in>
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        Bruce Ashfield <bruce.ashfield@gmail.com>,
-        Ross Philipson <ross.philipson@oracle.com>,
-        Ross Burton <ross.burton@intel.com>,
-        Chao Fan <fanc.fnst@cn.fujitsu.com>,
-        Daniel Kiper <daniel.kiper@oracle.com>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        tony.luck@intel.com, fenghua.yu@intel.com,
-        linux-ia64@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMwc25obOebugXGSNVWd1bjPN+tR82wwFJ6PgqnvZXK4O6xAFw@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Dec 4, 2019 at 2:55 PM Dmitry Golovin <dima@golovin.in> wrote:
->
-> Introduce a new READELF variable to top-level Makefile, so the name of
-> readelf binary can be specified.
+On Tue, Dec 03, 2019 at 06:01:15AM +1000, David Airlie wrote:
+> On Mon, Dec 2, 2019 at 11:33 PM LABBE Corentin <clabbe@baylibre.com> wrote:
+> >
+> > On Thu, Nov 21, 2019 at 08:14:40AM +0000, Corentin Labbe wrote:
+> > > Hello
+> > >
+> > > This patch serie fixes some minor problem found in the agp subsystem
+> > > There are no change since v1 (posted two years ago)
+> > > This is simply a repost for trying to get an answer (gentle ping 6 month
+> > > ago got no answer also).
+> > >
+> > > Regards
+> > >
+> >
+> > Hello
+> >
+> > Does the AGP maintainer still maintain it ?
+> 
+> It's maintained but really loathe to touch it, I've no hw to validate
+> any changes on so making any changes to it really has to get past my
+> internal, I care enough about this change to risk applying anything to
+> AGP.
+> 
+> I'll try and look and apply those patches today.
+> 
 
-Thanks for the patch!
+Thanks for applying.
+Perhaps you need to fix your address in MAINTAINERS.
 
-This is a general cleanup that should improve cross compilation
-(readelf should be treated as ever binary in the list like
-objcopy/objdump/etc), and allow us to use binutils substitutes for
-readelf that aren't called `readelf` (ie. `llvm-readelf`).
+When you has hardware, What was your tests procedure ?
+I can on my freetime add some AGP hw on my kernelCI lab.
 
->
-> Before this change the name of the binary was hardcoded to
-> "$(CROSS_COMPILE)readelf" which might not be present for every
-> toolchain.
->
-> This allows to build with LLVM Object Reader by using make parameter
-> READELF=llvm-readelf.
->
-> Link: https://github.com/ClangBuiltLinux/linux/issues/771
-> Signed-off-by: Dmitry Golovin <dima@golovin.in>
-> Cc: Nick Desaulniers <ndesaulniers@google.com>
-
-No need to explicitly CC me; I monitor our list like a hawk.
-
-> ---
->  Makefile                          | 3 ++-
->  arch/x86/boot/compressed/Makefile | 2 +-
->  2 files changed, 3 insertions(+), 2 deletions(-)
->
-> diff --git a/Makefile b/Makefile
-> index 999a197d67d2..612a55d25442 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -414,6 +414,7 @@ STRIP               = $(CROSS_COMPILE)strip
->  OBJCOPY                = $(CROSS_COMPILE)objcopy
->  OBJDUMP                = $(CROSS_COMPILE)objdump
->  OBJSIZE                = $(CROSS_COMPILE)size
-> +READELF                = $(CROSS_COMPILE)readelf
->  PAHOLE         = pahole
->  LEX            = flex
->  YACC           = bison
-> @@ -472,7 +473,7 @@ GCC_PLUGINS_CFLAGS :=
->  CLANG_FLAGS :=
->
->  export ARCH SRCARCH CONFIG_SHELL BASH HOSTCC KBUILD_HOSTCFLAGS CROSS_COMPILE AS LD CC
-> -export CPP AR NM STRIP OBJCOPY OBJDUMP OBJSIZE PAHOLE LEX YACC AWK INSTALLKERNEL
-> +export CPP AR NM STRIP OBJCOPY OBJDUMP OBJSIZE READELF PAHOLE LEX YACC AWK INSTALLKERNEL
->  export PERL PYTHON PYTHON2 PYTHON3 CHECK CHECKFLAGS MAKE UTS_MACHINE HOSTCXX
->  export KBUILD_HOSTCXXFLAGS KBUILD_HOSTLDFLAGS KBUILD_HOSTLDLIBS LDFLAGS_MODULE
->
-> diff --git a/arch/x86/boot/compressed/Makefile b/arch/x86/boot/compressed/Makefile
-> index aa976adb7094..1dac210f7d44 100644
-> --- a/arch/x86/boot/compressed/Makefile
-> +++ b/arch/x86/boot/compressed/Makefile
-> @@ -103,7 +103,7 @@ vmlinux-objs-$(CONFIG_EFI_MIXED) += $(obj)/efi_thunk_$(BITS).o
->  quiet_cmd_check_data_rel = DATAREL $@
->  define cmd_check_data_rel
->         for obj in $(filter %.o,$^); do \
-> -               ${CROSS_COMPILE}readelf -S $$obj | grep -qF .rel.local && { \
-> +               $(READELF) -S $$obj | grep -qF .rel.local && { \
-
-Grepping the kernel sources for `READELF`, it looks like
-arch/ia64/Makefile makes the same mistake. Would you mind fixing both
-cases in the same patch (v2)?  I'm also curious about it's use in
-arch/ia64/scripts/unwcheck.py, and scripts/faddr2line. +ia64
-maintainers and list.
-
-I think if you simply remove the assignment on line 17 of
-arch/ia64/Makefile you should be fine.
-
->                         echo "error: $$obj has data relocations!" >&2; \
->                         exit 1; \
->                 } || true; \
-> --
-> 2.23.0
->
-
-
--- 
-Thanks,
-~Nick Desaulniers
+Regards
