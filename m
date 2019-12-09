@@ -2,147 +2,127 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DFBB116291
-	for <lists+linux-ia64@lfdr.de>; Sun,  8 Dec 2019 15:59:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A258411756B
+	for <lists+linux-ia64@lfdr.de>; Mon,  9 Dec 2019 20:14:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726818AbfLHO6y (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 8 Dec 2019 09:58:54 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:36880 "EHLO
-        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726793AbfLHO6y (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 8 Dec 2019 09:58:54 -0500
-Received: from [5.158.153.53] (helo=tip-bot2.lab.linutronix.de)
-        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
-        (Exim 4.80)
-        (envelope-from <tip-bot2@linutronix.de>)
-        id 1idy1C-0000YD-Rq; Sun, 08 Dec 2019 15:58:43 +0100
-Received: from [127.0.1.1] (localhost [IPv6:::1])
-        by tip-bot2.lab.linutronix.de (Postfix) with ESMTP id 003E01C288E;
-        Sun,  8 Dec 2019 15:58:34 +0100 (CET)
-Date:   Sun, 08 Dec 2019 14:58:33 -0000
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: sched/urgent] sched/rt, ia64: Use CONFIG_PREEMPTION
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        id S1726637AbfLITOE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 9 Dec 2019 14:14:04 -0500
+Received: from ale.deltatee.com ([207.54.116.67]:56026 "EHLO ale.deltatee.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726230AbfLITOE (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 9 Dec 2019 14:14:04 -0500
+Received: from cgy1-donard.priv.deltatee.com ([172.16.1.31])
+        by ale.deltatee.com with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <gunthorp@deltatee.com>)
+        id 1ieOTk-00025k-Lg; Mon, 09 Dec 2019 12:13:57 -0700
+Received: from gunthorp by cgy1-donard.priv.deltatee.com with local (Exim 4.92)
+        (envelope-from <gunthorp@deltatee.com>)
+        id 1ieOTd-0001Me-0k; Mon, 09 Dec 2019 12:13:49 -0700
+From:   Logan Gunthorpe <logang@deltatee.com>
+To:     linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+        Christoph Hellwig <hch@lst.de>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
-        Ingo Molnar <mingo@kernel.org>, x86 <x86@kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>
-In-Reply-To: <20191015191821.11479-10-bigeasy@linutronix.de>
-References: <20191015191821.11479-10-bigeasy@linutronix.de>
+        Logan Gunthorpe <logang@deltatee.com>
+Date:   Mon,  9 Dec 2019 12:13:40 -0700
+Message-Id: <20191209191346.5197-1-logang@deltatee.com>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Message-ID: <157581711385.21853.17716722558979268134.tip-bot2@tip-bot2>
-X-Mailer: tip-git-log-daemon
-Robot-ID: <tip-bot2.linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Linutronix-Spam-Score: -1.0
-X-Linutronix-Spam-Level: -
-X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
+Content-Transfer-Encoding: 8bit
+X-SA-Exim-Connect-IP: 172.16.1.31
+X-SA-Exim-Rcpt-To: linux-arm-kernel@lists.infradead.org, linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org, linux-sh@vger.kernel.org, platform-driver-x86@vger.kernel.org, linux-mm@kvack.org, hch@lst.de, dan.j.williams@intel.com, akpm@linux-foundation.org, catalin.marinas@arm.com, benh@kernel.crashing.org, tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com, will@kernel.org, luto@kernel.org, peterz@infradead.org, logang@deltatee.com
+X-SA-Exim-Mail-From: gunthorp@deltatee.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
+X-Spam-Level: 
+X-Spam-Status: No, score=-6.7 required=5.0 tests=ALL_TRUSTED,BAYES_00,
+        MYRULES_NO_TEXT autolearn=no autolearn_force=no version=3.4.2
+Subject: [PATCH 0/6] Allow setting caching mode in arch_add_memory() for P2PDMA
+X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
+X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-The following commit has been merged into the sched/urgent branch of tip:
+Hi,
 
-Commit-ID:     b9b75e53b2fb040bc74a750fb27bbfa80059b3fe
-Gitweb:        https://git.kernel.org/tip/b9b75e53b2fb040bc74a750fb27bbfa80059b3fe
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Tue, 15 Oct 2019 21:17:56 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Sun, 08 Dec 2019 14:37:33 +01:00
+Currently, the page tables created using memremap_pages() are always
+created with the PAGE_KERNEL cacheing mode. However, the P2PDMA code
+is creating pages for PCI BAR memory which should never be accessed
+through the cache and instead use either WC or UC. This still works in
+most cases, on x86, because the MTRR registers typically override the
+caching settings in the page tables for all of the IO memory to be
+UC-. However, this tends not to work so well on other arches or
+some rare x86 machines that have firmware which does not setup the
+MTRR registers in this way.
 
-sched/rt, ia64: Use CONFIG_PREEMPTION
+Instead of this, this series proposes a change to arch_add_memory()
+to take the pgprot required by the mapping which allows us to
+explicitly set pagetable entries for P2PDMA memory to WC.
 
-CONFIG_PREEMPTION is selected by CONFIG_PREEMPT and by CONFIG_PREEMPT_RT.
-Both PREEMPT and PREEMPT_RT require the same functionality which today
-depends on CONFIG_PREEMPT.
+This changes is pretty routine for most of the arches: x86_64, s390, arm64
+and powerpc simply need to thread the pgprot through to where the page tables
+are setup. x86_32 unfortunately sets up the page tables at boot so
+must use _set_memory_prot() to change their caching mode. ia64 and sh
+don't appear to have an easy way to change the page tables so, for now
+at least, we just return -EINVAL on such mappings and thus they will
+not support P2PDMA memory until the work for this is done.
 
-Switch the entry code and kprobes over to use CONFIG_PREEMPTION.
+Thanks,
 
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: linux-ia64@vger.kernel.org
-Link: https://lore.kernel.org/r/20191015191821.11479-10-bigeasy@linutronix.de
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
----
- arch/ia64/kernel/entry.S   | 12 ++++++------
- arch/ia64/kernel/kprobes.c |  2 +-
- 2 files changed, 7 insertions(+), 7 deletions(-)
+Logan
 
-diff --git a/arch/ia64/kernel/entry.S b/arch/ia64/kernel/entry.S
-index a9992be..2ac9263 100644
---- a/arch/ia64/kernel/entry.S
-+++ b/arch/ia64/kernel/entry.S
-@@ -670,12 +670,12 @@ GLOBAL_ENTRY(ia64_leave_syscall)
- 	 *
- 	 * p6 controls whether current_thread_info()->flags needs to be check for
- 	 * extra work.  We always check for extra work when returning to user-level.
--	 * With CONFIG_PREEMPT, we also check for extra work when the preempt_count
-+	 * With CONFIG_PREEMPTION, we also check for extra work when the preempt_count
- 	 * is 0.  After extra work processing has been completed, execution
- 	 * resumes at ia64_work_processed_syscall with p6 set to 1 if the extra-work-check
- 	 * needs to be redone.
- 	 */
--#ifdef CONFIG_PREEMPT
-+#ifdef CONFIG_PREEMPTION
- 	RSM_PSR_I(p0, r2, r18)			// disable interrupts
- 	cmp.eq pLvSys,p0=r0,r0			// pLvSys=1: leave from syscall
- (pKStk) adds r20=TI_PRE_COUNT+IA64_TASK_SIZE,r13
-@@ -685,7 +685,7 @@ GLOBAL_ENTRY(ia64_leave_syscall)
- (pUStk)	mov r21=0			// r21 <- 0
- 	;;
- 	cmp.eq p6,p0=r21,r0		// p6 <- pUStk || (preempt_count == 0)
--#else /* !CONFIG_PREEMPT */
-+#else /* !CONFIG_PREEMPTION */
- 	RSM_PSR_I(pUStk, r2, r18)
- 	cmp.eq pLvSys,p0=r0,r0		// pLvSys=1: leave from syscall
- (pUStk)	cmp.eq.unc p6,p0=r0,r0		// p6 <- pUStk
-@@ -814,12 +814,12 @@ GLOBAL_ENTRY(ia64_leave_kernel)
- 	 *
- 	 * p6 controls whether current_thread_info()->flags needs to be check for
- 	 * extra work.  We always check for extra work when returning to user-level.
--	 * With CONFIG_PREEMPT, we also check for extra work when the preempt_count
-+	 * With CONFIG_PREEMPTION, we also check for extra work when the preempt_count
- 	 * is 0.  After extra work processing has been completed, execution
- 	 * resumes at .work_processed_syscall with p6 set to 1 if the extra-work-check
- 	 * needs to be redone.
- 	 */
--#ifdef CONFIG_PREEMPT
-+#ifdef CONFIG_PREEMPTION
- 	RSM_PSR_I(p0, r17, r31)			// disable interrupts
- 	cmp.eq p0,pLvSys=r0,r0			// pLvSys=0: leave from kernel
- (pKStk)	adds r20=TI_PRE_COUNT+IA64_TASK_SIZE,r13
-@@ -1120,7 +1120,7 @@ skip_rbs_switch:
- 
- 	/*
- 	 * On entry:
--	 *	r20 = &current->thread_info->pre_count (if CONFIG_PREEMPT)
-+	 *	r20 = &current->thread_info->pre_count (if CONFIG_PREEMPTION)
- 	 *	r31 = current->thread_info->flags
- 	 * On exit:
- 	 *	p6 = TRUE if work-pending-check needs to be redone
-diff --git a/arch/ia64/kernel/kprobes.c b/arch/ia64/kernel/kprobes.c
-index b8356ed..a6d6a05 100644
---- a/arch/ia64/kernel/kprobes.c
-+++ b/arch/ia64/kernel/kprobes.c
-@@ -841,7 +841,7 @@ static int __kprobes pre_kprobes_handler(struct die_args *args)
- 		return 1;
- 	}
- 
--#if !defined(CONFIG_PREEMPT)
-+#if !defined(CONFIG_PREEMPTION)
- 	if (p->ainsn.inst_flag == INST_FLAG_BOOSTABLE && !p->post_handler) {
- 		/* Boost up -- we can execute copied instructions directly */
- 		ia64_psr(regs)->ri = p->ainsn.slot;
+--
+
+Logan Gunthorpe (6):
+  x86/mm: Thread pgprot_t through init_memory_mapping()
+  x86/mm: Introduce _set_memory_prot()
+  powerpc/mm: Thread pgprot_t through create_section_mapping()
+  s390/mm: Thread pgprot_t through vmem_add_mapping()
+  mm, memory_hotplug: Provide argument for the pgprot_t in
+    arch_add_memory()
+  mm/memremap: Set caching mode for PCI P2PDMA memory to WC
+
+ arch/arm64/mm/mmu.c                        |  4 +--
+ arch/ia64/mm/init.c                        |  5 +++-
+ arch/powerpc/include/asm/book3s/64/hash.h  |  3 +-
+ arch/powerpc/include/asm/book3s/64/radix.h |  3 +-
+ arch/powerpc/include/asm/sparsemem.h       |  3 +-
+ arch/powerpc/mm/book3s64/hash_utils.c      |  5 ++--
+ arch/powerpc/mm/book3s64/pgtable.c         |  7 +++--
+ arch/powerpc/mm/book3s64/radix_pgtable.c   | 18 +++++++-----
+ arch/powerpc/mm/mem.c                      |  7 +++--
+ arch/s390/include/asm/pgtable.h            |  3 +-
+ arch/s390/mm/extmem.c                      |  3 +-
+ arch/s390/mm/init.c                        |  4 +--
+ arch/s390/mm/vmem.c                        | 10 +++----
+ arch/sh/mm/init.c                          |  5 +++-
+ arch/x86/include/asm/page_types.h          |  3 --
+ arch/x86/include/asm/pgtable.h             |  3 ++
+ arch/x86/include/asm/set_memory.h          |  1 +
+ arch/x86/kernel/amd_gart_64.c              |  3 +-
+ arch/x86/mm/init.c                         |  9 +++---
+ arch/x86/mm/init_32.c                      | 10 +++++--
+ arch/x86/mm/init_64.c                      | 34 ++++++++++++----------
+ arch/x86/mm/mm_internal.h                  |  3 +-
+ arch/x86/mm/pageattr.c                     |  7 +++++
+ arch/x86/platform/efi/efi_64.c             |  3 +-
+ include/linux/memory_hotplug.h             |  2 +-
+ mm/memory_hotplug.c                        |  2 +-
+ mm/memremap.c                              |  5 +++-
+ 27 files changed, 104 insertions(+), 61 deletions(-)
+
+--
+2.20.1
