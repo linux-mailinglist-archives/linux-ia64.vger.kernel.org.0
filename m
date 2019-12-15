@@ -2,46 +2,77 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A350211B56E
-	for <lists+linux-ia64@lfdr.de>; Wed, 11 Dec 2019 16:53:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AB13911F737
+	for <lists+linux-ia64@lfdr.de>; Sun, 15 Dec 2019 11:45:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1732028AbfLKPxu convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Wed, 11 Dec 2019 10:53:50 -0500
-Received: from mailout02.3bbmail.com ([110.164.252.195]:48196 "EHLO
-        mailout03.3bb.co.th" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1732692AbfLKPxn (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 11 Dec 2019 10:53:43 -0500
-X-Greylist: delayed 2072 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Dec 2019 10:53:42 EST
-Authentication-Results: 3bb.co.th;
-        spf=fail smtp.mailfrom=infoccfoundation@amazon.com
-Received: from appserv (mx-ll-110.164.149-9.static.3bb.co.th [110.164.149.9] (may be forged))
-        by mailout03.3bb.co.th (8.16.0.27/8.16.0.27) with ESMTP id xBBFFFkR021471;
-        Wed, 11 Dec 2019 22:15:15 +0700
-Message-ID: <41451-2201912311151525480@appserv>
-To:     "a" <skyteamsbiz@gmail.com>
-Reply-To: "CCULVERT FOUNDATION" <skyteamsbiz@gmail.com>
-From:   "CCULVERT FOUNDATION" <infoccfoundation@amazon.com>
-Subject: Mein letzter Wunsch.
-Date:   Wed, 11 Dec 2019 22:15:25 +0700
+        id S1726089AbfLOKp2 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 15 Dec 2019 05:45:28 -0500
+Received: from mail.baskent.edu.tr ([193.140.164.51]:58290 "EHLO
+        mail.baskent.edu.tr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726081AbfLOKp1 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 15 Dec 2019 05:45:27 -0500
+X-Greylist: delayed 1778 seconds by postgrey-1.27 at vger.kernel.org; Sun, 15 Dec 2019 05:45:25 EST
+Received: from mail.baskent.edu.tr (mail.baskent.edu.tr [193.140.164.51])
+        by mail.baskent.edu.tr (Postfix) with ESMTPA id 8F6F11AF6ED;
+        Sun, 15 Dec 2019 13:06:49 +0300 (+03)
 MIME-Version: 1.0
-Content-type: text/plain; charset=windows-874
-Content-Transfer-Encoding: 8BIT
-X-Proofpoint-SPF-Result: fail
-X-Proofpoint-SPF-Record: v=spf1 include:spf1.amazon.com include:spf2.amazon.com
- include:amazonses.com -all
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:,, definitions=2019-11-25_06:,,
- signatures=0
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=40 suspectscore=1 malwarescore=0
- phishscore=0 bulkscore=0 spamscore=0 mlxscore=0 mlxlogscore=353
- adultscore=0 classifier=spam adjust=40 reason=mlx scancount=1
- engine=8.0.1-1911140001 definitions=main-1911260048
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+Date:   Sun, 15 Dec 2019 04:06:48 -0600
+From:   Mr Pressley Anton <info@anton.co.za>
+To:     undisclosed-recipients:;
+Subject: Love Greetings
+Reply-To: infoantonnp@gmail.com
+Mail-Reply-To: infoantonnp@gmail.com
+Message-ID: <c5d07996cc0a087abf22fe18fce4672e@mail.baskent.edu.tr>
+X-Sender: info@anton.co.za
+User-Agent: Roundcube Webmail/1.0.12
+X-mailyeni-MailScanner-Information: Please contact the ISP for more information
+X-mailyeni-MailScanner-ID: 8F6F11AF6ED.A93DD
+X-mailyeni-MailScanner: Found to be clean
+X-mailyeni-MailScanner-SpamCheck: not spam, SpamAssassin (cached,
+        score=2.132, required 6, ALL_TRUSTED -1.00, AWL 0.43, BAYES_20 -0.00,
+        MILLION_HUNDRED 2.70)
+X-mailyeni-MailScanner-SpamScore: ss
+X-mailyeni-MailScanner-From: info@anton.co.za
+X-Spam-Status: No
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Wenn Sie sich für die Finanzierung der STIFTUNG interessieren, schreiben Sie bitte heute über meinen Anwalt zurück
-Grüße,
-Mrs. Cindy Culvert.
-skyteamsbiz@gmail.com
+
+
+-- 
+Love Greetings
+
+I will introduce myself as Mr. Pressley Anton. a South African citizen 
+living in East London. A director of accounting who oversees the bank's 
+financial network
+
+I ask for your approval to introduce you to our bank as a business 
+partner. Ms. Surti Dahlia, a German / Dutch businesswoman and widow from 
+the Netherlands, who died in a MH370 Malaysia aircraft
+
+So we can say that their fund was worth eight million five hundred 
+thousand pounds
+
+
+
+We can legally move this amount if you are interested.
+Many thanks
+
+Greetings,
+Mr. Pressley Anton.
+E-post :infoantonnp@gmail.com
+Telephone : +27678841926
+(Director) Department International System.
+Accounting,
+Monitoring the financial network
+
+-- 
+This message has been scanned for viruses and
+dangerous content by MailScanner, and is
+believed to be clean.
 
