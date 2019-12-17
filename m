@@ -2,91 +2,163 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 9255F12225C
-	for <lists+linux-ia64@lfdr.de>; Tue, 17 Dec 2019 04:08:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 495E51224DC
+	for <lists+linux-ia64@lfdr.de>; Tue, 17 Dec 2019 07:40:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726526AbfLQDGc (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 16 Dec 2019 22:06:32 -0500
-Received: from conssluserg-04.nifty.com ([210.131.2.83]:58155 "EHLO
-        conssluserg-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725836AbfLQDGc (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 16 Dec 2019 22:06:32 -0500
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id xBH36CI2031595;
-        Tue, 17 Dec 2019 12:06:13 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com xBH36CI2031595
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1576551973;
-        bh=pugGGjF7UoSjVUlbexS6sMjOLhQht+PE5aPlQbu3gZI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=XG0jL4Z9K1FdE5J1JOKxZIxiZwa8NLcIxoZqNdqDodGPR20KM+MqHO2s5a5mHmZqW
-         wtvgE5naeIuBsDaM5g99Y41zIUJbo9bVfcjCmDRLyx75tvZUlMhA8FUSBoOCdAI3+H
-         l0ihq/zIAjKucOEWwVx4IrSL3Jygz8V2oA+VJ6tNyOK3IEGABp9h78h6GJEa2CSDSu
-         Sj2BLwivdka/vPEL+9uNgsTNz0kZ79eC5GUr/UVJnhq3eacLPRzL1KV76+uBymT5Hu
-         VmDcd2O3y/A6XEAqZw/vt99PSaLH0Cq+Z7cs/Ue0ozIGWwQS9B0tc3vJkfdckNdE73
-         q3dD17PQDdctQ==
-X-Nifty-SrcIP: [209.85.221.178]
-Received: by mail-vk1-f178.google.com with SMTP id o187so2280165vka.2;
-        Mon, 16 Dec 2019 19:06:13 -0800 (PST)
-X-Gm-Message-State: APjAAAVa5FlKlNPsTAt+PcO42ylnfUV6+yYx382ea2tdaSlHksey7XGr
-        IrdpD5IH2mspR12TYZZfw/qcLEbc3mCc13Pc0Wk=
-X-Google-Smtp-Source: APXvYqzpD0fO/aIi+ks5CVgoBnhS77OdbbT+Hz15RXdLJaxFP29PsPPPy4YjBrxnkc42+qznbFUj3VyFbxlLC1iTnak=
-X-Received: by 2002:a1f:8cd5:: with SMTP id o204mr1689010vkd.66.1576551972298;
- Mon, 16 Dec 2019 19:06:12 -0800 (PST)
+        id S1726947AbfLQGkd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 17 Dec 2019 01:40:33 -0500
+Received: from mout-p-101.mailbox.org ([80.241.56.151]:53806 "EHLO
+        mout-p-101.mailbox.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726875AbfLQGkc (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 17 Dec 2019 01:40:32 -0500
+Received: from smtp1.mailbox.org (smtp1.mailbox.org [80.241.60.240])
+        (using TLSv1.2 with cipher ECDHE-RSA-CHACHA20-POLY1305 (256/256 bits))
+        (No client certificate requested)
+        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 47cT6M2DP7zKmbN;
+        Tue, 17 Dec 2019 07:40:27 +0100 (CET)
+X-Virus-Scanned: amavisd-new at heinlein-support.de
+Received: from smtp1.mailbox.org ([80.241.60.240])
+        by spamfilter06.heinlein-hosting.de (spamfilter06.heinlein-hosting.de [80.241.56.125]) (amavisd-new, port 10030)
+        with ESMTP id AVgNK5XsT0lw; Tue, 17 Dec 2019 07:40:19 +0100 (CET)
+Date:   Tue, 17 Dec 2019 17:39:50 +1100
+From:   Aleksa Sarai <cyphar@cyphar.com>
+To:     Florian Weimer <fweimer@redhat.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Jeff Layton <jlayton@kernel.org>,
+        "J. Bruce Fields" <bfields@fieldses.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        David Howells <dhowells@redhat.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        Andrii Nakryiko <andriin@fb.com>,
+        Jonathan Corbet <corbet@lwn.net>, linux-ia64@vger.kernel.org,
+        linux-doc@vger.kernel.org,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-api@vger.kernel.org,
+        Jiri Olsa <jolsa@redhat.com>, linux-arch@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        David Drysdale <drysdale@google.com>,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, linuxppc-dev@lists.ozlabs.org,
+        dev@opencontainers.org, Andy Lutomirski <luto@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        libc-alpha@sourceware.org, linux-parisc@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, netdev@vger.kernel.org,
+        Chanho Min <chanho.min@lge.com>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        linux-alpha@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        bpf@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        containers@lists.linux-foundation.org
+Subject: Re: [PATCH v18 11/13] open: introduce openat2(2) syscall
+Message-ID: <20191217063950.5oqwwqz5p3bu7t2x@yavin.dot.cyphar.com>
+References: <20191206141338.23338-1-cyphar@cyphar.com>
+ <20191206141338.23338-12-cyphar@cyphar.com>
+ <20191216192158.B9F19832924A@oldenburg2.str.redhat.com>
 MIME-Version: 1.0
-References: <20191204225446.202981-1-dima@golovin.in> <CAKwvOdm-bhuJMRRN3tyNdb88+_TFd4m3b-7gX0-91VG4djzp+Q@mail.gmail.com>
- <23883331575506134@vla1-3991b5027d7d.qloud-c.yandex.net>
-In-Reply-To: <23883331575506134@vla1-3991b5027d7d.qloud-c.yandex.net>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Tue, 17 Dec 2019 12:05:36 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATRWgfnP_C68aiOLacR_Bhz2oL6DgyUE76gENWfOvvGbQ@mail.gmail.com>
-Message-ID: <CAK7LNATRWgfnP_C68aiOLacR_Bhz2oL6DgyUE76gENWfOvvGbQ@mail.gmail.com>
-Subject: Re: [PATCH] x86/boot: kbuild: allow readelf executable to be specified
-To:     Dmitry Golovin <dima@golovin.in>
-Cc:     Nick Desaulniers <ndesaulniers@google.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        Bruce Ashfield <bruce.ashfield@gmail.com>,
-        Ross Philipson <ross.philipson@oracle.com>,
-        Ross Burton <ross.burton@intel.com>,
-        Chao Fan <fanc.fnst@cn.fujitsu.com>,
-        Daniel Kiper <daniel.kiper@oracle.com>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        LKML <linux-kernel@vger.kernel.org>,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        "tony.luck@intel.com" <tony.luck@intel.com>,
-        "fenghua.yu@intel.com" <fenghua.yu@intel.com>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="vzwczu2ztdefrrfu"
+Content-Disposition: inline
+In-Reply-To: <20191216192158.B9F19832924A@oldenburg2.str.redhat.com>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Dec 5, 2019 at 9:41 AM Dmitry Golovin <dima@golovin.in> wrote:
->
-> 05.12.2019, 01:18, "'Nick Desaulniers' via Clang Built Linux" <clang-built-linux@googlegroups.com>:
-> >
-> > Grepping the kernel sources for `READELF`, it looks like
-> > arch/ia64/Makefile makes the same mistake. Would you mind fixing both
-> > cases in the same patch (v2)? I'm also curious about it's use in
-> > arch/ia64/scripts/unwcheck.py, and scripts/faddr2line. +ia64
-> > maintainers and list.
-> >
-> > I think if you simply remove the assignment on line 17 of
-> > arch/ia64/Makefile you should be fine.
->
-> Perhaps something should be done to NM on line 16 of this file as well. Also
-> found similar invocation of `objcopy` in arch/riscv/kernel/vdso/Makefile.
-> I think IA64 and RISC-V changes should be made as separate commits.
->
-> -- Dmitry
 
-Applied to linux-kbuid. Thanks.
+--vzwczu2ztdefrrfu
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
--- 
-Best Regards
-Masahiro Yamada
+On 2019-12-16, Florian Weimer <fweimer@redhat.com> wrote:
+> > diff --git a/include/uapi/linux/fcntl.h b/include/uapi/linux/fcntl.h
+> > index 1d338357df8a..58c3a0e543c6 100644
+> > --- a/include/uapi/linux/fcntl.h
+> > +++ b/include/uapi/linux/fcntl.h
+> > @@ -93,5 +93,40 @@
+> > =20
+> >  #define AT_RECURSIVE		0x8000	/* Apply to the entire subtree */
+> > =20
+> > +/*
+> > + * Arguments for how openat2(2) should open the target path. If @resol=
+ve is
+> > + * zero, then openat2(2) operates very similarly to openat(2).
+> > + *
+> > + * However, unlike openat(2), unknown bits in @flags result in -EINVAL=
+ rather
+> > + * than being silently ignored. @mode must be zero unless one of {O_CR=
+EAT,
+> > + * O_TMPFILE} are set.
+> > + *
+> > + * @flags: O_* flags.
+> > + * @mode: O_CREAT/O_TMPFILE file mode.
+> > + * @resolve: RESOLVE_* flags.
+> > + */
+> > +struct open_how {
+> > +	__aligned_u64 flags;
+> > +	__u16 mode;
+> > +	__u16 __padding[3]; /* must be zeroed */
+> > +	__aligned_u64 resolve;
+> > +};
+> > +
+> > +#define OPEN_HOW_SIZE_VER0	24 /* sizeof first published struct */
+> > +#define OPEN_HOW_SIZE_LATEST	OPEN_HOW_SIZE_VER0
+> > +
+> > +/* how->resolve flags for openat2(2). */
+> > +#define RESOLVE_NO_XDEV		0x01 /* Block mount-point crossings
+> > +					(includes bind-mounts). */
+> > +#define RESOLVE_NO_MAGICLINKS	0x02 /* Block traversal through procfs-s=
+tyle
+> > +					"magic-links". */
+> > +#define RESOLVE_NO_SYMLINKS	0x04 /* Block traversal through all symlin=
+ks
+> > +					(implies OEXT_NO_MAGICLINKS) */
+> > +#define RESOLVE_BENEATH		0x08 /* Block "lexical" trickery like
+> > +					"..", symlinks, and absolute
+> > +					paths which escape the dirfd. */
+> > +#define RESOLVE_IN_ROOT		0x10 /* Make all jumps to "/" and ".."
+> > +					be scoped inside the dirfd
+> > +					(similar to chroot(2)). */
+> > =20
+> >  #endif /* _UAPI_LINUX_FCNTL_H */
+>=20
+> Would it be possible to move these to a new UAPI header?
+>=20
+> In glibc, we currently do not #include <linux/fcntl.h>.  We need some of
+> the AT_* constants in POSIX mode, and the header is not necessarily
+> namespace-clean.  If there was a separate header for openat2 support, we
+> could use that easily, and we would only have to maintain the baseline
+> definitions (which never change).
+
+Sure, (assuming nobody objects) I can move it to "linux/openat2.h".
+
+--=20
+Aleksa Sarai
+Senior Software Engineer (Containers)
+SUSE Linux GmbH
+<https://www.cyphar.com/>
+
+--vzwczu2ztdefrrfu
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYIAB0WIQSxZm6dtfE8gxLLfYqdlLljIbnQEgUCXfh4MQAKCRCdlLljIbnQ
+EvJ/AP9e+RbEhnKlfXeue8RftgpgyUu8To5+ZOcmuoKfUFVefgEAmch0tDU0glq6
+a0g2iw25N8tzxhAIzQpE/p2HRuzcPgo=
+=p/bo
+-----END PGP SIGNATURE-----
+
+--vzwczu2ztdefrrfu--
