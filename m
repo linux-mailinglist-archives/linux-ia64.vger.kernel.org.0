@@ -2,58 +2,82 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C92E129F6F
-	for <lists+linux-ia64@lfdr.de>; Tue, 24 Dec 2019 09:47:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E25612A696
+	for <lists+linux-ia64@lfdr.de>; Wed, 25 Dec 2019 08:31:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726224AbfLXIrS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 24 Dec 2019 03:47:18 -0500
-Received: from mail-qv1-f67.google.com ([209.85.219.67]:45104 "EHLO
-        mail-qv1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726116AbfLXIrN (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 24 Dec 2019 03:47:13 -0500
-Received: by mail-qv1-f67.google.com with SMTP id l14so7240499qvu.12
-        for <linux-ia64@vger.kernel.org>; Tue, 24 Dec 2019 00:47:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=LcGU1mt+nAQIi3eKcWZpiy7DqrkNG23tK1MNYV9CB+M=;
-        b=PQC8SYLCXx+8aDuDCLCwJgk2oQh3fLzHmMXwhB5xY3bef3Vo9nrhk4Yg6HHmflz15A
-         odr7sEsXszk5IefLinD2h+1zq4e88FBObg36SZAuPRqSewet3Ta9S7nYrpgVd56Fd7Nn
-         pF4UOpFqHS/vFlCYHvNiKKET749oMuh6ba4SGm84XHPjlJH1jZ6bNkVeqECOxLVvUm4D
-         QLX5/qOjMF+sSc2kOy8uf2Xg/YtEl3CfJAdSFbQYNBLHe5VpSisBe2Vhsy7I7HtuscWQ
-         RrXf3skZb21QSlq2mtaYGqsirOIfAXY2wSc5lCy61V/R0NEOho5Faf+a1vRLR5TL05Tc
-         J2BQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=LcGU1mt+nAQIi3eKcWZpiy7DqrkNG23tK1MNYV9CB+M=;
-        b=MbO0vbQePRyDTaWtoyGt5KW1dcYDnZAUS7D8f5kfhBEmZXirxzUeeVbfvfnRYi0E1I
-         78rHOIF/+T4y5QtrDo0jPy5qJ4bUvNTm9qF9F6BUT+iB2bP1R9k3vuNgMnOt0oF9BIT7
-         zhQXj0r0panCz2qEQlT3K+f5iC/uO1oFyxrR1PupMx3qnZx9nIvWjaY9jt9IPFmfc5Mg
-         h/t/oc4ouqozBUsn3+GdananBNQMslHr/tISAK5823SzX8GgqBKt4DE202hR26s5aRKj
-         F66GdFILpnjTdH+gk2csBzo+Nu69fLTwKwZHxQdEPQH2JVpk0kP9bQsNgVN8cLZ6l8cu
-         n1hA==
-X-Gm-Message-State: APjAAAXd0XHmubCbchoY/O5Rrkedj60K5KunJZ4BXsWhgscaoYEFXyYG
-        zO+gI+Pft4vz3YA/f5vuy5NIbGLUFUjWMtb94Zo=
-X-Google-Smtp-Source: APXvYqzaLbNYw7chXTk9TUUPs6B60DWqUF5k2s4P095bxLhv0swSj+2PMPeIkcEn8uNvF34hBR2yK95ka1103zSo7Q4=
-X-Received: by 2002:a0c:f24a:: with SMTP id z10mr28100861qvl.33.1577177231005;
- Tue, 24 Dec 2019 00:47:11 -0800 (PST)
+        id S1725992AbfLYHbZ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 25 Dec 2019 02:31:25 -0500
+Received: from mail02.vodafone.es ([217.130.24.81]:49166 "EHLO
+        mail02.vodafone.es" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725976AbfLYHbZ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 25 Dec 2019 02:31:25 -0500
+X-Greylist: delayed 302 seconds by postgrey-1.27 at vger.kernel.org; Wed, 25 Dec 2019 02:31:24 EST
+IronPort-SDR: ojCoRRFcjNagaSs+KZFddpmnv8vEwZMvCxWaoZWJ746PDBdul3mDkV1CYPlSE0wt44f2KSGRxQ
+ BZ+64wIu38Kw==
+IronPort-PHdr: =?us-ascii?q?9a23=3AaVGcQx2ZOdw5+zw7smDT+DRfVm0co7zxezQtwd?=
+ =?us-ascii?q?8ZseIXK/ad9pjvdHbS+e9qxAeQG9mCsLQe0bGd7vGocFdDyK7JiGoFfp1IWk?=
+ =?us-ascii?q?1NouQttCtkPvS4D1bmJuXhdS0wEZcKflZk+3amLRodQ56mNBXdrXKo8DEdBA?=
+ =?us-ascii?q?j0OxZrKeTpAI7SiNm82/yv95HJbAhEmTSwbalsIBmoowjduckbjI9/Iast1x?=
+ =?us-ascii?q?XFpWdFdf5Lzm1yP1KTmBj85sa0/JF99ilbpuws+c1dX6jkZqo0VbNXAigoPG?=
+ =?us-ascii?q?Az/83rqALMTRCT6XsGU2UZiQRHDg7Y5xznRJjxsy/6tu1g2CmGOMD9UL45VS?=
+ =?us-ascii?q?i+46ptVRTljjoMOTwk/2HNksF+gqJVoAi/qRJ83oDbb52aOvVlc6PBf94VWX?=
+ =?us-ascii?q?ZNUtpNWyBfBI63cosBD/AGPeZdt4TzoUEBpgakCwm2BePvzz5IhmP33a0kye?=
+ =?us-ascii?q?sqDAbL3BA9H9IKrHvUrcj6O70JUe2uyanH1zTDb/dM1Tfh9ofIdg4uoemWUr?=
+ =?us-ascii?q?1sa8bR0VUvGhrDg16NqoLlJyuY2voQv2WZ9eZsSOyih3I9pw1vrTWj3Mkhh4?=
+ =?us-ascii?q?nPi4kI0F7L7z95z5wwJdCgTU57ZsOrH4VIuiGBMot2XtsiQ2Z1uCYm0rEGuY?=
+ =?us-ascii?q?C0fCwNyJk/wh7Qcf2Hc4yS4h39UOadPTh1iGh7eLK4mhm960agyur6Vsaqyl?=
+ =?us-ascii?q?pFsDFFnsHNtnALyRPT9tCKRuVg8kqjwzqDyg7e5v1eLUwqmqfXMZAsz74omp?=
+ =?us-ascii?q?oWq0vDHyv2mEvsjK+Rc0Up4vSo6/njYrr6p5+TKpV7ihrlP6QrgMO/AOA4Ph?=
+ =?us-ascii?q?ISX2eF/eSzyqXj8lflT7lQlv02jrHVsIrGKsQDuq65HwhV354n6xa+CTemzd?=
+ =?us-ascii?q?sZkWAGLF1feR+KgJPkO0/BIP/mF/ezmVesnylxx/DAILLhBo/BLn/ZkLfuLv?=
+ =?us-ascii?q?5B7BtYyQwu3ZVe7swIIq8OLei1WULrstHcSBgjPF+Ozv7jGel6g6cXEVqVA6?=
+ =?us-ascii?q?qYLKLMuBfc4us3OeiJZZMUpj/wMNA34P7piHY4nRkQYP/684EQbSWcF7xeOU?=
+ =?us-ascii?q?ScYGbtnN5JRXsXugE/QOXxoFiLUDoVe3u2Uro17XcjFNT1Xs/4WomxjenZj2?=
+ =?us-ascii?q?+AFZpMazUeBw=3D=3D?=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-Anti-Spam-Result: =?us-ascii?q?A2GEKgDyDQNelyMYgtllgkQBGAEBgns?=
+ =?us-ascii?q?3GyASk0JUBnUdihKFM4N8FYYaDIFbDQEBAQEBNQIBAYRAgiIkOBMCAw0BAQU?=
+ =?us-ascii?q?BAQEBAQUEAQECEAEBAQEBCBYGhXNCAQwBgWsihBeBA4EsgwOCUymtGhoChSO?=
+ =?us-ascii?q?Ec4E2AYwYGnmBB4FEgjKFAgESAWyFIQSNRSGIS2GXfoI+BJYwDYIpAYw4A4J?=
+ =?us-ascii?q?UiRGnIoI3VYELgQpxTTiBchmBHU8YDY0sji1AgRYQAk+FQIdcgjIBAQ?=
+X-IPAS-Result: =?us-ascii?q?A2GEKgDyDQNelyMYgtllgkQBGAEBgns3GyASk0JUBnUdi?=
+ =?us-ascii?q?hKFM4N8FYYaDIFbDQEBAQEBNQIBAYRAgiIkOBMCAw0BAQUBAQEBAQUEAQECE?=
+ =?us-ascii?q?AEBAQEBCBYGhXNCAQwBgWsihBeBA4EsgwOCUymtGhoChSOEc4E2AYwYGnmBB?=
+ =?us-ascii?q?4FEgjKFAgESAWyFIQSNRSGIS2GXfoI+BJYwDYIpAYw4A4JUiRGnIoI3VYELg?=
+ =?us-ascii?q?QpxTTiBchmBHU8YDY0sji1AgRYQAk+FQIdcgjIBAQ?=
+X-IronPort-AV: E=Sophos;i="5.69,353,1571695200"; 
+   d="scan'208";a="317866489"
+Received: from mailrel04.vodafone.es ([217.130.24.35])
+  by mail02.vodafone.es with ESMTP; 25 Dec 2019 08:26:20 +0100
+Received: (qmail 32240 invoked from network); 25 Dec 2019 04:33:51 -0000
+Received: from unknown (HELO 192.168.1.88) (seigo@[217.217.179.17])
+          (envelope-sender <tulcidas@mail.telepac.pt>)
+          by mailrel04.vodafone.es (qmail-ldap-1.03) with SMTP
+          for <linux-ia64@vger.kernel.org>; 25 Dec 2019 04:33:51 -0000
+Date:   Wed, 25 Dec 2019 05:33:42 +0100 (CET)
+From:   La Primitiva <tulcidas@mail.telepac.pt>
+Reply-To: La Primitiva <laprimitivaes@zohomail.eu>
+To:     linux-ia64@vger.kernel.org
+Message-ID: <21249373.259372.1577248422827.JavaMail.javamailuser@localhost>
+Subject: Take home 750,000 Euros this end of year
 MIME-Version: 1.0
-Received: by 2002:ad4:530a:0:0:0:0:0 with HTTP; Tue, 24 Dec 2019 00:47:10
- -0800 (PST)
-Reply-To: bethnatividad9@gmail.com
-From:   Beth Nat <anthonymoore105@gmail.com>
-Date:   Tue, 24 Dec 2019 08:47:10 +0000
-Message-ID: <CAKqrdYCjdg7tKr1Bgbtcoo-HGDCypDL8xnV8R2ZpiJxfRimm-A@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-How are you today my dear? i saw your profile and it interests me, i
-am a Military nurse from USA. Can we be friend? I want to know more
-about you.
+Attn: Email User,
+
+You have won, you are to reply back with your name and phone number for
+claim.
+
+La Primitiva
+
+
+
+
+----------------------------------------------------
+This email was sent by the shareware version of Postman Professional.
+
