@@ -2,157 +2,70 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A1E812B38C
-	for <lists+linux-ia64@lfdr.de>; Fri, 27 Dec 2019 10:33:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6649A12F4F9
+	for <lists+linux-ia64@lfdr.de>; Fri,  3 Jan 2020 08:38:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726354AbfL0Jdo (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 27 Dec 2019 04:33:44 -0500
-Received: from mx0a-00010702.pphosted.com ([148.163.156.75]:55754 "EHLO
-        mx0b-00010702.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1725904AbfL0Jdo (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 27 Dec 2019 04:33:44 -0500
-X-Greylist: delayed 6147 seconds by postgrey-1.27 at vger.kernel.org; Fri, 27 Dec 2019 04:33:43 EST
-Received: from pps.filterd (m0098780.ppops.net [127.0.0.1])
-        by mx0a-00010702.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id xBR7o2ji026549;
-        Fri, 27 Dec 2019 01:51:09 -0600
-Received: from nam02-cy1-obe.outbound.protection.outlook.com (mail-cys01nam02lp2053.outbound.protection.outlook.com [104.47.37.53])
-        by mx0a-00010702.pphosted.com with ESMTP id 2x1ht0v0c7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 27 Dec 2019 01:51:08 -0600
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=b+AiQgLZphcwJnylMm+ovqtqVeOylcayZUxR0y6ZDzia0YP43eZovbqBEWAh+/JVgUUe+CY2M/ojhWbI2qZ7D8J3/Sx/s2icOrTWeG19DNw4scpxm8iYTER30ioSUylrBnbnmCoWqCgBXwNM4milA91WBIX8RkNo5nNU/ZL92Ee+XlRvRstz7gTKvlt4A4XkDUuvuHz/4VWzHfKy1+HaC1nMkAQ9aEPhBrGuTu0JL/M3gezYh0EKYrSBtF45MQ4gFodT5nDAZ0LFY/fQuARpQ7ZaCcDwZ7dE3+a5JNodpIDLpA57hMAJ9sSKbbKw4FdFzzdO/9QQU88pNhadZ4ilNw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vr+BKJ/WykkDsomNLPJmm9XgEnfsmA8LK65nPBeP5aY=;
- b=nNBKE7hiCL5KNwoeQCsjp6ijBbzTkVYLLxQFAi7/MtxuqBWvRNP7BB5cyPjzVQX0CTpYe72v5S4RBK3BV1tkBU96rZV4eftH2loC+DtbhYubhlEQTqx/9MO3mWJxUqRKtha4DEGgPfwVq5wweffxRHUVKVvi3fTUC7iuJYhVh9FL54x++zfv0jqNLVdP8YNj0XiTdCUzJ4XNxr9/NGt8lJ76MbdDO5hQyVK4GpxjiJNoovC9ZCDAfBkfIhwLHPgMMaCtG2M9nOc/JXkJ4X1PxuFaEmI5U6UVv9cAmY8a6oLj4p0TYyUzxwOyaDtR2XVIAUHv7BNsvVUuqbj+3TMjCQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ni.com; dmarc=pass action=none header.from=ni.com; dkim=pass
- header.d=ni.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=nio365.onmicrosoft.com; s=selector2-nio365-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Vr+BKJ/WykkDsomNLPJmm9XgEnfsmA8LK65nPBeP5aY=;
- b=OiySrtD7toWV15O/tzNxt1QqjvzWyD63d4YIvJlGct8Xw4YO8IgeebK+AWyAjP2qW77lmyqpH5IriXbfPPKuIzTGjs9tsJPanrZ7ruq5cv5g5xvxFwgB6ep7Isjhn6GKYvzMPjMKqzVk6DT0SamuiRubSpmwWE4uBU7BXWsNj8k=
-Received: from MN2PR04MB6255.namprd04.prod.outlook.com (20.178.245.75) by
- MN2PR04MB5821.namprd04.prod.outlook.com (20.179.22.76) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.2581.12; Fri, 27 Dec 2019 07:51:07 +0000
-Received: from MN2PR04MB6255.namprd04.prod.outlook.com
- ([fe80::9868:19c9:2875:b0ab]) by MN2PR04MB6255.namprd04.prod.outlook.com
- ([fe80::9868:19c9:2875:b0ab%5]) with mapi id 15.20.2581.007; Fri, 27 Dec 2019
- 07:51:07 +0000
-From:   Kar Hin Ong <kar.hin.ong@ni.com>
-To:     linux-rt-users <linux-rt-users@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-x86_64@vger.kernel.org" <linux-x86_64@vger.kernel.org>,
-        "platform-driver-x86@vger.kernel.org" 
-        <platform-driver-x86@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>
-CC:     Gratian Crisan <gratian.crisan@ni.com>
-Subject: "oneshot" interrupt causes another interrupt to be fired erroneously
- in Intel Haswell system
-Thread-Topic: "oneshot" interrupt causes another interrupt to be fired
- erroneously in Intel Haswell system
-Thread-Index: AdW8ilVAAvaA3JdCTRaY/KqJbPF6vA==
-Date:   Fri, 27 Dec 2019 07:51:07 +0000
-Message-ID: <MN2PR04MB6255567B0B0060B0A8954605C32A0@MN2PR04MB6255.namprd04.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-originating-ip: [130.164.75.18]
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: 6a12e843-41c6-4532-7be0-08d78aa1883c
-x-ms-traffictypediagnostic: MN2PR04MB5821:
-x-ms-exchange-transport-forked: True
-x-microsoft-antispam-prvs: <MN2PR04MB5821FE42D9C4C633F8BB90F1C32A0@MN2PR04MB5821.namprd04.prod.outlook.com>
-x-ms-oob-tlc-oobclassifiers: OLM:9508;
-x-forefront-prvs: 0264FEA5C3
-x-forefront-antispam-report: SFV:NSPM;SFS:(10019020)(136003)(366004)(376002)(346002)(396003)(39860400002)(189003)(199004)(478600001)(26005)(7696005)(966005)(5660300002)(186003)(52536014)(86362001)(71200400001)(64756008)(66446008)(66476007)(6506007)(76116006)(66946007)(66556008)(110136005)(316002)(2906002)(8676002)(81156014)(81166006)(4326008)(33656002)(9686003)(8936002)(55016002);DIR:OUT;SFP:1102;SCL:1;SRVR:MN2PR04MB5821;H:MN2PR04MB6255.namprd04.prod.outlook.com;FPR:;SPF:None;LANG:en;PTR:InfoNoRecords;MX:1;A:1;
-received-spf: None (protection.outlook.com: ni.com does not designate
- permitted sender hosts)
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: pjVcvvOEjNneDlbCK7nrN+EPn2kTDVt5CKSFA11jw5tpl3ZqCd4No6ANoPbGfsn1+CH8XSIo20DMHGbiCFFI75dt4blSFxtzQJxsXl2dxB3bcnRK5rtA2Rtk5nZ92UZyE+s3aXOfNcJoTuSqgetRfAQItC9Td254/11P7b7jEKCbFwLZu8zLF74sSD30PrMc5dtS5jyiSljh+0235EtOWLDsS48fuqikC8Vo9o12G/42o2EU/WBveYMcl9cSuT2k/uqbpGUVzPasc58JQVgWLfdprAafdamZlGfPL0hznmalnkvypdtge3oSMZFHNrCfP4oS4IhDsbzkvJdQMVDG1GKxXTJh1ZVhyxR/HeDLu+Ph+wOOgDu2k0Ex2L2+ufNSQmZ7sZVVXcEQ4JpXRYUZX6TY9tFrghX2IRPUVJ+2RozmpbHCc0ClXt/0yBFXZutmyHLiFgpPjtp/XwPqVyAkQciXd3zqTMcFX5eVrpZe2ek=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        id S1727385AbgACHiB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 3 Jan 2020 02:38:01 -0500
+Received: from sonic301-30.consmr.mail.ne1.yahoo.com ([66.163.184.199]:46422
+        "EHLO sonic301-30.consmr.mail.ne1.yahoo.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727230AbgACHiA (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 3 Jan 2020 02:38:00 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1578037079; bh=MJdpASvZnpj3gXKZxrNskiGAl+hYYwdjGUMDZ9fMpsI=; h=Date:From:Reply-To:Subject:References:From:Subject; b=QSzh+FyK+PQqbNd1K5cuBfArUFqLiHiJAQkXv9ezOJqgEXC8QGQMQgZAHUyU4Q0YcLWtuY4D2Sr0/dr6OjadKmrFpRakTwV7xCp1Dw9f3Q8q2/NkQ+4lnuwCSU6ZzF+/SD5BmTiB2snpNWbd/vjroSKHRXVe13Ijb3DEHq61gm+41ZOBxaPDbGxUDpkZ8SREJ0VaTp1sKxjjUlqQ71XhzeDKepMbeP55ACCKICPw3k8vC84jh5JeEVKUf4+ADYt70sDmqegTPKmZMC9QOWyFjc5PX3rjn6/D10NDWKEFrjS7h/8J9Y+dKohuMDQAzRvoNR6eF6qw7FzJN6TwUm1t6Q==
+X-YMail-OSG: yXnmVBcVM1nFNSolob2gHkbHPZ3yfZSyZjIbiwo.24pXbh3OORIC9CiEzjjKfH6
+ 8rSqYYnETRF7LhGLdUPzfYxNL6Gya8Ka3CCZWTtjqUbND6M5a2wBG3Y7vYCztdFqeu78uLMNZC5m
+ b7EeHWZ4xaoadYgjjjfuitcXMc36jsOezDOKkecQ9TRe6DtHyC5EvQqVsYwapO8tlf4JYG6EG.FO
+ fpu2auCbIRLs2MMA4vMibGMiLjZrSyX1kCZbgDexAdD_u8b6KDCrEjd.8YF8F5qs3Fs_VGdMsOR0
+ jZsb6E8Efoq_Si6fVJggXbZQTFHf8MpBVXhO5euMma_ZBUlsoQi2o0U1Odi4aNmPfRfOEgmR90h.
+ jdRum8_.6VtYtI_pOGkH2YCHRtFFd476aeEECdrF.AFtyXeOxs2o7H749gRc9BNV6sXxBwgMOj2E
+ ShP09eiehvu.hKrhwu6x6yrDIIpsTqX7LCK0nHuyzZs1uvNd2EfdAbHabW7zBrJJLPT5PaIY4ovG
+ p0Szss.hm_6Pz4O9p5anMdPoK43XMHT03yxf6swDbirj_O98EUYSPd9C6B1LXMD0iWHjuSl4tu4z
+ GIkIvc5lErAM8tTr24dgvhNxDUiJjvDKO8aA9jRuhSAko29MJ2iRVxJezRLqhuWEeVdzlkskH9EI
+ ZD_4G3.v4_qxcPOSs4ITL4lFHkQ3bJ1Y3Sy7rM5os5jjdtpUycMyD5TDpD__0Zyv.rpIlc3Kp6oq
+ ina.QJE1E6rtxYYhIcDId1NSX8jEd6EvQxUOBktCleihXRVNPm2g0PWI_eEw1eFFFD7gOcvtR7WD
+ BH75SicEpJ4UxtblvYRCgbF4nBbu07TsJlDBqpoYhXjSllQlGGLt66pzu0itIp62Il08vY2UkuvB
+ 47aUc1oLbRxxjU.ZjgJiYHzj6rspZAMCHXwdber4wpv4kbkhO7B1ErJ9czk266z92WRVUmIXubFy
+ xoCO4fNiGxGSeULLlJXDzuatxKFNeZOshtAHHZsIYIpy8hqudstdD960GzqSzolnSothWFrZ9lPk
+ fdpDXQjhh_Bhq4AyRjbclegvE0E2Q6oVs48sZAx4e9.9jOD53UK9T51iW.8Qg4gQ7WDyjiFU097R
+ zRDteTFA2hFNqSihVhw0S70tRmOJUBWFF02lceT0zzN5czDm.R0ujSijrvskZZ8FRh6voapbwD2b
+ 2ZlGVZU0NAjdPxBL5xsAIPzLSSlYf_w7Z.xyZ7MCtzl.LRHZTR7.FX2iNvzladPYgxttJZOgLMCI
+ m7qk3S8Vtp3MqstvSjUF8K5e9axmV8qc4Htq4lQZhpUQ8zddeP2QVwyQbhsfIP2LKdUbWexqI
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic301.consmr.mail.ne1.yahoo.com with HTTP; Fri, 3 Jan 2020 07:37:59 +0000
+Date:   Fri, 3 Jan 2020 07:37:55 +0000 (UTC)
+From:   Brian Gilvary <1brian.gilvary@gmail.com>
+Reply-To: gilvarybrian@aol.com
+Message-ID: <466166173.6197256.1578037075711@mail.yahoo.com>
+Subject: Happy New Year For Our Mutual Benefits
 MIME-Version: 1.0
-X-OriginatorOrg: ni.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6a12e843-41c6-4532-7be0-08d78aa1883c
-X-MS-Exchange-CrossTenant-originalarrivaltime: 27 Dec 2019 07:51:07.3649
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 87ba1f9a-44cd-43a6-b008-6fdb45a5204e
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: e6maJfPBHzb90lxtLYWCyCH88hauxx0d/+Vb4N8ILuQ/bjnXxkeXVq7vONZe7zKzeo2H4+IOMQd/BMqx/Jhsqw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR04MB5821
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.95,18.0.572
- definitions=2019-12-27_01:2019-12-24,2019-12-27 signatures=0
-X-Proofpoint-Spam-Details: rule=inbound_policy_notspam policy=inbound_policy score=30 malwarescore=0
- clxscore=1011 priorityscore=1501 mlxlogscore=687 spamscore=0
- impostorscore=0 phishscore=0 lowpriorityscore=0 adultscore=0 mlxscore=0
- bulkscore=0 suspectscore=0 classifier=spam adjust=30 reason=mlx
- scancount=1 engine=8.12.0-1910280000 definitions=main-1912270063
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+References: <466166173.6197256.1578037075711.ref@mail.yahoo.com>
+X-Mailer: WebService/1.1.14873 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:71.0) Gecko/20100101 Firefox/71.0
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi,
+Hi
 
-I've an Intel Haswell system running Linux kernel v4.14 with preempt_rt pat=
-ch. The system contain 2 IOAPICs: IOAPIC 1 is on the PCH where IOAPIC 2 is =
-on the CPU.
+As the Chief Financial Officer, British Petroleum Company plc (BP), I am in=
+ a position to facilitate immediate transfer of =C2=A3 48,000,000.00 (Forty=
+ Eight Million British Pounds Sterling), to any of your nominated Bank Acco=
+unt.
 
-I observed that whenever a PCI device is firing interrupt (INTx) to Pin 20 =
-of IOAPIC 2 (GSI 44); the kernel will receives 2 interrupts:=20
-   1. Interrupt from Pin 20 of IOAPIC 2  -> Expected
-   2. Interrupt from Pin 19 of IOAPIC 1  -> UNEXPECTED, erroneously trigger=
-ed
+Source of Funds: An over-invoiced payment from a past project executed in m=
+y department. I cannot successfully achieve this transaction without presen=
+ting you as foreign contractor who will provide the bank account to receive=
+ the funds. Every documentation for the claim of the funds will be legally =
+processed and documented, so I will need your full co-operation for our mut=
+ual benefits.
 
-The unexpected interrupt is unhandled eventually. When this scenario happen=
- more than 99,000 times, kernel disables the interrupt line (Pin 19 of IOAP=
-IC 1) and causing device that has requested it become malfunction.
-I managed to also reproduced this issue on RHEL 8 and Ubuntu 19.04, 19.10 (=
-without preempt_rt patch) after added "threadirqs" to the kernel command li=
-ne.
+We will discuss details if you are interested to work with me to secure thi=
+s funds, as I said for our mutual benefits. I will be looking forward to yo=
+ur prompt response.
 
-After digging further, I noticed that the said issue is happened whenever a=
-n interrupt pin on IOAPIC 2 is masked:
- - Masking Pin 20 of IOAPIC 2 triggers Pin 19 of IOAPIC 1 =20
- - Masking Pin 22 of IOAPIC 2 triggers Pin 18 of IOAPIC 1 =20
-
-I learnt that kernel will explicitly mask a specific interrupt pin before e=
-xecute its handler, if the interrupt is configured as "oneshot" (i.e. threa=
-ded). Source: https://elixir.bootlin.com/linux/v4.14/source/kernel/irq/chip=
-.c#L695 =20
-This explained why it only happened on RTOS and Desktop Linux with "threadi=
-rqs" flag, because these configurations forces the interrupt handler to be =
-threaded.
-
-From Intel Xeon Processor E5/E7 v3 Product Family External Design Specifica=
-tion (EDS), Volume One: Architecture, section 13.1 (Legacy PCI Interrupt Ha=
-ndling), it mention:
-"If the I/OxAPIC entry is masked (via the 'mask' bit in the corresponding R=
-edirection Table Entry), then the corresponding PCI Express interrupt(s) is=
- forwarded to the legacy PCH"
-
-My interpretation is: when kernel receive a "oneshot" interrupt, it mask th=
-e line before start handling it.=20
-At this moment, if the interrupt line is still asserting, then the interrup=
-t signal will be routed to the IOAPIC in PCH, and hence causing another int=
-errupt to be fired erroneously and unhandled. =20
-
-Since the "route_to_pci" behaviour is documented in Intel spec, I presume i=
-t's a feature rather than a bug.
-If this is a feature for intel processors, should the kernel irq handling r=
-outine be patched to handle it?=20
-
-Thanks.
-Kar Hin Ong
-
-
-
+Best regards
+Brian Gilvary
+Chief financial officer
+BP, Plc.
