@@ -2,100 +2,117 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id A6C9F12FD8D
-	for <lists+linux-ia64@lfdr.de>; Fri,  3 Jan 2020 21:19:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D12E6131FF2
+	for <lists+linux-ia64@lfdr.de>; Tue,  7 Jan 2020 07:45:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728650AbgACUTr (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 3 Jan 2020 15:19:47 -0500
-Received: from mail-vk1-f193.google.com ([209.85.221.193]:34563 "EHLO
-        mail-vk1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728660AbgACUTq (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 3 Jan 2020 15:19:46 -0500
-Received: by mail-vk1-f193.google.com with SMTP id w67so11024166vkf.1
-        for <linux-ia64@vger.kernel.org>; Fri, 03 Jan 2020 12:19:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:from:date:message-id:subject:to;
-        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
-        b=AWCc/ylFmQ91zZEJrbKovcmODhKduqUVkKGxHK8uCtVvWppAnjCzAVhlqtuTB6Zv3H
-         fwGfadWPG5OWx3vtouAanI9rAb4+nCSTS9ougZHH94RmFVRXusGOhSeq6LcZbXUbpYke
-         LecHuReAxOHZIAlNr0puF8IN10taJseJbu/8dZmgE65qy44VHc90CsjCbMPz9YIW56uc
-         KAocddCq9fbTe+4eLEe4ukQAx3KuF/S8Bs/5ss0PU18bAsmodPObJCziaNGvW+fW97nj
-         vqPpR6NvW2UHqccwDYrcuioTdRRCTX8F5vGOe97A6Uj5iUQG4sbm5c76feOsNIPb/J8O
-         nOKQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:from:date:message-id:subject:to;
-        bh=40ACnQIUnpge54Cj+EODMXbGQ2AM0yGbootCDBdgIh0=;
-        b=VhCHm7d4ZX0qYrNjVSUauA1/8f2iWJxKzIQ1tAe3SOFdRN2qOxXqJ/GIfOjLbfWjUF
-         CB/mpm5Lk1OzRcEeqOKSePEXSImXSRa9Ox0eXZr435NGqsRPU0AD5KLeRzueR6yyZPGa
-         1RAVpHZU1WSj8zYFk8E9NZIX58mEGb/1BVEossKw/HrNnXuFCZtVPRF+MCjp/BIR9HRd
-         QnyrukpyApU1HdW/qe1SHF01OTDZSZMS14bgXOrd/gAFUwwO2l7qx32WenDTAoHWmctW
-         r5wFr3hcZ59LCfhhjheTKTwoydiDGGY1bCkmDk5OXF6ViNxh39eQJ1hOv90ALMyJpxbj
-         oceQ==
-X-Gm-Message-State: APjAAAVmN0qtbqaRcEuTdJnKTKH/c1wFBr23gusXe4i/nExx7g41H1CJ
-        2yxrjV7nPqWjV/WLjHBLquKjXlhaYQErtFnuDAn3/rpAgqg=
-X-Google-Smtp-Source: APXvYqwTD0MzQRfSqMjBdpNUeZAJzfDvhrEGhXGCrMyvXGb//+N8M9ASxsqTbkQfP5NbaV7n6hKI5gEfY+hOjDS6Fyg=
-X-Received: by 2002:ad4:478b:: with SMTP id z11mr69635758qvy.185.1578082785331;
- Fri, 03 Jan 2020 12:19:45 -0800 (PST)
+        id S1725987AbgAGGpE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 7 Jan 2020 01:45:04 -0500
+Received: from foss.arm.com ([217.140.110.172]:53050 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725781AbgAGGpE (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 7 Jan 2020 01:45:04 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F3E7731B;
+        Mon,  6 Jan 2020 22:45:02 -0800 (PST)
+Received: from [10.162.43.133] (p8cg001049571a15.blr.arm.com [10.162.43.133])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A45EE3F703;
+        Mon,  6 Jan 2020 22:48:16 -0800 (PST)
+Subject: Re: [mm/debug] 87c4696d57: kernel_BUG_at_include/linux/mm.h
+To:     kernel test robot <rong.a.chen@intel.com>
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Mark Brown <broonie@kernel.org>,
+        Steven Price <Steven.Price@arm.com>,
+        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
+        Masahiro Yamada <yamada.masahiro@socionext.com>,
+        Kees Cook <keescook@chromium.org>,
+        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
+        Matthew Wilcox <willy@infradead.org>,
+        Sri Krishna chowdary <schowdary@nvidia.com>,
+        Dave Hansen <dave.hansen@intel.com>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>,
+        Martin Schwidefsky <schwidefsky@de.ibm.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        James Hogan <jhogan@kernel.org>,
+        Paul Burton <paul.burton@mips.com>,
+        Ralf Baechle <ralf@linux-mips.org>,
+        "Kirill A . Shutemov" <kirill@shutemov.name>,
+        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Ingo Molnar <mingo@kernel.org>,
+        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org, lkp@lists.01.org
+References: <20191227142255.GD2760@shao2-debian>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <490e77d6-a3ef-dd70-4c29-b90234f8a13d@arm.com>
+Date:   Tue, 7 Jan 2020 12:16:02 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Received: by 2002:ac8:4410:0:0:0:0:0 with HTTP; Fri, 3 Jan 2020 12:19:45 -0800 (PST)
-From:   "Rev.Dr Emmanuel Okoye CEO Ecobank-benin" 
-        <westernunion.benin982@gmail.com>
-Date:   Fri, 3 Jan 2020 21:19:45 +0100
-Message-ID: <CAP=nHBKxfmbdRg7q4-1jdSUL6+zok9agasMSrXV5CsEJEmZz3A@mail.gmail.com>
-Subject: I promise you must be happy today, God has uplifted you and your
- family ok
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20191227142255.GD2760@shao2-debian>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dear Friend
+On 12/27/2019 07:52 PM, kernel test robot wrote:
+> [    9.781974] kernel BUG at include/linux/mm.h:592!
+> [    9.782810] invalid opcode: 0000 [#1] PTI
+> [    9.783443] CPU: 0 PID: 1 Comm: swapper Not tainted 5.5.0-rc3-00001-g87c4696d57b5e #1
+> [    9.784528] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1 04/01/2014
+> [    9.785756] EIP: __free_pages+0x14/0x40
+> [    9.786442] Code: 0c 9c 5e fa 89 d8 e8 5b f3 ff ff 56 9d 5b 5e 5d c3 8d 74 26 00 90 8b 48 1c 55 89 e5 85 c9 75 16 ba b4 b6 84 d6 e8 ac 49 fe ff <0f> 0b 8d b4 26 00 00 00 00 8d 76 00 ff 48 1c 75 10 85 d2 75 07 e8
+> [    9.789697] EAX: d68761f7 EBX: ea52f000 ECX: ea4f8520 EDX: d684b6b4
+> [    9.790850] ESI: 00000000 EDI: ef45e000 EBP: ea501f08 ESP: ea501f08
+> [    9.791879] DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010286
+> [    9.792783] CR0: 80050033 CR2: ffffffff CR3: 16d00000 CR4: 000406b0
+> [    9.792783] Call Trace:
+> [    9.792783]  free_pages+0x3c/0x50
+> [    9.792783]  pgd_free+0x5a/0x170
+> [    9.792783]  __mmdrop+0x42/0xe0
+> [    9.792783]  debug_vm_pgtable+0x54f/0x567
+> [    9.792783]  kernel_init_freeable+0x90/0x1e3
+> [    9.792783]  ? rest_init+0xf0/0xf0
+> [    9.792783]  kernel_init+0x8/0xf0
+> [    9.792783]  ret_from_fork+0x19/0x24
+> [    9.792783] Modules linked in:
+> [    9.792803] ---[ end trace 91b7335adcf0b656 ]---
+> 
+> 
+> To reproduce:
+> 
+>         # build kernel
+> 	cd linux
+> 	cp config-5.5.0-rc3-00001-g87c4696d57b5e .config
+> 	make HOSTCC=gcc-7 CC=gcc-7 ARCH=i386 olddefconfig prepare modules_prepare bzImage
+> 
+>         git clone https://github.com/intel/lkp-tests.git
+>         cd lkp-tests
+>         bin/lkp qemu -k <bzImage> job-script # job-script is attached in this email
 
-i hope all is well with you,if so, glory be to God almighty. I'm very
-happy to inform you, about my success in getting payment funds under
-the cooperation of a new partner from United States of
-America.Presently I am in uk for investment projects with my own share
-of the total sum. I didn't forget your past efforts. IMF finally
-approved your compensation payment funds this morning by prepaid (ATM)
-Debit card of US$12,500.000.00Million Dollars, Since you not received
-this payment yet, I was not certified
-but it is not your fault and not my fault, I hold nothing against
-you.than bank official whom has been detaining the transfer in the
-bank, trying to claim your funds by themselves.
+Hello,
 
-Therefore, in appreciation of your effort I have raised an
-International prepaid (ATM) Debit card of US$12,500.000.00 in your
-favor as compensation to you.
+As the failure might be happening during boot when the test executes,
+do we really need to run these LKP based QEMU environment in order to
+reproduce the problem ? Could not this be recreated on a standalone
+system.
 
-Now, i want you to contact my Diplomatic Agent, His name is Mike Benz
-on His  e-mail Address (mikebenz550@aol.com
-
-ask Him to send the Prepaid (ATM) Debit card to you. Bear in mind that
-the money is in Prepaid (ATM) Debit card, not cash, so you need to
-send to him,
-your full name
-address  where the prepaid (ATM) Debit card will be delivered to you,
-including your cell phone number. Finally, I left explicit
-instructions with him, on how to send the (ATM CARD) to you.
-
-The Prepaid (ATM) Debit card, will be send to you through my
-Diplomatic Agent Mr. Mike Benz immediately you contact him. So contact
-my Diplomatic Agent Mr. Mike Benz immediately you receive this letter.
-Below is his contact information:
-
-NAME : MIKE BENZ
-EMAIL ADDRESS: mikebenz550@aol.com
-Text Him, (256) 284-4886
-
-Request for Delivery of the Prepaid (ATM) Debit card  to you today.
-Note, please I have paid for the whole service fees for you, so the
-only money you will send to my Diplomatic Agent Mr. Mike Benz is
-$50.00 for your prepaid (ATM) Debit card DELIVERY FEE to your address
-ok.
-Let me know once you receive this Card at your address.
-Best regards,
-Rev.Dr, George Adadar
+- Anshuman
