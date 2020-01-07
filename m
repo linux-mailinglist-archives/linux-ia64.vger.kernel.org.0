@@ -2,117 +2,78 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id D12E6131FF2
-	for <lists+linux-ia64@lfdr.de>; Tue,  7 Jan 2020 07:45:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 69DEF133014
+	for <lists+linux-ia64@lfdr.de>; Tue,  7 Jan 2020 20:56:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725987AbgAGGpE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 7 Jan 2020 01:45:04 -0500
-Received: from foss.arm.com ([217.140.110.172]:53050 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725781AbgAGGpE (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 7 Jan 2020 01:45:04 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id F3E7731B;
-        Mon,  6 Jan 2020 22:45:02 -0800 (PST)
-Received: from [10.162.43.133] (p8cg001049571a15.blr.arm.com [10.162.43.133])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A45EE3F703;
-        Mon,  6 Jan 2020 22:48:16 -0800 (PST)
-Subject: Re: [mm/debug] 87c4696d57: kernel_BUG_at_include/linux/mm.h
-To:     kernel test robot <rong.a.chen@intel.com>
-Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Mike Rapoport <rppt@linux.vnet.ibm.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Mark Brown <broonie@kernel.org>,
-        Steven Price <Steven.Price@arm.com>,
-        Ard Biesheuvel <ard.biesheuvel@linaro.org>,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Kees Cook <keescook@chromium.org>,
-        Tetsuo Handa <penguin-kernel@i-love.sakura.ne.jp>,
-        Matthew Wilcox <willy@infradead.org>,
-        Sri Krishna chowdary <schowdary@nvidia.com>,
-        Dave Hansen <dave.hansen@intel.com>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Martin Schwidefsky <schwidefsky@de.ibm.com>,
-        Heiko Carstens <heiko.carstens@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        James Hogan <jhogan@kernel.org>,
-        Paul Burton <paul.burton@mips.com>,
-        Ralf Baechle <ralf@linux-mips.org>,
-        "Kirill A . Shutemov" <kirill@shutemov.name>,
-        Gerald Schaefer <gerald.schaefer@de.ibm.com>,
-        Christophe Leroy <christophe.leroy@c-s.fr>,
-        Ingo Molnar <mingo@kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org, lkp@lists.01.org
-References: <20191227142255.GD2760@shao2-debian>
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Message-ID: <490e77d6-a3ef-dd70-4c29-b90234f8a13d@arm.com>
-Date:   Tue, 7 Jan 2020 12:16:02 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S1728723AbgAGT4n (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 7 Jan 2020 14:56:43 -0500
+Received: from mail-ed1-f67.google.com ([209.85.208.67]:43156 "EHLO
+        mail-ed1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728682AbgAGT4j (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 7 Jan 2020 14:56:39 -0500
+Received: by mail-ed1-f67.google.com with SMTP id dc19so597570edb.10
+        for <linux-ia64@vger.kernel.org>; Tue, 07 Jan 2020 11:56:37 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
+        b=m/Udengj3famfT4AeeQ1IRW+yMW7VasUnASahB37i/PoeHrkRBk2CGyFKYNukmjW7S
+         L8SRka5Jakx3oOkJPsG2IofN9vOqI+MJeZI3Q0YE0hhIfxJgla/Mvi4GlBIJ0+PXKJyR
+         fGhtIsUmeS9lphgKJPwASTV0Wis5x+akjvA6FztTMBR/K8fgi7sOjdtLa1OeTeeGw/oC
+         WuhGv+1qsxod0shrSr56iRhzuujf6ypC8mQV8JosjFfNeYtuq3xDGNFupimiXFOQL0SO
+         8SxYRsEAywqZcf7WmcQRmN/Qkf20W+/a6rRSJl252WjsQoa/SZxLvQ4mGRJVkfZ3ex9s
+         ABpA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=lUsTd9lJYwK928kai9reachpHe0HC9Hv8/gDLGwtaBI=;
+        b=pbiSBrVpTbNuWr+3QiFW3F1aRUMYbc+hPwf/OdTpYyKDM+hIfzTLuioPaLXqUp4SLx
+         ECDyXoB7ajkOI8nC+g1nBjDB575QQRHoCB+RdcwBKvr6YFJMnHGpeVpAkFyEAjnRAIJ2
+         DLqcGeayg8wopl0SR0tyqF1RfCHB3f9XEYwyVzi5oVRA0rddCgHnaagWRm3OyWbdxgZU
+         y9eaYUYpqc9ud1RFqIV9uMFQclVM/f5hClFEW8mAlyffeVir2TihuJ7q6Bgklhx1MR66
+         kR13148N0G323yv7KufIK9mwzdx8wv/bVF3ojF1WimWAw2iZq59vClE3YxsO/mDaKRR5
+         zGMg==
+X-Gm-Message-State: APjAAAUh/Vw2aBvXEah6PVgbh6eQwHWZzt0p0NQO5x2CZQJltp5DRIvZ
+        jhPNG1AK718r2xsY1ZVMaCWDZnidcXlBQ6luL64=
+X-Google-Smtp-Source: APXvYqzNbcT08PcgNHBR6CjdjGMonF1aREtl3FixKkalZzLFfyP3YZsjOtPyVn2SjFoUiZ8TzNVIEuitC7fnDU0d3Kk=
+X-Received: by 2002:a17:907:20ef:: with SMTP id rh15mr1111482ejb.325.1578426995176;
+ Tue, 07 Jan 2020 11:56:35 -0800 (PST)
 MIME-Version: 1.0
-In-Reply-To: <20191227142255.GD2760@shao2-debian>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a17:906:72c6:0:0:0:0 with HTTP; Tue, 7 Jan 2020 11:56:34
+ -0800 (PST)
+Reply-To: dhlexpresscouriercompany.nyusa@gmail.com
+From:   "Dr. William Johnson" <currency1000000@gmail.com>
+Date:   Tue, 7 Jan 2020 20:56:34 +0100
+Message-ID: <CAPqfnSEyU1pBR_7HT2g1KK7i8caLMBQ8yPA8KRDVm+MN-K_Z4w@mail.gmail.com>
+Subject: contact Dhl office New York to receive your Prepaid ATM Master Card
+ worth $15.8Million US DOLLARS now.
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 12/27/2019 07:52 PM, kernel test robot wrote:
-> [    9.781974] kernel BUG at include/linux/mm.h:592!
-> [    9.782810] invalid opcode: 0000 [#1] PTI
-> [    9.783443] CPU: 0 PID: 1 Comm: swapper Not tainted 5.5.0-rc3-00001-g87c4696d57b5e #1
-> [    9.784528] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.10.2-1 04/01/2014
-> [    9.785756] EIP: __free_pages+0x14/0x40
-> [    9.786442] Code: 0c 9c 5e fa 89 d8 e8 5b f3 ff ff 56 9d 5b 5e 5d c3 8d 74 26 00 90 8b 48 1c 55 89 e5 85 c9 75 16 ba b4 b6 84 d6 e8 ac 49 fe ff <0f> 0b 8d b4 26 00 00 00 00 8d 76 00 ff 48 1c 75 10 85 d2 75 07 e8
-> [    9.789697] EAX: d68761f7 EBX: ea52f000 ECX: ea4f8520 EDX: d684b6b4
-> [    9.790850] ESI: 00000000 EDI: ef45e000 EBP: ea501f08 ESP: ea501f08
-> [    9.791879] DS: 007b ES: 007b FS: 0000 GS: 0000 SS: 0068 EFLAGS: 00010286
-> [    9.792783] CR0: 80050033 CR2: ffffffff CR3: 16d00000 CR4: 000406b0
-> [    9.792783] Call Trace:
-> [    9.792783]  free_pages+0x3c/0x50
-> [    9.792783]  pgd_free+0x5a/0x170
-> [    9.792783]  __mmdrop+0x42/0xe0
-> [    9.792783]  debug_vm_pgtable+0x54f/0x567
-> [    9.792783]  kernel_init_freeable+0x90/0x1e3
-> [    9.792783]  ? rest_init+0xf0/0xf0
-> [    9.792783]  kernel_init+0x8/0xf0
-> [    9.792783]  ret_from_fork+0x19/0x24
-> [    9.792783] Modules linked in:
-> [    9.792803] ---[ end trace 91b7335adcf0b656 ]---
-> 
-> 
-> To reproduce:
-> 
->         # build kernel
-> 	cd linux
-> 	cp config-5.5.0-rc3-00001-g87c4696d57b5e .config
-> 	make HOSTCC=gcc-7 CC=gcc-7 ARCH=i386 olddefconfig prepare modules_prepare bzImage
-> 
->         git clone https://github.com/intel/lkp-tests.git
->         cd lkp-tests
->         bin/lkp qemu -k <bzImage> job-script # job-script is attached in this email
-
-Hello,
-
-As the failure might be happening during boot when the test executes,
-do we really need to run these LKP based QEMU environment in order to
-reproduce the problem ? Could not this be recreated on a standalone
-system.
-
-- Anshuman
+ATTN Dear Beneficiary.
+Goodnews
+I have Registered your Prepaid ATM Master Card
+worth $15.800,000.00 US DOLLARS with Courier company
+asigned to deliver it to you today.
+So contact Dhl office New York to receive your Prepaid ATM Master Card
+worth $15.8Million US DOLLARS now.
+Contact Person: Mrs. Mary Michael, Director, DHL Courier Company-NY USA. 10218
+Email. dhlexpresscouriercompany.nyusa@gmail.com
+Call the office +(202) 890-8752
+Rec-Confirmed your mailing address to the office as I listed below.
+Your Full Name--------------
+House Address-----------
+Your working Phone Number----------------
+ID copy-------------------------
+Sex-----------------------------
+Note,delivery fee to your address is only $25.00. send it to this
+company urgent on itunes card today so that DHL will deliver this
+Prepaid ATM Master Card to you today according to our finally
+agreement.
+Thanks for coperations,
+Dr. William Johnson
