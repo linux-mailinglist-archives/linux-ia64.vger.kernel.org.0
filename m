@@ -2,107 +2,71 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 5433A134B79
-	for <lists+linux-ia64@lfdr.de>; Wed,  8 Jan 2020 20:29:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C14C5138284
+	for <lists+linux-ia64@lfdr.de>; Sat, 11 Jan 2020 17:45:43 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727275AbgAHT32 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 8 Jan 2020 14:29:28 -0500
-Received: from ale.deltatee.com ([207.54.116.67]:47294 "EHLO ale.deltatee.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727247AbgAHT32 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 8 Jan 2020 14:29:28 -0500
-Received: from s0106ac1f6bb1ecac.cg.shawcable.net ([70.73.163.230] helo=[192.168.11.155])
-        by ale.deltatee.com with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.92)
-        (envelope-from <logang@deltatee.com>)
-        id 1ipH0r-0006vH-74; Wed, 08 Jan 2020 12:29:06 -0700
-To:     Dan Williams <dan.j.williams@intel.com>,
-        David Hildenbrand <david@redhat.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-ia64@vger.kernel.org,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh <linux-sh@vger.kernel.org>,
-        platform-driver-x86@vger.kernel.org, Linux MM <linux-mm@kvack.org>,
-        Michal Hocko <mhocko@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Eric Badger <ebadger@gigaio.com>
-References: <CAPcyv4hdpMs5om4_VrYUz98aWDJ9eRhj7WJr312Jwn6LCmAm9Q@mail.gmail.com>
- <5D5ED235-EB67-4072-8CCA-C046B7EC031C@redhat.com>
- <CAPcyv4jJgBm6rhLn2685HN3DnBKB1FO2ONXC1=Aftspu1hiqmA@mail.gmail.com>
-From:   Logan Gunthorpe <logang@deltatee.com>
-Message-ID: <1786a855-de7e-f9f9-d9b1-9dbe081e7360@deltatee.com>
-Date:   Wed, 8 Jan 2020 12:29:00 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.3.0
+        id S1730371AbgAKQpn (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 11 Jan 2020 11:45:43 -0500
+Received: from vmicros1.altlinux.org ([194.107.17.57]:50604 "EHLO
+        vmicros1.altlinux.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730347AbgAKQpn (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 11 Jan 2020 11:45:43 -0500
+X-Greylist: delayed 495 seconds by postgrey-1.27 at vger.kernel.org; Sat, 11 Jan 2020 11:45:42 EST
+Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
+        by vmicros1.altlinux.org (Postfix) with ESMTP id 95A8172CCEA;
+        Sat, 11 Jan 2020 19:37:26 +0300 (MSK)
+Received: by mua.local.altlinux.org (Postfix, from userid 508)
+        id 6F6437CCE30; Sat, 11 Jan 2020 19:37:26 +0300 (MSK)
+Date:   Sat, 11 Jan 2020 19:37:26 +0300
+From:   "Dmitry V. Levin" <ldv@altlinux.org>
+To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>
+Cc:     Elvira Khabirova <lineprinter@altlinux.org>,
+        Eugene Syromyatnikov <esyr@redhat.com>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PING PATCH] ia64: fix syscall_get_error()
+Message-ID: <20200111163726.GB22612@altlinux.org>
+References: <20181203031725.GA11573@altlinux.org>
 MIME-Version: 1.0
-In-Reply-To: <CAPcyv4jJgBm6rhLn2685HN3DnBKB1FO2ONXC1=Aftspu1hiqmA@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.73.163.230
-X-SA-Exim-Rcpt-To: ebadger@gigaio.com, peterz@infradead.org, luto@kernel.org, dave.hansen@linux.intel.com, bp@alien8.de, mingo@redhat.com, tglx@linutronix.de, benh@kernel.crashing.org, will@kernel.org, catalin.marinas@arm.com, hch@lst.de, akpm@linux-foundation.org, mhocko@kernel.org, linux-mm@kvack.org, platform-driver-x86@vger.kernel.org, linux-sh@vger.kernel.org, linux-s390@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, linux-ia64@vger.kernel.org, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, david@redhat.com, dan.j.williams@intel.com
-X-SA-Exim-Mail-From: logang@deltatee.com
-X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on ale.deltatee.com
-X-Spam-Level: 
-X-Spam-Status: No, score=-8.9 required=5.0 tests=ALL_TRUSTED,BAYES_00,
-        GREYLIST_ISWHITE autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/8] mm/memory_hotplug: Rename mhp_restrictions to
- mhp_modifiers
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20181203031725.GA11573@altlinux.org>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+PING
 
+On Mon, Dec 03, 2018 at 06:17:25AM +0300, Dmitry V. Levin wrote:
+> According to documentation in include/asm-generic/syscall.h,
+> syscall_get_error() should return -ERRORCODE if the system call failed.
+> 
+> This change fixes syscall_get_error() implementation on ia64 to match
+> its own syscall_set_return_value(), the documentation, and other
+> architectures where syscall_get_error() returns a non-positive value.
+> 
+> Fixes: cfb361f13c81 ("[IA64] utrace syscall.h support for ia64")
+> Cc: stable@vger.kernel.org # v2.6.27+
+> Signed-off-by: Dmitry V. Levin <ldv@altlinux.org>
+> ---
+>  arch/ia64/include/asm/syscall.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/ia64/include/asm/syscall.h b/arch/ia64/include/asm/syscall.h
+> index 1d0b875fec44..4ccf888c083d 100644
+> --- a/arch/ia64/include/asm/syscall.h
+> +++ b/arch/ia64/include/asm/syscall.h
+> @@ -35,7 +35,7 @@ static inline void syscall_rollback(struct task_struct *task,
+>  static inline long syscall_get_error(struct task_struct *task,
+>  				     struct pt_regs *regs)
+>  {
+> -	return regs->r10 == -1 ? regs->r8:0;
+> +	return regs->r10 == -1 ? -regs->r8 : 0;
+>  }
+>  
+>  static inline long syscall_get_return_value(struct task_struct *task,
+> -- 
+> ldv
 
-On 2020-01-08 12:13 p.m., Dan Williams wrote:
-> On Wed, Jan 8, 2020 at 11:08 AM David Hildenbrand <david@redhat.com> wrote:
->>
->>
->>
->>> Am 08.01.2020 um 20:00 schrieb Dan Williams <dan.j.williams@intel.com>:
->>>
->>> ﻿On Wed, Jan 8, 2020 at 9:17 AM Logan Gunthorpe <logang@deltatee.com> wrote:
->>>>
->>>>
->>>>
->>>>> On 2020-01-08 5:28 a.m., David Hildenbrand wrote:
->>>>> On 07.01.20 21:59, Logan Gunthorpe wrote:
->>>>>> The mhp_restrictions struct really doesn't specify anything resembling
->>>>>> a restriction anymore so rename it to be mhp_modifiers.
->>>>>
->>>>> I wonder if something like "mhp_params" would be even better. It's
->>>>> essentially just a way to avoid changing call chains rough-out all archs
->>>>> whenever we want to add a new parameter.
->>>>
->>>> Sure, that does sound a bit nicer to me. I can change it for v3.
->>>
->>> Oh, I was just about to chime in to support "modifiers" because I
->>> would expect all parameters to folded into a "params" struct. The
->>> modifiers seem to be limited to the set of items that are only
->>> considered in a non-default / expert memory hotplug use cases.
-
->>
->> It‘s a set of extended parameters I‘d say.
-
-> Sure, we can call them "mhp_params" and just clarify that they are
-> optional / extended in the kernel-doc.
-
-Well pgprot isn't going to be optional... But I'll add something to the
-kernel_doc.
-
-Logan
-
+-- 
+ldv
