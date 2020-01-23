@@ -2,120 +2,114 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C5CA1452AA
-	for <lists+linux-ia64@lfdr.de>; Wed, 22 Jan 2020 11:32:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 159491461B4
+	for <lists+linux-ia64@lfdr.de>; Thu, 23 Jan 2020 06:55:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728931AbgAVKc5 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 22 Jan 2020 05:32:57 -0500
-Received: from foss.arm.com ([217.140.110.172]:54612 "EHLO foss.arm.com"
+        id S1725990AbgAWFzV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 23 Jan 2020 00:55:21 -0500
+Received: from foss.arm.com ([217.140.110.172]:35214 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729148AbgAVKc5 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 22 Jan 2020 05:32:57 -0500
+        id S1725938AbgAWFzV (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 23 Jan 2020 00:55:21 -0500
 Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3942A1FB;
-        Wed, 22 Jan 2020 02:32:56 -0800 (PST)
-Received: from e107158-lin.cambridge.arm.com (e107158-lin.cambridge.arm.com [10.1.195.21])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C72CD3F68E;
-        Wed, 22 Jan 2020 02:32:53 -0800 (PST)
-Date:   Wed, 22 Jan 2020 10:32:51 +0000
-From:   Qais Yousef <qais.yousef@arm.com>
-To:     Russell King - ARM Linux admin <linux@armlinux.org.uk>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Jiri Kosina <jkosina@suse.cz>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Eiichi Tsukata <devel@etsukata.com>,
-        Zhenzhong Duan <zhenzhong.duan@oracle.com>,
-        Nadav Amit <namit@vmware.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E77801FB;
+        Wed, 22 Jan 2020 21:55:20 -0800 (PST)
+Received: from p8cg001049571a15.blr.arm.com (p8cg001049571a15.blr.arm.com [10.162.16.32])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3BE6B3F68E;
+        Wed, 22 Jan 2020 21:55:14 -0800 (PST)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-mm@kvack.org
+Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Michal Hocko <mhocko@suse.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
         linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-riscv@lists.infradead.org, x86@kernel.org,
         linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 01/14] smp: Create a new function to shutdown nonboot
- cpus
-Message-ID: <20200122103250.jdssttb7veevfttz@e107158-lin.cambridge.arm.com>
-References: <20191125112754.25223-1-qais.yousef@arm.com>
- <20191125112754.25223-2-qais.yousef@arm.com>
- <20200121170350.GC18808@shell.armlinux.org.uk>
- <20200121174751.5opyyjwxfnwdgcev@e107158-lin.cambridge.arm.com>
- <20200121180930.GJ25745@shell.armlinux.org.uk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200121180930.GJ25745@shell.armlinux.org.uk>
-User-Agent: NeoMutt/20171215
+Subject: [PATCH 0/2] arm64: Enable vmemmap mapping from device memory
+Date:   Thu, 23 Jan 2020 11:26:26 +0530
+Message-Id: <1579758988-18520-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 01/21/20 18:09, Russell King - ARM Linux admin wrote:
-> On Tue, Jan 21, 2020 at 05:47:52PM +0000, Qais Yousef wrote:
-> > On 01/21/20 17:03, Russell King - ARM Linux admin wrote:
-> > > On Mon, Nov 25, 2019 at 11:27:41AM +0000, Qais Yousef wrote:
-> > > > +void smp_shutdown_nonboot_cpus(unsigned int primary_cpu)
-> > > > +{
-> > > > +	unsigned int cpu;
-> > > > +
-> > > > +	if (!cpu_online(primary_cpu)) {
-> > > > +		pr_info("Attempting to shutdodwn nonboot cpus while boot cpu is offline!\n");
-> > > > +		cpu_online(primary_cpu);
-> > 
-> > Eh, that should be cpu_up(primary_cpu)!
-> > 
-> > Which I have to say I'm not if is the right thing to do.
-> > migrate_to_reboot_cpu() picks the first online cpu if reboot_cpu (assumed 0) is
-> > offline
-> > 
-> > migrate_to_reboot_cpu():
-> >  225         /* Make certain the cpu I'm about to reboot on is online */
-> >  226         if (!cpu_online(cpu))
-> >  227                 cpu = cpumask_first(cpu_online_mask);
-> > 
-> > > > +	}
-> > > > +
-> > > > +	for_each_present_cpu(cpu) {
-> > > > +		if (cpu == primary_cpu)
-> > > > +			continue;
-> > > > +		if (cpu_online(cpu))
-> > > > +			cpu_down(cpu);
-> > > > +	}
-> > > 
-> > > How does this avoid racing with userspace attempting to restart CPUs
-> > > that have already been taken down by this function?
-> > 
-> > This is meant to be called from machine_shutdown() only.
-> > 
-> > But you've got a point.
-> > 
-> > The previous logic that used disable_nonboot_cpus(), which in turn called
-> > freeze_secondary_cpus() didn't hold hotplug lock. So I assumed the higher level
-> > logic of machine_shutdown() ensures that hotplug lock is held to synchronize
-> > with potential other hotplug operations.
-> 
-> freeze_secondary_cpus() takes the CPU maps lock while it takes CPUs
-> down, and then disables cpu hotplug by incrementing
-> cpu_hotplug_disabled.  Incrementing that prevents cpu_up() and
-> cpu_down() being used, thereby preventing userspace from changing the
-> online state of any CPU in the system.
+This series enables vmemmap backing memory allocation from device memory
+ranges on arm64. But before that, it enables vmemmap_populate_basepages()
+to accommodate struct vmem_altmap based requests.
 
-I see. Sorry I missed the CPU maps lock.
+This series applies after latest (v12) arm64 memory hot remove series
+(https://lkml.org/lkml/2020/1/16/46) on Linux 5.5-rc7.
 
-Yes this makes sense and should work here too.
+Changes in V1:
 
-Thanks for the help.
+- Added an WARN_ON() in unmap_hotplug_range() when altmap is
+  provided without the page table backing memory being freed
 
-Thomas, I'll wait for your comment on this and potentially other patches before
-sending v3.
+Changes in RFC V2: (https://lkml.org/lkml/2019/10/21/11)
 
-Thanks
+- Changed the commit message on 1/2 patch per Will
+- Changed the commit message on 2/2 patch as well
+- Rebased on arm64 memory hot remove series (v10)
 
---
-Qais Yousef
+RFC V1: (https://lkml.org/lkml/2019/6/28/32)
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Mike Rapoport <rppt@linux.ibm.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org
+Cc: x86@kernel.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (2):
+  mm/sparsemem: Enable vmem_altmap support in vmemmap_populate_basepages()
+  arm64/mm: Enable vmem_altmap support for vmemmap mappings
+
+ arch/arm64/mm/mmu.c      | 65 +++++++++++++++++++++++++++++-----------
+ arch/ia64/mm/discontig.c |  2 +-
+ arch/riscv/mm/init.c     |  2 +-
+ arch/x86/mm/init_64.c    |  6 ++--
+ include/linux/mm.h       |  5 ++--
+ mm/sparse-vmemmap.c      | 16 ++++++----
+ 6 files changed, 66 insertions(+), 30 deletions(-)
+
+-- 
+2.20.1
+
