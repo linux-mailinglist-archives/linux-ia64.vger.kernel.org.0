@@ -2,56 +2,48 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D7FD14FCE1
-	for <lists+linux-ia64@lfdr.de>; Sun,  2 Feb 2020 12:26:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE9C1150972
+	for <lists+linux-ia64@lfdr.de>; Mon,  3 Feb 2020 16:14:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726814AbgBBL0e (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 2 Feb 2020 06:26:34 -0500
-Received: from mail-qk1-f196.google.com ([209.85.222.196]:44337 "EHLO
-        mail-qk1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726205AbgBBL0e (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 2 Feb 2020 06:26:34 -0500
-Received: by mail-qk1-f196.google.com with SMTP id v195so11358054qkb.11
-        for <linux-ia64@vger.kernel.org>; Sun, 02 Feb 2020 03:26:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=lca.pw; s=google;
-        h=content-transfer-encoding:from:mime-version:subject:date:message-id
-         :references:cc:in-reply-to:to;
-        bh=haUAAZdbmdU3COyJ/sqnDbNti6tUXhiH5WpEb5CUu3o=;
-        b=ktqi1Si5IANgowqGSuWt2goxaefj9MArH9hBL4drDxYpQy5gO9eIMpaj4x1g9qz0Ft
-         wJg8PZziG/0FMCaYMFvU0R1ed/sRIgt60RVYo/fiPoIuWPHtw5CoKADSbrdPinp59eNX
-         GqmqoNXOemL5q0rosXYIx2UJ1orNdlYcFK73Ygg0a/RE2arXPeSnjr+QO/TuQNX54JbP
-         bi9ii20//c0h4YooeibM3yZGm2vZjIxTdT2q1agyMmadm90FFuyO+OFJ2urFPdZeXwtw
-         AgKWNyLv5Arxyw8debfI90Lt1gaaDIBA8bYeatlKiESPBREuLesS3poug3ybj8+iH21/
-         Psqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:content-transfer-encoding:from:mime-version
-         :subject:date:message-id:references:cc:in-reply-to:to;
-        bh=haUAAZdbmdU3COyJ/sqnDbNti6tUXhiH5WpEb5CUu3o=;
-        b=eaapnmG8Gl/sWFHVFT5mDQFT+8RA/MHLhogMKdaqyaCdOGeoCSQSjngZfE7RZbZulX
-         gIxIsynnXEUsgJrKI7RWO1HBmEwh4nXo45QVZrXqfyTCB1lrxAImRoU/kSXj1RhEE4WQ
-         BmKJxwe2zBgiHRnNrhSxf8zfOXoJLw3iDrm5s9b085wKPmrHEO7bSlHm37vKJb8el2Mf
-         JCXmx0+ez5li2tRP7V8P74AGHIaghG2mh1yXOuk1pxuTXdVsNBatUN0QWPwpE9hMKMPl
-         S9D+Zv88WxHAK/rbFhQ0MNUVeTBTVcuPH1FLp+rDnu0adx0abm4Ajdf320oWLuqQF4EF
-         CyKA==
-X-Gm-Message-State: APjAAAXVtddfutQ5CIdAyMu2FYr3hzaxcW1cZ4jgLFQfpnrG5GMz3bHA
-        NJLCFnAIWslLrG0GykCGlu5MHg==
-X-Google-Smtp-Source: APXvYqz2LMXXgwCpUXH7EnnO/Ck2Cj8Gc2SWzAj6pxocjOsHmdsAhT1kwXiGUD+liMIX2mq/rCkMKw==
-X-Received: by 2002:a05:620a:218d:: with SMTP id g13mr19497581qka.286.1580642791619;
-        Sun, 02 Feb 2020 03:26:31 -0800 (PST)
-Received: from [192.168.1.183] (pool-71-184-117-43.bstnma.fios.verizon.net. [71.184.117.43])
-        by smtp.gmail.com with ESMTPSA id s1sm7274932qkm.84.2020.02.02.03.26.30
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 02 Feb 2020 03:26:30 -0800 (PST)
-Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-From:   Qian Cai <cai@lca.pw>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page table helpers
-Date:   Sun, 2 Feb 2020 06:26:29 -0500
-Message-Id: <2C4ADFAE-7BB4-42B7-8F54-F036EA7A4316@lca.pw>
-References: <473d8198-3ac4-af3b-e2ec-c0698a3565d3@c-s.fr>
+        id S1728920AbgBCPO2 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 3 Feb 2020 10:14:28 -0500
+Received: from pegase1.c-s.fr ([93.17.236.30]:44923 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728918AbgBCPO2 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 3 Feb 2020 10:14:28 -0500
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 48BBF846fMz9v3ls;
+        Mon,  3 Feb 2020 16:14:20 +0100 (CET)
+Authentication-Results: localhost; dkim=pass
+        reason="1024-bit key; insecure key"
+        header.d=c-s.fr header.i=@c-s.fr header.b=OGtzFIa+; dkim-adsp=pass;
+        dkim-atps=neutral
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id 5VszB6UW2Yif; Mon,  3 Feb 2020 16:14:20 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 48BBF82h8pz9v3lm;
+        Mon,  3 Feb 2020 16:14:20 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
+        t=1580742860; bh=i4hAG7YwdO6LNDmYZ4wBEtikutj9N76WG5xl/PwnPrw=;
+        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
+        b=OGtzFIa+5ZhSxgd/BuHky5Jny2LDfnoF42zPtabwjmhorMsQSP8od+tqTvY9oMk3O
+         ug6+KKaiRNlh/wtS69Y4UVsFdUJC1Vu36ZVhY++cHIlyr4PBVDhCfDbWqmvxtfLxhX
+         pBTvZSaYZbiw2B0JwaU6kwU/pCLUp2ai2uhwAOdA=
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 7DE228B7B0;
+        Mon,  3 Feb 2020 16:14:25 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id unrhNEULKrXy; Mon,  3 Feb 2020 16:14:25 +0100 (CET)
+Received: from [172.25.230.102] (po15451.idsi0.si.c-s.fr [172.25.230.102])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 12E638B7AC;
+        Mon,  3 Feb 2020 16:14:25 +0100 (CET)
+Subject: Re: [PATCH V12] mm/debug: Add tests validating architecture page
+ table helpers
+To:     Qian Cai <cai@lca.pw>
 Cc:     Anshuman Khandual <Anshuman.Khandual@arm.com>, linux-mm@kvack.org,
         Andrew Morton <akpm@linux-foundation.org>,
         Vlastimil Babka <vbabka@suse.cz>,
@@ -91,9 +83,18 @@ Cc:     Anshuman Khandual <Anshuman.Khandual@arm.com>, linux-mm@kvack.org,
         linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
         x86@kernel.org, linux-kernel@vger.kernel.org,
         kasan-dev <kasan-dev@googlegroups.com>
-In-Reply-To: <473d8198-3ac4-af3b-e2ec-c0698a3565d3@c-s.fr>
-To:     Christophe Leroy <christophe.leroy@c-s.fr>
-X-Mailer: iPhone Mail (17C54)
+References: <473d8198-3ac4-af3b-e2ec-c0698a3565d3@c-s.fr>
+ <2C4ADFAE-7BB4-42B7-8F54-F036EA7A4316@lca.pw>
+From:   Christophe Leroy <christophe.leroy@c-s.fr>
+Message-ID: <8e94a073-4045-89aa-6a3b-24847ad7c858@c-s.fr>
+Date:   Mon, 3 Feb 2020 16:14:24 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.4.2
+MIME-Version: 1.0
+In-Reply-To: <2C4ADFAE-7BB4-42B7-8F54-F036EA7A4316@lca.pw>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
@@ -101,16 +102,29 @@ X-Mailing-List: linux-ia64@vger.kernel.org
 
 
 
-> On Jan 30, 2020, at 9:13 AM, Christophe Leroy <christophe.leroy@c-s.fr> wr=
-ote:
->=20
-> config DEBUG_VM_PGTABLE
->    bool "Debug arch page table for semantics compliance" if ARCH_HAS_DEBUG=
-_VM_PGTABLE || EXPERT
->    depends on MMU
->    default 'n' if !ARCH_HAS_DEBUG_VM_PGTABLE
->    default 'y' if DEBUG_VM
+Le 02/02/2020 à 12:26, Qian Cai a écrit :
+> 
+> 
+>> On Jan 30, 2020, at 9:13 AM, Christophe Leroy <christophe.leroy@c-s.fr> wrote:
+>>
+>> config DEBUG_VM_PGTABLE
+>>     bool "Debug arch page table for semantics compliance" if ARCH_HAS_DEBUG_VM_PGTABLE || EXPERT
+>>     depends on MMU
+>>     default 'n' if !ARCH_HAS_DEBUG_VM_PGTABLE
+>>     default 'y' if DEBUG_VM
+> 
+> Does it really necessary to potentially force all bots to run this? Syzbot, kernel test robot etc? Does it ever pay off for all their machine times there?
+> 
 
-Does it really necessary to potentially force all bots to run this? Syzbot, k=
-ernel test robot etc? Does it ever pay off for all their machine times there=
-?=
+Machine time ?
+
+On a 32 bits powerpc running at 132 MHz, the tests takes less than 10ms. 
+Is it worth taking the risk of not detecting faults by not selecting it 
+by default ?
+
+[    5.656916] debug_vm_pgtable: debug_vm_pgtable: Validating 
+architecture page table helpers
+[    5.665661] debug_vm_pgtable: debug_vm_pgtable: Validated 
+architecture page table helpers
+
+Christophe
