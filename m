@@ -2,54 +2,21 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 362FD160E12
-	for <lists+linux-ia64@lfdr.de>; Mon, 17 Feb 2020 10:10:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C47C91612B1
+	for <lists+linux-ia64@lfdr.de>; Mon, 17 Feb 2020 14:08:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728621AbgBQJJ4 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 17 Feb 2020 04:09:56 -0500
-Received: from mail-wr1-f65.google.com ([209.85.221.65]:41273 "EHLO
-        mail-wr1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728272AbgBQJJ4 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 17 Feb 2020 04:09:56 -0500
-Received: by mail-wr1-f65.google.com with SMTP id c9so18687448wrw.8;
-        Mon, 17 Feb 2020 01:09:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=gC9lstFoxEbX/zQZl/VGhuG//7pDVMBu6cMv3ckvkAU=;
-        b=baE06W5yq08EjZh19JkBU/yIxabzuvcrk/fS7nJ2NCYTeBK/X4EGFMJV63kxKi7jTJ
-         PZrVmMnxEAme/EWJ7BDAsut41LJWRVYRubKAduXkegmWLDydGVwCnMyDbPIM6TtWf5H2
-         8M/fcF1DRAotpclQ+BARtqmv2DXgCUgmX9zFbOoFA8qAgV5uqCIvct2b4+PVPvICSJca
-         pJMldZE/U/e7zpkkGbqQWZ0bRcEM8bZp+TjnHQLJ2rTL+i/4VglTEbcNd7yhWvIUIgax
-         JiH94SZL+m+Xp/Mt3GU8JQwrlH/1WRgnKZ4u2VPUQalUl7kF5x+Sbf1a7JTxjgyuoO3K
-         GEMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=gC9lstFoxEbX/zQZl/VGhuG//7pDVMBu6cMv3ckvkAU=;
-        b=MiUy6yZfYlYtlcuhdKt6MqEbIZvKB0GcCLPtqfDheHLku7GvBJK7QqOxaNxdG5/olX
-         MKF8SXVhKe+SSk/KQfrTGn4/ZpmcySVa20YPfhxz/Rvy8GngWNcWb19pOF4P804DjK67
-         d7mQDCvjxLVOof65PgreS2xBf0mDRsXSIB6ubz+PYVwtOUkw87oH4yYUuT/7WimfwsIb
-         5MJvVmbvQB09E9O2t9fZeu9ORnpZ5AW+Pvdr0s922rXNta5sUSSn+5c5YT77MCNoK5ee
-         yRykt3moNwxU3wu0JIPkvEEuREX7agioYJ2deRUAcqCaX9ky3UUhzJY2YB3rQ+qqdbif
-         MaZQ==
-X-Gm-Message-State: APjAAAWKj+p/NIwSX4/jZQekBMldBGTMUqsVhJfR4vdDyWR/CmHfFUR1
-        VG76BJkLmsxSioNsdekB6+8=
-X-Google-Smtp-Source: APXvYqz4xI89JvqJoHrYysoNhU4UT5wcGoXD2k5XjMzR8Zm4M/6JUP2fvA3Un3j/9tUBTSy7QLesBw==
-X-Received: by 2002:adf:f9d0:: with SMTP id w16mr21184055wrr.83.1581930593493;
-        Mon, 17 Feb 2020 01:09:53 -0800 (PST)
-Received: from felia ([2001:16b8:3888:da00:b474:2167:8661:27cf])
-        by smtp.gmail.com with ESMTPSA id q1sm38417wrw.5.2020.02.17.01.09.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2020 01:09:52 -0800 (PST)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Mon, 17 Feb 2020 10:09:45 +0100 (CET)
-X-X-Sender: lukas@felia
-To:     Anatoly Pugachev <matorola@gmail.com>
-cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>, Pat Gefre <pfg@sgi.com>,
+        id S1726866AbgBQNIc (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 17 Feb 2020 08:08:32 -0500
+Received: from verein.lst.de ([213.95.11.211]:33694 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726710AbgBQNIc (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 17 Feb 2020 08:08:32 -0500
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 0815468B05; Mon, 17 Feb 2020 14:08:29 +0100 (CET)
+Date:   Mon, 17 Feb 2020 14:08:28 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Anatoly Pugachev <matorola@gmail.com>, Pat Gefre <pfg@sgi.com>,
         Christoph Hellwig <hch@lst.de>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
@@ -57,72 +24,21 @@ cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>, Pat Gefre <pfg@sgi.com>,
         kernel-janitors@vger.kernel.org,
         Linux Kernel list <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] tty/serial: cleanup after ioc*_serial driver removal
-In-Reply-To: <CADxRZqwGBi=4A224mG0cPgONdNitnvi3LFD_KQckxdYSXzgBGg@mail.gmail.com>
-Message-ID: <alpine.DEB.2.21.2002170950390.11007@felia>
-References: <20200217081558.10266-1-lukas.bulwahn@gmail.com> <CADxRZqwGBi=4A224mG0cPgONdNitnvi3LFD_KQckxdYSXzgBGg@mail.gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+Message-ID: <20200217130828.GB26781@lst.de>
+References: <20200217081558.10266-1-lukas.bulwahn@gmail.com> <CADxRZqwGBi=4A224mG0cPgONdNitnvi3LFD_KQckxdYSXzgBGg@mail.gmail.com> <alpine.DEB.2.21.2002170950390.11007@felia>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <alpine.DEB.2.21.2002170950390.11007@felia>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+On Mon, Feb 17, 2020 at 10:09:45AM +0100, Lukas Bulwahn wrote:
+> The description is about situations on very outdated kernel versions, so 
+> the whole page needs a general update.
 
-
-On Mon, 17 Feb 2020, Anatoly Pugachev wrote:
-
-> On Mon, Feb 17, 2020 at 11:16 AM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
-> >
-> > Commit 9c860e4cf708 ("tty/serial: remove the ioc3_serial driver") and
-> > commit a017ef17cfd8 ("tty/serial: remove the ioc4_serial driver") removed
-> > the ioc{3,4}_serial driver, but missed some files.
-> >
-> > Fortunately, ./scripts/get_maintainer.pl --self-test complains:
-> >
-> >   warning: no file matches F: drivers/tty/serial/ioc?_serial.c
-> >
-> > The driver is gone, so remove the other obsolete files and maintainer
-> > entry as well.
-> >
-> > Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> > ---
-> > Christoph, please ack. Tony, please pick this patch.
-> > applies cleanly on 5.6-rc2 and next-20200217
-> > only sanity-grep for filenames and make htmldocs, no compile testing
-> >
-> >  Documentation/ia64/index.rst  |   1 -
-> >  Documentation/ia64/serial.rst | 165 ----------------------------------
-> >  MAINTAINERS                   |   8 --
-> >  include/linux/ioc3.h          |  93 -------------------
-> >  4 files changed, 267 deletions(-)
-> >  delete mode 100644 Documentation/ia64/serial.rst
-> 
-> Can you please at leat leave in tree serial.rst since it has generic
-> nature and not describing only ioc3_serial driver? Does ioc3_serial
-> the only serial driver available under ia64 ? Or can we please not to
-> loose some docs? Or do we have a more common serial driver description
-> somewhere which has info on ia64 serial driver/ports ?
-> 
-
-The description is about situations on very outdated kernel versions, so 
-the whole page needs a general update.
-
-I see there is some general troubleshooting hints which might fit into:
-
-https://www.kernel.org/doc/html/latest/admin-guide/serial-console.html
-
-Feel free to include what you think is worthwhile to keep long-term as a 
-patch to Documention/admin-guide/serial-console.rst.
-
-I am happy to support with that, but I am not the serial console expert.
-
-The documentation is not lost, it is just not in the documentation of the 
-latest kernel version, when we do not include the driver anymore.
-The documentation is still in old versions, which you would need to use 
-anyway for that driver support.
-
-I do not know if there are more ia64 serial drivers, but the MAINTAINERS 
-entry and commit message suggested there is not another serial driver.
-
-Lukas
+While the file doesn't seem all that useful, I think removing or updating
+it should probably be a separate patch.
