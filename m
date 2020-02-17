@@ -2,85 +2,215 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 802B616131C
-	for <lists+linux-ia64@lfdr.de>; Mon, 17 Feb 2020 14:17:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1053C1613C3
+	for <lists+linux-ia64@lfdr.de>; Mon, 17 Feb 2020 14:44:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727402AbgBQNQn (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 17 Feb 2020 08:16:43 -0500
-Received: from mail-wr1-f68.google.com ([209.85.221.68]:44045 "EHLO
+        id S1728209AbgBQNoT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 17 Feb 2020 08:44:19 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:45916 "EHLO
         mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727332AbgBQNQm (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 17 Feb 2020 08:16:42 -0500
-Received: by mail-wr1-f68.google.com with SMTP id m16so19652387wrx.11;
-        Mon, 17 Feb 2020 05:16:41 -0800 (PST)
+        with ESMTP id S1728123AbgBQNoT (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 17 Feb 2020 08:44:19 -0500
+Received: by mail-wr1-f68.google.com with SMTP id g3so19770546wrs.12;
+        Mon, 17 Feb 2020 05:44:17 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=p/uQQdbP6CtQI5bxDvGVhaC/f+9PVyfSbatM3OlAi4s=;
-        b=lqHzEm5UNtGWjo21PqgaH03h2WQqDhZVrATmmQneQSSxw0OAWr5pYizoWChwVr0djZ
-         9KUFAShTLryHyD5zqfG4hJTz/cAqtCvOLHIhJvr3Q7KVW+EurO+Yi4kEjjAuog8RigGO
-         DGvb3aibmZxA4agX8sEpSAcwhhczpYYzAiR20y1JYwfzl9KIMKskURQ3FGYPKEQTkJRN
-         mfhY785IoICmCuxwQaqqz6Q0gZUJZCgv6fJpJiAGE/RSng4jBWiQ9BLt3pjbDIFx1u9t
-         qvzerbnGe3rAk6Qyphb33szJbzvsZVEzT4Fc1dGLbCu58TTXyOxm6I3WzYZ71ZK4MutK
-         tjtA==
+        h=from:to:cc:subject:date:message-id;
+        bh=7wpsMP2q+fA/OVi+XTu9od/CnB0uA/QKGcPyEUOs0lw=;
+        b=OBgXe5AY40cDqIwpqyKbELr93rcrUuyJsT6Ac+zwMMlmMJTAedWWvppefLIexCGZnl
+         OXv4jTGD3Dy+0kLxDs27eR6R2xIr9wxMWyyMQhvvqknFiMsqqnYXboHbPL/i0m7p25f+
+         19Rst1nz6buVrf8t3B47JCZUMgprDTK8QbZ5X/e0vJ/x5NFsL5NRrg8l+VmaHdpZc+7n
+         f+lCxRR6AdX/nCiTKW322OfsXcsUDWNJQ2kic1ExE7U04n8YP43YLsLRgVVaalB19aVP
+         BY3i5cTrnIzK6gjrz9OwYe0cKXlFTpO4THJHg7FBXAcE3ZwyNiJgTvWAS4OzrHTXmyD7
+         KBAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=p/uQQdbP6CtQI5bxDvGVhaC/f+9PVyfSbatM3OlAi4s=;
-        b=tNk2TjY3qGmQIOCldg8XLmO0mfJL8wLH2efnz7P2nDjtOxte6FGhAO70Qh2hpxJ2rG
-         R1tB/QOeTeivpH50IPfu0jYBab4S2TPIJtNi4ikgjAI03H2XU+HSupNVGJWkWofK4qnU
-         7Gti1CBc+dvK5dMt6BjlN2HPxltBU8P3g8G4Xe7YCw89oGBohromu89S9nsugjEKnOry
-         sjOnaTPbTU4eat1lPNg4XyPgNC013zvWkzQBBJabPz3xJ7a1cjCSL0sxtHuDBFDDrA4j
-         tHxYAOqAiJkZm6of5qEUd9trWHXo3Z2cJYUruLCCxLBemJGiCoAYuv8HwP/VIPCObwA6
-         qE9g==
-X-Gm-Message-State: APjAAAVLJG4b99lI7dF4ODaTFjy16sZnHKgcLH0HPRNpULNvPaHYD4xi
-        Rpy8QS7jJQGK7mxdhQK72HFzd5sHN1E=
-X-Google-Smtp-Source: APXvYqxl068Wx/x2bBMrsu8QHOx94CFshQcGiFI0JuLpMh4rhyh0RoBdBOR0XjR0R0lIfWKRPKlflA==
-X-Received: by 2002:a5d:484d:: with SMTP id n13mr21948552wrs.420.1581945400649;
-        Mon, 17 Feb 2020 05:16:40 -0800 (PST)
-Received: from felia ([2001:16b8:3888:da00:b474:2167:8661:27cf])
-        by smtp.gmail.com with ESMTPSA id n1sm999072wrw.52.2020.02.17.05.16.39
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=7wpsMP2q+fA/OVi+XTu9od/CnB0uA/QKGcPyEUOs0lw=;
+        b=KPidjmSgb9OjICVCsxjsAAMP/bWLsoOxUmP7plc45Xhcr0tBdMdJzlokAm262CJg76
+         VLwozKqlbXR5OrNMt6zNvC7WKd+PmKR9G1sjD/H2q4PO4AUzev4d20mISNF1VQOJv2Qm
+         6fTJpCH+jueuNYARn0qGx6AV4iVK+UCtbrOG1YsuBKr2FadK9ZQN73kXeGA5kKNOFdhp
+         /x115FSoPKoXyCRyWOdQHnnYjbLXHH8Gs4EevzBx/4+M1UIWM+RrLhOneC+9CzkD5fAy
+         6tsguxI3p276Kgm2e52nqYi2iAIb3IpdIzgDDPclLvj1f9Ghe17pP/7KIv60Le8M2v9I
+         4phQ==
+X-Gm-Message-State: APjAAAWLeJ3AKGngZxQqs7aHYl4c+g49PwnT32sCLa/j/MvqMkSzYbgF
+        XdWt0HrnP4uqwEu65p62UMY=
+X-Google-Smtp-Source: APXvYqxfE8mmuZt0XZWD0swbae6L0C6YWFdQFoG7uNSJi9XOyxZSBtL4TB2SVjIace7jfVuD9rGGMg==
+X-Received: by 2002:a5d:4052:: with SMTP id w18mr22064626wrp.112.1581947056250;
+        Mon, 17 Feb 2020 05:44:16 -0800 (PST)
+Received: from felia.fritz.box ([2001:16b8:3888:da00:b474:2167:8661:27cf])
+        by smtp.gmail.com with ESMTPSA id z6sm1069084wrw.36.2020.02.17.05.44.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Feb 2020 05:16:40 -0800 (PST)
+        Mon, 17 Feb 2020 05:44:14 -0800 (PST)
 From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Mon, 17 Feb 2020 14:16:38 +0100 (CET)
-X-X-Sender: lukas@felia
-To:     Christoph Hellwig <hch@lst.de>
-cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Anatoly Pugachev <matorola@gmail.com>, Pat Gefre <pfg@sgi.com>,
+To:     Pat Gefre <pfg@sgi.com>, Christoph Hellwig <hch@lst.de>,
         Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        linux-doc@vger.kernel.org, Joe Perches <joe@perches.com>,
-        kernel-janitors@vger.kernel.org,
-        Linux Kernel list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] tty/serial: cleanup after ioc*_serial driver removal
-In-Reply-To: <20200217130828.GB26781@lst.de>
-Message-ID: <alpine.DEB.2.21.2002171409410.14734@felia>
-References: <20200217081558.10266-1-lukas.bulwahn@gmail.com> <CADxRZqwGBi=4A224mG0cPgONdNitnvi3LFD_KQckxdYSXzgBGg@mail.gmail.com> <alpine.DEB.2.21.2002170950390.11007@felia> <20200217130828.GB26781@lst.de>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Anatoly Pugachev <matorola@gmail.com>
+Cc:     linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org,
+        Joe Perches <joe@perches.com>, kernel-janitors@vger.kernel.org,
+        linux-kernel@vger.kernel.org,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Subject: [PATCH v2] tty/serial: cleanup after ioc*_serial driver removal
+Date:   Mon, 17 Feb 2020 14:44:05 +0100
+Message-Id: <20200217134405.19154-1-lukas.bulwahn@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+Commit 9c860e4cf708 ("tty/serial: remove the ioc3_serial driver") and
+commit a017ef17cfd8 ("tty/serial: remove the ioc4_serial driver") removed
+the ioc{3,4}_serial driver, but missed some files.
 
+Fortunately, ./scripts/get_maintainer.pl --self-test complains:
 
-On Mon, 17 Feb 2020, Christoph Hellwig wrote:
+  warning: no file matches F: drivers/tty/serial/ioc?_serial.c
 
-> On Mon, Feb 17, 2020 at 10:09:45AM +0100, Lukas Bulwahn wrote:
-> > The description is about situations on very outdated kernel versions, so 
-> > the whole page needs a general update.
-> 
-> While the file doesn't seem all that useful, I think removing or updating
-> it should probably be a separate patch.
-> 
-Okay, I will send a v2 where I keep the documentation and I will add a
-maintainers entry for Documentation/ia64/ to IA64 (Itanium) PLATFORM.
+The driver is gone, so remove the header and maintainer
+entry as well.
 
-Lukas
+The serial.rst Documentation might be useful, so we keep it and update
+the maintainer entry to the document's actual maintainers.
+
+Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
+---
+Christoph, please ack. Tony, please pick this patch.
+applies cleanly on 5.6-rc2 and next-20200217
+only sanity-grep for filenames, no compile testing
+
+ MAINTAINERS          |  9 +----
+ include/linux/ioc3.h | 93 --------------------------------------------
+ 2 files changed, 1 insertion(+), 101 deletions(-)
+ delete mode 100644 include/linux/ioc3.h
+
+diff --git a/MAINTAINERS b/MAINTAINERS
+index a0d86490c2c6..ffd51bb3ba7f 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7945,6 +7945,7 @@ L:	linux-ia64@vger.kernel.org
+ T:	git git://git.kernel.org/pub/scm/linux/kernel/git/aegl/linux.git
+ S:	Maintained
+ F:	arch/ia64/
++F:	Documentation/ia64/
+ 
+ IBM Power 842 compression accelerator
+ M:	Haren Myneni <haren@us.ibm.com>
+@@ -15043,14 +15044,6 @@ M:	Dimitri Sivanich <sivanich@sgi.com>
+ S:	Maintained
+ F:	drivers/misc/sgi-gru/
+ 
+-SGI SN-IA64 (Altix) SERIAL CONSOLE DRIVER
+-M:	Pat Gefre <pfg@sgi.com>
+-L:	linux-ia64@vger.kernel.org
+-S:	Supported
+-F:	Documentation/ia64/serial.rst
+-F:	drivers/tty/serial/ioc?_serial.c
+-F:	include/linux/ioc?.h
+-
+ SGI XP/XPC/XPNET DRIVER
+ M:	Cliff Whickman <cpw@sgi.com>
+ M:	Robin Holt <robinmholt@gmail.com>
+diff --git a/include/linux/ioc3.h b/include/linux/ioc3.h
+deleted file mode 100644
+index 38b286e9a46c..000000000000
+--- a/include/linux/ioc3.h
++++ /dev/null
+@@ -1,93 +0,0 @@
+-/*
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (c) 2005 Stanislaw Skowronek <skylark@linux-mips.org>
+- */
+-
+-#ifndef _LINUX_IOC3_H
+-#define _LINUX_IOC3_H
+-
+-#include <asm/sn/ioc3.h>
+-
+-#define IOC3_MAX_SUBMODULES	32
+-
+-#define IOC3_CLASS_NONE		0
+-#define IOC3_CLASS_BASE_IP27	1
+-#define IOC3_CLASS_BASE_IP30	2
+-#define IOC3_CLASS_MENET_123	3
+-#define IOC3_CLASS_MENET_4	4
+-#define IOC3_CLASS_CADDUO	5
+-#define IOC3_CLASS_SERIAL	6
+-
+-/* One of these per IOC3 */
+-struct ioc3_driver_data {
+-	struct list_head list;
+-	int id;				/* IOC3 sequence number */
+-	/* PCI mapping */
+-	unsigned long pma;		/* physical address */
+-	struct ioc3 __iomem *vma;	/* pointer to registers */
+-	struct pci_dev *pdev;		/* PCI device */
+-	/* IRQ stuff */
+-	int dual_irq;			/* set if separate IRQs are used */
+-	int irq_io, irq_eth;		/* IRQ numbers */
+-	/* GPIO magic */
+-	spinlock_t gpio_lock;
+-	unsigned int gpdr_shadow;
+-	/* NIC identifiers */
+-	char nic_part[32];
+-	char nic_serial[16];
+-	char nic_mac[6];
+-	/* submodule set */
+-	int class;
+-	void *data[IOC3_MAX_SUBMODULES];	/* for submodule use */
+-	int active[IOC3_MAX_SUBMODULES];	/* set if probe succeeds */
+-	/* is_ir_lock must be held while
+-	 * modifying sio_ie values, so
+-	 * we can be sure that sio_ie is
+-	 * not changing when we read it
+-	 * along with sio_ir.
+-	 */
+-	spinlock_t ir_lock;	/* SIO_IE[SC] mod lock */
+-};
+-
+-/* One per submodule */
+-struct ioc3_submodule {
+-	char *name;		/* descriptive submodule name */
+-	struct module *owner;	/* owning kernel module */
+-	int ethernet;		/* set for ethernet drivers */
+-	int (*probe) (struct ioc3_submodule *, struct ioc3_driver_data *);
+-	int (*remove) (struct ioc3_submodule *, struct ioc3_driver_data *);
+-	int id;			/* assigned by IOC3, index for the "data" array */
+-	/* IRQ stuff */
+-	unsigned int irq_mask;	/* IOC3 IRQ mask, leave clear for Ethernet */
+-	int reset_mask;		/* non-zero if you want the ioc3.c module to reset interrupts */
+-	int (*intr) (struct ioc3_submodule *, struct ioc3_driver_data *, unsigned int);
+-	/* private submodule data */
+-	void *data;		/* assigned by submodule */
+-};
+-
+-/**********************************
+- * Functions needed by submodules *
+- **********************************/
+-
+-#define IOC3_W_IES		0
+-#define IOC3_W_IEC		1
+-
+-/* registers a submodule for all existing and future IOC3 chips */
+-extern int ioc3_register_submodule(struct ioc3_submodule *);
+-/* unregisters a submodule */
+-extern void ioc3_unregister_submodule(struct ioc3_submodule *);
+-/* enables IRQs indicated by irq_mask for a specified IOC3 chip */
+-extern void ioc3_enable(struct ioc3_submodule *, struct ioc3_driver_data *, unsigned int);
+-/* ackowledges specified IRQs */
+-extern void ioc3_ack(struct ioc3_submodule *, struct ioc3_driver_data *, unsigned int);
+-/* disables IRQs indicated by irq_mask for a specified IOC3 chip */
+-extern void ioc3_disable(struct ioc3_submodule *, struct ioc3_driver_data *, unsigned int);
+-/* atomically sets GPCR bits */
+-extern void ioc3_gpcr_set(struct ioc3_driver_data *, unsigned int);
+-/* general ireg writer */
+-extern void ioc3_write_ireg(struct ioc3_driver_data *idd, uint32_t value, int reg);
+-
+-#endif
+-- 
+2.17.1
 
