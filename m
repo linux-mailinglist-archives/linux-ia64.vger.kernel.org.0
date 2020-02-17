@@ -2,43 +2,85 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id C47C91612B1
-	for <lists+linux-ia64@lfdr.de>; Mon, 17 Feb 2020 14:08:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 802B616131C
+	for <lists+linux-ia64@lfdr.de>; Mon, 17 Feb 2020 14:17:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726866AbgBQNIc (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 17 Feb 2020 08:08:32 -0500
-Received: from verein.lst.de ([213.95.11.211]:33694 "EHLO verein.lst.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726710AbgBQNIc (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 17 Feb 2020 08:08:32 -0500
-Received: by verein.lst.de (Postfix, from userid 2407)
-        id 0815468B05; Mon, 17 Feb 2020 14:08:29 +0100 (CET)
-Date:   Mon, 17 Feb 2020 14:08:28 +0100
-From:   Christoph Hellwig <hch@lst.de>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Anatoly Pugachev <matorola@gmail.com>, Pat Gefre <pfg@sgi.com>,
-        Christoph Hellwig <hch@lst.de>,
+        id S1727402AbgBQNQn (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 17 Feb 2020 08:16:43 -0500
+Received: from mail-wr1-f68.google.com ([209.85.221.68]:44045 "EHLO
+        mail-wr1-f68.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727332AbgBQNQm (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 17 Feb 2020 08:16:42 -0500
+Received: by mail-wr1-f68.google.com with SMTP id m16so19652387wrx.11;
+        Mon, 17 Feb 2020 05:16:41 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:date:to:cc:subject:in-reply-to:message-id:references
+         :user-agent:mime-version;
+        bh=p/uQQdbP6CtQI5bxDvGVhaC/f+9PVyfSbatM3OlAi4s=;
+        b=lqHzEm5UNtGWjo21PqgaH03h2WQqDhZVrATmmQneQSSxw0OAWr5pYizoWChwVr0djZ
+         9KUFAShTLryHyD5zqfG4hJTz/cAqtCvOLHIhJvr3Q7KVW+EurO+Yi4kEjjAuog8RigGO
+         DGvb3aibmZxA4agX8sEpSAcwhhczpYYzAiR20y1JYwfzl9KIMKskURQ3FGYPKEQTkJRN
+         mfhY785IoICmCuxwQaqqz6Q0gZUJZCgv6fJpJiAGE/RSng4jBWiQ9BLt3pjbDIFx1u9t
+         qvzerbnGe3rAk6Qyphb33szJbzvsZVEzT4Fc1dGLbCu58TTXyOxm6I3WzYZ71ZK4MutK
+         tjtA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version;
+        bh=p/uQQdbP6CtQI5bxDvGVhaC/f+9PVyfSbatM3OlAi4s=;
+        b=tNk2TjY3qGmQIOCldg8XLmO0mfJL8wLH2efnz7P2nDjtOxte6FGhAO70Qh2hpxJ2rG
+         R1tB/QOeTeivpH50IPfu0jYBab4S2TPIJtNi4ikgjAI03H2XU+HSupNVGJWkWofK4qnU
+         7Gti1CBc+dvK5dMt6BjlN2HPxltBU8P3g8G4Xe7YCw89oGBohromu89S9nsugjEKnOry
+         sjOnaTPbTU4eat1lPNg4XyPgNC013zvWkzQBBJabPz3xJ7a1cjCSL0sxtHuDBFDDrA4j
+         tHxYAOqAiJkZm6of5qEUd9trWHXo3Z2cJYUruLCCxLBemJGiCoAYuv8HwP/VIPCObwA6
+         qE9g==
+X-Gm-Message-State: APjAAAVLJG4b99lI7dF4ODaTFjy16sZnHKgcLH0HPRNpULNvPaHYD4xi
+        Rpy8QS7jJQGK7mxdhQK72HFzd5sHN1E=
+X-Google-Smtp-Source: APXvYqxl068Wx/x2bBMrsu8QHOx94CFshQcGiFI0JuLpMh4rhyh0RoBdBOR0XjR0R0lIfWKRPKlflA==
+X-Received: by 2002:a5d:484d:: with SMTP id n13mr21948552wrs.420.1581945400649;
+        Mon, 17 Feb 2020 05:16:40 -0800 (PST)
+Received: from felia ([2001:16b8:3888:da00:b474:2167:8661:27cf])
+        by smtp.gmail.com with ESMTPSA id n1sm999072wrw.52.2020.02.17.05.16.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 17 Feb 2020 05:16:40 -0800 (PST)
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
+Date:   Mon, 17 Feb 2020 14:16:38 +0100 (CET)
+X-X-Sender: lukas@felia
+To:     Christoph Hellwig <hch@lst.de>
+cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Anatoly Pugachev <matorola@gmail.com>, Pat Gefre <pfg@sgi.com>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
         linux-doc@vger.kernel.org, Joe Perches <joe@perches.com>,
         kernel-janitors@vger.kernel.org,
         Linux Kernel list <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] tty/serial: cleanup after ioc*_serial driver removal
-Message-ID: <20200217130828.GB26781@lst.de>
-References: <20200217081558.10266-1-lukas.bulwahn@gmail.com> <CADxRZqwGBi=4A224mG0cPgONdNitnvi3LFD_KQckxdYSXzgBGg@mail.gmail.com> <alpine.DEB.2.21.2002170950390.11007@felia>
+In-Reply-To: <20200217130828.GB26781@lst.de>
+Message-ID: <alpine.DEB.2.21.2002171409410.14734@felia>
+References: <20200217081558.10266-1-lukas.bulwahn@gmail.com> <CADxRZqwGBi=4A224mG0cPgONdNitnvi3LFD_KQckxdYSXzgBGg@mail.gmail.com> <alpine.DEB.2.21.2002170950390.11007@felia> <20200217130828.GB26781@lst.de>
+User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.DEB.2.21.2002170950390.11007@felia>
-User-Agent: Mutt/1.5.17 (2007-11-01)
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Feb 17, 2020 at 10:09:45AM +0100, Lukas Bulwahn wrote:
-> The description is about situations on very outdated kernel versions, so 
-> the whole page needs a general update.
 
-While the file doesn't seem all that useful, I think removing or updating
-it should probably be a separate patch.
+
+On Mon, 17 Feb 2020, Christoph Hellwig wrote:
+
+> On Mon, Feb 17, 2020 at 10:09:45AM +0100, Lukas Bulwahn wrote:
+> > The description is about situations on very outdated kernel versions, so 
+> > the whole page needs a general update.
+> 
+> While the file doesn't seem all that useful, I think removing or updating
+> it should probably be a separate patch.
+> 
+Okay, I will send a v2 where I keep the documentation and I will add a
+maintainers entry for Documentation/ia64/ to IA64 (Itanium) PLATFORM.
+
+Lukas
+
