@@ -2,268 +2,132 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 15085169B6D
-	for <lists+linux-ia64@lfdr.de>; Mon, 24 Feb 2020 01:49:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A8E7116A154
+	for <lists+linux-ia64@lfdr.de>; Mon, 24 Feb 2020 10:12:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727156AbgBXAt6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 23 Feb 2020 19:49:58 -0500
-Received: from mail-pf1-f193.google.com ([209.85.210.193]:32856 "EHLO
-        mail-pf1-f193.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727151AbgBXAt6 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 23 Feb 2020 19:49:58 -0500
-Received: by mail-pf1-f193.google.com with SMTP id n7so4469543pfn.0;
-        Sun, 23 Feb 2020 16:49:57 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=YMwZfyhzKIn7XIlMpWIz2TroR95Fj3VWRLrDKbQ2Lxo=;
-        b=CMcacNiQtw7mwU+R6DdkhKVrKtXvLJTBouSHy+fja+ccQfhoBoE+TZA6qGN1iYUdHr
-         QB7+FFYYfrUPxCrN6Gm4ilSNAlmICz6N89h5SboiPmSnET/8cMdScCjWnD8D0wUTN+FV
-         eec9uLA7PY2AWH45m+oL12zPOIx8Y0w9Mb00E3ouXN05G90srlSwppPUsS3llOb69YxZ
-         wO5KH/ec+5ejn7Hu76TNx8NJcpucv/xBDTTpBgPM4j1u5uxn75hP1/lpDqwPzT3We8dd
-         9bNcUOoxkU2oZsGOu00io8ZBpD8yHXHq3xiY/bzFmGlbqILqbh52HdM25PeKmGJ1LBZk
-         3/3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=YMwZfyhzKIn7XIlMpWIz2TroR95Fj3VWRLrDKbQ2Lxo=;
-        b=UgTesJjNS5M10N6bwjcLKs4OifwFur42j/r65aTxr9HCMN5Bf7Ylp1ERw1bWlh48RD
-         RSdTt2PVSRlGz+yWLIQcWT5wDZ9JSGSXAJe+nBCxym2NAjwBUubbdC/m5eGe2fnMcits
-         kIdPohYPrLh5UC/5vlJ2RILW+nul574uVL4xtCkg1Lmo0UZyqPAAo7JutzdYvZP6yQ86
-         DDowiriLUeXgdnI0WO1fBp/KWWeF972kIc7FJlPZw/wHLcejPWZaXzPrrjjjQ8OJlkZl
-         kGZhYJq5ODpXdegBsuQLTp5o0PF/xQDSAcUL0MsP7cgpzgLzbpc1BDiOOyw+5waXZda0
-         E0Yg==
-X-Gm-Message-State: APjAAAUmuKWLOowik2SFJfrulcM8JW/qMZSY1lJSYYPPnRy+eayBfB87
-        eQgXAsOI4PH5QPIAWvKRPRhYRRomT94=
-X-Google-Smtp-Source: APXvYqyNRXyuEATpC3EHUKNuhaNoIa7Q5flofrUDddV7fxB4wBa/JBLzn77e9Rs+wea+VmBrpTdDHw==
-X-Received: by 2002:a62:e217:: with SMTP id a23mr49051595pfi.50.1582505397048;
-        Sun, 23 Feb 2020 16:49:57 -0800 (PST)
-Received: from localhost ([106.51.232.35])
-        by smtp.gmail.com with ESMTPSA id r11sm10182014pgi.9.2020.02.23.16.49.56
-        (version=TLS1_2 cipher=ECDHE-RSA-CHACHA20-POLY1305 bits=256/256);
-        Sun, 23 Feb 2020 16:49:56 -0800 (PST)
-Date:   Mon, 24 Feb 2020 06:19:55 +0530
-From:   afzal mohammed <afzal.mohd.ma@gmail.com>
-To:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
-        Tom Vaden <tom.vaden@hpe.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S1728487AbgBXJMP (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 24 Feb 2020 04:12:15 -0500
+Received: from us-smtp-2.mimecast.com ([207.211.31.81]:34078 "EHLO
+        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728475AbgBXJMM (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 24 Feb 2020 04:12:12 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1582535531;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+        bh=dmb0RTH1axsQyoKZK4Qs+mYxX0tLJ+ZXHM8KfTxIyzU=;
+        b=gGHUPqIep3le9PziAWCmaHPJtNm65JLd0ZtciuZPHgXQoL1ahJVcV5fEaIS+fSsgUwhCVM
+        TF6hwEHoMSn/3EYo+j8jeqGhNn4MgxerjPlWdycfs45zNauN9d7Glvg+XON+PcBmkgkJUt
+        O13JJSBA0cKkWvH66lKxc3FkuRHIxBY=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-345-IGyW_UW9MfSb-QdX7lWO8w-1; Mon, 24 Feb 2020 04:12:07 -0500
+X-MC-Unique: IGyW_UW9MfSb-QdX7lWO8w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 4A7EB185735C;
+        Mon, 24 Feb 2020 09:12:04 +0000 (UTC)
+Received: from [10.36.118.8] (unknown [10.36.118.8])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 93D0E393;
+        Mon, 24 Feb 2020 09:11:53 +0000 (UTC)
+Subject: Re: [PATCH v3 2/7] mm/memory_hotplug: Rename mhp_restrictions to
+ mhp_params
+To:     Logan Gunthorpe <logang@deltatee.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        platform-driver-x86@vger.kernel.org, linux-mm@kvack.org,
+        Dan Williams <dan.j.williams@intel.com>,
+        Michal Hocko <mhocko@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH v2 05/18] ia64: replace setup_irq() by request_irq()
-Message-ID: <336789c09434b468a2443f5cb2063e2530ca4a1e.1582471508.git.afzal.mohd.ma@gmail.com>
-References: <cover.1582471508.git.afzal.mohd.ma@gmail.com>
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Eric Badger <ebadger@gigaio.com>
+References: <20200221182503.28317-1-logang@deltatee.com>
+ <20200221182503.28317-3-logang@deltatee.com>
+From:   David Hildenbrand <david@redhat.com>
+Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
+ 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
+Organization: Red Hat GmbH
+Message-ID: <e428521d-3509-5403-f8d8-c584a7d4d320@redhat.com>
+Date:   Mon, 24 Feb 2020 10:11:52 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.5.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cover.1582471508.git.afzal.mohd.ma@gmail.com>
-User-Agent: Mutt/1.9.3 (2018-01-21)
+In-Reply-To: <20200221182503.28317-3-logang@deltatee.com>
+Content-Type: text/plain; charset=windows-1252
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-request_irq() is preferred over setup_irq(). The early boot setup_irq()
-invocations happen either via 'init_IRQ()' or 'time_init()', while
-memory allocators are ready by 'mm_init()'.
+On 21.02.20 19:24, Logan Gunthorpe wrote:
+> The mhp_restrictions struct really doesn't specify anything resembling
+> a restriction anymore so rename it to be mhp_params as it is a list
+> of extended parameters.
+> 
+> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
 
-Per tglx[1], setup_irq() existed in olden days when allocators were not
-ready by the time early interrupts were initialized.
+Reviewed-by: David Hildenbrand <david@redhat.com>
 
-Hence replace setup_irq() by request_irq().
 
-Seldom remove_irq() usage has been observed coupled with setup_irq(),
-wherever that has been found, it too has been replaced by free_irq().
-
-[1] https://lkml.kernel.org/r/alpine.DEB.2.20.1710191609480.1971@nanos
-
-Signed-off-by: afzal mohammed <afzal.mohd.ma@gmail.com>
----
-
-v2:
- * Replace pr_err("request_irq() on %s failed" by
-           pr_err("%s: request_irq() failed"
- * Commit message massage
-
- arch/ia64/kernel/irq_ia64.c | 42 ++++++++++--------------------
- arch/ia64/kernel/mca.c      | 51 +++++++++++--------------------------
- 2 files changed, 29 insertions(+), 64 deletions(-)
-
-diff --git a/arch/ia64/kernel/irq_ia64.c b/arch/ia64/kernel/irq_ia64.c
-index 8e91c86e8072..166a38dae663 100644
---- a/arch/ia64/kernel/irq_ia64.c
-+++ b/arch/ia64/kernel/irq_ia64.c
-@@ -351,11 +351,6 @@ static irqreturn_t smp_irq_move_cleanup_interrupt(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--static struct irqaction irq_move_irqaction = {
--	.handler =	smp_irq_move_cleanup_interrupt,
--	.name =		"irq_move"
--};
--
- static int __init parse_vector_domain(char *arg)
- {
- 	if (!arg)
-@@ -586,28 +581,15 @@ static irqreturn_t dummy_handler (int irq, void *dev_id)
- 	return IRQ_NONE;
- }
- 
--static struct irqaction ipi_irqaction = {
--	.handler =	handle_IPI,
--	.name =		"IPI"
--};
--
- /*
-  * KVM uses this interrupt to force a cpu out of guest mode
-  */
--static struct irqaction resched_irqaction = {
--	.handler =	dummy_handler,
--	.name =		"resched"
--};
--
--static struct irqaction tlb_irqaction = {
--	.handler =	dummy_handler,
--	.name =		"tlb_flush"
--};
- 
- #endif
- 
- void
--ia64_native_register_percpu_irq (ia64_vector vec, struct irqaction *action)
-+ia64_native_register_percpu_irq(ia64_vector vec, const char *name,
-+				irq_handler_t handler)
- {
- 	unsigned int irq;
- 
-@@ -615,8 +597,9 @@ ia64_native_register_percpu_irq (ia64_vector vec, struct irqaction *action)
- 	BUG_ON(bind_irq_vector(irq, vec, CPU_MASK_ALL));
- 	irq_set_status_flags(irq, IRQ_PER_CPU);
- 	irq_set_chip(irq, &irq_type_ia64_lsapic);
--	if (action)
--		setup_irq(irq, action);
-+	if (handler)
-+		if (request_irq(irq, handler, 0, name, NULL))
-+			pr_err("request_irq() for %s failed", name);
- 	irq_set_handler(irq, handle_percpu_irq);
- }
- 
-@@ -624,9 +607,10 @@ void __init
- ia64_native_register_ipi(void)
- {
- #ifdef CONFIG_SMP
--	register_percpu_irq(IA64_IPI_VECTOR, &ipi_irqaction);
--	register_percpu_irq(IA64_IPI_RESCHEDULE, &resched_irqaction);
--	register_percpu_irq(IA64_IPI_LOCAL_TLB_FLUSH, &tlb_irqaction);
-+	register_percpu_irq(IA64_IPI_VECTOR, "IPI", handle_IPI);
-+	register_percpu_irq(IA64_IPI_RESCHEDULE, "resched", dummy_handler);
-+	register_percpu_irq(IA64_IPI_LOCAL_TLB_FLUSH, "tlb_flush",
-+			    dummy_handler);
- #endif
- }
- 
-@@ -635,10 +619,12 @@ init_IRQ (void)
- {
- 	acpi_boot_init();
- 	ia64_register_ipi();
--	register_percpu_irq(IA64_SPURIOUS_INT_VECTOR, NULL);
-+	register_percpu_irq(IA64_SPURIOUS_INT_VECTOR, NULL, NULL);
- #ifdef CONFIG_SMP
--	if (vector_domain_type != VECTOR_DOMAIN_NONE)
--		register_percpu_irq(IA64_IRQ_MOVE_VECTOR, &irq_move_irqaction);
-+	if (vector_domain_type != VECTOR_DOMAIN_NONE) {
-+		register_percpu_irq(IA64_IRQ_MOVE_VECTOR, "irq_move",
-+				    smp_irq_move_cleanup_interrupt);
-+	}
- #endif
- #ifdef CONFIG_PERFMON
- 	pfm_init_percpu();
-diff --git a/arch/ia64/kernel/mca.c b/arch/ia64/kernel/mca.c
-index bf2cb9294795..e3d12b376f92 100644
---- a/arch/ia64/kernel/mca.c
-+++ b/arch/ia64/kernel/mca.c
-@@ -1766,36 +1766,6 @@ ia64_mca_disable_cpe_polling(char *str)
- 
- __setup("disable_cpe_poll", ia64_mca_disable_cpe_polling);
- 
--static struct irqaction cmci_irqaction = {
--	.handler =	ia64_mca_cmc_int_handler,
--	.name =		"cmc_hndlr"
--};
--
--static struct irqaction cmcp_irqaction = {
--	.handler =	ia64_mca_cmc_int_caller,
--	.name =		"cmc_poll"
--};
--
--static struct irqaction mca_rdzv_irqaction = {
--	.handler =	ia64_mca_rendez_int_handler,
--	.name =		"mca_rdzv"
--};
--
--static struct irqaction mca_wkup_irqaction = {
--	.handler =	ia64_mca_wakeup_int_handler,
--	.name =		"mca_wkup"
--};
--
--static struct irqaction mca_cpe_irqaction = {
--	.handler =	ia64_mca_cpe_int_handler,
--	.name =		"cpe_hndlr"
--};
--
--static struct irqaction mca_cpep_irqaction = {
--	.handler =	ia64_mca_cpe_int_caller,
--	.name =		"cpe_poll"
--};
--
- /* Minimal format of the MCA/INIT stacks.  The pseudo processes that run on
-  * these stacks can never sleep, they cannot return from the kernel to user
-  * space, they do not appear in a normal ps listing.  So there is no need to
-@@ -2056,18 +2026,23 @@ void __init ia64_mca_irq_init(void)
- 	 *  Configure the CMCI/P vector and handler. Interrupts for CMC are
- 	 *  per-processor, so AP CMC interrupts are setup in smp_callin() (smpboot.c).
- 	 */
--	register_percpu_irq(IA64_CMC_VECTOR, &cmci_irqaction);
--	register_percpu_irq(IA64_CMCP_VECTOR, &cmcp_irqaction);
-+	register_percpu_irq(IA64_CMC_VECTOR, "cmc_hndlr",
-+			    ia64_mca_cmc_int_handler);
-+	register_percpu_irq(IA64_CMCP_VECTOR, "cmc_poll",
-+			    ia64_mca_cmc_int_caller);
- 	ia64_mca_cmc_vector_setup();       /* Setup vector on BSP */
- 
- 	/* Setup the MCA rendezvous interrupt vector */
--	register_percpu_irq(IA64_MCA_RENDEZ_VECTOR, &mca_rdzv_irqaction);
-+	register_percpu_irq(IA64_MCA_RENDEZ_VECTOR, "mca_rdzv",
-+			    ia64_mca_rendez_int_handler);
- 
- 	/* Setup the MCA wakeup interrupt vector */
--	register_percpu_irq(IA64_MCA_WAKEUP_VECTOR, &mca_wkup_irqaction);
-+	register_percpu_irq(IA64_MCA_WAKEUP_VECTOR, "mca_wkup",
-+			    ia64_mca_wakeup_int_handler);
- 
- 	/* Setup the CPEI/P handler */
--	register_percpu_irq(IA64_CPEP_VECTOR, &mca_cpep_irqaction);
-+	register_percpu_irq(IA64_CPEP_VECTOR, "cpe_poll",
-+			    ia64_mca_cpe_int_caller);
- }
- 
- /*
-@@ -2108,7 +2083,11 @@ ia64_mca_late_init(void)
- 			if (irq > 0) {
- 				cpe_poll_enabled = 0;
- 				irq_set_status_flags(irq, IRQ_PER_CPU);
--				setup_irq(irq, &mca_cpe_irqaction);
-+				if (request_irq(irq, ia64_mca_cpe_int_handler,
-+						0, "cpe_hndlr", NULL)) {
-+					pr_err("%s: request_irq() failed\n",
-+					       "cpe_hndlr");
-+				}
- 				ia64_cpe_irq = irq;
- 				ia64_mca_register_cpev(cpe_vector);
- 				IA64_MCA_DEBUG("%s: CPEI/P setup and enabled.\n",
 -- 
-2.25.1
+Thanks,
+
+David / dhildenb
 
