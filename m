@@ -2,150 +2,557 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 1472D16FD5E
-	for <lists+linux-ia64@lfdr.de>; Wed, 26 Feb 2020 12:21:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BECA170BCA
+	for <lists+linux-ia64@lfdr.de>; Wed, 26 Feb 2020 23:44:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728047AbgBZLVH (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 26 Feb 2020 06:21:07 -0500
-Received: from pegase1.c-s.fr ([93.17.236.30]:65462 "EHLO pegase1.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727974AbgBZLVG (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 26 Feb 2020 06:21:06 -0500
-Received: from localhost (mailhub1-int [192.168.12.234])
-        by localhost (Postfix) with ESMTP id 48SCzM1tTVz9tyML;
-        Wed, 26 Feb 2020 12:21:03 +0100 (CET)
-Authentication-Results: localhost; dkim=pass
-        reason="1024-bit key; insecure key"
-        header.d=c-s.fr header.i=@c-s.fr header.b=dcbZx4t5; dkim-adsp=pass;
-        dkim-atps=neutral
-X-Virus-Scanned: Debian amavisd-new at c-s.fr
-Received: from pegase1.c-s.fr ([192.168.12.234])
-        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
-        with ESMTP id J7zfGGKBixz2; Wed, 26 Feb 2020 12:21:03 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase1.c-s.fr (Postfix) with ESMTP id 48SCzL6n6pz9tyLT;
-        Wed, 26 Feb 2020 12:21:02 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=c-s.fr; s=mail;
-        t=1582716063; bh=u+44lvk1l0rvN0rVt0XeRLZF9pAnZ+SeTYsCRW90jUs=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=dcbZx4t5T2TqZBsmJqeETgOslZL/sjGjY3jtgZjyAkWRnWp+cZWdaA9+1CVcQnyrg
-         EAK/r3fzS6yjM9r4KrQXdxQ3U95U+v+IizkroXw9QSoxVs+Y7bA5gjhV+iBVeI3LhD
-         1eV+B927JsHKM6Lu+qpoDnmZLHfscXCGj3HKorDY=
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 166CF8B844;
-        Wed, 26 Feb 2020 12:21:04 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id HTbfYZhVV_tY; Wed, 26 Feb 2020 12:21:03 +0100 (CET)
-Received: from [192.168.4.90] (unknown [192.168.4.90])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id B0DBC8B776;
-        Wed, 26 Feb 2020 12:21:01 +0100 (CET)
-Subject: Re: [PATCH v2 07/13] powerpc: add support for folded p4d page tables
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Brian Cain <bcain@codeaurora.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Guan Xuetao <gxt@pku.edu.cn>,
-        James Morse <james.morse@arm.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Julien Thierry <julien.thierry.kdev@gmail.com>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>,
-        Rich Felker <dalias@libc.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Tony Luck <tony.luck@intel.com>, Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        kvmarm@lists.cs.columbia.edu, kvm-ppc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mm@kvack.org, linuxppc-dev@lists.ozlabs.org,
-        linux-sh@vger.kernel.org, nios2-dev@lists.rocketboards.org,
-        openrisc@lists.librecores.org,
-        uclinux-h8-devel@lists.sourceforge.jp,
-        Mike Rapoport <rppt@linux.ibm.com>
-References: <20200216081843.28670-1-rppt@kernel.org>
- <20200216081843.28670-8-rppt@kernel.org>
- <c79b363c-a111-389a-5752-51cf85fa8c44@c-s.fr> <20200218105440.GA1698@hump>
- <20200226091315.GA11803@hump> <f881f732-729b-a098-f520-b30e44dc10c8@c-s.fr>
- <20200226105615.GB11803@hump>
-From:   Christophe Leroy <christophe.leroy@c-s.fr>
-Message-ID: <7a008227-433c-73d7-b01a-1c6c7c66f04e@c-s.fr>
-Date:   Wed, 26 Feb 2020 12:20:49 +0100
-User-Agent: Mozilla/5.0 (Windows NT 6.1; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.5.0
+        id S1727837AbgBZWoO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 26 Feb 2020 17:44:14 -0500
+Received: from relay2-d.mail.gandi.net ([217.70.183.194]:42763 "EHLO
+        relay2-d.mail.gandi.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727763AbgBZWoO (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 26 Feb 2020 17:44:14 -0500
+X-Originating-IP: 86.202.105.35
+Received: from localhost (lfbn-lyo-1-9-35.w86-202.abo.wanadoo.fr [86.202.105.35])
+        (Authenticated sender: alexandre.belloni@bootlin.com)
+        by relay2-d.mail.gandi.net (Postfix) with ESMTPSA id A2EA040009;
+        Wed, 26 Feb 2020 22:44:10 +0000 (UTC)
+From:   Alexandre Belloni <alexandre.belloni@bootlin.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-rtc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        linux-ia64@vger.kernel.org, Fenghua Yu <fenghua.yu@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Stephane Eranian <eranian@google.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH RESEND 1/2] rtc/ia64: remove legacy efirtc driver
+Date:   Wed, 26 Feb 2020 23:43:21 +0100
+Message-Id: <20200226224322.187960-1-alexandre.belloni@bootlin.com>
+X-Mailer: git-send-email 2.24.1
 MIME-Version: 1.0
-In-Reply-To: <20200226105615.GB11803@hump>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr
 Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+From: Arnd Bergmann <arnd@arndb.de>
 
+There are two EFI RTC drivers, the original drivers/char/efirtc.c
+driver and the more modern drivers/rtc/rtc-efi.c.
 
-Le 26/02/2020 à 11:56, Mike Rapoport a écrit :
-> On Wed, Feb 26, 2020 at 10:46:13AM +0100, Christophe Leroy wrote:
->>
->>
->> Le 26/02/2020 à 10:13, Mike Rapoport a écrit :
->>> On Tue, Feb 18, 2020 at 12:54:40PM +0200, Mike Rapoport wrote:
->>>> On Sun, Feb 16, 2020 at 11:41:07AM +0100, Christophe Leroy wrote:
->>>>>
->>>>>
->>>>> Le 16/02/2020 à 09:18, Mike Rapoport a écrit :
->>>>>> From: Mike Rapoport <rppt@linux.ibm.com>
->>>>>>
->>>>>> Implement primitives necessary for the 4th level folding, add walks of p4d
->>>>>> level where appropriate and replace 5level-fixup.h with pgtable-nop4d.h.
->>>>>
->>>>> I don't think it is worth adding all this additionnals walks of p4d, this
->>>>> patch could be limited to changes like:
->>>>>
->>>>> -		pud = pud_offset(pgd, gpa);
->>>>> +		pud = pud_offset(p4d_offset(pgd, gpa), gpa);
->>>>>
->>>>> The additionnal walks should be added through another patch the day powerpc
->>>>> need them.
->>>>
->>>> Ok, I'll update the patch to reduce walking the p4d.
->>>
->>> Here's what I have with more direct acceses from pgd to pud.
->>
->> I went quickly through. This looks promising.
->>
->> Do we need the walk_p4d() in arch/powerpc/mm/ptdump/hashpagetable.c ?
->> Can't we just do
->>
->> @@ -445,7 +459,7 @@ static void walk_pagetables(struct pg_state *st)
->>   		addr = KERN_VIRT_START + i * PGDIR_SIZE;
->>   		if (!pgd_none(*pgd))
->>   			/* pgd exists */
->> -			walk_pud(st, pgd, addr);
->> +			walk_pud(st, p4d_offset(pgd, addr), addr);
-> 
-> We can do
-> 
-> 	addr = KERN_VIRT_START + i * PGDIR_SIZE;
-> 	p4d = p4d_offset(pgd, addr);
-> 	if (!p4d_none(*pgd))
-> 		walk_pud()
-> 
-> But I don't think this is really essential. Again, we are trading off code
-> consistency vs line count. I don't think line count is that important.
+Both implement the same interface, but the new one does so
+in a more portable way.
 
-Ok.
+Move everything over to that one and remove the old one.
 
-Christophe
+Cc: linux-ia64@vger.kernel.org
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Stephane Eranian <eranian@google.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+---
+This was discussed in early 2018 in
+https://lore.kernel.org/lkml/CAK8P3a0QZNY+K+V1HG056xCerz=_L2jh5UfZ+2LWkDqkw5Zznw@mail.gmail.com/
+
+This patch was send in October 2019
+https://lore.kernel.org/lkml/20191023150311.844123-1-arnd@arndb.de/
+
+It still seems there is no reason to keep the driver.
+
+ arch/ia64/configs/bigsur_defconfig    |   3 +-
+ arch/ia64/configs/generic_defconfig   |   3 +-
+ arch/ia64/configs/gensparse_defconfig |   3 +-
+ arch/ia64/configs/tiger_defconfig     |   3 +-
+ arch/ia64/configs/zx1_defconfig       |   3 +-
+ drivers/char/Kconfig                  |   4 -
+ drivers/char/Makefile                 |   1 -
+ drivers/char/efirtc.c                 | 366 --------------------------
+ include/linux/miscdevice.h            |   2 +-
+ 9 files changed, 11 insertions(+), 377 deletions(-)
+ delete mode 100644 drivers/char/efirtc.c
+
+diff --git a/arch/ia64/configs/bigsur_defconfig b/arch/ia64/configs/bigsur_defconfig
+index b630bd7351c4..f3ba813a5b80 100644
+--- a/arch/ia64/configs/bigsur_defconfig
++++ b/arch/ia64/configs/bigsur_defconfig
+@@ -57,7 +57,8 @@ CONFIG_SERIAL_8250_CONSOLE=y
+ CONFIG_SERIAL_8250_EXTENDED=y
+ CONFIG_SERIAL_8250_SHARE_IRQ=y
+ # CONFIG_HW_RANDOM is not set
+-CONFIG_EFI_RTC=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_EFI=y
+ CONFIG_I2C=y
+ CONFIG_I2C_CHARDEV=y
+ CONFIG_AGP=m
+diff --git a/arch/ia64/configs/generic_defconfig b/arch/ia64/configs/generic_defconfig
+index 661d90b3e148..cb267a07c57f 100644
+--- a/arch/ia64/configs/generic_defconfig
++++ b/arch/ia64/configs/generic_defconfig
+@@ -94,7 +94,8 @@ CONFIG_SERIAL_8250_NR_UARTS=6
+ CONFIG_SERIAL_8250_EXTENDED=y
+ CONFIG_SERIAL_8250_SHARE_IRQ=y
+ # CONFIG_HW_RANDOM is not set
+-CONFIG_EFI_RTC=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_EFI=y
+ CONFIG_RAW_DRIVER=m
+ CONFIG_HPET=y
+ CONFIG_AGP=m
+diff --git a/arch/ia64/configs/gensparse_defconfig b/arch/ia64/configs/gensparse_defconfig
+index 7844e6a956a4..7e25f2f031b6 100644
+--- a/arch/ia64/configs/gensparse_defconfig
++++ b/arch/ia64/configs/gensparse_defconfig
+@@ -82,7 +82,8 @@ CONFIG_SERIAL_8250_NR_UARTS=6
+ CONFIG_SERIAL_8250_EXTENDED=y
+ CONFIG_SERIAL_8250_SHARE_IRQ=y
+ # CONFIG_HW_RANDOM is not set
+-CONFIG_EFI_RTC=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_EFI=y
+ CONFIG_RAW_DRIVER=m
+ CONFIG_HPET=y
+ CONFIG_AGP=m
+diff --git a/arch/ia64/configs/tiger_defconfig b/arch/ia64/configs/tiger_defconfig
+index 1d6e2a01452b..3f486d5bdc2d 100644
+--- a/arch/ia64/configs/tiger_defconfig
++++ b/arch/ia64/configs/tiger_defconfig
+@@ -86,7 +86,8 @@ CONFIG_SERIAL_8250_NR_UARTS=6
+ CONFIG_SERIAL_8250_EXTENDED=y
+ CONFIG_SERIAL_8250_SHARE_IRQ=y
+ # CONFIG_HW_RANDOM is not set
+-CONFIG_EFI_RTC=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_EFI=y
+ CONFIG_RAW_DRIVER=m
+ CONFIG_HPET=y
+ CONFIG_AGP=m
+diff --git a/arch/ia64/configs/zx1_defconfig b/arch/ia64/configs/zx1_defconfig
+index 8c92e095f8bb..70788a500448 100644
+--- a/arch/ia64/configs/zx1_defconfig
++++ b/arch/ia64/configs/zx1_defconfig
+@@ -69,7 +69,8 @@ CONFIG_SERIAL_8250_NR_UARTS=8
+ CONFIG_SERIAL_8250_EXTENDED=y
+ CONFIG_SERIAL_8250_SHARE_IRQ=y
+ # CONFIG_HW_RANDOM is not set
+-CONFIG_EFI_RTC=y
++CONFIG_RTC_CLASS=y
++CONFIG_RTC_DRV_EFI=y
+ CONFIG_I2C_CHARDEV=y
+ CONFIG_AGP=y
+ CONFIG_AGP_HP_ZX1=y
+diff --git a/drivers/char/Kconfig b/drivers/char/Kconfig
+index 26956c006987..d9274e2d965c 100644
+--- a/drivers/char/Kconfig
++++ b/drivers/char/Kconfig
+@@ -297,10 +297,6 @@ config JS_RTC
+ 	  To compile this driver as a module, choose M here: the
+ 	  module will be called js-rtc.
+ 
+-config EFI_RTC
+-	bool "EFI Real Time Clock Services"
+-	depends on IA64
+-
+ endif # RTC_LIB
+ 
+ config DTLK
+diff --git a/drivers/char/Makefile b/drivers/char/Makefile
+index 7c5ea6f9df14..abe3138b1f5a 100644
+--- a/drivers/char/Makefile
++++ b/drivers/char/Makefile
+@@ -22,7 +22,6 @@ obj-$(CONFIG_APPLICOM)		+= applicom.o
+ obj-$(CONFIG_SONYPI)		+= sonypi.o
+ obj-$(CONFIG_RTC)		+= rtc.o
+ obj-$(CONFIG_HPET)		+= hpet.o
+-obj-$(CONFIG_EFI_RTC)		+= efirtc.o
+ obj-$(CONFIG_XILINX_HWICAP)	+= xilinx_hwicap/
+ obj-$(CONFIG_NVRAM)		+= nvram.o
+ obj-$(CONFIG_TOSHIBA)		+= toshiba.o
+diff --git a/drivers/char/efirtc.c b/drivers/char/efirtc.c
+deleted file mode 100644
+index 4f73064d0c6f..000000000000
+--- a/drivers/char/efirtc.c
++++ /dev/null
+@@ -1,366 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-/*
+- * EFI Time Services Driver for Linux
+- *
+- * Copyright (C) 1999 Hewlett-Packard Co
+- * Copyright (C) 1999 Stephane Eranian <eranian@hpl.hp.com>
+- *
+- * Based on skeleton from the drivers/char/rtc.c driver by P. Gortmaker
+- *
+- * This code provides an architected & portable interface to the real time
+- * clock by using EFI instead of direct bit fiddling. The functionalities are 
+- * quite different from the rtc.c driver. The only way to talk to the device 
+- * is by using ioctl(). There is a /proc interface which provides the raw 
+- * information.
+- *
+- * Please note that we have kept the API as close as possible to the
+- * legacy RTC. The standard /sbin/hwclock program should work normally 
+- * when used to get/set the time.
+- *
+- * NOTES:
+- *	- Locking is required for safe execution of EFI calls with regards
+- *	  to interrupts and SMP.
+- *
+- * TODO (December 1999):
+- * 	- provide the API to set/get the WakeUp Alarm (different from the
+- *	  rtc.c alarm).
+- *	- SMP testing
+- * 	- Add module support
+- */
+-
+-#include <linux/types.h>
+-#include <linux/errno.h>
+-#include <linux/miscdevice.h>
+-#include <linux/init.h>
+-#include <linux/rtc.h>
+-#include <linux/proc_fs.h>
+-#include <linux/seq_file.h>
+-#include <linux/efi.h>
+-#include <linux/uaccess.h>
+-
+-
+-#define EFI_RTC_VERSION		"0.4"
+-
+-#define EFI_ISDST (EFI_TIME_ADJUST_DAYLIGHT|EFI_TIME_IN_DAYLIGHT)
+-/*
+- * EFI Epoch is 1/1/1998
+- */
+-#define EFI_RTC_EPOCH		1998
+-
+-static DEFINE_SPINLOCK(efi_rtc_lock);
+-
+-static long efi_rtc_ioctl(struct file *file, unsigned int cmd,
+-							unsigned long arg);
+-
+-#define is_leap(year) \
+-          ((year) % 4 == 0 && ((year) % 100 != 0 || (year) % 400 == 0))
+-
+-static const unsigned short int __mon_yday[2][13] =
+-{
+-	/* Normal years.  */
+-	{ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 },
+-	/* Leap years.  */  
+-	{ 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335, 366 }
+-};
+-
+-/*
+- * returns day of the year [0-365]
+- */
+-static inline int
+-compute_yday(efi_time_t *eft)
+-{
+-	/* efi_time_t.month is in the [1-12] so, we need -1 */
+-	return  __mon_yday[is_leap(eft->year)][eft->month-1]+ eft->day -1;
+-}
+-/*
+- * returns day of the week [0-6] 0=Sunday
+- *
+- * Don't try to provide a year that's before 1998, please !
+- */
+-static int
+-compute_wday(efi_time_t *eft)
+-{
+-	int y;
+-	int ndays = 0;
+-
+-	if ( eft->year < 1998 ) {
+-		printk(KERN_ERR "efirtc: EFI year < 1998, invalid date\n");
+-		return -1;
+-	}
+-
+-	for(y=EFI_RTC_EPOCH; y < eft->year; y++ ) {
+-		ndays += 365 + (is_leap(y) ? 1 : 0);
+-	}
+-	ndays += compute_yday(eft);
+-
+-	/*
+-	 * 4=1/1/1998 was a Thursday
+-	 */
+-	return (ndays + 4) % 7;
+-}
+-
+-static void
+-convert_to_efi_time(struct rtc_time *wtime, efi_time_t *eft)
+-{
+-
+-	eft->year	= wtime->tm_year + 1900;
+-	eft->month	= wtime->tm_mon + 1; 
+-	eft->day	= wtime->tm_mday;
+-	eft->hour	= wtime->tm_hour;
+-	eft->minute	= wtime->tm_min;
+-	eft->second 	= wtime->tm_sec;
+-	eft->nanosecond = 0; 
+-	eft->daylight	= wtime->tm_isdst ? EFI_ISDST: 0;
+-	eft->timezone	= EFI_UNSPECIFIED_TIMEZONE;
+-}
+-
+-static void
+-convert_from_efi_time(efi_time_t *eft, struct rtc_time *wtime)
+-{
+-	memset(wtime, 0, sizeof(*wtime));
+-	wtime->tm_sec  = eft->second;
+-	wtime->tm_min  = eft->minute;
+-	wtime->tm_hour = eft->hour;
+-	wtime->tm_mday = eft->day;
+-	wtime->tm_mon  = eft->month - 1;
+-	wtime->tm_year = eft->year - 1900;
+-
+-	/* day of the week [0-6], Sunday=0 */
+-	wtime->tm_wday = compute_wday(eft);
+-
+-	/* day in the year [1-365]*/
+-	wtime->tm_yday = compute_yday(eft);
+-
+-
+-	switch (eft->daylight & EFI_ISDST) {
+-		case EFI_ISDST:
+-			wtime->tm_isdst = 1;
+-			break;
+-		case EFI_TIME_ADJUST_DAYLIGHT:
+-			wtime->tm_isdst = 0;
+-			break;
+-		default:
+-			wtime->tm_isdst = -1;
+-	}
+-}
+-
+-static long efi_rtc_ioctl(struct file *file, unsigned int cmd,
+-							unsigned long arg)
+-{
+-
+-	efi_status_t	status;
+-	unsigned long	flags;
+-	efi_time_t	eft;
+-	efi_time_cap_t	cap;
+-	struct rtc_time	wtime;
+-	struct rtc_wkalrm __user *ewp;
+-	unsigned char	enabled, pending;
+-
+-	switch (cmd) {
+-		case RTC_UIE_ON:
+-		case RTC_UIE_OFF:
+-		case RTC_PIE_ON:
+-		case RTC_PIE_OFF:
+-		case RTC_AIE_ON:
+-		case RTC_AIE_OFF:
+-		case RTC_ALM_SET:
+-		case RTC_ALM_READ:
+-		case RTC_IRQP_READ:
+-		case RTC_IRQP_SET:
+-		case RTC_EPOCH_READ:
+-		case RTC_EPOCH_SET:
+-			return -EINVAL;
+-
+-		case RTC_RD_TIME:
+-			spin_lock_irqsave(&efi_rtc_lock, flags);
+-
+-			status = efi.get_time(&eft, &cap);
+-
+-			spin_unlock_irqrestore(&efi_rtc_lock,flags);
+-
+-			if (status != EFI_SUCCESS) {
+-				/* should never happen */
+-				printk(KERN_ERR "efitime: can't read time\n");
+-				return -EINVAL;
+-			}
+-
+-			convert_from_efi_time(&eft, &wtime);
+-
+- 			return copy_to_user((void __user *)arg, &wtime,
+-					    sizeof (struct rtc_time)) ? - EFAULT : 0;
+-
+-		case RTC_SET_TIME:
+-
+-			if (!capable(CAP_SYS_TIME)) return -EACCES;
+-
+-			if (copy_from_user(&wtime, (struct rtc_time __user *)arg,
+-					   sizeof(struct rtc_time)) )
+-				return -EFAULT;
+-
+-			convert_to_efi_time(&wtime, &eft);
+-
+-			spin_lock_irqsave(&efi_rtc_lock, flags);
+-
+-			status = efi.set_time(&eft);
+-
+-			spin_unlock_irqrestore(&efi_rtc_lock,flags);
+-
+-			return status == EFI_SUCCESS ? 0 : -EINVAL;
+-
+-		case RTC_WKALM_SET:
+-
+-			if (!capable(CAP_SYS_TIME)) return -EACCES;
+-
+-			ewp = (struct rtc_wkalrm __user *)arg;
+-
+-			if (  get_user(enabled, &ewp->enabled)
+-			   || copy_from_user(&wtime, &ewp->time, sizeof(struct rtc_time)) )
+-				return -EFAULT;
+-
+-			convert_to_efi_time(&wtime, &eft);
+-
+-			spin_lock_irqsave(&efi_rtc_lock, flags);
+-			/*
+-			 * XXX Fixme:
+-			 * As of EFI 0.92 with the firmware I have on my
+-			 * machine this call does not seem to work quite
+-			 * right
+-			 */
+-			status = efi.set_wakeup_time((efi_bool_t)enabled, &eft);
+-
+-			spin_unlock_irqrestore(&efi_rtc_lock,flags);
+-
+-			return status == EFI_SUCCESS ? 0 : -EINVAL;
+-
+-		case RTC_WKALM_RD:
+-
+-			spin_lock_irqsave(&efi_rtc_lock, flags);
+-
+-			status = efi.get_wakeup_time((efi_bool_t *)&enabled, (efi_bool_t *)&pending, &eft);
+-
+-			spin_unlock_irqrestore(&efi_rtc_lock,flags);
+-
+-			if (status != EFI_SUCCESS) return -EINVAL;
+-
+-			ewp = (struct rtc_wkalrm __user *)arg;
+-
+-			if (  put_user(enabled, &ewp->enabled)
+-			   || put_user(pending, &ewp->pending)) return -EFAULT;
+-
+-			convert_from_efi_time(&eft, &wtime);
+-
+-			return copy_to_user(&ewp->time, &wtime,
+-					    sizeof(struct rtc_time)) ? -EFAULT : 0;
+-	}
+-	return -ENOTTY;
+-}
+-
+-/*
+- *	The various file operations we support.
+- */
+-
+-static const struct file_operations efi_rtc_fops = {
+-	.owner		= THIS_MODULE,
+-	.unlocked_ioctl	= efi_rtc_ioctl,
+-	.llseek		= no_llseek,
+-};
+-
+-static struct miscdevice efi_rtc_dev= {
+-	EFI_RTC_MINOR,
+-	"efirtc",
+-	&efi_rtc_fops
+-};
+-
+-/*
+- *	We export RAW EFI information to /proc/driver/efirtc
+- */
+-static int efi_rtc_proc_show(struct seq_file *m, void *v)
+-{
+-	efi_time_t 	eft, alm;
+-	efi_time_cap_t	cap;
+-	efi_bool_t	enabled, pending;	
+-	unsigned long	flags;
+-
+-	memset(&eft, 0, sizeof(eft));
+-	memset(&alm, 0, sizeof(alm));
+-	memset(&cap, 0, sizeof(cap));
+-
+-	spin_lock_irqsave(&efi_rtc_lock, flags);
+-
+-	efi.get_time(&eft, &cap);
+-	efi.get_wakeup_time(&enabled, &pending, &alm);
+-
+-	spin_unlock_irqrestore(&efi_rtc_lock,flags);
+-
+-	seq_printf(m,
+-		   "Time           : %u:%u:%u.%09u\n"
+-		   "Date           : %u-%u-%u\n"
+-		   "Daylight       : %u\n",
+-		   eft.hour, eft.minute, eft.second, eft.nanosecond, 
+-		   eft.year, eft.month, eft.day,
+-		   eft.daylight);
+-
+-	if (eft.timezone == EFI_UNSPECIFIED_TIMEZONE)
+-		seq_puts(m, "Timezone       : unspecified\n");
+-	else
+-		/* XXX fixme: convert to string? */
+-		seq_printf(m, "Timezone       : %u\n", eft.timezone);
+-		
+-
+-	seq_printf(m,
+-		   "Alarm Time     : %u:%u:%u.%09u\n"
+-		   "Alarm Date     : %u-%u-%u\n"
+-		   "Alarm Daylight : %u\n"
+-		   "Enabled        : %s\n"
+-		   "Pending        : %s\n",
+-		   alm.hour, alm.minute, alm.second, alm.nanosecond, 
+-		   alm.year, alm.month, alm.day, 
+-		   alm.daylight,
+-		   enabled == 1 ? "yes" : "no",
+-		   pending == 1 ? "yes" : "no");
+-
+-	if (eft.timezone == EFI_UNSPECIFIED_TIMEZONE)
+-		seq_puts(m, "Timezone       : unspecified\n");
+-	else
+-		/* XXX fixme: convert to string? */
+-		seq_printf(m, "Timezone       : %u\n", alm.timezone);
+-
+-	/*
+-	 * now prints the capabilities
+-	 */
+-	seq_printf(m,
+-		   "Resolution     : %u\n"
+-		   "Accuracy       : %u\n"
+-		   "SetstoZero     : %u\n",
+-		   cap.resolution, cap.accuracy, cap.sets_to_zero);
+-
+-	return 0;
+-}
+-static int __init 
+-efi_rtc_init(void)
+-{
+-	int ret;
+-	struct proc_dir_entry *dir;
+-
+-	printk(KERN_INFO "EFI Time Services Driver v%s\n", EFI_RTC_VERSION);
+-
+-	ret = misc_register(&efi_rtc_dev);
+-	if (ret) {
+-		printk(KERN_ERR "efirtc: can't misc_register on minor=%d\n",
+-				EFI_RTC_MINOR);
+-		return ret;
+-	}
+-
+-	dir = proc_create_single("driver/efirtc", 0, NULL, efi_rtc_proc_show);
+-	if (dir == NULL) {
+-		printk(KERN_ERR "efirtc: can't create /proc/driver/efirtc.\n");
+-		misc_deregister(&efi_rtc_dev);
+-		return -1;
+-	}
+-	return 0;
+-}
+-device_initcall(efi_rtc_init);
+-
+-/*
+-MODULE_LICENSE("GPL");
+-*/
+diff --git a/include/linux/miscdevice.h b/include/linux/miscdevice.h
+index becde6981a95..b3c920cbe475 100644
+--- a/include/linux/miscdevice.h
++++ b/include/linux/miscdevice.h
+@@ -25,7 +25,7 @@
+ #define TEMP_MINOR		131	/* Temperature Sensor */
+ #define APM_MINOR_DEV		134
+ #define RTC_MINOR		135
+-#define EFI_RTC_MINOR		136	/* EFI Time services */
++/*#define EFI_RTC_MINOR		136	was EFI Time services */
+ #define VHCI_MINOR		137
+ #define SUN_OPENPROM_MINOR	139
+ #define DMAPI_MINOR		140	/* unused */
+-- 
+2.24.1
+
