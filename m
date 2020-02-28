@@ -2,57 +2,54 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 05F501725FC
-	for <lists+linux-ia64@lfdr.de>; Thu, 27 Feb 2020 19:09:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DDA43174181
+	for <lists+linux-ia64@lfdr.de>; Fri, 28 Feb 2020 22:31:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729503AbgB0SIV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 27 Feb 2020 13:08:21 -0500
-Received: from mail-ot1-f67.google.com ([209.85.210.67]:46902 "EHLO
-        mail-ot1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729269AbgB0SIV (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 27 Feb 2020 13:08:21 -0500
-Received: by mail-ot1-f67.google.com with SMTP id g96so3755083otb.13
-        for <linux-ia64@vger.kernel.org>; Thu, 27 Feb 2020 10:08:21 -0800 (PST)
+        id S1726880AbgB1VbR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 28 Feb 2020 16:31:17 -0500
+Received: from mail-ot1-f66.google.com ([209.85.210.66]:37646 "EHLO
+        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726838AbgB1VbR (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 28 Feb 2020 16:31:17 -0500
+Received: by mail-ot1-f66.google.com with SMTP id b3so3975761otp.4
+        for <linux-ia64@vger.kernel.org>; Fri, 28 Feb 2020 13:31:16 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=4F3CkEYboenOdYfvgxaEFjzaB88Ias8AvgF6y2bsYJo=;
-        b=btVB1/kCSyh3miQnMYs3e17lMek8QSVYBuP0FlHl1SN8jj8AK7ZcsZTrZLYZcDr8L0
-         NSJ9MeY7RriOXGf8mxUIHycStwVTMNeNi3yrQla6dMYLj551Rp9KWZnTu9g5AKGKvvYT
-         9WlFsCXT0V4ckXbqldT9RpXG/xwR6Da9kdRkEzPi8tdoEUk2abNALGro5ZLdP/rXl0tG
-         /sptmzlpcqEIizzSfsWPT6ZSjga8U2PolwmP3cK/7EJmAplRWGpIpx3oVOIujglDOBPB
-         U/jmRkYeKgZuoKDQ/uKn2xiCIfawYUF6S/k5E1dLzCZ3Me3N7Bit13cPq5fiueJNzJqi
-         dLRw==
+        bh=E57qmAYxRULljTteoL9BnNM233t9xRFNSPdb4qSFmz4=;
+        b=FOSXg/gDLnMTvsFKrROzrWHQkymULqZ4VWWSzkxbCpGWafrvoL1DbhvWHkNA1awmFJ
+         mqZ4yc3Xu7lUtGU0lnzzTMrQrhjDoBb0aAi0O834VNv0Xx2wr1FRPluT436M+3L6Uu3P
+         OeEfO9GHrkLM+a5+P9XzccUiCN5lVGpuO1RMFe6qheaZSXTBuWXwalcRrw3HRO/r9ITu
+         dbpQvHayrSz63xS3XZJvxFAo9ni5zPDlHcVTL49HtS1LUdDaUyRpVgHEgZqSQiaYscIw
+         1HyAUUJ1ehUcyfKMFiPZLd4BrozyOvRYXTSs34KN1qjk4Mke8taeKrGC90q2MJWKZrKw
+         q4mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=4F3CkEYboenOdYfvgxaEFjzaB88Ias8AvgF6y2bsYJo=;
-        b=HUnpBqCZd8vkiBmErH9uQGYv2SzglOD8Pr9ptVJlnbrPaT9bDbUWy/+TqQYrrMq7Zg
-         4uvKMf8gSNDNGXsMV4YxHNb5PqU3bFQ+UkkehEyshnrd28r7qvbSHL+IwxZ5ViY9trFL
-         kD9WZvOKAuBPHl6cNSutDk9rQLVL+S5wx8f5Wxe4LdBsuQ2WNZE1i26hXWqh2cr4uHOT
-         JIhdvfViUUB5lOGSMZtaSLgQVPlR1+zSZiG+qgDdE8QcIwn5fXwFJEVBF61As50UGupL
-         nrcTnYHgmOs/G98EZw06MGi7deINC1SP14r2xmVxULgfbTqcvCvpd4hUBDmMCdU4Licy
-         QzoQ==
-X-Gm-Message-State: APjAAAUb4SHkQoYDUu7nSNAMnF3VdkuJqKJ/n2UbBCYf5wxSfrEY1Vtp
-        Bq7kFVpzHHKNVXApFhiY3Ai+tKDRu1Qz43F9WAOJuA==
-X-Google-Smtp-Source: APXvYqzWZDXbIbzo1esKuuymk2opANK/r16XeVx9wwrPYC7dcJfvghbSyviygno+FjUiHqeLzBQ9brN5G7f+Od4lm4g=
-X-Received: by 2002:a9d:6c9:: with SMTP id 67mr93279otx.363.1582826900650;
- Thu, 27 Feb 2020 10:08:20 -0800 (PST)
+        bh=E57qmAYxRULljTteoL9BnNM233t9xRFNSPdb4qSFmz4=;
+        b=aFL67xLKW+gLRtt2G3wq9PXMT7buKjixMm8lQPGzoXw9GeGEcwkH908XvdowYvYqP2
+         1JbijZhMGAp7DHqjHo0L0TDdACL/BuZ0ai0MmRh1FU+ooH5rpU2eF5SOJog5x8L/uhTK
+         VsqE3GSDgSNMCzBZXR8Y9h3AkSyb8y6zNjZZ3gaIrqPr9xhfMoQqKEvIkoZrL8z3giit
+         j9/aEWpRPprQbUAjyMK5XdcVzJu0w7y5I3UeLNWN6VYg6BjwXCmE6AZ1jL+xzJC3T9Rd
+         6iQjJUblfEzht4HdH6qsMoumh0fekIc2zPdlXwJqh0dUJOlGY0juelnTZy2plZ++fCJe
+         w8gA==
+X-Gm-Message-State: APjAAAUyhbiVZ5nGx0jrP10sHYzZchC+mo5Gl71pQEc6/5enU6xglcy1
+        LNfk1aBGDlQOIPea7jXXvdR+IXJbUGBmzeQ/O0PX9g==
+X-Google-Smtp-Source: APXvYqw3lx5wUMOoXp5Dz6+9E6dRQ6P4Q87wBR0C2ISCuvp93d5At8nQ1nTZ6ODRu1fC1blNWg8tMcQbt7eE8AgCHRU=
+X-Received: by 2002:a9d:64d8:: with SMTP id n24mr4607004otl.71.1582925476085;
+ Fri, 28 Feb 2020 13:31:16 -0800 (PST)
 MIME-Version: 1.0
-References: <20200221182503.28317-1-logang@deltatee.com> <20200227171704.GK31668@ziepe.ca>
- <e8781f85-3fc7-b9ce-c751-606803cbdc77@deltatee.com> <20200227174311.GL31668@ziepe.ca>
- <CAPcyv4iek=EmNk9JgXq=-HcZjd9Kz4m2+qXMhnDWMshFKFZPXQ@mail.gmail.com> <20200227180346.GM31668@ziepe.ca>
-In-Reply-To: <20200227180346.GM31668@ziepe.ca>
+References: <20200221182503.28317-1-logang@deltatee.com> <20200221182503.28317-2-logang@deltatee.com>
+In-Reply-To: <20200221182503.28317-2-logang@deltatee.com>
 From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Thu, 27 Feb 2020 10:08:09 -0800
-Message-ID: <CAPcyv4g6OYvD57LdWcqGuWVanckQv4a1uzJrE1OZyMH+z=5KZw@mail.gmail.com>
-Subject: Re: [PATCH v3 0/7] Allow setting caching mode in arch_add_memory()
- for P2PDMA
-To:     Jason Gunthorpe <jgg@ziepe.ca>
-Cc:     Logan Gunthorpe <logang@deltatee.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+Date:   Fri, 28 Feb 2020 13:31:05 -0800
+Message-ID: <CAPcyv4gFiCBN_Bz5eZrWXV0PEaWhwdHDkgEW7e5z0xZkp6a83w@mail.gmail.com>
+Subject: Re: [PATCH v3 1/7] mm/memory_hotplug: Drop the flags field from
+ struct mhp_restrictions
+To:     Logan Gunthorpe <logang@deltatee.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
         linux-ia64@vger.kernel.org,
         linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
@@ -78,71 +75,12 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Feb 27, 2020 at 10:03 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
+On Fri, Feb 21, 2020 at 10:25 AM Logan Gunthorpe <logang@deltatee.com> wrote:
 >
-> On Thu, Feb 27, 2020 at 09:55:04AM -0800, Dan Williams wrote:
-> > On Thu, Feb 27, 2020 at 9:43 AM Jason Gunthorpe <jgg@ziepe.ca> wrote:
-> > >
-> > > On Thu, Feb 27, 2020 at 10:21:50AM -0700, Logan Gunthorpe wrote:
-> > > >
-> > > >
-> > > > On 2020-02-27 10:17 a.m., Jason Gunthorpe wrote:
-> > > > >> Instead of this, this series proposes a change to arch_add_memory()
-> > > > >> to take the pgprot required by the mapping which allows us to
-> > > > >> explicitly set pagetable entries for P2PDMA memory to WC.
-> > > > >
-> > > > > Is there a particular reason why WC was selected here? I thought for
-> > > > > the p2pdma cases there was no kernel user that touched the memory?
-> > > >
-> > > > Yes, that's correct. I choose WC here because the existing users are
-> > > > registering memory blocks without side effects which fit the WC
-> > > > semantics well.
-> > >
-> > > Hm, AFAIK WC memory is not compatible with the spinlocks/mutexs/etc in
-> > > Linux, so while it is true the memory has no side effects, there would
-> > > be surprising concurrency risks if anything in the kernel tried to
-> > > write to it.
-> > >
-> > > Not compatible means the locks don't contain stores to WC memory the
-> > > way you would expect. AFAIK on many CPUs extra barriers are required
-> > > to keep WC stores ordered, the same way ARM already has extra barriers
-> > > to keep UC stores ordered with locking..
-> > >
-> > > The spinlocks are defined to contain UC stores though.
-> >
-> > How are spinlocks and mutexes getting into p2pdma ranges in the first
-> > instance? Even with UC, the system has bigger problems if it's trying
-> > to send bus locks targeting PCI, see the flurry of activity of trying
-> > to trigger faults on split locks [1].
+> This variable is not used anywhere and should therefore be removed
+> from the structure.
 >
-> This is not what I was trying to explain.
->
-> Consider
->
->  static spinlock lock; // CPU DRAM
->  static idx = 0;
->  u64 *wc_memory = [..];
->
->  spin_lock(&lock);
->  wc_memory[0] = idx++;
->  spin_unlock(&lock);
->
-> You'd expect that the PCI device will observe stores where idx is
-> strictly increasing, but this is not guarenteed. idx may decrease, idx
-> may skip. It just won't duplicate.
->
-> Or perhaps
->
->  wc_memory[0] = foo;
->  writel(doorbell)
->
-> foo is not guarenteed observable by the device before doorbell reaches
-> the device.
->
-> All of these are things that do not happen with UC or NC memory, and
-> are surprising violations of our programming model.
->
-> Generic kernel code should never touch WC memory unless the code is
-> specifically designed to handle it.
+> Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
+> Reviewed-by: David Hildenbrand <david@redhat.com>
 
-Ah, yes, agree.
+Reviewed-by: Dan Williams <dan.j.williams@intel.com>
