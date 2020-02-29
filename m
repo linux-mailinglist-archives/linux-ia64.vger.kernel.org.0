@@ -2,52 +2,51 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id DDA43174181
-	for <lists+linux-ia64@lfdr.de>; Fri, 28 Feb 2020 22:31:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 62464174961
+	for <lists+linux-ia64@lfdr.de>; Sat, 29 Feb 2020 21:44:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726880AbgB1VbR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 28 Feb 2020 16:31:17 -0500
-Received: from mail-ot1-f66.google.com ([209.85.210.66]:37646 "EHLO
-        mail-ot1-f66.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726838AbgB1VbR (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 28 Feb 2020 16:31:17 -0500
-Received: by mail-ot1-f66.google.com with SMTP id b3so3975761otp.4
-        for <linux-ia64@vger.kernel.org>; Fri, 28 Feb 2020 13:31:16 -0800 (PST)
+        id S1727265AbgB2Uop (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 29 Feb 2020 15:44:45 -0500
+Received: from mail-ot1-f65.google.com ([209.85.210.65]:45048 "EHLO
+        mail-ot1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727252AbgB2Uoo (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 29 Feb 2020 15:44:44 -0500
+Received: by mail-ot1-f65.google.com with SMTP id v22so1444244otq.11
+        for <linux-ia64@vger.kernel.org>; Sat, 29 Feb 2020 12:44:44 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=intel-com.20150623.gappssmtp.com; s=20150623;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=E57qmAYxRULljTteoL9BnNM233t9xRFNSPdb4qSFmz4=;
-        b=FOSXg/gDLnMTvsFKrROzrWHQkymULqZ4VWWSzkxbCpGWafrvoL1DbhvWHkNA1awmFJ
-         mqZ4yc3Xu7lUtGU0lnzzTMrQrhjDoBb0aAi0O834VNv0Xx2wr1FRPluT436M+3L6Uu3P
-         OeEfO9GHrkLM+a5+P9XzccUiCN5lVGpuO1RMFe6qheaZSXTBuWXwalcRrw3HRO/r9ITu
-         dbpQvHayrSz63xS3XZJvxFAo9ni5zPDlHcVTL49HtS1LUdDaUyRpVgHEgZqSQiaYscIw
-         1HyAUUJ1ehUcyfKMFiPZLd4BrozyOvRYXTSs34KN1qjk4Mke8taeKrGC90q2MJWKZrKw
-         q4mQ==
+        bh=rqrrnhnAhDxDR8DToJ03L+juASOs6Wy8PQ3rH1ycKSY=;
+        b=TYpFojaFQdUqaHBll6wgyaBq0JuxhRQyFCiHl2aCihv5uMBc1KFDLDDeMczLWyt8tD
+         qnLbcLplw+2WoNzbCgJnxTLzJUgibDfZbhT9vNbt0/enEuXTff8alC+u6o+URMJGyNJ6
+         ou1NISRDvkqJtex7bh+3kcVgLSIao7pALFZD+un2PFXr3PJS3k+VeI1R+qVg2jI4wJXw
+         L5hTOFFVEbsKWNM3uV0YKQ+t9u+eM/SZ1W/MR2NG+K24z72IjJI5pZ4CTLDqOY2K4PT1
+         nii7SoL/cAdaHD/p50gusTVN3y7GcODdwr9wZ2TLWb8bhxiKX9kOGosaY8MhItMZJRCE
+         nAQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=E57qmAYxRULljTteoL9BnNM233t9xRFNSPdb4qSFmz4=;
-        b=aFL67xLKW+gLRtt2G3wq9PXMT7buKjixMm8lQPGzoXw9GeGEcwkH908XvdowYvYqP2
-         1JbijZhMGAp7DHqjHo0L0TDdACL/BuZ0ai0MmRh1FU+ooH5rpU2eF5SOJog5x8L/uhTK
-         VsqE3GSDgSNMCzBZXR8Y9h3AkSyb8y6zNjZZ3gaIrqPr9xhfMoQqKEvIkoZrL8z3giit
-         j9/aEWpRPprQbUAjyMK5XdcVzJu0w7y5I3UeLNWN6VYg6BjwXCmE6AZ1jL+xzJC3T9Rd
-         6iQjJUblfEzht4HdH6qsMoumh0fekIc2zPdlXwJqh0dUJOlGY0juelnTZy2plZ++fCJe
-         w8gA==
-X-Gm-Message-State: APjAAAUyhbiVZ5nGx0jrP10sHYzZchC+mo5Gl71pQEc6/5enU6xglcy1
-        LNfk1aBGDlQOIPea7jXXvdR+IXJbUGBmzeQ/O0PX9g==
-X-Google-Smtp-Source: APXvYqw3lx5wUMOoXp5Dz6+9E6dRQ6P4Q87wBR0C2ISCuvp93d5At8nQ1nTZ6ODRu1fC1blNWg8tMcQbt7eE8AgCHRU=
-X-Received: by 2002:a9d:64d8:: with SMTP id n24mr4607004otl.71.1582925476085;
- Fri, 28 Feb 2020 13:31:16 -0800 (PST)
+        bh=rqrrnhnAhDxDR8DToJ03L+juASOs6Wy8PQ3rH1ycKSY=;
+        b=cH8tw9HBFILCC9qzR0bNvzf1mArXGHqCeGflsM9wC9ad9AsFYpnNhJ95dJN0Ra4f/q
+         Q4++eOJ6LYQs7708naab5x/FEJNCnm44bJB+R0PpMSK4KI7hTFw+976eH2F35Bwo5RAC
+         qgJH5jaMdw6/ibC4VKej3gNPTRdSxEiSAX54+0o/82AwkomuLt99BlUSWJsYWt+oO/6R
+         /D1U0nzIEgeLp339ysOArJDYBJR0aMT3m+ux7tpEOBscNCzuPlvgpLswos9m/HrZkOG0
+         BepGf5AKmPftm51GxxeAGCCPOQGV4qgsieODmqL9ws0FhrLM8XWW2du4keR1IwlC2UNR
+         OLTA==
+X-Gm-Message-State: APjAAAWltLus6mHiZ5u2erhb40+FwSlTNRmt7rif2msQIz8ngQjYuX2H
+        daBjdifLf02OICFtZLeyjgNkFtuLK+h/+xd7JqUbgQ==
+X-Google-Smtp-Source: APXvYqwuD7hXgqDuHa7bNKr2aGN5ZsRtxcfrMKKpE5k3aRoSjSLBCzEO28z30FjlnmPqDSMCgEWPc3EsieveZxFwGeE=
+X-Received: by 2002:a05:6830:134c:: with SMTP id r12mr7849308otq.126.1583009084306;
+ Sat, 29 Feb 2020 12:44:44 -0800 (PST)
 MIME-Version: 1.0
-References: <20200221182503.28317-1-logang@deltatee.com> <20200221182503.28317-2-logang@deltatee.com>
-In-Reply-To: <20200221182503.28317-2-logang@deltatee.com>
+References: <20200221182503.28317-1-logang@deltatee.com> <20200221182503.28317-3-logang@deltatee.com>
+In-Reply-To: <20200221182503.28317-3-logang@deltatee.com>
 From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 28 Feb 2020 13:31:05 -0800
-Message-ID: <CAPcyv4gFiCBN_Bz5eZrWXV0PEaWhwdHDkgEW7e5z0xZkp6a83w@mail.gmail.com>
-Subject: Re: [PATCH v3 1/7] mm/memory_hotplug: Drop the flags field from
- struct mhp_restrictions
+Date:   Sat, 29 Feb 2020 12:44:29 -0800
+Message-ID: <CAPcyv4hLvciwxSnsQRye9SuB-sy9fm+_6CwZSuHifkmbWQs-+g@mail.gmail.com>
+Subject: Re: [PATCH v3 2/7] mm/memory_hotplug: Rename mhp_restrictions to mhp_params
 To:     Logan Gunthorpe <logang@deltatee.com>
 Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Linux ARM <linux-arm-kernel@lists.infradead.org>,
@@ -77,10 +76,12 @@ X-Mailing-List: linux-ia64@vger.kernel.org
 
 On Fri, Feb 21, 2020 at 10:25 AM Logan Gunthorpe <logang@deltatee.com> wrote:
 >
-> This variable is not used anywhere and should therefore be removed
-> from the structure.
+> The mhp_restrictions struct really doesn't specify anything resembling
+> a restriction anymore so rename it to be mhp_params as it is a list
+> of extended parameters.
 >
 > Signed-off-by: Logan Gunthorpe <logang@deltatee.com>
-> Reviewed-by: David Hildenbrand <david@redhat.com>
+
+Tests ok, and looks good to me:
 
 Reviewed-by: Dan Williams <dan.j.williams@intel.com>
