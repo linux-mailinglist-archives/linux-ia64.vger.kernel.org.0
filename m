@@ -2,52 +2,45 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id CB77E17D58B
-	for <lists+linux-ia64@lfdr.de>; Sun,  8 Mar 2020 19:29:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C9A5E17DC11
+	for <lists+linux-ia64@lfdr.de>; Mon,  9 Mar 2020 10:01:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726292AbgCHS3m (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 8 Mar 2020 14:29:42 -0400
-Received: from www752.sakura.ne.jp ([59.106.19.202]:61599 "EHLO
-        www752.sakura.ne.jp" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726279AbgCHS3m (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 8 Mar 2020 14:29:42 -0400
-X-Greylist: delayed 8817 seconds by postgrey-1.27 at vger.kernel.org; Sun, 08 Mar 2020 14:29:40 EDT
-Received: from fsav110.sakura.ne.jp (fsav110.sakura.ne.jp [27.133.134.237])
-        by www752.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 028Fr1LR061808;
-        Mon, 9 Mar 2020 00:53:01 +0900 (JST)
-        (envelope-from postmaster@hokusetubad.sakura.ne.jp)
-Received: from www752.sakura.ne.jp (59.106.19.202)
- by fsav110.sakura.ne.jp (F-Secure/fsigk_smtp/550/fsav110.sakura.ne.jp);
- Mon, 09 Mar 2020 00:53:01 +0900 (JST)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/550/fsav110.sakura.ne.jp)
-Received: from www752.sakura.ne.jp (localhost [127.0.0.1])
-        by www752.sakura.ne.jp (8.15.2/8.15.2) with ESMTP id 028Fr04x061805;
-        Mon, 9 Mar 2020 00:53:00 +0900 (JST)
-        (envelope-from postmaster@hokusetubad.sakura.ne.jp)
-Received: (from hokusetubad@localhost)
-        by www752.sakura.ne.jp (8.15.2/8.15.2/Submit) id 028Fr0UG061804;
-        Mon, 9 Mar 2020 00:53:00 +0900 (JST)
-        (envelope-from postmaster@hokusetubad.sakura.ne.jp)
-Message-Id: <202003081553.028Fr0UG061804@www752.sakura.ne.jp>
-X-Authentication-Warning: www752.sakura.ne.jp: hokusetubad set sender to postmaster@hokusetubad.sakura.ne.jp using -f
-Subject: BUSINESS PROPOSAL
-From:   postmaster@hokusetubad.sakura.ne.jp
-Reply-To: abulkareem461@gmail.com
-To:     xiyoulinuxkernelgroup@googlegroups.com
+        id S1726548AbgCIJBt (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 9 Mar 2020 05:01:49 -0400
+Received: from paleo.ru ([195.178.204.132]:48697 "EHLO mail.paleo.ru"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726027AbgCIJBs (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 9 Mar 2020 05:01:48 -0400
+X-Greylist: delayed 661 seconds by postgrey-1.27 at vger.kernel.org; Mon, 09 Mar 2020 05:01:46 EDT
+Received: from mail.paleo.ru (paleo.ru [195.178.204.132])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.paleo.ru (Postfix) with ESMTPSA id 7D9011E9F55;
+        Mon,  9 Mar 2020 08:43:33 +0000 (UTC)
 MIME-Version: 1.0
-Date:   Mon, 09 Mar 2020 00:53:00 +0900
-Content-Type: text/plain; charset="ISO-2022-JP"
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
+Date:   Mon, 09 Mar 2020 10:43:33 +0200
+From:   "Michael J. Weirsky" <mikhailov@paleo.ru>
+To:     undisclosed-recipients:;
+Reply-To: micjsky@aol.com
+Mail-Reply-To: micjsky@aol.com
+Message-ID: <b49abeef61f9247d0a0f1b2f9bde1d81@paleo.ru>
+X-Sender: mikhailov@paleo.ru
+User-Agent: Roundcube Webmail/1.3.9
+X-Spam: Yes
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dearest Friend
 
-I am Mr Abdul Kareem working with Emirate NBD Bank Dubai,United Arab Emirate as Finance Manager.
-I have a very profitable Business that concerns you and will benefit both of us after completion.
-Kindly get back to me for more details.
-Awaiting your response.
-Regards
-Abdul Kareem
+
+-- 
+My name is Michael J. Weirsky, I'm an unemployed Handy man , winner of 
+$273million Jackpot in March 8, 2019. I donate $1.000.000,00 to you. 
+Contact me via email: micjsky@aol.com for info / claim.
+Continue reading: 
+https://abcnews.go.com/WNT/video/jersey-handyman-forward-273m-lottery-winner-61544244
