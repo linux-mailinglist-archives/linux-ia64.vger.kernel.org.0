@@ -2,63 +2,163 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 4E9B918524E
-	for <lists+linux-ia64@lfdr.de>; Sat, 14 Mar 2020 00:28:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DB21A186D5F
+	for <lists+linux-ia64@lfdr.de>; Mon, 16 Mar 2020 15:40:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727571AbgCMX2G convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Fri, 13 Mar 2020 19:28:06 -0400
-Received: from mga09.intel.com ([134.134.136.24]:61396 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726637AbgCMX2G (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 13 Mar 2020 19:28:06 -0400
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga102.jf.intel.com with ESMTP/TLS/DHE-RSA-AES256-GCM-SHA384; 13 Mar 2020 16:28:05 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.70,550,1574150400"; 
-   d="scan'208";a="237398961"
-Received: from orsmsx109.amr.corp.intel.com ([10.22.240.7])
-  by orsmga008.jf.intel.com with ESMTP; 13 Mar 2020 16:28:05 -0700
-Received: from orsmsx112.amr.corp.intel.com (10.22.240.13) by
- ORSMSX109.amr.corp.intel.com (10.22.240.7) with Microsoft SMTP Server (TLS)
- id 14.3.439.0; Fri, 13 Mar 2020 16:28:05 -0700
-Received: from orsmsx115.amr.corp.intel.com ([169.254.4.100]) by
- ORSMSX112.amr.corp.intel.com ([169.254.3.76]) with mapi id 14.03.0439.000;
- Fri, 13 Mar 2020 16:28:05 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     afzal mohammed <afzal.mohd.ma@gmail.com>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>
-CC:     "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: RE: [PATCH v4] ia64: replace setup_irq() by request_irq()
-Thread-Topic: [PATCH v4] ia64: replace setup_irq() by request_irq()
-Thread-Index: AQHV9UGq2aCUP9ErHUejHyKw+orV3ahG8YeAgABB30A=
-Date:   Fri, 13 Mar 2020 23:28:05 +0000
-Message-ID: <3908561D78D1C84285E8C5FCA982C28F7F59FA55@ORSMSX115.amr.corp.intel.com>
-References: <20200304004936.4955-1-afzal.mohd.ma@gmail.com>
- <20200308120350.19117-1-afzal.mohd.ma@gmail.com>
- <20200313123141.GA7155@afzalpc>
-In-Reply-To: <20200313123141.GA7155@afzalpc>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-version: 11.2.0.6
-dlp-reaction: no-action
-x-originating-ip: [10.22.254.139]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1731734AbgCPOkv (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 16 Mar 2020 10:40:51 -0400
+Received: from mail-pf1-f194.google.com ([209.85.210.194]:34741 "EHLO
+        mail-pf1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731733AbgCPOkv (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 16 Mar 2020 10:40:51 -0400
+Received: by mail-pf1-f194.google.com with SMTP id 23so10071147pfj.1
+        for <linux-ia64@vger.kernel.org>; Mon, 16 Mar 2020 07:40:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=arista.com; s=googlenew;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=tH14vsCJSuW7zZrLo5hHQ6Asz5cLIWfJR/NJ1vUZ0eY=;
+        b=ivxAv/QITm61FxIIm5vY4yOx4EfV2g+Km/JeZdcEBkjq2PexINlAtiwxVXcsaMjGIM
+         vPa3EKiz/ohsAyXfL//cwkSpnhYEplisBElCKta2BjThLIQHcpbO8vg/LRRS0yO8MU0D
+         yeolVvdtokiUk04WQsFKW3RjVVNzWIr3NhmK+YnrSDcp371fEScy2m/+KmM6zAlwmkHH
+         wvr+aUZh50hC6n1shyIkEZNJnI0W3xri42OyNiQhEtemB7qrYYNYX9LqnVmS+qduy25y
+         loJYCfasK3CJGbtewUu0om7Yi4UJR61LgyPHkhwy94TdxisBm31U3fckE5iquhI7vJ16
+         /wpw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=tH14vsCJSuW7zZrLo5hHQ6Asz5cLIWfJR/NJ1vUZ0eY=;
+        b=bc7QwCniS8MOdpmt8pJiL3T9nFF7dtbPKID/S1PQlSmRb37zsr4xc89kqUTL00MoSz
+         mP/3iD2zg6ojgtIsXJrcnGcxaQBIBM6KXCKHQryMjA7dvgmGS3yUPkb7n9dqeDsj2ICF
+         lxPoCsIA1/0gXTO7zLJqtKit0yfgx5SYR35mRi9IrDmreY7Pnrdf7PneC7EeeM4+iORr
+         B+ZMj2ku0FEPuabBJHdHC98q29GfxWXraw0mG5gknUlIcQ6VKSXpNqvftUv43cTTI7iC
+         csIWTqR2IwnIs7DBDaihkhxyunYn5Dd42bXyEZwwR6EZEn7Dls5f7+Vjqchxpv9RAW/R
+         PTNA==
+X-Gm-Message-State: ANhLgQ1Bg2Kft2RtIA0NKlhmqRtsRONftj0xDA70PFMF35wLC33PXcW9
+        vnkRiqjRqsIa95/Mq7QNpvHjvA==
+X-Google-Smtp-Source: ADFU+vv33KVdzJhx3I0wZlH3r+fvYP4599ca97Z17ZK/K68o2Pb3q7OjovY9fVwnhnh72ynKkF5aHg==
+X-Received: by 2002:a63:450b:: with SMTP id s11mr178648pga.45.1584369650601;
+        Mon, 16 Mar 2020 07:40:50 -0700 (PDT)
+Received: from Mindolluin.aristanetworks.com ([2a02:8084:e84:2480:228:f8ff:fe6f:83a8])
+        by smtp.gmail.com with ESMTPSA id i2sm81524pjs.21.2020.03.16.07.40.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Mar 2020 07:40:49 -0700 (PDT)
+From:   Dmitry Safonov <dima@arista.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Dmitry Safonov <0x7f454c46@gmail.com>,
+        Dmitry Safonov <dima@arista.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Slaby <jslaby@suse.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org
+Subject: [PATCHv2 15/50] ia64: Pass log level as arg into ia64_do_show_stack()
+Date:   Mon, 16 Mar 2020 14:38:41 +0000
+Message-Id: <20200316143916.195608-16-dima@arista.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20200316143916.195608-1-dima@arista.com>
+References: <20200316143916.195608-1-dima@arista.com>
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-> Seems you handle pull requests for ia64, if this change is okay, can
-> please consider taking this thr' your tree ?
+Currently, the log-level of show_stack() depends on a platform
+realization. It creates situations where the headers are printed with
+lower log level or higher than the stacktrace (depending on
+a platform or user).
 
-Looks ok. Will apply.
+Furthermore, it forces the logic decision from user to an architecture
+side. In result, some users as sysrq/kdb/etc are doing tricks with
+temporary rising console_loglevel while printing their messages.
+And in result it not only may print unwanted messages from other CPUs,
+but also omit printing at all in the unlucky case where the printk()
+was deferred.
 
--Tony
+Introducing log-level parameter and KERN_UNSUPPRESSED [1] seems
+an easier approach than introducing more printk buffers.
+Also, it will consolidate printings with headers.
+
+Add log level argument to ia64_do_show_stack() as a preparation to
+introduce show_stack_loglvl().
+Also, make ia64_do_show_stack() static as it's not used outside.
+
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: linux-ia64@vger.kernel.org
+[1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/T/#u
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+---
+ arch/ia64/include/asm/ptrace.h |  1 -
+ arch/ia64/kernel/process.c     | 13 +++++++------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/arch/ia64/include/asm/ptrace.h b/arch/ia64/include/asm/ptrace.h
+index 7ff574d56429..b3aa46090101 100644
+--- a/arch/ia64/include/asm/ptrace.h
++++ b/arch/ia64/include/asm/ptrace.h
+@@ -114,7 +114,6 @@ static inline long regs_return_value(struct pt_regs *regs)
+   struct task_struct;			/* forward decl */
+   struct unw_frame_info;		/* forward decl */
+ 
+-  extern void ia64_do_show_stack (struct unw_frame_info *, void *);
+   extern unsigned long ia64_get_user_rbs_end (struct task_struct *, struct pt_regs *,
+ 					      unsigned long *);
+   extern long ia64_peek (struct task_struct *, struct switch_stack *, unsigned long,
+diff --git a/arch/ia64/kernel/process.c b/arch/ia64/kernel/process.c
+index 968b5f33e725..0526cc51ff0b 100644
+--- a/arch/ia64/kernel/process.c
++++ b/arch/ia64/kernel/process.c
+@@ -64,12 +64,13 @@ EXPORT_SYMBOL(boot_option_idle_override);
+ void (*pm_power_off) (void);
+ EXPORT_SYMBOL(pm_power_off);
+ 
+-void
++static void
+ ia64_do_show_stack (struct unw_frame_info *info, void *arg)
+ {
+ 	unsigned long ip, sp, bsp;
++	const char *loglvl = arg;
+ 
+-	printk("\nCall Trace:\n");
++	printk("%s\nCall Trace:\n", loglvl);
+ 	do {
+ 		unw_get_ip(info, &ip);
+ 		if (ip == 0)
+@@ -77,9 +78,9 @@ ia64_do_show_stack (struct unw_frame_info *info, void *arg)
+ 
+ 		unw_get_sp(info, &sp);
+ 		unw_get_bsp(info, &bsp);
+-		printk(" [<%016lx>] %pS\n"
++		printk("%s [<%016lx>] %pS\n"
+ 			 "                                sp=%016lx bsp=%016lx\n",
+-			 ip, (void *)ip, sp, bsp);
++			 loglvl, ip, (void *)ip, sp, bsp);
+ 	} while (unw_unwind(info) >= 0);
+ }
+ 
+@@ -87,12 +88,12 @@ void
+ show_stack (struct task_struct *task, unsigned long *sp)
+ {
+ 	if (!task)
+-		unw_init_running(ia64_do_show_stack, NULL);
++		unw_init_running(ia64_do_show_stack, (void *)KERN_DEFAULT);
+ 	else {
+ 		struct unw_frame_info info;
+ 
+ 		unw_init_from_blocked_task(&info, task);
+-		ia64_do_show_stack(&info, NULL);
++		ia64_do_show_stack(&info, (void *)KERN_DEFAULT);
+ 	}
+ }
+ 
+-- 
+2.25.1
+
