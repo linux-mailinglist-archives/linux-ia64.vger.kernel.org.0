@@ -2,57 +2,114 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FE3618B989
-	for <lists+linux-ia64@lfdr.de>; Thu, 19 Mar 2020 15:38:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 65F4218CAC1
+	for <lists+linux-ia64@lfdr.de>; Fri, 20 Mar 2020 10:50:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727279AbgCSOi5 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 19 Mar 2020 10:38:57 -0400
-Received: from mail-lf1-f65.google.com ([209.85.167.65]:43994 "EHLO
-        mail-lf1-f65.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727178AbgCSOiy (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 19 Mar 2020 10:38:54 -0400
-Received: by mail-lf1-f65.google.com with SMTP id n20so1818553lfl.10
-        for <linux-ia64@vger.kernel.org>; Thu, 19 Mar 2020 07:38:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=MkfEc6MRH89syDpHugGsyUmRoLIB+ex3PIfLXsCoWS0=;
-        b=VNKsnixrSGPf8yrO/jo6xJSlXKQVopNMoQT6BraznVYO9v6c604ckBPJK3qWjK+FAb
-         5svsp89rDIRokuRXORX2g5NtGFxK8vbSgXi1i17ILZ0/lR0v51HB+IGnOnTQk2PauOtp
-         sTIf1QK661uLD3q0DhnSAhAYpDv9dReh6RuvHQ8mu6v7rigFgplhUdhtJhVoecPfYNUD
-         vK7up9VYGBMQ9LRA8Jflc2WH49An0EuiGvBAjq/Hq3kZeRHWgFe7vVFyaSHgMdBMrZrT
-         AyIV7YgmnlEAlYFbWbmWMsMJryP2WWtaO5o3yf7G1r9AtkO3LBrad8C/Xz13iUTNhR8V
-         J6tA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=MkfEc6MRH89syDpHugGsyUmRoLIB+ex3PIfLXsCoWS0=;
-        b=VcNnkA69vhR53I7VffoczGAvpDlOdgCqXlrqb6KLrvwRZxcZYOrLfI2iT3wt2oAkgn
-         44iqGjoLTrarAjBlVSJBg/I6LZncctZqjyVxU1aiA24phu7Xviu+fnwT2GJI831Yh7gL
-         B6zS+mMYCqVPAQSVuRDa+ENCbU7FX2A+iPWdPoKu0Ij4omB09UYo83qXrzUBB00Fum02
-         Pp59h3QRtfPH+9Ork2hfH/WZ7BjWV8cBdkGppuQMpBuL1u/uKLQHDD6m1eosYzDVPUmA
-         JUfTYy3099hCnPODW2tZWBEYA5pKVceBW7PMhPEGCsdjMjpoODlEH2DMMZJXoVKuR7pD
-         6oTQ==
-X-Gm-Message-State: ANhLgQ1oGjw01ESZjjLEGzMuEwsSTPyj13LXuVL5ao+zWUCpAcIMAq8p
-        iHQi6k5zHmPXfwmk5rsnjUmlF6Nr4qoGsiMnsuM=
-X-Google-Smtp-Source: ADFU+vvs48PcHTruOCCw8qtCf1y3JhdkdGqb+alGXikcZyv5RHItou9TIvti3tj6+wPCyO5s3hsxrX4/fiPcteRF7Kw=
-X-Received: by 2002:ac2:4a6d:: with SMTP id q13mr2366850lfp.27.1584628731473;
- Thu, 19 Mar 2020 07:38:51 -0700 (PDT)
+        id S1727364AbgCTJtu (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 20 Mar 2020 05:49:50 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:35084 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726791AbgCTJtu (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 20 Mar 2020 05:49:50 -0400
+Received: from localhost ([127.0.0.1] helo=flow.W.breakpoint.cc)
+        by Galois.linutronix.de with esmtp (Exim 4.80)
+        (envelope-from <bigeasy@linutronix.de>)
+        id 1jFEH2-0000vL-Rg; Fri, 20 Mar 2020 10:49:04 +0100
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     tglx@linutronix.de
+Cc:     arnd@arndb.de, balbi@kernel.org, bhelgaas@google.com,
+        bigeasy@linutronix.de, dave@stgolabs.net, davem@davemloft.net,
+        gregkh@linuxfoundation.org, joel@joelfernandes.org,
+        kurt.schwemmer@microsemi.com, kvalo@codeaurora.org,
+        linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
+        linux-usb@vger.kernel.org, linux-wireless@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, logang@deltatee.com,
+        mingo@kernel.org, mpe@ellerman.id.au, netdev@vger.kernel.org,
+        oleg@redhat.com, paulmck@kernel.org, peterz@infradead.org,
+        rdunlap@infradead.org, rostedt@goodmis.org,
+        torvalds@linux-foundation.org, will@kernel.org,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        kbuild test robot <lkp@intel.com>
+Subject: [PATCH 4/5] ia64: Remove mm.h from asm/uaccess.h
+Date:   Fri, 20 Mar 2020 10:48:55 +0100
+Message-Id: <20200320094856.3453859-5-bigeasy@linutronix.de>
+X-Mailer: git-send-email 2.26.0.rc2
+In-Reply-To: <20200320094856.3453859-1-bigeasy@linutronix.de>
+References: <20200318204408.010461877@linutronix.de>
+ <20200320094856.3453859-1-bigeasy@linutronix.de>
 MIME-Version: 1.0
-Received: by 2002:a05:6504:74f:0:0:0:0 with HTTP; Thu, 19 Mar 2020 07:38:51
- -0700 (PDT)
-Reply-To: georgebrownlevi@outlook.com
-From:   George <okeke.tg@gmail.com>
-Date:   Thu, 19 Mar 2020 14:38:51 +0000
-Message-ID: <CACtp8BHRtQ0YMhgMQb6NvCZ+dWy8kxOuziE87GerxEwX=mdaHQ@mail.gmail.com>
-Subject: from George
-To:     georgebrownlevi@outlook.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
--- 
-Do you received my previous email?
+The defconfig compiles without linux/mm.h. With mm.h included the
+include chain leands to:
+|   CC      kernel/locking/percpu-rwsem.o
+| In file included from include/linux/huge_mm.h:8,
+|                  from include/linux/mm.h:567,
+|                  from arch/ia64/include/asm/uaccess.h:,
+|                  from include/linux/uaccess.h:11,
+|                  from include/linux/sched/task.h:11,
+|                  from include/linux/sched/signal.h:9,
+|                  from include/linux/rcuwait.h:6,
+|                  from include/linux/percpu-rwsem.h:8,
+|                  from kernel/locking/percpu-rwsem.c:6:
+| include/linux/fs.h:1422:29: error: array type has incomplete element type=
+ 'struct percpu_rw_semaphore'
+|  1422 |  struct percpu_rw_semaphore rw_sem[SB_FREEZE_LEVELS];
+
+once rcuwait.h includes linux/sched/signal.h.
+
+Remove the linux/mm.h include.
+
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: linux-ia64@vger.kernel.org
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+---
+ arch/ia64/include/asm/uaccess.h | 1 -
+ arch/ia64/kernel/process.c      | 1 +
+ arch/ia64/mm/ioremap.c          | 1 +
+ 3 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/ia64/include/asm/uaccess.h b/arch/ia64/include/asm/uacces=
+s.h
+index 89782ad3fb887..5c7e79eccaeed 100644
+--- a/arch/ia64/include/asm/uaccess.h
++++ b/arch/ia64/include/asm/uaccess.h
+@@ -35,7 +35,6 @@
+=20
+ #include <linux/compiler.h>
+ #include <linux/page-flags.h>
+-#include <linux/mm.h>
+=20
+ #include <asm/intrinsics.h>
+ #include <asm/pgtable.h>
+diff --git a/arch/ia64/kernel/process.c b/arch/ia64/kernel/process.c
+index 968b5f33e725e..743aaf5283278 100644
+--- a/arch/ia64/kernel/process.c
++++ b/arch/ia64/kernel/process.c
+@@ -681,3 +681,4 @@ machine_power_off (void)
+ 	machine_halt();
+ }
+=20
++EXPORT_SYMBOL(ia64_delay_loop);
+diff --git a/arch/ia64/mm/ioremap.c b/arch/ia64/mm/ioremap.c
+index a09cfa0645369..55fd3eb753ff9 100644
+--- a/arch/ia64/mm/ioremap.c
++++ b/arch/ia64/mm/ioremap.c
+@@ -8,6 +8,7 @@
+ #include <linux/module.h>
+ #include <linux/efi.h>
+ #include <linux/io.h>
++#include <linux/mm.h>
+ #include <linux/vmalloc.h>
+ #include <asm/io.h>
+ #include <asm/meminit.h>
+--=20
+2.26.0.rc2
+
