@@ -2,523 +2,370 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 939C7190CF5
-	for <lists+linux-ia64@lfdr.de>; Tue, 24 Mar 2020 13:01:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B779191D4C
+	for <lists+linux-ia64@lfdr.de>; Wed, 25 Mar 2020 00:14:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727318AbgCXMBh (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 24 Mar 2020 08:01:37 -0400
-Received: from foss.arm.com ([217.140.110.172]:33160 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727304AbgCXMBh (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 24 Mar 2020 08:01:37 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B4F171FB;
-        Tue, 24 Mar 2020 05:01:35 -0700 (PDT)
-Received: from [10.163.1.71] (unknown [10.163.1.71])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id DD49C3F792;
-        Tue, 24 Mar 2020 05:01:26 -0700 (PDT)
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V2 1/2] mm/sparsemem: Enable vmem_altmap support in
- vmemmap_populate_basepages()
-To:     Robin Murphy <robin.murphy@arm.com>, linux-mm@kvack.org
-Cc:     Mark Rutland <mark.rutland@arm.com>,
-        Michal Hocko <mhocko@suse.com>, linux-ia64@vger.kernel.org,
-        David Hildenbrand <david@redhat.com>,
+        id S1727205AbgCXXO1 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 24 Mar 2020 19:14:27 -0400
+Received: from Galois.linutronix.de ([193.142.43.55]:46547 "EHLO
+        Galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726204AbgCXXO1 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 24 Mar 2020 19:14:27 -0400
+Received: from p5de0bf0b.dip0.t-ipconnect.de ([93.224.191.11] helo=nanos.tec.linutronix.de)
+        by Galois.linutronix.de with esmtpsa (TLS1.2:DHE_RSA_AES_256_CBC_SHA256:256)
+        (Exim 4.80)
+        (envelope-from <tglx@linutronix.de>)
+        id 1jGsjn-0007lV-Qr; Wed, 25 Mar 2020 00:13:36 +0100
+Received: by nanos.tec.linutronix.de (Postfix, from userid 1000)
+        id DC4A4100C51; Wed, 25 Mar 2020 00:13:34 +0100 (CET)
+From:   Thomas Gleixner <tglx@linutronix.de>
+To:     paulmck@kernel.org
+Cc:     LKML <linux-kernel@vger.kernel.org>,
         Peter Zijlstra <peterz@infradead.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        linux-riscv@lists.infradead.org, Will Deacon <will@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Tony Luck <tony.luck@intel.com>, linux-kernel@vger.kernel.org,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-References: <1583331030-7335-1-git-send-email-anshuman.khandual@arm.com>
- <1583331030-7335-2-git-send-email-anshuman.khandual@arm.com>
- <5e1bad9b-11d7-344c-766f-162f7a779941@arm.com>
-Message-ID: <dd9cae33-e106-1e85-28e4-ce3b89d41f44@arm.com>
-Date:   Tue, 24 Mar 2020 17:31:21 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        Ingo Molnar <mingo@kernel.org>,
+        Sebastian Siewior <bigeasy@linutronix.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Kurt Schwemmer <kurt.schwemmer@microsemi.com>,
+        linux-pci@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Felipe Balbi <balbi@kernel.org>, linux-usb@vger.kernel.org,
+        Kalle Valo <kvalo@codeaurora.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org,
+        Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        platform-driver-x86@vger.kernel.org,
+        Zhang Rui <rui.zhang@intel.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        linux-pm@vger.kernel.org, Len Brown <lenb@kernel.org>,
+        linux-acpi@vger.kernel.org, kbuild test robot <lkp@intel.com>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Guo Ren <guoren@kernel.org>, linux-csky@vger.kernel.org,
+        Brian Cain <bcain@codeaurora.org>,
+        linux-hexagon@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        Michal Simek <monstr@monstr.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Geoff Levand <geoff@infradead.org>,
+        linuxppc-dev@lists.ozlabs.org, Davidlohr Bueso <dbueso@suse.de>
+Subject: Re: [patch V3 13/20] Documentation: Add lock ordering and nesting documentation
+In-Reply-To: <20200323025501.GE3199@paulmck-ThinkPad-P72>
+Date:   Wed, 25 Mar 2020 00:13:34 +0100
+Message-ID: <87r1xhz6qp.fsf@nanos.tec.linutronix.de>
 MIME-Version: 1.0
-In-Reply-To: <5e1bad9b-11d7-344c-766f-162f7a779941@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Linutronix-Spam-Score: -1.0
+X-Linutronix-Spam-Level: -
+X-Linutronix-Spam-Status: No , -1.0 points, 5.0 required,  ALL_TRUSTED=-1,SHORTCIRCUIT=-0.0001
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+Paul,
 
-On 03/20/2020 10:38 PM, Robin Murphy wrote:
-> On 2020-03-04 2:10 pm, Anshuman Khandual wrote:
->> vmemmap_populate_basepages() is used across platforms to allocate backing
->> memory for vmemmap mapping. This is used as a standard default choice or
->> as a fallback when intended huge pages allocation fails. This just creates
->> entire vmemmap mapping with base pages (PAGE_SIZE).
->>
->> On arm64 platforms, vmemmap_populate_basepages() is called instead of the
->> platform specific vmemmap_populate() when ARM64_SWAPPER_USES_SECTION_MAPS
->> is not enabled as in case for ARM64_16K_PAGES and ARM64_64K_PAGES configs.
->>
->> At present vmemmap_populate_basepages() does not support allocating from
->> driver defined struct vmem_altmap while trying to create vmemmap mapping
->> for a device memory range. It prevents ARM64_16K_PAGES and ARM64_64K_PAGES
->> configs on arm64 from supporting device memory with vmemap_altmap request.
->>
->> This enables vmem_altmap support in vmemmap_populate_basepages() unlocking
->> device memory allocation for vmemap mapping on arm64 platforms with 16K or
->> 64K base page configs.
->>
->> Each architecture should evaluate and decide on subscribing device memory
->> based base page allocation through vmemmap_populate_basepages(). Hence lets
->> keep it disabled on all archs in order to preserve the existing semantics.
->> A subsequent patch enables it on arm64.
-> 
-> I guess buy-in for this change largely depends on whether any other architectures are likely to want to share it. The existing altmap users don't look like they would, so that's probably more a question for the likes of S390 and RISC-V.
+"Paul E. McKenney" <paulmck@kernel.org> writes:
+> On Sat, Mar 21, 2020 at 12:25:57PM +0100, Thomas Gleixner wrote:
+> In the normal case where the task sleeps through the entire lock
+> acquisition, the sequence of events is as follows:
+>
+>      state = UNINTERRUPTIBLE
+>      lock()
+>        block()
+>          real_state = state
+>          state = SLEEPONLOCK
+>
+>                                lock wakeup
+>                                  state = real_state == UNINTERRUPTIBLE
+>
+> This sequence of events can occur when the task acquires spinlocks
+> on its way to sleeping, for example, in a call to wait_event().
+>
+> The non-lock wakeup can occur when a wakeup races with this wait_event(),
+> which can result in the following sequence of events:
+>
+>      state = UNINTERRUPTIBLE
+>      lock()
+>        block()
+>          real_state = state
+>          state = SLEEPONLOCK
+>
+>                              non lock wakeup
+>                                  real_state = RUNNING
+>
+>                                lock wakeup
+>                                  state = real_state == RUNNING
+>
+> Without this real_state subterfuge, the wakeup might be lost.
 
-If vmemmap_populate_basepages() exists to be shared across platforms for
-creating vmemmap mapping with base pages, then there does not seem to be
-any good reason for it not to support altmap requests as well.
+I added this with a few modifications which reflect the actual
+implementation. Conceptually the same.
 
-> 
-> Failing that, simply decoupling arm64 from vmemmap_populate_basepages() seems viable - I tried hacking up a quick proof-of-concept (attached at the end) and it doesn't come out looking *too* disgusting.
+> rwsems have grown special-purpose interfaces that allow non-owner release.
+> This non-owner release prevents PREEMPT_RT from substituting RT-mutex
+> implementations, for example, by defeating priority inheritance.
+> After all, if the lock has no owner, whose priority should be boosted?
+> As a result, PREEMPT_RT does not currently support rwsem, which in turn
+> means that code using it must therefore be disabled until a workable
+> solution presents itself.
+>
+> [ Note: Not as confident as I would like to be in the above. ]
 
-Even though this option seemed viable to me at the beginning, there was
-no particular pressing reasons for vmemmap_populate_basepages() to exist
-as a generic function and not support atlamp. If each architecture just
-create their own policies regarding which level to support altmap or not
-while also using a generic function, then why even have a minimum shared
-function like vmemmap_populate_basepages() in the first place.
+I'm not confident either especially not after looking at the actual
+code.
 
-> 
->> Cc: Catalin Marinas <catalin.marinas@arm.com>
->> Cc: Will Deacon <will@kernel.org>
->> Cc: Mark Rutland <mark.rutland@arm.com>
->> Cc: Paul Walmsley <paul.walmsley@sifive.com>
->> Cc: Palmer Dabbelt <palmer@dabbelt.com>
->> Cc: Tony Luck <tony.luck@intel.com>
->> Cc: Fenghua Yu <fenghua.yu@intel.com>
->> Cc: Dave Hansen <dave.hansen@linux.intel.com>
->> Cc: Andy Lutomirski <luto@kernel.org>
->> Cc: Peter Zijlstra <peterz@infradead.org>
->> Cc: Thomas Gleixner <tglx@linutronix.de>
->> Cc: Ingo Molnar <mingo@redhat.com>
->> Cc: David Hildenbrand <david@redhat.com>
->> Cc: Mike Rapoport <rppt@linux.ibm.com>
->> Cc: Michal Hocko <mhocko@suse.com>
->> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
->> Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
->> Cc: Andrew Morton <akpm@linux-foundation.org>
->> Cc: Dan Williams <dan.j.williams@intel.com>
->> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
->> Cc: linux-arm-kernel@lists.infradead.org
->> Cc: linux-ia64@vger.kernel.org
->> Cc: linux-riscv@lists.infradead.org
->> Cc: x86@kernel.org
->> Cc: linux-kernel@vger.kernel.org
->>
->> Acked-by: Will Deacon <will@kernel.org>
->> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
->> ---
->>   arch/arm64/mm/mmu.c      |  2 +-
->>   arch/ia64/mm/discontig.c |  2 +-
->>   arch/riscv/mm/init.c     |  2 +-
->>   arch/x86/mm/init_64.c    |  6 +++---
->>   include/linux/mm.h       |  5 +++--
->>   mm/sparse-vmemmap.c      | 16 +++++++++++-----
->>   6 files changed, 20 insertions(+), 13 deletions(-)
->>
->> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
->> index 9b08f7c7e6f0..27cb95c471eb 100644
->> --- a/arch/arm64/mm/mmu.c
->> +++ b/arch/arm64/mm/mmu.c
->> @@ -1036,7 +1036,7 @@ static void free_empty_tables(unsigned long addr, unsigned long end,
->>   int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->>           struct vmem_altmap *altmap)
->>   {
->> -    return vmemmap_populate_basepages(start, end, node);
->> +    return vmemmap_populate_basepages(start, end, node, NULL);
->>   }
->>   #else    /* !ARM64_SWAPPER_USES_SECTION_MAPS */
->>   int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->> diff --git a/arch/ia64/mm/discontig.c b/arch/ia64/mm/discontig.c
->> index 4f33f6e7e206..20409f3afea8 100644
->> --- a/arch/ia64/mm/discontig.c
->> +++ b/arch/ia64/mm/discontig.c
->> @@ -656,7 +656,7 @@ void arch_refresh_nodedata(int update_node, pg_data_t *update_pgdat)
->>   int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->>           struct vmem_altmap *altmap)
->>   {
->> -    return vmemmap_populate_basepages(start, end, node);
->> +    return vmemmap_populate_basepages(start, end, node, NULL);
->>   }
->>     void vmemmap_free(unsigned long start, unsigned long end,
->> diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
->> index 965a8cf4829c..1d7451c91982 100644
->> --- a/arch/riscv/mm/init.c
->> +++ b/arch/riscv/mm/init.c
->> @@ -501,6 +501,6 @@ void __init paging_init(void)
->>   int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->>                      struct vmem_altmap *altmap)
->>   {
->> -    return vmemmap_populate_basepages(start, end, node);
->> +    return vmemmap_populate_basepages(start, end, node, NULL);
->>   }
->>   #endif
->> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
->> index abbdecb75fad..3272fe0d844a 100644
->> --- a/arch/x86/mm/init_64.c
->> +++ b/arch/x86/mm/init_64.c
->> @@ -1471,7 +1471,7 @@ static int __meminit vmemmap_populate_hugepages(unsigned long start,
->>               vmemmap_verify((pte_t *)pmd, node, addr, next);
->>               continue;
->>           }
->> -        if (vmemmap_populate_basepages(addr, next, node))
->> +        if (vmemmap_populate_basepages(addr, next, node, NULL))
->>               return -ENOMEM;
->>       }
->>       return 0;
->> @@ -1483,7 +1483,7 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->>       int err;
->>         if (end - start < PAGES_PER_SECTION * sizeof(struct page))
->> -        err = vmemmap_populate_basepages(start, end, node);
->> +        err = vmemmap_populate_basepages(start, end, node, NULL);
->>       else if (boot_cpu_has(X86_FEATURE_PSE))
->>           err = vmemmap_populate_hugepages(start, end, node, altmap);
->>       else if (altmap) {
->> @@ -1491,7 +1491,7 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->>                   __func__);
->>           err = -ENOMEM;
->>       } else
->> -        err = vmemmap_populate_basepages(start, end, node);
->> +        err = vmemmap_populate_basepages(start, end, node, NULL);
->>       if (!err)
->>           sync_global_pgds(start, end - 1);
->>       return err;
->> diff --git a/include/linux/mm.h b/include/linux/mm.h
->> index 52269e56c514..42f99c8d63c0 100644
->> --- a/include/linux/mm.h
->> +++ b/include/linux/mm.h
->> @@ -2780,14 +2780,15 @@ pgd_t *vmemmap_pgd_populate(unsigned long addr, int node);
->>   p4d_t *vmemmap_p4d_populate(pgd_t *pgd, unsigned long addr, int node);
->>   pud_t *vmemmap_pud_populate(p4d_t *p4d, unsigned long addr, int node);
->>   pmd_t *vmemmap_pmd_populate(pud_t *pud, unsigned long addr, int node);
->> -pte_t *vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node);
->> +pte_t *vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
->> +                struct vmem_altmap *altmap);
->>   void *vmemmap_alloc_block(unsigned long size, int node);
->>   struct vmem_altmap;
->>   void *vmemmap_alloc_block_buf(unsigned long size, int node);
->>   void *altmap_alloc_block_buf(unsigned long size, struct vmem_altmap *altmap);
->>   void vmemmap_verify(pte_t *, int, unsigned long, unsigned long);
->>   int vmemmap_populate_basepages(unsigned long start, unsigned long end,
->> -                   int node);
->> +                   int node, struct vmem_altmap *altmap);
->>   int vmemmap_populate(unsigned long start, unsigned long end, int node,
->>           struct vmem_altmap *altmap);
->>   void vmemmap_populate_print_last(void);
->> diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
->> index 200aef686722..a407abc9b46c 100644
->> --- a/mm/sparse-vmemmap.c
->> +++ b/mm/sparse-vmemmap.c
->> @@ -140,12 +140,18 @@ void __meminit vmemmap_verify(pte_t *pte, int node,
->>               start, end - 1);
->>   }
->>   -pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node)
->> +pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
->> +                       struct vmem_altmap *altmap)
->>   {
->>       pte_t *pte = pte_offset_kernel(pmd, addr);
->>       if (pte_none(*pte)) {
->>           pte_t entry;
->> -        void *p = vmemmap_alloc_block_buf(PAGE_SIZE, node);
->> +        void *p;
->> +
->> +        if (altmap)
->> +            p = altmap_alloc_block_buf(PAGE_SIZE, altmap);
->> +        else
->> +            p = vmemmap_alloc_block_buf(PAGE_SIZE, node);
-> 
-> This pattern ends up appearing a number of times by the end - if we do go down the generic code route, might it be worth pushing it down into vmmemmap_alloc_block_buf() itself to make it automatic? (possibly even including the powerpc fallback behaviour too?)
+In fact I feel really stupid because the rw_semaphore reader non-owner
+restriction on RT simply does not exist anymore and my history biased
+memory tricked me.
 
-Yes, this pattern is now there in couple of more places. Sure, will change
-vmemmap_alloc_block_buf() to handle altmap with a fallback request.
+The first rw_semaphore implementation of RT was simple and restricted
+the reader side to a single reader to support PI on both the reader and
+the writer side. That obviosuly did not scale well and made mmap_sem
+heavy use cases pretty unhappy.
 
-Something like this (not tested properly)
+The short interlude with multi-reader boosting turned out to be a failed
+experiment - Steven might still disagree though :)
 
---------------------------------------------------- 
-From: Anshuman Khandual <anshuman.khandual@arm.com>
-Date: Tue, 24 Mar 2020 07:35:47 +0000
-Subject: [PATCH] mm/sparse: Enable vmemmap_alloc_block_buf() for altmap
- allocations
+At some point we gave up and I myself (sic!) reimplemented the RT
+variant of rw_semaphore with a reader biased mechanism.
 
-There are many instances where vmemap allocation is often switched between
-device memory and regular memory based on whether altmap is available or
-not. vmemmap_alloc_block_buf() is used in various platforms to allocate
-vmemmap. Hence enable it to handle altmap based device memory allocation as
-well. While here implement a regular memory allocation fallback mechanism
-that is used in powerpc.
+The reader never holds the underlying rt_mutex accross the read side
+critical section. It merily increments the reader count and drops it on
+release.
 
-Suggested-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- arch/arm64/mm/mmu.c       |  6 ++----
- arch/powerpc/mm/init_64.c | 12 ++++++------
- arch/x86/mm/init_64.c     |  6 ++----
- include/linux/mm.h        |  3 ++-
- mm/sparse-vmemmap.c       | 27 +++++++++++++++++++++------
- 5 files changed, 33 insertions(+), 21 deletions(-)
+The only time a reader takes the rt_mutex is when it blocks on a
+writer. Writers hold the rt_mutex across the write side critical section
+to allow incoming readers to boost them. Once the writer releases the
+rw_semaphore it unlocks the rt_mutex which is then handed off to the
+readers. They increment the reader count and then drop the rt_mutex
+before continuing in the read side critical section.
 
-diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-index 88c5b357013b..45f09935c160 100644
---- a/arch/arm64/mm/mmu.c
-+++ b/arch/arm64/mm/mmu.c
-@@ -1080,10 +1080,8 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
- 		if (pmd_none(READ_ONCE(*pmdp))) {
- 			void *p = NULL;
+So while I changed the implementation it did obviously not occur to me
+that this also lifted the non-owner release restriction. Nobody else
+noticed either. So we kept dragging this along in both memory and
+implementation. Both will be fixed now :)
+
+The owner semantics of down/up_read() are only enforced by lockdep. That
+applies to both RT and !RT. The up/down_read_non_owner() variants are
+just there to tell lockdep about it.
+
+So, I picked up your other suggestions with slight modifications and
+adjusted the owner, semaphore and rw_semaphore docs accordingly.
+
+Please have a close look at the patch below (applies on tip core/locking).
+
+Thanks,
+
+        tglx, who is searching a brown paperbag
+
+8<----------
+
+ Documentation/locking/locktypes.rst |  148 +++++++++++++++++++++++-------------
+ 1 file changed, 98 insertions(+), 50 deletions(-)
+
+--- a/Documentation/locking/locktypes.rst
++++ b/Documentation/locking/locktypes.rst
+@@ -67,6 +67,17 @@ Spinning locks implicitly disable preemp
+  _irqsave/restore()   Save and disable / restore interrupt disabled state
+  ===================  ====================================================
  
--			if (altmap)
--				p = altmap_alloc_block_buf(PMD_SIZE, altmap);
--			else
--				p = vmemmap_alloc_block_buf(PMD_SIZE, node);
-+			p = vmemmap_alloc_block_buf(PMD_SIZE, node,
-+						    altmap, false);
- 			if (!p)
- 				return -ENOMEM;
- 
-diff --git a/arch/powerpc/mm/init_64.c b/arch/powerpc/mm/init_64.c
-index 4002ced3596f..31995eb4b62a 100644
---- a/arch/powerpc/mm/init_64.c
-+++ b/arch/powerpc/mm/init_64.c
-@@ -150,7 +150,7 @@ static __meminit struct vmemmap_backing * vmemmap_list_alloc(int node)
- 
- 	/* allocate a page when required and hand out chunks */
- 	if (!num_left) {
--		next = vmemmap_alloc_block(PAGE_SIZE, node);
-+		next = vmemmap_alloc_block(PAGE_SIZE, node, NULL, false);
- 		if (unlikely(!next)) {
- 			WARN_ON(1);
- 			return NULL;
-@@ -226,12 +226,12 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
- 		 * fall back to system memory if the altmap allocation fail.
- 		 */
- 		if (altmap && !altmap_cross_boundary(altmap, start, page_size)) {
--			p = altmap_alloc_block_buf(page_size, altmap);
--			if (!p)
--				pr_debug("altmap block allocation failed, falling back to system memory");
-+			p = vmemmap_alloc_block_buf(page_size, node,
-+						    altmap, true);
-+		} else {
-+			p = vmemmap_alloc_block_buf(page_size, node,
-+						    NULL, false);
- 		}
--		if (!p)
--			p = vmemmap_alloc_block_buf(page_size, node);
- 		if (!p)
- 			return -ENOMEM;
- 
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index c22677571619..35cc0c9d9578 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1444,10 +1444,8 @@ static int __meminit vmemmap_populate_hugepages(unsigned long start,
- 		if (pmd_none(*pmd)) {
- 			void *p;
- 
--			if (altmap)
--				p = altmap_alloc_block_buf(PMD_SIZE, altmap);
--			else
--				p = vmemmap_alloc_block_buf(PMD_SIZE, node);
-+			p = vmemmap_alloc_block_buf(PMD_SIZE, node,
-+						    altmap, false);
- 			if (p) {
- 				pte_t entry;
- 
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 4a987d173488..a2cb9c669800 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2994,7 +2994,8 @@ pte_t *vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
- 			    struct vmem_altmap *altmap);
- void *vmemmap_alloc_block(unsigned long size, int node);
- struct vmem_altmap;
--void *vmemmap_alloc_block_buf(unsigned long size, int node);
-+void *vmemmap_alloc_block_buf(unsigned long size, int node,
-+			      struct vmem_altmap *altmap, bool fallback);
- void *altmap_alloc_block_buf(unsigned long size, struct vmem_altmap *altmap);
- void vmemmap_verify(pte_t *, int, unsigned long, unsigned long);
- int vmemmap_populate_basepages(unsigned long start, unsigned long end,
-diff --git a/mm/sparse-vmemmap.c b/mm/sparse-vmemmap.c
-index a407abc9b46c..f502fcdf539f 100644
---- a/mm/sparse-vmemmap.c
-+++ b/mm/sparse-vmemmap.c
-@@ -71,10 +71,28 @@ void * __meminit vmemmap_alloc_block(unsigned long size, int node)
- }
- 
- /* need to make sure size is all the same during early stage */
--void * __meminit vmemmap_alloc_block_buf(unsigned long size, int node)
-+void * __meminit vmemmap_alloc_block_buf(unsigned long size, int node,
-+					 struct vmem_altmap *altmap,
-+					 bool fallback)
- {
--	void *ptr = sparse_buffer_alloc(size);
-+	void *ptr;
- 
-+	/*
-+	 * There is no point in asking for fallback without
-+	 * an altmap request to begin with. Just warn here
-+	 * to catch potential call sites violating this.
-+	 */
-+	WARN_ON(!altmap && fallback);
++Owner semantics
++===============
 +
-+	if (altmap) {
-+		ptr = altmap_alloc_block_buf(size, altmap);
-+		if (!ptr && !fallback)
-+			return NULL;
-+		pr_debug("altmap block allocation failed,\
-+				falling back to system memory");
-+	}
++The aforementioned lock types except semaphores have strict owner
++semantics:
 +
-+	ptr = sparse_buffer_alloc(size);
- 	if (!ptr)
- 		ptr = vmemmap_alloc_block(size, node);
- 	return ptr;
-@@ -148,10 +166,7 @@ pte_t * __meminit vmemmap_pte_populate(pmd_t *pmd, unsigned long addr, int node,
- 		pte_t entry;
- 		void *p;
++  The context (task) that acquired the lock must release it.
++
++rw_semaphores have a special interface which allows non-owner release for
++readers.
++
  
--		if (altmap)
--			p = altmap_alloc_block_buf(PAGE_SIZE, altmap);
--		else
--			p = vmemmap_alloc_block_buf(PAGE_SIZE, node);
-+		p = vmemmap_alloc_block_buf(PAGE_SIZE, node, altmap, false);
- 		if (!p)
- 			return NULL;
- 		entry = pfn_pte(__pa(p) >> PAGE_SHIFT, PAGE_KERNEL);
--- 
-2.20.1
+ rtmutex
+ =======
+@@ -83,6 +94,51 @@ interrupt handlers and soft interrupts.
+ and rwlock_t to be implemented via RT-mutexes.
+ 
+ 
++sempahore
++=========
++
++semaphore is a counting semaphore implementation.
++
++Semaphores are often used for both serialization and waiting, but new use
++cases should instead use separate serialization and wait mechanisms, such
++as mutexes and completions.
++
++sempahores and PREEMPT_RT
++----------------------------
++
++PREEMPT_RT does not change the sempahore implementation. That's impossible
++due to the counting semaphore semantics which have no concept of owners.
++The lack of an owner conflicts with priority inheritance. After all an
++unknown owner cannot be boosted. As a consequence blocking on semaphores
++can be subject to priority inversion.
++
++
++rw_sempahore
++============
++
++rw_semaphore is a multiple readers and single writer lock mechanism.
++
++On non-PREEMPT_RT kernels the implementation is fair, thus preventing
++writer starvation.
++
++rw_semaphore complies by default with the strict owner semantics, but there
++exist special-purpose interfaces that allow non-owner release for readers.
++These work independent of the kernel configuration.
++
++rw_sempahore and PREEMPT_RT
++---------------------------
++
++PREEMPT_RT kernels map rw_sempahore to a separate rt_mutex-based
++implementation, thus changing the fairness:
++
++ Because an rw_sempaphore writer cannot grant its priority to multiple
++ readers, a preempted low-priority reader will continue holding its lock,
++ thus starving even high-priority writers.  In contrast, because readers
++ can grant their priority to a writer, a preempted low-priority writer will
++ have its priority boosted until it releases the lock, thus preventing that
++ writer from starving readers.
++
++
+ raw_spinlock_t and spinlock_t
+ =============================
+ 
+@@ -140,7 +196,16 @@ On a PREEMPT_RT enabled kernel spinlock_
+    kernels leave task state untouched.  However, PREEMPT_RT must change
+    task state if the task blocks during acquisition.  Therefore, it saves
+    the current task state before blocking and the corresponding lock wakeup
+-   restores it.
++   restores it::
++
++    task->state = TASK_INTERRUPTIBLE
++     lock()
++       block()
++         task->saved_state = task->state
++	 task->state = TASK_UNINTERRUPTIBLE
++	 schedule()
++					lock wakeup
++					  task->state = task->saved_state
+ 
+    Other types of wakeups would normally unconditionally set the task state
+    to RUNNING, but that does not work here because the task must remain
+@@ -148,7 +213,22 @@ On a PREEMPT_RT enabled kernel spinlock_
+    wakeup attempts to awaken a task blocked waiting for a spinlock, it
+    instead sets the saved state to RUNNING.  Then, when the lock
+    acquisition completes, the lock wakeup sets the task state to the saved
+-   state, in this case setting it to RUNNING.
++   state, in this case setting it to RUNNING::
++
++    task->state = TASK_INTERRUPTIBLE
++     lock()
++       block()
++         task->saved_state = task->state
++	 task->state = TASK_UNINTERRUPTIBLE
++	 schedule()
++					non lock wakeup
++					  task->saved_state = TASK_RUNNING
++
++					lock wakeup
++					  task->state = task->saved_state
++
++   This ensures that the real wakeup cannot be lost.
++
+ 
+ rwlock_t
+ ========
+@@ -228,17 +308,16 @@ while holding normal non-raw spinlocks b
+ bit spinlocks
+ -------------
+ 
+-Bit spinlocks are problematic for PREEMPT_RT as they cannot be easily
+-substituted by an RT-mutex based implementation for obvious reasons.
+-
+-The semantics of bit spinlocks are preserved on PREEMPT_RT kernels and the
+-caveats vs. raw_spinlock_t apply.
+-
+-Some bit spinlocks are substituted by regular spinlock_t for PREEMPT_RT but
+-this requires conditional (#ifdef'ed) code changes at the usage site while
+-the spinlock_t substitution is simply done by the compiler and the
+-conditionals are restricted to header files and core implementation of the
+-locking primitives and the usage sites do not require any changes.
++PREEMPT_RT cannot substitute bit spinlocks because a single bit is too
++small to accommodate an RT-mutex.  Therefore, the semantics of bit
++spinlocks are preserved on PREEMPT_RT kernels, so that the raw_spinlock_t
++caveats also apply to bit spinlocks.
++
++Some bit spinlocks are replaced with regular spinlock_t for PREEMPT_RT
++using conditional (#ifdef'ed) code changes at the usage site.  In contrast,
++usage-site changes are not needed for the spinlock_t substitution.
++Instead, conditionals in header files and the core locking implemementation
++enable the compiler to do the substitution transparently.
+ 
+ 
+ Lock type nesting rules
+@@ -254,46 +333,15 @@ Lock type nesting rules
+ 
+   - Spinning lock types can nest inside sleeping lock types.
+ 
+-These rules apply in general independent of CONFIG_PREEMPT_RT.
++These constraints apply both in CONFIG_PREEMPT_RT and otherwise.
+ 
+-As PREEMPT_RT changes the lock category of spinlock_t and rwlock_t from
+-spinning to sleeping this has obviously restrictions how they can nest with
+-raw_spinlock_t.
+-
+-This results in the following nest ordering:
++The fact that PREEMPT_RT changes the lock category of spinlock_t and
++rwlock_t from spinning to sleeping means that they cannot be acquired while
++holding a raw spinlock.  This results in the following nesting ordering:
+ 
+   1) Sleeping locks
+   2) spinlock_t and rwlock_t
+   3) raw_spinlock_t and bit spinlocks
+ 
+-Lockdep is aware of these constraints to ensure that they are respected.
+-
+-
+-Owner semantics
+-===============
+-
+-Most lock types in the Linux kernel have strict owner semantics, i.e. the
+-context (task) which acquires a lock has to release it.
+-
+-There are two exceptions:
+-
+-  - semaphores
+-  - rwsems
+-
+-semaphores have no owner semantics for historical reason, and as such
+-trylock and release operations can be called from any context. They are
+-often used for both serialization and waiting purposes. That's generally
+-discouraged and should be replaced by separate serialization and wait
+-mechanisms, such as mutexes and completions.
+-
+-rwsems have grown interfaces which allow non owner release for special
+-purposes. This usage is problematic on PREEMPT_RT because PREEMPT_RT
+-substitutes all locking primitives except semaphores with RT-mutex based
+-implementations to provide priority inheritance for all lock types except
+-the truly spinning ones. Priority inheritance on ownerless locks is
+-obviously impossible.
+-
+-For now the rwsem non-owner release excludes code which utilizes it from
+-being used on PREEMPT_RT enabled kernels. In same cases this can be
+-mitigated by disabling portions of the code, in other cases the complete
+-functionality has to be disabled until a workable solution has been found.
++Lockdep will complain if these constraints are violated, both in
++CONFIG_PREEMPT_RT and otherwise.
 
-
-
-> 
-> Robin.
-> 
->>           if (!p)
->>               return NULL;
->>           entry = pfn_pte(__pa(p) >> PAGE_SHIFT, PAGE_KERNEL);
->> @@ -213,8 +219,8 @@ pgd_t * __meminit vmemmap_pgd_populate(unsigned long addr, int node)
->>       return pgd;
->>   }
->>   -int __meminit vmemmap_populate_basepages(unsigned long start,
->> -                     unsigned long end, int node)
->> +int __meminit vmemmap_populate_basepages(unsigned long start, unsigned long end,
->> +                     int node, struct vmem_altmap *altmap)
->>   {
->>       unsigned long addr = start;
->>       pgd_t *pgd;
->> @@ -236,7 +242,7 @@ int __meminit vmemmap_populate_basepages(unsigned long start,
->>           pmd = vmemmap_pmd_populate(pud, addr, node);
->>           if (!pmd)
->>               return -ENOMEM;
->> -        pte = vmemmap_pte_populate(pmd, addr, node);
->> +        pte = vmemmap_pte_populate(pmd, addr, node, altmap);
->>           if (!pte)
->>               return -ENOMEM;
->>           vmemmap_verify(pte, node, addr, addr + PAGE_SIZE);
->>
-> 
-> ----->8-----
-> From: Robin Murphy <robin.murphy@arm.com>
-> Subject: [PATCH] arm64/mm: Consolidate vmemmap_populate()
-> 
-> Since we already have a custom vmemmap_populate() implementation, fold
-> the non-section-map case into that as well, so that we can easily add
-> altmap support for both cases without having to mess with core code.
-> 
-> Signed-off-by: Robin Murphy <robin.murphy@arm.com>
-> ---
->  arch/arm64/mm/mmu.c | 34 +++++++++++++++++++++-------------
->  1 file changed, 21 insertions(+), 13 deletions(-)
-> 
-> diff --git a/arch/arm64/mm/mmu.c b/arch/arm64/mm/mmu.c
-> index 128f70852bf3..e250fd414b2b 100644
-> --- a/arch/arm64/mm/mmu.c
-> +++ b/arch/arm64/mm/mmu.c
-> @@ -725,13 +725,6 @@ int kern_addr_valid(unsigned long addr)
->      return pfn_valid(pte_pfn(pte));
->  }
->  #ifdef CONFIG_SPARSEMEM_VMEMMAP
-> -#if !ARM64_SWAPPER_USES_SECTION_MAPS
-> -int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
-> -        struct vmem_altmap *altmap)
-> -{
-> -    return vmemmap_populate_basepages(start, end, node);
-> -}
-> -#else    /* !ARM64_SWAPPER_USES_SECTION_MAPS */
->  int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->          struct vmem_altmap *altmap)
->  {
-> @@ -740,6 +733,7 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->      pgd_t *pgdp;
->      pud_t *pudp;
->      pmd_t *pmdp;
-> +    pte_t *ptep;
-> 
->      do {
->          next = pmd_addr_end(addr, end);
-> @@ -752,22 +746,36 @@ int __meminit vmemmap_populate(unsigned long start, unsigned long end, int node,
->          if (!pudp)
->              return -ENOMEM;
-> 
-> +#if ARM64_SWAPPER_USES_SECTION_MAPS
->          pmdp = pmd_offset(pudp, addr);
->          if (pmd_none(READ_ONCE(*pmdp))) {
-> -            void *p = NULL;
-> -
-> -            p = vmemmap_alloc_block_buf(PMD_SIZE, node);
-> +            void *p = vmemmap_alloc_block_buf(PMD_SIZE, node);
->              if (!p)
->                  return -ENOMEM;
-> 
->              pmd_set_huge(pmdp, __pa(p), __pgprot(PROT_SECT_NORMAL));
-> -        } else
-> -            vmemmap_verify((pte_t *)pmdp, node, addr, next);
-> +            continue;
-> +        }
-> +#else
-> +        pmdp = vmemmap_pmd_populate(pmdp, addr, node);
-> +        if (!pmdp)
-> +            return -ENOMEM;
-> +
-> +        ptep = pte_offset_kernel(pmdp, addr);
-> +        if (pte_none(READ_ONCE(*ptep))) {
-> +            void *p = vmemmap_alloc_block_buf(PAGE_SIZE, node);
-> +            if (!p)
-> +                return -ENOMEM;
-> +
-> +            set_pte(ptep, pfn_pte(__pa(p) >> PAGE_SHIFT, PAGE_KERNEL));
-> +        }
-> +#endif
-> +        vmemmap_verify((pte_t *)pmdp, node, addr, next);
->      } while (addr = next, addr != end);
-> 
->      return 0;
->  }
-> -#endif    /* !ARM64_SWAPPER_USES_SECTION_MAPS */
-> +
->  void vmemmap_free(unsigned long start, unsigned long end,
->          struct vmem_altmap *altmap)
->  {
-> 
-> 
