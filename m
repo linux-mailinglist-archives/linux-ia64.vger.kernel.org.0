@@ -2,57 +2,71 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E2E1197A1A
-	for <lists+linux-ia64@lfdr.de>; Mon, 30 Mar 2020 13:01:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 340C3198383
+	for <lists+linux-ia64@lfdr.de>; Mon, 30 Mar 2020 20:39:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729752AbgC3LBN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 30 Mar 2020 07:01:13 -0400
-Received: from mail.11d01.mspz7.gob.ec ([190.152.145.91]:53516 "EHLO
-        mail.11d01.mspz7.gob.ec" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729381AbgC3LBL (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 30 Mar 2020 07:01:11 -0400
-Received: from localhost (localhost [127.0.0.1])
-        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id DB5D22F6F5D4;
-        Mon, 30 Mar 2020 04:16:31 -0500 (-05)
-Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id lTJhwE_10QOc; Mon, 30 Mar 2020 04:16:31 -0500 (-05)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTP id 3490C2F6F59C;
-        Mon, 30 Mar 2020 04:16:31 -0500 (-05)
-DKIM-Filter: OpenDKIM Filter v2.9.2 mail.11d01.mspz7.gob.ec 3490C2F6F59C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=11d01.mspz7.gob.ec;
-        s=50CBC7E4-8BED-11E9-AF6C-F1A741A224D3; t=1585559791;
-        bh=cLQbOHa1aY+/FyDjaDQOZOnnnlZDxMu+rBX/cg5yps8=;
-        h=Content-Type:MIME-Version:Content-Transfer-Encoding:Subject:To:
-         From:Date:Reply-To:Message-Id;
-        b=sMaxFwRzyh2e/usPXpeUKVGg884xMqbLH84GPb84j7eLWa5CsnNlweiVzmme6vGkR
-         leypk1KgYAlxHU8rNke+VRUj4vN3Rz81ZalYkzovytF0vI3YAcAcIfG8laVoK9t8jO
-         o8/73ecBb+tZfYwmvJZ8VMj0+LBRmLW32/YXxvfY=
-X-Virus-Scanned: amavisd-new at 11d01.mspz7.gob.ec
-Received: from mail.11d01.mspz7.gob.ec ([127.0.0.1])
-        by localhost (mail.11d01.mspz7.gob.ec [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id a9dWUaBEpLXP; Mon, 30 Mar 2020 04:16:31 -0500 (-05)
-Received: from [10.121.152.251] (unknown [105.12.0.10])
-        by mail.11d01.mspz7.gob.ec (Postfix) with ESMTPSA id 1E6052F6F5A1;
-        Mon, 30 Mar 2020 04:16:20 -0500 (-05)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726518AbgC3SjO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 30 Mar 2020 14:39:14 -0400
+Received: from mga02.intel.com ([134.134.136.20]:11897 "EHLO mga02.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726085AbgC3SjO (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 30 Mar 2020 14:39:14 -0400
+IronPort-SDR: Ql+5PGh1N20d97T10HVjJihB2pKaSvjnO28enQSVhLDFbxpw0Yf58t2kc57bkbMGR2JVdd9KCr
+ AT7U/YGp30rQ==
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 11:39:14 -0700
+IronPort-SDR: GTTrCUV9Efmpy4y5ocnST56b6jKYkisg35tLqyYfzOKEgfjyB4tN/OzLxQfdIEnf997wqndPkH
+ WTx3SNjvVu4Q==
+X-IronPort-AV: E=Sophos;i="5.72,325,1580803200"; 
+   d="scan'208";a="395219392"
+Received: from agluck-desk2.sc.intel.com (HELO agluck-desk2.amr.corp.intel.com) ([10.3.52.68])
+  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 11:39:13 -0700
+Date:   Mon, 30 Mar 2020 11:39:12 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [GIT PULL] ia64 for v5.7
+Message-ID: <20200330183912.GA27085@agluck-desk2.amr.corp.intel.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: spende von 2.000.000,00 Euro
-To:     Recipients <luis.sanchez@11d01.mspz7.gob.ec>
-From:   "Manuel Franco" <luis.sanchez@11d01.mspz7.gob.ec>
-Date:   Mon, 30 Mar 2020 11:47:34 +0200
-Reply-To: manuelfrancospende11@gmail.com
-Message-Id: <20200330091621.1E6052F6F5A1@mail.11d01.mspz7.gob.ec>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Ich bin Manuel Franco, ich spende Ihnen 2.000.000,00 Euro. Kontaktieren Sie=
- mich jetzt, damit wir fortfahren k=F6nnen.
+The following changes since commit 98d54f81e36ba3bf92172791eba5ca5bd813989b:
 
-I am Manuel Franco, I donate to you 2,000,000.00 euros. Contact me now so w=
-e can proceed.
+  Linux 5.6-rc4 (2020-03-01 16:38:46 -0600)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/aegl/linux.git please-pull-ia64_for_5.7
+
+for you to fetch changes up to 172e7890406d6183b9b39271ffb434ff0a97ce72:
+
+  tty/serial: cleanup after ioc*_serial driver removal (2020-03-13 16:12:17 -0700)
+
+----------------------------------------------------------------
+Couple of cleanup patches
+
+----------------------------------------------------------------
+Lukas Bulwahn (1):
+      tty/serial: cleanup after ioc*_serial driver removal
+
+afzal mohammed (1):
+      ia64: replace setup_irq() by request_irq()
+
+ MAINTAINERS                    |  9 +---
+ arch/ia64/include/asm/hw_irq.h |  2 -
+ arch/ia64/kernel/irq.h         |  3 ++
+ arch/ia64/kernel/irq_ia64.c    | 43 +++++++------------
+ arch/ia64/kernel/mca.c         | 50 +++++++----------------
+ arch/ia64/kernel/perfmon.c     | 10 ++---
+ arch/ia64/kernel/time.c        | 11 ++---
+ include/linux/ioc3.h           | 93 ------------------------------------------
+ 8 files changed, 40 insertions(+), 181 deletions(-)
+ create mode 100644 arch/ia64/kernel/irq.h
+ delete mode 100644 include/linux/ioc3.h
