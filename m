@@ -2,71 +2,143 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [209.132.180.67])
-	by mail.lfdr.de (Postfix) with ESMTP id 340C3198383
-	for <lists+linux-ia64@lfdr.de>; Mon, 30 Mar 2020 20:39:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D0250198B86
+	for <lists+linux-ia64@lfdr.de>; Tue, 31 Mar 2020 07:10:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726518AbgC3SjO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 30 Mar 2020 14:39:14 -0400
-Received: from mga02.intel.com ([134.134.136.20]:11897 "EHLO mga02.intel.com"
+        id S1726001AbgCaFKT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 31 Mar 2020 01:10:19 -0400
+Received: from foss.arm.com ([217.140.110.172]:43608 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726085AbgC3SjO (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 30 Mar 2020 14:39:14 -0400
-IronPort-SDR: Ql+5PGh1N20d97T10HVjJihB2pKaSvjnO28enQSVhLDFbxpw0Yf58t2kc57bkbMGR2JVdd9KCr
- AT7U/YGp30rQ==
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from orsmga004.jf.intel.com ([10.7.209.38])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 11:39:14 -0700
-IronPort-SDR: GTTrCUV9Efmpy4y5ocnST56b6jKYkisg35tLqyYfzOKEgfjyB4tN/OzLxQfdIEnf997wqndPkH
- WTx3SNjvVu4Q==
-X-IronPort-AV: E=Sophos;i="5.72,325,1580803200"; 
-   d="scan'208";a="395219392"
-Received: from agluck-desk2.sc.intel.com (HELO agluck-desk2.amr.corp.intel.com) ([10.3.52.68])
-  by orsmga004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Mar 2020 11:39:13 -0700
-Date:   Mon, 30 Mar 2020 11:39:12 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [GIT PULL] ia64 for v5.7
-Message-ID: <20200330183912.GA27085@agluck-desk2.amr.corp.intel.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+        id S1725809AbgCaFKS (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 31 Mar 2020 01:10:18 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 221741FB;
+        Mon, 30 Mar 2020 22:10:18 -0700 (PDT)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.1.70])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C8F2F3F71E;
+        Mon, 30 Mar 2020 22:09:57 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-mm@kvack.org
+Cc:     robin.murphy@arm.com, dan.j.williams@intel.com, jglisse@redhat.com,
+        jgg@mellanox.com, rcampbell@nvidia.com, aneesh.kumar@linux.ibm.com,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Michal Hocko <mhocko@suse.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-riscv@lists.infradead.org, x86@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH V3 0/3] arm64: Enable vmemmap mapping from device memory
+Date:   Tue, 31 Mar 2020 10:39:44 +0530
+Message-Id: <1585631387-18819-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-The following changes since commit 98d54f81e36ba3bf92172791eba5ca5bd813989b:
+This series enables vmemmap backing memory allocation from device memory
+ranges on arm64. But before that, it enables vmemmap_populate_basepages()
+and vmemmap_alloc_block_buf() to accommodate struct vmem_altmap based
+alocation requests.
 
-  Linux 5.6-rc4 (2020-03-01 16:38:46 -0600)
+This series applies after latest (v14) arm64 memory hot remove series
+(https://lkml.org/lkml/2020/3/3/1746) on Linux 5.6.
 
-are available in the Git repository at:
+Pending Question:
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/aegl/linux.git please-pull-ia64_for_5.7
+altmap_alloc_block_buf() does not have any other remaining users in the
+tree after this change. Should it be converted into a static function and
+it's declaration be dropped from the header (include/linux/mm.h). Avoided
+doing so because I was not sure if there are any off-tree users or not.
 
-for you to fetch changes up to 172e7890406d6183b9b39271ffb434ff0a97ce72:
+Changes in V3:
 
-  tty/serial: cleanup after ioc*_serial driver removal (2020-03-13 16:12:17 -0700)
+- Dropped comment from free_hotplug_page_range() per Robin
+- Modified comment in unmap_hotplug_range() per Robin
+- Enabled altmap support in vmemmap_alloc_block_buf() per Robin
 
-----------------------------------------------------------------
-Couple of cleanup patches
+Changes in V2: (https://lkml.org/lkml/2020/3/4/475)
 
-----------------------------------------------------------------
-Lukas Bulwahn (1):
-      tty/serial: cleanup after ioc*_serial driver removal
+- Rebased on latest hot-remove series (v14) adding P4D page table support
 
-afzal mohammed (1):
-      ia64: replace setup_irq() by request_irq()
+Changes in V1: (https://lkml.org/lkml/2020/1/23/12)
 
- MAINTAINERS                    |  9 +---
- arch/ia64/include/asm/hw_irq.h |  2 -
- arch/ia64/kernel/irq.h         |  3 ++
- arch/ia64/kernel/irq_ia64.c    | 43 +++++++------------
- arch/ia64/kernel/mca.c         | 50 +++++++----------------
- arch/ia64/kernel/perfmon.c     | 10 ++---
- arch/ia64/kernel/time.c        | 11 ++---
- include/linux/ioc3.h           | 93 ------------------------------------------
- 8 files changed, 40 insertions(+), 181 deletions(-)
- create mode 100644 arch/ia64/kernel/irq.h
- delete mode 100644 include/linux/ioc3.h
+- Added an WARN_ON() in unmap_hotplug_range() when altmap is
+  provided without the page table backing memory being freed
+
+Changes in RFC V2: (https://lkml.org/lkml/2019/10/21/11)
+
+- Changed the commit message on 1/2 patch per Will
+- Changed the commit message on 2/2 patch as well
+- Rebased on arm64 memory hot remove series (v10)
+
+RFC V1: (https://lkml.org/lkml/2019/6/28/32)
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Mike Rapoport <rppt@linux.ibm.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org
+Cc: x86@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (3):
+  mm/sparsemem: Enable vmem_altmap support in vmemmap_populate_basepages()
+  mm/sparsemem: Enable vmem_altmap support in vmemmap_alloc_block_buf()
+  arm64/mm: Enable vmem_altmap support for vmemmap mappings
+
+ arch/arm64/mm/mmu.c       | 59 ++++++++++++++++++++++++++-------------
+ arch/ia64/mm/discontig.c  |  2 +-
+ arch/powerpc/mm/init_64.c | 10 +++----
+ arch/riscv/mm/init.c      |  2 +-
+ arch/x86/mm/init_64.c     | 12 ++++----
+ include/linux/mm.h        |  8 ++++--
+ mm/sparse-vmemmap.c       | 38 ++++++++++++++++++++-----
+ 7 files changed, 87 insertions(+), 44 deletions(-)
+
+-- 
+2.20.1
+
