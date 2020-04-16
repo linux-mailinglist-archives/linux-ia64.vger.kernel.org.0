@@ -2,58 +2,98 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D28781AD345
-	for <lists+linux-ia64@lfdr.de>; Fri, 17 Apr 2020 01:35:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A23941AD277
+	for <lists+linux-ia64@lfdr.de>; Fri, 17 Apr 2020 00:01:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726521AbgDPXfE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 16 Apr 2020 19:35:04 -0400
-Received: from mail.dsns.gov.ua ([194.0.148.99]:37970 "EHLO mail.dsns.gov.ua"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725770AbgDPXfD (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 16 Apr 2020 19:35:03 -0400
-X-Greylist: delayed 9287 seconds by postgrey-1.27 at vger.kernel.org; Thu, 16 Apr 2020 19:34:56 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.dsns.gov.ua (Postfix) with ESMTP id 6223A1EC85AF;
-        Thu, 16 Apr 2020 23:35:36 +0300 (EEST)
-Received: from mail.dsns.gov.ua ([127.0.0.1])
-        by localhost (mail.dsns.gov.ua [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id ekdCUR6pZ0Aa; Thu, 16 Apr 2020 23:35:36 +0300 (EEST)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.dsns.gov.ua (Postfix) with ESMTP id 67C3E1EC85F9;
-        Thu, 16 Apr 2020 23:35:26 +0300 (EEST)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.dsns.gov.ua 67C3E1EC85F9
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dsns.gov.ua;
-        s=1E60DAC0-2607-11E9-81E6-7A77C2B36653; t=1587069326;
-        bh=47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=;
-        h=Date:From:Message-ID:MIME-Version;
-        b=BFrHb0sdI6ttGZUrYrU3NgniYtd1aDAhnXXb2vKIb2B9styAswbm0NbzZRAHiMp0y
-         hUE3veWMbUD+qTP/VmiRFig+sJh7tgrjRSipmI8jEPDH4mLyVFQtPdyPojLkpu/SlT
-         y/CjSPHdIqozfsh/zyWU9aeO41yKuuO77HTVyT/eVGDUtLYGTijz0IeETvwB1Yur4I
-         5RegLOWC96rliENvAjVU5IoM4JfcadYa95Q959RRtGyCSnevHOMfGycVhDjkxX/p7G
-         0gUYzq9GdO73hW8YI3AV2m5dSWB1tPfsxP4FJUwoBTp88jIZZeY7uAiDenSeAUtBdj
-         PKl/BScyij7GQ==
-X-Virus-Scanned: amavisd-new at dsns.gov.ua
-Received: from mail.dsns.gov.ua ([127.0.0.1])
-        by localhost (mail.dsns.gov.ua [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id U4DcK3mdlYyf; Thu, 16 Apr 2020 23:35:26 +0300 (EEST)
-Received: from mail.dsns.gov.ua (localhost [127.0.0.1])
-        by mail.dsns.gov.ua (Postfix) with ESMTP id 9BAF81EC8118;
-        Thu, 16 Apr 2020 23:35:15 +0300 (EEST)
-Date:   Thu, 16 Apr 2020 23:35:15 +0300 (EEST)
-From:   Saleem Netanyahu <duchenko@dsns.gov.ua>
-Reply-To: Saleem Netanyahu <saleemnetu@gmail.com>
-Message-ID: <1255292802.718114.1587069315574.JavaMail.zimbra@dsns.gov.ua>
-Subject: Hey, how are u, can we talk?
+        id S1728740AbgDPWBf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 16 Apr 2020 18:01:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51240 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1728720AbgDPWBd (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 16 Apr 2020 18:01:33 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DFBAC03C1A6;
+        Thu, 16 Apr 2020 15:01:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=14Ju6mOxlL9LJIOW/FTdgj6GivNAEkcDFvA+NJF0hh4=; b=JYt02rkpIxLfSksSlE8uemCZJq
+        N29XAVZHY7OEQvLCJGet9/lu5zO/JUGTcdn00BySeshPpZCf/rvt9a7GTwJLh6H1xxB5LRy+QyGPZ
+        BW2AFaaBs1sem3PR6wwbngwpAztHsiQKTqy/R4L79NzCmct41xrxivbxMO7w0ZxV0ToiMGIbKnvMc
+        0G7gWn4xcHuLLox0Q8llw7ntoQ1JNfa4wv2md27c7fC/btqps3kYVlOAJXoqIebqSAsIjWbrpG9uo
+        e1Yhwm0NNyim/bJtFBeTOmOQME265mnMLU9/9JVkpFsFi9XCHklAD9kSxEzpIsNYum1HMA/pfVxwO
+        NZXY37Hw==;
+Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jPCZg-0003U8-Ca; Thu, 16 Apr 2020 22:01:32 +0000
+From:   Matthew Wilcox <willy@infradead.org>
+To:     linux-mm@kvack.org, linux-fsdevel@vger.kernel.org
+Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org
+Subject: [PATCH v3 00/11] Make PageWriteback use the PageLocked optimisation
+Date:   Thu, 16 Apr 2020 15:01:19 -0700
+Message-Id: <20200416220130.13343-1-willy@infradead.org>
+X-Mailer: git-send-email 2.21.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [45.82.223.36, 172.69.54.54]
-X-Mailer: Zimbra 8.8.15_GA_3918 (zclient/8.8.15_GA_3918)
-Thread-Index: oV9MZN6+Sh4gFPdsGziQ2IngcJhATw==
-Thread-Topic: Hey, how are u, can we talk?
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+From: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+
+PageWaiters is used by PageWriteback and PageLocked (and no other page
+flags), so it makes sense to use the same codepaths that have already been
+optimised for PageLocked, even if there's probably no real performance
+benefit to be had.
+
+Unfortunately, clear_bit_unlock_is_negative_byte() isn't present on every
+architecture, and the default implementation is only available in filemap.c
+while I want to use it in page-writeback.c.  Rather than move the default
+implementation to a header file, I've done optimised implementations for
+alpha and ia64.  I can't figure out optimised implementations for m68k,
+mips, riscv and s390, so I've just replicated the effect of the generic
+implementation in them.  I leave it to the experts to fix that (... or
+convert over to using asm-generic/bitops/lock.h ...)
+
+v3:
+ - Added implementations of clear_bit_unlock_is_negative_byte()
+   to architectures which need it
+
+v2: Rebased to 5.7-rc1
+ - Split up patches better
+ - Moved the BUG() from end_page_writeback() to __clear_page_writeback()
+   as requested by Jan Kara.
+ - Converted the BUG() to WARN_ON()
+ - Removed TestClearPageWriteback
+
+Matthew Wilcox (Oracle) (11):
+  alpha: Add clear_bit_unlock_is_negative_byte implementation
+  ia64: Add clear_bit_unlock_is_negative_byte implementation
+  m68k: Add clear_bit_unlock_is_negative_byte implementation
+  mips: Add clear_bit_unlock_is_negative_byte implementation
+  riscv: Add clear_bit_unlock_is_negative_byte implementation
+  s390: Add clear_bit_unlock_is_negative_byte implementation
+  mm: Remove definition of clear_bit_unlock_is_negative_byte
+  mm: Move PG_writeback into the bottom byte
+  mm: Convert writeback BUG to WARN_ON
+  mm: Use clear_bit_unlock_is_negative_byte for PageWriteback
+  mm: Remove TestClearPageWriteback
+
+ arch/alpha/include/asm/bitops.h | 23 ++++++++++++++++++
+ arch/ia64/include/asm/bitops.h  | 20 ++++++++++++++++
+ arch/m68k/include/asm/bitops.h  |  7 ++++++
+ arch/mips/include/asm/bitops.h  |  7 ++++++
+ arch/riscv/include/asm/bitops.h |  7 ++++++
+ arch/s390/include/asm/bitops.h  |  9 +++++++
+ include/linux/page-flags.h      |  8 +++----
+ mm/filemap.c                    | 41 ++++----------------------------
+ mm/page-writeback.c             | 42 ++++++++++++++++++++-------------
+ 9 files changed, 107 insertions(+), 57 deletions(-)
+
+-- 
+2.25.1
