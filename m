@@ -2,78 +2,167 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 700C01ADBF9
-	for <lists+linux-ia64@lfdr.de>; Fri, 17 Apr 2020 13:13:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD0ED1AF4E0
+	for <lists+linux-ia64@lfdr.de>; Sat, 18 Apr 2020 22:23:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730164AbgDQLMl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 17 Apr 2020 07:12:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32972 "EHLO
+        id S1728390AbgDRUWb (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 18 Apr 2020 16:22:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1729846AbgDQLMl (ORCPT
+        by vger.kernel.org with ESMTP id S1728430AbgDRUUM (ORCPT
         <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 17 Apr 2020 07:12:41 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05544C061A0C;
-        Fri, 17 Apr 2020 04:12:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20170209; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=8sFIV+/8fWUY1Zbo7nie6mENpkyN/bnZv7/UFlj2FCU=; b=YYrgq/hvPgReVdxVWoGhcDq5OH
-        bTtip9uQNfhfbbmBEukbzi+TjuaHGEoFqG47UgzsbLv240p6s/vtR8k6s1thPihwHGajzkKlVVXpb
-        nTTfBMJZn8WTuTDH4+oh/r6SS4ofu22zRjXRhVOqlSJKl6Mz6q3qvnI+JsCN1nx3obijkON7+ZOYG
-        5B53aEmaqbpH41A0CRp9eYifRtoWPLrLG/9sLsiac6odvXQ9wBPqGH5QZSR6Ui9lTNY5WmIpcj0Oc
-        RVS1FKCoO8b2LZuXy4Lj1EXODCGwav1Un8/U+rzwjHrv5kedEqM/tsdpghQBno3bTfzS/+mjkfCm7
-        Z6SzouSw==;
-Received: from willy by bombadil.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1jPOvB-0006uy-Fk; Fri, 17 Apr 2020 11:12:33 +0000
-Date:   Fri, 17 Apr 2020 04:12:33 -0700
-From:   Matthew Wilcox <willy@infradead.org>
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Linux MM <linux-mm@kvack.org>,
-        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        linux-riscv@lists.infradead.org
-Subject: Re: [PATCH v3 00/11] Make PageWriteback use the PageLocked
- optimisation
-Message-ID: <20200417111233.GL5820@bombadil.infradead.org>
-References: <20200416220130.13343-1-willy@infradead.org>
- <CAMuHMdWxhVoPCZ5+=Pf1LFpdE9vPv9GGTqTYMQP9oFz7eCxDaQ@mail.gmail.com>
+        Sat, 18 Apr 2020 16:20:12 -0400
+Received: from mail-wr1-x441.google.com (mail-wr1-x441.google.com [IPv6:2a00:1450:4864:20::441])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D795C061A0C
+        for <linux-ia64@vger.kernel.org>; Sat, 18 Apr 2020 13:20:12 -0700 (PDT)
+Received: by mail-wr1-x441.google.com with SMTP id j2so7147579wrs.9
+        for <linux-ia64@vger.kernel.org>; Sat, 18 Apr 2020 13:20:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=arista.com; s=googlenew;
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=3Zx0j9dhsBcoY80rEpVxAPrttTB7YEySwNL8nK9K1gE=;
+        b=AvXTR7vuxCognA33cJ6XDtM3eGcgdAyYamMmSXba9fEoe9v887njAbkiwXQrYK3mCm
+         LEcK43L/w37TbukKg3urwbiDlDamqT8HaDD/OO5gO1Mb/mnZgJs480LqT3fxFz+DeYVe
+         +vRh+DViRnQmfVWpDBfagjtA1gjN8G/53AzMfOjYNGerHnU41i5BLjMiCOkIFoCWfRUY
+         NSEMMjmTzpzVmo8h904aIBL020tR3wOalEofk0y3nXst1ZfnjvXm+0B5SAjEjtj/Zj0f
+         vUBak4eO1q2iJ5km9mm00VDO1Wm4P32UJpbH+XQh5f5yZzftUE9zJS1mDzfZ4ZOUSBBE
+         HlyA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=3Zx0j9dhsBcoY80rEpVxAPrttTB7YEySwNL8nK9K1gE=;
+        b=O8+3xX2I4pBRbqVE/FwTlBwv8oYTd8yLbwawHUv0Lvrriq8i0/wKgAKRUe2OBq88Xf
+         u+rLzQYqVaGrGG8APuo3wZmQ/bkOcsbMiGM5A25fLARcKoCjBkB7aRuU9PGO4EaE24hT
+         GAJbS/IPZvibNI0t7eM0UlVFdIdickvyB1tondpViTwQoxhXTqkwilLOaHWaDRbLrfAj
+         aVJlDd2tIotHBdkztfWxZH7lz09CsaXR2j3J/DQKTqmdOcJyjZfxvAKAFiGtpCUXnt8I
+         +gSmGo9hRC/7acwEEKdh+6x9CtYZm+8Fu4Q9x7FRIlcb2Kz9xSdFW/ktRf8nsViQIiBK
+         TI9Q==
+X-Gm-Message-State: AGi0PuZKXbSHn0FsCrWed5+MUIbB2v6/JDu1BZE3KS4Y1IJHZQatpiXB
+        VASzTah0Ql7nfBSPkA0j8hvsmQ==
+X-Google-Smtp-Source: APiQypI9QnAQsgI0SJ6jSbUsnLWDMzELjBwQfoGfl1dERhLb1OVclICsAiPR6ailwe6STfzW84JosA==
+X-Received: by 2002:adf:dd8a:: with SMTP id x10mr9456824wrl.308.1587241210875;
+        Sat, 18 Apr 2020 13:20:10 -0700 (PDT)
+Received: from localhost.localdomain ([2a02:8084:e84:2480:228:f8ff:fe6f:83a8])
+        by smtp.gmail.com with ESMTPSA id m1sm31735255wro.64.2020.04.18.13.20.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Apr 2020 13:20:10 -0700 (PDT)
+From:   Dmitry Safonov <dima@arista.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     Dmitry Safonov <0x7f454c46@gmail.com>,
+        Dmitry Safonov <dima@arista.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ingo Molnar <mingo@kernel.org>, Jiri Slaby <jslaby@suse.com>,
+        Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <sergey.senozhatsky@gmail.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org
+Subject: [PATCHv3 15/50] ia64: Pass log level as arg into ia64_do_show_stack()
+Date:   Sat, 18 Apr 2020 21:19:09 +0100
+Message-Id: <20200418201944.482088-16-dima@arista.com>
+X-Mailer: git-send-email 2.26.0
+In-Reply-To: <20200418201944.482088-1-dima@arista.com>
+References: <20200418201944.482088-1-dima@arista.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAMuHMdWxhVoPCZ5+=Pf1LFpdE9vPv9GGTqTYMQP9oFz7eCxDaQ@mail.gmail.com>
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Apr 17, 2020 at 09:28:14AM +0200, Geert Uytterhoeven wrote:
-> On Fri, Apr 17, 2020 at 12:01 AM Matthew Wilcox <willy@infradead.org> wrote:
-> > v3:
-> >  - Added implementations of clear_bit_unlock_is_negative_byte()
-> >    to architectures which need it
-> 
-> I have two questions here?
->   1. Why not implement arch_clear_bit_unlock_is_negative_byte()
->      instead, so the kasan check in asm-generic is used everywhere?
+Currently, the log-level of show_stack() depends on a platform
+realization. It creates situations where the headers are printed with
+lower log level or higher than the stacktrace (depending on
+a platform or user).
 
-That would be a larger change.  As I understand it (and I may misunderstand
-it), I would need to rename all the clear_bit(), __clear_bit(), change_bit(),
-... functions to have an 'arch_' prefix and then include instrumented-lock.h
+Furthermore, it forces the logic decision from user to an architecture
+side. In result, some users as sysrq/kdb/etc are doing tricks with
+temporary rising console_loglevel while printing their messages.
+And in result it not only may print unwanted messages from other CPUs,
+but also omit printing at all in the unlucky case where the printk()
+was deferred.
 
->   2. Why not add the default implementation to
->      include/asm-generic/bitops/instrumented-lock.h, in case an arch_*()
->      variant is not provided yet?
-> 
-> Note that you did 1 for s390.
+Introducing log-level parameter and KERN_UNSUPPRESSED [1] seems
+an easier approach than introducing more printk buffers.
+Also, it will consolidate printings with headers.
 
-Well, s390 already uses instrumented-lock.h so I followed along with
-what they're doing.  I don't think instrumented-lock.h is used at all on
-these other architectures, but the whole bitops header files are such a
-mess that I could easily have built a completely wrong mental model of
-what's going on.
+Add log level argument to ia64_do_show_stack() as a preparation to
+introduce show_stack_loglvl().
+Also, make ia64_do_show_stack() static as it's not used outside.
+
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: linux-ia64@vger.kernel.org
+[1]: https://lore.kernel.org/lkml/20190528002412.1625-1-dima@arista.com/T/#u
+Signed-off-by: Dmitry Safonov <dima@arista.com>
+---
+ arch/ia64/include/asm/ptrace.h |  1 -
+ arch/ia64/kernel/process.c     | 13 +++++++------
+ 2 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/arch/ia64/include/asm/ptrace.h b/arch/ia64/include/asm/ptrace.h
+index 7ff574d56429..b3aa46090101 100644
+--- a/arch/ia64/include/asm/ptrace.h
++++ b/arch/ia64/include/asm/ptrace.h
+@@ -114,7 +114,6 @@ static inline long regs_return_value(struct pt_regs *regs)
+   struct task_struct;			/* forward decl */
+   struct unw_frame_info;		/* forward decl */
+ 
+-  extern void ia64_do_show_stack (struct unw_frame_info *, void *);
+   extern unsigned long ia64_get_user_rbs_end (struct task_struct *, struct pt_regs *,
+ 					      unsigned long *);
+   extern long ia64_peek (struct task_struct *, struct switch_stack *, unsigned long,
+diff --git a/arch/ia64/kernel/process.c b/arch/ia64/kernel/process.c
+index 10cb9382ab76..332c6dfe7333 100644
+--- a/arch/ia64/kernel/process.c
++++ b/arch/ia64/kernel/process.c
+@@ -64,12 +64,13 @@ EXPORT_SYMBOL(boot_option_idle_override);
+ void (*pm_power_off) (void);
+ EXPORT_SYMBOL(pm_power_off);
+ 
+-void
++static void
+ ia64_do_show_stack (struct unw_frame_info *info, void *arg)
+ {
+ 	unsigned long ip, sp, bsp;
++	const char *loglvl = arg;
+ 
+-	printk("\nCall Trace:\n");
++	printk("%s\nCall Trace:\n", loglvl);
+ 	do {
+ 		unw_get_ip(info, &ip);
+ 		if (ip == 0)
+@@ -77,9 +78,9 @@ ia64_do_show_stack (struct unw_frame_info *info, void *arg)
+ 
+ 		unw_get_sp(info, &sp);
+ 		unw_get_bsp(info, &bsp);
+-		printk(" [<%016lx>] %pS\n"
++		printk("%s [<%016lx>] %pS\n"
+ 			 "                                sp=%016lx bsp=%016lx\n",
+-			 ip, (void *)ip, sp, bsp);
++			 loglvl, ip, (void *)ip, sp, bsp);
+ 	} while (unw_unwind(info) >= 0);
+ }
+ 
+@@ -87,12 +88,12 @@ void
+ show_stack (struct task_struct *task, unsigned long *sp)
+ {
+ 	if (!task)
+-		unw_init_running(ia64_do_show_stack, NULL);
++		unw_init_running(ia64_do_show_stack, (void *)KERN_DEFAULT);
+ 	else {
+ 		struct unw_frame_info info;
+ 
+ 		unw_init_from_blocked_task(&info, task);
+-		ia64_do_show_stack(&info, NULL);
++		ia64_do_show_stack(&info, (void *)KERN_DEFAULT);
+ 	}
+ }
+ 
+-- 
+2.26.0
+
