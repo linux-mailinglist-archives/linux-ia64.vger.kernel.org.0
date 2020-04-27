@@ -2,43 +2,62 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 929931B953C
-	for <lists+linux-ia64@lfdr.de>; Mon, 27 Apr 2020 04:57:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31D0C1BA2A4
+	for <lists+linux-ia64@lfdr.de>; Mon, 27 Apr 2020 13:41:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726374AbgD0C5p (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 26 Apr 2020 22:57:45 -0400
-Received: from host141-99-61-217.static.arubacloud.com ([217.61.99.141]:49760
-        "EHLO mail.bengiamein.cf" rhost-flags-OK-FAIL-OK-OK)
-        by vger.kernel.org with ESMTP id S1726340AbgD0C5o (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 26 Apr 2020 22:57:44 -0400
-X-Greylist: delayed 8832 seconds by postgrey-1.27 at vger.kernel.org; Sun, 26 Apr 2020 22:57:44 EDT
-Received: by mail.bengiamein.cf (Postfix, from userid 48)
-        id 2CD541AE22; Sun, 26 Apr 2020 19:44:29 -0400 (EDT)
-To:     linux-ia64@vger.kernel.org
-Subject: Purchase Order
-X-PHP-Originating-Script: 0:ghgaerew.php
-From:   Richard Martins <richard.martins@list.ru>
-Reply-To: richard.martins1953@outlook.com
+        id S1727115AbgD0Llk (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 27 Apr 2020 07:41:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36074 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727082AbgD0Llg (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 27 Apr 2020 07:41:36 -0400
+Received: from mail-io1-xd42.google.com (mail-io1-xd42.google.com [IPv6:2607:f8b0:4864:20::d42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21EFBC0A3BF5
+        for <linux-ia64@vger.kernel.org>; Mon, 27 Apr 2020 04:41:35 -0700 (PDT)
+Received: by mail-io1-xd42.google.com with SMTP id z2so18394899iol.11
+        for <linux-ia64@vger.kernel.org>; Mon, 27 Apr 2020 04:41:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
+        b=uI1U3pP4FazEZaTfkDGgaf1Qyb1hL6AlgZB9tozzlJtw0tc2p0xAeW9BNdbY4A2XuL
+         JYn8lE6gg3HqjBgRaTT8CTSOLDZ9E79yDyBM0EGnWldSdHyzrk+BT/7frJGn/PAhMIrE
+         VCZdq7yfljhgiOOYhIeLP2AIIFXvLFMREe3IREMgf/Wimn5okrCaqK4gkS0+n2Tqfq3c
+         EFYh4cYLyK3nIET0YOm2adzDe5W5QN3hsgSvwW72euh+PRPDs3oxC82+7cfg/ZGTOz8/
+         eTagf6SblJMWIJeJ59y/zg3//EVOq9RPByBfKkQCDUJB6vE62XJLcx9qUgZNIxoYrz8S
+         JAeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=F+HbPvxQnRBlqBFKy/zn6110uxUPAWY6eSsMY6+ckPY=;
+        b=SALKmD8WBdUI4lY4SXZc6muyPIYEUVdHsacIHLy3a3mJ/5ImDLIegkvoPu9tNG5lvn
+         g1gU5wzLFySjE2RRnk/XYImNuDtmBn1zrXpZiZFOAJ9f+OrenaoTzhoKRgeAsA7Cxlhc
+         2N09CfwofwEJ8z/VFtYMQUYj4Zrlv4j504sLfDur83cwXxavHcoSjfvwcuBYM1kCQGCd
+         2K5+TSK0f6lg82eoSLYKlJ2V56MLGu5sH7ABqD7KLBv0+V41GodTtVZaFVy+wlXSrzBn
+         oHQykDf9DFmgy20iHnUm3tal9nkl2NsR4svKoLhBncwMjov3tQXrDmRANjAqo7MNk7Pq
+         /4PQ==
+X-Gm-Message-State: AGi0PubCvTMZr94QAdxttxsGgawiRGm1CsbI4S7llwytU/H/m7Apd5DC
+        NoKW+9OSinAl1LCvVG0Mix8ttnm6Gwimi1CBmDY=
+X-Google-Smtp-Source: APiQypJWdjzUZMbeRoAX94bUJV0IgwyoF5kUG7iPo3CBzKxW8lStFNsM/6tz3An/TyzRuH2Qw14DtavsVumw6JVLls0=
+X-Received: by 2002:a6b:7d4a:: with SMTP id d10mr4072296ioq.70.1587987694042;
+ Mon, 27 Apr 2020 04:41:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type:   text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7BIT
-Message-Id: <20200427000819.2CD541AE22@mail.bengiamein.cf>
-Date:   Sun, 26 Apr 2020 19:44:29 -0400 (EDT)
+Received: by 2002:a5d:8f89:0:0:0:0:0 with HTTP; Mon, 27 Apr 2020 04:41:33
+ -0700 (PDT)
+Reply-To: convy0090@gmail.com
+From:   Ruben CONVY <andrewboccc@gmail.com>
+Date:   Mon, 27 Apr 2020 12:41:33 +0100
+Message-ID: <CAHVC0+Ag87TMCmfNNwWbxXOFxn5166q8GG5wEfPjwtixj9=EXQ@mail.gmail.com>
+Subject: Why continued silence 2
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi, friend,
-
-This is Richard Martins and i am purchasing manager from BANTEX INTERNATIONAL INC. in the US.
-We are glad to know about your company from the web and we are interested in your products.
-Could you kindly send us your Latest catalog and price list for our trial order.
-
-Thanks and Best Regards,
-Mr.Richard Martins
-Purchasing Manager
-BANTEX INTERNATIONAL INC.
-
-
+Did you receive my previous email regarding your family inheritance?
+Reply strictly through: convy0090@gmail.com
+Best Regards,
+Ruben CONVY
