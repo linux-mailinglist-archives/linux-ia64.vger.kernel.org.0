@@ -2,47 +2,66 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 280291C2734
-	for <lists+linux-ia64@lfdr.de>; Sat,  2 May 2020 19:18:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D554E1C4C60
+	for <lists+linux-ia64@lfdr.de>; Tue,  5 May 2020 04:52:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728421AbgEBRSG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 2 May 2020 13:18:06 -0400
-Received: from sonic313-21.consmr.mail.ir2.yahoo.com ([77.238.179.188]:37583
-        "EHLO sonic313-21.consmr.mail.ir2.yahoo.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728413AbgEBRSG (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 2 May 2020 13:18:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1588439884; bh=+NKq2YP/4c3bLm2HmGhxa/KCZOXr0NIUKHs/ECuC0yk=; h=Date:From:Reply-To:Subject:References:From:Subject; b=qBP2lcjSr8q7TgpLQLiuz97xVGP2/Z7qiZFuoll9UYBZPqQEGCmI5TYmRsjDebluGFxObWhzJDJwtqv8TrEl924CRjX9djR9BsSdvJHBdX5r5IoYws7c1VfnEwTxxuRsB+XqLaFU6s3HP6p5xag9pFos8eJSZzQd+grUoXUMaUxHtr/oSucTp7Wqfr6gvvwwuCOYNfUd7piYH9vTUXlSrCGyDMdfzeRk3rCAPRxsOOpWAE+XKFkVtWqbM7PAtLOmgKxdmu8nKQwcQw1UPbDwWFDr09OGlswiTs6JQakIArYjAptSX8ceMxTpsP1cTiXZ+BHacRDnP//xrxww5JTSsQ==
-X-YMail-OSG: 2ZbRMtcVM1nsAfGKsl6cKABpw5JZCCLY9VCQTJDTj_j2nR5wZQaONxBw7xVqyPo
- n377WWssMESuxsLR4RyuYV7ja6Xr4T.SvXMHSSSVpmF_QR.BW.5CgH8oGlCs8ECSC35OpTU3uWPb
- HwOxpsPe5m9qld6Gg8vhmg9UQ668SbIYkvtoTjTFkMKcJ15M9AvbVxlMF.Kud2iX5hSEWjds75Gj
- VBxoe5dWa9hJ7J6IgaL_2tuogM92jM.LxFQWotObxO833anoUlkg.gHaWtzbUotaCDh1pC6V9_um
- U7sVUy2HNQ3lgWXt5WgTGNOdO5vkNimQ4xDPeVkiLZ3P_tIiU1rIK6aOlDznbWHPpkVX8jURwBIN
- c11DtbtPlevp4BRTJr2egwFUo9Xjt1VeqoeKzAizl4i_zJ4bSVq5R3Izm1xh6AKUmv9q4VSpvj3u
- GkdR8oXgVCHVnEkEWws87xDV1tLKHmavaX9vonm_txawplevwe3EQ6nGlUHLzbxJYQsmzr5Rhs4H
- m.uZCglC2_vvVlJCyLqn.HrA5f0UQqEg5vXKp05JqJRF4opOijJ6JHQbkr2RiyQ9m9PUfpY2yMpj
- 86T8He8j0Susl_Ib0DBhbJLBicI8LAih3vt21xL8sKKmROPZ4mxKS_zH0vqEwJH1G2ROu0Qqm2G9
- 6H9f3xlFxo5pPXW8qW1Pb58F_mGol_1MZkoJ.oOAaecrL0637sZ6kfOSuE7r8HhxP0ys7tCfw5hU
- gqx54BbPnfy7oZmfhf6jXcd5DlxRiwbNbYyspbWK81eGJcH.6v2whDP0lGNPvfVVcy.X.TuK_fFX
- zYVyQDxfdVlmBwr53gYW.XrGzBzuh3Xh8uVEKvMgSemZ5EWEtZetiCySWaQo.2mVKMRCTRCDl6gO
- P0Nj5wn1kZYxeNmtDUa440oZm1P0tEcUJ19N2WliHWuDwXIQZMLspxLQQOVWwtNh_uUkeRDcz4vy
- IyDDe2E0HKxmS86Fg1ulrTk7cHWQNYCyofSlmzGaruPORxHMme5n_BHa7VivCjCsLtz1Y6eReaLw
- zXOUpOyECNOvzxJ40f5E9JlfqaxiicdqJDWM_MkV11kyLXv6VOkrWcN9d9Ro5Ysk_Tuo4gkw88TW
- zdhnGQJ81IS7COSXYyaxc6VNCA2iMqC1BzYzsCj_WvNqpwnrzVE1FFWuFczSu6AIDkB3tuXzB73j
- TOIE60LYAvFYRlxSBIkJwrwBdkwCsUYn8vkdGkLpZgcN_isPIDR0K2X7FFob1yQolG8vs5zWmmtp
- rOhCtsJSexPpnl49pYTq.EzlmtZwyPY2GuBY0T92wa.eKp.9cMb_DqX3.QRQFMpsr7OSinGk1g1g
- DtAJbC3.k1jI-
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic313.consmr.mail.ir2.yahoo.com with HTTP; Sat, 2 May 2020 17:18:04 +0000
-Date:   Sat, 2 May 2020 17:18:01 +0000 (UTC)
-From:   "Mrs. Mina A. Brunel" <mrs.minaabrunel209@gmail.com>
-Reply-To: mrs.minaabrunel30@gmail.com
-Message-ID: <570800982.467049.1588439881918@mail.yahoo.com>
-Subject: My Dear in the lord
+        id S1727820AbgEECwT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 4 May 2020 22:52:19 -0400
+Received: from foss.arm.com ([217.140.110.172]:57846 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726516AbgEECwS (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 4 May 2020 22:52:18 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3D5C41FB;
+        Mon,  4 May 2020 19:52:17 -0700 (PDT)
+Received: from [192.168.0.129] (unknown [172.31.20.19])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 20A803F71F;
+        Mon,  4 May 2020 19:52:04 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH 3/3] mm/hugetlb: Introduce HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-mm@kvack.org, Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <heiko.carstens@de.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <1586864670-21799-1-git-send-email-anshuman.khandual@arm.com>
+ <1586864670-21799-4-git-send-email-anshuman.khandual@arm.com>
+ <20200425175511.7a68efb5e2f4436fe0328c1d@linux-foundation.org>
+ <87d37591-caa2-b82b-392a-3a29b2c7e9a6@arm.com>
+ <20200425200124.20d0c75fcaef05d062d3667c@linux-foundation.org>
+Message-ID: <21460cbc-8e9a-b956-5797-57b2e1df9fb1@arm.com>
+Date:   Tue, 5 May 2020 08:21:34 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
+ Thunderbird/52.9.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-References: <570800982.467049.1588439881918.ref@mail.yahoo.com>
-X-Mailer: WebService/1.1.15756 YMailNodin Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:75.0) Gecko/20100101 Firefox/75.0
-To:     unlisted-recipients:; (no To-header on input)
+In-Reply-To: <20200425200124.20d0c75fcaef05d062d3667c@linux-foundation.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
@@ -50,47 +69,83 @@ X-Mailing-List: linux-ia64@vger.kernel.org
 
 
 
-My Dear in the lord
+On 04/26/2020 08:31 AM, Andrew Morton wrote:
+> On Sun, 26 Apr 2020 08:13:17 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+> 
+>>
+>>
+>> On 04/26/2020 06:25 AM, Andrew Morton wrote:
+>>> On Tue, 14 Apr 2020 17:14:30 +0530 Anshuman Khandual <anshuman.khandual@arm.com> wrote:
+>>>
+>>>> There are multiple similar definitions for arch_clear_hugepage_flags() on
+>>>> various platforms. This introduces HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS for those
+>>>> platforms that need to define their own arch_clear_hugepage_flags() while
+>>>> also providing a generic fallback definition for others to use. This help
+>>>> reduce code duplication.
+>>>>
+>>>> ...
+>>>>
+>>>> --- a/include/linux/hugetlb.h
+>>>> +++ b/include/linux/hugetlb.h
+>>>> @@ -544,6 +544,10 @@ static inline int is_hugepage_only_range(struct mm_struct *mm,
+>>>>  }
+>>>>  #endif
+>>>>  
+>>>> +#ifndef HAVE_ARCH_CLEAR_HUGEPAGE_FLAGS
+>>>> +static inline void arch_clear_hugepage_flags(struct page *page) { }
+>>>> +#endif
+>>>> +
+>>>>  #ifndef arch_make_huge_pte
+>>>>  static inline pte_t arch_make_huge_pte(pte_t entry, struct vm_area_struct *vma,
+>>>>  				       struct page *page, int writable)
+>>>
+>>> This is the rather old-school way of doing it.  The Linus-suggested way is
+>>>
+>>> #ifndef arch_clear_hugepage_flags
+>>> static inline void arch_clear_hugepage_flags(struct page *page)
+>>> {
+>>> }
+>>> #define arch_clear_hugepage_flags arch_clear_hugepage_flags
+>>
+>> Do we need that above line here ? Is not that implicit.
+> 
+> It depends if other header files want to test whether
+> arch_clear_hugepage_flags is already defined.  If the header heorarchy
+> is well-defined and working properly, they shouldn't need to, because
+> we're reliably indluding the relevant arch header before (or early
+> within) include/linux/hugetlb.h.
+> 
+> It would be nice if
+> 
+> #define arch_clear_hugepage_flags arch_clear_hugepage_flags
+> #define arch_clear_hugepage_flags arch_clear_hugepage_flags
+> 
+> were to generate an compiler error but it doesn't.  If it did we could
+> detect these incorrect inclusion orders.
+> 
+>>> #endif
+>>>
+>>> And the various arch headers do
+>>>
+>>> static inline void arch_clear_hugepage_flags(struct page *page)
+>>> {
+>>> 	<some implementation>
+>>> }
+>>> #define arch_clear_hugepage_flags arch_clear_hugepage_flags
+>>>
+>>> It's a small difference - mainly to avoid adding two variables to the
+>>> overall namespace where one would do.
+>>
+>> Understood, will change and resend.
+> 
+> That's OK - I've queued up that fix.
+>
 
+Hello Andrew,
 
-My name is Mrs. Mina A. Brunel I am a Norway Citizen who is living in Burki=
-na Faso, I am married to Mr. Brunel Patrice, a politician who owns a small =
-gold company in Burkina Faso; He died of Leprosy and Radesyge, in the year =
-February 2010, During his lifetime he deposited the sum of =E2=82=AC 8.5 Mi=
-llion Euro) Eight million, Five hundred thousand Euros in a bank in Ouagado=
-ugou the capital city of Burkina Faso in West Africa. The money was from th=
-e sale of his company and death benefits payment and entitlements of my dec=
-eased husband by his company.
+I might not have searched all the relevant trees or might have just searched
+earlier than required. But I dont see these patches (or your proposed fixes)
+either in mmotm (2020-04-29-23-04) or in next-20200504. Wondering if you are
+waiting on a V2 for this series accommodating the changes you had proposed.
 
-I am sending you this message with heavy tears in my eyes and great sorrow =
-in my heart, and also praying that it will reach you in good health because=
- I am not in good health, I sleep every night without knowing if I may be a=
-live to see the next day. I am suffering from long time cancer and presentl=
-y I am partially suffering from Leprosy, which has become difficult for me =
-to move around. I was married to my late husband for more than 6 years with=
-out having a child and my doctor confided that I have less chance to live, =
-having to know when the cup of death will come, I decided to contact you to=
- claim the fund since I don't have any relation I grew up from an orphanage=
- home.
-
-I have decided to donate this money for the support of helping Motherless b=
-abies/Less privileged/Widows and churches also to build the house of God be=
-cause I am dying and diagnosed with cancer for about 3 years ago. I have de=
-cided to donate from what I have inherited from my late husband to you for =
-the good work of Almighty God; I will be going in for an operation surgery =
-soon.
-
-Now I want you to stand as my next of kin to claim the funds for charity pu=
-rposes. Because of this money remains unclaimed after my death, the bank ex=
-ecutives or the government will take the money as unclaimed fund and maybe =
-use it for selfishness and worthless ventures, I need a very honest person =
-who can claim this money and use it for Charity works, for orphanages, wido=
-ws and also build schools and churches for less privilege that will be name=
-d after my late husband and my name.
-
-I need your urgent answer to know if you will be able to execute this proje=
-ct, and I will give you more information on how the fund will be transferre=
-d to your bank account or online banking.
-
-Thanks
-Mrs. Mina A. Brunel
+- Anshuman
