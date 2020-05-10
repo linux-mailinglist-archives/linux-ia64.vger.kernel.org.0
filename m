@@ -2,45 +2,87 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 125E81CBBFC
-	for <lists+linux-ia64@lfdr.de>; Sat,  9 May 2020 02:50:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F9D91CC7DF
+	for <lists+linux-ia64@lfdr.de>; Sun, 10 May 2020 09:56:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727984AbgEIAu2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Fri, 8 May 2020 20:50:28 -0400
-Received: from mail.itanhaem.sp.gov.br ([187.8.184.45]:48624 "EHLO
-        mail.itanhaem.sp.gov.br" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727959AbgEIAu2 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 8 May 2020 20:50:28 -0400
-X-Greylist: delayed 407 seconds by postgrey-1.27 at vger.kernel.org; Fri, 08 May 2020 20:50:26 EDT
-Received: from localhost (localhost [127.0.0.1])
-        by mail.itanhaem.sp.gov.br (Postfix) with ESMTP id 47C473E58D1;
-        Fri,  8 May 2020 21:41:56 -0300 (-03)
-Received: from mail.itanhaem.sp.gov.br ([127.0.0.1])
-        by localhost (mail.itanhaem.sp.gov.br [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id Kg9MuDIEvMmJ; Fri,  8 May 2020 21:41:56 -0300 (-03)
-Received: from mail.itanhaem.sp.gov.br (localhost [127.0.0.1])
-        by mail.itanhaem.sp.gov.br (Postfix) with ESMTP id E40333E5811;
-        Fri,  8 May 2020 21:41:49 -0300 (-03)
-Date:   Fri, 8 May 2020 21:41:49 -0300 (ART)
-From:   Barbara D Wilkins <endrigo.lsantos@itanhaem.sp.gov.br>
-Reply-To: "mrsbarbarawilkinsfunds.usa@gmail.com" 
-          <mrsbarbarawilkinsfunds.usa@gmail.com>
-Message-ID: <2069812232.984326.1588984909866.JavaMail.zimbra@itanhaem.sp.gov.br>
-Subject: 
+        id S1728154AbgEJHzV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 10 May 2020 03:55:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38128 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725839AbgEJHzU (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 10 May 2020 03:55:20 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE92FC061A0E;
+        Sun, 10 May 2020 00:55:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20170209; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=7/gXVwxfQCALl/htOL9nGBBdk9CR2DqbWyS3c9DzJzg=; b=TvxbsuwUX/hm6+Z8fi/17h3sCr
+        V6hTHGgSMnPIXClp9WBd4xHpkact4TdSPlY40kgpTlFrc4X0TcbVrodeZch2eF33X40QtPmPFET1U
+        Tys5kVImtNbCnWZn12idX8lvZh32iDnfxIDeXhSFPGHn0PMIm30TD0pbjnUShEADOadDDfLCmcKnm
+        wKfgOhNBY1n/ICaPIfQgdGgBtYZHWT6fzJbX2O0Ol1Icyt3JJoleMMbRsBA4C7Ht6DLkc7DlYLbcX
+        cjmyou6JXKISuiamP88TvDgJ4S2xixwnMizgAVSPuwNbaVDo6GTG7tK/YFq90voaly/1rUW1zB1cS
+        ecEzX6Qw==;
+Received: from [2001:4bb8:180:9d3f:c70:4a89:bc61:2] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jXgno-0007lE-9T; Sun, 10 May 2020 07:55:13 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Roman Zippel <zippel@linux-m68k.org>
+Cc:     Jessica Yu <jeyu@kernel.org>, Michal Simek <monstr@monstr.eu>,
+        x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-c6x-dev@linux-c6x.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linux-fsdevel@vger.kernel.org
+Subject: sort out the flush_icache_range mess
+Date:   Sun, 10 May 2020 09:54:39 +0200
+Message-Id: <20200510075510.987823-1-hch@lst.de>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [63.141.48.14]
-X-Mailer: Zimbra 8.7.11_GA_3865 (zclient/8.7.11_GA_3865)
-X-Authenticated-User: endrigo.lsantos@itanhaem.sp.gov.br
-Thread-Index: O6vXxvKl1xCsumBH9F1WM0vPlaI8Lg==
-Thread-Topic: 
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+Hi all,
 
+flush_icache_range is mostly used for kernel address, except for the following
+cases:
 
-Hallo,          Wir sind eine christliche Organisation, die gegründet wurde, um Menschen zu helfen, die Hilfe benötigen, beispielsweise finanzielle Hilfe. Wenn Sie also finanzielle Schwierigkeiten haben oder sich in einem finanziellen Chaos befinden und Geld benötigen, um Ihr eigenes Unternehmen zu gründen, oder wenn Sie einen Kredit benötigen Begleichen Sie Ihre Schulden oder zahlen Sie Ihre Rechnungen ab, gründen Sie ein gutes Geschäft oder es fällt Ihnen schwer, einen Kapitalkredit von lokalen Banken zu erhalten. Kontaktieren Sie uns noch heute per E-Mail:  Lassen Sie sich diese Gelegenheit also nicht entgehen weil Jesus gestern, heute und für immer derselbe ist. Bitte, diese sind für ernsthafte und gottesfürchtige Menschen.Dein Name:Darlehensbetrag:Leihdauer:Gültige Handynummer:Vielen Dank für Ihr Verständnis für Ihren Kontakt, während wir warten: mrsbarbarawilkinsfunds.usagmail.comGrüßeVerwaltung
+ - the nommu brk and mmap implementations,
+ - the read_code helper that is only used for binfmt_flat, binfmt_elf_fdpic,
+   and binfmt_aout including the broken ia32 compat version
+ - binfmt_flat itself,
+
+none of which really are used by a typical MMU enabled kernel, as a.out can
+only be build for alpha and m68k to start with.
+
+But strangely enough commit ae92ef8a4424 ("PATCH] flush icache in correct
+context") added a "set_fs(KERNEL_DS)" around the flush_icache_range call
+in the module loader, because apparently m68k assumed user pointers.
+
+This series first cleans up the cacheflush implementations, largely by
+switching as much as possible to the asm-generic version after a few
+preparations, then moves the misnamed current flush_icache_user_range to
+a new name, to finally introduce a real flush_icache_user_range to be used
+for the above use cases to flush the instruction cache for a userspace
+address range.  The last patch then drops the set_fs in the module code
+and moves it into the m68k implementation.
+
+A git tree is available here:
+
+    git://git.infradead.org/users/hch/misc.git flush_icache_range
+
+Gitweb:
+
+    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/flush_icache_range
