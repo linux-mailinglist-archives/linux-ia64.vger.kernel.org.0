@@ -2,25 +2,24 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4B021D2902
-	for <lists+linux-ia64@lfdr.de>; Thu, 14 May 2020 09:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BDAC01D290E
+	for <lists+linux-ia64@lfdr.de>; Thu, 14 May 2020 09:50:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725972AbgENHqN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 14 May 2020 03:46:13 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:57370 "EHLO
+        id S1725925AbgENHuE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 14 May 2020 03:50:04 -0400
+Received: from youngberry.canonical.com ([91.189.89.112]:57511 "EHLO
         youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725952AbgENHqM (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 14 May 2020 03:46:12 -0400
+        with ESMTP id S1725886AbgENHuE (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 14 May 2020 03:50:04 -0400
 Received: from ip5f5af183.dynamic.kabel-deutschland.de ([95.90.241.131] helo=wittgenstein)
         by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
         (Exim 4.86_2)
         (envelope-from <christian.brauner@ubuntu.com>)
-        id 1jZ8ZD-0004BY-FN; Thu, 14 May 2020 07:46:07 +0000
-Date:   Thu, 14 May 2020 09:46:06 +0200
+        id 1jZ8d0-0004a4-O6; Thu, 14 May 2020 07:50:02 +0000
+Date:   Thu, 14 May 2020 09:50:01 +0200
 From:   Christian Brauner <christian.brauner@ubuntu.com>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     "Luck, Tony" <tony.luck@intel.com>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>,
+To:     "Luck, Tony" <tony.luck@intel.com>
+Cc:     "Yu, Fenghua" <fenghua.yu@intel.com>,
         "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
         Al Viro <viro@zeniv.linux.org.uk>,
         Arnd Bergmann <arnd@arndb.de>,
@@ -32,51 +31,47 @@ Cc:     "Luck, Tony" <tony.luck@intel.com>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Subject: Re: [PATCH] ia64: enable HAVE_COPY_THREAD_TLS, switch to
  kernel_clone_args
-Message-ID: <20200514074606.vkc35syhdep23rzh@wittgenstein>
+Message-ID: <20200514075001.c63f3isbialsacpd@wittgenstein>
 References: <20200513204848.1208864-1-christian.brauner@ubuntu.com>
  <3908561D78D1C84285E8C5FCA982C28F7F6266E0@ORSMSX115.amr.corp.intel.com>
- <79e58d9b-5a39-390c-2f0c-0d87b63442b4@physik.fu-berlin.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <79e58d9b-5a39-390c-2f0c-0d87b63442b4@physik.fu-berlin.de>
+In-Reply-To: <3908561D78D1C84285E8C5FCA982C28F7F6266E0@ORSMSX115.amr.corp.intel.com>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, May 13, 2020 at 11:26:35PM +0200, John Paul Adrian Glaubitz wrote:
-> Hi Tony!
+On Wed, May 13, 2020 at 09:19:41PM +0000, Luck, Tony wrote:
+> > I tried my very best to test this patch including installing Debian 3
+> > and 4 to try and get my hands on a gcc version that would allow
+> > cross-compiling for ia64. But no, even that wasn't possible let alone a
+> > working qemu for ia64. So this is largely untested but hopefully a
+> > straightforward change. If this breaks something we will hear from
+> > people if they still care about new kernels on ia64 since they won't be
+> > able to get any further than trying to start init. :) If this patch
+> > breaks it, I'll fix it.
 > 
-> On 5/13/20 11:19 PM, Luck, Tony wrote:
-> >> I tried my very best to test this patch including installing Debian 3
-> >> and 4 to try and get my hands on a gcc version that would allow
-> >> cross-compiling for ia64. But no, even that wasn't possible let alone a
-> >> working qemu for ia64. So this is largely untested but hopefully a
-> >> straightforward change. If this breaks something we will hear from
-> >> people if they still care about new kernels on ia64 since they won't be
-> >> able to get any further than trying to start init. :) If this patch
-> >> breaks it, I'll fix it.
-> > 
-> > My last functional ia64 machine no longer powers on. Unclear if it's just
-> > a broken power supply or something more serious. With almost nobody
-> > in offices/labs anymore my search for another machine is proceeding
-> > slowly.
-> 
-> I could test it.
+> My last functional ia64 machine no longer powers on. Unclear if it's just
+> a broken power supply or something more serious. With almost nobody
+> in offices/labs anymore my search for another machine is proceeding
+> slowly.
 
-Hey Adrian,
-
-That would be excellent and much appreciated.
-Do you think you can get it tested soon?
+Ah. :/
 
 > 
-> As for getting a working cross-compiler for ia64 in Debian, this has
-> been on my TODO list for a while now. Building a cross-compiler for
-> ia64 is a bit more tricky due to it's dependency on the external
-> libunwind.
+> Which is to say ... it won't be me noticing any breakage (at least not for
+> a while).
 
-I hit that roadblock as well but yeah, a cross-compiler would be
-helpful.
+If we can't get it tested on a machine soon, would you still be ok
+proceeding with this patch?
+
+> 
+> I think Al Viro bought an ia64 on ebay a while back ... if that's still running
+> perhaps he'll test?
+
+I have to admit, that out of pure desperation I considered buying on too
+on ebay. But they are still suprisingly pricy.
 
 Christian
