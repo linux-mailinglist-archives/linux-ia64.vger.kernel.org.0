@@ -2,55 +2,82 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71DB61D7757
-	for <lists+linux-ia64@lfdr.de>; Mon, 18 May 2020 13:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E9A11D7820
+	for <lists+linux-ia64@lfdr.de>; Mon, 18 May 2020 14:09:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727989AbgERLfj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 18 May 2020 07:35:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58720 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726739AbgERLfi (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 18 May 2020 07:35:38 -0400
-X-Greylist: delayed 1915 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 18 May 2020 04:35:37 PDT
-Received: from vps.dvp24.com (unknown [IPv6:2a02:348:36:5b8c::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1BA1C05BD09;
-        Mon, 18 May 2020 04:35:37 -0700 (PDT)
-Received: from localhost ([127.0.0.1] helo=dvp24.com)
-        by vps.dvp24.com with esmtpa (Exim 4.77)
-        (envelope-from <abhay@dvp24.com>)
-        id 1jadYZ-0006rf-Up; Mon, 18 May 2020 13:03:39 +0200
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 8bit
-Date:   Mon, 18 May 2020 12:03:39 +0100
-From:   pedro hills <abhay@dvp24.com>
-To:     undisclosed-recipients:;
-Subject: (DONATION) $2 Million Has Been Donated
-Reply-To: <pedrohills@outlook.es>
-Mail-Reply-To: <pedrohills@outlook.es>
-Message-ID: <f63d46632b20d7492a1d2e423510606e@dvp24.com>
-X-Sender: abhay@dvp24.com
-User-Agent: Roundcube Webmail/0.7.1
+        id S1726682AbgERMJD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 18 May 2020 08:09:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:50014 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726448AbgERMJD (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 18 May 2020 08:09:03 -0400
+Received: from kozik-lap.mshome.net (unknown [194.230.155.188])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id E3D14207D8;
+        Mon, 18 May 2020 12:09:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1589803743;
+        bh=SEByoyU7zUcqsSozfnjODsKZnvuUk1JfOriPckML+F4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=l3i7U26etrohomOegVf5fBfK9nF8sMSrRZr9e1n0cdxHeZ4Spq8JggfufDwtUFK6/
+         cAujaYLrudSVf4FcCMAL/8TRYSkHDpQJwxLF4ly33rlqD/Ujx5kwHLdsNY4ja4eHSb
+         cf93eYsTh/FFxkQ3gvoPNnknZD/0SbtETKejRph0=
+From:   Krzysztof Kozlowski <krzk@kernel.org>
+To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Joerg Roedel <joro@8bytes.org>,
+        iommu@lists.linux-foundation.org
+Cc:     Krzysztof Kozlowski <krzk@kernel.org>
+Subject: [PATCH 1/2] ia64: Hide the archdata.iommu field behind generic IOMMU_API
+Date:   Mon, 18 May 2020 14:08:54 +0200
+Message-Id: <20200518120855.27822-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+There is a generic, kernel wide configuration symbol for enabling the
+IOMMU specific bits: CONFIG_IOMMU_API.  Implementations (including
+INTEL_IOMMU driver) select it so use it here as well.
 
+This makes the conditional archdata.iommu field consistent with other
+platforms and also fixes any compile test builds of other IOMMU drivers,
+when INTEL_IOMMU is not selected).
 
+For the case when INTEL_IOMMU and COMPILE_TEST are not selected, this
+should create functionally equivalent code/choice.  With COMPILE_TEST
+this field could appear if other IOMMU drivers are chosen but
+INTEL_IOMMU not.
+
+Reported-by: kbuild test robot <lkp@intel.com>
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+
+---
+
+See:
+https://lore.kernel.org/lkml/202005181412.frC4juFy%25lkp@intel.com/
+---
+ arch/ia64/include/asm/device.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/ia64/include/asm/device.h b/arch/ia64/include/asm/device.h
+index 410a769ece95..3eb397415381 100644
+--- a/arch/ia64/include/asm/device.h
++++ b/arch/ia64/include/asm/device.h
+@@ -6,7 +6,7 @@
+ #define _ASM_IA64_DEVICE_H
+ 
+ struct dev_archdata {
+-#ifdef CONFIG_INTEL_IOMMU
++#ifdef CONFIG_IOMMU_API
+ 	void *iommu; /* hook for IOMMU specific extension */
+ #endif
+ };
 -- 
-$2 Million Has Been Donated To You,By PEDRO this is Real For More Info
-  Contact PEDRO immediately for your clame This Email:
-  pedrohills@outlook.es
+2.17.1
 
-  Contact phone number +34632232897
-  Send Your Response To: pedrohills@outlook.es
-
-  2 Millionen US-Dollar wurden an Sie gespendet. Von PEDRO ist dies für
-weitere Informationen real
-  Wenden Sie sich umgehend an PEDRO. Diese E-Mail:
-  pedrohills@outlook.es
-
-  Kontakttelefonnummer +34632232897
-  Senden Sie Ihre Antwort an: pedrohills@outlook.es
