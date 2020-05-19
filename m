@@ -2,122 +2,51 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9403D1D85C3
-	for <lists+linux-ia64@lfdr.de>; Mon, 18 May 2020 20:21:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 249D91DE1DB
+	for <lists+linux-ia64@lfdr.de>; Fri, 22 May 2020 10:32:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1730169AbgERSU7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 18 May 2020 14:20:59 -0400
-Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:28126 "EHLO
-        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S2387782AbgERSU5 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 18 May 2020 14:20:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1589826056;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=bgUgYOhXHVrOhAbBYxlnYyhMzdekwGrXn9fI5GzJacU=;
-        b=R02e7DTE6AfSGT/kUhzmH81a2fEJ34ufqbGIFaAWXoKyh0SMZ9MIko9KOY7BKG0o7gTdaq
-        vE5ALxgIHTPL919QCmHQ4btR5vr4lHE0Q12t/fIsbCUQiJNBAp7f6UqXLiGPz0g0n+P0eu
-        5oyquCeX6qaAQaeLejCDo3J7i0bVCA8=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-266-kVRrudnWNEOZ64966nyy_Q-1; Mon, 18 May 2020 14:20:52 -0400
-X-MC-Unique: kVRrudnWNEOZ64966nyy_Q-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.phx2.redhat.com [10.5.11.23])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 428731005510;
-        Mon, 18 May 2020 18:20:48 +0000 (UTC)
-Received: from ovpn-115-234.rdu2.redhat.com (ovpn-115-234.rdu2.redhat.com [10.10.115.234])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 6AF23398;
-        Mon, 18 May 2020 18:20:43 +0000 (UTC)
-Message-ID: <5260142047d0339e00d4a74865c2f0b7511c89f6.camel@redhat.com>
-Subject: Re: [PATCH 10/29] c6x: use asm-generic/cacheflush.h
-From:   Mark Salter <msalter@redhat.com>
-To:     Christoph Hellwig <hch@lst.de>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Roman Zippel <zippel@linux-m68k.org>
-Cc:     linux-arch@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        Michal Simek <monstr@monstr.eu>, Jessica Yu <jeyu@kernel.org>,
-        linux-ia64@vger.kernel.org, linux-c6x-dev@linux-c6x.org,
-        linux-sh@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        x86@kernel.org, linux-um@lists.infradead.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-m68k@lists.linux-m68k.org,
-        openrisc@lists.librecores.org, linux-alpha@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-arm-kernel@lists.infradead.org
-Date:   Mon, 18 May 2020 14:20:42 -0400
-In-Reply-To: <20200515143646.3857579-11-hch@lst.de>
-References: <20200515143646.3857579-1-hch@lst.de>
-         <20200515143646.3857579-11-hch@lst.de>
-Organization: Red Hat, Inc
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.36.2 (3.36.2-1.fc32) 
+        id S1728920AbgEVIcP (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 22 May 2020 04:32:15 -0400
+Received: from [134.119.191.54] ([134.119.191.54]:45918 "EHLO
+        fronje545.pserver.ru" rhost-flags-FAIL-FAIL-OK-OK) by vger.kernel.org
+        with ESMTP id S1728883AbgEVIcN (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 22 May 2020 04:32:13 -0400
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=bofchina.com; s=dkim; h=Sender:Message-Id:Reply-To:Date:From:To:Subject:
+        Content-Description:Content-Transfer-Encoding:MIME-Version:Content-Type:Cc:
+        Content-ID:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:
+        Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=bS+yQnISJM2v0OdEopwaw88y7ksjIKrtL0uFXb72uxM=; b=E7Y+uqyyv3BQpJwlWTaW6pXnVh
+        BG48asoDsQvLAB7KTSqi4yml/LVaxypSvN4v42FIFG9riGK4qLaZgKoT/vkGoHUMiH32/vnBeBhQU
+        JlMlROP/bn3DaReJrb5CP6Gofoht79Oe4I/RRGOd98/LlwbEB8aK6TNB6Ky8T38ZFj2U=;
+Received: from [199.119.151.199] (helo=[173.243.112.60])
+        by fronje545.pserver.ru with esmtpa (Exim 4.92.3)
+        (envelope-from <Bahu@bofchina.com>)
+        id 1jacU8-0001ar-Ma; Mon, 18 May 2020 11:55:00 +0200
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.84 on 10.5.11.23
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: Re:
+To:     Recipients <storebrand@storebrand.com>
+From:   "STOREBRAND" <storebrand@storebrand.com>
+Date:   Mon, 18 May 2020 18:57:00 -0700
+Reply-To: h2.hauge@caramail.com
+Message-Id: <E1jacU8-0001ar-Ma@fronje545.pserver.ru>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, 2020-05-15 at 16:36 +0200, Christoph Hellwig wrote:
-> C6x needs almost no cache flushing routines of its own.  Rely on
-> asm-generic/cacheflush.h for the defaults.
-> 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/c6x/include/asm/cacheflush.h | 19 +------------------
->  1 file changed, 1 insertion(+), 18 deletions(-)
-> 
-> diff --git a/arch/c6x/include/asm/cacheflush.h b/arch/c6x/include/asm/cacheflush.h
-> index 4540b40475e6c..10922d528de6d 100644
-> --- a/arch/c6x/include/asm/cacheflush.h
-> +++ b/arch/c6x/include/asm/cacheflush.h
-> @@ -16,21 +16,6 @@
->  #include <asm/page.h>
->  #include <asm/string.h>
->  
-> -/*
-> - * virtually-indexed cache management (our cache is physically indexed)
-> - */
-> -#define flush_cache_all()			do {} while (0)
-> -#define flush_cache_mm(mm)			do {} while (0)
-> -#define flush_cache_dup_mm(mm)			do {} while (0)
-> -#define flush_cache_range(mm, start, end)	do {} while (0)
-> -#define flush_cache_page(vma, vmaddr, pfn)	do {} while (0)
-> -#define flush_cache_vmap(start, end)		do {} while (0)
-> -#define flush_cache_vunmap(start, end)		do {} while (0)
-> -#define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 0
-> -#define flush_dcache_page(page)			do {} while (0)
-> -#define flush_dcache_mmap_lock(mapping)		do {} while (0)
-> -#define flush_dcache_mmap_unlock(mapping)	do {} while (0)
-> -
->  /*
->   * physically-indexed cache management
->   */
-> @@ -49,14 +34,12 @@ do {								  \
->  			(unsigned long) page_address(page) + PAGE_SIZE)); \
->  } while (0)
->  
-> -
->  #define copy_to_user_page(vma, page, vaddr, dst, src, len) \
->  do {						     \
->  	memcpy(dst, src, len);			     \
->  	flush_icache_range((unsigned) (dst), (unsigned) (dst) + (len)); \
->  } while (0)
->  
-> -#define copy_from_user_page(vma, page, vaddr, dst, src, len) \
-> -	memcpy(dst, src, len)
-> +#include <asm-generic/cacheflush.h>
->  
->  #endif /* _ASM_C6X_CACHEFLUSH_H */
+Hello,
 
-Acked-by: Mark Salter <msalter@redhat.com>
+     Am Harald Hauge an Investment Manager from Norway. I wish to solicit y=
+our interest in an investment project that is currently ongoing in my compa=
+ny (Storebrand);  It is a short term investment with good returns. Simply r=
+eply for me to confirm the validity of your email so i shall give you a com=
+prehensive details about the project.
 
-
+Best Regards,
+Harald Hauge
+Business Consultant
