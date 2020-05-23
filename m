@@ -2,65 +2,123 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 451F41DF9E6
-	for <lists+linux-ia64@lfdr.de>; Sat, 23 May 2020 20:00:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C5841DFAC3
+	for <lists+linux-ia64@lfdr.de>; Sat, 23 May 2020 21:50:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388131AbgEWSAg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 23 May 2020 14:00:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55764 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2388233AbgEWSAX (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 23 May 2020 14:00:23 -0400
-Received: from mail-qv1-xf42.google.com (mail-qv1-xf42.google.com [IPv6:2607:f8b0:4864:20::f42])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FE83C02A1BA
-        for <linux-ia64@vger.kernel.org>; Sat, 23 May 2020 11:00:21 -0700 (PDT)
-Received: by mail-qv1-xf42.google.com with SMTP id z9so6234898qvi.12
-        for <linux-ia64@vger.kernel.org>; Sat, 23 May 2020 11:00:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=DLUdlLdqK1bsV3DbEuTTyBWxouo7TOwyxri4APWQD3NqiMSIjirU+KuWgkxjC+SPXd
-         U5bKcUrFxXkujPWjXtLFF/k/nfilKzP5EjBajrS/8510fneO07cpMqdcHCxwrpi40/q7
-         /O0e1HoJlTbh5NB1junI0CHT5u7OlL96wLc3EVtoU1jy6h6mu/94Ij3+HmmWjDrdLWVh
-         jTwO4Rc/jE6wel14tPJDJsn6k0/UDkI9Or/XCFS691xyvyogoxyI2h7yK06Suh6ePv/U
-         +lZz7VywgsFgSxYL/B5mLPOXcZ0fktkIkUnyPxHg9tbmvqat4Bb8GZAodniIxvBVB3XB
-         mJxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=F3NMDrR9dummcUXdRfruEEfbIS6yB2vx68nB8Asq/5Q=;
-        b=jDgLhT1xWp0zXXcYjg32inwPBTstaAZnEUdaXdPyrAxLTAjCqmJVFh9ISc7kSDFfto
-         w1wEzGwX2qkZev6vD5tFoiSbOFTUU1QqyJ0gfQ3QedWWyiJyVLxxq1vRerCto49eOHWG
-         uTCdvNdtXG4LbavReLwbNlTuvYhmma302o92rZyiqzCHFwnoRT7HNa4FudYyltZGZ9RQ
-         CBue0BEPlXq3kC22Q8Li6Lmxg5lNcpOFEaJ+QLNjYk+130R0X7f8ovPEEw8sAnMGMdeJ
-         NYZ+9vpdeIMQ7IZG5zw5Xb4BkUC8/nBkEPH0mmF2hnKJxNjELJyAI+VvkqD+yH30dcIY
-         UVGg==
-X-Gm-Message-State: AOAM532JURYXg6relAE5OrtS+b9xqVKAnXVMafRUI4r5JT9jlU63UWW/
-        dCVbC0n7vGa6eIHPIQzBXuorkxxg5Gw0d2MZjUQ30TLb
-X-Google-Smtp-Source: ABdhPJxI0GNvtYFRzubiNKehFnBmeNa8IdxO7hQ3TxAldsg7mTxyy0v9X6v2Fayhxp/lnxt7tCbB9QFJVJ60H98MgEQ=
-X-Received: by 2002:a0c:ed4b:: with SMTP id v11mr9120627qvq.179.1590256818769;
- Sat, 23 May 2020 11:00:18 -0700 (PDT)
+        id S2387551AbgEWTuF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 23 May 2020 15:50:05 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:54787 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728319AbgEWTuE (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Sat, 23 May 2020 15:50:04 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1jca9f-000opP-Gq; Sat, 23 May 2020 21:49:59 +0200
+Received: from p57ae58d6.dip0.t-ipconnect.de ([87.174.88.214] helo=[192.168.178.23])
+          by inpost2.zedat.fu-berlin.de (Exim 4.93)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1jca9f-003fes-9T; Sat, 23 May 2020 21:49:59 +0200
+Subject: Re: [PATCH v2] ia64: enable HAVE_COPY_THREAD_TLS, switch to
+ kernel_clone_args
+To:     Christian Brauner <christian.brauner@ubuntu.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Qais Yousef <qais.yousef@arm.com>, linux-kernel@vger.kernel.org
+References: <20200517151635.3085756-1-christian.brauner@ubuntu.com>
+ <20200517151853.z6y42y4npd4plgkb@wittgenstein>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
+ 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
+ scOkTAZQGVpD/8AaLH4v1w==
+Message-ID: <6a14fbe8-b135-4e69-c2e6-dbb3d70c0afd@physik.fu-berlin.de>
+Date:   Sat, 23 May 2020 21:49:58 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.8.0
 MIME-Version: 1.0
-Received: by 2002:aed:3ac5:0:0:0:0:0 with HTTP; Sat, 23 May 2020 11:00:18
- -0700 (PDT)
-Reply-To: mrs.chantala2055@gmail.com
-From:   mrs chantal <mrs.chantaltwo@gmail.com>
-Date:   Sat, 23 May 2020 18:00:18 +0000
-Message-ID: <CAGVwK0UnqGdMqCxvjeR06i5Ca=SScOHB3E1kfQEUa4_tgZN-cQ@mail.gmail.com>
-Subject: jjCompliment
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200517151853.z6y42y4npd4plgkb@wittgenstein>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.174.88.214
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-     Compliment of the day to you. I am Mrs.CHANTAL I am sending this brief
-    letter to solicit your partnership to transfer $13.5 Million US
-    Dollars.I shall send you more information and procedures when I receive
-    positive response From you. Please send me a message in My private
-    email address is ( mrschantal066@gmail.com  )
-    Best Regards
-    MrS.Chantal
+Hi!
+
+On 5/17/20 5:18 PM, Christian Brauner wrote:
+>> Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
+>> ---
+>> /* v2 */
+>> - Christian Brauner <christian.brauner@ubuntu.com>:
+>>   - Continue to preserve afs.pfs in r16. I wasn't clear that r16 needs to
+>>     be used because switch stack and load stack rely on it being saved in
+>>     r16 and they'll be very unhappy when it's not. r16 is clobbered though
+>>     so now the mov loc1=r16 in there makes sense to me.
+>>   - Well, it's tested now...
+> 
+> Tony, I managed to test this now.
+
+Any update on this?
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
