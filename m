@@ -2,83 +2,92 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7EC7F1EEBC1
-	for <lists+linux-ia64@lfdr.de>; Thu,  4 Jun 2020 22:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3DB51F3D52
+	for <lists+linux-ia64@lfdr.de>; Tue,  9 Jun 2020 15:52:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728565AbgFDUSy (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 4 Jun 2020 16:18:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:60276 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726456AbgFDUSy (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 4 Jun 2020 16:18:54 -0400
-Received: from localhost.localdomain (unknown [194.230.155.118])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        id S1730394AbgFINwn (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 9 Jun 2020 09:52:43 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([205.139.110.120]:48165 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1730347AbgFINwk (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 9 Jun 2020 09:52:40 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1591710759;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=1QZxzGJLd7MwraWpl9HYsPVgjFSkkdnN13rxpeDTWvE=;
+        b=bNcxCSaVY4LbDXddGZPULryKNQOp9rhnZwPnUAkw4Wmu5KJtFh+k4aM8EFRnXVb5rsFxbc
+        7/K66D3UkgQEr5zQ7WoK6vmMPJ8Wco7pkZWyV2w62EjnwLsDRTC0J8sMoAoxlOPzJ7CkVt
+        4Z7fOflo5Bl+Ts91bC/g+WHCP8+friM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-374-SKVCis5-OQWdNQGNLlklxw-1; Tue, 09 Jun 2020 09:52:35 -0400
+X-MC-Unique: SKVCis5-OQWdNQGNLlklxw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.phx2.redhat.com [10.5.11.16])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id CF5D6206E6;
-        Thu,  4 Jun 2020 20:18:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1591301934;
-        bh=8AMUfx+U41h/W4ISZLyWgwankxiN0RxfqRn8dcLTozk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=cG4hGRm4OKubJ9zcO4yHg94fi43rWCmcMt8d3MJmSafIsSh2OGN1qFw9nk/MLdprw
-         H6eZ30H84bXPOOlHoH1sDG1irCKDzTN0sOTcomSsPzs8jhao4DDoUxzs+Oh7L/XD8P
-         U7sNhA/X4xC11tIvj05ZxlWkA9jfz2Zax3QCFD6Y=
-From:   Krzysztof Kozlowski <krzk@kernel.org>
-To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
-        Tom Vaden <tom.vaden@hpe.com>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Daisuke HATAYAMA <d.hatayama@jp.fujitsu.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, Joerg Roedel <jroedel@suse.de>,
-        stable@vger.kernel.org
-Subject: [RFT PATCH] ia64: Fix build error with !COREDUMP
-Date:   Thu,  4 Jun 2020 22:18:42 +0200
-Message-Id: <20200604201842.29482-1-krzk@kernel.org>
-X-Mailer: git-send-email 2.17.1
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id ABB2A18A8235;
+        Tue,  9 Jun 2020 13:52:33 +0000 (UTC)
+Received: from oldenburg2.str.redhat.com (ovpn-113-78.ams2.redhat.com [10.36.113.78])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 708335C1BD;
+        Tue,  9 Jun 2020 13:52:19 +0000 (UTC)
+From:   Florian Weimer <fweimer@redhat.com>
+To:     Palmer Dabbelt <palmer@sifive.com>
+Cc:     viro@zeniv.linux.org.uk, linux-kernel@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-api@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>, rth@twiddle.net,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
+        tony.luck@intel.com, fenghua.yu@intel.com, geert@linux-m68k.org,
+        monstr@monstr.eu, ralf@linux-mips.org, paul.burton@mips.com,
+        jhogan@kernel.org, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, benh@kernel.crashing.org, paulus@samba.org,
+        mpe@ellerman.id.au, heiko.carstens@de.ibm.com, gor@linux.ibm.com,
+        borntraeger@de.ibm.com, ysato@users.sourceforge.jp,
+        dalias@libc.org, davem@davemloft.net, luto@kernel.org,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, hpa@zytor.com,
+        x86@kernel.org, peterz@infradead.org, acme@kernel.org,
+        alexander.shishkin@linux.intel.com, jolsa@redhat.com,
+        namhyung@kernel.org, dhowells@redhat.com, firoz.khan@linaro.org,
+        stefan@agner.ch, schwidefsky@de.ibm.com, axboe@kernel.dk,
+        christian@brauner.io, hare@suse.com, deepa.kernel@gmail.com,
+        tycho@tycho.ws, kim.phillips@arm.com, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org
+Subject: Re: Add a new fchmodat4() syscall, v2
+References: <20190717012719.5524-1-palmer@sifive.com>
+Date:   Tue, 09 Jun 2020 15:52:17 +0200
+In-Reply-To: <20190717012719.5524-1-palmer@sifive.com> (Palmer Dabbelt's
+        message of "Tue, 16 Jul 2019 18:27:15 -0700")
+Message-ID: <87o8pscpny.fsf@oldenburg2.str.redhat.com>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.3 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.16
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Fix linkage error when CONFIG_BINFMT_ELF is selected but CONFIG_COREDUMP
-is not:
+* Palmer Dabbelt:
 
-    ia64-linux-ld: arch/ia64/kernel/elfcore.o: in function `elf_core_write_extra_phdrs':
-    elfcore.c:(.text+0x172): undefined reference to `dump_emit'
-    ia64-linux-ld: arch/ia64/kernel/elfcore.o: in function `elf_core_write_extra_data':
-    elfcore.c:(.text+0x2b2): undefined reference to `dump_emit'
+> This patch set adds fchmodat4(), a new syscall. The actual
+> implementation is super simple: essentially it's just the same as
+> fchmodat(), but LOOKUP_FOLLOW is conditionally set based on the flags.
+> I've attempted to make this match "man 2 fchmodat" as closely as
+> possible, which says EINVAL is returned for invalid flags (as opposed to
+> ENOTSUPP, which is currently returned by glibc for AT_SYMLINK_NOFOLLOW).
+> I have a sketch of a glibc patch that I haven't even compiled yet, but
+> seems fairly straight-forward:
 
-Cc: <stable@vger.kernel.org>
-Fixes: 1fcccbac89f5 ("elf coredump: replace ELF_CORE_EXTRA_* macros by functions")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+What's the status here?  We'd really like to see this system call in the
+kernel because our emulation in glibc has its problems (especially if
+/proc is not mounted).
 
----
-
-Please let kbuild test it for a while before applying. I built it only
-on few configurations.
-
-This is similar fix to commit 42d91f612c87 ("um: Fix build error and
-kconfig for i386") although I put different fixes tag - the commit which
-introduced this part of code.
----
- arch/ia64/kernel/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/ia64/kernel/Makefile b/arch/ia64/kernel/Makefile
-index 1a8df6669eee..18d6008b151f 100644
---- a/arch/ia64/kernel/Makefile
-+++ b/arch/ia64/kernel/Makefile
-@@ -41,7 +41,7 @@ obj-y				+= esi_stub.o	# must be in kernel proper
- endif
- obj-$(CONFIG_INTEL_IOMMU)	+= pci-dma.o
- 
--obj-$(CONFIG_BINFMT_ELF)	+= elfcore.o
-+obj-$(CONFIG_ELF_CORE)		+= elfcore.o
- 
- # fp_emulate() expects f2-f5,f16-f31 to contain the user-level state.
- CFLAGS_traps.o  += -mfixed-range=f2-f5,f16-f31
--- 
-2.17.1
+Thanks,
+Florian
 
