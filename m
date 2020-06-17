@@ -2,48 +2,60 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 230531FA460
-	for <lists+linux-ia64@lfdr.de>; Tue, 16 Jun 2020 01:36:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDB801FD5C9
+	for <lists+linux-ia64@lfdr.de>; Wed, 17 Jun 2020 22:12:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726546AbgFOXga convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Mon, 15 Jun 2020 19:36:30 -0400
-Received: from mail.bnv.gob.ve ([201.249.200.115]:41372 "EHLO
-        correo.bnv.gob.ve" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726774AbgFOXg3 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 15 Jun 2020 19:36:29 -0400
-Received: from localhost (localhost.bnv.gob.ve [127.0.0.1])
-        by correo.bnv.gob.ve (Postfix) with ESMTP id 67E273633AA7;
-        Mon, 15 Jun 2020 17:55:09 -0400 (-04)
-Received: from correo.bnv.gob.ve ([127.0.0.1])
-        by localhost (correo.bnv.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id bDqahYJnknEw; Mon, 15 Jun 2020 17:55:09 -0400 (-04)
-Received: from localhost (localhost.bnv.gob.ve [127.0.0.1])
-        by correo.bnv.gob.ve (Postfix) with ESMTP id 0F1F93633AA9;
-        Mon, 15 Jun 2020 17:55:09 -0400 (-04)
-X-Virus-Scanned: amavisd-new at bnv.gob.ve
-Received: from correo.bnv.gob.ve ([127.0.0.1])
-        by localhost (correo.bnv.gob.ve [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id eJlmcY9OFcj3; Mon, 15 Jun 2020 17:55:09 -0400 (-04)
-Received: from [10.122.16.20] (unknown [105.12.7.63])
-        by correo.bnv.gob.ve (Postfix) with ESMTPSA id EB7B03633A85;
-        Mon, 15 Jun 2020 17:54:57 -0400 (-04)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726496AbgFQUMW (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 17 Jun 2020 16:12:22 -0400
+Received: from smtp04.smtpout.orange.fr ([80.12.242.126]:23670 "EHLO
+        smtp.smtpout.orange.fr" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726848AbgFQUMV (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 17 Jun 2020 16:12:21 -0400
+Received: from localhost.localdomain ([93.23.15.97])
+        by mwinf5d07 with ME
+        id sLCH2200K25enVZ03LCJWz; Wed, 17 Jun 2020 22:12:20 +0200
+X-ME-Helo: localhost.localdomain
+X-ME-Auth: Y2hyaXN0b3BoZS5qYWlsbGV0QHdhbmFkb28uZnI=
+X-ME-Date: Wed, 17 Jun 2020 22:12:20 +0200
+X-ME-IP: 93.23.15.97
+From:   Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+To:     tony.luck@intel.com, fenghua.yu@intel.com, walken@google.com,
+        vbabka@suse.cz, tglx@linutronix.de, namit@vmware.com,
+        afzal.mohd.ma@gmail.com
+Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kernel-janitors@vger.kernel.org,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: [PATCH] ia64: Fix a typo in a comment
+Date:   Wed, 17 Jun 2020 22:12:14 +0200
+Message-Id: <20200617201214.733262-1-christophe.jaillet@wanadoo.fr>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: donation of Euro 2,000,000.00.
-To:     Recipients <manuel@info.com>
-From:   "manuel franco" <manuel@info.com>
-Date:   Mon, 15 Jun 2020 23:54:49 +0200
-Reply-To: manuelfrancospende22@gmail.com
-Message-Id: <20200615215457.EB7B03633A85@correo.bnv.gob.ve>
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-You have a donation of Euro 2,000,000.00.
+s/permfon/perfmon/
 
-My name is Manuel Franco from the United States.
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+---
+ arch/ia64/kernel/perfmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I won the America lottery worth $768 million and I am donating a portion of it to just 5 lucky people and a few Orphanage homes as a memorandum of goodwill to humanity.email: manuelfrancospende@gmail.com
+diff --git a/arch/ia64/kernel/perfmon.c b/arch/ia64/kernel/perfmon.c
+index 971f166873aa..e8e30a408946 100644
+--- a/arch/ia64/kernel/perfmon.c
++++ b/arch/ia64/kernel/perfmon.c
+@@ -4555,7 +4555,7 @@ pfm_exit_thread(struct task_struct *task)
+ }
+ 
+ /*
+- * functions MUST be listed in the increasing order of their index (see permfon.h)
++ * functions MUST be listed in the increasing order of their index (see perfmon.h)
+  */
+ #define PFM_CMD(name, flags, arg_count, arg_type, getsz) { name, #name, flags, arg_count, sizeof(arg_type), getsz }
+ #define PFM_CMD_S(name, flags) { name, #name, flags, 0, 0, NULL }
+-- 
+2.25.1
+
