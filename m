@@ -2,88 +2,141 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E8D01FDA18
-	for <lists+linux-ia64@lfdr.de>; Thu, 18 Jun 2020 02:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A09F11FE5D8
+	for <lists+linux-ia64@lfdr.de>; Thu, 18 Jun 2020 04:29:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726848AbgFRAMH (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 17 Jun 2020 20:12:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36360 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726815AbgFRAMH (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 17 Jun 2020 20:12:07 -0400
-Received: from mail-qk1-x744.google.com (mail-qk1-x744.google.com [IPv6:2607:f8b0:4864:20::744])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5161EC06174E;
-        Wed, 17 Jun 2020 17:12:06 -0700 (PDT)
-Received: by mail-qk1-x744.google.com with SMTP id n11so3914401qkn.8;
-        Wed, 17 Jun 2020 17:12:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:subject:date:message-id:in-reply-to:references;
-        bh=edtf2eABu219UZLqaAwwL2YPJpuQp4rR5iROhIj3sug=;
-        b=HN5C7ut0vfhPtRFQUUi3d7lVBooP4PiOOS8rtAO1wN2+3kIBmscyVYtBfzy+CP+2jj
-         0G1rXyqnaQPrnGyjoGGX1Vbb1z2Ty7h/4k2aRisn2B+7VHZuN3+Wer2/yISSOY5cHmd3
-         iPMjbeu59zG6DxpC29JslX1GOUYriYf9N5Zyst0SY8Z7etxMMGX3yX32PKPxMcCBNWoK
-         wb7YdmZ6b8L5C73GGHL5UFbZpxNkvZtd85b3EMZFGSCvtsYRhjfx7NIkgoOGNFTS7qFy
-         wKOi3TFptgKcrZ9uE+AxLvNyeLEP2fNVWlZhMZFjFEIao6f1rWGXLPmHyY2x3pvfNoLw
-         Z+5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
-         :references;
-        bh=edtf2eABu219UZLqaAwwL2YPJpuQp4rR5iROhIj3sug=;
-        b=ib63NhK9tQWPLp5D6BG1x1P/46j7nauuClX/desB1RrKkcHcmBMgujmWmekQgz0mwU
-         knFtPdpsNxMzcVWhV9130V3ywE4aBnBS4CPgEc424InqoncJxvQlltM3vUImbgYq5tmM
-         qG0bV9pE4gz3UVs1DL8uAk3UM3BoR5fdSxfBIkOyc/ZgSzjzu2v9I9dWx6KoRhcEUZ20
-         DdsHvIW4MocIsV8zhox52o6024hUcxIeyioLrkcWKUByVvNEXzrhHIRTGtMHmZalsBlI
-         fF+n5t/zifvntK9kvaQBd/03bc9siwivZZ5I7zh2iRDPjyDeFjfvOdGXFw3jR9j3Dy8o
-         e1cA==
-X-Gm-Message-State: AOAM532idZkUbGMSF+OXb6YF0kL0R3UFTTDorQ5O0ijwRp6dcO5uLvX5
-        Hb95WOvi2il4PMh099saIf8=
-X-Google-Smtp-Source: ABdhPJzgSG6bY0yPlJdrhmH0It6v98GQcK8Jc28vmTtFveOm6v1hG+rgwoeUub8MjxuFGNDrVruAKA==
-X-Received: by 2002:a37:de0c:: with SMTP id h12mr1254711qkj.466.1592439126137;
-        Wed, 17 Jun 2020 17:12:06 -0700 (PDT)
-Received: from linux.home ([2604:2000:1344:41d:9c3:b47c:c995:4853])
-        by smtp.googlemail.com with ESMTPSA id b26sm1699066qta.84.2020.06.17.17.12.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jun 2020 17:12:05 -0700 (PDT)
-From:   Gaurav Singh <gaurav1086@gmail.com>
-To:     gaurav1086@gmail.com, Tony Luck <tony.luck@intel.com>,
+        id S1729564AbgFRC3C (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 17 Jun 2020 22:29:02 -0400
+Received: from foss.arm.com ([217.140.110.172]:38588 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729562AbgFRBQO (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 17 Jun 2020 21:16:14 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8BB6C31B;
+        Wed, 17 Jun 2020 18:16:13 -0700 (PDT)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.80.176])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 3351C3F6CF;
+        Wed, 17 Jun 2020 18:16:02 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-mm@kvack.org
+Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
-        linux-ia64@vger.kernel.org (open list:IA64 (Itanium) PLATFORM),
-        linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH] ia64: Add null pointer check for task in default_handler
-Date:   Wed, 17 Jun 2020 20:11:46 -0400
-Message-Id: <20200618001157.26035-1-gaurav1086@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20200611150221.15665-1-gaurav1086@gmail.com>
-References: <20200611150221.15665-1-gaurav1086@gmail.com>
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        David Hildenbrand <david@redhat.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Michal Hocko <mhocko@suse.com>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Pavel Tatashin <pasha.tatashin@soleen.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-riscv@lists.infradead.org, x86@kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
+Subject: [PATCH V3 (RESEND) 0/3] arm64: Enable vmemmap mapping from device memory
+Date:   Thu, 18 Jun 2020 06:45:27 +0530
+Message-Id: <1592442930-9380-1-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-If the task is NULL and the if condition is true 
-then task->pid would cause null pointer dereference. 
-Fix this by adding additional null check.
+This series enables vmemmap backing memory allocation from device memory
+ranges on arm64. But before that, it enables vmemmap_populate_basepages()
+and vmemmap_alloc_block_buf() to accommodate struct vmem_altmap based
+alocation requests.
 
-Signed-off-by: Gaurav Singh <gaurav1086@gmail.com>
----
- arch/ia64/kernel/perfmon_default_smpl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This series applies on 5.8-rc1.
 
-diff --git a/arch/ia64/kernel/perfmon_default_smpl.c b/arch/ia64/kernel/perfmon_default_smpl.c
-index a40c56020fc5..2732b4cf4296 100644
---- a/arch/ia64/kernel/perfmon_default_smpl.c
-+++ b/arch/ia64/kernel/perfmon_default_smpl.c
-@@ -111,7 +111,7 @@ default_handler(struct task_struct *task, void *buf, pfm_ovfl_arg_t *arg, struct
- 	unsigned char ovfl_notify;
- 
- 	if (unlikely(buf == NULL || arg == NULL|| regs == NULL || task == NULL)) {
--		DPRINT(("[%d] invalid arguments buf=%p arg=%p\n", task->pid, buf, arg));
-+		DPRINT(("[%d] invalid arguments buf=%p arg=%p\n", task? task->pid : -1, buf, arg));
- 		return -EINVAL;
- 	}
- 
+Pending Question:
+
+altmap_alloc_block_buf() does not have any other remaining users in the
+tree after this change. Should it be converted into a static function and
+it's declaration be dropped from the header (include/linux/mm.h). Avoided
+doing so because I was not sure if there are any off-tree users or not.
+
+Changes in V3:
+
+- Dropped comment from free_hotplug_page_range() per Robin
+- Modified comment in unmap_hotplug_range() per Robin
+- Enabled altmap support in vmemmap_alloc_block_buf() per Robin
+
+Changes in V2: (https://lkml.org/lkml/2020/3/4/475)
+
+- Rebased on latest hot-remove series (v14) adding P4D page table support
+
+Changes in V1: (https://lkml.org/lkml/2020/1/23/12)
+
+- Added an WARN_ON() in unmap_hotplug_range() when altmap is
+  provided without the page table backing memory being freed
+
+Changes in RFC V2: (https://lkml.org/lkml/2019/10/21/11)
+
+- Changed the commit message on 1/2 patch per Will
+- Changed the commit message on 2/2 patch as well
+- Rebased on arm64 memory hot remove series (v10)
+
+RFC V1: (https://lkml.org/lkml/2019/6/28/32)
+
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Andy Lutomirski <luto@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Mike Rapoport <rppt@linux.ibm.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Dan Williams <dan.j.williams@intel.com>
+Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: Paul Mackerras <paulus@samba.org>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org
+Cc: x86@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (3):
+  mm/sparsemem: Enable vmem_altmap support in vmemmap_populate_basepages()
+  mm/sparsemem: Enable vmem_altmap support in vmemmap_alloc_block_buf()
+  arm64/mm: Enable vmem_altmap support for vmemmap mappings
+
+ arch/arm64/mm/mmu.c       | 59 ++++++++++++++++++++++++++-------------
+ arch/ia64/mm/discontig.c  |  2 +-
+ arch/powerpc/mm/init_64.c | 10 +++----
+ arch/riscv/mm/init.c      |  2 +-
+ arch/x86/mm/init_64.c     | 12 ++++----
+ include/linux/mm.h        |  8 ++++--
+ mm/sparse-vmemmap.c       | 38 ++++++++++++++++++++-----
+ 7 files changed, 87 insertions(+), 44 deletions(-)
+
 -- 
-2.17.1
+2.20.1
 
