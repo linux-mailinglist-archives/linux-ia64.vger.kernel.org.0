@@ -2,193 +2,107 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 62D911FEE36
-	for <lists+linux-ia64@lfdr.de>; Thu, 18 Jun 2020 10:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 160011FFC00
+	for <lists+linux-ia64@lfdr.de>; Thu, 18 Jun 2020 21:48:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728995AbgFRI5q (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 18 Jun 2020 04:57:46 -0400
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:58246 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728992AbgFRI5g (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 18 Jun 2020 04:57:36 -0400
-Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 05I8XHsP166386;
-        Thu, 18 Jun 2020 04:56:54 -0400
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 31r44t239w-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 18 Jun 2020 04:56:54 -0400
-Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 05I8Xovn168995;
-        Thu, 18 Jun 2020 04:56:53 -0400
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 31r44t2396-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 18 Jun 2020 04:56:53 -0400
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-        by ppma04fra.de.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 05I8tl9e022242;
-        Thu, 18 Jun 2020 08:56:50 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-        by ppma04fra.de.ibm.com with ESMTP id 31r18v04f3-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Thu, 18 Jun 2020 08:56:50 +0000
-Received: from d06av24.portsmouth.uk.ibm.com (mk.ibm.com [9.149.105.60])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 05I8tTmP62915032
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Thu, 18 Jun 2020 08:55:29 GMT
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id DC5ED4204C;
-        Thu, 18 Jun 2020 08:56:46 +0000 (GMT)
-Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BBBA14203F;
-        Thu, 18 Jun 2020 08:56:43 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.148.204.36])
-        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Thu, 18 Jun 2020 08:56:43 +0000 (GMT)
-Date:   Thu, 18 Jun 2020 11:56:41 +0300
-From:   Mike Rapoport <rppt@linux.ibm.com>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-mm@kvack.org, Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        Michal Hocko <mhocko@suse.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-riscv@lists.infradead.org, x86@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V3 (RESEND) 0/3] arm64: Enable vmemmap mapping from
- device memory
-Message-ID: <20200618085641.GE6493@linux.ibm.com>
-References: <1592442930-9380-1-git-send-email-anshuman.khandual@arm.com>
+        id S1727860AbgFRTsq (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 18 Jun 2020 15:48:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48074 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727978AbgFRTsn (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 18 Jun 2020 15:48:43 -0400
+Received: from mail-lf1-x141.google.com (mail-lf1-x141.google.com [IPv6:2a00:1450:4864:20::141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD84DC0613EF
+        for <linux-ia64@vger.kernel.org>; Thu, 18 Jun 2020 12:48:42 -0700 (PDT)
+Received: by mail-lf1-x141.google.com with SMTP id w15so4176996lfe.11
+        for <linux-ia64@vger.kernel.org>; Thu, 18 Jun 2020 12:48:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=zAj23S3Mp6rRGO4SN+Gp5C3WPkcIYgiIEGIXxkjYIf0=;
+        b=O8vGhvfOfOq9wLj1E8rP/VwqEBx1zwNPyHW+trZ6ABPefealuQSSUilZwTmE1SLwx3
+         zEwIy5hJ4gIay72KjTq2B1QzBGNJ+P/4jwxTdP42XjdJJEBlYBl/eBUwneIpV2J18exN
+         a/r+v/+JeACo1IVMd6iMfbPGsYHL+wiwfVYwk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=zAj23S3Mp6rRGO4SN+Gp5C3WPkcIYgiIEGIXxkjYIf0=;
+        b=VZMOdaBiiGkE9Y5L3yvVb5s0mTNmKHf6ChOGGvOZcwa/+p6znAxUs/U3tXDQAnP/Vi
+         PDh4dHULLQOuEa7Er2CGwetUIdxUR/JdVT6C3dK7OWNZwFwlzCIFecdRCwzyQ4vIimme
+         RM0V/uhFNFwaw2H4B0PyXVpajJJoWUiZ6BTzOgEVWWsnnJSaw1md+535o8bM65Il5+wt
+         URxcBo+Vtc636z/8FUxHcWnOumpSvC38Kf/IGr4dYnPRUMmWNpPN9kN4LnnIgx9nESPR
+         dWukSrr09nfzI4E8rP9pds4eQ9CP2lOGK8OQo0b9BgoBH3AN+wwwW+TQfmzdVeiODcF7
+         JlrA==
+X-Gm-Message-State: AOAM532Uapi4hN96gsSv8cZGlh19DsZRyu6J7XDJvkKRNBmDjFDCUWAs
+        twbIXRtCxDBkkOVL/UGXiIBdxd5tDT4=
+X-Google-Smtp-Source: ABdhPJw8c/tKyzkn4MmSGzXT3RefwbDVlO8zkniSeD0MxI7SMvr6YYNkDYSi0ezUIjX0XiI0WfYXJA==
+X-Received: by 2002:a05:6512:318f:: with SMTP id i15mr3235849lfe.203.1592509720600;
+        Thu, 18 Jun 2020 12:48:40 -0700 (PDT)
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com. [209.85.208.171])
+        by smtp.gmail.com with ESMTPSA id 2sm567121lfr.48.2020.06.18.12.48.38
+        for <linux-ia64@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 18 Jun 2020 12:48:39 -0700 (PDT)
+Received: by mail-lj1-f171.google.com with SMTP id i3so8762733ljg.3
+        for <linux-ia64@vger.kernel.org>; Thu, 18 Jun 2020 12:48:38 -0700 (PDT)
+X-Received: by 2002:a2e:8e78:: with SMTP id t24mr9039ljk.314.1592509718255;
+ Thu, 18 Jun 2020 12:48:38 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1592442930-9380-1-git-send-email-anshuman.khandual@arm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.216,18.0.687
- definitions=2020-06-18_04:2020-06-17,2020-06-18 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 mlxscore=0 mlxlogscore=999
- clxscore=1011 lowpriorityscore=0 malwarescore=0 suspectscore=0 bulkscore=0
- phishscore=0 cotscore=-2147483648 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2004280000 definitions=main-2006180065
+References: <20200617073755.8068-1-hch@lst.de>
+In-Reply-To: <20200617073755.8068-1-hch@lst.de>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Thu, 18 Jun 2020 12:48:22 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjpnu=882iD9ck9Ywt6R1LYX_Hv-oS7dBMsWZwDRGZ5jA@mail.gmail.com>
+Message-ID: <CAHk-=wjpnu=882iD9ck9Ywt6R1LYX_Hv-oS7dBMsWZwDRGZ5jA@mail.gmail.com>
+Subject: Re: rename probe_kernel_* and probe_user_*
+To:     Christoph Hellwig <hch@lst.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Luck <tony.luck@intel.com>, Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Jun 18, 2020 at 06:45:27AM +0530, Anshuman Khandual wrote:
-> This series enables vmemmap backing memory allocation from device memory
-> ranges on arm64. But before that, it enables vmemmap_populate_basepages()
-> and vmemmap_alloc_block_buf() to accommodate struct vmem_altmap based
-> alocation requests.
-> 
-> This series applies on 5.8-rc1.
-> 
-> Pending Question:
-> 
-> altmap_alloc_block_buf() does not have any other remaining users in
-> the tree after this change. Should it be converted into a static
-> function and it's declaration be dropped from the header
-> (include/linux/mm.h). Avoided doing so because I was not sure if there
-> are any off-tree users or not.
+[ Explicitly added architecture lists and developers to the cc to make
+this more visible ]
 
-Well, off-tree users probably have an active fork anyway so they could
-switch to vmemmap_alloc_block_buf()...
+On Wed, Jun 17, 2020 at 12:38 AM Christoph Hellwig <hch@lst.de> wrote:
+>
+> Andrew and I decided to drop the patches implementing your suggested
+> rename of the probe_kernel_* and probe_user_* helpers from -mm as there
+> were way to many conflicts.  After -rc1 might be a good time for this as
+> all the conflicts are resolved now.
 
-Regardless, can you please update Documentation/vm/memory-model.rst to
-keep it in sync with the code?
+So I've merged this renaming now, together with my changes to make
+'get_kernel_nofault()' look and act a lot more like 'get_user()'.
 
-> Changes in V3:
-> 
-> - Dropped comment from free_hotplug_page_range() per Robin
-> - Modified comment in unmap_hotplug_range() per Robin
-> - Enabled altmap support in vmemmap_alloc_block_buf() per Robin
-> 
-> Changes in V2: (https://lkml.org/lkml/2020/3/4/475)
-> 
-> - Rebased on latest hot-remove series (v14) adding P4D page table support
-> 
-> Changes in V1: (https://lkml.org/lkml/2020/1/23/12)
-> 
-> - Added an WARN_ON() in unmap_hotplug_range() when altmap is
->   provided without the page table backing memory being freed
-> 
-> Changes in RFC V2: (https://lkml.org/lkml/2019/10/21/11)
-> 
-> - Changed the commit message on 1/2 patch per Will
-> - Changed the commit message on 2/2 patch as well
-> - Rebased on arm64 memory hot remove series (v10)
-> 
-> RFC V1: (https://lkml.org/lkml/2019/6/28/32)
-> 
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Mark Rutland <mark.rutland@arm.com>
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Tony Luck <tony.luck@intel.com>
-> Cc: Fenghua Yu <fenghua.yu@intel.com>
-> Cc: Dave Hansen <dave.hansen@linux.intel.com>
-> Cc: Andy Lutomirski <luto@kernel.org>
-> Cc: Peter Zijlstra <peterz@infradead.org>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> Cc: Mike Rapoport <rppt@linux.ibm.com>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> Cc: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Pavel Tatashin <pasha.tatashin@soleen.com>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: x86@kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> 
-> Anshuman Khandual (3):
->   mm/sparsemem: Enable vmem_altmap support in vmemmap_populate_basepages()
->   mm/sparsemem: Enable vmem_altmap support in vmemmap_alloc_block_buf()
->   arm64/mm: Enable vmem_altmap support for vmemmap mappings
-> 
->  arch/arm64/mm/mmu.c       | 59 ++++++++++++++++++++++++++-------------
->  arch/ia64/mm/discontig.c  |  2 +-
->  arch/powerpc/mm/init_64.c | 10 +++----
->  arch/riscv/mm/init.c      |  2 +-
->  arch/x86/mm/init_64.c     | 12 ++++----
->  include/linux/mm.h        |  8 ++++--
->  mm/sparse-vmemmap.c       | 38 ++++++++++++++++++++-----
->  7 files changed, 87 insertions(+), 44 deletions(-)
-> 
-> -- 
-> 2.20.1
-> 
+It just felt wrong (and potentially dangerous) to me to have a
+'get_kernel_nofault()' naming that implied semantics that we're all
+familiar with from 'get_user()', but acting very differently.
 
--- 
-Sincerely yours,
-Mike.
+But part of the fixups I made for the type checking are for
+architectures where I didn't even compile-test the end result. I
+looked at every case individually, and the patch looks sane, but I
+could have screwed something up.
+
+Basically, 'get_kernel_nofault()' doesn't do the same automagic type
+munging from the pointer to the target that 'get_user()' does, but at
+least now it checks that the types are superficially compatible.
+There should be build failures if they aren't, but I hopefully fixed
+everything up properly for all architectures.
+
+This email is partly to ask people to double-check, but partly just as
+a heads-up so that _if_ I screwed something up, you'll have the
+background and it won't take you by surprise.
+
+               Linus
