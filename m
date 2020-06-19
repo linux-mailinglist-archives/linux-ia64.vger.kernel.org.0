@@ -2,92 +2,88 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BE71B1FFFB4
-	for <lists+linux-ia64@lfdr.de>; Fri, 19 Jun 2020 03:34:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA4F02001E2
+	for <lists+linux-ia64@lfdr.de>; Fri, 19 Jun 2020 08:21:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727045AbgFSBev (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 18 Jun 2020 21:34:51 -0400
-Received: from foss.arm.com ([217.140.110.172]:37594 "EHLO foss.arm.com"
+        id S1727808AbgFSGU4 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 19 Jun 2020 02:20:56 -0400
+Received: from ozlabs.org ([203.11.71.1]:49909 "EHLO ozlabs.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726878AbgFSBeu (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 18 Jun 2020 21:34:50 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 238DFD6E;
-        Thu, 18 Jun 2020 18:34:50 -0700 (PDT)
-Received: from [10.163.81.119] (unknown [10.163.81.119])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 216703F73C;
-        Thu, 18 Jun 2020 18:34:41 -0700 (PDT)
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH V3 (RESEND) 0/3] arm64: Enable vmemmap mapping from device
- memory
-To:     Mike Rapoport <rppt@linux.ibm.com>
-Cc:     linux-mm@kvack.org, Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>,
-        David Hildenbrand <david@redhat.com>,
-        Michal Hocko <mhocko@suse.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Pavel Tatashin <pasha.tatashin@soleen.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-riscv@lists.infradead.org, x86@kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org
-References: <1592442930-9380-1-git-send-email-anshuman.khandual@arm.com>
- <20200618085641.GE6493@linux.ibm.com>
-Message-ID: <27f8c6f9-3970-6f02-dff4-7ca15bee7138@arm.com>
-Date:   Fri, 19 Jun 2020 07:04:35 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:52.0) Gecko/20100101
- Thunderbird/52.9.1
+        id S1726125AbgFSGUz (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 19 Jun 2020 02:20:55 -0400
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 49p7wL5jVwz9sRk;
+        Fri, 19 Jun 2020 16:20:50 +1000 (AEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1592547653;
+        bh=EKAlwH7KMWYrcFWL23SicxqJVWA6PUXsyMOdTXnR/PY=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=MgSsavcewAYAsBdDFbtoBeCs4pwI8Pw44ofaqZsWzbBvq/8XIIX5HBYIj1OGZ1RBH
+         SBR3aXYv3KyrTy7uZZA6Ur26SBqzW3f7GzJbauWhV9BiSvkNmgcZwl45966TlljNL0
+         0nC02luelmCpLqXFfsCx2pS9OC+R6l8V+mpwjFC5NjZuUC84niSlpcfs65KBIo7uW4
+         0a5huAuSz3bWTfax5WFGP6PRj+NVuer2xaCuJpOiGu5FbQmcmIXXAcEr+86kSl8LY3
+         K0TG3L7/8QwVal78sg2tT7Pb2WSUFxZN19KK+34iL6sa2mMOupHRyg6ziGP1+vzjs0
+         fHbErT7mhl2zA==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Luck <tony.luck@intel.com>, Helge Deller <deller@gmx.de>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        the arch/x86 maintainers <x86@kernel.org>
+Subject: Re: rename probe_kernel_* and probe_user_*
+In-Reply-To: <CAHk-=wjpnu=882iD9ck9Ywt6R1LYX_Hv-oS7dBMsWZwDRGZ5jA@mail.gmail.com>
+References: <20200617073755.8068-1-hch@lst.de> <CAHk-=wjpnu=882iD9ck9Ywt6R1LYX_Hv-oS7dBMsWZwDRGZ5jA@mail.gmail.com>
+Date:   Fri, 19 Jun 2020 16:21:18 +1000
+Message-ID: <87lfkjd19d.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <20200618085641.GE6493@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-
-
-On 06/18/2020 02:26 PM, Mike Rapoport wrote:
-> On Thu, Jun 18, 2020 at 06:45:27AM +0530, Anshuman Khandual wrote:
->> This series enables vmemmap backing memory allocation from device memory
->> ranges on arm64. But before that, it enables vmemmap_populate_basepages()
->> and vmemmap_alloc_block_buf() to accommodate struct vmem_altmap based
->> alocation requests.
+Linus Torvalds <torvalds@linux-foundation.org> writes:
+> [ Explicitly added architecture lists and developers to the cc to make
+> this more visible ]
+>
+> On Wed, Jun 17, 2020 at 12:38 AM Christoph Hellwig <hch@lst.de> wrote:
 >>
->> This series applies on 5.8-rc1.
->>
->> Pending Question:
->>
->> altmap_alloc_block_buf() does not have any other remaining users in
->> the tree after this change. Should it be converted into a static
->> function and it's declaration be dropped from the header
->> (include/linux/mm.h). Avoided doing so because I was not sure if there
->> are any off-tree users or not.
-> 
-> Well, off-tree users probably have an active fork anyway so they could
-> switch to vmemmap_alloc_block_buf()...
+>> Andrew and I decided to drop the patches implementing your suggested
+>> rename of the probe_kernel_* and probe_user_* helpers from -mm as there
+>> were way to many conflicts.  After -rc1 might be a good time for this as
+>> all the conflicts are resolved now.
+>
+> So I've merged this renaming now, together with my changes to make
+> 'get_kernel_nofault()' look and act a lot more like 'get_user()'.
+>
+> It just felt wrong (and potentially dangerous) to me to have a
+> 'get_kernel_nofault()' naming that implied semantics that we're all
+> familiar with from 'get_user()', but acting very differently.
+>
+> But part of the fixups I made for the type checking are for
+> architectures where I didn't even compile-test the end result. I
+> looked at every case individually, and the patch looks sane, but I
+> could have screwed something up.
+>
+> Basically, 'get_kernel_nofault()' doesn't do the same automagic type
+> munging from the pointer to the target that 'get_user()' does, but at
+> least now it checks that the types are superficially compatible.
+> There should be build failures if they aren't, but I hopefully fixed
+> everything up properly for all architectures.
+>
+> This email is partly to ask people to double-check, but partly just as
+> a heads-up so that _if_ I screwed something up, you'll have the
+> background and it won't take you by surprise.
 
-Sure, will make the function a static and remove it's declaration
-from the header.
+The powerpc changes look right, compile cleanly and seem to work
+correctly.
 
-> 
-> Regardless, can you please update Documentation/vm/memory-model.rst to
-> keep it in sync with the code?
-Sure, will do.
+cheers
