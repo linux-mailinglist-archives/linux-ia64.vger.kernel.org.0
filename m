@@ -2,32 +2,59 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9D94209FB7
-	for <lists+linux-ia64@lfdr.de>; Thu, 25 Jun 2020 15:24:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 046C520AA31
+	for <lists+linux-ia64@lfdr.de>; Fri, 26 Jun 2020 03:41:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2404829AbgFYNYK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 25 Jun 2020 09:24:10 -0400
-Received: from mga01.intel.com ([192.55.52.88]:31089 "EHLO mga01.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404740AbgFYNYJ (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 25 Jun 2020 09:24:09 -0400
-IronPort-SDR: +tDidLvzPYJbquK0D1mP2uVYc490LpVLEVxXwKbRnDZB+Kiz587/k/bit4fX42ZkYqrR0/CoF1
- RLUTIirjY/5w==
-X-IronPort-AV: E=McAfee;i="6000,8403,9662"; a="162967841"
-X-IronPort-AV: E=Sophos;i="5.75,279,1589266800"; 
-   d="scan'208";a="162967841"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Jun 2020 06:24:09 -0700
-IronPort-SDR: 2ezmgb/2u+6MiN49NBDP4+M+S621ypojUrDTBgV5HkQXZoiMnzdBYl7br8dvfIWQ31G+v5RuoY
- 22igJXxP/XdQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.75,279,1589266800"; 
-   d="scan'208";a="263919837"
-Received: from blu2-mobl3.ccr.corp.intel.com (HELO [10.255.28.52]) ([10.255.28.52])
-  by fmsmga007.fm.intel.com with ESMTP; 25 Jun 2020 06:24:01 -0700
-Cc:     baolu.lu@linux.intel.com, Russell King <linux@armlinux.org.uk>,
+        id S1727899AbgFZBlf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 25 Jun 2020 21:41:35 -0400
+Received: from us-smtp-delivery-1.mimecast.com ([207.211.31.120]:21807 "EHLO
+        us-smtp-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1727872AbgFZBle (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 25 Jun 2020 21:41:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1593135691;
+        h=from:from:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:in-reply-to:in-reply-to:  references:references;
+        bh=uo+JSVhYTDvCZf7XIZ/u95KoeLyqGn7ATOJ0JQcKOAM=;
+        b=X/eFoFsFmrSbMLbNmJKeyyAEAHG7l3ofIliReS4d7ekfU1heo0/igwtG+a387YlX7omkws
+        p38azIUcV41Rp852YgHbuY8eI/G9xs2cv9MXEzh57/mHZhnJDM2S4ZnfDTV0CuMz8CJM5Q
+        YYc4h10GBBAPXx+wkfFXgsnzXEo8JYs=
+Received: from mail-qt1-f197.google.com (mail-qt1-f197.google.com
+ [209.85.160.197]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-127-6ch-9QrrNuOzZO45flSwEw-1; Thu, 25 Jun 2020 21:41:29 -0400
+X-MC-Unique: 6ch-9QrrNuOzZO45flSwEw-1
+Received: by mail-qt1-f197.google.com with SMTP id s30so5374281qts.18
+        for <linux-ia64@vger.kernel.org>; Thu, 25 Jun 2020 18:41:29 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:reply-to
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=uo+JSVhYTDvCZf7XIZ/u95KoeLyqGn7ATOJ0JQcKOAM=;
+        b=pIgqsdvB4tut1RCiI2ITgvaa9jo5JHw0nfnpyi3TAEv2T+YMeyfpuXO8WtmZYlLi94
+         OghuLDxezhd1yvmvMMeIDONN68iNrXKk6Es2FDTW0oGGtfMdMzBu5dUAwAV7gut1JrKP
+         DAFTrbwm9dhLzWshY33aunsyPG9/uje4xBqzBUTuP7FwR6prc906H17K9DvRxghPUlZH
+         9RRG2vTFSWKe4Pydr6/3T6rtCfo5cUR7Ax2wEY8iC+xHD9/oTSDKXibsv6AVs5vAy3IN
+         nrLpX9gs5QOAfqF5MjKDv6i1EwnV6sCkcEadxntXqAPQEuZcDHHKRqXja9oc1cOEn0gJ
+         AGag==
+X-Gm-Message-State: AOAM533rWvZ018+177HeCgl7BMZW+KKN2F9vB8HAnbPT8Lu1P0fp9DRF
+        UKR1Jau7TfrX5/VmW2q5EsQaAvjxVRBat5hHN5eZLD1WjNXrT8xWNttsH1BjDQVQRAHRii9Z6sP
+        +svgCNcoCdQBGWDBtLwNeKA==
+X-Received: by 2002:ac8:4c88:: with SMTP id j8mr485594qtv.57.1593135689027;
+        Thu, 25 Jun 2020 18:41:29 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxE0WP3An23id/QtUmTXvQBy3iL8fWfM574b18RON6eZLnCxQ/UjBX9iOp11Y71pEOcFwhWWA==
+X-Received: by 2002:ac8:4c88:: with SMTP id j8mr485566qtv.57.1593135688592;
+        Thu, 25 Jun 2020 18:41:28 -0700 (PDT)
+Received: from localhost (ip70-163-223-149.ph.ph.cox.net. [70.163.223.149])
+        by smtp.gmail.com with ESMTPSA id 19sm7136347qke.44.2020.06.25.18.41.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 25 Jun 2020 18:41:27 -0700 (PDT)
+Date:   Thu, 25 Jun 2020 18:41:26 -0700
+From:   Jerry Snitselaar <jsnitsel@redhat.com>
+To:     Joerg Roedel <joro@8bytes.org>
+Cc:     iommu@lists.linux-foundation.org,
+        Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
@@ -41,168 +68,115 @@ Cc:     baolu.lu@linux.intel.com, Russell King <linux@armlinux.org.uk>,
         Daniel Vetter <daniel@ffwll.ch>,
         Marek Szyprowski <m.szyprowski@samsung.com>,
         David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         Heiko Stuebner <heiko@sntech.de>,
         Thierry Reding <thierry.reding@gmail.com>,
         linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         intel-gfx@lists.freedesktop.org, Joerg Roedel <jroedel@suse.de>
-Subject: Re: [PATCH 02/13] iommu/vt-d: Use dev_iommu_priv_get/set()
-To:     Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org
+Subject: Re: [PATCH 00/13] iommu: Remove usage of dev->archdata.iommu
+Message-ID: <20200626014126.vbjw5jh7wqrpm4oc@cantor>
+Reply-To: Jerry Snitselaar <jsnitsel@redhat.com>
+Mail-Followup-To: Joerg Roedel <joro@8bytes.org>,
+        iommu@lists.linux-foundation.org,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>, x86@kernel.org,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>, Daniel Vetter <daniel@ffwll.ch>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        intel-gfx@lists.freedesktop.org, Joerg Roedel <jroedel@suse.de>
 References: <20200625130836.1916-1-joro@8bytes.org>
- <20200625130836.1916-3-joro@8bytes.org>
-From:   Lu Baolu <baolu.lu@linux.intel.com>
-Message-ID: <1f6c3feb-d8b0-3ade-db2e-133f40874c30@linux.intel.com>
-Date:   Thu, 25 Jun 2020 21:24:00 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.9.0
 MIME-Version: 1.0
-In-Reply-To: <20200625130836.1916-3-joro@8bytes.org>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+In-Reply-To: <20200625130836.1916-1-joro@8bytes.org>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Joerg,
+On Thu Jun 25 20, Joerg Roedel wrote:
+>From: Joerg Roedel <jroedel@suse.de>
+>
+>Hi,
+>
+>here is a patch-set to remove the usage of dev->archdata.iommu from
+>the IOMMU code in the kernel and replace its uses by the iommu per-device
+>private data field. The changes also remove the field entirely from
+>the architectures which no longer need it.
+>
+>On PowerPC the field is called dev->archdata.iommu_domain and was only
+>used by the PAMU IOMMU driver. It gets removed as well.
+>
+>The patches have been runtime tested on Intel VT-d and compile tested
+>with allyesconfig for:
+>
+>	* x86 (32 and 64 bit)
+>	* arm and arm64
+>	* ia64 (only drivers/ because build failed for me in
+>	        arch/ia64)
+>	* PPC64
+>
+>Besides that the changes also survived my IOMMU tree compile tests.
+>
+>Please review.
+>
+>Regards,
+>
+>	Joerg
+>
+>Joerg Roedel (13):
+>  iommu/exynos: Use dev_iommu_priv_get/set()
+>  iommu/vt-d: Use dev_iommu_priv_get/set()
+>  iommu/msm: Use dev_iommu_priv_get/set()
+>  iommu/omap: Use dev_iommu_priv_get/set()
+>  iommu/rockchip: Use dev_iommu_priv_get/set()
+>  iommu/tegra: Use dev_iommu_priv_get/set()
+>  iommu/pamu: Use dev_iommu_priv_get/set()
+>  iommu/mediatek: Do no use dev->archdata.iommu
+>  x86: Remove dev->archdata.iommu pointer
+>  ia64: Remove dev->archdata.iommu pointer
+>  arm: Remove dev->archdata.iommu pointer
+>  arm64: Remove dev->archdata.iommu pointer
+>  powerpc/dma: Remove dev->archdata.iommu_domain
+>
+> arch/arm/include/asm/device.h                 |  3 ---
+> arch/arm64/include/asm/device.h               |  3 ---
+> arch/ia64/include/asm/device.h                |  3 ---
+> arch/powerpc/include/asm/device.h             |  3 ---
+> arch/x86/include/asm/device.h                 |  3 ---
+> .../gpu/drm/i915/selftests/mock_gem_device.c  | 10 ++++++++--
+> drivers/iommu/exynos-iommu.c                  | 20 +++++++++----------
+> drivers/iommu/fsl_pamu_domain.c               |  8 ++++----
+> drivers/iommu/intel/iommu.c                   | 18 ++++++++---------
+> drivers/iommu/msm_iommu.c                     |  4 ++--
+> drivers/iommu/mtk_iommu.h                     |  2 ++
+> drivers/iommu/mtk_iommu_v1.c                  | 10 ++++------
+> drivers/iommu/omap-iommu.c                    | 20 +++++++++----------
+> drivers/iommu/rockchip-iommu.c                |  8 ++++----
+> drivers/iommu/tegra-gart.c                    |  8 ++++----
+> drivers/iommu/tegra-smmu.c                    |  8 ++++----
+> .../media/platform/s5p-mfc/s5p_mfc_iommu.h    |  4 +++-
+> 17 files changed, 64 insertions(+), 71 deletions(-)
+>
+>-- 
+>2.27.0
+>
 
-On 2020/6/25 21:08, Joerg Roedel wrote:
-> From: Joerg Roedel <jroedel@suse.de>
-> 
-> Remove the use of dev->archdata.iommu and use the private per-device
-> pointer provided by IOMMU core code instead.
-> 
-> Signed-off-by: Joerg Roedel <jroedel@suse.de>
-> ---
->   .../gpu/drm/i915/selftests/mock_gem_device.c   | 10 ++++++++--
->   drivers/iommu/intel/iommu.c                    | 18 +++++++++---------
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
 
-For changes in VT-d driver,
-
-Reviewed-by: Lu Baolu <baolu.lu@linux.intel.com>
-
-Best regards,
-baolu
-
->   2 files changed, 17 insertions(+), 11 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/selftests/mock_gem_device.c b/drivers/gpu/drm/i915/selftests/mock_gem_device.c
-> index 9b105b811f1f..e08601905a64 100644
-> --- a/drivers/gpu/drm/i915/selftests/mock_gem_device.c
-> +++ b/drivers/gpu/drm/i915/selftests/mock_gem_device.c
-> @@ -24,6 +24,7 @@
->   
->   #include <linux/pm_domain.h>
->   #include <linux/pm_runtime.h>
-> +#include <linux/iommu.h>
->   
->   #include <drm/drm_managed.h>
->   
-> @@ -118,6 +119,9 @@ struct drm_i915_private *mock_gem_device(void)
->   {
->   	struct drm_i915_private *i915;
->   	struct pci_dev *pdev;
-> +#if IS_ENABLED(CONFIG_IOMMU_API) && defined(CONFIG_INTEL_IOMMU)
-> +	struct dev_iommu iommu;
-> +#endif
->   	int err;
->   
->   	pdev = kzalloc(sizeof(*pdev), GFP_KERNEL);
-> @@ -136,8 +140,10 @@ struct drm_i915_private *mock_gem_device(void)
->   	dma_coerce_mask_and_coherent(&pdev->dev, DMA_BIT_MASK(64));
->   
->   #if IS_ENABLED(CONFIG_IOMMU_API) && defined(CONFIG_INTEL_IOMMU)
-> -	/* hack to disable iommu for the fake device; force identity mapping */
-> -	pdev->dev.archdata.iommu = (void *)-1;
-> +	/* HACK HACK HACK to disable iommu for the fake device; force identity mapping */
-> +	memset(&iommu, 0, sizeof(iommu));
-> +	iommu.priv = (void *)-1;
-> +	pdev->dev.iommu = &iommu;
->   #endif
->   
->   	pci_set_drvdata(pdev, i915);
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index d759e7234e98..2ce490c2eab8 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -372,7 +372,7 @@ struct device_domain_info *get_domain_info(struct device *dev)
->   	if (!dev)
->   		return NULL;
->   
-> -	info = dev->archdata.iommu;
-> +	info = dev_iommu_priv_get(dev);
->   	if (unlikely(info == DUMMY_DEVICE_DOMAIN_INFO ||
->   		     info == DEFER_DEVICE_DOMAIN_INFO))
->   		return NULL;
-> @@ -743,12 +743,12 @@ struct context_entry *iommu_context_addr(struct intel_iommu *iommu, u8 bus,
->   
->   static int iommu_dummy(struct device *dev)
->   {
-> -	return dev->archdata.iommu == DUMMY_DEVICE_DOMAIN_INFO;
-> +	return dev_iommu_priv_get(dev) == DUMMY_DEVICE_DOMAIN_INFO;
->   }
->   
->   static bool attach_deferred(struct device *dev)
->   {
-> -	return dev->archdata.iommu == DEFER_DEVICE_DOMAIN_INFO;
-> +	return dev_iommu_priv_get(dev) == DEFER_DEVICE_DOMAIN_INFO;
->   }
->   
->   /**
-> @@ -2420,7 +2420,7 @@ static inline void unlink_domain_info(struct device_domain_info *info)
->   	list_del(&info->link);
->   	list_del(&info->global);
->   	if (info->dev)
-> -		info->dev->archdata.iommu = NULL;
-> +		dev_iommu_priv_set(info->dev, NULL);
->   }
->   
->   static void domain_remove_dev_info(struct dmar_domain *domain)
-> @@ -2453,7 +2453,7 @@ static void do_deferred_attach(struct device *dev)
->   {
->   	struct iommu_domain *domain;
->   
-> -	dev->archdata.iommu = NULL;
-> +	dev_iommu_priv_set(dev, NULL);
->   	domain = iommu_get_domain_for_dev(dev);
->   	if (domain)
->   		intel_iommu_attach_device(domain, dev);
-> @@ -2599,7 +2599,7 @@ static struct dmar_domain *dmar_insert_one_dev_info(struct intel_iommu *iommu,
->   	list_add(&info->link, &domain->devices);
->   	list_add(&info->global, &device_domain_list);
->   	if (dev)
-> -		dev->archdata.iommu = info;
-> +		dev_iommu_priv_set(dev, info);
->   	spin_unlock_irqrestore(&device_domain_lock, flags);
->   
->   	/* PASID table is mandatory for a PCI device in scalable mode. */
-> @@ -4004,7 +4004,7 @@ static void quirk_ioat_snb_local_iommu(struct pci_dev *pdev)
->   	if (!drhd || drhd->reg_base_addr - vtbar != 0xa000) {
->   		pr_warn_once(FW_BUG "BIOS assigned incorrect VT-d unit for Intel(R) QuickData Technology device\n");
->   		add_taint(TAINT_FIRMWARE_WORKAROUND, LOCKDEP_STILL_OK);
-> -		pdev->dev.archdata.iommu = DUMMY_DEVICE_DOMAIN_INFO;
-> +		dev_iommu_priv_set(&pdev->dev, DUMMY_DEVICE_DOMAIN_INFO);
->   	}
->   }
->   DECLARE_PCI_FIXUP_ENABLE(PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_IOAT_SNB, quirk_ioat_snb_local_iommu);
-> @@ -4043,7 +4043,7 @@ static void __init init_no_remapping_devices(void)
->   			drhd->ignored = 1;
->   			for_each_active_dev_scope(drhd->devices,
->   						  drhd->devices_cnt, i, dev)
-> -				dev->archdata.iommu = DUMMY_DEVICE_DOMAIN_INFO;
-> +				dev_iommu_priv_set(dev, DUMMY_DEVICE_DOMAIN_INFO);
->   		}
->   	}
->   }
-> @@ -5665,7 +5665,7 @@ static struct iommu_device *intel_iommu_probe_device(struct device *dev)
->   		return ERR_PTR(-ENODEV);
->   
->   	if (translation_pre_enabled(iommu))
-> -		dev->archdata.iommu = DEFER_DEVICE_DOMAIN_INFO;
-> +		dev_iommu_priv_set(dev, DEFER_DEVICE_DOMAIN_INFO);
->   
->   	return &iommu->iommu;
->   }
-> 
