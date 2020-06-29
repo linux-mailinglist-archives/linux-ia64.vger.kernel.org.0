@@ -2,258 +2,116 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2E7220DA3E
-	for <lists+linux-ia64@lfdr.de>; Mon, 29 Jun 2020 22:13:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F8320D629
+	for <lists+linux-ia64@lfdr.de>; Mon, 29 Jun 2020 22:04:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388265AbgF2TzK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 29 Jun 2020 15:55:10 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:36501 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2387629AbgF2TkZ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 29 Jun 2020 15:40:25 -0400
-Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200629075143euoutp01c56c5985b7b8523b83868a8bdcc880eb~c9GnrEGld0704007040euoutp01R
-        for <linux-ia64@vger.kernel.org>; Mon, 29 Jun 2020 07:51:43 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200629075143euoutp01c56c5985b7b8523b83868a8bdcc880eb~c9GnrEGld0704007040euoutp01R
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1593417103;
-        bh=dQ9Doz3UBs0xgD6IFLX1j1JQ9wXrq3erbykFtgNQuDY=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=s6EBXoymUWh9R+b1KtkNXgxwspIJxNs1VFHDgdhYWFeOHzFCRC8u46/Zm6PSfE90Y
-         GVJDflUobNNHFng+q6WlyYuTXrfESnjJb0irk0vdcPQ6X3kBEjS8+QLq/0HUrfTobM
-         LcGKLwYcnQ9Mz40qqpfl6izB0v8nAVKZbT4P161E=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20200629075143eucas1p118ab028a0335d12e8906b9ce64d4253e~c9GnHwKVj3253332533eucas1p1t;
-        Mon, 29 Jun 2020 07:51:43 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges1new.samsung.com (EUCPMTA) with SMTP id 91.C1.06456.F8D99FE5; Mon, 29
-        Jun 2020 08:51:43 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20200629075142eucas1p1d1cf615c77342a874310bfc853b3ed5d~c9GmlEi_T3259232592eucas1p1t;
-        Mon, 29 Jun 2020 07:51:42 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20200629075142eusmtrp1fb024f39aa4ea00e14ad66a0ec1cc68c~c9GmkFrfa2414324143eusmtrp17;
-        Mon, 29 Jun 2020 07:51:42 +0000 (GMT)
-X-AuditID: cbfec7f2-809ff70000001938-4c-5ef99d8f1bb6
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id CB.6A.06314.E8D99FE5; Mon, 29
-        Jun 2020 08:51:42 +0100 (BST)
-Received: from [106.210.88.143] (unknown [106.210.88.143]) by
-        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-        20200629075141eusmtip1660c2664e074b9ed3be926930118c382~c9GlPVr7z1159711597eusmtip1P;
-        Mon, 29 Jun 2020 07:51:41 +0000 (GMT)
-Subject: Re: [PATCH 01/13] iommu/exynos: Use dev_iommu_priv_get/set()
-To:     Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org
-Cc:     Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>, x86@kernel.org,
-        Jani Nikula <jani.nikula@linux.intel.com>,
-        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Thierry Reding <thierry.reding@gmail.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        intel-gfx@lists.freedesktop.org, Joerg Roedel <jroedel@suse.de>
-From:   Marek Szyprowski <m.szyprowski@samsung.com>
-Message-ID: <f69cc934-1fcc-c311-7bc0-22472befa796@samsung.com>
-Date:   Mon, 29 Jun 2020 09:51:41 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
-        Thunderbird/68.9.0
+        id S1731992AbgF2TSF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 29 Jun 2020 15:18:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44312 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1731886AbgF2TRn (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 29 Jun 2020 15:17:43 -0400
+Received: from mail-ot1-x344.google.com (mail-ot1-x344.google.com [IPv6:2607:f8b0:4864:20::344])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69549C03079F;
+        Mon, 29 Jun 2020 08:41:55 -0700 (PDT)
+Received: by mail-ot1-x344.google.com with SMTP id d4so15937212otk.2;
+        Mon, 29 Jun 2020 08:41:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=18DuSBZeLijFT5byeb07kqFnxpD8Og5k3o71uVKMsdg=;
+        b=pdqY7+o2ViXtdwzpRg7V0spv+w3RMUTM8pq1mA6PmxJQxaN+pwXkRL4gutZbEnUAKk
+         7oZWR0fNzNN95BqoUgj38z60RkoZbqe4xAnV7jSf0z2PY1Vs68uxoB44TPGrQzkJO7a0
+         Vyua6rOkYqe3j2a+SNQtf1aAGahjOQ6olRQRMR+QKVRHTqTrB26RJMcrE0bQrdpP0kxb
+         GXkekPVusG/8EahYhVxY3eQGoN00/OYTFsMlyutG2FEKFwqzG7+e2D6I98d2I2Ajzi8X
+         2phUh4VE9sJpVENYIDLD7jo8f7GkC33+xzVej1zgc1PQXMy/mwSU4BfTjAdKNWzeDASN
+         aDpQ==
+X-Gm-Message-State: AOAM532mh0D7t76EfolXynbkKGtSx7oXy9QJfDi+g7PO2w/qt/ymCT0a
+        6P7ZpiPFXLDHyBHypymp52y56QVZgAapKfX/hxQ=
+X-Google-Smtp-Source: ABdhPJyfGDnofAtWY6Vq9zQSiEjHHywgsNVHJzUbnOYeAK8rSOSVeLQNZQAOcMed2+/KO3c+bzP8Q5CiqDzs7aUNX9g=
+X-Received: by 2002:a05:6830:1451:: with SMTP id w17mr1238896otp.250.1593445314725;
+ Mon, 29 Jun 2020 08:41:54 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20200625130836.1916-2-joro@8bytes.org>
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa1CMYRid97vtt7HNZ0WPywyzLjM0SbnM6zImt5nXH6N/BsXim0KF/eQ+
-        SrJYK2UH2a215VKapRSbbSQt2qmUtDMrJkIxomhCinFp+0L/znPOeeY5Z+bhaXUFN5rfFL9D
-        1MVrYzWcH+Oo7K0LPpnVGzXd2OaPT9RVUbg4/SaHO5MP0/jTZSPCvx3pNE6/YqKx/sxC/Pv1
-        BxZb0oopbCufh3M9BQiXZVP4mKVQgU3VWRQuavGyuPPoRxZ7SjM57DpdhvCPb79YnJwyA99I
-        cnHYfv+CApebvQrcW2plcHv9CwanNM3CPYUtbPgY0lphpYjdakfE431Mk5y2JIaUddsY4jQ/
-        V5DivKnkwu02ihjbU1hSlH+MIyXdL1lirYogzcfdFCm+mEhMjbmIPMrIRisCVvnN3yjGbtop
-        6kIWrPOL6bxvobcdDNpt0bdQSShtggEpeRBmQm2ngzMgP14t5CHIrzpIycMXBOXJhQPKZwT2
-        5mzF35XUslRWFnIROHK6kTx8QnDdeYT1uYYLS6G05CTlwwHCEnjS41H4TLSQp4Bq6x3kEzgh
-        FAwdBs6HVcICeJdS348ZYRK8zahlfHiEEAmpl2wDnmFQda61n1f2xbja1NJ/jBbGQUlHJi3j
-        QHjWer6/BAhHlNBcUcnKuZdAdoMXyXg4vHffGOgzFmpMRkZeOITgVd1VhTwYEXiSMwY25kFT
-        3fe+GHzfiSlQUBoi0wtB//A946NB8IfGjmFyCH845ThLy7QKjurVsnsymN3X/p2tqG+g05DG
-        PKiaeVAd86A65v93bYjJR4FighQXLUqh8eKuaZI2TkqIj562YWtcEep77Jpf7q5b6GvDehcS
-        eKQZqgp/3BOlZrU7pT1xLgQ8rQlQLaqtiVKrNmr37BV1W9fqEmJFyYXG8IwmUDUjpy1SLURr
-        d4hbRHGbqPurUrxydBK6Fbbvdm3UxyzT9g32598b17zq8VpCEsUTy7AmyKC03A0OCD/zqHrm
-        3NUrl77l7mb9GH8vZooeZr85UDlq/37n4tc5EY6Rc9CVUzZdr2p+cFrY2hE/nxS8GzqnXZ04
-        yT2kqKv6+HJ+NnnZ+hVNfBC2MjPykvNB0GbJGTzZG7L56Z3QLg0jxWhDp9I6SfsHQHazEtQD
-        AAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTcRTH+d3HHtbiNpV+WGAsemB17c5sP/OBlcGvqCiCiB7q0ouLnIvd
-        KdkfukRFrcwlmU1d2ssMeznTUpc4e7DCUgfrgZmlhFGmGU1F0Zwa+N+Hc76fwzlwJKTcSftJ
-        jicZeH2SOlEh8qJeT778tD6/bCx6Q9f9AHT+jYNAVtMjERrKyCLR4K1zAE3VmUhkqiokUXbR
-        FjT19QeNSgqsBCpvDkWVzvsA2SoIlFvyQIwKX5URqKbXRaOhnF80cjaUipD9kg2g8ZFJGmVk
-        BqFao12Eqp9dF6Nms0uMxhosFPrZ3k2hzK5gNPqgl45civtaLASutlQD7HR1kPjadyOFbe5y
-        Cj8xfxJj6+0AfL3pO4HP/cykcc2dXBGud/fQ2OLYhz+ffUlg6410XPi+EuC3xRVgr88hNkyv
-        SzbwyzU6wRCuOMwhJcuFIFa5MYTlglRHNyuDFYERYfF84vEUXh8YEctqhp6VkCfPrD1Vkt1L
-        GEHBijwglUBmI8y35dN5wEsiZ24CaP57QTzbWAYdRUZ6lr3hhCtPNBsaAHBgeBB4Gt7MdthQ
-        f4HwsA8TBd+NOsWeEMlUi2F7f+Wc8RDAP7WTM4aI4WDegGeUVCJjImB/ZvsMU8xK+K24jfKw
-        L3MUurtr5zKLoeNK30xdOr3r3a7emZVIZhO0WL+Qs+wP6wdK53gJ/Nh3lSgAcvM83TxPMc9T
-        zPOUckDdAT58sqBN0AocK6i1QnJSAhun09aA6YeqezFmfQw6H+63A0YCFAtlkR2j0XJanSKk
-        au0ASkiFj2xr2+touSxenXqa1+ti9MmJvGAHwdPHmUg/3zjd9HsmGWK4YE6FQjhVkCpoE1Is
-        keUwLUfkTILawJ/g+ZO8/r9HSKR+RnAxbFfjsYvbNNHxu9urfD+sZsMrUsZVS/vTmka0Jz7a
-        XPee35CvKftc725tdQ92p6c2h6w76K98bvIuim3p2UcXb3EsWomlX7L6Dvjv0IgWRLW4OidS
-        OrOVByOz7OyiU1FVO28nXN6ZMf60oOhFG8GuKvyNGtPWgtCePTEVqcOWOAUlaNRcAKkX1P8A
-        S4B8M2YDAAA=
-X-CMS-MailID: 20200629075142eucas1p1d1cf615c77342a874310bfc853b3ed5d
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20200625130845eucas1p2e7715cbd0b8ad95d5f5bc86728c3aabe
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20200625130845eucas1p2e7715cbd0b8ad95d5f5bc86728c3aabe
-References: <20200625130836.1916-1-joro@8bytes.org>
-        <CGME20200625130845eucas1p2e7715cbd0b8ad95d5f5bc86728c3aabe@eucas1p2.samsung.com>
-        <20200625130836.1916-2-joro@8bytes.org>
+References: <20200627143453.31835-1-rppt@kernel.org> <20200627143453.31835-2-rppt@kernel.org>
+In-Reply-To: <20200627143453.31835-2-rppt@kernel.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 29 Jun 2020 17:41:43 +0200
+Message-ID: <CAMuHMdUOrrrtKuhtWJvzKNNLXY1fx+Ym1oXGN2J_CZ7RqByGHQ@mail.gmail.com>
+Subject: Re: [PATCH 1/8] mm: remove unneeded includes of <asm/pgalloc.h>
+To:     Mike Rapoport <rppt@kernel.org>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Abdul Haleem <abdhalee@linux.vnet.ibm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Joerg Roedel <joro@8bytes.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Satheesh Rajendran <sathnaga@linux.vnet.ibm.com>,
+        Stafford Horne <shorne@gmail.com>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-csky@vger.kernel.org,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Linux MM <linux-mm@kvack.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        arcml <linux-snps-arc@lists.infradead.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Openrisc <openrisc@lists.librecores.org>,
+        sparclinux <sparclinux@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 25.06.2020 15:08, Joerg Roedel wrote:
-> From: Joerg Roedel <jroedel@suse.de>
+On Sat, Jun 27, 2020 at 4:35 PM Mike Rapoport <rppt@kernel.org> wrote:
+> From: Mike Rapoport <rppt@linux.ibm.com>
 >
-> Remove the use of dev->archdata.iommu and use the private per-device
-> pointer provided by IOMMU core code instead.
+> In the most cases <asm/pgalloc.h> header is required only for allocations
+> of page table memory. Most of the .c files that include that header do not
+> use symbols declared in <asm/pgalloc.h> and do not require that header.
 >
-> Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> ---
->   drivers/iommu/exynos-iommu.c                  | 20 +++++++++----------
->   .../media/platform/s5p-mfc/s5p_mfc_iommu.h    |  4 +++-
->   2 files changed, 13 insertions(+), 11 deletions(-)
+> As for the other header files that used to include <asm/pgalloc.h>, it is
+> possible to move that include into the .c file that actually uses symbols
+> from <asm/pgalloc.h> and drop the include from the header file.
 >
-> diff --git a/drivers/iommu/exynos-iommu.c b/drivers/iommu/exynos-iommu.c
-> index 60c8a56e4a3f..6a9b67302369 100644
-> --- a/drivers/iommu/exynos-iommu.c
-> +++ b/drivers/iommu/exynos-iommu.c
-> @@ -173,7 +173,7 @@ static u32 lv2ent_offset(sysmmu_iova_t iova)
->   #define REG_V5_FAULT_AR_VA	0x070
->   #define REG_V5_FAULT_AW_VA	0x080
->   
-> -#define has_sysmmu(dev)		(dev->archdata.iommu != NULL)
-> +#define has_sysmmu(dev)		(dev_iommu_priv_get(dev) != NULL)
->   
->   static struct device *dma_dev;
->   static struct kmem_cache *lv2table_kmem_cache;
-> @@ -226,7 +226,7 @@ static const struct sysmmu_fault_info sysmmu_v5_faults[] = {
->   };
->   
->   /*
-> - * This structure is attached to dev.archdata.iommu of the master device
-> + * This structure is attached to dev->iommu->priv of the master device
->    * on device add, contains a list of SYSMMU controllers defined by device tree,
->    * which are bound to given master device. It is usually referenced by 'owner'
->    * pointer.
-> @@ -670,7 +670,7 @@ static int __maybe_unused exynos_sysmmu_suspend(struct device *dev)
->   	struct device *master = data->master;
->   
->   	if (master) {
-> -		struct exynos_iommu_owner *owner = master->archdata.iommu;
-> +		struct exynos_iommu_owner *owner = dev_iommu_priv_get(master);
->   
->   		mutex_lock(&owner->rpm_lock);
->   		if (data->domain) {
-> @@ -688,7 +688,7 @@ static int __maybe_unused exynos_sysmmu_resume(struct device *dev)
->   	struct device *master = data->master;
->   
->   	if (master) {
-> -		struct exynos_iommu_owner *owner = master->archdata.iommu;
-> +		struct exynos_iommu_owner *owner = dev_iommu_priv_get(master);
->   
->   		mutex_lock(&owner->rpm_lock);
->   		if (data->domain) {
-> @@ -837,8 +837,8 @@ static void exynos_iommu_domain_free(struct iommu_domain *iommu_domain)
->   static void exynos_iommu_detach_device(struct iommu_domain *iommu_domain,
->   				    struct device *dev)
->   {
-> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
->   	struct exynos_iommu_domain *domain = to_exynos_domain(iommu_domain);
-> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
->   	phys_addr_t pagetable = virt_to_phys(domain->pgtable);
->   	struct sysmmu_drvdata *data, *next;
->   	unsigned long flags;
-> @@ -875,8 +875,8 @@ static void exynos_iommu_detach_device(struct iommu_domain *iommu_domain,
->   static int exynos_iommu_attach_device(struct iommu_domain *iommu_domain,
->   				   struct device *dev)
->   {
-> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
->   	struct exynos_iommu_domain *domain = to_exynos_domain(iommu_domain);
-> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
->   	struct sysmmu_drvdata *data;
->   	phys_addr_t pagetable = virt_to_phys(domain->pgtable);
->   	unsigned long flags;
-> @@ -1237,7 +1237,7 @@ static phys_addr_t exynos_iommu_iova_to_phys(struct iommu_domain *iommu_domain,
->   
->   static struct iommu_device *exynos_iommu_probe_device(struct device *dev)
->   {
-> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
-> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
->   	struct sysmmu_drvdata *data;
->   
->   	if (!has_sysmmu(dev))
-> @@ -1263,7 +1263,7 @@ static struct iommu_device *exynos_iommu_probe_device(struct device *dev)
->   
->   static void exynos_iommu_release_device(struct device *dev)
->   {
-> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
-> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
->   	struct sysmmu_drvdata *data;
->   
->   	if (!has_sysmmu(dev))
-> @@ -1287,8 +1287,8 @@ static void exynos_iommu_release_device(struct device *dev)
->   static int exynos_iommu_of_xlate(struct device *dev,
->   				 struct of_phandle_args *spec)
->   {
-> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
->   	struct platform_device *sysmmu = of_find_device_by_node(spec->np);
-> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
->   	struct sysmmu_drvdata *data, *entry;
->   
->   	if (!sysmmu)
-> @@ -1305,7 +1305,7 @@ static int exynos_iommu_of_xlate(struct device *dev,
->   
->   		INIT_LIST_HEAD(&owner->controllers);
->   		mutex_init(&owner->rpm_lock);
-> -		dev->archdata.iommu = owner;
-> +		dev_iommu_priv_set(dev, owner);
->   	}
->   
->   	list_for_each_entry(entry, &owner->controllers, owner_node)
-> diff --git a/drivers/media/platform/s5p-mfc/s5p_mfc_iommu.h b/drivers/media/platform/s5p-mfc/s5p_mfc_iommu.h
-> index 152a713fff78..1a32266b7ddc 100644
-> --- a/drivers/media/platform/s5p-mfc/s5p_mfc_iommu.h
-> +++ b/drivers/media/platform/s5p-mfc/s5p_mfc_iommu.h
-> @@ -9,9 +9,11 @@
->   
->   #if defined(CONFIG_EXYNOS_IOMMU)
->   
-> +#include <linux/iommu.h>
-> +
->   static inline bool exynos_is_iommu_available(struct device *dev)
->   {
-> -	return dev->archdata.iommu != NULL;
-> +	return dev_iommu_priv_get(dev) != NULL;
->   }
->   
->   #else
+> The process was somewhat automated using
+>
+>         sed -i -E '/[<"]asm\/pgalloc\.h/d' \
+>                 $(grep -L -w -f /tmp/xx \
+>                         $(git grep -E -l '[<"]asm/pgalloc\.h'))
+>
+> where /tmp/xx contains all the symbols defined in
+> arch/*/include/asm/pgalloc.h.
+>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 
-Best regards
+For the m68k part:
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
