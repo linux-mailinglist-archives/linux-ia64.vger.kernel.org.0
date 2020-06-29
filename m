@@ -2,72 +2,258 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 705E520D546
-	for <lists+linux-ia64@lfdr.de>; Mon, 29 Jun 2020 21:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2E7220DA3E
+	for <lists+linux-ia64@lfdr.de>; Mon, 29 Jun 2020 22:13:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731776AbgF2TQJ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 29 Jun 2020 15:16:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44022 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731901AbgF2TQF (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 29 Jun 2020 15:16:05 -0400
-Received: from mail-io1-xd43.google.com (mail-io1-xd43.google.com [IPv6:2607:f8b0:4864:20::d43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C69C08C5FF
-        for <linux-ia64@vger.kernel.org>; Mon, 29 Jun 2020 12:16:02 -0700 (PDT)
-Received: by mail-io1-xd43.google.com with SMTP id q8so18393485iow.7
-        for <linux-ia64@vger.kernel.org>; Mon, 29 Jun 2020 12:16:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
-        b=E57soH+fAZU9oM/uuDn4bCNx2wALmvA7rwFsDeo/VdmyR4hSt+vRDMPW0qpAcJ9V/h
-         UbYJ9fIR9BUAZrS+1TfrEzBoFSxbLFUBB/IIzj7rfy4Y1SyxPmM/cs9fEremwVWV5m5u
-         b9v38myIgTBJNjasjLIOUO/K2CJS7vPJsURIlWBEC7RA0ax+vZbkexDjvFbqaAUgNm/w
-         yj4NkgHNxXLdKOO4AZsIv5vnXx8YMl4s3e1fTXh2Hp6rhwVI9k4nzVvvlc/OSvXrfpbl
-         +6DOlsrKa8IKCRxKxdcbetpm2uz+ZUKJBnziwlMhGJ11qW6bGQPIDGjYXF06+gry04Zz
-         3NGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=XdfoRVGuOCD2JOxmLnJxyvoO2f5zjf1xh4i//8cGLHs=;
-        b=XyYHIbOEOYVA+SK0TQfDFWaI3ckCVHh0Z8+NwQmc2FdJb7erhNpD8AONjAmR3JJUzy
-         KVljqV/FuOUW5bPnJzxNL5krhExc3FYqpJXRTfOMhOJDiGEc8Jxn4phtpm47+YB4N6EY
-         WtJZnG6xDX1RDuCBXLXK8Shl6V0ZmWBx5toBI8FunEEiUtKBIVu0S6C+/opMoFJeFkQ6
-         Cavx4xQ9lz4/QWdJY9uCkIkAGQHGIlQasdLfcMob6g84kTJkouw8pw56kQkiNjxdrDNK
-         Jx6vclfdFHw7MVVdkEbTFlpLlQGdamobdl54aPpGkcG0CqxGGE9LeOfDb5bpHq9MagAc
-         0JPQ==
-X-Gm-Message-State: AOAM532iEA2XgT0A1Uf/Rr2simZ6kQQ4AkBU2ZCZktUMF+uh9VieYxvf
-        ezlkbcqnbSgw1Zqe4afuv4lFyj9MFBBHlm9dyqY=
-X-Google-Smtp-Source: ABdhPJyNR5zXZ8o09DSJzsSA3OSccnAxM/c9AxKQjYYOZlXvOMCiHs1YW/1gQi1Sa70TQ2VOPtabshfviWRkV7+ICnM=
-X-Received: by 2002:a6b:db17:: with SMTP id t23mr18236117ioc.4.1593458159284;
- Mon, 29 Jun 2020 12:15:59 -0700 (PDT)
+        id S2388265AbgF2TzK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 29 Jun 2020 15:55:10 -0400
+Received: from mailout1.w1.samsung.com ([210.118.77.11]:36501 "EHLO
+        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387629AbgF2TkZ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 29 Jun 2020 15:40:25 -0400
+Received: from eucas1p1.samsung.com (unknown [182.198.249.206])
+        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20200629075143euoutp01c56c5985b7b8523b83868a8bdcc880eb~c9GnrEGld0704007040euoutp01R
+        for <linux-ia64@vger.kernel.org>; Mon, 29 Jun 2020 07:51:43 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20200629075143euoutp01c56c5985b7b8523b83868a8bdcc880eb~c9GnrEGld0704007040euoutp01R
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1593417103;
+        bh=dQ9Doz3UBs0xgD6IFLX1j1JQ9wXrq3erbykFtgNQuDY=;
+        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
+        b=s6EBXoymUWh9R+b1KtkNXgxwspIJxNs1VFHDgdhYWFeOHzFCRC8u46/Zm6PSfE90Y
+         GVJDflUobNNHFng+q6WlyYuTXrfESnjJb0irk0vdcPQ6X3kBEjS8+QLq/0HUrfTobM
+         LcGKLwYcnQ9Mz40qqpfl6izB0v8nAVKZbT4P161E=
+Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
+        20200629075143eucas1p118ab028a0335d12e8906b9ce64d4253e~c9GnHwKVj3253332533eucas1p1t;
+        Mon, 29 Jun 2020 07:51:43 +0000 (GMT)
+Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
+        eusmges1new.samsung.com (EUCPMTA) with SMTP id 91.C1.06456.F8D99FE5; Mon, 29
+        Jun 2020 08:51:43 +0100 (BST)
+Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
+        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
+        20200629075142eucas1p1d1cf615c77342a874310bfc853b3ed5d~c9GmlEi_T3259232592eucas1p1t;
+        Mon, 29 Jun 2020 07:51:42 +0000 (GMT)
+Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
+        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
+        20200629075142eusmtrp1fb024f39aa4ea00e14ad66a0ec1cc68c~c9GmkFrfa2414324143eusmtrp17;
+        Mon, 29 Jun 2020 07:51:42 +0000 (GMT)
+X-AuditID: cbfec7f2-809ff70000001938-4c-5ef99d8f1bb6
+Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
+        eusmgms1.samsung.com (EUCPMTA) with SMTP id CB.6A.06314.E8D99FE5; Mon, 29
+        Jun 2020 08:51:42 +0100 (BST)
+Received: from [106.210.88.143] (unknown [106.210.88.143]) by
+        eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20200629075141eusmtip1660c2664e074b9ed3be926930118c382~c9GlPVr7z1159711597eusmtip1P;
+        Mon, 29 Jun 2020 07:51:41 +0000 (GMT)
+Subject: Re: [PATCH 01/13] iommu/exynos: Use dev_iommu_priv_get/set()
+To:     Joerg Roedel <joro@8bytes.org>, iommu@lists.linux-foundation.org
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>, x86@kernel.org,
+        Jani Nikula <jani.nikula@linux.intel.com>,
+        Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>,
+        David Airlie <airlied@linux.ie>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        intel-gfx@lists.freedesktop.org, Joerg Roedel <jroedel@suse.de>
+From:   Marek Szyprowski <m.szyprowski@samsung.com>
+Message-ID: <f69cc934-1fcc-c311-7bc0-22472befa796@samsung.com>
+Date:   Mon, 29 Jun 2020 09:51:41 +0200
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+        Thunderbird/68.9.0
 MIME-Version: 1.0
-Received: by 2002:a05:6602:1588:0:0:0:0 with HTTP; Mon, 29 Jun 2020 12:15:58
- -0700 (PDT)
-Reply-To: mrs.victoria.alexander2@gmail.com
-From:   "mrs.victoria alexander" <markalexandermilley321@gmail.com>
-Date:   Mon, 29 Jun 2020 12:15:58 -0700
-Message-ID: <CAP7XNCwEGQ+-Q==u4yk4yvJdk1X+gsfSU6pUV_hROjmF=p-DHw@mail.gmail.com>
-Subject: Hello,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20200625130836.1916-2-joro@8bytes.org>
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-Brightmail-Tracker: H4sIAAAAAAAAA01Sa1CMYRid97vtt7HNZ0WPywyzLjM0SbnM6zImt5nXH6N/BsXim0KF/eQ+
+        SrJYK2UH2a215VKapRSbbSQt2qmUtDMrJkIxomhCinFp+0L/znPOeeY5Z+bhaXUFN5rfFL9D
+        1MVrYzWcH+Oo7K0LPpnVGzXd2OaPT9RVUbg4/SaHO5MP0/jTZSPCvx3pNE6/YqKx/sxC/Pv1
+        BxZb0oopbCufh3M9BQiXZVP4mKVQgU3VWRQuavGyuPPoRxZ7SjM57DpdhvCPb79YnJwyA99I
+        cnHYfv+CApebvQrcW2plcHv9CwanNM3CPYUtbPgY0lphpYjdakfE431Mk5y2JIaUddsY4jQ/
+        V5DivKnkwu02ihjbU1hSlH+MIyXdL1lirYogzcfdFCm+mEhMjbmIPMrIRisCVvnN3yjGbtop
+        6kIWrPOL6bxvobcdDNpt0bdQSShtggEpeRBmQm2ngzMgP14t5CHIrzpIycMXBOXJhQPKZwT2
+        5mzF35XUslRWFnIROHK6kTx8QnDdeYT1uYYLS6G05CTlwwHCEnjS41H4TLSQp4Bq6x3kEzgh
+        FAwdBs6HVcICeJdS348ZYRK8zahlfHiEEAmpl2wDnmFQda61n1f2xbja1NJ/jBbGQUlHJi3j
+        QHjWer6/BAhHlNBcUcnKuZdAdoMXyXg4vHffGOgzFmpMRkZeOITgVd1VhTwYEXiSMwY25kFT
+        3fe+GHzfiSlQUBoi0wtB//A946NB8IfGjmFyCH845ThLy7QKjurVsnsymN3X/p2tqG+g05DG
+        PKiaeVAd86A65v93bYjJR4FighQXLUqh8eKuaZI2TkqIj562YWtcEep77Jpf7q5b6GvDehcS
+        eKQZqgp/3BOlZrU7pT1xLgQ8rQlQLaqtiVKrNmr37BV1W9fqEmJFyYXG8IwmUDUjpy1SLURr
+        d4hbRHGbqPurUrxydBK6Fbbvdm3UxyzT9g32598b17zq8VpCEsUTy7AmyKC03A0OCD/zqHrm
+        3NUrl77l7mb9GH8vZooeZr85UDlq/37n4tc5EY6Rc9CVUzZdr2p+cFrY2hE/nxS8GzqnXZ04
+        yT2kqKv6+HJ+NnnZ+hVNfBC2MjPykvNB0GbJGTzZG7L56Z3QLg0jxWhDp9I6SfsHQHazEtQD
+        AAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTcRTH+d3HHtbiNpV+WGAsemB17c5sP/OBlcGvqCiCiB7q0ouLnIvd
+        KdkfukRFrcwlmU1d2ssMeznTUpc4e7DCUgfrgZmlhFGmGU1F0Zwa+N+Hc76fwzlwJKTcSftJ
+        jicZeH2SOlEh8qJeT778tD6/bCx6Q9f9AHT+jYNAVtMjERrKyCLR4K1zAE3VmUhkqiokUXbR
+        FjT19QeNSgqsBCpvDkWVzvsA2SoIlFvyQIwKX5URqKbXRaOhnF80cjaUipD9kg2g8ZFJGmVk
+        BqFao12Eqp9dF6Nms0uMxhosFPrZ3k2hzK5gNPqgl45civtaLASutlQD7HR1kPjadyOFbe5y
+        Cj8xfxJj6+0AfL3pO4HP/cykcc2dXBGud/fQ2OLYhz+ffUlg6410XPi+EuC3xRVgr88hNkyv
+        SzbwyzU6wRCuOMwhJcuFIFa5MYTlglRHNyuDFYERYfF84vEUXh8YEctqhp6VkCfPrD1Vkt1L
+        GEHBijwglUBmI8y35dN5wEsiZ24CaP57QTzbWAYdRUZ6lr3hhCtPNBsaAHBgeBB4Gt7MdthQ
+        f4HwsA8TBd+NOsWeEMlUi2F7f+Wc8RDAP7WTM4aI4WDegGeUVCJjImB/ZvsMU8xK+K24jfKw
+        L3MUurtr5zKLoeNK30xdOr3r3a7emZVIZhO0WL+Qs+wP6wdK53gJ/Nh3lSgAcvM83TxPMc9T
+        zPOUckDdAT58sqBN0AocK6i1QnJSAhun09aA6YeqezFmfQw6H+63A0YCFAtlkR2j0XJanSKk
+        au0ASkiFj2xr2+touSxenXqa1+ti9MmJvGAHwdPHmUg/3zjd9HsmGWK4YE6FQjhVkCpoE1Is
+        keUwLUfkTILawJ/g+ZO8/r9HSKR+RnAxbFfjsYvbNNHxu9urfD+sZsMrUsZVS/vTmka0Jz7a
+        XPee35CvKftc725tdQ92p6c2h6w76K98bvIuim3p2UcXb3EsWomlX7L6Dvjv0IgWRLW4OidS
+        OrOVByOz7OyiU1FVO28nXN6ZMf60oOhFG8GuKvyNGtPWgtCePTEVqcOWOAUlaNRcAKkX1P8A
+        S4B8M2YDAAA=
+X-CMS-MailID: 20200629075142eucas1p1d1cf615c77342a874310bfc853b3ed5d
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-RootMTR: 20200625130845eucas1p2e7715cbd0b8ad95d5f5bc86728c3aabe
+X-EPHeader: CA
+CMS-TYPE: 201P
+X-CMS-RootMailID: 20200625130845eucas1p2e7715cbd0b8ad95d5f5bc86728c3aabe
+References: <20200625130836.1916-1-joro@8bytes.org>
+        <CGME20200625130845eucas1p2e7715cbd0b8ad95d5f5bc86728c3aabe@eucas1p2.samsung.com>
+        <20200625130836.1916-2-joro@8bytes.org>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dear friend,
+On 25.06.2020 15:08, Joerg Roedel wrote:
+> From: Joerg Roedel <jroedel@suse.de>
+>
+> Remove the use of dev->archdata.iommu and use the private per-device
+> pointer provided by IOMMU core code instead.
+>
+> Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> ---
+>   drivers/iommu/exynos-iommu.c                  | 20 +++++++++----------
+>   .../media/platform/s5p-mfc/s5p_mfc_iommu.h    |  4 +++-
+>   2 files changed, 13 insertions(+), 11 deletions(-)
+>
+> diff --git a/drivers/iommu/exynos-iommu.c b/drivers/iommu/exynos-iommu.c
+> index 60c8a56e4a3f..6a9b67302369 100644
+> --- a/drivers/iommu/exynos-iommu.c
+> +++ b/drivers/iommu/exynos-iommu.c
+> @@ -173,7 +173,7 @@ static u32 lv2ent_offset(sysmmu_iova_t iova)
+>   #define REG_V5_FAULT_AR_VA	0x070
+>   #define REG_V5_FAULT_AW_VA	0x080
+>   
+> -#define has_sysmmu(dev)		(dev->archdata.iommu != NULL)
+> +#define has_sysmmu(dev)		(dev_iommu_priv_get(dev) != NULL)
+>   
+>   static struct device *dma_dev;
+>   static struct kmem_cache *lv2table_kmem_cache;
+> @@ -226,7 +226,7 @@ static const struct sysmmu_fault_info sysmmu_v5_faults[] = {
+>   };
+>   
+>   /*
+> - * This structure is attached to dev.archdata.iommu of the master device
+> + * This structure is attached to dev->iommu->priv of the master device
+>    * on device add, contains a list of SYSMMU controllers defined by device tree,
+>    * which are bound to given master device. It is usually referenced by 'owner'
+>    * pointer.
+> @@ -670,7 +670,7 @@ static int __maybe_unused exynos_sysmmu_suspend(struct device *dev)
+>   	struct device *master = data->master;
+>   
+>   	if (master) {
+> -		struct exynos_iommu_owner *owner = master->archdata.iommu;
+> +		struct exynos_iommu_owner *owner = dev_iommu_priv_get(master);
+>   
+>   		mutex_lock(&owner->rpm_lock);
+>   		if (data->domain) {
+> @@ -688,7 +688,7 @@ static int __maybe_unused exynos_sysmmu_resume(struct device *dev)
+>   	struct device *master = data->master;
+>   
+>   	if (master) {
+> -		struct exynos_iommu_owner *owner = master->archdata.iommu;
+> +		struct exynos_iommu_owner *owner = dev_iommu_priv_get(master);
+>   
+>   		mutex_lock(&owner->rpm_lock);
+>   		if (data->domain) {
+> @@ -837,8 +837,8 @@ static void exynos_iommu_domain_free(struct iommu_domain *iommu_domain)
+>   static void exynos_iommu_detach_device(struct iommu_domain *iommu_domain,
+>   				    struct device *dev)
+>   {
+> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
+>   	struct exynos_iommu_domain *domain = to_exynos_domain(iommu_domain);
+> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
+>   	phys_addr_t pagetable = virt_to_phys(domain->pgtable);
+>   	struct sysmmu_drvdata *data, *next;
+>   	unsigned long flags;
+> @@ -875,8 +875,8 @@ static void exynos_iommu_detach_device(struct iommu_domain *iommu_domain,
+>   static int exynos_iommu_attach_device(struct iommu_domain *iommu_domain,
+>   				   struct device *dev)
+>   {
+> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
+>   	struct exynos_iommu_domain *domain = to_exynos_domain(iommu_domain);
+> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
+>   	struct sysmmu_drvdata *data;
+>   	phys_addr_t pagetable = virt_to_phys(domain->pgtable);
+>   	unsigned long flags;
+> @@ -1237,7 +1237,7 @@ static phys_addr_t exynos_iommu_iova_to_phys(struct iommu_domain *iommu_domain,
+>   
+>   static struct iommu_device *exynos_iommu_probe_device(struct device *dev)
+>   {
+> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
+> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
+>   	struct sysmmu_drvdata *data;
+>   
+>   	if (!has_sysmmu(dev))
+> @@ -1263,7 +1263,7 @@ static struct iommu_device *exynos_iommu_probe_device(struct device *dev)
+>   
+>   static void exynos_iommu_release_device(struct device *dev)
+>   {
+> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
+> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
+>   	struct sysmmu_drvdata *data;
+>   
+>   	if (!has_sysmmu(dev))
+> @@ -1287,8 +1287,8 @@ static void exynos_iommu_release_device(struct device *dev)
+>   static int exynos_iommu_of_xlate(struct device *dev,
+>   				 struct of_phandle_args *spec)
+>   {
+> -	struct exynos_iommu_owner *owner = dev->archdata.iommu;
+>   	struct platform_device *sysmmu = of_find_device_by_node(spec->np);
+> +	struct exynos_iommu_owner *owner = dev_iommu_priv_get(dev);
+>   	struct sysmmu_drvdata *data, *entry;
+>   
+>   	if (!sysmmu)
+> @@ -1305,7 +1305,7 @@ static int exynos_iommu_of_xlate(struct device *dev,
+>   
+>   		INIT_LIST_HEAD(&owner->controllers);
+>   		mutex_init(&owner->rpm_lock);
+> -		dev->archdata.iommu = owner;
+> +		dev_iommu_priv_set(dev, owner);
+>   	}
+>   
+>   	list_for_each_entry(entry, &owner->controllers, owner_node)
+> diff --git a/drivers/media/platform/s5p-mfc/s5p_mfc_iommu.h b/drivers/media/platform/s5p-mfc/s5p_mfc_iommu.h
+> index 152a713fff78..1a32266b7ddc 100644
+> --- a/drivers/media/platform/s5p-mfc/s5p_mfc_iommu.h
+> +++ b/drivers/media/platform/s5p-mfc/s5p_mfc_iommu.h
+> @@ -9,9 +9,11 @@
+>   
+>   #if defined(CONFIG_EXYNOS_IOMMU)
+>   
+> +#include <linux/iommu.h>
+> +
+>   static inline bool exynos_is_iommu_available(struct device *dev)
+>   {
+> -	return dev->archdata.iommu != NULL;
+> +	return dev_iommu_priv_get(dev) != NULL;
+>   }
+>   
+>   #else
 
+Best regards
+-- 
+Marek Szyprowski, PhD
+Samsung R&D Institute Poland
 
-I have a business container transaction what that some of( $13million dollars)
-
- I would like to discuss with you. If you are interested, please
-contact my email
-
-address (mrs.victoria.alexander2@gmail.com)
-
-My WhatsApp number but only message (+19293737780)
-
-Please do not reply if you are not ready
-Thanks
