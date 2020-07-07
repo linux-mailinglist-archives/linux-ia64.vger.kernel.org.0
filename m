@@ -2,87 +2,70 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A3C432176D3
-	for <lists+linux-ia64@lfdr.de>; Tue,  7 Jul 2020 20:35:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A16812179B2
+	for <lists+linux-ia64@lfdr.de>; Tue,  7 Jul 2020 22:50:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728364AbgGGSfE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 7 Jul 2020 14:35:04 -0400
-Received: from mail-wr1-f67.google.com ([209.85.221.67]:45341 "EHLO
-        mail-wr1-f67.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728073AbgGGSfE (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 7 Jul 2020 14:35:04 -0400
-Received: by mail-wr1-f67.google.com with SMTP id s10so46249089wrw.12;
-        Tue, 07 Jul 2020 11:35:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=IxxgOhn0lGIUx68pkNi/zBk9PHmI9Ujpy6Yy6N+FauI=;
-        b=FgAzOPoSbQS7H5NUrBteka9wxpaJl14c625k9Hy3qlI5tc5quG6DzUwc9BGloAfIiP
-         WOgM+7+l6pDf0UQiFOT53oJJ+nl7TQM86UswiWBsHKtsuFP/VWlex2JMRHOaiWOC8Doo
-         JTLiVBePwGeHPXz5VP9JjWtG3jzb1VVnMxlN3HU52SknroXsdm/OSlZX+fw1+YSr6kLV
-         Hi4PrSrfSHIran3HZ3qIJ2fnOLu/Zku1cDhy96nACmVewLDCKcsJAC4He3o3ZHzSYcl5
-         V/vHtnrx+XWxD3oWpGlAYtEetvEIIr7dojgaUWNE4BWuAGCOlmxNZZ92TqxYHiwsR5+5
-         Y+tw==
-X-Gm-Message-State: AOAM530lkgKkQPd4Ek09Rzil4XSmDXONfZHSJ+8MjF+6KSN8qbkE5N92
-        QUFjpUXfgrgk92M3B/GGUTk3yZi5
-X-Google-Smtp-Source: ABdhPJwEe7e5O3OlbWSEfsZM3Pa/ieXK1xVYvlYr9ZySVMUNyMBSRt113UYGI5z3UF8RjUIzHDx07w==
-X-Received: by 2002:a5d:40c9:: with SMTP id b9mr53122600wrq.425.1594146902779;
-        Tue, 07 Jul 2020 11:35:02 -0700 (PDT)
-Received: from kozik-lap ([194.230.155.195])
-        by smtp.googlemail.com with ESMTPSA id y16sm2058180wro.71.2020.07.07.11.35.01
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 07 Jul 2020 11:35:02 -0700 (PDT)
-Date:   Tue, 7 Jul 2020 20:34:59 +0200
+        id S1728831AbgGGUug (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 7 Jul 2020 16:50:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:53060 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726273AbgGGUug (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 7 Jul 2020 16:50:36 -0400
+Received: from localhost.localdomain (unknown [194.230.155.195])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id B8868206F6;
+        Tue,  7 Jul 2020 20:50:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1594155036;
+        bh=KoTA2o9FaMQOH2KZot8SHO+30GT1daY4qqGv1KORumc=;
+        h=From:To:Subject:Date:From;
+        b=rqT/1s3LagS/5HYBCjZyEnJut75G82gj6+JQPOvrvSUqzoJhA/TLhpK91pVr/KL0q
+         Ip9O5bWUmM9yx6y7YpB7mgc4OslcgQKSNy/y1yI7mpn6go2wYQx0omVCIZCC19T9fU
+         9jgvb/edxoRa2HSmy9zoG4LRyuT2Zf5YWFiO1Ztc=
 From:   Krzysztof Kozlowski <krzk@kernel.org>
 To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
-        Tom Vaden <tom.vaden@hpe.com>,
-        Daisuke HATAYAMA <d.hatayama@jp.fujitsu.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
         linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     kbuild-all@lists.01.org, Joerg Roedel <jroedel@suse.de>,
-        stable@vger.kernel.org
-Subject: Re: [RFT PATCH] ia64: Fix build error with !COREDUMP
-Message-ID: <20200707183459.GB3442@kozik-lap>
-References: <20200604201842.29482-1-krzk@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20200604201842.29482-1-krzk@kernel.org>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Subject: [PATCH RESENT] ia64: configs: Remove useless UEVENT_HELPER_PATH
+Date:   Tue,  7 Jul 2020 22:50:30 +0200
+Message-Id: <20200707205030.32394-1-krzk@kernel.org>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Jun 04, 2020 at 10:18:42PM +0200, Krzysztof Kozlowski wrote:
-> Fix linkage error when CONFIG_BINFMT_ELF is selected but CONFIG_COREDUMP
-> is not:
-> 
->     ia64-linux-ld: arch/ia64/kernel/elfcore.o: in function `elf_core_write_extra_phdrs':
->     elfcore.c:(.text+0x172): undefined reference to `dump_emit'
->     ia64-linux-ld: arch/ia64/kernel/elfcore.o: in function `elf_core_write_extra_data':
->     elfcore.c:(.text+0x2b2): undefined reference to `dump_emit'
-> 
-> Cc: <stable@vger.kernel.org>
-> Fixes: 1fcccbac89f5 ("elf coredump: replace ELF_CORE_EXTRA_* macros by functions")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
-> 
-> ---
-> 
-> Please let kbuild test it for a while before applying. I built it only
-> on few configurations.
-> 
-> This is similar fix to commit 42d91f612c87 ("um: Fix build error and
-> kconfig for i386") although I put different fixes tag - the commit which
-> introduced this part of code.
+Remove the CONFIG_UEVENT_HELPER_PATH because:
+1. It is disabled since commit 1be01d4a5714 ("driver: base: Disable
+   CONFIG_UEVENT_HELPER by default") as its dependency (UEVENT_HELPER) was
+   made default to 'n',
+2. It is not recommended (help message: "This should not be used today
+   [...] creates a high system load") and was kept only for ancient
+   userland,
+3. Certain userland specifically requests it to be disabled (systemd
+   README: "Legacy hotplug slows down the system and confuses udev").
 
-Kernel-test-robot did not complain anymore so I think build tests
-passed.
+Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+---
+ arch/ia64/configs/generic_defconfig | 1 -
+ 1 file changed, 1 deletion(-)
 
-Any comments here?
-
-Best regards,
-Krzysztof
+diff --git a/arch/ia64/configs/generic_defconfig b/arch/ia64/configs/generic_defconfig
+index cb267a07c57f..f1c5aad6725e 100644
+--- a/arch/ia64/configs/generic_defconfig
++++ b/arch/ia64/configs/generic_defconfig
+@@ -37,7 +37,6 @@ CONFIG_INET=y
+ CONFIG_IP_MULTICAST=y
+ CONFIG_SYN_COOKIES=y
+ # CONFIG_IPV6 is not set
+-CONFIG_UEVENT_HELPER_PATH="/sbin/hotplug"
+ CONFIG_CONNECTOR=y
+ # CONFIG_PNP_DEBUG_MESSAGES is not set
+ CONFIG_BLK_DEV_LOOP=m
+-- 
+2.17.1
 
