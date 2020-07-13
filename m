@@ -2,105 +2,105 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 78CC021B774
-	for <lists+linux-ia64@lfdr.de>; Fri, 10 Jul 2020 16:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 106A321D7EC
+	for <lists+linux-ia64@lfdr.de>; Mon, 13 Jul 2020 16:10:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727074AbgGJOA2 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 10 Jul 2020 10:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39436 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726920AbgGJOA2 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 10 Jul 2020 10:00:28 -0400
-Received: from mail-qt1-x842.google.com (mail-qt1-x842.google.com [IPv6:2607:f8b0:4864:20::842])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0428DC08C5CE
-        for <linux-ia64@vger.kernel.org>; Fri, 10 Jul 2020 07:00:28 -0700 (PDT)
-Received: by mail-qt1-x842.google.com with SMTP id 6so4458150qtt.0
-        for <linux-ia64@vger.kernel.org>; Fri, 10 Jul 2020 07:00:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=intel-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=DeBGSFa6JpLDSEOobydkMfjCm7xXfWYBIoiGgmJvsiY=;
-        b=xtDwzbDKceDPrdb2OHoramfVkpsxDADJ71nfnkU/U11ey7QyoCDreWzdTySdP3Bf95
-         ko7FnPp1/f2cIaGMh3ZNzsz0Tk0c89dEXFz4xGd5qoKP5aeVtETNGjgveKn8G+bB5ZCU
-         qyeoRvjQsFDUXwssBBeR5gc17mrpKDHaW6DNckwXSdhPayaI4sq6JiGfGAg/1e2NR2+K
-         w6m5jVpJb5U2aiGes5SDDt8L5Ld6vOLLHfwgmQEAIJsjgIr3JCFEvBQidjQjLrOvLaeG
-         nuz08QDD1+u1/1rB2NI5RZsufXulW3Zf9eAmgXzpRcA2d94ETiaosy+RpJuCDqUAnBzH
-         1skA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=DeBGSFa6JpLDSEOobydkMfjCm7xXfWYBIoiGgmJvsiY=;
-        b=WQd5v399fNjITuol3vgjK3eX+hdeIXoyh/OUrzwJoTWY6BZBDUlLJk7ipUW89wQUv+
-         Vu/t49yKC6QvqpagV2CQj38fD9pdR+UG7iHBJDEYYxk6ZZYm2FYtDycIxwn96LDKH9Ug
-         Cn+0sXFzK0PdR+jgEwIF/cB4RS2vt4llYkryt/e7PVwL+LBreVBvtACi/6LRCOI2Mk19
-         y2hdHiCdIvsymW5UKJbhP9oaV5fBJRvOqC3FgfcPHOP2RouiSe9+3FIiDcGxHn6d38wW
-         5l+gq84jJXQtJcZrfOv+SJ7iEpgR9tZxQBD0JzM54mSa2D2HAVTqc6zP47Xp/gtcl/lY
-         I/BA==
-X-Gm-Message-State: AOAM53300Wwsz5/LVE7i8Kct5uiT7tgwOxg6LBlJig5sZRSkqoIVACAk
-        GC1KPeCjQBNKNbefEKL6kui7OLhIhRI3Keg2TPFqyA==
-X-Google-Smtp-Source: ABdhPJyl6xq9PxhonQS0J3Dx+J5gbm1PIhxGa1brPjByYujkui0S6cvVgDWfdJGYhmVAV084h8/4qpdI7H3iU+5xBUo=
-X-Received: by 2002:ac8:396c:: with SMTP id t41mr71181576qtb.45.1594389627173;
- Fri, 10 Jul 2020 07:00:27 -0700 (PDT)
+        id S1729828AbgGMOKq (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 13 Jul 2020 10:10:46 -0400
+Received: from smtp.al2klimov.de ([78.46.175.9]:39562 "EHLO smtp.al2klimov.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1729659AbgGMOKq (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 13 Jul 2020 10:10:46 -0400
+Received: from authenticated-user (PRIMARY_HOSTNAME [PUBLIC_IP])
+        by smtp.al2klimov.de (Postfix) with ESMTPA id BE852BC0CA;
+        Mon, 13 Jul 2020 14:10:42 +0000 (UTC)
+From:   "Alexander A. Klimov" <grandmaster@al2klimov.de>
+To:     tony.luck@intel.com, fenghua.yu@intel.com, corbet@lwn.net,
+        linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
+Subject: [PATCH] ia64: Replace HTTP links with HTTPS ones
+Date:   Mon, 13 Jul 2020 16:10:36 +0200
+Message-Id: <20200713141036.34841-1-grandmaster@al2klimov.de>
 MIME-Version: 1.0
-References: <20200710031619.18762-1-justin.he@arm.com>
-In-Reply-To: <20200710031619.18762-1-justin.he@arm.com>
-From:   Dan Williams <dan.j.williams@intel.com>
-Date:   Fri, 10 Jul 2020 07:00:15 -0700
-Message-ID: <CAPcyv4izHex9W0m3voSXM5J69gFWhHj_a-XsmJ4HF01Uh4jp6w@mail.gmail.com>
-Subject: Re: [PATCH v4 0/2] Fix and enable pmem as RAM device on arm64
-To:     Jia He <justin.he@arm.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        David Hildenbrand <david@redhat.com>, X86 ML <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Vishal Verma <vishal.l.verma@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Baoquan He <bhe@redhat.com>,
-        Chuhong Yuan <hslester96@gmail.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org, Linux-sh <linux-sh@vger.kernel.org>,
-        linux-nvdimm <linux-nvdimm@lists.01.org>,
-        Linux MM <linux-mm@kvack.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Kaly Xin <Kaly.Xin@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Spamd-Bar: +++++
+X-Spam-Level: *****
+Authentication-Results: smtp.al2klimov.de;
+        auth=pass smtp.auth=aklimov@al2klimov.de smtp.mailfrom=grandmaster@al2klimov.de
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Jul 9, 2020 at 8:17 PM Jia He <justin.he@arm.com> wrote:
->
-> This fixies a few issues when I tried to enable pmem as RAM device on arm64.
->
-> To use memory_add_physaddr_to_nid as a fallback nid, it would be better
-> implement a general version (__weak) in mm/memory_hotplug. After that, arm64/
-> sh/s390 can simply use the general version, and PowerPC/ia64/x86 will use
-> arch specific version.
->
-> Tested on ThunderX2 host/qemu "-M virt" guest with a nvdimm device. The
-> memblocks from the dax pmem device can be either hot-added or hot-removed
-> on arm64 guest. Also passed the compilation test on x86.
->
-> Changes:
-> v4: - remove "device-dax: use fallback nid when numa_node is invalid", wait
->       for Dan Williams' phys_addr_to_target_node() patch
+Rationale:
+Reduces attack surface on kernel devs opening the links for MITM
+as HTTPS traffic is much harder to manipulate.
 
-FWIW, I put these patches through a 0-day run overnight and will be
-posting them today.
+Deterministic algorithm:
+For each file:
+  If not .svg:
+    For each line:
+      If doesn't contain `\bxmlns\b`:
+        For each link, `\bhttp://[^# \t\r\n]*(?:\w|/)`:
+	  If neither `\bgnu\.org/license`, nor `\bmozilla\.org/MPL\b`:
+            If both the HTTP and HTTPS versions
+            return 200 OK and serve the same content:
+              Replace HTTP with HTTPS.
+
+Signed-off-by: Alexander A. Klimov <grandmaster@al2klimov.de>
+---
+ Continuing my work started at 93431e0607e5.
+ See also: git log --oneline '--author=Alexander A. Klimov <grandmaster@al2klimov.de>' v5.7..master
+ (Actually letting a shell for loop submit all this stuff for me.)
+
+ If there are any URLs to be removed completely or at least not just HTTPSified:
+ Just clearly say so and I'll *undo my change*.
+ See also: https://lkml.org/lkml/2020/6/27/64
+
+ If there are any valid, but yet not changed URLs:
+ See: https://lkml.org/lkml/2020/6/26/837
+
+ If you apply the patch, please let me know.
+
+ Sorry again to all maintainers who complained about subject lines.
+ Now I realized that you want an actually perfect prefixes,
+ not just subsystem ones.
+ I tried my best...
+ And yes, *I could* (at least half-)automate it.
+ Impossible is nothing! :)
+
+
+ Documentation/ia64/xen.rst | 2 +-
+ arch/ia64/Kconfig          | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Documentation/ia64/xen.rst b/Documentation/ia64/xen.rst
+index 831339c74441..9da6abb02a2c 100644
+--- a/Documentation/ia64/xen.rst
++++ b/Documentation/ia64/xen.rst
+@@ -28,7 +28,7 @@ Getting and Building Xen and Dom0
+ 
+ 	# hg clone http://xenbits.xensource.com/ext/ia64/xen-unstable.hg
+ 	# cd xen-unstable.hg
+-	# hg clone http://xenbits.xensource.com/ext/ia64/linux-2.6.18-xen.hg
++	# hg clone https://xenbits.xensource.com/ext/ia64/linux-2.6.18-xen.hg
+ 
+  2. # make world
+ 
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index 1fa2fe2ef053..f21f121a8f42 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -223,7 +223,7 @@ config SMP
+ 	  will run faster if you say N here.
+ 
+ 	  See also the SMP-HOWTO available at
+-	  <http://www.tldp.org/docs.html#howto>.
++	  <https://www.tldp.org/docs.html#howto>.
+ 
+ 	  If you don't know what to do here, say N.
+ 
+-- 
+2.27.0
+
