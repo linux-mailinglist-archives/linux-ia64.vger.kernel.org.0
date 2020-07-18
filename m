@@ -2,137 +2,110 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 49C882242D2
-	for <lists+linux-ia64@lfdr.de>; Fri, 17 Jul 2020 20:03:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DBC52248E5
+	for <lists+linux-ia64@lfdr.de>; Sat, 18 Jul 2020 07:09:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728047AbgGQSDs (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 17 Jul 2020 14:03:48 -0400
-Received: from lhrrgout.huawei.com ([185.176.76.210]:2503 "EHLO huawei.com"
+        id S1725963AbgGRFJb convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Sat, 18 Jul 2020 01:09:31 -0400
+Received: from szxga03-in.huawei.com ([45.249.212.189]:2981 "EHLO huawei.com"
         rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1727903AbgGQSDs (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 17 Jul 2020 14:03:48 -0400
-Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.107])
-        by Forcepoint Email with ESMTP id BB0A8F4BF11DF7754B29;
-        Fri, 17 Jul 2020 19:03:46 +0100 (IST)
-Received: from lhrphicprd00229.huawei.com (10.123.41.22) by
- lhreml710-chm.china.huawei.com (10.201.108.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.1913.5; Fri, 17 Jul 2020 19:03:46 +0100
-From:   Jonathan Cameron <Jonathan.Cameron@huawei.com>
-To:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>
+        id S1725887AbgGRFJb (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sat, 18 Jul 2020 01:09:31 -0400
+Received: from dggemi404-hub.china.huawei.com (unknown [172.30.72.53])
+        by Forcepoint Email with ESMTP id 6CC67F0EEEC0DF655046;
+        Sat, 18 Jul 2020 13:09:27 +0800 (CST)
+Received: from DGGEMI525-MBS.china.huawei.com ([169.254.6.52]) by
+ dggemi404-hub.china.huawei.com ([10.3.17.142]) with mapi id 14.03.0487.000;
+ Sat, 18 Jul 2020 13:09:17 +0800
+From:   "Song Bao Hua (Barry Song)" <song.bao.hua@hisilicon.com>
+To:     Jonathan Cameron <jonathan.cameron@huawei.com>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-acpi@vger.kernel.org" <linux-acpi@vger.kernel.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "x86@kernel.org" <x86@kernel.org>
 CC:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
         Bjorn Helgaas <bhelgaas@google.com>,
-        <linux-pci@vger.kernel.org>, <martin@geanix.com>,
-        Ingo Molnar <mingo@redhat.com>, <linux-ia64@vger.kernel.org>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>,
+        "martin@geanix.com" <martin@geanix.com>,
+        "Ingo Molnar" <mingo@redhat.com>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Song Bao Hua <song.bao.hua@hisilicon.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH v2 6/6] irq-chip/gic-v3-its: Fix crash if ITS is in a proximity domain without processor or memory
-Date:   Sat, 18 Jul 2020 01:59:59 +0800
-Message-ID: <20200717175959.899775-7-Jonathan.Cameron@huawei.com>
-X-Mailer: git-send-email 2.19.1
-In-Reply-To: <20200717175959.899775-1-Jonathan.Cameron@huawei.com>
+        Thomas Gleixner <tglx@linutronix.de>,
+        Linuxarm <linuxarm@huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>
+Subject: RE: [PATCH v2 1/6] ACPI: Add out of bounds and numa_off protections
+ to pxm_to_node
+Thread-Topic: [PATCH v2 1/6] ACPI: Add out of bounds and numa_off
+ protections to pxm_to_node
+Thread-Index: AQHWXGREtKO5c5ALFUyDHE/x3auv/qkMybkQ
+Date:   Sat, 18 Jul 2020 05:09:16 +0000
+Message-ID: <B926444035E5E2439431908E3842AFD2593D39@DGGEMI525-MBS.china.huawei.com>
 References: <20200717175959.899775-1-Jonathan.Cameron@huawei.com>
+ <20200717175959.899775-2-Jonathan.Cameron@huawei.com>
+In-Reply-To: <20200717175959.899775-2-Jonathan.Cameron@huawei.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [10.126.200.103]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.123.41.22]
-X-ClientProxiedBy: lhreml706-chm.china.huawei.com (10.201.108.55) To
- lhreml710-chm.china.huawei.com (10.201.108.61)
 X-CFilter-Loop: Reflected
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Note this crash is present before any of the patches in this series, but
-as explained below it is highly unlikely anyone is shipping a firmware that
-causes it. Tests were done using an overriden SRAT.
 
-On ARM64, the gic-v3 driver directly parses SRAT to locate GIC Interrupt
-Translation Service (ITS) Affinity Structures. This is done much later
-in the boot than the parses of SRAT which identify proximity domains.
 
-As a result, an ITS placed in a proximity domain that is not defined by
-another SRAT structure will result in a NUMA node that is not completely
-configured and a crash.
+> -----Original Message-----
+> From: Jonathan Cameron
+> Sent: Saturday, July 18, 2020 6:00 AM
+> To: linux-mm@kvack.org; linux-acpi@vger.kernel.org;
+> linux-arm-kernel@lists.infradead.org; x86@kernel.org
+> Cc: Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>; Bjorn Helgaas
+> <bhelgaas@google.com>; linux-pci@vger.kernel.org; martin@geanix.com; Ingo
+> Molnar <mingo@redhat.com>; linux-ia64@vger.kernel.org; Tony Luck
+> <tony.luck@intel.com>; Fenghua Yu <fenghua.yu@intel.com>; Thomas
+> Gleixner <tglx@linutronix.de>; Linuxarm <linuxarm@huawei.com>; Dan
+> Williams <dan.j.williams@intel.com>; Song Bao Hua (Barry Song)
+> <song.bao.hua@hisilicon.com>; Jonathan Cameron
+> <jonathan.cameron@huawei.com>
+> Subject: [PATCH v2 1/6] ACPI: Add out of bounds and numa_off protections to
+> pxm_to_node
+> 
+> The function should check the validity of the pxm value before using
+> it to index the pxm_to_node_map array.
+> 
+> Whilst hardening this code may be good in general, the main intent
+> here is to enable following patches that use this function to replace
+> acpi_map_pxm_to_node for non SRAT usecases which should return
+> NO_NUMA_NODE for PXM entries not matching with those in SRAT.
+> 
+> Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-ITS [mem 0x202100000-0x20211ffff]
-ITS@0x0000000202100000: Using ITS number 0
-Unable to handle kernel paging request at virtual address 0000000000001a08
-...
+Reviewed-by: Barry Song <song.bao.hua@hisilicon.com>
 
-Call trace:
-  __alloc_pages_nodemask+0xe8/0x338
-  alloc_pages_node.constprop.0+0x34/0x40
-  its_probe_one+0x2f8/0xb18
-  gic_acpi_parse_madt_its+0x108/0x150
-  acpi_table_parse_entries_array+0x17c/0x264
-  acpi_table_parse_entries+0x48/0x6c
-  acpi_table_parse_madt+0x30/0x3c
-  its_init+0x1c4/0x644
-  gic_init_bases+0x4b8/0x4ec
-  gic_acpi_init+0x134/0x264
-  acpi_match_madt+0x4c/0x84
-  acpi_table_parse_entries_array+0x17c/0x264
-  acpi_table_parse_entries+0x48/0x6c
-  acpi_table_parse_madt+0x30/0x3c
-  __acpi_probe_device_table+0x8c/0xe8
-  irqchip_init+0x3c/0x48
-  init_IRQ+0xcc/0x100
-  start_kernel+0x33c/0x548
-
-ACPI 6.3 allows any set of Affinity Structures in SRAT to define a proximity
-domain.  However, as we do not see this crash, we can conclude that no
-firmware is currently placing an ITS in a node that is separate from
-those containing memory and / or processors.
-
-We could modify the SRAT parsing behavior to identify the existence
-of Proximity Domains unique to the ITS structures, and handle them as
-a special case of a generic initiator (once support for those merges).
-
-This patch avoids the complexity that would be needed to handle this corner
-case, by not allowing the ITS entry parsing code to instantiate new NUMA
-Nodes.  If one is encountered that does not already exist, then NO_NUMA_NODE
-is assigned and a warning printed just as if the value had been greater than
-allowed NUMA Nodes.
-
-"SRAT: Invalid NUMA node -1 in ITS affinity"
-
-Whilst this does not provide the full flexibility allowed by ACPI,
-it does fix the problem.  We can revisit a more sophisticated solution if
-needed by future platforms.
-
-Change is simply to replace acpi_map_pxm_to_node with pxm_to_node reflecting
-the fact a new mapping is not created.
-
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
----
- drivers/irqchip/irq-gic-v3-its.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/irqchip/irq-gic-v3-its.c b/drivers/irqchip/irq-gic-v3-its.c
-index 6a5a87fc4601..c26862a074da 100644
---- a/drivers/irqchip/irq-gic-v3-its.c
-+++ b/drivers/irqchip/irq-gic-v3-its.c
-@@ -5248,7 +5248,12 @@ static int __init gic_acpi_parse_srat_its(union acpi_subtable_headers *header,
- 		return -EINVAL;
- 	}
- 
--	node = acpi_map_pxm_to_node(its_affinity->proximity_domain);
-+	/*
-+	 * Note that in theory a new proximity node could be created by this
-+	 * entry as it is an SRAT resource allocation structure.
-+	 * We do not currently support doing so.
-+	 */
-+	node = pxm_to_node(its_affinity->proximity_domain);
- 
- 	if (node == NUMA_NO_NODE || node >= MAX_NUMNODES) {
- 		pr_err("SRAT: Invalid NUMA node %d in ITS affinity\n", node);
--- 
-2.19.1
+> ---
+>  drivers/acpi/numa/srat.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/acpi/numa/srat.c b/drivers/acpi/numa/srat.c
+> index 5be5a977da1b..8ef44ee0d76b 100644
+> --- a/drivers/acpi/numa/srat.c
+> +++ b/drivers/acpi/numa/srat.c
+> @@ -31,7 +31,7 @@ int acpi_numa __initdata;
+> 
+>  int pxm_to_node(int pxm)
+>  {
+> -	if (pxm < 0)
+> +	if (pxm < 0 || pxm >= MAX_PXM_DOMAINS || numa_off)
+>  		return NUMA_NO_NODE;
+>  	return pxm_to_node_map[pxm];
+>  }
+> --
+> 2.19.1
 
