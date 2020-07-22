@@ -2,112 +2,51 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 112C92276A1
-	for <lists+linux-ia64@lfdr.de>; Tue, 21 Jul 2020 05:23:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 104CF228FFC
+	for <lists+linux-ia64@lfdr.de>; Wed, 22 Jul 2020 07:42:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728159AbgGUDXV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 20 Jul 2020 23:23:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34330 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726016AbgGUDXU (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 20 Jul 2020 23:23:20 -0400
-Received: from mail-il1-x141.google.com (mail-il1-x141.google.com [IPv6:2607:f8b0:4864:20::141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8DB3C061794;
-        Mon, 20 Jul 2020 20:23:20 -0700 (PDT)
-Received: by mail-il1-x141.google.com with SMTP id o3so15149633ilo.12;
-        Mon, 20 Jul 2020 20:23:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=Vy/t34kGa+AL0KVS5scjg7XYMyIm/b9u03KSFMBJSXw=;
-        b=e5h641+MTFpVytkoYyEBT4W0KfC6V02/Z7w3+CKkJAly6R0JfqLQaCO0C7qq3km8Wb
-         WFDVdCc+hEhqY+nS4HFLOvKt9R07H5PBFgzLDAelPS00zA9xMjj/Ih3pNbOYAbJrIhPC
-         Gck4m85PrjCgtsTuHQJGL2piphuPT+S7wSsvo8nkiY+ut+DqE2TREJXRiAPn//n8NWEk
-         2ZjDXsGBtILiF7AcQoM9O+jhNE6e6dNiHDu9rpIxyw2sm2l/JyKflj0skGlvEuTsINQF
-         Jt6rXMIQL3mPqZaXXRWmWnAASVK++i/79at+NWr9oDK1QgLvnlc6R5qYVw+XjfbnJeTh
-         wL7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=Vy/t34kGa+AL0KVS5scjg7XYMyIm/b9u03KSFMBJSXw=;
-        b=dIB4ppbtPAiaZEanSAMa7dpZ0NAou46pxjj5671zSg9in/1ilO3ImtpjAn/+oqF4fo
-         RTCB2/46x7Z7qVQ/iFh33WIGYpGS89LKyNytA72S26bwNcdgG4hl/PMs4uQmLFBVirj4
-         vUPjT930oRYM3J1GDya7WlLO5tXq0AkmGe4Nm8FND69RZPdtrBh5Acf15r1ucgVXuBNc
-         Zobvu58609Cp6ESpP9Rq3erASFZcStzzIYLP7PJIB/RgvlO8dvUU+9zI/I9voRIaxEjn
-         ebZVVWU7Fy0hTEhn1shxKoFmjk1DRQPBRfLryXkmd9Stv3ubwSRVp/CvASu/kz0KpaVJ
-         GjAw==
-X-Gm-Message-State: AOAM533d5UpNxyG3PQJgZKRyXrqbL6Av7K+cTIIm82kI7yykNCVqOZLh
-        yKRGcn89hBVBpvvznO/aphNdy2u9BG4SjvL+bAs=
-X-Google-Smtp-Source: ABdhPJzlqOcqKyey5YvPQM2wcN7pJpIFGRanN3KGGvW5kGMiePQ+aEHo+MR6gDJJj7Vv1ysgkHw3v0zs7bA044vZaeU=
-X-Received: by 2002:a05:6e02:80b:: with SMTP id u11mr27228504ilm.178.1595301800016;
- Mon, 20 Jul 2020 20:23:20 -0700 (PDT)
+        id S1728041AbgGVFmE convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Wed, 22 Jul 2020 01:42:04 -0400
+Received: from smtp.utu.edu.uy ([190.0.150.6]:49256 "EHLO delta45.utu.edu.uy"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1726696AbgGVFmD (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 22 Jul 2020 01:42:03 -0400
+X-Greylist: delayed 481 seconds by postgrey-1.27 at vger.kernel.org; Wed, 22 Jul 2020 01:41:53 EDT
+Received: from localhost (localhost [127.0.0.1])
+        by delta45.utu.edu.uy (Postfix) with ESMTP id A0FDF1D0EF10;
+        Wed, 22 Jul 2020 02:32:12 -0300 (GMT+3)
+Received: from delta45.utu.edu.uy ([127.0.0.1])
+        by localhost (delta45.utu.edu.uy [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id j-d5-xIHkuKF; Wed, 22 Jul 2020 02:32:12 -0300 (GMT+3)
+Received: from localhost (localhost [127.0.0.1])
+        by delta45.utu.edu.uy (Postfix) with ESMTP id DC7E81D0EF09;
+        Wed, 22 Jul 2020 02:32:11 -0300 (GMT+3)
+X-Virus-Scanned: amavisd-new at delta45.utu.edu.uy
+Received: from delta45.utu.edu.uy ([127.0.0.1])
+        by localhost (delta45.utu.edu.uy [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id z5KYbxFuF39p; Wed, 22 Jul 2020 02:32:11 -0300 (GMT+3)
+Received: from delta45.utu.edu.uy (delta45 [172.17.1.45])
+        by delta45.utu.edu.uy (Postfix) with ESMTP id 7FB051D0EEFB;
+        Wed, 22 Jul 2020 02:32:10 -0300 (GMT+3)
+Date:   Wed, 22 Jul 2020 02:32:10 -0300 (GMT-03:00)
+From:   Darlehen Bedienung <aemartinez@utu.edu.uy>
+Reply-To: info_innoxcapitalservicesolution@aol.com
+Message-ID: <754360867.138094.1595395930510.JavaMail.zimbra@utu.edu.uy>
+Subject: 
 MIME-Version: 1.0
-References: <20200709020629.91671-1-justin.he@arm.com> <20200709020629.91671-4-justin.he@arm.com>
-In-Reply-To: <20200709020629.91671-4-justin.he@arm.com>
-From:   Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-Date:   Tue, 21 Jul 2020 05:23:08 +0200
-Message-ID: <CAM9Jb+i7wMqXWXdnaeXmRQN8w8305A5WRKsnE9PAkxgUs2c++Q@mail.gmail.com>
-Subject: Re: [PATCH v3 3/6] sh/mm: use default dummy memory_add_physaddr_to_nid()
-To:     Jia He <justin.he@arm.com>
-Cc:     Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        David Hildenbrand <david@redhat.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Baoquan He <bhe@redhat.com>,
-        Chuhong Yuan <hslester96@gmail.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Hocko <mhocko@suse.com>,
-        linux-arm-kernel@lists.infradead.org,
-        LKML <linux-kernel@vger.kernel.org>, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org, linux-nvdimm@lists.01.org,
-        Linux MM <linux-mm@kvack.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Kaly Xin <Kaly.Xin@arm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [172.17.1.45]
+X-Mailer: Zimbra 8.8.12_GA_3866 (zclient/8.8.12_GA_3866)
+X-Authenticated-User: aemartinez@utu.edu.uy
+Thread-Index: sHxyVNlBzwToKpIuoIGp0++CnI1oLA==
+Thread-Topic: 
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-> After making default memory_add_physaddr_to_nid in mm/memory_hotplug,
-> there is no use to define a similar one in arch specific directory.
->
-> Signed-off-by: Jia He <justin.he@arm.com>
-> ---
->  arch/sh/mm/init.c | 9 ---------
->  1 file changed, 9 deletions(-)
->
-> diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-> index a70ba0fdd0b3..f75932ba87a6 100644
-> --- a/arch/sh/mm/init.c
-> +++ b/arch/sh/mm/init.c
-> @@ -430,15 +430,6 @@ int arch_add_memory(int nid, u64 start, u64 size,
->         return ret;
->  }
->
-> -#ifdef CONFIG_NUMA
-> -int memory_add_physaddr_to_nid(u64 addr)
-> -{
-> -       /* Node 0 for now.. */
-> -       return 0;
-> -}
-> -EXPORT_SYMBOL_GPL(memory_add_physaddr_to_nid);
-> -#endif
-> -
->  void arch_remove_memory(int nid, u64 start, u64 size,
->                         struct vmem_altmap *altmap)
->  {
 
-Reviewed-by: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+
+Schönen Tag,Wir sind zuverlässige, vertrauenswürdige Kreditgeber, Wir bieten Darlehen an Unternehmen und Privatpersonen zu niedrigen und günstigen Zinssatz von 2%. Sind Sie auf der Suche nach einem Business-Darlehen, persönliche Darlehen, Schuldenkonsolidierung, unbesicherte Darlehen, Venture Capital. Kontaktieren Sie uns mit Name, Land, Darlehensbetrag, Dauer und Telefonnummer.GrüßeHerr DA COSTA DARREN FAY
