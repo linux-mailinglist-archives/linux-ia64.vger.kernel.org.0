@@ -2,62 +2,51 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6300222B80E
-	for <lists+linux-ia64@lfdr.de>; Thu, 23 Jul 2020 22:47:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B69C22C19A
+	for <lists+linux-ia64@lfdr.de>; Fri, 24 Jul 2020 11:03:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726135AbgGWUr0 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 23 Jul 2020 16:47:26 -0400
-Received: from ms.lwn.net ([45.79.88.28]:42632 "EHLO ms.lwn.net"
+        id S1726801AbgGXJDd convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Fri, 24 Jul 2020 05:03:33 -0400
+Received: from mx2.itam.mx ([148.205.229.36]:45588 "EHLO mx2.itam.mx"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726046AbgGWUr0 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 23 Jul 2020 16:47:26 -0400
-Received: from lwn.net (localhost [127.0.0.1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id 1ADFF2CD;
-        Thu, 23 Jul 2020 20:47:26 +0000 (UTC)
-Date:   Thu, 23 Jul 2020 14:47:25 -0600
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     "Alexander A. Klimov" <grandmaster@al2klimov.de>
-Cc:     tony.luck@intel.com, fenghua.yu@intel.com,
-        linux-ia64@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] ia64: Replace HTTP links with HTTPS ones
-Message-ID: <20200723144725.17e369e0@lwn.net>
-In-Reply-To: <20200713215506.44327-1-grandmaster@al2klimov.de>
-References: <20200713083408.38154746@lwn.net>
-        <20200713215506.44327-1-grandmaster@al2klimov.de>
-Organization: LWN.net
+        id S1726753AbgGXJDd (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 24 Jul 2020 05:03:33 -0400
+Received: from cronos2.itam.mx (cronos2.itam.mx [148.205.148.141])
+        by mx2.itam.mx  with ESMTP id 06O92LrE000688-06O92LrI000688
+        (version=TLSv1.0 cipher=DHE-RSA-AES256-SHA bits=256 verify=FAIL);
+        Fri, 24 Jul 2020 04:02:21 -0500
+Received: from [10.28.175.153] (105.0.7.102) by cronos2.itam.mx
+ (148.205.148.141) with Microsoft SMTP Server (TLS) id 14.3.468.0; Fri, 24 Jul
+ 2020 04:02:18 -0500
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: =?utf-8?q?Covid_19_Wohlt=C3=A4tigkeitsfonds?=
+To:     Recipients@vger.kernel.org
+From:   ''Tayeb@vger.kernel.org, Souami''@vger.kernel.org
+Date:   Fri, 24 Jul 2020 11:01:56 +0200
+Reply-To: <charlesjacksonjr001@gmail.com>
+Message-ID: <7806f861-52d6-427d-9b01-1feee210566c@CRONOS2.itam.mx>
+X-Originating-IP: [105.0.7.102]
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, 13 Jul 2020 23:55:06 +0200
-"Alexander A. Klimov" <grandmaster@al2klimov.de> wrote:
+Hallo
 
->  Documentation/ia64/xen.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/ia64/xen.rst b/Documentation/ia64/xen.rst
-> index 831339c74441..9da6abb02a2c 100644
-> --- a/Documentation/ia64/xen.rst
-> +++ b/Documentation/ia64/xen.rst
-> @@ -28,7 +28,7 @@ Getting and Building Xen and Dom0
->  
->  	# hg clone http://xenbits.xensource.com/ext/ia64/xen-unstable.hg
->  	# cd xen-unstable.hg
-> -	# hg clone http://xenbits.xensource.com/ext/ia64/linux-2.6.18-xen.hg
-> +	# hg clone https://xenbits.xensource.com/ext/ia64/linux-2.6.18-xen.hg
->  
->   2. # make world
+Ich bin Charles W. Jackson aus North Carolina, Vereinigte Staaten von Amerika, und ich bin der Gewinner des Mega-Millionen-Jackpots von 344 Millionen US-Dollar. Ich spende die Summe von 2.000.000 Millionen Euro als Teil der Hilfsgelder für das Corona-Virus.
 
-So ... this is a sequence of operations that clearly cannot work at all
-since the repo link you didn't change is broken.  And if it were to
-somehow work, we'd get ... a 2.6.18 version of ia64 xen?  I think that the
-proper solution here is to simply delete this document...
+Dies ist Ihr Spendencode: [CJ530342019]
 
-jon
+www.youtube.com/watch?v=BSr8myiLPMQ
+
+Bitte antworten Sie auf diese E-Mail mit dem SPENDERCODE:
+
+charlesjacksonjr001@gmail.com
+
+Ich hoffe, dass Sie und Ihre Familie dies durchkommen
+
+
+Herr Charles Jackson
