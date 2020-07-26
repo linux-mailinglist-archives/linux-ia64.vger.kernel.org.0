@@ -2,48 +2,57 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 98AA222C91A
-	for <lists+linux-ia64@lfdr.de>; Fri, 24 Jul 2020 17:29:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0D7822DAE9
+	for <lists+linux-ia64@lfdr.de>; Sun, 26 Jul 2020 02:40:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726857AbgGXP3e (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 24 Jul 2020 11:29:34 -0400
-Received: from [125.140.134.231] ([125.140.134.231]:53505 "EHLO
-        WIN-DAONO245HJF" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1726842AbgGXP3d (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 24 Jul 2020 11:29:33 -0400
-Received: from User ([66.154.113.229]) by WIN-DAONO245HJF with Microsoft SMTPSVC(8.5.9600.16384);
-         Sat, 25 Jul 2020 00:23:30 +0900
-Reply-To: <christopherwang36@gmail.com>
-From:   "CHRISTOPHER WANG" <christopherwang36@gmail.com>
-Subject: INVESTMENT
-Date:   Fri, 24 Jul 2020 08:23:47 -0700
+        id S1727921AbgGZAkU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 25 Jul 2020 20:40:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53822 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727101AbgGZAkU (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 25 Jul 2020 20:40:20 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 456D8C08C5C0;
+        Sat, 25 Jul 2020 17:40:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=sQTU7EiSbF6nuRz5kddGWR7FHrJ/c2mknsP6KeJX8nw=; b=TJ6enFMzLeV5zQlaa0wsQaR6x9
+        EVn+qds6ObDxyRp5091mg7rlwdeLV721xl8V6FU6q33bnkQnWQrT3dyU1wl6urHeHTVhHcuVTtVcq
+        WQTc5IbdqAx/18f/aEyLhUUPDzBQIijc/gdgDxxjxg9iWHnLCRcx3Va3n4XbQJBINdmlFyOwhWHeI
+        wWGPzdGICsh6Mbb6cy8qi78rCybrgs8iK5MVwQk1QYoA8/cIwwvicyyjP7tU4KhIZYRtyoq6VY1tg
+        ROM0bJb631sdQj4diQSaTN/r7GNjXX14JtWiYhJARf5M07xNY32fs5WQd3cfz78pnyszwqBmOTMh+
+        FV/xk62w==;
+Received: from [2601:1c0:6280:3f0::19c2] (helo=smtpauth.infradead.org)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1jzUi8-0003NC-OQ; Sun, 26 Jul 2020 00:40:17 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
+Subject: [PATCH 0/5] ia64: delete duplicated words
+Date:   Sat, 25 Jul 2020 17:40:08 -0700
+Message-Id: <20200726004013.20534-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="Windows-1251"
-Content-Transfer-Encoding: 7bit
-X-Priority: 3
-X-MSMail-Priority: Normal
-X-Mailer: Microsoft Outlook Express 6.00.2600.0000
-X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
-Message-ID: <WIN-DAONO245HJFccxl008ef90c@WIN-DAONO245HJF>
-X-OriginalArrivalTime: 24 Jul 2020 15:23:30.0473 (UTC) FILETIME=[62EAF190:01D661CE]
-To:     unlisted-recipients:; (no To-header on input)
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+Drop repeated words in arch/ia64/ header files.
 
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: linux-ia64@vger.kernel.org
 
-Good day,
-
-You were recommended by a mutual associate. I write you regarding an investment of bearer bonds I made on behalf of a client. 
-
-       The investment was made in 2009 and has been under my management. The said investor is deceased. The window is now available to assign these bonds to any name or company of my choice. I have all the necessary information to achieve this within 10 banking days.
-      
-       The total value of the bond is 100million pounds sterling, in a million pound denominations.
-      
-        If you can handle this, do contact me at your earliest convenience via my email christopherwang36@gmail.com
-So we can discuss the final details Thank you.
- 
-Mr CHRISTOPHER WANG
+ arch/ia64/include/asm/pal.h          |    2 +-
+ arch/ia64/include/asm/perfmon.h      |    2 +-
+ arch/ia64/include/asm/spinlock.h     |    2 +-
+ arch/ia64/include/asm/uv/uv_hub.h    |    2 +-
+ arch/ia64/kernel/perfmon_mckinley.h  |    2 +-
+ arch/ia64/kernel/perfmon_montecito.h |    2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
