@@ -2,59 +2,31 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B00E9241F0F
-	for <lists+linux-ia64@lfdr.de>; Tue, 11 Aug 2020 19:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE3A1241F93
+	for <lists+linux-ia64@lfdr.de>; Tue, 11 Aug 2020 20:17:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729163AbgHKRUS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 11 Aug 2020 13:20:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48948 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729096AbgHKRUS (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 11 Aug 2020 13:20:18 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B794AC061787
-        for <linux-ia64@vger.kernel.org>; Tue, 11 Aug 2020 10:20:17 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id t14so3588039wmi.3
-        for <linux-ia64@vger.kernel.org>; Tue, 11 Aug 2020 10:20:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=jrtc27.com; s=gmail.jrtc27.user;
-        h=mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=wp+5ZaFf1QbnwLDrPCmaXkqrjaCFIhwjnpZssqgW770=;
-        b=Yh4522UESZrNZEfXagYw+bL0GktDu+xWNMRnegKv9gospYVm4e0LxnFv+GMO+jQJ+i
-         U0KrNq0TWj12YtlYK/MWlVyCdIheYW6p+UPm1g/+W5jsWtLowiqTUl/wLbLwZgAEMSpe
-         ociD7aM+iVfMQA2NUTH0pBBFDX1PN9OR6tXbvOaaBgML+u+BtBgevEioPf2kipiRwd9u
-         IDh5NbpeF27XYvEOgkPuAo10jK0HNNU1kkygs+CAY3Z7MIM5XcY/lhxpCmeplEo1tqoM
-         AR9Zyra5GMG4i1pwQJkUBsIUDaeS3FxDc9NGESpZLftJxHISTS4PyNd18GDkNET+chCK
-         NQvg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:subject:from:in-reply-to:date:cc
-         :content-transfer-encoding:message-id:references:to;
-        bh=wp+5ZaFf1QbnwLDrPCmaXkqrjaCFIhwjnpZssqgW770=;
-        b=DveeDXUJiehKxJ0yINqsHaOn2H5l6uRiaykg7W+WyEOmEanrtGZo7l0iGK/xUXxjSq
-         L5gI8WZeXwDoJLD+3Bp58mYSOBWvJy7h59UN4tuf+LMJYvMmhlH+dn26ee2iXhjKGbql
-         T2pQXGNxXYZ7kv8PpIZogdEpe3AbsDAnI2aqgirg8Vc9TUPFqYllSbJW5w5nF+jw99lA
-         TAHAkZsadYQkCv4UeUuVerGSg8fVU54nhvN/UGKC2KVj8deeM4nWJ+K+cB+IBEE3qFfK
-         v1E+p+nejoFWyY93P96jTqCZn2gc+2yW+ik4uSPu8asqc3qfWDB4WdcCLZDe7k0/mBPG
-         XKFA==
-X-Gm-Message-State: AOAM531LzMunKKswUsnppuBWBXGMKbgRv+dUJuRmKMUUWD6Fc/L3oaeJ
-        Z8/yWF4llyNRFHf2l9wJIuavJg==
-X-Google-Smtp-Source: ABdhPJxUdETwwMoZqjnMHFKdGRa4ItOH3++fzm4pRPin6Bb3tTiMjmhKmZN+15V94ZyImrlaepao7Q==
-X-Received: by 2002:a7b:c258:: with SMTP id b24mr4756895wmj.122.1597166415374;
-        Tue, 11 Aug 2020 10:20:15 -0700 (PDT)
-Received: from [192.168.149.251] (trinity-students-nat.trin.cam.ac.uk. [131.111.193.104])
-        by smtp.gmail.com with ESMTPSA id z66sm6532408wme.16.2020.08.11.10.20.14
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Tue, 11 Aug 2020 10:20:14 -0700 (PDT)
-Content-Type: text/plain;
-        charset=us-ascii
-Mime-Version: 1.0 (Mac OS X Mail 13.4 \(3608.120.23.2.1\))
+        id S1726020AbgHKSRD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 11 Aug 2020 14:17:03 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:46545 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725901AbgHKSRC (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 11 Aug 2020 14:17:02 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.93)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1k5YpW-003rJ7-Ix; Tue, 11 Aug 2020 20:16:58 +0200
+Received: from p57bd93c4.dip0.t-ipconnect.de ([87.189.147.196] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.93)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1k5YpW-002zpy-8o; Tue, 11 Aug 2020 20:16:58 +0200
 Subject: Re: "mm: consolidate pte_index() and pte_offset_*() definitions"
  broke ia64
-From:   Jessica Clarke <jrtc27@jrtc27.com>
-In-Reply-To: <fa71f38e-b191-597a-6359-502cba197050@physik.fu-berlin.de>
-Date:   Tue, 11 Aug 2020 18:20:14 +0100
+To:     Jessica Clarke <jrtc27@jrtc27.com>
 Cc:     Mike Rapoport <rppt@linux.ibm.com>,
         Tony Luck <tony.luck@intel.com>,
         "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
@@ -63,252 +35,136 @@ Cc:     Mike Rapoport <rppt@linux.ibm.com>,
         Linux MM <linux-mm@kvack.org>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         Frank Scheiner <frank.scheiner@web.de>
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <AA5E212C-56ED-4DB9-9CC1-EB13745DD5AF@jrtc27.com>
 References: <fa71f38e-b191-597a-6359-502cba197050@physik.fu-berlin.de>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-X-Mailer: Apple Mail (2.3608.120.23.2.1)
+ <AA5E212C-56ED-4DB9-9CC1-EB13745DD5AF@jrtc27.com>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
+ 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
+ scOkTAZQGVpD/8AaLH4v1w==
+Message-ID: <fe587e09-2835-87b9-ceed-89cdb81f327c@physik.fu-berlin.de>
+Date:   Tue, 11 Aug 2020 20:16:57 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
+MIME-Version: 1.0
+In-Reply-To: <AA5E212C-56ED-4DB9-9CC1-EB13745DD5AF@jrtc27.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.147.196
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 11 Aug 2020, at 17:35, John Paul Adrian Glaubitz =
-<glaubitz@physik.fu-berlin.de> wrote:
->=20
-> Hi Mike!
->=20
-> I just bisected a kernel issue on ia64 which leads to the kernel =
-hanging very early
-> when booting on an HP RX2600 server (also verified to hang on other =
-ia64 machines):
->=20
-> Loading Linux 5.8.0-12299-g00e4db51259a ...
-> Loading initial ramdisk ...
-> [    0.000000] Linux version 5.8.0-12299-g00e4db51259a =
-(root@glendronach) (gcc (Debian 10.2.0-3) 10.2.0, GNU ld (GNU Binutils =
-for Debian) 2.35) #5 SMP Tue Aug 11 15:33:11 CEST 2020
-> [    0.000000] efi: EFI v2.00 by HP
-> [    0.000000] efi: SALsystab=3D0x3ee7a000 ACPI 2.0=3D0x3fde4000 =
-ESI=3D0x3ee7b000 SMBIOS=3D0x3ee7c000 HCDP=3D0x3fde2000=20
-> [    0.000000] PCDP: v3 at 0x3fde2000
-> [    0.000000] earlycon: uart8250 at MMIO 0x0000000088033000 (options =
-'115200n8')
-> [    0.000000] printk: bootconsole [uart8250] enabled
-> [    0.000000] ACPI: Early table checksum verification disabled
-> [    0.000000] ACPI: RSDP 0x000000003FDE4000 000028 (v02 HP    )
-> [    0.000000] ACPI: XSDT 0x000000003FDE402C 0000A4 (v01 HP     rx2660 =
-  00000000 HP   00000000)
-> [    0.000000] ACPI: FACP 0x000000003FDF6A08 0000F4 (v03 HP     rx2660 =
-  00000000 HP   00000000)
-> [    0.000000] ACPI: DSDT 0x000000003FDE41C8 00E566 (v01 HP     rx2660 =
-  00000007 INTL 20050309)
-> [    0.000000] ACPI: FACS 0x000000003FDF6B00 000040
-> [    0.000000] ACPI: SPCR 0x000000003FDF6B40 000050 (v01 HP            =
-  00000000 HP   00000000)
-> [    0.000000] ACPI: DBGP 0x000000003FDF6B90 000034 (v01 HP     rx2660 =
-  00000000 HP   00000000)
-> [    0.000000] ACPI: APIC 0x000000003FDF6FB0 0000C8 (v01 HP     rx2660 =
-  00000000 HP   00000000)
-> [    0.000000] ACPI: SPMI 0x000000003FDF6BC8 000050 (v04 HP     rx2660 =
-  00000000 HP   00000000)
-> [    0.000000] ACPI: CPEP 0x000000003FDF6E80 000034 (v01 HP     rx2660 =
-  00000000 HP   00000000)
-> [    0.000000] ACPI: SSDT 0x000000003FDF2738 0004B3 (v01 HP     rx2660 =
-  00000006 INTL 20050309)
-> [    0.000000] ACPI: SSDT 0x000000003FDF2BF8 000456 (v01 HP     rx2660 =
-  00000006 INTL 20050309)
-> [    0.000000] ACPI: SSDT 0x000000003FDF3058 000EB8 (v01 HP     rx2660 =
-  00000006 INTL 20050309)
-> [    0.000000] ACPI: SSDT 0x000000003FDF3F18 000EB8 (v01 HP     rx2660 =
-  00000006 INTL 20050309)
-> [    0.000000] ACPI: SSDT 0x000000003FDF4DD8 000866 (v01 HP     rx2660 =
-  00000006 INTL 20050309)
-> [    0.000000] ACPI: SSDT 0x000000003FDF5648 000EB8 (v01 HP     rx2660 =
-  00000006 INTL 20050309)
-> [    0.000000] ACPI: SSDT 0x000000003FDF6508 000138 (v01 HP     rx2660 =
-  00000006 INTL 20050309)
-> [    0.000000] ACPI: SSDT 0x000000003FDF6648 00013C (v01 HP     rx2660 =
-  00000006 INTL 20050309)
-> [    0.000000] ACPI: SSDT 0x000000003FDF6788 00013C (v01 HP     rx2660 =
-  00000006 INTL 20050309)
-> [    0.000000] ACPI: SSDT 0x000000003FDF68C8 00013C (v01 HP     rx2660 =
-  00000006 INTL 20050309)
-> [    0.000000] ACPI: Local APIC address (____ptrval____)
-> [    0.000000] 4 CPUs available, 4 CPUs total
-> [    0.000000] SMP: Allowing 4 CPUs, 0 hotplug CPUs
-> [    0.000000] Initial ramdisk at: 0xe00000002e368000 (9818100 bytes)
-> [    0.000000] SAL 3.20: HP version 4.4
-> [    0.000000] SAL Platform features:
-> [    0.000000]  None
-> [    0.000000] SAL: AP wakeup using external interrupt vector 0xff
-> [    0.000000] MCA related initialization done                         =
-                                                                         =
-             =20
-> [    0.000000] Virtual mem_map starts at 0x(____ptrval____)            =
-                                                                         =
-             =20
-> [    0.000000] Zone ranges:                                            =
-                                                                         =
-             =20
-> [    0.000000]   DMA32    [mem 0x0000000001000000-0x00000000ffffffff]  =
-                                                                         =
-             =20
-> [    0.000000]   Normal   [mem 0x0000000100000000-0x000001007fffffff]  =
-                                                                         =
-             =20
-> [    0.000000] Movable zone start for each node                        =
-                                                                         =
-             =20
-> [    0.000000] Early memory node ranges                                =
-                                                                         =
-             =20
-> [    0.000000]   node   0: [mem 0x0000000001000000-0x000000003e67ffff] =
-                                                                         =
-             =20
-> [    0.000000]   node   0: [mem 0x000000003eaec000-0x000000003ee77fff] =
-                                                                         =
-             =20
-> [    0.000000]   node   0: [mem 0x000000003fc00000-0x000000003fd77fff] =
-                                                                         =
-             =20
-> [    0.000000]   node   0: [mem 0x000000003fddc000-0x000000003fddffff] =
-                                                                         =
-             =20
-> [    0.000000]   node   0: [mem 0x0000010040000000-0x000001007f1fbfff] =
-                                                                         =
-             =20
-> [    0.000000]   node   0: [mem 0x000001007f200000-0x000001007fffffff] =
-                                                                         =
-             =20
-> [    0.000000] Initmem setup node 0 [mem =
-0x0000000001000000-0x000001007fffffff]
->=20
-> Bisecting the problem lead to your change as mentioned in the topic:
->=20
-> 974b9b2c68f3d35a65e80af9657fe378d2439b60 is the first bad commit
-> commit 974b9b2c68f3d35a65e80af9657fe378d2439b60
-> Author: Mike Rapoport <rppt@linux.ibm.com>
-> Date:   Mon Jun 8 21:33:10 2020 -0700
->=20
->    mm: consolidate pte_index() and pte_offset_*() definitions
->=20
->    All architectures define pte_index() as
->=20
->            (address >> PAGE_SHIFT) & (PTRS_PER_PTE - 1)
->=20
->    and all architectures define pte_offset_kernel() as an entry in the =
-array
->    of PTEs indexed by the pte_index().
->=20
->    For the most architectures the pte_offset_kernel() implementation =
-relies
->    on the availability of pmd_page_vaddr() that converts a PMD entry =
-value to
->    the virtual address of the page containing PTEs array.
->=20
->    Let's move x86 definitions of the PTE accessors to the generic =
-place in
->    <linux/pgtable.h> and then simply drop the respective definitions =
-from the
->    other architectures.
->=20
->    The architectures that didn't provide pmd_page_vaddr() are updated =
-to have
->    that defined.
->=20
->    The generic implementation of pte_offset_kernel() can be overridden =
-by an
->    architecture and alpha makes use of this because it has special =
-ordering
->    requirements for its version of pte_offset_kernel().
->=20
-> Any suggestions what could be the problem?
+On 8/11/20 7:20 PM, Jessica Clarke wrote:
+> From 6c13e42cb95025e5f7ea3ac1a1262817bf3fcfec Mon Sep 17 00:00:00 2001
+> From: Jessica Clarke <jrtc27@jrtc27.com>
+> Date: Tue, 11 Aug 2020 19:18:28 +0200
+> Subject: [PATCH] arch/ia64: Restore arch-specific pgd_offset_k implementation
+> 
+> IA-64 is special and treats pgd_offset_k differently from pgd_offset by
+> not including the region number, and init_mm's PGD is such that it only
+> points to the kernel's region's PGD. This was broken in 974b9b2c68 which
+> unified the two and therfore included the region number, causing it to
+> index way out of bounds of the kernel's PGD and cause the kernel to hang
+> during early boot. Thus, permit pgd_offset_k to be overridden like the
+> other macros and override it on IA-64 with the old implementation. Also
+> update the comment to clarify that this is not just an optimisation but
+> a required implementation detail.
+> 
+> Fixes: 974b9b2c68 ("mm: consolidate pte_index() and pte_offset_*() definitions")
+> Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> Signed-off-by: Jessica Clarke <jrtc27@jrtc27.com>
+> ---
+>  arch/ia64/include/asm/pgtable.h | 8 ++++++++
+>  include/linux/pgtable.h         | 2 ++
+>  2 files changed, 10 insertions(+)
+> 
+> diff --git a/arch/ia64/include/asm/pgtable.h b/arch/ia64/include/asm/pgtable.h
+> index 10850897a91c..2ac2199d99ce 100644
+> --- a/arch/ia64/include/asm/pgtable.h
+> +++ b/arch/ia64/include/asm/pgtable.h
+> @@ -366,6 +366,14 @@ pgd_index (unsigned long address)
+>  }
+>  #define pgd_index pgd_index
+>  
+> +/*
+> + * In the kernel's mapped region we know everything is in region number 5, so
+> + * as an optimisation its PGD already points to the area for that region, but
+> + * that means not adding the region here is required, not just an optimisation.
+> + */
+> +#define pgd_offset_k(addr) \
+> +	(init_mm.pgd + (((addr) >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1)))
+> +
+>  /* Look up a pgd entry in the gate area.  On IA-64, the gate-area
+>     resides in the kernel-mapped segment, hence we use pgd_offset_k()
+>     here.  */
+> diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+> index 53e97da1e8e2..73c64fe098ba 100644
+> --- a/include/linux/pgtable.h
+> +++ b/include/linux/pgtable.h
+> @@ -117,7 +117,9 @@ static inline pgd_t *pgd_offset_pgd(pgd_t *pgd, unsigned long address)
+>   * a shortcut which implies the use of the kernel's pgd, instead
+>   * of a process's
+>   */
+> +#ifndef pgd_offset_k
+>  #define pgd_offset_k(address)		pgd_offset(&init_mm, (address))
+> +#endif
+>  
+>  /*
+>   * In many cases it is known that a virtual address is mapped at PMD or PTE
+> 
 
-Yeah, so, this definitely looks broken on ia64. pgd_offset_k was:
+Yes, this fixes it for me. The kernel boots fine again. Also, no build issues.
 
-> /* In the kernel's mapped region we completely ignore the region =
-number	=09
->    (since we know it's in region number 5). */	=09
-> #define pgd_offset_k(addr) \	=09
-> 	(init_mm.pgd + (((addr) >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1)))
+Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 
-But now it's the generic:
+Adrian
 
-> #define pgd_offset_k(address)		pgd_offset(&init_mm, (address))
-
-
-and so will call ia64's pgd_index, and thus include the region number,
-but presumably this causes surprises because the expectation is that
-it's just an offset within region 5, whereas now it's got a 5 in the
-high bits. Please try the patch below (not compile tested but WCPGW).
-
-Jess
-
-=46rom 6c13e42cb95025e5f7ea3ac1a1262817bf3fcfec Mon Sep 17 00:00:00 2001
-From: Jessica Clarke <jrtc27@jrtc27.com>
-Date: Tue, 11 Aug 2020 19:18:28 +0200
-Subject: [PATCH] arch/ia64: Restore arch-specific pgd_offset_k =
-implementation
-
-IA-64 is special and treats pgd_offset_k differently from pgd_offset by
-not including the region number, and init_mm's PGD is such that it only
-points to the kernel's region's PGD. This was broken in 974b9b2c68 which
-unified the two and therfore included the region number, causing it to
-index way out of bounds of the kernel's PGD and cause the kernel to hang
-during early boot. Thus, permit pgd_offset_k to be overridden like the
-other macros and override it on IA-64 with the old implementation. Also
-update the comment to clarify that this is not just an optimisation but
-a required implementation detail.
-
-Fixes: 974b9b2c68 ("mm: consolidate pte_index() and pte_offset_*() =
-definitions")
-Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Jessica Clarke <jrtc27@jrtc27.com>
----
- arch/ia64/include/asm/pgtable.h | 8 ++++++++
- include/linux/pgtable.h         | 2 ++
- 2 files changed, 10 insertions(+)
-
-diff --git a/arch/ia64/include/asm/pgtable.h =
-b/arch/ia64/include/asm/pgtable.h
-index 10850897a91c..2ac2199d99ce 100644
---- a/arch/ia64/include/asm/pgtable.h
-+++ b/arch/ia64/include/asm/pgtable.h
-@@ -366,6 +366,14 @@ pgd_index (unsigned long address)
- }
- #define pgd_index pgd_index
-=20
-+/*
-+ * In the kernel's mapped region we know everything is in region number =
-5, so
-+ * as an optimisation its PGD already points to the area for that =
-region, but
-+ * that means not adding the region here is required, not just an =
-optimisation.
-+ */
-+#define pgd_offset_k(addr) \
-+	(init_mm.pgd + (((addr) >> PGDIR_SHIFT) & (PTRS_PER_PGD - 1)))
-+
- /* Look up a pgd entry in the gate area.  On IA-64, the gate-area
-    resides in the kernel-mapped segment, hence we use pgd_offset_k()
-    here.  */
-diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
-index 53e97da1e8e2..73c64fe098ba 100644
---- a/include/linux/pgtable.h
-+++ b/include/linux/pgtable.h
-@@ -117,7 +117,9 @@ static inline pgd_t *pgd_offset_pgd(pgd_t *pgd, =
-unsigned long address)
-  * a shortcut which implies the use of the kernel's pgd, instead
-  * of a process's
-  */
-+#ifndef pgd_offset_k
- #define pgd_offset_k(address)		pgd_offset(&init_mm, (address))
-+#endif
-=20
- /*
-  * In many cases it is known that a virtual address is mapped at PMD or =
-PTE
---=20
-2.23.0
-
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
