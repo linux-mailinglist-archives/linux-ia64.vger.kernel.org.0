@@ -2,33 +2,39 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBE30241BE7
-	for <lists+linux-ia64@lfdr.de>; Tue, 11 Aug 2020 15:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 810A7241E5B
+	for <lists+linux-ia64@lfdr.de>; Tue, 11 Aug 2020 18:35:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728638AbgHKN6J (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 11 Aug 2020 09:58:09 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:46011 "EHLO
+        id S1729203AbgHKQfT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 11 Aug 2020 12:35:19 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:49683 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1728689AbgHKN6F (ORCPT
+        by vger.kernel.org with ESMTP id S1728969AbgHKQfQ (ORCPT
         <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 11 Aug 2020 09:58:05 -0400
+        Tue, 11 Aug 2020 12:35:16 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.93)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1k5Ums-002YfH-FD; Tue, 11 Aug 2020 15:57:58 +0200
+          id 1k5XF1-003Quk-I9; Tue, 11 Aug 2020 18:35:11 +0200
 Received: from suse-laptop.physik.fu-berlin.de ([160.45.32.140])
           by inpost2.zedat.fu-berlin.de (Exim 4.93)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1k5Ums-002PSM-6q; Tue, 11 Aug 2020 15:57:58 +0200
-To:     "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
-Cc:     Sergei Trofimovich <slyfox@gentoo.org>,
-        Anatoly Pugachev <matorola@gmail.com>, jrtc27@jrtc27.com
+          id 1k5XF1-002n7F-C1; Tue, 11 Aug 2020 18:35:11 +0200
+To:     Mike Rapoport <rppt@linux.ibm.com>
+Cc:     Tony Luck <tony.luck@intel.com>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        Anatoly Pugachev <matorola@gmail.com>,
+        Sergei Trofimovich <slyfox@gentoo.org>, jrtc27@jrtc27.com,
+        Linux MM <linux-mm@kvack.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Frank Scheiner <frank.scheiner@web.de>
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: ia64 kernel not booting on HEAD, stopping at "Initmem setup"
+Subject: "mm: consolidate pte_index() and pte_offset_*() definitions" broke
+ ia64
 Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  mQINBE3JE9wBEADMrYGNfz3oz6XLw9XcWvuIxIlPWoTyw9BxTicfGAv0d87wngs9U+d52t/R
  EggPePf34gb7/k8FBY1IgyxnZEB5NxUb1WtW0M3GUxpPx6gBZqOm7SK1ZW3oSORw+T7Aezl3
@@ -73,8 +79,8 @@ Autocrypt: addr=glaubitz@physik.fu-berlin.de; keydata=
  jEF9ImTPcYZpw5vhdyPwBdXW2lSjV3EAqknWujRgcsm84nycuJnImwJptR481EWmtuH6ysj5
  YhRVGbQPfdsjVUQfZdRdkEv4CZ90pdscBi1nRqcqANtzC+WQFwekDzk2lGqNRDg56s+q0KtY
  scOkTAZQGVpD/8AaLH4v1w==
-Message-ID: <c9702a41-d7d6-669a-bcdf-ef69f3569650@physik.fu-berlin.de>
-Date:   Tue, 11 Aug 2020 15:57:57 +0200
+Message-ID: <fa71f38e-b191-597a-6359-502cba197050@physik.fu-berlin.de>
+Date:   Tue, 11 Aug 2020 18:35:11 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.10.0
 MIME-Version: 1.0
@@ -88,11 +94,10 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi!
+Hi Mike!
 
-I just compiled and booted a current kernel from Linus' tree and it doesn't boot
-beyond what's below. It looks like some changes to memory initialization broke
-the kernel on ia64:
+I just bisected a kernel issue on ia64 which leads to the kernel hanging very early
+when booting on an HP RX2600 server (also verified to hang on other ia64 machines):
 
 Loading Linux 5.8.0-12299-g00e4db51259a ...
 Loading initial ramdisk ...
@@ -146,6 +151,40 @@ Loading initial ramdisk ...
 [    0.000000]   node   0: [mem 0x000001007f200000-0x000001007fffffff]                                                                                        
 [    0.000000] Initmem setup node 0 [mem 0x0000000001000000-0x000001007fffffff]
 
+Bisecting the problem lead to your change as mentioned in the topic:
+
+974b9b2c68f3d35a65e80af9657fe378d2439b60 is the first bad commit
+commit 974b9b2c68f3d35a65e80af9657fe378d2439b60
+Author: Mike Rapoport <rppt@linux.ibm.com>
+Date:   Mon Jun 8 21:33:10 2020 -0700
+
+    mm: consolidate pte_index() and pte_offset_*() definitions
+    
+    All architectures define pte_index() as
+    
+            (address >> PAGE_SHIFT) & (PTRS_PER_PTE - 1)
+    
+    and all architectures define pte_offset_kernel() as an entry in the array
+    of PTEs indexed by the pte_index().
+    
+    For the most architectures the pte_offset_kernel() implementation relies
+    on the availability of pmd_page_vaddr() that converts a PMD entry value to
+    the virtual address of the page containing PTEs array.
+    
+    Let's move x86 definitions of the PTE accessors to the generic place in
+    <linux/pgtable.h> and then simply drop the respective definitions from the
+    other architectures.
+    
+    The architectures that didn't provide pmd_page_vaddr() are updated to have
+    that defined.
+    
+    The generic implementation of pte_offset_kernel() can be overridden by an
+    architecture and alpha makes use of this because it has special ordering
+    requirements for its version of pte_offset_kernel().
+
+Any suggestions what could be the problem?
+
+Thanks,
 Adrian
 
 -- 
