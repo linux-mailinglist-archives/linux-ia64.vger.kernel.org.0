@@ -2,72 +2,152 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7155A249F35
-	for <lists+linux-ia64@lfdr.de>; Wed, 19 Aug 2020 15:08:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11A2E24A02E
+	for <lists+linux-ia64@lfdr.de>; Wed, 19 Aug 2020 15:37:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727018AbgHSNIi (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 19 Aug 2020 09:08:38 -0400
-Received: from mx2.suse.de ([195.135.220.15]:42180 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726961AbgHSNIh (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 19 Aug 2020 09:08:37 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 758CEB0B7;
-        Wed, 19 Aug 2020 13:09:02 +0000 (UTC)
-Date:   Wed, 19 Aug 2020 15:08:35 +0200
-From:   Michal Hocko <mhocko@suse.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        Baoquan He <bhe@redhat.com>,
-        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
-        Oscar Salvador <osalvador@suse.de>,
+        id S1728603AbgHSNgp (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 19 Aug 2020 09:36:45 -0400
+Received: from out02.mta.xmission.com ([166.70.13.232]:58478 "EHLO
+        out02.mta.xmission.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1728582AbgHSNgn (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 19 Aug 2020 09:36:43 -0400
+Received: from in02.mta.xmission.com ([166.70.13.52])
+        by out02.mta.xmission.com with esmtps  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1k8OGa-0050Ds-A0; Wed, 19 Aug 2020 07:36:36 -0600
+Received: from ip68-227-160-95.om.om.cox.net ([68.227.160.95] helo=x220.xmission.com)
+        by in02.mta.xmission.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.87)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1k8OGZ-00033s-EG; Wed, 19 Aug 2020 07:36:36 -0600
+From:   ebiederm@xmission.com (Eric W. Biederman)
+To:     Matthew Wilcox <willy@infradead.org>
+Cc:     Christian Brauner <christian.brauner@ubuntu.com>,
+        peterz@infradead.org, Christoph Hewllig <hch@infradead.org>,
+        linux-kernel@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-arch@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Michel Lespinasse <walken@google.com>,
-        linux-ia64@vger.kernel.org
-Subject: Re: [PATCH v1 10/11] mm: pass migratetype into memmap_init_zone()
- and move_pfn_range_to_zone()
-Message-ID: <20200819130835.GO5422@dhcp22.suse.cz>
-References: <20200819101157.12723-1-david@redhat.com>
- <20200819101157.12723-11-david@redhat.com>
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ley Foon Tan <ley.foon.tan@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, Arnd Bergmann <arnd@arndb.de>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Stafford Horne <shorne@gmail.com>,
+        Kars de Jong <jongk@linux-m68k.org>,
+        Kees Cook <keescook@chromium.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Alexandre Chartre <alexandre.chartre@oracle.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Tom Zanussi <zanussi@kernel.org>,
+        Xiao Yang <yangx.jy@cn.fujitsu.com>, linux-doc@vger.kernel.org,
+        uclinux-h8-devel@lists.sourceforge.jp, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org,
+        kgdb-bugreport@lists.sourceforge.net,
+        linux-kselftest@vger.kernel.org
+References: <20200818173411.404104-1-christian.brauner@ubuntu.com>
+        <20200818174447.GV17456@casper.infradead.org>
+        <20200819074340.GW2674@hirez.programming.kicks-ass.net>
+        <20200819084556.im5zfpm2iquzvzws@wittgenstein>
+        <20200819111851.GY17456@casper.infradead.org>
+Date:   Wed, 19 Aug 2020 08:32:59 -0500
+In-Reply-To: <20200819111851.GY17456@casper.infradead.org> (Matthew Wilcox's
+        message of "Wed, 19 Aug 2020 12:18:51 +0100")
+Message-ID: <87a6yq222c.fsf@x220.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/26.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200819101157.12723-11-david@redhat.com>
+Content-Type: text/plain
+X-XM-SPF: eid=1k8OGZ-00033s-EG;;;mid=<87a6yq222c.fsf@x220.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.160.95;;;frm=ebiederm@xmission.com;;;spf=neutral
+X-XM-AID: U2FsdGVkX1/396JhySI4Q4/s/q4z9fmXeBaBg1QpuKc=
+X-SA-Exim-Connect-IP: 68.227.160.95
+X-SA-Exim-Mail-From: ebiederm@xmission.com
+X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on sa06.xmission.com
+X-Spam-Level: 
+X-Spam-Status: No, score=0.5 required=8.0 tests=ALL_TRUSTED,BAYES_40,
+        DCC_CHECK_NEGATIVE,T_TM2_M_HEADER_IN_MSG,T_TooManySym_01,
+        T_TooManySym_02,T_TooManySym_03,T_TooManySym_04,XMNoVowels
+        autolearn=disabled version=3.4.2
+X-Spam-Report: * -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
+        * -0.0 BAYES_40 BODY: Bayes spam probability is 20 to 40%
+        *      [score: 0.3763]
+        *  1.5 XMNoVowels Alpha-numberic number with no vowels
+        *  0.0 T_TM2_M_HEADER_IN_MSG BODY: No description available.
+        * -0.0 DCC_CHECK_NEGATIVE Not listed in DCC
+        *      [sa06 0; Body=1 Fuz1=1 Fuz2=1]
+        *  0.0 T_TooManySym_02 5+ unique symbols in subject
+        *  0.0 T_TooManySym_01 4+ unique symbols in subject
+        *  0.0 T_TooManySym_04 7+ unique symbols in subject
+        *  0.0 T_TooManySym_03 6+ unique symbols in subject
+X-Spam-DCC: ; sa06 0; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ;Matthew Wilcox <willy@infradead.org>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 406 ms - load_scoreonly_sql: 0.05 (0.0%),
+        signal_user_changed: 9 (2.2%), b_tie_ro: 8 (1.9%), parse: 1.26 (0.3%),
+        extract_message_metadata: 13 (3.3%), get_uri_detail_list: 2.0 (0.5%),
+        tests_pri_-1000: 18 (4.4%), tests_pri_-950: 1.30 (0.3%),
+        tests_pri_-900: 1.07 (0.3%), tests_pri_-90: 74 (18.1%), check_bayes:
+        72 (17.7%), b_tokenize: 12 (2.9%), b_tok_get_all: 9 (2.2%),
+        b_comp_prob: 2.8 (0.7%), b_tok_touch_all: 44 (10.9%), b_finish: 0.92
+        (0.2%), tests_pri_0: 273 (67.2%), check_dkim_signature: 0.54 (0.1%),
+        check_dkim_adsp: 2.4 (0.6%), poll_dns_idle: 0.81 (0.2%), tests_pri_10:
+        2.4 (0.6%), tests_pri_500: 10 (2.4%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH 00/11] Introduce kernel_clone(), kill _do_fork()
+X-Spam-Flag: No
+X-SA-Exim-Version: 4.2.1 (built Thu, 05 May 2016 13:38:54 -0600)
+X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed 19-08-20 12:11:56, David Hildenbrand wrote:
-> On the memory hotplug path, we want to start with MIGRATE_ISOLATE, to
-> un-isolate the pages after memory onlining is complete. Let's allow
-> passing in the migratetype.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> Cc: Michal Hocko <mhocko@suse.com>
-> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
-> Cc: Baoquan He <bhe@redhat.com>
-> Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
-> Cc: Oscar Salvador <osalvador@suse.de>
-> Cc: Tony Luck <tony.luck@intel.com>
-> Cc: Fenghua Yu <fenghua.yu@intel.com>
-> Cc: Logan Gunthorpe <logang@deltatee.com>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Mike Rapoport <rppt@kernel.org>
-> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
-> Cc: Michel Lespinasse <walken@google.com>
-> Cc: linux-ia64@vger.kernel.org
-> Signed-off-by: David Hildenbrand <david@redhat.com>
+Matthew Wilcox <willy@infradead.org> writes:
 
-Acked-by: Michal Hocko <mhocko@suse.com>
--- 
-Michal Hocko
-SUSE Labs
+> On Wed, Aug 19, 2020 at 10:45:56AM +0200, Christian Brauner wrote:
+>> On Wed, Aug 19, 2020 at 09:43:40AM +0200, peterz@infradead.org wrote:
+>> > On Tue, Aug 18, 2020 at 06:44:47PM +0100, Matthew Wilcox wrote:
+>> > > On Tue, Aug 18, 2020 at 07:34:00PM +0200, Christian Brauner wrote:
+>> > > > The only remaining function callable outside of kernel/fork.c is
+>> > > > _do_fork(). It doesn't really follow the naming of kernel-internal
+>> > > > syscall helpers as Christoph righly pointed out. Switch all callers and
+>> > > > references to kernel_clone() and remove _do_fork() once and for all.
+>> > > 
+>> > > My only concern is around return type.  long, int, pid_t ... can we
+>> > > choose one and stick to it?  pid_t is probably the right return type
+>> > > within the kernel, despite the return type of clone3().  It'll save us
+>> > > some work if we ever go through the hassle of growing pid_t beyond 31-bit.
+>> > 
+>> > We have at least the futex ABI restricting PID space to 30 bits.
+>> 
+>> Ok, looking into kernel/futex.c I see 
+>> 
+>> pid_t pid = uval & FUTEX_TID_MASK;
+>> 
+>> which is probably what this referes to and /proc/sys/kernel/threads-max
+>> is restricted to FUTEX_TID_MASK.
+>> 
+>> Afaict, that doesn't block switching kernel_clone() to return pid_t. It
+>> can't create anything > FUTEX_TID_MASK anyway without yelling EAGAIN at
+>> userspace. But it means that _if_ we were to change the size of pid_t
+>> we'd likely need a new futex API. 
+>
+> Yes, there would be a lot of work to do to increase the size of pid_t.
+> I'd just like to not do anything to make that harder _now_.  Stick to
+> using pid_t within the kernel.
+
+Just so people are aware.  If you look in include/linux/threads.h you
+can see that the maximum value of PID_MAX_LIMIT limits pids to 22 bits.
+
+Further the design decisions of pids keeps us densly using pids.  So I
+expect it will be a while before we even come close to using 30 bits of
+pid space.
+
+At the same time I do agree that it makes sense to use a consistent type
+in the kernel to make it easier to read and update the code.
+
+Eric
