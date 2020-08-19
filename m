@@ -2,117 +2,71 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 744BD24A079
-	for <lists+linux-ia64@lfdr.de>; Wed, 19 Aug 2020 15:49:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4989F24A0B5
+	for <lists+linux-ia64@lfdr.de>; Wed, 19 Aug 2020 15:55:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728639AbgHSNq5 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 19 Aug 2020 09:46:57 -0400
-Received: from youngberry.canonical.com ([91.189.89.112]:59111 "EHLO
-        youngberry.canonical.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728681AbgHSNqr (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 19 Aug 2020 09:46:47 -0400
-Received: from ip5f5af70b.dynamic.kabel-deutschland.de ([95.90.247.11] helo=wittgenstein)
-        by youngberry.canonical.com with esmtpsa (TLS1.2:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        (Exim 4.86_2)
-        (envelope-from <christian.brauner@ubuntu.com>)
-        id 1k8OQB-0005pv-If; Wed, 19 Aug 2020 13:46:31 +0000
-Date:   Wed, 19 Aug 2020 15:46:29 +0200
-From:   Christian Brauner <christian.brauner@ubuntu.com>
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     Matthew Wilcox <willy@infradead.org>, peterz@infradead.org,
-        Christoph Hewllig <hch@infradead.org>,
-        linux-kernel@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Stafford Horne <shorne@gmail.com>,
-        Kars de Jong <jongk@linux-m68k.org>,
-        Kees Cook <keescook@chromium.org>,
-        Greentime Hu <green.hu@gmail.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Tom Zanussi <zanussi@kernel.org>,
-        Xiao Yang <yangx.jy@cn.fujitsu.com>, linux-doc@vger.kernel.org,
-        uclinux-h8-devel@lists.sourceforge.jp, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org,
-        kgdb-bugreport@lists.sourceforge.net,
-        linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 00/11] Introduce kernel_clone(), kill _do_fork()
-Message-ID: <20200819134629.mvd4nupme7q2hmtz@wittgenstein>
-References: <20200818173411.404104-1-christian.brauner@ubuntu.com>
- <20200818174447.GV17456@casper.infradead.org>
- <20200819074340.GW2674@hirez.programming.kicks-ass.net>
- <20200819084556.im5zfpm2iquzvzws@wittgenstein>
- <20200819111851.GY17456@casper.infradead.org>
- <87a6yq222c.fsf@x220.int.ebiederm.org>
+        id S1728508AbgHSNzB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 19 Aug 2020 09:55:01 -0400
+Received: from verein.lst.de ([213.95.11.211]:37889 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726961AbgHSNzB (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 19 Aug 2020 09:55:01 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 8062B68BEB; Wed, 19 Aug 2020 15:54:55 +0200 (CEST)
+Date:   Wed, 19 Aug 2020 15:54:55 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Tomasz Figa <tfiga@chromium.org>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Pawel Osciak <pawel@osciak.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <iommu@lists.linux-foundation.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        alsa-devel@alsa-project.org,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-parisc@vger.kernel.org,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        nouveau@lists.freedesktop.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-nvme@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, netdev@vger.kernel.org,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <linux-arm-kernel@lists.infradead.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>
+Subject: Re: [PATCH 05/28] media/v4l2: remove
+ V4L2-FLAG-MEMORY-NON-CONSISTENT
+Message-ID: <20200819135454.GA17098@lst.de>
+References: <20200819065555.1802761-1-hch@lst.de> <20200819065555.1802761-6-hch@lst.de> <CAAFQd5COLxjydDYrfx47ht8tj-aNPiaVnC+WyQA7nvpW4gs=ww@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87a6yq222c.fsf@x220.int.ebiederm.org>
+In-Reply-To: <CAAFQd5COLxjydDYrfx47ht8tj-aNPiaVnC+WyQA7nvpW4gs=ww@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Aug 19, 2020 at 08:32:59AM -0500, Eric W. Biederman wrote:
-> Matthew Wilcox <willy@infradead.org> writes:
+On Wed, Aug 19, 2020 at 01:16:51PM +0200, Tomasz Figa wrote:
+> Hi Christoph,
 > 
-> > On Wed, Aug 19, 2020 at 10:45:56AM +0200, Christian Brauner wrote:
-> >> On Wed, Aug 19, 2020 at 09:43:40AM +0200, peterz@infradead.org wrote:
-> >> > On Tue, Aug 18, 2020 at 06:44:47PM +0100, Matthew Wilcox wrote:
-> >> > > On Tue, Aug 18, 2020 at 07:34:00PM +0200, Christian Brauner wrote:
-> >> > > > The only remaining function callable outside of kernel/fork.c is
-> >> > > > _do_fork(). It doesn't really follow the naming of kernel-internal
-> >> > > > syscall helpers as Christoph righly pointed out. Switch all callers and
-> >> > > > references to kernel_clone() and remove _do_fork() once and for all.
-> >> > > 
-> >> > > My only concern is around return type.  long, int, pid_t ... can we
-> >> > > choose one and stick to it?  pid_t is probably the right return type
-> >> > > within the kernel, despite the return type of clone3().  It'll save us
-> >> > > some work if we ever go through the hassle of growing pid_t beyond 31-bit.
-> >> > 
-> >> > We have at least the futex ABI restricting PID space to 30 bits.
-> >> 
-> >> Ok, looking into kernel/futex.c I see 
-> >> 
-> >> pid_t pid = uval & FUTEX_TID_MASK;
-> >> 
-> >> which is probably what this referes to and /proc/sys/kernel/threads-max
-> >> is restricted to FUTEX_TID_MASK.
-> >> 
-> >> Afaict, that doesn't block switching kernel_clone() to return pid_t. It
-> >> can't create anything > FUTEX_TID_MASK anyway without yelling EAGAIN at
-> >> userspace. But it means that _if_ we were to change the size of pid_t
-> >> we'd likely need a new futex API. 
+> On Wed, Aug 19, 2020 at 8:56 AM Christoph Hellwig <hch@lst.de> wrote:
 > >
-> > Yes, there would be a lot of work to do to increase the size of pid_t.
-> > I'd just like to not do anything to make that harder _now_.  Stick to
-> > using pid_t within the kernel.
+> > The V4L2-FLAG-MEMORY-NON-CONSISTENT flag is entirely unused,
 > 
-> Just so people are aware.  If you look in include/linux/threads.h you
-> can see that the maximum value of PID_MAX_LIMIT limits pids to 22 bits.
-> 
-> Further the design decisions of pids keeps us densly using pids.  So I
-> expect it will be a while before we even come close to using 30 bits of
-> pid space.
+> Could you explain what makes you think it's unused? It's a feature of
+> the UAPI generally supported by the videobuf2 framework and relied on
+> by Chromium OS to get any kind of reasonable performance when
+> accessing V4L2 buffers in the userspace.
 
-Also because it's simply annoying to have to type really large pid
-numbers on the shell. Yes yes, that's a very privileged
-developer-centric complaint but it matters when you have to do a quick
-kill -9. Chromebook users obviously won't care about how large their
-pids are for sure.
-
-Tbf, related to discussions last year, systemd now actually raises the
-default limit from ~33000 to 4194304. Which seems like an ok compromise.
-
-Christian
+Because it doesn't do anything except on PARISC and non-coherent MIPS,
+so by definition it isn't used by any of these media drivers.
