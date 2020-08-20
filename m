@@ -2,64 +2,76 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 05AE924A761
-	for <lists+linux-ia64@lfdr.de>; Wed, 19 Aug 2020 22:02:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9354B24ADF8
+	for <lists+linux-ia64@lfdr.de>; Thu, 20 Aug 2020 06:44:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726841AbgHSUC2 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 19 Aug 2020 16:02:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45562 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725997AbgHSUC1 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 19 Aug 2020 16:02:27 -0400
-Received: from shards.monkeyblade.net (shards.monkeyblade.net [IPv6:2620:137:e000::1:9])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8337CC061757;
-        Wed, 19 Aug 2020 13:02:26 -0700 (PDT)
-Received: from localhost (unknown [IPv6:2601:601:9f00:477::3d5])
-        (using TLSv1 with cipher AES256-SHA (256/256 bits))
-        (Client did not present a certificate)
-        (Authenticated sender: davem-davemloft)
-        by shards.monkeyblade.net (Postfix) with ESMTPSA id 32B9F11E45763;
-        Wed, 19 Aug 2020 12:45:37 -0700 (PDT)
-Date:   Wed, 19 Aug 2020 13:02:22 -0700 (PDT)
-Message-Id: <20200819.130222.1915954815957844234.davem@davemloft.net>
-To:     christian.brauner@ubuntu.com
-Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        corbet@lwn.net, ysato@users.sourceforge.jp, tony.luck@intel.com,
-        fenghua.yu@intel.com, geert@linux-m68k.org, ley.foon.tan@intel.com,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-        arnd@arndb.de, rostedt@goodmis.org, shorne@gmail.com,
-        peterz@infradead.org, jongk@linux-m68k.org, keescook@chromium.org,
-        green.hu@gmail.com, ebiederm@xmission.com,
-        mchehab+huawei@kernel.org, alexandre.chartre@oracle.com,
-        mhiramat@kernel.org, zanussi@kernel.org, yangx.jy@cn.fujitsu.com,
-        linux-doc@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        sparclinux@vger.kernel.org, kgdb-bugreport@lists.sourceforge.net,
-        linux-kselftest@vger.kernel.org, torvalds@linux-foundation.org,
-        hch@infradead.org, willy@infradead.org
-Subject: Re: [PATCH v2 06/11] sparc: switch to kernel_clone()
-From:   David Miller <davem@davemloft.net>
-In-Reply-To: <20200819104655.436656-7-christian.brauner@ubuntu.com>
-References: <20200819104655.436656-1-christian.brauner@ubuntu.com>
-        <20200819104655.436656-7-christian.brauner@ubuntu.com>
-X-Mailer: Mew version 6.8 on Emacs 26.3
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
-X-Greylist: Sender succeeded SMTP AUTH, not delayed by milter-greylist-4.5.12 (shards.monkeyblade.net [149.20.54.216]); Wed, 19 Aug 2020 12:45:38 -0700 (PDT)
+        id S1725793AbgHTEny (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 20 Aug 2020 00:43:54 -0400
+Received: from verein.lst.de ([213.95.11.211]:40376 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725772AbgHTEnx (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 20 Aug 2020 00:43:53 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 5BE8868BEB; Thu, 20 Aug 2020 06:43:47 +0200 (CEST)
+Date:   Thu, 20 Aug 2020 06:43:47 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Tomasz Figa <tfiga@chromium.org>
+Cc:     Christoph Hellwig <hch@lst.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Pawel Osciak <pawel@osciak.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <iommu@lists.linux-foundation.org>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        alsa-devel@alsa-project.org,
+        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, linux-scsi@vger.kernel.org,
+        linux-parisc@vger.kernel.org,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        nouveau@lists.freedesktop.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-nvme@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, netdev@vger.kernel.org,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <linux-arm-kernel@lists.infradead.org>,
+        Linux Media Mailing List <linux-media@vger.kernel.org>
+Subject: Re: [PATCH 05/28] media/v4l2: remove
+ V4L2-FLAG-MEMORY-NON-CONSISTENT
+Message-ID: <20200820044347.GA4533@lst.de>
+References: <20200819065555.1802761-1-hch@lst.de> <20200819065555.1802761-6-hch@lst.de> <CAAFQd5COLxjydDYrfx47ht8tj-aNPiaVnC+WyQA7nvpW4gs=ww@mail.gmail.com> <20200819135454.GA17098@lst.de> <CAAFQd5BuXP7t3d-Rwft85j=KTyXq7y4s24mQxLr=VoY9krEGZw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAAFQd5BuXP7t3d-Rwft85j=KTyXq7y4s24mQxLr=VoY9krEGZw@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Christian Brauner <christian.brauner@ubuntu.com>
-Date: Wed, 19 Aug 2020 12:46:50 +0200
-
-> The old _do_fork() helper is removed in favor of the new kernel_clone() helper.
-> The latter adheres to naming conventions for kernel internal syscall helpers.
+On Wed, Aug 19, 2020 at 03:57:53PM +0200, Tomasz Figa wrote:
+> > > Could you explain what makes you think it's unused? It's a feature of
+> > > the UAPI generally supported by the videobuf2 framework and relied on
+> > > by Chromium OS to get any kind of reasonable performance when
+> > > accessing V4L2 buffers in the userspace.
+> >
+> > Because it doesn't do anything except on PARISC and non-coherent MIPS,
+> > so by definition it isn't used by any of these media drivers.
 > 
-> Cc: "David S. Miller" <davem@davemloft.net>
-> Cc: sparclinux@vger.kernel.org
-> Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
+> It's still an UAPI feature, so we can't simply remove the flag, it
+> must stay there as a no-op, until the problem is resolved.
 
-Acked-by: David S. Miller <davem@davemloft.net>
+Ok, I'll switch to just ignoring it for the next version.
+
+> Also, it of course might be disputable as an out-of-tree usage, but
+> selecting CONFIG_DMA_NONCOHERENT_CACHE_SYNC makes the flag actually do
+> something on other platforms, including ARM64.
+
+It isn't just disputable, but by kernel policies simply is not relevant.
