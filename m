@@ -2,122 +2,121 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F418824C4AF
-	for <lists+linux-ia64@lfdr.de>; Thu, 20 Aug 2020 19:41:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5F0DF24C86A
+	for <lists+linux-ia64@lfdr.de>; Fri, 21 Aug 2020 01:20:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728020AbgHTRla (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 20 Aug 2020 13:41:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48348 "EHLO
+        id S1728631AbgHTXT4 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 20 Aug 2020 19:19:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727074AbgHTRlU (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 20 Aug 2020 13:41:20 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C37B6C061386
-        for <linux-ia64@vger.kernel.org>; Thu, 20 Aug 2020 10:41:19 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id b2so976722edw.5
-        for <linux-ia64@vger.kernel.org>; Thu, 20 Aug 2020 10:41:19 -0700 (PDT)
+        with ESMTP id S1728554AbgHTXTz (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 20 Aug 2020 19:19:55 -0400
+Received: from mail-pj1-x1041.google.com (mail-pj1-x1041.google.com [IPv6:2607:f8b0:4864:20::1041])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 794D7C061385;
+        Thu, 20 Aug 2020 16:19:54 -0700 (PDT)
+Received: by mail-pj1-x1041.google.com with SMTP id d4so109964pjx.5;
+        Thu, 20 Aug 2020 16:19:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=TdWdmS9KmpqRDKTTx4ZFKlZV0sk8Q5cLOhIOkZ1gD+w=;
-        b=cAZtzVYP2n3YvXgVkbJ7dbST+g3SP0UPbXQ9iKKyhX4VXr8jHpSYHqZMaG5ucNVipI
-         bzzpnQCIz78GKzn14VpRAj8Y6mpMr87iyH7UMbPsjr5O6z0niDquexdhhjTmn1y5QjQv
-         l8iJOpqbyOslL4LKhF6zS+g3cTQ+z78POnoVc=
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id;
+        bh=1XFUxolbA7h1HeK5YbtlyNm7bbkj2GGYGOp3MuLqhZo=;
+        b=eqzf/OiAqYuMkve9o3Rg2GzzA/6jLGZPEtPfhYoyr9342xlMhSngQCcxYLIDthFc44
+         UUDoF359natqKdeAghtC2LYyTQPzIg2AfXD2MCDW8kgNUE8qyC5F3NyYAgket6AT8NZX
+         C6dnA0DKIhRg+87oFAnmsOztdZ0eB8yymCaVRso8HDay52lsZUudDdwbNgj0QOSKX0+6
+         N6FojIdcqDVo6XGYNKA7m5x7NbW41RWc8A1LXhyZZwLysgZr6fzzJY7dQpft6xUhMYb4
+         F09zIOTv8fdcyWJU2Ln6l6J7/iegUOLhTxJf/aBepWLxKWQXt8bgGDxJfH/ZvRt4O9HF
+         o+xA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=TdWdmS9KmpqRDKTTx4ZFKlZV0sk8Q5cLOhIOkZ1gD+w=;
-        b=QLn7c2DCFed+cuHmCwblPtthdv4zIOsLbZWOJ+sCq+kIYQqRtffm6FFNIpx8/DMRfd
-         earYeFuYBQbZLRktecj0z8Z2unc7eXFL5cwXiSxMoFXGGmMFxTxJwQd7RwPdY+91Glrg
-         jvl+ap4OO/u1d7gjpp4NCZzzaK1qkvQLKL6K9OG+m/Sl7UVpOI8flt2N3VvP/V+bepHB
-         EVgVSl0JRHked07ywGd73q3y4N11WvoS9zerSTVUF2haTTx4WA8jxRVvc32RPGGjp4BE
-         giF313tZPvbEdg5y8Tes/IRH8gjts5xxf5w3D64xFtQUJsaveqLtIKoDXlCvf/RBADtF
-         o0vw==
-X-Gm-Message-State: AOAM5302avQ570iA0X24bpJ735Nlqz0Tb6nH++j84Ul2xeOAKjknfK5t
-        O2aB+liYc7IsfcH2dhEPJ/PqR6n7qJ7j5w==
-X-Google-Smtp-Source: ABdhPJx/+igJHEO7lN0/8ggGRxNcPaEnjJ2kG+Nip0h5dPgM1o2JBy4aOJeufjlffoOOl3XbBi890A==
-X-Received: by 2002:a05:6402:847:: with SMTP id b7mr4142845edz.39.1597945277956;
-        Thu, 20 Aug 2020 10:41:17 -0700 (PDT)
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com. [209.85.128.41])
-        by smtp.gmail.com with ESMTPSA id g6sm1727260edr.14.2020.08.20.10.41.16
-        for <linux-ia64@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Aug 2020 10:41:17 -0700 (PDT)
-Received: by mail-wm1-f41.google.com with SMTP id k8so2418405wma.2
-        for <linux-ia64@vger.kernel.org>; Thu, 20 Aug 2020 10:41:16 -0700 (PDT)
-X-Received: by 2002:a1c:4d12:: with SMTP id o18mr4512279wmh.55.1597945276327;
- Thu, 20 Aug 2020 10:41:16 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200819065555.1802761-1-hch@lst.de> <20200819065555.1802761-6-hch@lst.de>
- <CAAFQd5COLxjydDYrfx47ht8tj-aNPiaVnC+WyQA7nvpW4gs=ww@mail.gmail.com>
- <62e4f4fc-c8a5-3ee8-c576-fe7178cb4356@arm.com> <CAAFQd5AcCTDguB2C9KyDiutXWoEvBL8tL7+a==Uo8vj_8CLOJw@mail.gmail.com>
- <2b32f1d8-16f7-3352-40a5-420993d52fb5@arm.com> <20200820050214.GA4815@lst.de>
- <CAAFQd5AknYpP5BamC=wJkEJyO-q47V6Gc+HT65h6B+HyT+-xjQ@mail.gmail.com> <20200820165213.GC12693@lst.de>
-In-Reply-To: <20200820165213.GC12693@lst.de>
-From:   Tomasz Figa <tfiga@chromium.org>
-Date:   Thu, 20 Aug 2020 19:41:03 +0200
-X-Gmail-Original-Message-ID: <CAAFQd5BcH-_S=WDvqYvSPxMvQuN5atO8q=xktbMaPS-DOCAYbw@mail.gmail.com>
-Message-ID: <CAAFQd5BcH-_S=WDvqYvSPxMvQuN5atO8q=xktbMaPS-DOCAYbw@mail.gmail.com>
-Subject: Re: [PATCH 05/28] media/v4l2: remove V4L2-FLAG-MEMORY-NON-CONSISTENT
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Robin Murphy <robin.murphy@arm.com>, alsa-devel@alsa-project.org,
-        linux-ia64@vger.kernel.org,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        nouveau@lists.freedesktop.org, linux-nvme@lists.infradead.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-mm@kvack.org, Marek Szyprowski <m.szyprowski@samsung.com>,
-        linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
-        Joonyoung Shim <jy0922.shim@samsung.com>,
-        linux-scsi@vger.kernel.org,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        Linux Media Mailing List <linux-media@vger.kernel.org>,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        Pawel Osciak <pawel@osciak.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
-        Joerg Roedel <joro@8bytes.org>,
-        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
-        Roedel <joro@8bytes.org>," <linux-arm-kernel@lists.infradead.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        linux-mips@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        h=x-gm-message-state:from:to:cc:subject:date:message-id;
+        bh=1XFUxolbA7h1HeK5YbtlyNm7bbkj2GGYGOp3MuLqhZo=;
+        b=fs40e/s+Cv6AEg4yh0ZHXDUzP5dDNCVkapaQlC6i1kuXvx3enVaw5zy9kF1TBIEQDq
+         0xOVD+zEwy+4n3V6g/6SEi01egabEVgrRgUL7PofDKU9mwgvIDTR/ZgFytf6MmBUAT+k
+         UB+/5Q/GWWJl2bY4INtIc+LCauRtkp6jxLOM07Hbmz9rnglBWfA0Qbalnk96DIwhPhgb
+         b+4UlLYfbCwOiCUjBRNGQKLMWeJlwzDKVLi6YGbhdjJcRgw4GjQgIvO+a9CWtbfA1QPv
+         qcy0XOEmSclQTCVr3k1fMcjJzGSqx96L5r6GpSkyNmCXxYuXh1r1tJBpGRDe9LWUE1Wb
+         eR7A==
+X-Gm-Message-State: AOAM531EilyJGDCPOIIXVI/UBuk0YYzXNLhFnq4xRbfWBZrPE7LJuOlT
+        STVbfHn5Qs3btwfdDDtIv3YVi+3vj2AhVQ==
+X-Google-Smtp-Source: ABdhPJw7ZMI0DJ+F4LF445yS7IqFpJ7Ao4uy9XqpsjpadMZlzLMoDBw9nkHIEjI8WBaRHIT9WnIzRg==
+X-Received: by 2002:a17:90b:23c9:: with SMTP id md9mr86097pjb.173.1597965593711;
+        Thu, 20 Aug 2020 16:19:53 -0700 (PDT)
+Received: from Asurada-Nvidia.nvidia.com (thunderhill.nvidia.com. [216.228.112.22])
+        by smtp.gmail.com with ESMTPSA id f195sm150711pfa.96.2020.08.20.16.19.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Aug 2020 16:19:53 -0700 (PDT)
+From:   Nicolin Chen <nicoleotsuka@gmail.com>
+To:     mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        tony.luck@intel.com, fenghua.yu@intel.com, schnelle@linux.ibm.com,
+        gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
+        gor@linux.ibm.com, borntraeger@de.ibm.com, davem@davemloft.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
+        hpa@zytor.com, James.Bottomley@HansenPartnership.com, deller@gmx.de
+Cc:     sfr@canb.auug.org.au, hch@lst.de, linuxppc-dev@lists.ozlabs.org,
+        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-parisc@vger.kernel.org
+Subject: [RFT][PATCH 0/7] Avoid overflow at boundary_size
+Date:   Thu, 20 Aug 2020 16:19:23 -0700
+Message-Id: <20200820231923.23678-1-nicoleotsuka@gmail.com>
+X-Mailer: git-send-email 2.17.1
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Aug 20, 2020 at 6:52 PM Christoph Hellwig <hch@lst.de> wrote:
->
-> On Thu, Aug 20, 2020 at 12:24:31PM +0200, Tomasz Figa wrote:
-> > > Of course this still uses the scatterlist structure with its annoying
-> > > mix of input and output parametes, so I'd rather not expose it as
-> > > an official API at the DMA layer.
-> >
-> > The problem with the above open coded approach is that it requires
-> > explicit handling of the non-IOMMU and IOMMU cases and this is exactly
-> > what we don't want to have in vb2 and what was actually the job of the
-> > DMA API to hide. Is the plan to actually move the IOMMU handling out
-> > of the DMA API?
-> >
-> > Do you think we could instead turn it into a dma_alloc_noncoherent()
-> > helper, which has similar semantics as dma_alloc_attrs() and handles
-> > the various corner cases (e.g. invalidate_kernel_vmap_range and
-> > flush_kernel_vmap_range) to achieve the desired functionality without
-> > delegating the "hell", as you called it, to the users?
->
-> Yes, I guess I could do something in that direction.  At least for
-> dma-iommu, which thanks to Robin should be all you'll need in the
-> foreseeable future.
+We are expending the default DMA segmentation boundary to its
+possible maximum value (ULONG_MAX) to indicate that a device
+doesn't specify a boundary limit. So all dma_get_seg_boundary
+callers should take a precaution with the return values since
+it would easily get overflowed.
 
-That would be really great. Let me know if we can help by testing with
-V4L2/vb2 or in any other way.
+I scanned the entire kernel tree for all the existing callers
+and found that most of callers may get overflowed in two ways:
+either "+ 1" or passing it to ALIGN() that does "+ mask".
 
-Best regards,
-Tomasz
+According to kernel defines:
+    #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
+    #define ALIGN(x, a)	ALIGN_MASK(x, (typeof(x))(a) - 1)
+
+We can simplify the logic here:
+  ALIGN(boundary + 1, 1 << shift) >> shift
+= ALIGN_MASK(b + 1, (1 << s) - 1) >> s
+= {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
+= [b + 1 + (1 << s) - 1] >> s
+= [b + (1 << s)] >> s
+= (b >> s) + 1
+
+So this series of patches fix the potential overflow with this
+overflow-free shortcut.
+
+As I don't think that I have these platforms, marking RFT.
+
+Thanks
+Nic
+
+Nicolin Chen (7):
+  powerpc/iommu: Avoid overflow at boundary_size
+  alpha: Avoid overflow at boundary_size
+  ia64/sba_iommu: Avoid overflow at boundary_size
+  s390/pci_dma: Avoid overflow at boundary_size
+  sparc: Avoid overflow at boundary_size
+  x86/amd_gart: Avoid overflow at boundary_size
+  parisc: Avoid overflow at boundary_size
+
+ arch/alpha/kernel/pci_iommu.c    | 10 ++++------
+ arch/ia64/hp/common/sba_iommu.c  |  4 ++--
+ arch/powerpc/kernel/iommu.c      | 11 +++++------
+ arch/s390/pci/pci_dma.c          |  4 ++--
+ arch/sparc/kernel/iommu-common.c |  9 +++------
+ arch/sparc/kernel/iommu.c        |  4 ++--
+ arch/sparc/kernel/pci_sun4v.c    |  4 ++--
+ arch/x86/kernel/amd_gart_64.c    |  4 ++--
+ drivers/parisc/ccio-dma.c        |  4 ++--
+ drivers/parisc/sba_iommu.c       |  4 ++--
+ 10 files changed, 26 insertions(+), 32 deletions(-)
+
+-- 
+2.17.1
+
