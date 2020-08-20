@@ -2,72 +2,71 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDBFC24B586
-	for <lists+linux-ia64@lfdr.de>; Thu, 20 Aug 2020 12:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 212EB24B790
+	for <lists+linux-ia64@lfdr.de>; Thu, 20 Aug 2020 12:59:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731543AbgHTKZC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 20 Aug 2020 06:25:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37146 "EHLO
+        id S1731466AbgHTK5A (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 20 Aug 2020 06:57:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1731814AbgHTKYt (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 20 Aug 2020 06:24:49 -0400
-Received: from mail-ej1-x641.google.com (mail-ej1-x641.google.com [IPv6:2a00:1450:4864:20::641])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6E76C061384
-        for <linux-ia64@vger.kernel.org>; Thu, 20 Aug 2020 03:24:48 -0700 (PDT)
-Received: by mail-ej1-x641.google.com with SMTP id t10so1851834ejs.8
-        for <linux-ia64@vger.kernel.org>; Thu, 20 Aug 2020 03:24:48 -0700 (PDT)
+        with ESMTP id S1730916AbgHTKNy (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 20 Aug 2020 06:13:54 -0400
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B00D8C061757
+        for <linux-ia64@vger.kernel.org>; Thu, 20 Aug 2020 03:13:53 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id jp10so1867141ejb.0
+        for <linux-ia64@vger.kernel.org>; Thu, 20 Aug 2020 03:13:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=mime-version:references:in-reply-to:from:date:message-id:subject:to
          :cc;
-        bh=FU3+CiJFzLHmOFDuQMwlaisWRGuHRN+5AV6txupwZrU=;
-        b=QFNCCjnhRiVXX1RwHJMrjJrm3FMIDmNx/PgDGVaGoYPr2orRHBTBO48N0vE/bjgnJ+
-         SYuYytDiRhiYZtZgJZ7z4/4vPKus2MwWgTKmnlMmLZQ4o8gAgDqGKHg0dO0uTStdh95b
-         tHYxvzFh9iEVHBmlKA/EhqmNwNT52r2I3xUhk=
+        bh=Pbe+IJf4ZBxt6yUxRRrQR1l3UQTW2eLx6AT4PE1gQKg=;
+        b=foA95pAMne0k+ZduK2+JsEaA0Kd3Xk6AJeP12ZUtsQO8oCEqpY6AC2jWiQeJjjQrKA
+         n//Z/S/hwU9sUSwrh2bpFx9EjO5w8H5vkm5cyHDHvlSF0L7E3fVBHC7P2Ym9zd8UwQZN
+         UTTFBKoIkLT88Lc8FZLz7dV6a5Tegh0nandB0=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:mime-version:references:in-reply-to:from:date
          :message-id:subject:to:cc;
-        bh=FU3+CiJFzLHmOFDuQMwlaisWRGuHRN+5AV6txupwZrU=;
-        b=cyO5nG6/ikG9NzSjEwukU4p1+SncjhmDQUpRe5FXsIKm/CcQflG2CfDVtv5GM7Nduq
-         5wB8ygf6+FadNOC+LOFfp2LxkyZW67iqKrX8Cy1UV4A78ROAuUh1CyfEzHqwVr9lKbgO
-         iRxjJxcSSyrMNQvAtXNTo/DTlYw9HryeWEwiYSnQ/ay12xYPnRGpWHMAOCGogFizuDn/
-         WfKWtUsINZ2K61/icBGV24LTS4IdB9ZOOOnHz7nEM8LCVlFpWzBibGlNMLjnssl32/np
-         5UnmY3PviTFohtjCkBykR/t5oOfhXWvPF7huxzt22S+zXfRNr1Lt54+i6dVT7vyGxtHm
-         csMg==
-X-Gm-Message-State: AOAM532wepasMW0YNZKbWq7oSuapamQSbEfaTD58Fe5k+VBn+aMvaPr9
-        5kZNapdkzpf0CtIU+chGILVrwjy3x3DCqZBV
-X-Google-Smtp-Source: ABdhPJy7WTw5/jNNQlHCMzyCnx00sLTu3CLZlDiI4+HLV3IP7+ibBP49ghDMubjd83nVfrCSUj0guw==
-X-Received: by 2002:a17:906:845:: with SMTP id f5mr2522608ejd.34.1597919086473;
-        Thu, 20 Aug 2020 03:24:46 -0700 (PDT)
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com. [209.85.221.54])
-        by smtp.gmail.com with ESMTPSA id bt20sm1028435edb.62.2020.08.20.03.24.45
+        bh=Pbe+IJf4ZBxt6yUxRRrQR1l3UQTW2eLx6AT4PE1gQKg=;
+        b=Koj+roMYGyHIrU6J7FBL70Cv0f+VdX8t3u+opC00VFMgmMTVXzUO1+MyQGaVlS6spK
+         2Oa9TmCoe6Az2OWHnVOe5zXWfNL5jLKziDyks7eHNyEFU7Hxc9m5FxXnF3asRbaYMIId
+         6rl5XelCBTjkXAxlPmE6nXQPKK3/Kgo3Pv1qBglqiabkpgrlbVyVUHhkNS4P68uUqJYx
+         iiWgyEC27na2Mlfs28r9Fetyili1Oanj/aYR2q+OGxCXYHM0hZAejJhr028jYBWxUE+u
+         61Rc0H4bjqKFGI0mDymzBixpIk4ct82dTxvC1MBX8E0veVbfelF5wyjB0tYtUmOtaDxH
+         TXLg==
+X-Gm-Message-State: AOAM530MpSvb4pK/ESinYzeOCOP0HrxvMFP6lpUviGv3gbWdpT1gZZGS
+        Q5rjvMQ/fRsQ1fHE3WSdEQljuyi9U54/XO8i
+X-Google-Smtp-Source: ABdhPJxhV939jog6oNdZVIKqpj8gUxZbGGaSpcSRMYYpwqnUTzPK+ECene0CzvOCt5TurcxG/s7DqA==
+X-Received: by 2002:a17:906:cb8c:: with SMTP id mf12mr2460734ejb.3.1597918432106;
+        Thu, 20 Aug 2020 03:13:52 -0700 (PDT)
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com. [209.85.218.53])
+        by smtp.gmail.com with ESMTPSA id k6sm1136969ejg.81.2020.08.20.03.13.51
         for <linux-ia64@vger.kernel.org>
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 20 Aug 2020 03:24:45 -0700 (PDT)
-Received: by mail-wr1-f54.google.com with SMTP id r2so1488575wrs.8
-        for <linux-ia64@vger.kernel.org>; Thu, 20 Aug 2020 03:24:45 -0700 (PDT)
-X-Received: by 2002:a5d:6744:: with SMTP id l4mr2717742wrw.105.1597919084826;
- Thu, 20 Aug 2020 03:24:44 -0700 (PDT)
+        Thu, 20 Aug 2020 03:13:51 -0700 (PDT)
+Received: by mail-ej1-f53.google.com with SMTP id d6so1835666ejr.5
+        for <linux-ia64@vger.kernel.org>; Thu, 20 Aug 2020 03:13:51 -0700 (PDT)
+X-Received: by 2002:a5d:6744:: with SMTP id l4mr2628495wrw.105.1597917944145;
+ Thu, 20 Aug 2020 03:05:44 -0700 (PDT)
 MIME-Version: 1.0
 References: <20200819065555.1802761-1-hch@lst.de> <20200819065555.1802761-6-hch@lst.de>
  <CAAFQd5COLxjydDYrfx47ht8tj-aNPiaVnC+WyQA7nvpW4gs=ww@mail.gmail.com>
- <62e4f4fc-c8a5-3ee8-c576-fe7178cb4356@arm.com> <CAAFQd5AcCTDguB2C9KyDiutXWoEvBL8tL7+a==Uo8vj_8CLOJw@mail.gmail.com>
- <2b32f1d8-16f7-3352-40a5-420993d52fb5@arm.com> <20200820050214.GA4815@lst.de>
-In-Reply-To: <20200820050214.GA4815@lst.de>
+ <20200819135454.GA17098@lst.de> <CAAFQd5BuXP7t3d-Rwft85j=KTyXq7y4s24mQxLr=VoY9krEGZw@mail.gmail.com>
+ <20200820044347.GA4533@lst.de> <20200820052004.GA5305@lst.de>
+In-Reply-To: <20200820052004.GA5305@lst.de>
 From:   Tomasz Figa <tfiga@chromium.org>
-Date:   Thu, 20 Aug 2020 12:24:31 +0200
-X-Gmail-Original-Message-ID: <CAAFQd5AknYpP5BamC=wJkEJyO-q47V6Gc+HT65h6B+HyT+-xjQ@mail.gmail.com>
-Message-ID: <CAAFQd5AknYpP5BamC=wJkEJyO-q47V6Gc+HT65h6B+HyT+-xjQ@mail.gmail.com>
+Date:   Thu, 20 Aug 2020 12:05:29 +0200
+X-Gmail-Original-Message-ID: <CAAFQd5CFiA2WBaaPQ9ezvMjYZfNw37c42UEy9Pk7kJyCi1mLzQ@mail.gmail.com>
+Message-ID: <CAAFQd5CFiA2WBaaPQ9ezvMjYZfNw37c42UEy9Pk7kJyCi1mLzQ@mail.gmail.com>
 Subject: Re: [PATCH 05/28] media/v4l2: remove V4L2-FLAG-MEMORY-NON-CONSISTENT
 To:     Christoph Hellwig <hch@lst.de>
-Cc:     Robin Murphy <robin.murphy@arm.com>, alsa-devel@alsa-project.org,
-        linux-ia64@vger.kernel.org,
+Cc:     alsa-devel@alsa-project.org, linux-ia64@vger.kernel.org,
         Linux Doc Mailing List <linux-doc@vger.kernel.org>,
         nouveau@lists.freedesktop.org, linux-nvme@lists.infradead.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-mips@vger.kernel.org,
         "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-mm@kvack.org, Marek Szyprowski <m.szyprowski@samsung.com>,
+        linux-mm@kvack.org,
         linux-samsung-soc <linux-samsung-soc@vger.kernel.org>,
         Joonyoung Shim <jy0922.shim@samsung.com>,
         linux-scsi@vger.kernel.org,
@@ -78,94 +77,62 @@ Cc:     Robin Murphy <robin.murphy@arm.com>, alsa-devel@alsa-project.org,
         Tom Lendacky <thomas.lendacky@amd.com>,
         Pawel Osciak <pawel@osciak.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
-        "list@263.net:IOMMU DRIVERS" <iommu@lists.linux-foundation.org>,
-        Joerg Roedel <joro@8bytes.org>,
         "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
         Roedel <joro@8bytes.org>," <linux-arm-kernel@lists.infradead.org>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         linux-parisc@vger.kernel.org, netdev@vger.kernel.org,
         Seung-Woo Kim <sw0312.kim@samsung.com>,
-        linux-mips@vger.kernel.org
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <iommu@lists.linux-foundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Aug 20, 2020 at 7:02 AM Christoph Hellwig <hch@lst.de> wrote:
+On Thu, Aug 20, 2020 at 7:20 AM Christoph Hellwig <hch@lst.de> wrote:
 >
-> On Wed, Aug 19, 2020 at 03:07:04PM +0100, Robin Murphy wrote:
-> >> FWIW, I asked back in time what the plan is for non-coherent
-> >> allocations and it seemed like DMA_ATTR_NON_CONSISTENT and
-> >> dma_sync_*() was supposed to be the right thing to go with. [2] The
-> >> same thread also explains why dma_alloc_pages() isn't suitable for the
-> >> users of dma_alloc_attrs() and DMA_ATTR_NON_CONSISTENT.
+> On Thu, Aug 20, 2020 at 06:43:47AM +0200, Christoph Hellwig wrote:
+> > On Wed, Aug 19, 2020 at 03:57:53PM +0200, Tomasz Figa wrote:
+> > > > > Could you explain what makes you think it's unused? It's a feature of
+> > > > > the UAPI generally supported by the videobuf2 framework and relied on
+> > > > > by Chromium OS to get any kind of reasonable performance when
+> > > > > accessing V4L2 buffers in the userspace.
+> > > >
+> > > > Because it doesn't do anything except on PARISC and non-coherent MIPS,
+> > > > so by definition it isn't used by any of these media drivers.
+> > >
+> > > It's still an UAPI feature, so we can't simply remove the flag, it
+> > > must stay there as a no-op, until the problem is resolved.
 > >
-> > AFAICS even back then Christoph was implying getting rid of NON_CONSISTENT
-> > and *replacing* it with something streaming-API-based - i.e. this series -
-> > not encouraging mixing the existing APIs. It doesn't seem impossible to
-> > implement a remapping version of this new dma_alloc_pages() for
-> > IOMMU-backed ops if it's really warranted (although at that point it seems
-> > like "non-coherent" vb2-dc starts to have significant conceptual overlap
-> > with vb2-sg).
+> > Ok, I'll switch to just ignoring it for the next version.
 >
-> You can alway vmap the returned pages from dma_alloc_pages, but it will
-> make cache invalidation hell - you'll need to use
-> invalidate_kernel_vmap_range and flush_kernel_vmap_range to properly
-> handle virtually indexed caches.
->
-> Or with remapping you mean using the iommu do de-scatter/gather?
+> So I took a deeper look.  I don't really think it qualifies as a UAPI
+> in our traditional sense.  For one it only appeared in 5.9-rc1, so we
+> can trivially expedite the patch into 5.9-rc and not actually make it
+> show up in any released kernel version.  And even as of the current
+> Linus' tree the only user is a test driver.  So I really think the best
+> way to go ahead is to just revert it ASAP as the design wasn't thought
+> out at all.
 
-Ideally, both.
+The UAPI and V4L2/videobuf2 changes are in good shape and the only
+wrong part is the use of DMA API, which was based on an earlier email
+guidance anyway, and a change to the synchronization part . I find
+conclusions like the above insulting for people who put many hours
+into designing and implementing the related functionality, given the
+complexity of the videobuf2 framework and how ill-defined the DMA API
+was, and would feel better if such could be avoided in future
+communication.
 
-For remapping in the CPU sense, there are drivers which rely on a
-contiguous kernel mapping of the vb2 buffers, which was provided by
-dma_alloc_attrs(). I think they could be reworked to work on single
-pages, but that would significantly complicate the code. At the same
-time, such drivers would actually benefit from a cached mapping,
-because they often have non-bursty, random access patterns.
-
-Then, in the IOMMU sense, the whole idea of videobuf2-dma-contig is to
-rely on the DMA API to always provide device-contiguous memory, as
-required by the hardware which only has a single pointer and size.
-
->
-> You can implement that trivially implement it yourself for the iommu
-> case:
->
-> {
->         merge_boundary = dma_get_merge_boundary(dev);
->         if (!merge_boundary || merge_boundary > chunk_size - 1) {
->                 /* can't coalesce */
->                 return -EINVAL;
->         }
->
->
->         nents = DIV_ROUND_UP(total_size, chunk_size);
->         sg = sgl_alloc();
->         for_each_sgl() {
->                 sg->page = __alloc_pages(get_order(chunk_size))
->                 sg->len = chunk_size;
->         }
->         dma_map_sg(sg, DMA_ATTR_SKIP_CPU_SYNC);
->         // you are guaranteed to get a single dma_addr out
-> }
->
-> Of course this still uses the scatterlist structure with its annoying
-> mix of input and output parametes, so I'd rather not expose it as
-> an official API at the DMA layer.
-
-The problem with the above open coded approach is that it requires
-explicit handling of the non-IOMMU and IOMMU cases and this is exactly
-what we don't want to have in vb2 and what was actually the job of the
-DMA API to hide. Is the plan to actually move the IOMMU handling out
-of the DMA API?
-
-Do you think we could instead turn it into a dma_alloc_noncoherent()
-helper, which has similar semantics as dma_alloc_attrs() and handles
-the various corner cases (e.g. invalidate_kernel_vmap_range and
-flush_kernel_vmap_range) to achieve the desired functionality without
-delegating the "hell", as you called it, to the users?
+That said, we can revert it on the basis of the implementation issues,
+but I feel like we wouldn't get anything by doing so, because as I
+said, the design is sane and most of the implementation is fine as
+well. Instead. I'd suggest simply removing the use of the attribute
+being removed, so that the feature stays no-op until the DMA API
+provides a way to implement it or we just migrate videobuf2 to stop
+using the DMA API as much as possible, like many drivers in the DRM
+subsystem did.
 
 Best regards,
 Tomasz
