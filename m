@@ -2,58 +2,75 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CA87124EFA2
-	for <lists+linux-ia64@lfdr.de>; Sun, 23 Aug 2020 22:00:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35E9A24FD1D
+	for <lists+linux-ia64@lfdr.de>; Mon, 24 Aug 2020 13:59:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725996AbgHWUAS convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Sun, 23 Aug 2020 16:00:18 -0400
-Received: from smg.telkomsa.net ([105.187.200.242]:46894 "EHLO
-        smg2.telkomsa.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725887AbgHWUAR (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 23 Aug 2020 16:00:17 -0400
-X-AuditID: 69bbcaf2-70fff70000000a45-0d-5f42cacdb708
-Received: from zmmtarelay1.telkomsa.net ( [10.146.45.44])
-        by smg2.telkomsa.net (Telkom Internet Messaging Gateway) with SMTP id 95.8C.02629.DCAC24F5; Sun, 23 Aug 2020 22:00:13 +0200 (CAT)
-Received: from [192.168.43.163] (8ta-229-1-99.telkomadsl.co.za [197.229.1.99])
-        by zmmtarelay1.telkomsa.net (Postfix) with ESMTPS id 6BF2F7EC57;
-        Sun, 23 Aug 2020 22:00:11 +0200 (SAST)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726413AbgHXL7y (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 24 Aug 2020 07:59:54 -0400
+Received: from mx2.suse.de ([195.135.220.15]:55752 "EHLO mx2.suse.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726306AbgHXL7y (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 24 Aug 2020 07:59:54 -0400
+X-Virus-Scanned: by amavisd-new at test-mx.suse.de
+Received: from relay2.suse.de (unknown [195.135.221.27])
+        by mx2.suse.de (Postfix) with ESMTP id AF15DB7DA;
+        Mon, 24 Aug 2020 12:00:22 +0000 (UTC)
+Date:   Mon, 24 Aug 2020 13:59:49 +0200
+From:   Oscar Salvador <osalvador@suse.de>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        Michal Hocko <mhocko@suse.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        Baoquan He <bhe@redhat.com>,
+        Pankaj Gupta <pankaj.gupta.linux@gmail.com>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Logan Gunthorpe <logang@deltatee.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        Michel Lespinasse <walken@google.com>,
+        linux-ia64@vger.kernel.org
+Subject: Re: [PATCH v2 09/10] mm: pass migratetype into memmap_init_zone()
+ and move_pfn_range_to_zone()
+Message-ID: <20200824115944.GA7491@linux>
+References: <20200819175957.28465-1-david@redhat.com>
+ <20200819175957.28465-10-david@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Hi
-To:     Recipients <edlyn@telkomsa.net>
-From:   "Mr David Bailey" <edlyn@telkomsa.net>
-Date:   Mon, 24 Aug 2020 05:30:08 +0930
-Reply-To: david.bailey0515@zohomail.eu
-Message-Id: <20200823200011.6BF2F7EC57@zmmtarelay1.telkomsa.net>
-X-Brightmail-Tracker: H4sIAAAAAAAAA02TfUwTdxjH87u7tkdHl6Oy+IhmMV2m2SblJTO57E3mXHJbsmRG/liWaD3l
-        pIRSWFsQ3JIhwwINDlbAQCOFUkaQlyCdjmmnljpEsCATTSvIi0hhwmBAWXgbuDuIyj/ffPN8
-        n9/zuXvudyQun5WEkQlaA6fTshqFWEpIzeF7wrs696sifd736MBih4SeaXHjdEVdD0Z3F/gx
-        unHiG7rG143oKvtZRPt6GiR03swqQS+M3sFpS8UgTs/kToto2++76dutDoJ+PO+V0HPGm3zY
-        Vy6iXcYpCW279ZOY9nrOi2JCmXZfvogpyelEzJDzgoTxdUcwE91PRUyOt17ClJvPiJmah7MY
-        09VqFjOtA8sEY3p2WsQsXsyXMK3GXglz0VZIMJWNDhETcLz+ZcjX0g/iOE1CGqeL+OioVN1Z
-        XytOSUyfrioQZaJDJhREAvUunDafFZmQlJRT1xA0lGYiIZBTVxH8+OvngscpJfhKisWCl1Eh
-        0FE2SmzU34Ea2yRuQiTvd8G/JoNQ3kK9AqXeQZHgQ6k3oKH2kkRoEVN7oG3opGAJ6k1oq/ts
-        A7QLAk63ZGN4DHgf/UwUIpllE9eyiWvZxLW85FYiog4p9BlJnF7PxrMG7iSbER4ZrTyuNSgN
-        nCYxOUnPKrWcwYH4z5rg7Jz7DeUUq92IIpEiWHYgNkYlF7Fp/Hk32kZiitdk1yv3q+SvHkuO
-        y1CzerVKl6rh9G4EJK4IlfU79qnksjg24xSnS34ebScJxVZZ0IfhKjklPEAix6VwuuepkiSp
-        nq7Hc4i6PzOXhYUR2mQtpwDZpx08JkTHxXPpJxI0hpcHMDJIwAXzuKJbfI9Mn8Im6RPiN/JO
-        dJAcGC2vwsnBdS34xcprc5uglW47rxPrGvirugqXr8PCtsoaBBglDFKnal+whIve5kfHJ5AX
-        8dvYIsPb+bZg/j94gYu+xifUCbjS6CLAPLkihb/7V+XgueEMheZnljCov3ePgemnriNwY2zQ
-        iqDJa25BUGQ3DyEw2+eHEcw/MI0jWPL/Mctfq7X8ZQR9tn+MGHgWS2wYDM9XNmNQ6rg+goFj
-        pcKPgds49R8GuVk12Ti4FoaKcPB5Vpw4rJR7buNgLTvfh8PlnCfDfN16zo9D7cCVcZyf2WQk
-        4MndgRwCynpGrARk1/9gIyb4TWL8JsePfSxs0sC+fLWwTHRgp+qt9imNK/aOK27tXH7UvsPR
-        9jNfRfYx7I6C0j8Ts2LJ7482+Xck2xdWA9lj1Vrv5fePFF+dc3vHdhcvfZe1dGo6ve/+8N7p
-        zLyHO029I9sjq5XDcS2ZEUtB5IX+Rxmf3BzvHb277eDeB2m5hyedy54vJlMDl6KsusK8qG+7
-        vJNrCkKvZqPexnV69n96SDzshAQAAA==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200819175957.28465-10-david@redhat.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Attention:
+On Wed, Aug 19, 2020 at 07:59:56PM +0200, David Hildenbrand wrote:
+> On the memory onlining path, we want to start with MIGRATE_ISOLATE, to
+> un-isolate the pages after memory onlining is complete. Let's allow
+> passing in the migratetype.
+> 
+> Acked-by: Michal Hocko <mhocko@suse.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Wei Yang <richard.weiyang@linux.alibaba.com>
+> Cc: Baoquan He <bhe@redhat.com>
+> Cc: Pankaj Gupta <pankaj.gupta.linux@gmail.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Fenghua Yu <fenghua.yu@intel.com>
+> Cc: Logan Gunthorpe <logang@deltatee.com>
+> Cc: Dan Williams <dan.j.williams@intel.com>
+> Cc: Mike Rapoport <rppt@kernel.org>
+> Cc: "Matthew Wilcox (Oracle)" <willy@infradead.org>
+> Cc: Michel Lespinasse <walken@google.com>
+> Cc: linux-ia64@vger.kernel.org
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Promptly email Mr David Bailey on to lay claims to your INHERITED FUNDS.
+Reviewed-by: Oscar Salvador <osalvador@suse.de>
 
-Mr David Bailey
+-- 
+Oscar Salvador
+SUSE L3
