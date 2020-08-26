@@ -2,133 +2,136 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E908252404
-	for <lists+linux-ia64@lfdr.de>; Wed, 26 Aug 2020 01:19:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C01A425327A
+	for <lists+linux-ia64@lfdr.de>; Wed, 26 Aug 2020 16:56:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726593AbgHYXTO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 25 Aug 2020 19:19:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59270 "EHLO
+        id S1728080AbgHZO4o (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 26 Aug 2020 10:56:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726483AbgHYXTN (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 25 Aug 2020 19:19:13 -0400
-Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C00C061574;
-        Tue, 25 Aug 2020 16:19:12 -0700 (PDT)
-Received: by mail-pg1-x542.google.com with SMTP id 31so64876pgy.13;
-        Tue, 25 Aug 2020 16:19:12 -0700 (PDT)
+        with ESMTP id S1728251AbgHZOx3 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 26 Aug 2020 10:53:29 -0400
+Received: from mail-pj1-x1042.google.com (mail-pj1-x1042.google.com [IPv6:2607:f8b0:4864:20::1042])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14285C061574;
+        Wed, 26 Aug 2020 07:53:29 -0700 (PDT)
+Received: by mail-pj1-x1042.google.com with SMTP id i13so1006369pjv.0;
+        Wed, 26 Aug 2020 07:53:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=nzT4cIv5aZloZUa85ooGLcuJKku+lTzXEIFwdhhhrM4=;
-        b=g17iV+Lc6aSBOLe+PXWahWJW6Y2WovRbdTAFwXkgWGEBHeis8BwaGJ1/CrBTJ6wOxj
-         UKRTRHo+JKIkjHdtn9pMcUYhCibnMervY6vIJWwS4RQlE3LSjVqmLUTaL39UbAGj4g6L
-         0j0826j4CHEZnT2exq6W7xhcrJUuL+xeGwEr2VpfFjtGbo9lANRsknS4EVWyKfxKl7Il
-         /yIG9aDg8s8XYB33HFnAKY/2MhxQ2vY2S/m+geHEPThOE90LQ6W/H7XBdg78bySpsa/G
-         t/9acHQaOTqhr0MpHdKlJO7fxd8cXHOELXVJXXUfDBije2GdrgU/aZZQogR8XNVpmWFo
-         c4uQ==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=Qg+y9mENI5s/3Hp67w0VaPORZ5hguo4wpnU/9+nxop0=;
+        b=tsB9NPIEI2EV4l5chpZ1VShXia7MBk6qDAmAUpkG9ydb8tuPVcG7JMZoeW+T3Dm2iS
+         e40Z2DodY0kzrfIXcRQurr+mSfPL1M/qXx7wA4be0OVqeI3IQaidHUMGOwP10prR0EPY
+         qoFo6VNRBvU7kRfqumOH9/pppYWEM9JTk+Ll0/MwYzIZHhzT9FhJSBa/tCKl0ZA4Robn
+         BgZQ9bVnjbQVXNaQMmO2ezalhPNHWabMU0XVtcgr+WD4L48+QRPBjc5TlsNohUZd/9nd
+         BfpNS60rOmiEIrOzyFvqQaD6ph5N6Zptier4k2fdQwL2IxdVsSaIKQiLZw9tz4lOnRxj
+         Nd3Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=nzT4cIv5aZloZUa85ooGLcuJKku+lTzXEIFwdhhhrM4=;
-        b=UH/AJUyQZxDqGfdAJrvy99L/wXSWNJqoMJeRcOnBBVJkiv0FnY3SySyXVH/LTKr60j
-         oMvu9nv0sFDYhJGzELcZ3RObUu37x69fdGcXhnuzNpOqe6MNKC7y+Fn7gv64q8XuMMJg
-         Fl/eP0aSuFiu5pTmLOrzpLx8br1sQTZlQyXUhzOSibkUz4oxHdSfWryc4Mc3Ow+lQf8E
-         kXR5NI9FQOkmvVvLv3n6ToXl9kjbhk8F9gnPIuR0Y24DQJNCdYMdb/zSgrZW+vXqnDjT
-         1raRdZuevUW5Y4ua4eq/gaf4K5OnDme1ys2qxDCmhnOMw7tV2rXShWxAGLpeAT/rDtzH
-         8pFg==
-X-Gm-Message-State: AOAM531RQ2CB+J5qzUPdxAeAslK88XaaXW/rHNA4fX23yd1QFCE7iQE3
-        XhNF4EW1mA0cye4p0n3KMpM=
-X-Google-Smtp-Source: ABdhPJyK06Dvh5ZLh8ZEvQMG4jqMYYcFE+LKTmieWcScqEbOmexcuH0IBvKor0u/mjocM4FCOCK/kw==
-X-Received: by 2002:a63:4545:: with SMTP id u5mr8237031pgk.229.1598397551754;
-        Tue, 25 Aug 2020 16:19:11 -0700 (PDT)
-Received: from Asurada-Nvidia (thunderhill.nvidia.com. [216.228.112.22])
-        by smtp.gmail.com with ESMTPSA id v78sm344700pfc.121.2020.08.25.16.19.10
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Tue, 25 Aug 2020 16:19:11 -0700 (PDT)
-Date:   Tue, 25 Aug 2020 16:19:00 -0700
-From:   Nicolin Chen <nicoleotsuka@gmail.com>
-To:     Niklas Schnelle <schnelle@linux.ibm.com>
-Cc:     mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
-        rth@twiddle.net, ink@jurassic.park.msu.ru, mattst88@gmail.com,
-        tony.luck@intel.com, fenghua.yu@intel.com,
-        gerald.schaefer@linux.ibm.com, hca@linux.ibm.com,
-        gor@linux.ibm.com, borntraeger@de.ibm.com, davem@davemloft.net,
-        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de, x86@kernel.org,
-        hpa@zytor.com, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, sfr@canb.auug.org.au, hch@lst.de,
-        linuxppc-dev@lists.ozlabs.org, linux-kernel@vger.kernel.org,
-        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-parisc@vger.kernel.org
-Subject: Re: [RFT][PATCH 0/7] Avoid overflow at boundary_size
-Message-ID: <20200825231900.GA4726@Asurada-Nvidia>
-References: <20200820231923.23678-1-nicoleotsuka@gmail.com>
- <4321af30-9554-6897-5281-05afd88f2631@linux.ibm.com>
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=Qg+y9mENI5s/3Hp67w0VaPORZ5hguo4wpnU/9+nxop0=;
+        b=Xd+uMf+HUnu7pXTwnN0JBStoXyvfN3+wjM7c4m1O2qpieP0YcK55FmZrwFUmO1Nhml
+         R6ZGfkUxXjcT9QPX0GH9Ddk/ZgOzaDtgG1gM5kK1mUNmPRDDkyw+Xb+G2MxM/70At/St
+         UQ0sMFzve8j9VK2KpLLtzg3ukVFZ8y68ri9yEypMfrimvv5EfrKYz8L9tJssk2AWZ6Du
+         1AtWTLzdEIheZi83tLJJPjQBO3VSGIXOKiXvE3bSosA/N1B5uOxNhDc2Se1MBamjMhxc
+         06OgydwUC8JRhRfqv77JVbX4Nq0ygqVogs6WfXzW/KDUWBg8Ws6ZD8Ok/ir6/qftfS4x
+         ClNg==
+X-Gm-Message-State: AOAM533Y/pyLjlwnhdmFPYxytPTREL+jDSPJCt7krqEWiQQ7G7G8Y24Z
+        D18XJWzWliQFTkUAyKz9mVsxVcCbwdA=
+X-Google-Smtp-Source: ABdhPJzXkvb6xSDZr6SiieiLkOWMoxXqqyGTyYFG5Tva+Dhu45xbd/y2npDHNcyNJHrmj3G3xfZp9Q==
+X-Received: by 2002:a17:902:7b82:: with SMTP id w2mr12355577pll.258.1598453608407;
+        Wed, 26 Aug 2020 07:53:28 -0700 (PDT)
+Received: from bobo.ozlabs.ibm.com (61-68-212-105.tpgi.com.au. [61.68.212.105])
+        by smtp.gmail.com with ESMTPSA id r7sm3327140pfl.186.2020.08.26.07.53.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 26 Aug 2020 07:53:27 -0700 (PDT)
+From:   Nicholas Piggin <npiggin@gmail.com>
+To:     linux-arch@vger.kernel.org
+Cc:     Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
+Subject: [PATCH v2 08/23] ia64: use asm-generic/mmu_context.h for no-op implementations
+Date:   Thu, 27 Aug 2020 00:52:34 +1000
+Message-Id: <20200826145249.745432-9-npiggin@gmail.com>
+X-Mailer: git-send-email 2.23.0
+In-Reply-To: <20200826145249.745432-1-npiggin@gmail.com>
+References: <20200826145249.745432-1-npiggin@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4321af30-9554-6897-5281-05afd88f2631@linux.ibm.com>
-User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Niklas,
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: linux-ia64@vger.kernel.org
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+---
+ arch/ia64/include/asm/mmu_context.h | 17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
-On Tue, Aug 25, 2020 at 12:16:27PM +0200, Niklas Schnelle wrote:
-> On 8/21/20 1:19 AM, Nicolin Chen wrote:
-> > We are expending the default DMA segmentation boundary to its
-> > possible maximum value (ULONG_MAX) to indicate that a device
-> > doesn't specify a boundary limit. So all dma_get_seg_boundary
-> > callers should take a precaution with the return values since
-> > it would easily get overflowed.
-> > 
-> > I scanned the entire kernel tree for all the existing callers
-> > and found that most of callers may get overflowed in two ways:
-> > either "+ 1" or passing it to ALIGN() that does "+ mask".
-> > 
-> > According to kernel defines:
-> >     #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
-> >     #define ALIGN(x, a)	ALIGN_MASK(x, (typeof(x))(a) - 1)
-> > 
-> > We can simplify the logic here:
-> >   ALIGN(boundary + 1, 1 << shift) >> shift
-> > = ALIGN_MASK(b + 1, (1 << s) - 1) >> s
-> > = {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
-> > = [b + 1 + (1 << s) - 1] >> s
-> > = [b + (1 << s)] >> s
-> > = (b >> s) + 1
-> > 
-> > So this series of patches fix the potential overflow with this
-> > overflow-free shortcut.
+diff --git a/arch/ia64/include/asm/mmu_context.h b/arch/ia64/include/asm/mmu_context.h
+index 2da0e2eb036b..87a0d5bc11ef 100644
+--- a/arch/ia64/include/asm/mmu_context.h
++++ b/arch/ia64/include/asm/mmu_context.h
+@@ -49,11 +49,6 @@ DECLARE_PER_CPU(u8, ia64_need_tlb_flush);
+ extern void mmu_context_init (void);
+ extern void wrap_mmu_context (struct mm_struct *mm);
  
-> haven't seen any other feedback from other maintainers,
+-static inline void
+-enter_lazy_tlb (struct mm_struct *mm, struct task_struct *tsk)
+-{
+-}
+-
+ /*
+  * When the context counter wraps around all TLBs need to be flushed because
+  * an old context number might have been reused. This is signalled by the
+@@ -116,6 +111,7 @@ get_mmu_context (struct mm_struct *mm)
+  * Initialize context number to some sane value.  MM is guaranteed to be a
+  * brand-new address-space, so no TLB flushing is needed, ever.
+  */
++#define init_new_context init_new_context
+ static inline int
+ init_new_context (struct task_struct *p, struct mm_struct *mm)
+ {
+@@ -123,12 +119,6 @@ init_new_context (struct task_struct *p, struct mm_struct *mm)
+ 	return 0;
+ }
+ 
+-static inline void
+-destroy_context (struct mm_struct *mm)
+-{
+-	/* Nothing to do.  */
+-}
+-
+ static inline void
+ reload_context (nv_mm_context_t context)
+ {
+@@ -178,11 +168,10 @@ activate_context (struct mm_struct *mm)
+ 	} while (unlikely(context != mm->context));
+ }
+ 
+-#define deactivate_mm(tsk,mm)	do { } while (0)
+-
+ /*
+  * Switch from address space PREV to address space NEXT.
+  */
++#define activate_mm activate_mm
+ static inline void
+ activate_mm (struct mm_struct *prev, struct mm_struct *next)
+ {
+@@ -196,5 +185,7 @@ activate_mm (struct mm_struct *prev, struct mm_struct *next)
+ 
+ #define switch_mm(prev_mm,next_mm,next_task)	activate_mm(prev_mm, next_mm)
+ 
++#include <asm-generic/mmu_context.h>
++
+ # endif /* ! __ASSEMBLY__ */
+ #endif /* _ASM_IA64_MMU_CONTEXT_H */
+-- 
+2.23.0
 
-I am wondering this too...whether I sent correctly or not.
-
-> so I guess you will resend this?
-
-Do I need to? Though I won't mind doing so if it's necessary..
-
-> On first glance it seems to make sense.
-> I'm a little confused why it is only a "potential overflow"
-> while this part
-> 
-> "We are expending the default DMA segmentation boundary to its
->  possible maximum value (ULONG_MAX) to indicate that a device
->  doesn't specify a boundary limit"
-> 
-> sounds to me like ULONG_MAX is actually used, does that
-> mean there are currently no devices which do not specify a
-> boundary limit?
-
-Sorry for the confusion. We actually applied ULONG_MAX change
-last week but reverted it right after, due to a bug report at
-one of these "potential" overflows. So at this moment the top
-of the tree doesn't set default boundary to ULONG_MAX yet.
-
-Thanks
-Nic
