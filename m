@@ -2,102 +2,105 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F14152569AD
-	for <lists+linux-ia64@lfdr.de>; Sat, 29 Aug 2020 20:22:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58EEE256A78
+	for <lists+linux-ia64@lfdr.de>; Sat, 29 Aug 2020 23:39:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728351AbgH2SWW (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 29 Aug 2020 14:22:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60318 "EHLO
+        id S1727888AbgH2VjQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 29 Aug 2020 17:39:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728333AbgH2SWU (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 29 Aug 2020 14:22:20 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C757C061236;
-        Sat, 29 Aug 2020 11:22:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
-        :Reply-To:Content-ID:Content-Description;
-        bh=jOWSL7YMNppSparAg77dbZ6fJiWHneGJnmZYvPY6oW0=; b=BcLH4wp5wsdb1A6/+fcAVfpZx3
-        BQzmir9XB7NRPzzoGTRZeMbEQJZBCD5JoUKrKoX4ckwoUWmelPR7km55DXMRDZgA5KzcypRgg+Gyi
-        cz3otssgJBigGdFtVNa/LxVnVVs6tL0FAKcQcYTmg6zlm/CpplhLs3punUejhv/Leu9677ygpb2Vv
-        GKL0lbe+MszCipmGofBLmA7mIYHWJpsblnJgzNiKw0VvTZu0OnY16zYXhsctPsdTsLdlFCgmrb+um
-        kjOye1CvKCWiNt1CnjdXgJAcW/qHVZipGIL9DqlIuI465/2wRMqIDUwQtkccdxmt40OHz/vxMjJxj
-        KC8alnAQ==;
-Received: from [2601:1c0:6280:3f0::19c2]
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kC5UL-0007cU-0c; Sat, 29 Aug 2020 18:22:05 +0000
-Subject: Re: [PATCH 3/3] ia64: remove generated/nr-irqs.h generation to fix
- build warning
-To:     Masahiro Yamada <masahiroy@kernel.org>,
+        with ESMTP id S1726748AbgH2VjN (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 29 Aug 2020 17:39:13 -0400
+Received: from mail-pg1-x542.google.com (mail-pg1-x542.google.com [IPv6:2607:f8b0:4864:20::542])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F17D2C061573
+        for <linux-ia64@vger.kernel.org>; Sat, 29 Aug 2020 14:39:12 -0700 (PDT)
+Received: by mail-pg1-x542.google.com with SMTP id o13so2200679pgf.0
+        for <linux-ia64@vger.kernel.org>; Sat, 29 Aug 2020 14:39:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20161025;
+        h=date:from:to:cc:subject:in-reply-to:message-id:references
+         :user-agent:mime-version;
+        bh=1Xkw7SsTluwGLX1WFengI1q4lftidu3MJxTjNHik2H0=;
+        b=hMbO3tOle/Wmiud+C3raW+sqkQs9r44niz9Z7e4xn8V6HR5QhM+kqGaGqq0s82og7F
+         voJSh1miXiYFZD6eoMwd2LDU2k0wJJzOlo2zI/Z+5x/BUBgy3vxjrltkitJUqqyIic/J
+         BDoHDDGttgwoELTcH9Gf6VVlNDVSceNWy/VPZsEILA8VYdLnYhOuoJP9djFFXZszCi9Q
+         xNxP9GYg+d3iuUynUktGHqU0QpezdqeqRuc86NBG+mJbAEz2ashjEXRC2ZHq7dpS8NET
+         WMuR0hlYHmfQcfIOFaJ60xcIiHj78ntEVpgSbZYHpEDmOzDd1u/0TdKDWr8oSTjQW7FS
+         4cCw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:in-reply-to:message-id
+         :references:user-agent:mime-version;
+        bh=1Xkw7SsTluwGLX1WFengI1q4lftidu3MJxTjNHik2H0=;
+        b=j6XfIkLV/LPP25Ovw1YNGFN/kmSTs9CJuN9f2Am6CMeWsh41MUOHqDQSTW/Wdxh1P2
+         wCUClj/p/GwPv6ayCrenVnyo+QQ8/8+c7WpSy2L5dIZhD67ISmkCBP0RPbnAD7fZKRNA
+         BlQ+s58tAjXD7YLZA0kqm1PNmHrsG31s6FEZ7RlzTCyNRrOAmHumbpytoFN9Tx8NN+Et
+         CbZ0/rXMeF8uhS8GAgWI04mb76OE4VqIkInuOgW1Gg1zUUslzm/SDBVzWUShb2wlLf3+
+         ptv/fIz1E7YvpcN8SuxvEcIoCXSqK5KphiRtJk6IgZ7tU9mr4k+WA/x+KUDRQcdAW1Dw
+         1hlA==
+X-Gm-Message-State: AOAM531RtqEWk1MJZW+y37hsKa8LZnrG/ex6UNleoqeHadOV4THKHq9F
+        QfyTNmqrXkWNEQ21Ox46zeMPBg==
+X-Google-Smtp-Source: ABdhPJw34xsOfawWVhCBneMxURpAKERGDRRVZ2alS63AyRaicgNl3k8EQvpe9DGDskaKVzz63aC0Pw==
+X-Received: by 2002:a63:fc18:: with SMTP id j24mr1398594pgi.452.1598737152275;
+        Sat, 29 Aug 2020 14:39:12 -0700 (PDT)
+Received: from [2620:15c:17:3:4a0f:cfff:fe51:6667] ([2620:15c:17:3:4a0f:cfff:fe51:6667])
+        by smtp.gmail.com with ESMTPSA id z66sm3457517pfb.53.2020.08.29.14.39.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 29 Aug 2020 14:39:11 -0700 (PDT)
+Date:   Sat, 29 Aug 2020 14:39:11 -0700 (PDT)
+From:   David Rientjes <rientjes@google.com>
+X-X-Sender: rientjes@chino.kir.corp.google.com
+To:     Randy Dunlap <rdunlap@infradead.org>
+cc:     linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
-Cc:     linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20200829051524.706585-1-masahiroy@kernel.org>
- <20200829051524.706585-4-masahiroy@kernel.org>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <d98592ec-d74b-27c6-f7d2-9d304b1d9eda@infradead.org>
-Date:   Sat, 29 Aug 2020 11:22:01 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+Subject: Re: [PATCH] ia64: fix min_low_pfn/max_low_pfn build errors
+In-Reply-To: <20200829000126.2463-1-rdunlap@infradead.org>
+Message-ID: <alpine.DEB.2.23.453.2008291439020.3955211@chino.kir.corp.google.com>
+References: <20200829000126.2463-1-rdunlap@infradead.org>
+User-Agent: Alpine 2.23 (DEB 453 2020-06-18)
 MIME-Version: 1.0
-In-Reply-To: <20200829051524.706585-4-masahiroy@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 8/28/20 10:15 PM, Masahiro Yamada wrote:
-> Randy reports the following warning when building ARCH=ia64 with
-> CONFIG_IA64_PALINFO=m:
-> 
-> ../scripts/Makefile.build:68: 'arch/ia64/kernel/palinfo.ko' will not be built even though obj-m is specified.
-> ../scripts/Makefile.build:69: You cannot use subdir-y/m to visit a module Makefile. Use obj-y/m instead.
-> 
-> This message is actually false-positive, and you can get palinfo.ko
-> correctly built. It is emitted in the archprepare stage, where Kbuild
-> descends into arch/ia64/kernel to generate include/generated/nr-irqs.h
-> instead of any kind of kernel objects.
-> 
-> arch/ia64/kernel/nr-irqs.c was introduced by commit 213060a4d699
-> ("[IA64] pvops: paravirtualize NR_IRQS") to pre-calculate:
-> 
->    NR_IRQS = max(IA64_NATIVE_NR_IRQS, XEN_NR_IRQS, FOO_NR_IRQS...)
-> 
-> Since commit d52eefb47d4e ("ia64/xen: Remove Xen support for ia64"), this
-> union contains just one field, making NR_IRQS and IA64_NATIVE_NR_IRQS
-> always match.
-> 
-> So, the following hard-coding now works:
-> 
->   #define NR_IRQS                IA64_NATIVE_NR_IRQS
-> 
-> If you need to re-introduce NR_IRQS = max(...) gimmick in the future,
-> please try to implement it in asm-offsets.c instead of a separate file.
-> It will be possible because the header inclusion has been consolidated
-> to make asm-offsets.c independent of <asm/irqs.h>.
-> 
-> Reported-by: Randy Dunlap <rdunlap@infradead.org>
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+On Fri, 28 Aug 2020, Randy Dunlap wrote:
 
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-
-> ---
+> Fix min_low_pfn/max_low_pfn build errors for arch/ia64/: (e.g.)
 > 
->  arch/ia64/Makefile          |  6 ------
->  arch/ia64/include/asm/irq.h |  4 +++-
->  arch/ia64/kernel/Makefile   |  5 -----
->  arch/ia64/kernel/nr-irqs.c  | 22 ----------------------
->  4 files changed, 3 insertions(+), 34 deletions(-)
->  delete mode 100644 arch/ia64/kernel/nr-irqs.c
+>  ERROR: "max_low_pfn" [drivers/rpmsg/virtio_rpmsg_bus.ko] undefined!
+>  ERROR: "min_low_pfn" [drivers/rpmsg/virtio_rpmsg_bus.ko] undefined!
+>  ERROR: "min_low_pfn" [drivers/hwtracing/intel_th/intel_th_msu.ko] undefined!
+>  ERROR: "max_low_pfn" [drivers/hwtracing/intel_th/intel_th_msu.ko] undefined!
+>  ERROR: "min_low_pfn" [drivers/crypto/cavium/nitrox/n5pf.ko] undefined!
+>  ERROR: "max_low_pfn" [drivers/crypto/cavium/nitrox/n5pf.ko] undefined!
+>  ERROR: "max_low_pfn" [drivers/md/dm-integrity.ko] undefined!
+>  ERROR: "min_low_pfn" [drivers/md/dm-integrity.ko] undefined!
+>  ERROR: "max_low_pfn" [crypto/tcrypt.ko] undefined!
+>  ERROR: "min_low_pfn" [crypto/tcrypt.ko] undefined!
+>  ERROR: "min_low_pfn" [security/keys/encrypted-keys/encrypted-keys.ko] undefined!
+>  ERROR: "max_low_pfn" [security/keys/encrypted-keys/encrypted-keys.ko] undefined!
+>  ERROR: "min_low_pfn" [arch/ia64/kernel/mca_recovery.ko] undefined!
+>  ERROR: "max_low_pfn" [arch/ia64/kernel/mca_recovery.ko] undefined!
 > 
+> David suggested just exporting min_low_pfn & max_low_pfn in
+> mm/memblock.c:
+> https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2006291911220.1118534@chino.kir.corp.google.com/
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: linux-mm@kvack.org
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Rientjes <rientjes@google.com>
+> Cc: Mike Rapoport <rppt@linux.ibm.com>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Fenghua Yu <fenghua.yu@intel.com>
+> Cc: linux-ia64@vger.kernel.org
 
+Acked-by: David Rientjes <rientjes@google.com>
 
-thanks.
--- 
-~Randy
-
+Thanks Randy!
