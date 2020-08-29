@@ -2,50 +2,51 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C39072568BF
-	for <lists+linux-ia64@lfdr.de>; Sat, 29 Aug 2020 17:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A99B2569A5
+	for <lists+linux-ia64@lfdr.de>; Sat, 29 Aug 2020 20:21:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728310AbgH2PlC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 29 Aug 2020 11:41:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35354 "EHLO
+        id S1728335AbgH2SVK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 29 Aug 2020 14:21:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728196AbgH2PlC (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 29 Aug 2020 11:41:02 -0400
+        with ESMTP id S1728265AbgH2SVI (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 29 Aug 2020 14:21:08 -0400
 Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10D79C061236;
-        Sat, 29 Aug 2020 08:41:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5BD04C061236;
+        Sat, 29 Aug 2020 11:21:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
         d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
         In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:Subject:Sender
         :Reply-To:Content-ID:Content-Description;
-        bh=93vPl4ISVwqsT/rzN0zFT8sEJycYYCjRF7JumF/z/7A=; b=NvYz6VfwpyD+r3/mz8kVTJNDWh
-        oDcq20Px1L3OdYCXwdOTRowfxBe6Jgun2w/lOWw5H+CXzIMgFULh5o3BJdzMLMuhND59XX8x38tpW
-        hCRZK+G1byqOABRJiqOMG2g56vu60fb7ObDIYg9bL5fTf7Tja9a5Ej9PoCff5agINSDREwe0pXMa3
-        qQXc3ggYYnkjpFiHLKbUDkzDSS4LlshQ/AiA1tLITGOQ5ollyJbVMP6RNOG+vNotSQuG4BADxICEW
-        4nLPsmTgilYClQbOoYaM/RjadHGFCCZZm6R79XhRmLmBHek5NbY1qpFuVFgv40DFOPLx8mxlb7Tc2
-        BW1f9NVw==;
+        bh=wM+3aUTCfqWWlQ1tJHVnOtNIBFAHIEvD/50Kk8jfavo=; b=MxZoREBsaBXG6+jt9ukV047v5Q
+        XxKgvNn4fbCZZ14UAO7X0JIWw4Rkdqw87w7xo91fqNDwEae81IntJ9bQmzZH5vLAeaABDngfPIIWO
+        Z4gI+dq8a8qu/Ezvmcs52pX52VRnNp/aTGZyZzCBNIR6y85WRcW09ga12FU4InFdcA5x+7UgsevZn
+        qnXPfXWsrOT7j7Ilkd+TlmXqakOeskDPfMUlFeT1AwvjmpIjkqHcJEvmS3mLcAMLyPxoVY2LigNvn
+        kga8QessGsBG3qdRJz6WkJhNno2tu1+yDN/R6y3NZGtaP2EohcVR+XbvWJn1MtJmMCw6BQEU77B96
+        RO2HVuBQ==;
 Received: from [2601:1c0:6280:3f0::19c2]
         by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kC2yQ-0002UI-Bu; Sat, 29 Aug 2020 15:40:58 +0000
-Subject: Re: [ALTERNATE PATCH] memblock: fix min_low_pfn/max_low_pfn build
- errors
-To:     Mike Rapoport <rppt@linux.ibm.com>
-Cc:     linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
-        David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Michal Simek <michal.simek@xilinx.com>,
+        id 1kC5TL-0007at-2k; Sat, 29 Aug 2020 18:21:03 +0000
+Subject: Re: [PATCH 2/3] ia64: remove unneeded header includes from
+ <asm/mca.h>
+To:     Masahiro Yamada <masahiroy@kernel.org>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
-References: <20200829000139.2513-1-rdunlap@infradead.org>
- <20200829130429.GG167163@linux.ibm.com>
+Cc:     linux-kbuild@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Dmitry Safonov <0x7f454c46@gmail.com>,
+        afzal mohammed <afzal.mohd.ma@gmail.com>,
+        linux-efi@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20200829051524.706585-1-masahiroy@kernel.org>
+ <20200829051524.706585-3-masahiroy@kernel.org>
 From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <a0665bb7-3389-1178-0a79-2155fb88255d@infradead.org>
-Date:   Sat, 29 Aug 2020 08:40:51 -0700
+Message-ID: <e3dabd8d-352f-7471-3e4a-4d24d74e715b@infradead.org>
+Date:   Sat, 29 Aug 2020 11:20:57 -0700
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200829130429.GG167163@linux.ibm.com>
+In-Reply-To: <20200829051524.706585-3-masahiroy@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -54,19 +55,36 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 8/29/20 6:04 AM, Mike Rapoport wrote:
-> On Fri, Aug 28, 2020 at 05:01:39PM -0700, Randy Dunlap wrote:
->> Export min_low_pfn & max_low_pfn in mm/memblock.c to fix build errors
->> on arch/microblaze/ and arch/ia64/: (e.g.)
+On 8/28/20 10:15 PM, Masahiro Yamada wrote:
+> <asm/mca.h> includes too many unneeded headers.
 > 
-> Please don't. This would give driver developers a wrong impression that
-> these variables can be used to query memory boundaries, but this is not
-> the case, at least not on all architectures.
+> This commit cuts off a lot of header includes.
 > 
-> I would prefer fixing it up locally for microblaze and ia64.
+> What we need to include are:
+> 
+>  - <linux/percpu.h> for DECLARE_PER_CPU(u64, ia64_mca_pal_base)
+>  - <linux/threads.h> for NR_CPUS
+>  - <linux/types.h> for u8, u64, size_t, etc.
+>  - <asm/ptrace.h> for KERNEL_STACK_SIZE
+> 
+> The other header includes are actually unneeded.
+> 
+> <asm/mca.h> previously included 436 headers, and now it includes
+> only 138. I confirmed <asm/mca.h> is still self-contained.
 
-I did that.
-and that's why this is labeled as an ALTERNATE PATCH.
+Nice!
+
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+
+> ---
+> 
+>  arch/ia64/include/asm/mca.h | 9 +++------
+>  arch/ia64/kernel/efi.c      | 1 +
+>  arch/ia64/kernel/mca.c      | 1 +
+>  3 files changed, 5 insertions(+), 6 deletions(-)
+> 
 
 
 thanks.
