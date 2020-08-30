@@ -2,74 +2,116 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 04B50256AEC
-	for <lists+linux-ia64@lfdr.de>; Sun, 30 Aug 2020 02:32:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DB5F256D2A
+	for <lists+linux-ia64@lfdr.de>; Sun, 30 Aug 2020 11:57:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728594AbgH3AcI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 29 Aug 2020 20:32:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60878 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728187AbgH3AcH (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 29 Aug 2020 20:32:07 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7161C061573;
-        Sat, 29 Aug 2020 17:32:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
-        MIME-Version:Date:Message-ID:Subject:From:To:Sender:Reply-To:Cc:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=Wn0QekRidMhm9stuLLcOQt4vL8D9U9wBUq8kPt8hqzM=; b=QKwUQQhHAMcKgV+zUpNBAYCZRl
-        gXFJGx+AHMR7WsgwT9GW3w9TqzUdHit5CgkWOZn3NdafO6r80IJ1c6irf06CS7iQvNbpgqK0pBoaN
-        qRQq5Q/3deVB51ZfnIQpCLMMX6sXAG0oSZjTKYAKGHVqTNSZPc8fhteEwxHwKzQb9PYA9jY66fsDI
-        8Yp70dm5MNZNO+9HWauVUX3PmMBmBFtsLit2lebbv6wKCatT4SJ36ImZ3u4zjZpFRKkYBCRTmsF09
-        /6zNcKXCq9pPOIObaT5Kkl2nraebz/kOlkewcgD91zaYVUIUbuIO205lPQCxZ2sZu1gVxugzvM57J
-        kjHQDrxQ==;
-Received: from [2601:1c0:6280:3f0::19c2]
-        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kCBGM-0002eN-To; Sun, 30 Aug 2020 00:32:03 +0000
-To:     LKML <linux-kernel@vger.kernel.org>,
+        id S1726493AbgH3J5H (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 30 Aug 2020 05:57:07 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:51096 "EHLO
+        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726404AbgH3J5G (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 30 Aug 2020 05:57:06 -0400
+Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07U9XtR3001438;
+        Sun, 30 Aug 2020 05:56:56 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=zZZaGO9f6qJS5ucPnn8G8zA+KB54agYzgvVLkqVDWi8=;
+ b=tYJF8x208ofzu7GOhWPgHPcswnpNR+x7iLNKufVbymAkVQJbr0Z1szfJSS9rZGSbrdlI
+ I5XCpB+445wILSWhjn0RPv8AK2byOfb7CoJr7rl4eQ/Jt1AUVIUytGlTCgKkeaAiU491
+ FZ4VLlD8o54+ncSgWFCPMXAoS6f2pSXQjObOcYzishkRxchsNGZLHck34WXXfOqgfmnX
+ 4q0JHvFMchFLuZaSiECBaqnBI9y2QbNSUeBpl/vq0k792c9Avm40lEmJK1+zxKUQiidj
+ FaQV3owHbWG6duCGlpUg+k249urRc5meKenePZ50ei8fQDoe/LbVMXV2fhJKZdeWnc9E Sw== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3388n6h7x7-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 30 Aug 2020 05:56:56 -0400
+Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07U9ZwbG005193;
+        Sun, 30 Aug 2020 05:56:55 -0400
+Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 3388n6h7wp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 30 Aug 2020 05:56:55 -0400
+Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
+        by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07U9lXWo018395;
+        Sun, 30 Aug 2020 09:56:54 GMT
+Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
+        by ppma03ams.nl.ibm.com with ESMTP id 337en891xs-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Sun, 30 Aug 2020 09:56:54 +0000
+Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
+        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07U9upSu25035050
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Sun, 30 Aug 2020 09:56:52 GMT
+Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D177652051;
+        Sun, 30 Aug 2020 09:56:51 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.145.92.75])
+        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 65C4352050;
+        Sun, 30 Aug 2020 09:56:50 +0000 (GMT)
+Date:   Sun, 30 Aug 2020 12:56:48 +0300
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Randy Dunlap <rdunlap@infradead.org>
+Cc:     linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
         Andrew Morton <akpm@linux-foundation.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Michal Simek <michal.simek@xilinx.com>,
         Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Subject: [PATCH] MAINTAINERS: IA64: mark Status as Odd Fixes only
-Message-ID: <7e719139-450f-52c2-59a2-7964a34eda1f@infradead.org>
-Date:   Sat, 29 Aug 2020 17:31:59 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
+Subject: Re: [ALTERNATE PATCH] memblock: fix min_low_pfn/max_low_pfn build
+ errors
+Message-ID: <20200830095648.GA424181@linux.ibm.com>
+References: <20200829000139.2513-1-rdunlap@infradead.org>
+ <20200829130429.GG167163@linux.ibm.com>
+ <a0665bb7-3389-1178-0a79-2155fb88255d@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <a0665bb7-3389-1178-0a79-2155fb88255d@infradead.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-08-30_03:2020-08-28,2020-08-30 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
+ lowpriorityscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ suspectscore=1 clxscore=1015 phishscore=0 adultscore=0 mlxlogscore=927
+ mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2008300072
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+Hi Randy,
 
-IA64 isn't really being maintained, so mark it as
-Odd Fixes only.
+On Sat, Aug 29, 2020 at 08:40:51AM -0700, Randy Dunlap wrote:
+> On 8/29/20 6:04 AM, Mike Rapoport wrote:
+> > On Fri, Aug 28, 2020 at 05:01:39PM -0700, Randy Dunlap wrote:
+> >> Export min_low_pfn & max_low_pfn in mm/memblock.c to fix build errors
+> >> on arch/microblaze/ and arch/ia64/: (e.g.)
+> > 
+> > Please don't. This would give driver developers a wrong impression that
+> > these variables can be used to query memory boundaries, but this is not
+> > the case, at least not on all architectures.
+> > 
+> > I would prefer fixing it up locally for microblaze and ia64.
+> 
+> I did that.
+> and that's why this is labeled as an ALTERNATE PATCH.
 
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: linux-ia64@vger.kernel.org
+I've seen that, I just wanted to make sure that Andrew wouldn't pick
+this one :)
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
----
- MAINTAINERS |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I can help with taking microblaze and ia64 patches via memblock tree
+once we have Acks from the arch maintainers.
+ 
+> thanks.
+> -- 
+> ~Randy
+> 
 
---- linux-next-20200828.orig/MAINTAINERS
-+++ linux-next-20200828/MAINTAINERS
-@@ -8316,7 +8316,7 @@ IA64 (Itanium) PLATFORM
- M:	Tony Luck <tony.luck@intel.com>
- M:	Fenghua Yu <fenghua.yu@intel.com>
- L:	linux-ia64@vger.kernel.org
--S:	Maintained
-+S:	Odd Fixes
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/aegl/linux.git
- F:	Documentation/ia64/
- F:	arch/ia64/
-
+-- 
+Sincerely yours,
+Mike.
