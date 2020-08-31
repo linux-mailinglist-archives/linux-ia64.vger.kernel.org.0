@@ -2,116 +2,96 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DB5F256D2A
-	for <lists+linux-ia64@lfdr.de>; Sun, 30 Aug 2020 11:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C7C325765C
+	for <lists+linux-ia64@lfdr.de>; Mon, 31 Aug 2020 11:18:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726493AbgH3J5H (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 30 Aug 2020 05:57:07 -0400
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:51096 "EHLO
-        mx0b-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726404AbgH3J5G (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 30 Aug 2020 05:57:06 -0400
-Received: from pps.filterd (m0098417.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 07U9XtR3001438;
-        Sun, 30 Aug 2020 05:56:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=zZZaGO9f6qJS5ucPnn8G8zA+KB54agYzgvVLkqVDWi8=;
- b=tYJF8x208ofzu7GOhWPgHPcswnpNR+x7iLNKufVbymAkVQJbr0Z1szfJSS9rZGSbrdlI
- I5XCpB+445wILSWhjn0RPv8AK2byOfb7CoJr7rl4eQ/Jt1AUVIUytGlTCgKkeaAiU491
- FZ4VLlD8o54+ncSgWFCPMXAoS6f2pSXQjObOcYzishkRxchsNGZLHck34WXXfOqgfmnX
- 4q0JHvFMchFLuZaSiECBaqnBI9y2QbNSUeBpl/vq0k792c9Avm40lEmJK1+zxKUQiidj
- FaQV3owHbWG6duCGlpUg+k249urRc5meKenePZ50ei8fQDoe/LbVMXV2fhJKZdeWnc9E Sw== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3388n6h7x7-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sun, 30 Aug 2020 05:56:56 -0400
-Received: from m0098417.ppops.net (m0098417.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 07U9ZwbG005193;
-        Sun, 30 Aug 2020 05:56:55 -0400
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3388n6h7wp-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sun, 30 Aug 2020 05:56:55 -0400
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 07U9lXWo018395;
-        Sun, 30 Aug 2020 09:56:54 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by ppma03ams.nl.ibm.com with ESMTP id 337en891xs-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Sun, 30 Aug 2020 09:56:54 +0000
-Received: from d06av21.portsmouth.uk.ibm.com (d06av21.portsmouth.uk.ibm.com [9.149.105.232])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 07U9upSu25035050
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Sun, 30 Aug 2020 09:56:52 GMT
-Received: from d06av21.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id D177652051;
-        Sun, 30 Aug 2020 09:56:51 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.145.92.75])
-        by d06av21.portsmouth.uk.ibm.com (Postfix) with ESMTPS id 65C4352050;
-        Sun, 30 Aug 2020 09:56:50 +0000 (GMT)
-Date:   Sun, 30 Aug 2020 12:56:48 +0300
-From:   Mike Rapoport <rppt@linux.ibm.com>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>,
-        David Rientjes <rientjes@google.com>, linux-mm@kvack.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
-Subject: Re: [ALTERNATE PATCH] memblock: fix min_low_pfn/max_low_pfn build
- errors
-Message-ID: <20200830095648.GA424181@linux.ibm.com>
-References: <20200829000139.2513-1-rdunlap@infradead.org>
- <20200829130429.GG167163@linux.ibm.com>
- <a0665bb7-3389-1178-0a79-2155fb88255d@infradead.org>
+        id S1728103AbgHaJSA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 31 Aug 2020 05:18:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53382 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727810AbgHaJR6 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 31 Aug 2020 05:17:58 -0400
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF74DC061573;
+        Mon, 31 Aug 2020 02:17:58 -0700 (PDT)
+Received: by mail-pj1-x1044.google.com with SMTP id i13so2822351pjv.0;
+        Mon, 31 Aug 2020 02:17:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=o9UCQOw6Icrdln138Yk46bjdxyexHm5RqSjvFlYBk8U=;
+        b=QV0KmwhUYJy5ozjdtSeFUEk/E4pQQqWsKgdToJoD/9YQZKXQzVrRNVm2CZmSW7TZpY
+         oIAB1rJR2+QB6+QRoiknh0AAG+UZFAg0/eyjwWIpFf3mky9NVRsEZeppZvxZYsqZ8d6y
+         T+hMBvRqeU6FyjB5PXk8g5MneZPl2TMGcswUcDtkq2U3ILQ+qvrsmgsEWWyZNJuJ+kOY
+         ona9dzJvjwpO6dvARumpTQHpOcYzYvCIhRPUiTmPN0yk6X08t8gOv857AfhilV/09meS
+         nkctTeb7Gbqb0dBZDccPMaeD0PYaT0YxQw6zMFHywHPmqvSyasf5drdUC09xQwhkGPiR
+         yf0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=o9UCQOw6Icrdln138Yk46bjdxyexHm5RqSjvFlYBk8U=;
+        b=XdpTM5gjkRVF+OZ8OeoblcMor//dGMGlokZec0Y6Tep5adzZgDIPNHwUQ2gaZ+JKg8
+         YWYqocvKjoAoIcdpMeMdywYQ3IMZI21D39rO/HrqnwWEyFJoeDL1HJUuxxpOjjwZI/Fb
+         75l0RHbR7s45VOKSt2fwSqTQHYixyVFMZWtAzm6N7NiyIhr71cJlSSIXaG6BSmOTQbXY
+         OafHVyGlgnQDPdQMensE9i50xO67u6Cu75vQChnTMkTW690Gbgkb+CuD+E10oeUd789z
+         IzOmlkLD+UMjx5RC6imF+Sz4q4Ns1W6GPV+sZuwLF57jFoI00ciR+FkG6tY3j9rfWaoH
+         0c1w==
+X-Gm-Message-State: AOAM532dmLyFSKELE2w9qmXvwjKSXWFAUoiv1Nf+ZVCaOEngFyNNBp4f
+        VN4K+v/YrnkDq+IByYeD0Sk=
+X-Google-Smtp-Source: ABdhPJzHLac6/DDTF1AE1XtRQ7vEWY8uXAp6KCf1OcV7sb7Qvzlg9wW2K1FvfKJHLDLnoMvCcqcpmA==
+X-Received: by 2002:a17:90a:714b:: with SMTP id g11mr574043pjs.216.1598865478274;
+        Mon, 31 Aug 2020 02:17:58 -0700 (PDT)
+Received: from localhost.localdomain ([49.207.195.77])
+        by smtp.gmail.com with ESMTPSA id k5sm6847055pgk.78.2020.08.31.02.17.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 31 Aug 2020 02:17:57 -0700 (PDT)
+From:   Anant Thazhemadam <anant.thazhemadam@gmail.com>
+Cc:     anant.thazhemadam@gmail.com, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Daniel Jordan <daniel.m.jordan@oracle.com>,
+        afzal mohammed <afzal.mohd.ma@gmail.com>,
+        Michel Lespinasse <walken@google.com>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] arch: ia64 - Update put_filp to fput
+Date:   Mon, 31 Aug 2020 14:47:46 +0530
+Message-Id: <20200831091747.9305-1-anant.thazhemadam@gmail.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a0665bb7-3389-1178-0a79-2155fb88255d@infradead.org>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
- definitions=2020-08-30_03:2020-08-28,2020-08-30 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0
- lowpriorityscore=0 bulkscore=0 priorityscore=1501 impostorscore=0
- suspectscore=1 clxscore=1015 phishscore=0 adultscore=0 mlxlogscore=927
- mlxscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2006250000 definitions=main-2008300072
+Content-Transfer-Encoding: 8bit
+To:     unlisted-recipients:; (no To-header on input)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Randy,
+The function `put_filp`, (along with almost all references of it) seems to
+have been deprecated and exist no more, and neither the prototype nor
+the function definition seem to be a part of the main kernel tree anymore. 
+It has been recommended that `fput` be used instead, so it felt like it 
+was about time this was updated too
 
-On Sat, Aug 29, 2020 at 08:40:51AM -0700, Randy Dunlap wrote:
-> On 8/29/20 6:04 AM, Mike Rapoport wrote:
-> > On Fri, Aug 28, 2020 at 05:01:39PM -0700, Randy Dunlap wrote:
-> >> Export min_low_pfn & max_low_pfn in mm/memblock.c to fix build errors
-> >> on arch/microblaze/ and arch/ia64/: (e.g.)
-> > 
-> > Please don't. This would give driver developers a wrong impression that
-> > these variables can be used to query memory boundaries, but this is not
-> > the case, at least not on all architectures.
-> > 
-> > I would prefer fixing it up locally for microblaze and ia64.
-> 
-> I did that.
-> and that's why this is labeled as an ALTERNATE PATCH.
+Signed-off-by: Anant Thazhemadam <anant.thazhemadam@gmail.com>
+---
+ arch/ia64/kernel/perfmon.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I've seen that, I just wanted to make sure that Andrew wouldn't pick
-this one :)
-
-I can help with taking microblaze and ia64 patches via memblock tree
-once we have Acks from the arch maintainers.
+diff --git a/arch/ia64/kernel/perfmon.c b/arch/ia64/kernel/perfmon.c
+index 0dc3611e7971..91349e38b9be 100644
+--- a/arch/ia64/kernel/perfmon.c
++++ b/arch/ia64/kernel/perfmon.c
+@@ -2644,7 +2644,7 @@ pfm_context_create(pfm_context_t *ctx, void *arg, int count, struct pt_regs *reg
  
-> thanks.
-> -- 
-> ~Randy
-> 
-
+ buffer_error:
+ 	path = filp->f_path;
+-	put_filp(filp);
++	fput(filp);
+ 	path_put(&path);
+ 
+ 	if (ctx->ctx_buf_fmt) {
 -- 
-Sincerely yours,
-Mike.
+2.25.1
+
