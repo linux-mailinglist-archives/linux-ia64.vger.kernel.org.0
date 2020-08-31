@@ -2,131 +2,71 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 53E75257B91
-	for <lists+linux-ia64@lfdr.de>; Mon, 31 Aug 2020 17:00:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C31C5257E78
+	for <lists+linux-ia64@lfdr.de>; Mon, 31 Aug 2020 18:18:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728156AbgHaPAc (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 31 Aug 2020 11:00:32 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33704 "EHLO mail.kernel.org"
+        id S1727819AbgHaQSf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 31 Aug 2020 12:18:35 -0400
+Received: from mga09.intel.com ([134.134.136.24]:42417 "EHLO mga09.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726144AbgHaPAb (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 31 Aug 2020 11:00:31 -0400
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id F40E720936;
-        Mon, 31 Aug 2020 15:00:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1598886030;
-        bh=+TU+gwRio8JWgglRL++C4eb2K+Sd3krTX7+AJtYIW3s=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ThPCkcLBkEYvALiOwUx25L2kmKURkIZKvpC8gWkOw7kBM3dnmuFUw4OqT5wBbXaAu
-         rZ7nIJZnBOCT/Y69TldJ2Fx8d0R64XI8rjdQoIEMnsrL9xRv1UcHP/YEUJPGEAS5jb
-         I5eLg4kSWNKxy2LkPgcNO7WqHJamai6r2IKsS1Lg=
-Received: by mail-ot1-f41.google.com with SMTP id t7so5595231otp.0;
-        Mon, 31 Aug 2020 08:00:29 -0700 (PDT)
-X-Gm-Message-State: AOAM5334sCx4C+aS/s7Wcgw7ZMKq900clJRH8utBrO7i7CURiAcVkJos
-        8/YQMMeG5SGtk9k4+6DD8xftaYuyd8YMNJEPwpE=
-X-Google-Smtp-Source: ABdhPJwVGGb+gngLstrqLW0PFlbTXrG0TJiMbmlJ0aUDpEVAWF0OCWbFZD7MokZPg8Qes14uTkPbWeYCU0wBhXRJVO4=
-X-Received: by 2002:a9d:774d:: with SMTP id t13mr1176717otl.108.1598886029308;
- Mon, 31 Aug 2020 08:00:29 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200829051524.706585-1-masahiroy@kernel.org> <20200829051524.706585-3-masahiroy@kernel.org>
-In-Reply-To: <20200829051524.706585-3-masahiroy@kernel.org>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Mon, 31 Aug 2020 18:00:18 +0300
-X-Gmail-Original-Message-ID: <CAMj1kXF6-oFD3t4FkieLYRxB8gHpEAPnW+APouW0+AKb8ZXhvw@mail.gmail.com>
-Message-ID: <CAMj1kXF6-oFD3t4FkieLYRxB8gHpEAPnW+APouW0+AKb8ZXhvw@mail.gmail.com>
-Subject: Re: [PATCH 2/3] ia64: remove unneeded header includes from <asm/mca.h>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
-        linux-ia64@vger.kernel.org, Randy Dunlap <rdunlap@infradead.org>,
-        linux-kbuild@vger.kernel.org,
+        id S1726167AbgHaQSe (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 31 Aug 2020 12:18:34 -0400
+IronPort-SDR: bHNKhcgWCCKC8BbIRaXN9obBSEbarAz8TN2nfOeaWcPUlvwQ4vtBJfH+Fv0PGKu9x/K8Ex2k8X
+ buURgs6+ZrCg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9730"; a="158017172"
+X-IronPort-AV: E=Sophos;i="5.76,376,1592895600"; 
+   d="scan'208";a="158017172"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from orsmga003.jf.intel.com ([10.7.209.27])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2020 09:18:29 -0700
+IronPort-SDR: JoD+LXH8r7nIR9pwizZhL0agboDTc4CQEfMSnL4q/visw3TuQO2aHUiDeN6aH8q8IhryEh744W
+ 7jnVukwpeuhQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,376,1592895600"; 
+   d="scan'208";a="296978887"
+Received: from fmsmsx604.amr.corp.intel.com ([10.18.126.84])
+  by orsmga003.jf.intel.com with ESMTP; 31 Aug 2020 09:18:28 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx604.amr.corp.intel.com (10.18.126.84) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 31 Aug 2020 09:17:37 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 31 Aug 2020 09:17:37 -0700
+Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
+ fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.1713.004;
+ Mon, 31 Aug 2020 09:17:37 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Randy Dunlap <rdunlap@infradead.org>,
+        LKML <linux-kernel@vger.kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Dmitry Safonov <0x7f454c46@gmail.com>,
-        afzal mohammed <afzal.mohd.ma@gmail.com>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "Yu, Fenghua" <fenghua.yu@intel.com>
+Subject: RE: [PATCH] MAINTAINERS: IA64: mark Status as Odd Fixes only
+Thread-Topic: [PATCH] MAINTAINERS: IA64: mark Status as Odd Fixes only
+Thread-Index: AQHWfmUDEdRyqneU9UeJF3APC1yQGalSZ4Iw
+Date:   Mon, 31 Aug 2020 16:17:36 +0000
+Message-ID: <331482a4b3b9437f9282b9fc05b9739d@intel.com>
+References: <7e719139-450f-52c2-59a2-7964a34eda1f@infradead.org>
+In-Reply-To: <7e719139-450f-52c2-59a2-7964a34eda1f@infradead.org>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.5.1.3
+x-originating-ip: [10.22.254.132]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sat, 29 Aug 2020 at 08:16, Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> <asm/mca.h> includes too many unneeded headers.
->
-> This commit cuts off a lot of header includes.
->
-> What we need to include are:
->
->  - <linux/percpu.h> for DECLARE_PER_CPU(u64, ia64_mca_pal_base)
->  - <linux/threads.h> for NR_CPUS
->  - <linux/types.h> for u8, u64, size_t, etc.
->  - <asm/ptrace.h> for KERNEL_STACK_SIZE
->
-> The other header includes are actually unneeded.
->
-> <asm/mca.h> previously included 436 headers, and now it includes
-> only 138. I confirmed <asm/mca.h> is still self-contained.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-
-> ---
->
->  arch/ia64/include/asm/mca.h | 9 +++------
->  arch/ia64/kernel/efi.c      | 1 +
->  arch/ia64/kernel/mca.c      | 1 +
->  3 files changed, 5 insertions(+), 6 deletions(-)
->
-> diff --git a/arch/ia64/include/asm/mca.h b/arch/ia64/include/asm/mca.h
-> index c92b9c15962c..05805249296c 100644
-> --- a/arch/ia64/include/asm/mca.h
-> +++ b/arch/ia64/include/asm/mca.h
-> @@ -14,13 +14,10 @@
->
->  #if !defined(__ASSEMBLY__)
->
-> -#include <linux/interrupt.h>
-> +#include <linux/percpu.h>
-> +#include <linux/threads.h>
->  #include <linux/types.h>
-> -
-> -#include <asm/param.h>
-> -#include <asm/sal.h>
-> -#include <asm/processor.h>
-> -#include <asm/mca_asm.h>
-> +#include <asm/ptrace.h>
->
->  #define IA64_MCA_RENDEZ_TIMEOUT                (20 * 1000)     /* value in milliseconds - 20 seconds */
->
-> diff --git a/arch/ia64/kernel/efi.c b/arch/ia64/kernel/efi.c
-> index f932b25fb817..b6bb718ed1ff 100644
-> --- a/arch/ia64/kernel/efi.c
-> +++ b/arch/ia64/kernel/efi.c
-> @@ -39,6 +39,7 @@
->  #include <asm/meminit.h>
->  #include <asm/processor.h>
->  #include <asm/mca.h>
-> +#include <asm/sal.h>
->  #include <asm/setup.h>
->  #include <asm/tlbflush.h>
->
-> diff --git a/arch/ia64/kernel/mca.c b/arch/ia64/kernel/mca.c
-> index 17151269d655..3911c561d2bb 100644
-> --- a/arch/ia64/kernel/mca.c
-> +++ b/arch/ia64/kernel/mca.c
-> @@ -96,6 +96,7 @@
->  #include <asm/ptrace.h>
->  #include <asm/sal.h>
->  #include <asm/mca.h>
-> +#include <asm/mca_asm.h>
->  #include <asm/kexec.h>
->
->  #include <asm/irq.h>
-> --
-> 2.25.1
->
+PiBJQTY0IGlzbid0IHJlYWxseSBiZWluZyBtYWludGFpbmVkLCBzbyBtYXJrIGl0IGFzDQo+IE9k
+ZCBGaXhlcyBvbmx5Lg0KDQpBY2tlZC1ieTogVG9ueSBMdWNrIDx0b255Lmx1Y2tAaW50ZWwuY29t
+Pg0KDQo=
