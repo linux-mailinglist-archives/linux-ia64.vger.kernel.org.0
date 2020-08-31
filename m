@@ -2,96 +2,94 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C7C325765C
-	for <lists+linux-ia64@lfdr.de>; Mon, 31 Aug 2020 11:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86DA6257A88
+	for <lists+linux-ia64@lfdr.de>; Mon, 31 Aug 2020 15:33:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728103AbgHaJSA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 31 Aug 2020 05:18:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53382 "EHLO
+        id S1726984AbgHaNde (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 31 Aug 2020 09:33:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727810AbgHaJR6 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 31 Aug 2020 05:17:58 -0400
-Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF74DC061573;
-        Mon, 31 Aug 2020 02:17:58 -0700 (PDT)
-Received: by mail-pj1-x1044.google.com with SMTP id i13so2822351pjv.0;
-        Mon, 31 Aug 2020 02:17:58 -0700 (PDT)
+        with ESMTP id S1727852AbgHaN1I (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 31 Aug 2020 09:27:08 -0400
+Received: from mail-lj1-x244.google.com (mail-lj1-x244.google.com [IPv6:2a00:1450:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08549C0619E5
+        for <linux-ia64@vger.kernel.org>; Mon, 31 Aug 2020 06:26:29 -0700 (PDT)
+Received: by mail-lj1-x244.google.com with SMTP id w14so6688500ljj.4
+        for <linux-ia64@vger.kernel.org>; Mon, 31 Aug 2020 06:26:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=o9UCQOw6Icrdln138Yk46bjdxyexHm5RqSjvFlYBk8U=;
-        b=QV0KmwhUYJy5ozjdtSeFUEk/E4pQQqWsKgdToJoD/9YQZKXQzVrRNVm2CZmSW7TZpY
-         oIAB1rJR2+QB6+QRoiknh0AAG+UZFAg0/eyjwWIpFf3mky9NVRsEZeppZvxZYsqZ8d6y
-         T+hMBvRqeU6FyjB5PXk8g5MneZPl2TMGcswUcDtkq2U3ILQ+qvrsmgsEWWyZNJuJ+kOY
-         ona9dzJvjwpO6dvARumpTQHpOcYzYvCIhRPUiTmPN0yk6X08t8gOv857AfhilV/09meS
-         nkctTeb7Gbqb0dBZDccPMaeD0PYaT0YxQw6zMFHywHPmqvSyasf5drdUC09xQwhkGPiR
-         yf0w==
+        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
+        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
+        b=GvS5ONqONS+SkRITeLOYK+nEKqeftr2e4zlw8iOljUdVaT4ei8mXK/eMe5gdebbxul
+         qejaiESAwrQo/TwRSbsV2RgWo1cR2hwlUx3zHZP6xDZHfKXln6WrMjydy1j5UDKStApO
+         83k6OMYB/O4HA/D4ksOUSzU9ZpUpEqmaButNQtqR6C29H3+mAHSKCbPlI067sUdB20EE
+         ixBTW9S1A2kyuIbzfdQN/JSL5cc/RZ+/MNHv7Yis6pX8HuuJNUwic97zwHx5MU4x4PUn
+         9VwFvJUStfi4hRDyGGDy0ijlpU3bNrs4tLAIT0WFfsT49jK8zJO72eI6R18XAB60K+Uk
+         aflg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=o9UCQOw6Icrdln138Yk46bjdxyexHm5RqSjvFlYBk8U=;
-        b=XdpTM5gjkRVF+OZ8OeoblcMor//dGMGlokZec0Y6Tep5adzZgDIPNHwUQ2gaZ+JKg8
-         YWYqocvKjoAoIcdpMeMdywYQ3IMZI21D39rO/HrqnwWEyFJoeDL1HJUuxxpOjjwZI/Fb
-         75l0RHbR7s45VOKSt2fwSqTQHYixyVFMZWtAzm6N7NiyIhr71cJlSSIXaG6BSmOTQbXY
-         OafHVyGlgnQDPdQMensE9i50xO67u6Cu75vQChnTMkTW690Gbgkb+CuD+E10oeUd789z
-         IzOmlkLD+UMjx5RC6imF+Sz4q4Ns1W6GPV+sZuwLF57jFoI00ciR+FkG6tY3j9rfWaoH
-         0c1w==
-X-Gm-Message-State: AOAM532dmLyFSKELE2w9qmXvwjKSXWFAUoiv1Nf+ZVCaOEngFyNNBp4f
-        VN4K+v/YrnkDq+IByYeD0Sk=
-X-Google-Smtp-Source: ABdhPJzHLac6/DDTF1AE1XtRQ7vEWY8uXAp6KCf1OcV7sb7Qvzlg9wW2K1FvfKJHLDLnoMvCcqcpmA==
-X-Received: by 2002:a17:90a:714b:: with SMTP id g11mr574043pjs.216.1598865478274;
-        Mon, 31 Aug 2020 02:17:58 -0700 (PDT)
-Received: from localhost.localdomain ([49.207.195.77])
-        by smtp.gmail.com with ESMTPSA id k5sm6847055pgk.78.2020.08.31.02.17.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 31 Aug 2020 02:17:57 -0700 (PDT)
-From:   Anant Thazhemadam <anant.thazhemadam@gmail.com>
-Cc:     anant.thazhemadam@gmail.com, Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Daniel Jordan <daniel.m.jordan@oracle.com>,
-        afzal mohammed <afzal.mohd.ma@gmail.com>,
-        Michel Lespinasse <walken@google.com>,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] arch: ia64 - Update put_filp to fput
-Date:   Mon, 31 Aug 2020 14:47:46 +0530
-Message-Id: <20200831091747.9305-1-anant.thazhemadam@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        h=x-gm-message-state:mime-version:reply-to:sender:from:date
+         :message-id:subject:to;
+        bh=o69Nac3LLMj5CDhyPqLcnP7WGq46U4gQb9HzFdG/MvE=;
+        b=NEiOjCitxdDTBxFBbd6SikbYRPibj+j6mO+zjAujfW5lZjrhwZp4atKcSSppDTQJ6Y
+         Q/6xOm4+hJRI2uC1pj9tyVPUpw8aup1Q9uNouYsjtUQqhP0KUJ5kxaKnGy/7nLigFH47
+         WFCQcvmct+M8UzbCS6SZ+VkdfQqizS8xd4VyC/Q5M0EoUIVU3w91e1ZWJHzXZcODnAFM
+         GQQ0w3Bflwuh+/3PeaLToygT95CUM2ebOAJojcwCAiZN863WdbOn57FUr6M0NkFxliJP
+         0UNRnKVN9U0pdAKtTrjwPnLKwDo43YczWbRiXdbs4aZJcL7woQYRAMGq9neD1N8R+T/H
+         A5Pg==
+X-Gm-Message-State: AOAM53025E14TkV+eyfnQWHeuZNoVy0Rz7MOHwPDKYW4RfNmA4E7MHYJ
+        MVaMzm+tOVjqhlOrBm+d2t+Ra8/QqyzASezbrhg=
+X-Google-Smtp-Source: ABdhPJx5h73UdWdmqN0ZXklbmHxhGiANR3jS4fz3EetfufGWkyufJh3oSK0WTBZL+72KPBBqNF1EE+YcTj5isQyt2i4=
+X-Received: by 2002:a2e:5316:: with SMTP id h22mr714236ljb.167.1598880387154;
+ Mon, 31 Aug 2020 06:26:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-To:     unlisted-recipients:; (no To-header on input)
+Reply-To: marie_avis12@yahoo.com
+Received: by 2002:a2e:9817:0:0:0:0:0 with HTTP; Mon, 31 Aug 2020 06:26:26
+ -0700 (PDT)
+From:   Miss Maris Avis <marie.avis11@gmail.com>
+Date:   Mon, 31 Aug 2020 13:26:26 +0000
+X-Google-Sender-Auth: aulnVZG-1gSOcZsrnz7-vOB6QCo
+Message-ID: <CADTVshPC=1cJsw0xvUiUZDDBg3VVdBcHJ+pk-zuvR4tycntngg@mail.gmail.com>
+Subject: Hello
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-The function `put_filp`, (along with almost all references of it) seems to
-have been deprecated and exist no more, and neither the prototype nor
-the function definition seem to be a part of the main kernel tree anymore. 
-It has been recommended that `fput` be used instead, so it felt like it 
-was about time this was updated too
+My Dear,
 
-Signed-off-by: Anant Thazhemadam <anant.thazhemadam@gmail.com>
----
- arch/ia64/kernel/perfmon.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+My name is Miss Marie Avis the only daughter of Mr. Gabriel Avis, my
+Father was dealing in Cocoa and Timber in this country before his
+death,  It is my pleasure to contact you for a business venture which
+I intend to establish in your country. Though I have not met with you
+before but I believe one has to risk confiding before you can succeed
+sometimes in life.
 
-diff --git a/arch/ia64/kernel/perfmon.c b/arch/ia64/kernel/perfmon.c
-index 0dc3611e7971..91349e38b9be 100644
---- a/arch/ia64/kernel/perfmon.c
-+++ b/arch/ia64/kernel/perfmon.c
-@@ -2644,7 +2644,7 @@ pfm_context_create(pfm_context_t *ctx, void *arg, int count, struct pt_regs *reg
- 
- buffer_error:
- 	path = filp->f_path;
--	put_filp(filp);
-+	fput(filp);
- 	path_put(&path);
- 
- 	if (ctx->ctx_buf_fmt) {
--- 
-2.25.1
+I can confide in you for my brighter future since you are a human
+being like me. There is this huge amount of Ten Million five hundred
+thousand United States dollars. ($10.500.000.00) which my late Father
+kept for me in a suspense account with one of the bank here in Abidjan
+Cote d'Ivoire before he was assassinated by unknown persons, Now I
+have decided to invest these money in your country or anywhere safe
+enough for me.
 
+I want you to help me claim this fund from the bank and have it
+transfer into your personal account in your country for investment
+purposes in your country in these areas:
+
+1). Telecommunication
+2). The transport Industry
+3). Five Star Hotel
+4). Tourism
+5). Real Estate
+
+If you can be of assistance to me I will be pleased to offer you 20%
+of the total fund.
+
+I await your soonest response.
+
+Respectfully yours,
+Miss Marie Evis
+Tel: +225597438528
