@@ -2,140 +2,164 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4C4D259128
-	for <lists+linux-ia64@lfdr.de>; Tue,  1 Sep 2020 16:47:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70853259199
+	for <lists+linux-ia64@lfdr.de>; Tue,  1 Sep 2020 16:53:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728591AbgIAOpB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 1 Sep 2020 10:45:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42734 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727957AbgIAOQU (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 1 Sep 2020 10:16:20 -0400
-Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44BD7C061263;
-        Tue,  1 Sep 2020 07:16:20 -0700 (PDT)
-Received: by mail-pg1-x544.google.com with SMTP id p37so757506pgl.3;
-        Tue, 01 Sep 2020 07:16:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=FmD6S4VqHjRXcx/+V5HKXlkHBAdRWWNIZL1IhjQV5u0=;
-        b=Os1gKBY83fa3BnKaf2/Fgk8+qHXbsizFP4X+5zkibqdpKESKqO2CxfOAmi3rzOYHE9
-         Vy0JGM/Mv/4WaF4mgO5D+ynpZZDqC/uI150cLaBW+aebDIZjOIRcxe8TrmaOByhj/lPv
-         cMeOj+VRtfOgnNnztpMePFyY9BNSXZdESlVNAoSuMN2AS20JXT3BgCLrKKPueKJ97z/g
-         sQER9bZ7UXcV2ZWFpj2aEoRBqVY9zK8yM+hswomMc3+qTQ/8XPrNIo7EjbQbceHHHw/O
-         AtYWM+wBVuhixvDMKauTGbbMsdCCwCbKnMvXUL6gwdvjFBQqA2nPzs9P4KzmQUXW5Mfb
-         aErQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=FmD6S4VqHjRXcx/+V5HKXlkHBAdRWWNIZL1IhjQV5u0=;
-        b=HMQCf9X0Pfrq0Nkk+POCzAgDxBIOcIbnLLYNsqh2ESgS2MjJyjE2xEzphrK9Xv7dHV
-         s/GP0CZFbBTzwjz8isioCOX8WMQ1OGfuSXWPEjamZ56LMUqhcH+H6/uT3OaoOk6N9tiR
-         Op6z7EQ16fhtA3u3arGrNMal+eDXncLiFnUvOxz3bSrO6MZDjrTY4nlwc1WLXM4m/rpv
-         rMmFgpWTx6fA1ABgXqh/vJioEIUtmsA2Gdg2+0Qx2/g2MhCCl19HoMCLd5R2ed8KmzLF
-         7c0hZ3mldIxAHymPaVXJqNh+sWukTiz8DTP1DOUwiF9V50gvyMsQ2DiW5iawtajkX7XG
-         losw==
-X-Gm-Message-State: AOAM5304HNDfHgtzYwKdNWNp3HXx/C5rmrIRI599cndjAl/QZEPuXOt9
-        /tnngnyxfLPSLPn8zL3zReGLww/yweU=
-X-Google-Smtp-Source: ABdhPJw2zhJr1rT1/jQq//SJBkZbAVhJfAAF70Rwlclj/9VkgPdZhOkJ0VXXHUfZHxB08QZ5FQ4xcw==
-X-Received: by 2002:a62:1b4a:: with SMTP id b71mr2067784pfb.235.1598969779641;
-        Tue, 01 Sep 2020 07:16:19 -0700 (PDT)
-Received: from bobo.ibm.com ([203.185.249.227])
-        by smtp.gmail.com with ESMTPSA id w9sm2212816pgg.76.2020.09.01.07.16.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Sep 2020 07:16:19 -0700 (PDT)
-From:   Nicholas Piggin <npiggin@gmail.com>
-To:     linux-arch@vger.kernel.org
-Cc:     Nicholas Piggin <npiggin@gmail.com>, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, Arnd Bergmann <arnd@arndb.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
-Subject: [PATCH v3 08/23] ia64: use asm-generic/mmu_context.h for no-op implementations
-Date:   Wed,  2 Sep 2020 00:15:24 +1000
-Message-Id: <20200901141539.1757549-9-npiggin@gmail.com>
-X-Mailer: git-send-email 2.23.0
-In-Reply-To: <20200901141539.1757549-1-npiggin@gmail.com>
-References: <20200901141539.1757549-1-npiggin@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S1728678AbgIAOxO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 1 Sep 2020 10:53:14 -0400
+Received: from bedivere.hansenpartnership.com ([66.63.167.143]:42334 "EHLO
+        bedivere.hansenpartnership.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1728454AbgIAOwp (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 1 Sep 2020 10:52:45 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by bedivere.hansenpartnership.com (Postfix) with ESMTP id 2FA1E8EE112;
+        Tue,  1 Sep 2020 07:52:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1598971964;
+        bh=5QgiJp1XQuU8WeasWKUrByXxrzK/9M/xvKJovjxtOSE=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=wObSEMiIFiMQqpuLxaCfGj6fWwMB1SR5uR3WpqveV9O4eMPwCERYxZe+pGeu45B1s
+         Hh0lHOhPmaDzTL+z1MwoTQwce39LAcI0HTI6j6IhhJYI3h5nKO0TMp801H3LPYpAS2
+         cAlNurtUenHcZUudnTaoIqyV7yZakslR9e7UqKeA=
+Received: from bedivere.hansenpartnership.com ([127.0.0.1])
+        by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id 0Zy3Ukh5UkrA; Tue,  1 Sep 2020 07:52:44 -0700 (PDT)
+Received: from [153.66.254.174] (c-73-35-198-56.hsd1.wa.comcast.net [73.35.198.56])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id C9BD38EE0F5;
+        Tue,  1 Sep 2020 07:52:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hansenpartnership.com;
+        s=20151216; t=1598971963;
+        bh=5QgiJp1XQuU8WeasWKUrByXxrzK/9M/xvKJovjxtOSE=;
+        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
+        b=aKMifmu3auQ6FWaycnVm58I6hz9G+D25US7ZBIQmKPWtl/OO3oAlisEasTKoEqxvs
+         l6ihGgc23PPx6Vjc2Wtc/36E47y53pW7IPIx5bd2ov50jG73PyojCzhwq4i11ZzTyB
+         Dg3UC/gKa12A9sw0Wl45QN34rTiyU/vUbrJxeAio=
+Message-ID: <1598971960.4238.5.camel@HansenPartnership.com>
+Subject: Re: [PATCH 07/28] 53c700: improve non-coherent DMA handling
+From:   James Bottomley <James.Bottomley@HansenPartnership.com>
+To:     Christoph Hellwig <hch@lst.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Pawel Osciak <pawel@osciak.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        iommu@lists.linux-foundation.org
+Cc:     Tom Lendacky <thomas.lendacky@amd.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, nouveau@lists.freedesktop.org,
+        netdev@vger.kernel.org, linux-nvme@lists.infradead.org,
+        linux-scsi@vger.kernel.org, linux-mm@kvack.org,
+        alsa-devel@alsa-project.org
+Date:   Tue, 01 Sep 2020 07:52:40 -0700
+In-Reply-To: <20200819065555.1802761-8-hch@lst.de>
+References: <20200819065555.1802761-1-hch@lst.de>
+         <20200819065555.1802761-8-hch@lst.de>
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: Evolution 3.26.6 
+Mime-Version: 1.0
+Content-Transfer-Encoding: 7bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: linux-ia64@vger.kernel.org
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
----
+On Wed, 2020-08-19 at 08:55 +0200, Christoph Hellwig wrote:
+> Switch the 53c700 driver to only use non-coherent descriptor memory
+> if it really has to because dma_alloc_coherent fails.  This doesn't
+> matter for any of the platforms it runs on currently, but that will
+> change soon.
+> 
+> To help with this two new helpers to transfer ownership to and from
+> the device are added that abstract the syncing of the non-coherent
+> memory. The two current bidirectional cases are mapped to transfers
+> to the device, as that appears to what they are used for.  Note that
+> for parisc, which is the only architecture this driver needs to use
+> non-coherent memory on, the direction argument of dma_cache_sync is
+> ignored, so this will not change behavior in any way.
 
-Please ack or nack if you object to this being mered via
-Arnd's tree.
+I think this looks mostly OK, except for one misnamed parameter below. 
+Unfortunately, the last non-coherent parisc was the 700 series and I no
+longer own a box, so I can't test that part of it (I can fire up the
+C360 to test it on a coherent arch).
 
- arch/ia64/include/asm/mmu_context.h | 17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+[...]
+> diff --git a/drivers/scsi/53c700.h b/drivers/scsi/53c700.h
+> index 05fe439b66afe5..0f545b05fe611d 100644
+> --- a/drivers/scsi/53c700.h
+> +++ b/drivers/scsi/53c700.h
+> @@ -209,6 +209,7 @@ struct NCR_700_Host_Parameters {
+>  #endif
+>  	__u32	chip710:1;	/* set if really a 710 not
+> 700 */
+>  	__u32	burst_length:4;	/* set to 0 to disable
+> 710 bursting */
+> +	__u32	noncoherent:1;	/* needs to use non-
+> coherent DMA */
+>  
+>  	/* NOTHING BELOW HERE NEEDS ALTERING */
+>  	__u32	fast:1;		/* if we can alter the
+> SCSI bus clock
+> @@ -429,7 +430,7 @@ struct NCR_700_Host_Parameters {
+>  	for(i=0; i< (sizeof(A_##symbol##_used) / sizeof(__u32));
+> i++) { \
+>  		__u32 val =
+> bS_to_cpu((script)[A_##symbol##_used[i]]) + da; \
+>  		(script)[A_##symbol##_used[i]] = bS_to_host(val); \
+> -		dma_cache_sync((dev),
+> &(script)[A_##symbol##_used[i]], 4, DMA_TO_DEVICE); \
+> +		dma_sync_to_dev((dev),
+> &(script)[A_##symbol##_used[i]], 4); \
+>  		DEBUG((" script, patching %s at %d to %pad\n", \
+>  		       #symbol, A_##symbol##_used[i], &da)); \
+>  	} \
+> @@ -441,7 +442,7 @@ struct NCR_700_Host_Parameters {
+>  	dma_addr_t da = value; \
+>  	for(i=0; i< (sizeof(A_##symbol##_used) / sizeof(__u32));
+> i++) { \
+>  		(script)[A_##symbol##_used[i]] = bS_to_host(da); \
+> -		dma_cache_sync((dev),
+> &(script)[A_##symbol##_used[i]], 4, DMA_TO_DEVICE); \
+> +		dma_sync_to_dev((dev),
+> &(script)[A_##symbol##_used[i]], 4); \
+>  		DEBUG((" script, patching %s at %d to %pad\n", \
+>  		       #symbol, A_##symbol##_used[i], &da)); \
+>  	} \
+> @@ -456,7 +457,7 @@ struct NCR_700_Host_Parameters {
+>  		val &= 0xff00ffff; \
+>  		val |= ((value) & 0xff) << 16; \
+>  		(script)[A_##symbol##_used[i]] = bS_to_host(val); \
+> -		dma_cache_sync((dev),
+> &(script)[A_##symbol##_used[i]], 4, DMA_TO_DEVICE); \
+> +		dma_sync_to_dev((dev),
+> &(script)[A_##symbol##_used[i]], 4); \
+>  		DEBUG((" script, patching ID field %s at %d to
+> 0x%x\n", \
+>  		       #symbol, A_##symbol##_used[i], val)); \
+>  	} \
+> @@ -470,7 +471,7 @@ struct NCR_700_Host_Parameters {
+>  		val &= 0xffff0000; \
+>  		val |= ((value) & 0xffff); \
+>  		(script)[A_##symbol##_used[i]] = bS_to_host(val); \
+> -		dma_cache_sync((dev),
+> &(script)[A_##symbol##_used[i]], 4, DMA_TO_DEVICE); \
+> +		dma_sync_to_dev((dev),
+> &(script)[A_##symbol##_used[i]], 4); \
+>  		DEBUG((" script, patching short field %s at %d to
+> 0x%x\n", \
+>  		       #symbol, A_##symbol##_used[i], val)); \
+>  	} \
 
-diff --git a/arch/ia64/include/asm/mmu_context.h b/arch/ia64/include/asm/mmu_context.h
-index 2da0e2eb036b..87a0d5bc11ef 100644
---- a/arch/ia64/include/asm/mmu_context.h
-+++ b/arch/ia64/include/asm/mmu_context.h
-@@ -49,11 +49,6 @@ DECLARE_PER_CPU(u8, ia64_need_tlb_flush);
- extern void mmu_context_init (void);
- extern void wrap_mmu_context (struct mm_struct *mm);
- 
--static inline void
--enter_lazy_tlb (struct mm_struct *mm, struct task_struct *tsk)
--{
--}
--
- /*
-  * When the context counter wraps around all TLBs need to be flushed because
-  * an old context number might have been reused. This is signalled by the
-@@ -116,6 +111,7 @@ get_mmu_context (struct mm_struct *mm)
-  * Initialize context number to some sane value.  MM is guaranteed to be a
-  * brand-new address-space, so no TLB flushing is needed, ever.
-  */
-+#define init_new_context init_new_context
- static inline int
- init_new_context (struct task_struct *p, struct mm_struct *mm)
- {
-@@ -123,12 +119,6 @@ init_new_context (struct task_struct *p, struct mm_struct *mm)
- 	return 0;
- }
- 
--static inline void
--destroy_context (struct mm_struct *mm)
--{
--	/* Nothing to do.  */
--}
--
- static inline void
- reload_context (nv_mm_context_t context)
- {
-@@ -178,11 +168,10 @@ activate_context (struct mm_struct *mm)
- 	} while (unlikely(context != mm->context));
- }
- 
--#define deactivate_mm(tsk,mm)	do { } while (0)
--
- /*
-  * Switch from address space PREV to address space NEXT.
-  */
-+#define activate_mm activate_mm
- static inline void
- activate_mm (struct mm_struct *prev, struct mm_struct *next)
- {
-@@ -196,5 +185,7 @@ activate_mm (struct mm_struct *prev, struct mm_struct *next)
- 
- #define switch_mm(prev_mm,next_mm,next_task)	activate_mm(prev_mm, next_mm)
- 
-+#include <asm-generic/mmu_context.h>
-+
- # endif /* ! __ASSEMBLY__ */
- #endif /* _ASM_IA64_MMU_CONTEXT_H */
--- 
-2.23.0
+These macro arguments need updating.  Since you changed the input from
+hostdata->dev to hostdata, leaving the macro argument as dev is simply
+misleading.  It needs to become hostdata or h.
+
+James
 
