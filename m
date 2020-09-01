@@ -2,58 +2,136 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A99BB2584D6
-	for <lists+linux-ia64@lfdr.de>; Tue,  1 Sep 2020 02:27:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 837D82586C1
+	for <lists+linux-ia64@lfdr.de>; Tue,  1 Sep 2020 06:19:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726085AbgIAA1t convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Mon, 31 Aug 2020 20:27:49 -0400
-Received: from smg.telkomsa.net ([105.187.200.242]:62524 "EHLO
-        smg2.telkomsa.net" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
-        with ESMTP id S1725872AbgIAA1s (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 31 Aug 2020 20:27:48 -0400
-X-AuditID: 69bbcaf2-b59b09e000000a45-16-5f4d957fd39d
-Received: from zmmtarelay1.telkomsa.net ( [10.146.45.44])
-        by smg2.telkomsa.net (Telkom Internet Messaging Gateway) with SMTP id 67.58.02629.F759D4F5; Tue,  1 Sep 2020 02:27:43 +0200 (CAT)
-Received: from [192.168.43.163] (8ta-229-3-180.telkomadsl.co.za [197.229.3.180])
-        by zmmtarelay1.telkomsa.net (Postfix) with ESMTPS id 89DFD7EC57;
-        Tue,  1 Sep 2020 02:27:38 +0200 (SAST)
-Content-Type: text/plain; charset="iso-8859-1"
+        id S1726085AbgIAETT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 1 Sep 2020 00:19:19 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:54568 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725987AbgIAETT (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 1 Sep 2020 00:19:19 -0400
+Received: from pps.filterd (m0098393.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 081431xk119262;
+        Tue, 1 Sep 2020 00:19:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : mime-version : content-type :
+ in-reply-to; s=pp1; bh=Q246u/fQhcgO/yq7KHhZm2ekFkfZRubkGRPgvvC7blU=;
+ b=Zh9tUDJHTPb3QXMbh0l4b4TkPFCUsEas+cI5gzTV8VvqwuSi5tP3LsjjY7ok+kbmt50p
+ hRJMmcH/fotuOYBVHufFTgSZyDAbiNKBEUc6GPsonV9+hgz8u3A3CGBtI6s3yWmlXbmd
+ hoJ8lcw+k0Z9NxXjXL9WKeiF05C2pe7Qkg592CcY+h8z25QdDaiw89VF/KNyOt7wEQT4
+ ndH78U6AgAphmKJ5QjaVm+bT9NMkWIodMOWH9aTbmtTlmVVGT64w94j8NFTwNDymMmmR
+ WhlUIcvVFSoM9HowyKitjpJMgqnLGOFYoQy3d1ZTHkH8m9td0TBNNyuvch2gX23BgpUx 0Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 339eg9gvk6-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Sep 2020 00:19:10 -0400
+Received: from m0098393.ppops.net (m0098393.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08143QPN121201;
+        Tue, 1 Sep 2020 00:19:10 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 339eg9gvjn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Sep 2020 00:19:10 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+        by ppma06ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0814HJEp028925;
+        Tue, 1 Sep 2020 04:19:08 GMT
+Received: from b06cxnps3074.portsmouth.uk.ibm.com (d06relay09.portsmouth.uk.ibm.com [9.149.109.194])
+        by ppma06ams.nl.ibm.com with ESMTP id 337e9gty7c-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 01 Sep 2020 04:19:07 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06cxnps3074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0814J5o328049904
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 1 Sep 2020 04:19:05 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id A7172AE053;
+        Tue,  1 Sep 2020 04:19:05 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 9B524AE04D;
+        Tue,  1 Sep 2020 04:19:04 +0000 (GMT)
+Received: from linux.ibm.com (unknown [9.145.157.5])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Tue,  1 Sep 2020 04:19:04 +0000 (GMT)
+Date:   Tue, 1 Sep 2020 07:19:02 +0300
+From:   Mike Rapoport <rppt@linux.ibm.com>
+To:     Tony Luck <tony.luck@intel.com>
+Cc:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org,
+        kernel test robot <lkp@intel.com>, linux-mm@kvack.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        David Rientjes <rientjes@google.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
+Subject: Re: [PATCH] ia64: fix min_low_pfn/max_low_pfn build errors
+Message-ID: <20200901041902.GC424181@linux.ibm.com>
+References: <20200829000126.2463-1-rdunlap@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Life time opportunity
-To:     Recipients <edlyn@telkomsa.net>
-From:   "Aps-Loan" <edlyn@telkomsa.net>
-Date:   Tue, 01 Sep 2020 09:57:33 +0930
-Reply-To: info.apsloan@zohomail.eu
-Message-Id: <20200901002738.89DFD7EC57@zmmtarelay1.telkomsa.net>
-X-Brightmail-Tracker: H4sIAAAAAAAAA01Sb0wTZxzee3dtD8LJUUv8jW1+KFHjtiLDbbkszLF92G5hRrIPS2biuhsc
-        tIEW1isMTJYBGX9sMFVs4yggUKA6xYEdTpROLAhaFIZD18o2lFiMwNBSZiBzyO5wCl/e/N7n
-        ed7ned/f+yNx5agijtQbzbzJyOWo5ZFEZLXmVc039p3axIaleGZ+0adgQmd6cabh+AjGDFsn
-        Mebk9JeMKzCMGGfzfsQERtoUzL7QEsEsBK/gjKNhHGdClfdlTJNnC3PZ6yaYib/9CiZc3ieS
-        Y/Uy5kL5rIJpGjgoZ/xX62QpKvZSoErG2isGEXur+3sFGxjexk4PT8nYCv8JBVtfXSZnXTfn
-        MHbIWy1nvX/+Q7CW5RIZu9hRpWC95aMKtqPpAME2nnTL2Hn3xrSY3ZHJGXyOvoA3bdvxeaSu
-        tVWVdwcVjpd5ZMXoLLKgCBLo16H5317MgiJJJf0zgvHAwP8bD4Lg8mVMUuF0AgTsNrlUU3QM
-        +GqCxBP8FXA1zeAWRIr1ZnhoMUvwenojhB/Xr8hVdDy0HetUSBI5vQmWO7USTIjlgP/hikRJ
-        qyFgm5JJEopOgUMLbxxAlGNNrmNNrmNNrmM1txERx5FaKDLwgsBlcWb+K65Ik5iUkG40J5j5
-        nOxcg8AlGHmzG4kfq+8eDHehCpuuF9EkUkdRBv1OrVLGFYjne9HzJKaOpdxlIrTui9yMIh0n
-        6LSm/Bxe6EVA4moVdeFcqlZJZXBFe3lT7lPqBZJQb6Ai3tZolbR0gWyez+NNT9kEkqRHhibC
-        iL4eCpdicYQx18irgfpYHC9ljInP4gsz9Tnm1QMYGSHFRYlx0YdEDSXkcQZBn/WEH0TbyVP9
-        R5w42fVTixNXrtjFbaA+k6S0JNXlG5+5ScPcP4l3TqMbSHzveirNJsqixFl/ZpjULTJ0F4Ke
-        U8UEzDc+iobTJY9i4K/fl5TQ0npNBXXO1hfBV/djEhybmHoPaocassFTedcApaFgJYLApK8a
-        iXWLHUHHmfYa0enu+BEEf7T42xDMLVjaEdSds7oRLFYdPIvg19lmce0PhIII7t3umkXgOd/w
-        AMFI41xIRLpqHyNoq7JXYFDW57BgUFd63YrBconTgYmefa0Y1O63XcSkxEvYtNgpTOzU1ZSV
-        Tpm51YfFFaMPxsbMP6Rmvrt5XWGi8sOBWtfo+dlPj87Fe7YLeZqX3t/x3W6Xf+bKRe3i7bHc
-        wJ57yZ0Pvk6rbGS8Nb+M79rqMut2OY2xb9kPv3Nni8r25kSytWdf4dxhzW+pPdb0b9utvhnD
-        iaPzt2KD1fUF125+8lFzx/3ndP7204vRe0fz029khpfUhKDjXnsZNwncf8DtcMpmBAAA
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200829000126.2463-1-rdunlap@infradead.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-01_01:2020-08-31,2020-09-01 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
+ malwarescore=0 clxscore=1015 priorityscore=1501 adultscore=0 spamscore=0
+ phishscore=0 impostorscore=0 bulkscore=0 mlxscore=0 mlxlogscore=812
+ suspectscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009010035
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-To whom it may concern!!!Apply now for 24hours Approval loan at low interest rate. Apply by following our company website below. 
-https://www.apsloan.com
+Tony,
 
-1944 Madison Avenue, Memphis,
-TN 38104, USA.
-Apsloan.com©
+I can take it via the memblock tree, would appreciate an Ack.
+
+On Fri, Aug 28, 2020 at 05:01:26PM -0700, Randy Dunlap wrote:
+> Fix min_low_pfn/max_low_pfn build errors for arch/ia64/: (e.g.)
+> 
+>  ERROR: "max_low_pfn" [drivers/rpmsg/virtio_rpmsg_bus.ko] undefined!
+>  ERROR: "min_low_pfn" [drivers/rpmsg/virtio_rpmsg_bus.ko] undefined!
+>  ERROR: "min_low_pfn" [drivers/hwtracing/intel_th/intel_th_msu.ko] undefined!
+>  ERROR: "max_low_pfn" [drivers/hwtracing/intel_th/intel_th_msu.ko] undefined!
+>  ERROR: "min_low_pfn" [drivers/crypto/cavium/nitrox/n5pf.ko] undefined!
+>  ERROR: "max_low_pfn" [drivers/crypto/cavium/nitrox/n5pf.ko] undefined!
+>  ERROR: "max_low_pfn" [drivers/md/dm-integrity.ko] undefined!
+>  ERROR: "min_low_pfn" [drivers/md/dm-integrity.ko] undefined!
+>  ERROR: "max_low_pfn" [crypto/tcrypt.ko] undefined!
+>  ERROR: "min_low_pfn" [crypto/tcrypt.ko] undefined!
+>  ERROR: "min_low_pfn" [security/keys/encrypted-keys/encrypted-keys.ko] undefined!
+>  ERROR: "max_low_pfn" [security/keys/encrypted-keys/encrypted-keys.ko] undefined!
+>  ERROR: "min_low_pfn" [arch/ia64/kernel/mca_recovery.ko] undefined!
+>  ERROR: "max_low_pfn" [arch/ia64/kernel/mca_recovery.ko] undefined!
+> 
+> David suggested just exporting min_low_pfn & max_low_pfn in
+> mm/memblock.c:
+> https://lore.kernel.org/lkml/alpine.DEB.2.22.394.2006291911220.1118534@chino.kir.corp.google.com/
+> 
+> Reported-by: kernel test robot <lkp@intel.com>
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: linux-mm@kvack.org
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: David Rientjes <rientjes@google.com>
+> Cc: Mike Rapoport <rppt@linux.ibm.com>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Fenghua Yu <fenghua.yu@intel.com>
+> Cc: linux-ia64@vger.kernel.org
+> ---
+>  arch/ia64/kernel/ia64_ksyms.c |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> --- linux-next-20200825.orig/arch/ia64/kernel/ia64_ksyms.c
+> +++ linux-next-20200825/arch/ia64/kernel/ia64_ksyms.c
+> @@ -3,7 +3,7 @@
+>   * Architecture-specific kernel symbols
+>   */
+>  
+> -#ifdef CONFIG_VIRTUAL_MEM_MAP
+> +#if defined(CONFIG_VIRTUAL_MEM_MAP) || defined(CONFIG_DISCONTIGMEM)
+>  #include <linux/compiler.h>
+>  #include <linux/export.h>
+>  #include <linux/memblock.h>
+
+-- 
+Sincerely yours,
+Mike.
