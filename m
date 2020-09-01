@@ -2,72 +2,79 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC2A025923A
-	for <lists+linux-ia64@lfdr.de>; Tue,  1 Sep 2020 17:06:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B01DE259260
+	for <lists+linux-ia64@lfdr.de>; Tue,  1 Sep 2020 17:10:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728577AbgIAPGa (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 1 Sep 2020 11:06:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50504 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728021AbgIAPGZ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 1 Sep 2020 11:06:25 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F326C061244;
-        Tue,  1 Sep 2020 08:06:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=TQLSoH0xPQ3SjLQOZr/hg2RXQ7cUeDg7DQ8wAuWlnPY=; b=jZd0L7aTlxDR248PzMNlW27wkh
-        U5RPUon6By39MJmZf0ctObEI9pE6t9/Rga1EYLZwsrKYL9QKBtSzQY4MensUyVRxNASrX33Pl6ldS
-        zbXRi9/lO7DOPWfK1zGncHVRI29r2AMThiNWFyK5BL0hKgOTicHc7ljMttBaeAT085JBU3dfIIkhB
-        i2DXKzLWz59dGh9/sp69/KBXolj/SaGGtRWihBzzh4x4klX60zoq5kB/U7R9cVPhcDeNn5gerBNkJ
-        glYPLWys77T11Ln0t8j7NNm/ySZOphISgDrR6WnPzsdkVah1bi4+EBuWuom6AkSHomcEJms18cORZ
-        5mRx4n8A==;
-Received: from willy by casper.infradead.org with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kD7r8-0008OT-59; Tue, 01 Sep 2020 15:05:54 +0000
-Date:   Tue, 1 Sep 2020 16:05:54 +0100
-From:   Matthew Wilcox <willy@infradead.org>
-To:     James Bottomley <James.Bottomley@hansenpartnership.com>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Joonyoung Shim <jy0922.shim@samsung.com>,
-        Seung-Woo Kim <sw0312.kim@samsung.com>,
-        Kyungmin Park <kyungmin.park@samsung.com>,
-        Ben Skeggs <bskeggs@redhat.com>,
-        Pawel Osciak <pawel@osciak.com>,
-        Marek Szyprowski <m.szyprowski@samsung.com>,
-        Matt Porter <mporter@kernel.crashing.org>,
-        iommu@lists.linux-foundation.org,
-        Tom Lendacky <thomas.lendacky@amd.com>,
-        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
-        nouveau@lists.freedesktop.org, netdev@vger.kernel.org,
-        linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
-        linux-mm@kvack.org, alsa-devel@alsa-project.org
-Subject: Re: [PATCH 07/28] 53c700: improve non-coherent DMA handling
-Message-ID: <20200901150554.GN14765@casper.infradead.org>
-References: <20200819065555.1802761-1-hch@lst.de>
- <20200819065555.1802761-8-hch@lst.de>
- <1598971960.4238.5.camel@HansenPartnership.com>
+        id S1727026AbgIAPKZ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Tue, 1 Sep 2020 11:10:25 -0400
+Received: from mga11.intel.com ([192.55.52.93]:44800 "EHLO mga11.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726406AbgIAPKO (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 1 Sep 2020 11:10:14 -0400
+IronPort-SDR: lGB35X8lVXqmeURg5B9yY/hSidyFMrhUriySavm/P2O703ZaDR3QUjfYJi58IsZW6zuhsMDZOO
+ gn2Mbg1GmeFA==
+X-IronPort-AV: E=McAfee;i="6000,8403,9730"; a="154691600"
+X-IronPort-AV: E=Sophos;i="5.76,379,1592895600"; 
+   d="scan'208";a="154691600"
+X-Amp-Result: SKIPPED(no attachment in message)
+X-Amp-File-Uploaded: False
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2020 08:10:11 -0700
+IronPort-SDR: jLzcTjk/uOBg0RoHZOwp9TqCg46yUBWklGXcFqU/0inGvOaQE/ITf+KSTV66U7KvtoGIQ1EVrF
+ 2SdB7Su8O8GQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.76,379,1592895600"; 
+   d="scan'208";a="404805931"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by fmsmga001.fm.intel.com with ESMTP; 01 Sep 2020 08:10:11 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Tue, 1 Sep 2020 08:08:38 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Tue, 1 Sep 2020 08:08:37 -0700
+Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
+ fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.1713.004;
+ Tue, 1 Sep 2020 08:08:37 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Mike Rapoport <rppt@linux.ibm.com>
+CC:     Randy Dunlap <rdunlap@infradead.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        lkp <lkp@intel.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "David Rientjes" <rientjes@google.com>,
+        "Yu, Fenghua" <fenghua.yu@intel.com>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+Subject: RE: [PATCH] ia64: fix min_low_pfn/max_low_pfn build errors
+Thread-Topic: [PATCH] ia64: fix min_low_pfn/max_low_pfn build errors
+Thread-Index: AQHWfZeQG2gN8ZpSAUuKNWhMot21E6lTqDQAgAA/7AA=
+Date:   Tue, 1 Sep 2020 15:08:37 +0000
+Message-ID: <706c8eed209c4379baf2f1ac81b0112a@intel.com>
+References: <20200829000126.2463-1-rdunlap@infradead.org>
+ <20200901041902.GC424181@linux.ibm.com>
+In-Reply-To: <20200901041902.GC424181@linux.ibm.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.5.1.3
+x-originating-ip: [10.22.254.132]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 8BIT
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1598971960.4238.5.camel@HansenPartnership.com>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Sep 01, 2020 at 07:52:40AM -0700, James Bottomley wrote:
-> I think this looks mostly OK, except for one misnamed parameter below. 
-> Unfortunately, the last non-coherent parisc was the 700 series and I no
-> longer own a box, so I can't test that part of it (I can fire up the
-> C360 to test it on a coherent arch).
+> I can take it via the memblock tree, would appreciate an Ack.
 
-I have a 715/50 that probably hasn't been powered on in 15 years if you
-need something that old to test on (I believe the 725/100 uses the 7100LC
-and so is coherent).  I'll need to set up a cross-compiler ...
+Thanks
+
+Acked-by: Tony Luck <tony.luck@intel.com>
+
+-Tony
