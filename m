@@ -2,79 +2,94 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B01DE259260
-	for <lists+linux-ia64@lfdr.de>; Tue,  1 Sep 2020 17:10:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24909259808
+	for <lists+linux-ia64@lfdr.de>; Tue,  1 Sep 2020 18:22:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727026AbgIAPKZ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Tue, 1 Sep 2020 11:10:25 -0400
-Received: from mga11.intel.com ([192.55.52.93]:44800 "EHLO mga11.intel.com"
+        id S1731036AbgIAQV6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 1 Sep 2020 12:21:58 -0400
+Received: from elvis.franken.de ([193.175.24.41]:45872 "EHLO elvis.franken.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726406AbgIAPKO (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 1 Sep 2020 11:10:14 -0400
-IronPort-SDR: lGB35X8lVXqmeURg5B9yY/hSidyFMrhUriySavm/P2O703ZaDR3QUjfYJi58IsZW6zuhsMDZOO
- gn2Mbg1GmeFA==
-X-IronPort-AV: E=McAfee;i="6000,8403,9730"; a="154691600"
-X-IronPort-AV: E=Sophos;i="5.76,379,1592895600"; 
-   d="scan'208";a="154691600"
-X-Amp-Result: SKIPPED(no attachment in message)
-X-Amp-File-Uploaded: False
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2020 08:10:11 -0700
-IronPort-SDR: jLzcTjk/uOBg0RoHZOwp9TqCg46yUBWklGXcFqU/0inGvOaQE/ITf+KSTV66U7KvtoGIQ1EVrF
- 2SdB7Su8O8GQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.76,379,1592895600"; 
-   d="scan'208";a="404805931"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmsmga001.fm.intel.com with ESMTP; 01 Sep 2020 08:10:11 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Tue, 1 Sep 2020 08:08:38 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.1713.5; Tue, 1 Sep 2020 08:08:37 -0700
-Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
- fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.1713.004;
- Tue, 1 Sep 2020 08:08:37 -0700
-From:   "Luck, Tony" <tony.luck@intel.com>
-To:     Mike Rapoport <rppt@linux.ibm.com>
-CC:     Randy Dunlap <rdunlap@infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        lkp <lkp@intel.com>, "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "David Rientjes" <rientjes@google.com>,
-        "Yu, Fenghua" <fenghua.yu@intel.com>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
-Subject: RE: [PATCH] ia64: fix min_low_pfn/max_low_pfn build errors
-Thread-Topic: [PATCH] ia64: fix min_low_pfn/max_low_pfn build errors
-Thread-Index: AQHWfZeQG2gN8ZpSAUuKNWhMot21E6lTqDQAgAA/7AA=
-Date:   Tue, 1 Sep 2020 15:08:37 +0000
-Message-ID: <706c8eed209c4379baf2f1ac81b0112a@intel.com>
-References: <20200829000126.2463-1-rdunlap@infradead.org>
- <20200901041902.GC424181@linux.ibm.com>
-In-Reply-To: <20200901041902.GC424181@linux.ibm.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-dlp-product: dlpe-windows
-dlp-reaction: no-action
-dlp-version: 11.5.1.3
-x-originating-ip: [10.22.254.132]
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: 8BIT
+        id S1731021AbgIAPcY (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 1 Sep 2020 11:32:24 -0400
+Received: from uucp (helo=alpha)
+        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
+        id 1kD8Gf-0002rq-00; Tue, 01 Sep 2020 17:32:17 +0200
+Received: by alpha.franken.de (Postfix, from userid 1000)
+        id 92E50C0E4C; Tue,  1 Sep 2020 17:22:09 +0200 (CEST)
+Date:   Tue, 1 Sep 2020 17:22:09 +0200
+From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Mauro Carvalho Chehab <mchehab@kernel.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Joonyoung Shim <jy0922.shim@samsung.com>,
+        Seung-Woo Kim <sw0312.kim@samsung.com>,
+        Kyungmin Park <kyungmin.park@samsung.com>,
+        Ben Skeggs <bskeggs@redhat.com>,
+        Pawel Osciak <pawel@osciak.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Matt Porter <mporter@kernel.crashing.org>,
+        iommu@lists.linux-foundation.org,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-samsung-soc@vger.kernel.org,
+        nouveau@lists.freedesktop.org, netdev@vger.kernel.org,
+        linux-nvme@lists.infradead.org, linux-scsi@vger.kernel.org,
+        linux-mm@kvack.org, alsa-devel@alsa-project.org
+Subject: Re: [PATCH 22/28] sgiseeq: convert from dma_cache_sync to
+ dma_sync_single_for_device
+Message-ID: <20200901152209.GA14288@alpha.franken.de>
+References: <20200819065555.1802761-1-hch@lst.de>
+ <20200819065555.1802761-23-hch@lst.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20200819065555.1802761-23-hch@lst.de>
+User-Agent: Mutt/1.5.23 (2014-03-12)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-> I can take it via the memblock tree, would appreciate an Ack.
+On Wed, Aug 19, 2020 at 08:55:49AM +0200, Christoph Hellwig wrote:
+> Use the proper modern API to transfer cache ownership for incoherent DMA.
+> 
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  drivers/net/ethernet/seeq/sgiseeq.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/seeq/sgiseeq.c b/drivers/net/ethernet/seeq/sgiseeq.c
+> index 39599bbb5d45b6..f91dae16d69a19 100644
+> --- a/drivers/net/ethernet/seeq/sgiseeq.c
+> +++ b/drivers/net/ethernet/seeq/sgiseeq.c
+> @@ -112,14 +112,18 @@ struct sgiseeq_private {
+>  
+>  static inline void dma_sync_desc_cpu(struct net_device *dev, void *addr)
+>  {
+> -	dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
+> -		       DMA_FROM_DEVICE);
+> +	struct sgiseeq_private *sp = netdev_priv(dev);
+> +
+> +	dma_sync_single_for_cpu(dev->dev.parent, VIRT_TO_DMA(sp, addr),
+> +			sizeof(struct sgiseeq_rx_desc), DMA_BIDIRECTIONAL);
+>  }
+>  
+>  static inline void dma_sync_desc_dev(struct net_device *dev, void *addr)
+>  {
+> -	dma_cache_sync(dev->dev.parent, addr, sizeof(struct sgiseeq_rx_desc),
+> -		       DMA_TO_DEVICE);
+> +	struct sgiseeq_private *sp = netdev_priv(dev);
+> +
+> +	dma_sync_single_for_device(dev->dev.parent, VIRT_TO_DMA(sp, addr),
+> +			sizeof(struct sgiseeq_rx_desc), DMA_BIDIRECTIONAL);
+>  }
 
-Thanks
+this breaks ethernet on IP22 completely, but I haven't figured out why, yet.
 
-Acked-by: Tony Luck <tony.luck@intel.com>
+Thomas.
 
--Tony
+-- 
+Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
+good idea.                                                [ RFC1925, 2.3 ]
