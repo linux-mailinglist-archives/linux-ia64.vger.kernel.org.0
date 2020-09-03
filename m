@@ -2,84 +2,69 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BCDC25C399
-	for <lists+linux-ia64@lfdr.de>; Thu,  3 Sep 2020 16:54:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE57525C655
+	for <lists+linux-ia64@lfdr.de>; Thu,  3 Sep 2020 18:13:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729275AbgICOyt (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 3 Sep 2020 10:54:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52470 "EHLO mail.kernel.org"
+        id S1728709AbgICQM6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 3 Sep 2020 12:12:58 -0400
+Received: from verein.lst.de ([213.95.11.211]:38543 "EHLO verein.lst.de"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1729296AbgICOyp (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 3 Sep 2020 10:54:45 -0400
-Received: from kernel.org (unknown [77.127.89.201])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D8D952072A;
-        Thu,  3 Sep 2020 14:54:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599144884;
-        bh=v33Xb9X9GvxmPN3+NOHcqHGJjgQqmZYSA04xdjzeNUQ=;
-        h=Date:From:To:Cc:Subject:From;
-        b=nsU7mWRmhR/Pfl4Z4+2/xdN0yMWkKeMDLx6U+5rYeeuL0CrLRaCprjNkhF8mHEYv9
-         52vD0bWQeoz+j7GgbkZSg1U0OoMY5/Y2gnwvTMaaSgryB6zAjoYwm8Zd5Q/muX3eIe
-         WmLBizF+TvgLJfs43bVRd6eCDeQdUL7H6JrMb1zU=
-Date:   Thu, 3 Sep 2020 17:54:38 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        David Rientjes <rientjes@google.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Simek <michal.simek@xilinx.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Randy Dunlap <rdunlap@infradead.org>,
+        id S1728294AbgICQM6 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 3 Sep 2020 12:12:58 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 0749867357; Thu,  3 Sep 2020 18:12:53 +0200 (CEST)
+Date:   Thu, 3 Sep 2020 18:12:52 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>
+Cc:     Nicolin Chen <nicoleotsuka@gmail.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" 
+        <linuxppc-dev@lists.ozlabs.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        rth@twiddle.net, ink@jurassic.park.msu.ru,
+        Matt Turner <mattst88@gmail.com>, linux-alpha@vger.kernel.org,
         Tony Luck <tony.luck@intel.com>,
-        kernel test robot <lkp@intel.com>,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: [GIT PULL] Fix min_low_pfn/max_low_pfn build errors on ia64 and
- microblaze
-Message-ID: <20200903145438.GA1781636@kernel.org>
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        schnelle@linux.ibm.com, gerald.schaefer@linux.ibm.com,
+        hca@linux.ibm.com, Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        linux-s390@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
+        sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
+Subject: Re: [PATCH 1/2] dma-mapping: introduce
+ dma_get_seg_boundary_nr_pages()
+Message-ID: <20200903161252.GA24841@lst.de>
+References: <20200901221646.26491-1-nicoleotsuka@gmail.com> <20200901221646.26491-2-nicoleotsuka@gmail.com> <CAHp75VcVJBSnPQ6NfdF8FdEDfM+oQ=Sr+cH5VGX4SrAqrgpf-g@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <CAHp75VcVJBSnPQ6NfdF8FdEDfM+oQ=Sr+cH5VGX4SrAqrgpf-g@mail.gmail.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Linus,
+On Thu, Sep 03, 2020 at 01:57:39PM +0300, Andy Shevchenko wrote:
+> > +{
+> > +       if (!dev)
+> > +               return (U32_MAX >> page_shift) + 1;
+> > +       return (dma_get_seg_boundary(dev) >> page_shift) + 1;
+> 
+> Can it be better to do something like
+>   unsigned long boundary = dev ? dma_get_seg_boundary(dev) : U32_MAX;
+> 
+>   return (boundary >> page_shift) + 1;
+> 
+> ?
 
-The following changes since commit f75aef392f869018f78cfedf3c320a6b3fcfda6b:
-
-  Linux 5.9-rc3 (2020-08-30 16:01:54 -0700)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/linux/kernel/git/rppt/memblock.git tags/fixes-2020-09-03
-
-for you to fetch changes up to 5f7b81c18366c38446f6eedab570b98dbdc07cff:
-
-  ia64: fix min_low_pfn/max_low_pfn build errors (2020-09-01 19:34:11 +0300)
-
-----------------------------------------------------------------
-Fix min_low_pfn/max_low_pfn build errors on ia64 and microblaze
-
-Some configurations of ia64 and microblaze use min_low_pfn and
-max_low_pfn in pfn_valid(). This causes build failures for modules that
-use pfn_valid().
-
-The fix is to add EXPORT_SYMBOL() for these variables on ia64 and
-microblaze.
-
-----------------------------------------------------------------
-Randy Dunlap (2):
-      microblaze: fix min_low_pfn/max_low_pfn build errors
-      ia64: fix min_low_pfn/max_low_pfn build errors
-
- arch/ia64/kernel/ia64_ksyms.c | 2 +-
- arch/microblaze/mm/init.c     | 3 +++
- 2 files changed, 4 insertions(+), 1 deletion(-)
-
--- 
-Sincerely yours,
-Mike.
+I don't really see what that would buy us.
