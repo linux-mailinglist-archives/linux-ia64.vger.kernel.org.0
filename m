@@ -2,130 +2,157 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3178D25BFDA
-	for <lists+linux-ia64@lfdr.de>; Thu,  3 Sep 2020 13:05:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0836925C119
+	for <lists+linux-ia64@lfdr.de>; Thu,  3 Sep 2020 14:36:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728330AbgICLAC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 3 Sep 2020 07:00:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59738 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728354AbgICK6A (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 3 Sep 2020 06:58:00 -0400
-Received: from mail-pf1-x441.google.com (mail-pf1-x441.google.com [IPv6:2607:f8b0:4864:20::441])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250A4C061246;
-        Thu,  3 Sep 2020 03:57:57 -0700 (PDT)
-Received: by mail-pf1-x441.google.com with SMTP id u20so2048061pfn.0;
-        Thu, 03 Sep 2020 03:57:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=XvxPmxtC0Bk31a11OwZrMge+dU3uUM43arNhidKdfeY=;
-        b=q1yCvbZ8w01P8xuPxnIcZnEF3Hr07ImVQMcXxZgqnSncr+zba54pN3npDYYOjJXhbm
-         XIqjp77VnYo3sJUa9nsc/OkcPZ2a5Y90boSJn50VaZ74haoOIwzEqzuApddDmuRsWA4t
-         5LlNWMh47eFOI/t/pn9hyEBoN/9bMzFwyvwPxAFUkJ5XUIrhRgszLM/M8If1a/RC8WmZ
-         6qZ5sWP8uitmybmf3cwkB0qwBCXj3OoX/HrhU+S1S1dHFyplWZAkXiQoi27iG3iQmbnm
-         EQGK1zrcCUMrp+7WqPhSebA3XqqW6nM8d6/yeJZq7qMNXZRfKdpHSJtV5y0ESKKzTh/Z
-         pJhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=XvxPmxtC0Bk31a11OwZrMge+dU3uUM43arNhidKdfeY=;
-        b=V3pK3e2Oog1j3HPAQsghba8wYWj1Mtrhpt2ehqrEjsJ/S4lckjMeBl1zy6AwYJ2p07
-         MjPkKE7T6pPseQHyQLb/nrp9N3e0hdaj4sSktyHB2neM406UB+Yd413XzbV+Atn0xfmi
-         Z415AMeFtnBVcs2QNmQPnp891RycLLVRTCwu7GNg8GQcCm7n2+tdQ223nOUWqHELKhlp
-         u7qcXnhY5V0qAnNkJbPbP7rFC2ceG2XU4Au4AOtVXvkUEeqOpVkdX6DTXWd5NrV9057N
-         T4aesZBQZhCHkbWOsAsjy9N8T14T8c3k09Hdw8Puo/L9/9FIaZo2JFKYirXYLYVJMTjH
-         cHRQ==
-X-Gm-Message-State: AOAM533pykzo0Pq5/z+hkZSIkPMwFxvqBvegu3w859zL2aEj/0LXi3qV
-        gKQzm5BlGL2x4mqc/QdhI7FMysM+vkWi7I45vieAzSzRLXUY+g==
-X-Google-Smtp-Source: ABdhPJzWVo7SnArbq5BTD4S1cYWUGvNIOFTqyxYbAJGJHhEbl/k7IWPLuudMRiwWjgcOrgrKPL+6Qt7HKDzE/CcnN7Y=
-X-Received: by 2002:a62:6083:0:b029:13c:1611:66c4 with SMTP id
- u125-20020a6260830000b029013c161166c4mr1648433pfb.15.1599130676695; Thu, 03
- Sep 2020 03:57:56 -0700 (PDT)
-MIME-Version: 1.0
-References: <20200901221646.26491-1-nicoleotsuka@gmail.com> <20200901221646.26491-2-nicoleotsuka@gmail.com>
-In-Reply-To: <20200901221646.26491-2-nicoleotsuka@gmail.com>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Thu, 3 Sep 2020 13:57:39 +0300
-Message-ID: <CAHp75VcVJBSnPQ6NfdF8FdEDfM+oQ=Sr+cH5VGX4SrAqrgpf-g@mail.gmail.com>
-Subject: Re: [PATCH 1/2] dma-mapping: introduce dma_get_seg_boundary_nr_pages()
-To:     Nicolin Chen <nicoleotsuka@gmail.com>
-Cc:     Christoph Hellwig <hch@lst.de>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" 
-        <linuxppc-dev@lists.ozlabs.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        rth@twiddle.net, ink@jurassic.park.msu.ru,
-        Matt Turner <mattst88@gmail.com>, linux-alpha@vger.kernel.org,
+        id S1728870AbgICMgn (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 3 Sep 2020 08:36:43 -0400
+Received: from lhrrgout.huawei.com ([185.176.76.210]:2747 "EHLO huawei.com"
+        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
+        id S1728828AbgICMgk (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 3 Sep 2020 08:36:40 -0400
+Received: from lhreml710-chm.china.huawei.com (unknown [172.18.7.106])
+        by Forcepoint Email with ESMTP id 71392CDCF9CFF0BA78E7;
+        Thu,  3 Sep 2020 13:34:52 +0100 (IST)
+Received: from localhost (10.52.126.121) by lhreml710-chm.china.huawei.com
+ (10.201.108.61) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.1913.5; Thu, 3 Sep 2020
+ 13:34:51 +0100
+Date:   Thu, 3 Sep 2020 13:33:18 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     <linux-mm@kvack.org>, <linux-acpi@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>
+CC:     Lorenzo Pieralisi <lorenzo.pieralisi@arm.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        <linux-pci@vger.kernel.org>, <martin@geanix.com>,
+        Ingo Molnar <mingo@redhat.com>, <linux-ia64@vger.kernel.org>,
         Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        schnelle@linux.ibm.com, gerald.schaefer@linux.ibm.com,
-        hca@linux.ibm.com, Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        linux-s390@vger.kernel.org,
-        "David S. Miller" <davem@davemloft.net>,
-        sparclinux@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, linux-parisc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>, <linuxarm@huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Song Bao Hua <song.bao.hua@hisilicon.com>
+Subject: Re: [PATCH v3 0/6]  ACPI: Only create NUMA nodes from entries in
+ SRAT or SRAT emulation.
+Message-ID: <20200903133318.000017f5@Huawei.com>
+In-Reply-To: <20200818142430.1156547-1-Jonathan.Cameron@huawei.com>
+References: <20200818142430.1156547-1-Jonathan.Cameron@huawei.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 3.17.4 (GTK+ 2.24.32; i686-w64-mingw32)
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [10.52.126.121]
+X-ClientProxiedBy: lhreml738-chm.china.huawei.com (10.201.108.188) To
+ lhreml710-chm.china.huawei.com (10.201.108.61)
+X-CFilter-Loop: Reflected
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Sep 2, 2020 at 1:20 AM Nicolin Chen <nicoleotsuka@gmail.com> wrote:
->
-> We found that callers of dma_get_seg_boundary mostly do an ALIGN
-> with page mask and then do a page shift to get number of pages:
->     ALIGN(boundary + 1, 1 << shift) >> shift
->
-> However, the boundary might be as large as ULONG_MAX, which means
-> that a device has no specific boundary limit. So either "+ 1" or
-> passing it to ALIGN() would potentially overflow.
->
-> According to kernel defines:
->     #define ALIGN_MASK(x, mask) (((x) + (mask)) & ~(mask))
->     #define ALIGN(x, a) ALIGN_MASK(x, (typeof(x))(a) - 1)
->
-> We can simplify the logic here into a helper function doing:
->   ALIGN(boundary + 1, 1 << shift) >> shift
-> = ALIGN_MASK(b + 1, (1 << s) - 1) >> s
-> = {[b + 1 + (1 << s) - 1] & ~[(1 << s) - 1]} >> s
-> = [b + 1 + (1 << s) - 1] >> s
-> = [b + (1 << s)] >> s
-> = (b >> s) + 1
->
-> This patch introduces and applies dma_get_seg_boundary_nr_pages()
-> as an overflow-free helper for the dma_get_seg_boundary() callers
-> to get numbers of pages. It also takes care of the NULL dev case
-> for non-DMA API callers.
 
-...
+On Tue, 18 Aug 2020 22:24:24 +0800
+Jonathan Cameron <Jonathan.Cameron@huawei.com> wrote:
 
-> +static inline unsigned long dma_get_seg_boundary_nr_pages(struct device *dev,
-> +               unsigned int page_shift)
-> +{
-> +       if (!dev)
-> +               return (U32_MAX >> page_shift) + 1;
-> +       return (dma_get_seg_boundary(dev) >> page_shift) + 1;
+> This is a trivial rebase and resend of V2 now the merge window has closed.
+> 
+> Here, I will use the term Proximity Domains for the ACPI description and
+> NUMA Nodes for the in kernel representation.
+> 
+> ACPI 6.3 included a clarification that only Static Resource Allocation
+> Structures in SRAT may define the existence of proximity domains
+> (sec 5.2.16). This clarification closed a possible interpretation that
+> other parts of ACPI (e.g. DSDT _PXM, NFIT etc) could define new proximity
+> domains that were not also mentioned in SRAT structures.
+> 
+> In practice the kernel has never allowed this alternative interpretation as
+> such nodes are only partially initialized. This is architecture specific
+> but to take an example, on x86 alloc_node_data has not been called.
+> Any use of them for node specific allocation, will result in a crash as the
+> infrastructure to fallback to a node with memory is not setup.
+> 
+> We ran into a problem when enabling _PXM handling for PCI devices and found
+> there were boards out there advertising devices in proximity domains that
+> didn't exist [2].
+> 
+> The fix suggested in this series is to replace instances that should not
+> 'create' new nodes with pxm_to_node.  This function needs a some additional
+> hardening against invalid inputs to make sure it is safe for use in these
+> new callers.
+> 
+> Patch 1 Hardens pxm_to_node() against numa_off, and pxm entry being too large.
+> 
+> Patch 2-4 change the various callers not related to SRAT entries so that they
+> set this parameter to false, so do not attempt to initialize a new NUMA node
+> if the relevant one does not already exist.
+> 
+> Patch 5 is a function rename to reflect change in functionality of
+> acpi_map_pxm_to_online_node() as it no longer creates a new map, but just does a
+> lookup of existing maps.
+> 
+> Patch 6 covers the one place we do not allow the full flexibility defined
+> in the ACPI spec.  For SRAT GIC Interrupt Translation Service (ITS) Affinity
+> Structures, on ARM64, the driver currently makes an additional pass of SRAT
+> later in the boot than the one used to identify NUMA domains.
+> Note, this currently means that an ITS placed in a proximity domain that is
+> not defined by another SRAT structure will result in the a crash.
+> 
+> To avoid this crash with minimal changes we do not create new NUMA nodes based
+> on this particular entry type.  Any current platform trying to do this will not
+> boot, so this is an improvement, if perhaps not a perfect solution.
+> 
+> [1] Note in ACPI Specification 6.3 5.2.16 System Resource Affinity Table (SRAT)
+> [2] https://patchwork.kernel.org/patch/10597777/
 
-Can it be better to do something like
-  unsigned long boundary = dev ? dma_get_seg_boundary(dev) : U32_MAX;
+Looking for input from ARM (Lorenzo?), X86(not sure) and ACPI(Rafael?) people
+on this set. As it also touches NFIT handling perhaps someone who focuses on
+that as well. Please feel free to CC additional people who might be interested.
 
-  return (boundary >> page_shift) + 1;
+I'm fairly confident that it should be uncontroversial (famous last words)
+and it closes down a problem that lead to issues with seemingly obvious
+changes in the past. (The whole PCI _PXM issue on some threadripper platforms).
 
-?
+Thanks to Bjorn, Hanjun and Barry for feedback on earlier revisions.
 
-> +}
+Thanks,
 
--- 
-With Best Regards,
-Andy Shevchenko
+Jonathan
+
+> 
+> Thanks to Bjorn Helgaas for review of v1 and Barry Song for internal reviews that
+> lead to a slightly different approach for this v2.
+> 
+> Changes since v2.
+> * Trivial rebase to v5.9-rc1
+> * Collect up tags.
+> 
+> Changes since v1.
+> * Use pxm_to_node for what was previously the path using acpi_map_pxm_to_node
+>   with create==false. (Barry)
+> * Broke patch up into an initial noop stage followed by patches (Bjorn)
+>   to update each type of case in which partial creation of NUMA nodes is prevented.
+> * Added patch 5 to rename function to reflect change of functionality.
+> * Updated descriptions (now mostly in individual patches) inline with Bjorn's comments.
+> 
+> Jonathan Cameron (6):
+>   ACPI: Add out of bounds and numa_off protections to pxm_to_node
+>   ACPI: Do not create new NUMA domains from ACPI static tables that are
+>     not SRAT
+>   ACPI: Remove side effect of partly creating a node in
+>     acpi_map_pxm_to_online_node
+>   ACPI: Rename acpi_map_pxm_to_online_node to pxm_to_online_node
+>   ACPI: Remove side effect of partly creating a node in acpi_get_node
+>   irq-chip/gic-v3-its: Fix crash if ITS is in a proximity domain without
+>     processor or memory
+> 
+>  drivers/acpi/arm64/iort.c        |  2 +-
+>  drivers/acpi/nfit/core.c         |  6 ++----
+>  drivers/acpi/numa/hmat.c         |  4 ++--
+>  drivers/acpi/numa/srat.c         |  4 ++--
+>  drivers/iommu/intel/dmar.c       |  2 +-
+>  drivers/irqchip/irq-gic-v3-its.c |  7 ++++++-
+>  include/linux/acpi.h             | 15 +++++++--------
+>  7 files changed, 21 insertions(+), 19 deletions(-)
+> 
+
+
