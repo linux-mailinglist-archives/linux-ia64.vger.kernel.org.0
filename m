@@ -2,476 +2,383 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 039FB25D24E
-	for <lists+linux-ia64@lfdr.de>; Fri,  4 Sep 2020 09:28:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEB1C25DA52
+	for <lists+linux-ia64@lfdr.de>; Fri,  4 Sep 2020 15:47:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1728195AbgIDH2S (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 4 Sep 2020 03:28:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38796 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726089AbgIDH2P (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 4 Sep 2020 03:28:15 -0400
-Received: from devnote2 (NE2965lan1.rev.em-net.ne.jp [210.141.244.193])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 37B36206D4;
-        Fri,  4 Sep 2020 07:28:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599204493;
-        bh=s3hZXjb6C0V1tGt1Af2B5F4+dHP0ZvfaNuHdQEGrHY4=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=yY1mrgU3TKXXWChgJws0RZjdyfJDRr/qwOcv8RuqeyGq+s+hirwia+hfTNT4AEnlY
-         pkh47wnHz4EgyIo7l2jkp5I5FmT+fpgCT9UpudRBYAWDliJES1RBtxfZkiWreYmm5u
-         JzwaF0S5lsqtjBKuM4tABpcip7XkUCRCv96RAtoY=
-Date:   Fri, 4 Sep 2020 16:28:03 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Christian Brauner <christian.brauner@ubuntu.com>
-Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Jonathan Corbet <corbet@lwn.net>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Tony Luck <tony.luck@intel.com>,
+        id S1730659AbgIDNr3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 4 Sep 2020 09:47:29 -0400
+Received: from condef-06.nifty.com ([202.248.20.71]:20136 "EHLO
+        condef-06.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730544AbgIDNrQ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 4 Sep 2020 09:47:16 -0400
+Received: from conuserg-11.nifty.com ([10.126.8.74])by condef-06.nifty.com with ESMTP id 084DeFBP003135;
+        Fri, 4 Sep 2020 22:40:15 +0900
+Received: from oscar.flets-west.jp (softbank126090211135.bbtec.net [126.90.211.135]) (authenticated)
+        by conuserg-11.nifty.com with ESMTP id 084DVRDU018232;
+        Fri, 4 Sep 2020 22:31:27 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-11.nifty.com 084DVRDU018232
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1599226289;
+        bh=KhuHwbVOnaHwR/5Po5h9g9JE1ia7wMs0KH0UYL7hjd4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=TnOeU5OotpjJG/3yzqnn14+3m1xxcfFCaY5s9pZCclr0d/QAjBYBzlWdez9P01L6m
+         bxQpfit6PIhtd4+auw0orDB+byH8dvLG+zNYn6xwzn2Ye/3/RHWKQ+5s7Hg4maBaap
+         gK86ISfHlAxBXIai9JqpqsDg7NdAcIeA+saiXsWlLTsAjT3CWUUp/g79sm22vLxDV0
+         FlOBRqtz3uBSf8G43FISiKpdJB9AW0nIzIZi695E2UoAvhFmGOFpgiXG3cygRaved8
+         C+No/iOvGQcDCp9jUXBY73wpFGore0tmzO7ESnlkKZthVOjSxSTPA5xkes2Owv/2M9
+         G7KJpFVICFZIQ==
+X-Nifty-SrcIP: [126.90.211.135]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     Ingo Molnar <mingo@redhat.com>, Jessica Yu <jeyu@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Will Deacon <will@kernel.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Stafford Horne <shorne@gmail.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Kars de Jong <jongk@linux-m68k.org>,
-        Kees Cook <keescook@chromium.org>,
-        Greentime Hu <green.hu@gmail.com>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        Alexandre Chartre <alexandre.chartre@oracle.com>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Tom Zanussi <zanussi@kernel.org>,
-        Xiao Yang <yangx.jy@cn.fujitsu.com>, linux-doc@vger.kernel.org,
-        uclinux-h8-devel@lists.sourceforge.jp, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org,
-        kgdb-bugreport@lists.sourceforge.net,
-        linux-kselftest@vger.kernel.org,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Christoph Hewllig <hch@infradead.org>,
-        Matthew Wilcox <willy@infradead.org>,
-        Shuah Khan <shuah@kernel.org>
-Subject: Re: [PATCH v2 10/11] tracing: switch to kernel_clone()
-Message-Id: <20200904162803.d17810b79a335d90440bef69@kernel.org>
-In-Reply-To: <20200819104655.436656-11-christian.brauner@ubuntu.com>
-References: <20200819104655.436656-1-christian.brauner@ubuntu.com>
-        <20200819104655.436656-11-christian.brauner@ubuntu.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        Jeff Dike <jdike@addtoit.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Luck <tony.luck@intel.com>, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH] kbuild: preprocess module linker script
+Date:   Fri,  4 Sep 2020 22:31:21 +0900
+Message-Id: <20200904133122.133071-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, 19 Aug 2020 12:46:54 +0200
-Christian Brauner <christian.brauner@ubuntu.com> wrote:
+There was a request to preprocess the module linker script like we do
+for the vmlinux one (https://lkml.org/lkml/2020/8/21/512).
 
-> The old _do_fork() helper is removed in favor of the new kernel_clone() helper.
-> The latter adheres to naming conventions for kernel internal syscall helpers.
-> 
+The difference between vmlinux.lds and module.lds is that the latter
+is needed for external module builds, thus must be cleaned up by
+'make mrproper' instead of 'make clean' (also, it must be created by
+'make modules_prepare').
 
-This looks good to me.
+You cannot put it in arch/*/kernel/ because 'make clean' descends into
+it. I moved arch/*/kernel/module.lds to arch/*/include/asm/module.lds.h,
+which is included from scripts/module.lds.S.
 
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
+scripts/module.lds is fine because 'make clean' keeps all the build
+artifacts under scripts/.
 
-Thank you,
+You can add arch-specific sections in <asm/module.lds.h>.
 
-> Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-> Cc: Alexandre Chartre <alexandre.chartre@oracle.com>
-> Cc: Jonathan Corbet <corbet@lwn.net>
-> Cc: Thomas Gleixner <tglx@linutronix.de>
-> Cc: Masami Hiramatsu <mhiramat@kernel.org>
-> Cc: Shuah Khan <shuah@kernel.org>
-> Cc: Ingo Molnar <mingo@redhat.com>
-> Cc: Steven Rostedt <rostedt@goodmis.org>
-> Cc: Xiao Yang <yangx.jy@cn.fujitsu.com>
-> Cc: Tom Zanussi <zanussi@kernel.org>
-> Cc: linux-doc@vger.kernel.org
-> Cc: linux-kselftest@vger.kernel.org
-> Signed-off-by: Christian Brauner <christian.brauner@ubuntu.com>
-> ---
-> /* v2 */
-> unchanged
-> ---
->  Documentation/trace/histogram.rst                  |  4 ++--
->  samples/kprobes/kretprobe_example.c                |  4 ++--
->  .../ftrace/test.d/dynevent/add_remove_kprobe.tc    |  2 +-
->  .../ftrace/test.d/dynevent/clear_select_events.tc  |  2 +-
->  .../ftrace/test.d/dynevent/generic_clear_event.tc  |  2 +-
->  .../ftrace/test.d/ftrace/func-filter-stacktrace.tc |  4 ++--
->  .../ftrace/test.d/kprobe/add_and_remove.tc         |  2 +-
->  .../selftests/ftrace/test.d/kprobe/busy_check.tc   |  2 +-
->  .../selftests/ftrace/test.d/kprobe/kprobe_args.tc  |  4 ++--
->  .../ftrace/test.d/kprobe/kprobe_args_comm.tc       |  2 +-
->  .../ftrace/test.d/kprobe/kprobe_args_string.tc     |  4 ++--
->  .../ftrace/test.d/kprobe/kprobe_args_symbol.tc     | 10 +++++-----
->  .../ftrace/test.d/kprobe/kprobe_args_type.tc       |  2 +-
->  .../ftrace/test.d/kprobe/kprobe_ftrace.tc          | 14 +++++++-------
->  .../ftrace/test.d/kprobe/kprobe_multiprobe.tc      |  2 +-
->  .../ftrace/test.d/kprobe/kprobe_syntax_errors.tc   | 12 ++++++------
->  .../ftrace/test.d/kprobe/kretprobe_args.tc         |  4 ++--
->  .../selftests/ftrace/test.d/kprobe/profile.tc      |  2 +-
->  18 files changed, 39 insertions(+), 39 deletions(-)
-> 
-> diff --git a/Documentation/trace/histogram.rst b/Documentation/trace/histogram.rst
-> index 8408670d0328..f93333524a44 100644
-> --- a/Documentation/trace/histogram.rst
-> +++ b/Documentation/trace/histogram.rst
-> @@ -1495,7 +1495,7 @@ Extended error information
->      #
->  
->      { stacktrace:
-> -             _do_fork+0x18e/0x330
-> +             kernel_clone+0x18e/0x330
->               kernel_thread+0x29/0x30
->               kthreadd+0x154/0x1b0
->               ret_from_fork+0x3f/0x70
-> @@ -1588,7 +1588,7 @@ Extended error information
->               SYSC_sendto+0xef/0x170
->      } hitcount:         88
->      { stacktrace:
-> -             _do_fork+0x18e/0x330
-> +             kernel_clone+0x18e/0x330
->               SyS_clone+0x19/0x20
->               entry_SYSCALL_64_fastpath+0x12/0x6a
->      } hitcount:        244
-> diff --git a/samples/kprobes/kretprobe_example.c b/samples/kprobes/kretprobe_example.c
-> index 78a2da6fb3cd..0c40f7236989 100644
-> --- a/samples/kprobes/kretprobe_example.c
-> +++ b/samples/kprobes/kretprobe_example.c
-> @@ -8,7 +8,7 @@
->   *
->   * usage: insmod kretprobe_example.ko func=<func_name>
->   *
-> - * If no func_name is specified, _do_fork is instrumented
-> + * If no func_name is specified, kernel_clone is instrumented
->   *
->   * For more information on theory of operation of kretprobes, see
->   * Documentation/staging/kprobes.rst
-> @@ -26,7 +26,7 @@
->  #include <linux/limits.h>
->  #include <linux/sched.h>
->  
-> -static char func_name[NAME_MAX] = "_do_fork";
-> +static char func_name[NAME_MAX] = "kernel_clone";
->  module_param_string(func, func_name, NAME_MAX, S_IRUGO);
->  MODULE_PARM_DESC(func, "Function to kretprobe; this module will report the"
->  			" function's execution time");
-> diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_kprobe.tc b/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_kprobe.tc
-> index 68550f97d3c3..3bcd4c3624ee 100644
-> --- a/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_kprobe.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/dynevent/add_remove_kprobe.tc
-> @@ -6,7 +6,7 @@
->  echo 0 > events/enable
->  echo > dynamic_events
->  
-> -PLACE=_do_fork
-> +PLACE=kernel_clone
->  
->  echo "p:myevent1 $PLACE" >> dynamic_events
->  echo "r:myevent2 $PLACE" >> dynamic_events
-> diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/clear_select_events.tc b/tools/testing/selftests/ftrace/test.d/dynevent/clear_select_events.tc
-> index c969be9eb7de..438961971b7e 100644
-> --- a/tools/testing/selftests/ftrace/test.d/dynevent/clear_select_events.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/dynevent/clear_select_events.tc
-> @@ -6,7 +6,7 @@
->  echo 0 > events/enable
->  echo > dynamic_events
->  
-> -PLACE=_do_fork
-> +PLACE=kernel_clone
->  
->  setup_events() {
->  echo "p:myevent1 $PLACE" >> dynamic_events
-> diff --git a/tools/testing/selftests/ftrace/test.d/dynevent/generic_clear_event.tc b/tools/testing/selftests/ftrace/test.d/dynevent/generic_clear_event.tc
-> index 16d543eaac88..a8603bd23e0d 100644
-> --- a/tools/testing/selftests/ftrace/test.d/dynevent/generic_clear_event.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/dynevent/generic_clear_event.tc
-> @@ -6,7 +6,7 @@
->  echo 0 > events/enable
->  echo > dynamic_events
->  
-> -PLACE=_do_fork
-> +PLACE=kernel_clone
->  
->  setup_events() {
->  echo "p:myevent1 $PLACE" >> dynamic_events
-> diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-stacktrace.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-stacktrace.tc
-> index 0f41e441c203..98305d76bd04 100644
-> --- a/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-stacktrace.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/ftrace/func-filter-stacktrace.tc
-> @@ -4,9 +4,9 @@
->  # requires: set_ftrace_filter
->  # flags: instance
->  
-> -echo _do_fork:stacktrace >> set_ftrace_filter
-> +echo kernel_clone:stacktrace >> set_ftrace_filter
->  
-> -grep -q "_do_fork:stacktrace:unlimited" set_ftrace_filter
-> +grep -q "kernel_clone:stacktrace:unlimited" set_ftrace_filter
->  
->  (echo "forked"; sleep 1)
->  
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/add_and_remove.tc b/tools/testing/selftests/ftrace/test.d/kprobe/add_and_remove.tc
-> index eba858c21815..9737cd0578a7 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/add_and_remove.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/add_and_remove.tc
-> @@ -3,7 +3,7 @@
->  # description: Kprobe dynamic event - adding and removing
->  # requires: kprobe_events
->  
-> -echo p:myevent _do_fork > kprobe_events
-> +echo p:myevent kernel_clone > kprobe_events
->  grep myevent kprobe_events
->  test -d events/kprobes/myevent
->  echo > kprobe_events
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/busy_check.tc b/tools/testing/selftests/ftrace/test.d/kprobe/busy_check.tc
-> index d10bf4f05bc8..f9a40af76888 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/busy_check.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/busy_check.tc
-> @@ -3,7 +3,7 @@
->  # description: Kprobe dynamic event - busy event check
->  # requires: kprobe_events
->  
-> -echo p:myevent _do_fork > kprobe_events
-> +echo p:myevent kernel_clone > kprobe_events
->  test -d events/kprobes/myevent
->  echo 1 > events/kprobes/myevent/enable
->  echo > kprobe_events && exit_fail # this must fail
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args.tc
-> index 61f2ac441aec..eb543d3cfe5f 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args.tc
-> @@ -3,13 +3,13 @@
->  # description: Kprobe dynamic event with arguments
->  # requires: kprobe_events
->  
-> -echo 'p:testprobe _do_fork $stack $stack0 +0($stack)' > kprobe_events
-> +echo 'p:testprobe kernel_clone $stack $stack0 +0($stack)' > kprobe_events
->  grep testprobe kprobe_events | grep -q 'arg1=\$stack arg2=\$stack0 arg3=+0(\$stack)'
->  test -d events/kprobes/testprobe
->  
->  echo 1 > events/kprobes/testprobe/enable
->  ( echo "forked")
-> -grep testprobe trace | grep '_do_fork' | \
-> +grep testprobe trace | grep 'kernel_clone' | \
->    grep -q 'arg1=0x[[:xdigit:]]* arg2=0x[[:xdigit:]]* arg3=0x[[:xdigit:]]*$'
->  
->  echo 0 > events/kprobes/testprobe/enable
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_comm.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_comm.tc
-> index 05aaeed6987f..4e5b63be51c9 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_comm.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_comm.tc
-> @@ -5,7 +5,7 @@
->  
->  grep -A1 "fetcharg:" README | grep -q "\$comm" || exit_unsupported # this is too old
->  
-> -echo 'p:testprobe _do_fork comm=$comm ' > kprobe_events
-> +echo 'p:testprobe kernel_clone comm=$comm ' > kprobe_events
->  grep testprobe kprobe_events | grep -q 'comm=$comm'
->  test -d events/kprobes/testprobe
->  
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
-> index b5fa05443b39..a1d70588ab21 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
-> @@ -30,13 +30,13 @@ esac
->  : "Test get argument (1)"
->  echo "p:testprobe tracefs_create_dir arg1=+0(${ARG1}):string" > kprobe_events
->  echo 1 > events/kprobes/testprobe/enable
-> -echo "p:test _do_fork" >> kprobe_events
-> +echo "p:test kernel_clone" >> kprobe_events
->  grep -qe "testprobe.* arg1=\"test\"" trace
->  
->  echo 0 > events/kprobes/testprobe/enable
->  : "Test get argument (2)"
->  echo "p:testprobe tracefs_create_dir arg1=+0(${ARG1}):string arg2=+0(${ARG1}):string" > kprobe_events
->  echo 1 > events/kprobes/testprobe/enable
-> -echo "p:test _do_fork" >> kprobe_events
-> +echo "p:test kernel_clone" >> kprobe_events
->  grep -qe "testprobe.* arg1=\"test\" arg2=\"test\"" trace
->  
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_symbol.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_symbol.tc
-> index b8c75a3d003c..bd25dd0ba0d0 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_symbol.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_symbol.tc
-> @@ -14,12 +14,12 @@ elif ! grep "$SYMBOL\$" /proc/kallsyms; then
->  fi
->  
->  : "Test get basic types symbol argument"
-> -echo "p:testprobe_u _do_fork arg1=@linux_proc_banner:u64 arg2=@linux_proc_banner:u32 arg3=@linux_proc_banner:u16 arg4=@linux_proc_banner:u8" > kprobe_events
-> -echo "p:testprobe_s _do_fork arg1=@linux_proc_banner:s64 arg2=@linux_proc_banner:s32 arg3=@linux_proc_banner:s16 arg4=@linux_proc_banner:s8" >> kprobe_events
-> +echo "p:testprobe_u kernel_clone arg1=@linux_proc_banner:u64 arg2=@linux_proc_banner:u32 arg3=@linux_proc_banner:u16 arg4=@linux_proc_banner:u8" > kprobe_events
-> +echo "p:testprobe_s kernel_clone arg1=@linux_proc_banner:s64 arg2=@linux_proc_banner:s32 arg3=@linux_proc_banner:s16 arg4=@linux_proc_banner:s8" >> kprobe_events
->  if grep -q "x8/16/32/64" README; then
-> -  echo "p:testprobe_x _do_fork arg1=@linux_proc_banner:x64 arg2=@linux_proc_banner:x32 arg3=@linux_proc_banner:x16 arg4=@linux_proc_banner:x8" >> kprobe_events
-> +  echo "p:testprobe_x kernel_clone arg1=@linux_proc_banner:x64 arg2=@linux_proc_banner:x32 arg3=@linux_proc_banner:x16 arg4=@linux_proc_banner:x8" >> kprobe_events
->  fi
-> -echo "p:testprobe_bf _do_fork arg1=@linux_proc_banner:b8@4/32" >> kprobe_events
-> +echo "p:testprobe_bf kernel_clone arg1=@linux_proc_banner:b8@4/32" >> kprobe_events
->  echo 1 > events/kprobes/enable
->  (echo "forked")
->  echo 0 > events/kprobes/enable
-> @@ -27,7 +27,7 @@ grep "testprobe_[usx]:.* arg1=.* arg2=.* arg3=.* arg4=.*" trace
->  grep "testprobe_bf:.* arg1=.*" trace
->  
->  : "Test get string symbol argument"
-> -echo "p:testprobe_str _do_fork arg1=@linux_proc_banner:string" > kprobe_events
-> +echo "p:testprobe_str kernel_clone arg1=@linux_proc_banner:string" > kprobe_events
->  echo 1 > events/kprobes/enable
->  (echo "forked")
->  echo 0 > events/kprobes/enable
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_type.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_type.tc
-> index 0610e0b5587c..91fcce1c241c 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_type.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_type.tc
-> @@ -4,7 +4,7 @@
->  # requires: kprobe_events "x8/16/32/64":README
->  
->  gen_event() { # Bitsize
-> -  echo "p:testprobe _do_fork \$stack0:s$1 \$stack0:u$1 \$stack0:x$1 \$stack0:b4@4/$1"
-> +  echo "p:testprobe kernel_clone \$stack0:s$1 \$stack0:u$1 \$stack0:x$1 \$stack0:b4@4/$1"
->  }
->  
->  check_types() { # s-type u-type x-type bf-type width
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_ftrace.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_ftrace.tc
-> index 81d8b58c03bc..0d179094191f 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_ftrace.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_ftrace.tc
-> @@ -5,29 +5,29 @@
->  
->  # prepare
->  echo nop > current_tracer
-> -echo _do_fork > set_ftrace_filter
-> -echo 'p:testprobe _do_fork' > kprobe_events
-> +echo kernel_clone > set_ftrace_filter
-> +echo 'p:testprobe kernel_clone' > kprobe_events
->  
->  # kprobe on / ftrace off
->  echo 1 > events/kprobes/testprobe/enable
->  echo > trace
->  ( echo "forked")
->  grep testprobe trace
-> -! grep '_do_fork <-' trace
-> +! grep 'kernel_clone <-' trace
->  
->  # kprobe on / ftrace on
->  echo function > current_tracer
->  echo > trace
->  ( echo "forked")
->  grep testprobe trace
-> -grep '_do_fork <-' trace
-> +grep 'kernel_clone <-' trace
->  
->  # kprobe off / ftrace on
->  echo 0 > events/kprobes/testprobe/enable
->  echo > trace
->  ( echo "forked")
->  ! grep testprobe trace
-> -grep '_do_fork <-' trace
-> +grep 'kernel_clone <-' trace
->  
->  # kprobe on / ftrace on
->  echo 1 > events/kprobes/testprobe/enable
-> @@ -35,11 +35,11 @@ echo function > current_tracer
->  echo > trace
->  ( echo "forked")
->  grep testprobe trace
-> -grep '_do_fork <-' trace
-> +grep 'kernel_clone <-' trace
->  
->  # kprobe on / ftrace off
->  echo nop > current_tracer
->  echo > trace
->  ( echo "forked")
->  grep testprobe trace
-> -! grep '_do_fork <-' trace
-> +! grep 'kernel_clone <-' trace
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
-> index 366b7e1b6718..45d90b6c763d 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_multiprobe.tc
-> @@ -4,7 +4,7 @@
->  # requires: kprobe_events "Create/append/":README
->  
->  # Choose 2 symbols for target
-> -SYM1=_do_fork
-> +SYM1=kernel_clone
->  SYM2=do_exit
->  EVENT_NAME=kprobes/testevent
->  
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
-> index b4d834675e59..c02ea50d63ea 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_syntax_errors.tc
-> @@ -86,15 +86,15 @@ esac
->  
->  # multiprobe errors
->  if grep -q "Create/append/" README && grep -q "imm-value" README; then
-> -echo 'p:kprobes/testevent _do_fork' > kprobe_events
-> +echo 'p:kprobes/testevent kernel_clone' > kprobe_events
->  check_error '^r:kprobes/testevent do_exit'	# DIFF_PROBE_TYPE
->  
->  # Explicitly use printf "%s" to not interpret \1
-> -printf "%s" 'p:kprobes/testevent _do_fork abcd=\1' > kprobe_events
-> -check_error 'p:kprobes/testevent _do_fork ^bcd=\1'	# DIFF_ARG_TYPE
-> -check_error 'p:kprobes/testevent _do_fork ^abcd=\1:u8'	# DIFF_ARG_TYPE
-> -check_error 'p:kprobes/testevent _do_fork ^abcd=\"foo"'	# DIFF_ARG_TYPE
-> -check_error '^p:kprobes/testevent _do_fork abcd=\1'	# SAME_PROBE
-> +printf "%s" 'p:kprobes/testevent kernel_clone abcd=\1' > kprobe_events
-> +check_error 'p:kprobes/testevent kernel_clone ^bcd=\1'	# DIFF_ARG_TYPE
-> +check_error 'p:kprobes/testevent kernel_clone ^abcd=\1:u8'	# DIFF_ARG_TYPE
-> +check_error 'p:kprobes/testevent kernel_clone ^abcd=\"foo"'	# DIFF_ARG_TYPE
-> +check_error '^p:kprobes/testevent kernel_clone abcd=\1'	# SAME_PROBE
->  fi
->  
->  exit 0
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kretprobe_args.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kretprobe_args.tc
-> index 523fde6d1aa5..7ae492c204a4 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/kretprobe_args.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/kretprobe_args.tc
-> @@ -4,14 +4,14 @@
->  # requires: kprobe_events
->  
->  # Add new kretprobe event
-> -echo 'r:testprobe2 _do_fork $retval' > kprobe_events
-> +echo 'r:testprobe2 kernel_clone $retval' > kprobe_events
->  grep testprobe2 kprobe_events | grep -q 'arg1=\$retval'
->  test -d events/kprobes/testprobe2
->  
->  echo 1 > events/kprobes/testprobe2/enable
->  ( echo "forked")
->  
-> -cat trace | grep testprobe2 | grep -q '<- _do_fork'
-> +cat trace | grep testprobe2 | grep -q '<- kernel_clone'
->  
->  echo 0 > events/kprobes/testprobe2/enable
->  echo '-:testprobe2' >> kprobe_events
-> diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/profile.tc b/tools/testing/selftests/ftrace/test.d/kprobe/profile.tc
-> index ff6c44adc8a0..c4093fc1a773 100644
-> --- a/tools/testing/selftests/ftrace/test.d/kprobe/profile.tc
-> +++ b/tools/testing/selftests/ftrace/test.d/kprobe/profile.tc
-> @@ -4,7 +4,7 @@
->  # requires: kprobe_events
->  
->  ! grep -q 'myevent' kprobe_profile
-> -echo p:myevent _do_fork > kprobe_events
-> +echo p:myevent kernel_clone > kprobe_events
->  grep -q 'myevent[[:space:]]*0[[:space:]]*0$' kprobe_profile
->  echo 1 > events/kprobes/myevent/enable
->  ( echo "forked" )
-> -- 
-> 2.28.0
-> 
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Tested-by: Jessica Yu <jeyu@kernel.org>
+---
 
+ Makefile                                               |  1 -
+ arch/arm/Makefile                                      |  4 ----
+ .../{kernel/module.lds => include/asm/module.lds.h}    |  2 ++
+ arch/arm64/Makefile                                    |  4 ----
+ .../{kernel/module.lds => include/asm/module.lds.h}    |  2 ++
+ arch/ia64/Makefile                                     |  1 -
+ arch/ia64/{module.lds => include/asm/module.lds.h}     |  0
+ arch/m68k/Makefile                                     |  1 -
+ .../{kernel/module.lds => include/asm/module.lds.h}    |  0
+ arch/powerpc/Makefile                                  |  1 -
+ .../{kernel/module.lds => include/asm/module.lds.h}    |  0
+ arch/riscv/Makefile                                    |  3 ---
+ .../{kernel/module.lds => include/asm/module.lds.h}    |  3 ++-
+ arch/um/include/asm/Kbuild                             |  1 +
+ include/asm-generic/Kbuild                             |  1 +
+ include/asm-generic/module.lds.h                       | 10 ++++++++++
+ scripts/.gitignore                                     |  1 +
+ scripts/Makefile                                       |  2 ++
+ scripts/Makefile.modfinal                              |  5 ++---
+ scripts/{module-common.lds => module.lds.S}            |  3 +++
+ scripts/package/builddeb                               |  2 +-
+ 21 files changed, 27 insertions(+), 20 deletions(-)
+ rename arch/arm/{kernel/module.lds => include/asm/module.lds.h} (72%)
+ rename arch/arm64/{kernel/module.lds => include/asm/module.lds.h} (76%)
+ rename arch/ia64/{module.lds => include/asm/module.lds.h} (100%)
+ rename arch/m68k/{kernel/module.lds => include/asm/module.lds.h} (100%)
+ rename arch/powerpc/{kernel/module.lds => include/asm/module.lds.h} (100%)
+ rename arch/riscv/{kernel/module.lds => include/asm/module.lds.h} (84%)
+ create mode 100644 include/asm-generic/module.lds.h
+ rename scripts/{module-common.lds => module.lds.S} (93%)
 
+diff --git a/Makefile b/Makefile
+index 9cac6fde3479..3d9b56c6b47e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -506,7 +506,6 @@ KBUILD_CFLAGS_KERNEL :=
+ KBUILD_AFLAGS_MODULE  := -DMODULE
+ KBUILD_CFLAGS_MODULE  := -DMODULE
+ KBUILD_LDFLAGS_MODULE :=
+-export KBUILD_LDS_MODULE := $(srctree)/scripts/module-common.lds
+ KBUILD_LDFLAGS :=
+ CLANG_FLAGS :=
+ 
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 4e877354515f..a0cb15de9677 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -16,10 +16,6 @@ LDFLAGS_vmlinux	+= --be8
+ KBUILD_LDFLAGS_MODULE	+= --be8
+ endif
+ 
+-ifeq ($(CONFIG_ARM_MODULE_PLTS),y)
+-KBUILD_LDS_MODULE	+= $(srctree)/arch/arm/kernel/module.lds
+-endif
+-
+ GZFLAGS		:=-9
+ #KBUILD_CFLAGS	+=-pipe
+ 
+diff --git a/arch/arm/kernel/module.lds b/arch/arm/include/asm/module.lds.h
+similarity index 72%
+rename from arch/arm/kernel/module.lds
+rename to arch/arm/include/asm/module.lds.h
+index 79cb6af565e5..0e7cb4e314b4 100644
+--- a/arch/arm/kernel/module.lds
++++ b/arch/arm/include/asm/module.lds.h
+@@ -1,5 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
++#ifdef CONFIG_ARM_MODULE_PLTS
+ SECTIONS {
+ 	.plt : { BYTE(0) }
+ 	.init.plt : { BYTE(0) }
+ }
++#endif
+diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+index 55bc8546d9c7..232547ec07d8 100644
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -115,10 +115,6 @@ endif
+ 
+ CHECKFLAGS	+= -D__aarch64__
+ 
+-ifeq ($(CONFIG_ARM64_MODULE_PLTS),y)
+-KBUILD_LDS_MODULE	+= $(srctree)/arch/arm64/kernel/module.lds
+-endif
+-
+ ifeq ($(CONFIG_DYNAMIC_FTRACE_WITH_REGS),y)
+   KBUILD_CPPFLAGS += -DCC_USING_PATCHABLE_FUNCTION_ENTRY
+   CC_FLAGS_FTRACE := -fpatchable-function-entry=2
+diff --git a/arch/arm64/kernel/module.lds b/arch/arm64/include/asm/module.lds.h
+similarity index 76%
+rename from arch/arm64/kernel/module.lds
+rename to arch/arm64/include/asm/module.lds.h
+index 22e36a21c113..691f15af788e 100644
+--- a/arch/arm64/kernel/module.lds
++++ b/arch/arm64/include/asm/module.lds.h
+@@ -1,5 +1,7 @@
++#ifdef CONFIG_ARM64_MODULE_PLTS
+ SECTIONS {
+ 	.plt (NOLOAD) : { BYTE(0) }
+ 	.init.plt (NOLOAD) : { BYTE(0) }
+ 	.text.ftrace_trampoline (NOLOAD) : { BYTE(0) }
+ }
++#endif
+diff --git a/arch/ia64/Makefile b/arch/ia64/Makefile
+index 2876a7df1b0a..703b1c4f6d12 100644
+--- a/arch/ia64/Makefile
++++ b/arch/ia64/Makefile
+@@ -20,7 +20,6 @@ CHECKFLAGS	+= -D__ia64=1 -D__ia64__=1 -D_LP64 -D__LP64__
+ 
+ OBJCOPYFLAGS	:= --strip-all
+ LDFLAGS_vmlinux	:= -static
+-KBUILD_LDS_MODULE += $(srctree)/arch/ia64/module.lds
+ KBUILD_AFLAGS_KERNEL := -mconstant-gp
+ EXTRA		:=
+ 
+diff --git a/arch/ia64/module.lds b/arch/ia64/include/asm/module.lds.h
+similarity index 100%
+rename from arch/ia64/module.lds
+rename to arch/ia64/include/asm/module.lds.h
+diff --git a/arch/m68k/Makefile b/arch/m68k/Makefile
+index 4438ffb4bbe1..ea14f2046fb4 100644
+--- a/arch/m68k/Makefile
++++ b/arch/m68k/Makefile
+@@ -75,7 +75,6 @@ KBUILD_CPPFLAGS += -D__uClinux__
+ endif
+ 
+ KBUILD_LDFLAGS := -m m68kelf
+-KBUILD_LDS_MODULE += $(srctree)/arch/m68k/kernel/module.lds
+ 
+ ifdef CONFIG_SUN3
+ LDFLAGS_vmlinux = -N
+diff --git a/arch/m68k/kernel/module.lds b/arch/m68k/include/asm/module.lds.h
+similarity index 100%
+rename from arch/m68k/kernel/module.lds
+rename to arch/m68k/include/asm/module.lds.h
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index 3e8da9cf2eb9..8935658fcd06 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -65,7 +65,6 @@ UTS_MACHINE := $(subst $(space),,$(machine-y))
+ ifdef CONFIG_PPC32
+ KBUILD_LDFLAGS_MODULE += arch/powerpc/lib/crtsavres.o
+ else
+-KBUILD_LDS_MODULE += $(srctree)/arch/powerpc/kernel/module.lds
+ ifeq ($(call ld-ifversion, -ge, 225000000, y),y)
+ # Have the linker provide sfpr if possible.
+ # There is a corresponding test in arch/powerpc/lib/Makefile
+diff --git a/arch/powerpc/kernel/module.lds b/arch/powerpc/include/asm/module.lds.h
+similarity index 100%
+rename from arch/powerpc/kernel/module.lds
+rename to arch/powerpc/include/asm/module.lds.h
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index fb6e37db836d..8edaa8bd86d6 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -53,9 +53,6 @@ endif
+ ifeq ($(CONFIG_CMODEL_MEDANY),y)
+ 	KBUILD_CFLAGS += -mcmodel=medany
+ endif
+-ifeq ($(CONFIG_MODULE_SECTIONS),y)
+-	KBUILD_LDS_MODULE += $(srctree)/arch/riscv/kernel/module.lds
+-endif
+ ifeq ($(CONFIG_PERF_EVENTS),y)
+         KBUILD_CFLAGS += -fno-omit-frame-pointer
+ endif
+diff --git a/arch/riscv/kernel/module.lds b/arch/riscv/include/asm/module.lds.h
+similarity index 84%
+rename from arch/riscv/kernel/module.lds
+rename to arch/riscv/include/asm/module.lds.h
+index 295ecfb341a2..4254ff2ff049 100644
+--- a/arch/riscv/kernel/module.lds
++++ b/arch/riscv/include/asm/module.lds.h
+@@ -1,8 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
+ /* Copyright (C) 2017 Andes Technology Corporation */
+-
++#ifdef CONFIG_MODULE_SECTIONS
+ SECTIONS {
+ 	.plt (NOLOAD) : { BYTE(0) }
+ 	.got (NOLOAD) : { BYTE(0) }
+ 	.got.plt (NOLOAD) : { BYTE(0) }
+ }
++#endif
+diff --git a/arch/um/include/asm/Kbuild b/arch/um/include/asm/Kbuild
+index 8d435f8a6dec..1c63b260ecc4 100644
+--- a/arch/um/include/asm/Kbuild
++++ b/arch/um/include/asm/Kbuild
+@@ -16,6 +16,7 @@ generic-y += kdebug.h
+ generic-y += mcs_spinlock.h
+ generic-y += mm-arch-hooks.h
+ generic-y += mmiowb.h
++generic-y += module.lds.h
+ generic-y += param.h
+ generic-y += pci.h
+ generic-y += percpu.h
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index 74b0612601dd..7cd4e627e00e 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -40,6 +40,7 @@ mandatory-y += mmiowb.h
+ mandatory-y += mmu.h
+ mandatory-y += mmu_context.h
+ mandatory-y += module.h
++mandatory-y += module.lds.h
+ mandatory-y += msi.h
+ mandatory-y += pci.h
+ mandatory-y += percpu.h
+diff --git a/include/asm-generic/module.lds.h b/include/asm-generic/module.lds.h
+new file mode 100644
+index 000000000000..f210d5c1b78b
+--- /dev/null
++++ b/include/asm-generic/module.lds.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __ASM_GENERIC_MODULE_LDS_H
++#define __ASM_GENERIC_MODULE_LDS_H
++
++/*
++ * <asm/module.lds.h> can specify arch-specific sections for linking modules.
++ * Empty for the asm-generic header.
++ */
++
++#endif /* __ASM_GENERIC_MODULE_LDS_H */
+diff --git a/scripts/.gitignore b/scripts/.gitignore
+index 0d1c8e217cd7..a6c11316c969 100644
+--- a/scripts/.gitignore
++++ b/scripts/.gitignore
+@@ -8,3 +8,4 @@ asn1_compiler
+ extract-cert
+ sign-file
+ insert-sys-cert
++/module.lds
+diff --git a/scripts/Makefile b/scripts/Makefile
+index bc018e4b733e..a5058bfdd0f6 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -29,6 +29,8 @@ endif
+ # The following programs are only built on demand
+ hostprogs += unifdef
+ 
++always-$(CONFIG_MODULES)	+= module.lds
++
+ subdir-$(CONFIG_GCC_PLUGINS) += gcc-plugins
+ subdir-$(CONFIG_MODVERSIONS) += genksyms
+ subdir-$(CONFIG_SECURITY_SELINUX) += selinux
+diff --git a/scripts/Makefile.modfinal b/scripts/Makefile.modfinal
+index 411c1e600e7d..ae01baf96f4e 100644
+--- a/scripts/Makefile.modfinal
++++ b/scripts/Makefile.modfinal
+@@ -33,11 +33,10 @@ quiet_cmd_ld_ko_o = LD [M]  $@
+       cmd_ld_ko_o =                                                     \
+ 	$(LD) -r $(KBUILD_LDFLAGS)					\
+ 		$(KBUILD_LDFLAGS_MODULE) $(LDFLAGS_MODULE)		\
+-		$(addprefix -T , $(KBUILD_LDS_MODULE))			\
+-		-o $@ $(filter %.o, $^);				\
++		-T scripts/module.lds -o $@ $(filter %.o, $^);		\
+ 	$(if $(ARCH_POSTLINK), $(MAKE) -f $(ARCH_POSTLINK) $@, true)
+ 
+-$(modules): %.ko: %.o %.mod.o $(KBUILD_LDS_MODULE) FORCE
++$(modules): %.ko: %.o %.mod.o scripts/module.lds FORCE
+ 	+$(call if_changed,ld_ko_o)
+ 
+ targets += $(modules) $(modules:.ko=.mod.o)
+diff --git a/scripts/module-common.lds b/scripts/module.lds.S
+similarity index 93%
+rename from scripts/module-common.lds
+rename to scripts/module.lds.S
+index d61b9e8678e8..69b9b71a6a47 100644
+--- a/scripts/module-common.lds
++++ b/scripts/module.lds.S
+@@ -24,3 +24,6 @@ SECTIONS {
+ 
+ 	__jump_table		0 : ALIGN(8) { KEEP(*(__jump_table)) }
+ }
++
++/* bring in arch-specific sections */
++#include <asm/module.lds.h>
+diff --git a/scripts/package/builddeb b/scripts/package/builddeb
+index 6df3c9f8b2da..44f212e37935 100755
+--- a/scripts/package/builddeb
++++ b/scripts/package/builddeb
+@@ -55,7 +55,7 @@ deploy_kernel_headers () {
+ 		cd $srctree
+ 		find . arch/$SRCARCH -maxdepth 1 -name Makefile\*
+ 		find include scripts -type f -o -type l
+-		find arch/$SRCARCH -name module.lds -o -name Kbuild.platforms -o -name Platform
++		find arch/$SRCARCH -name Kbuild.platforms -o -name Platform
+ 		find $(find arch/$SRCARCH -name include -o -name scripts -type d) -type f
+ 	) > debian/hdrsrcfiles
+ 
 -- 
-Masami Hiramatsu <mhiramat@kernel.org>
+2.25.1
+
