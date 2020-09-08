@@ -2,107 +2,54 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CF906260B77
-	for <lists+linux-ia64@lfdr.de>; Tue,  8 Sep 2020 09:00:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECF0E26156D
+	for <lists+linux-ia64@lfdr.de>; Tue,  8 Sep 2020 18:49:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729077AbgIHHAa (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 8 Sep 2020 03:00:30 -0400
-Received: from mail-oi1-f194.google.com ([209.85.167.194]:38496 "EHLO
-        mail-oi1-f194.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1728995AbgIHHAA (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 8 Sep 2020 03:00:00 -0400
-Received: by mail-oi1-f194.google.com with SMTP id y6so15523657oie.5;
-        Mon, 07 Sep 2020 23:59:59 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=80BY8rNg7RfD6oxznXYOKPcFZuo8wajfOpZ0OBeC/wY=;
-        b=RqGXWXZ9/kAxQAFSyuC5kqinD3ki4bRUdQCvuUBMdUD+NSJ4wf//toLW3N6/2xpWSI
-         4xYPmSVXo1d4QZZk7IbFC372rxSH8PBVawRiRmYmwmipDSgE19hyBXsbXcUclHUI7zhl
-         baOaiGDUTAQSKJepnGQgdAa71SHWFs5ktn6Owkl/dVgnAwDE0Yz16m3t3Otw8iiLvA7r
-         CxoqGaf4XmBlVdiZIWvC/J3/bykpfrW+9BIwzaOWT9jAjEWmqwcneAleIhN/4ca92NUu
-         mF/SikMkKKHBiGthrYmeN29uidszA6oEUywvueO8kr6U+rF9Nfnl7SC9t9AToy4lr9RO
-         qjcw==
-X-Gm-Message-State: AOAM531m5uxK5E5rDhrG78duUtGRrc4iSEER4Gv4Q5UXuKJPX0Br0eRo
-        eu2XDYFr4nVHkqJ/t1i+cPoDfVotTwO2ijrL7sI=
-X-Google-Smtp-Source: ABdhPJw+Sdn/Kf/NbESMrEGT3ykKzS7L5e1uWHMt5PE98XyXUrM0snkLRMMoZ/Q/NW5lb7vt9j4vz11Ltnr3Qr8PC/E=
-X-Received: by 2002:aca:b742:: with SMTP id h63mr1711017oif.148.1599548399253;
- Mon, 07 Sep 2020 23:59:59 -0700 (PDT)
+        id S1732130AbgIHQtE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 8 Sep 2020 12:49:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34164 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732029AbgIHQsj (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 8 Sep 2020 12:48:39 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C611C061795;
+        Tue,  8 Sep 2020 09:48:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=xF9RZXKA4EiFQUj/JjM3EuzJl40Uj2VLvNxxwGRDZAM=; b=gayIdn2gK+0gbWA1zyBuj3iada
+        IKI16aUVs7hClZF1g624+hDQCEhOhIbApmzMhIX3IugyJOkjf73Alpxq1u+MtbXB1QbxV689L6wQR
+        ci8FG0MGPZ4m2u7d9Nis5Mgwq2wjBI26LGSoT9WB1x4wsDBAoqWxO4lrVEUh8bTKnff0SvKSy1Fu9
+        bZODj62rBjTrCLl0nkzs01w4pcf5hPbKUKaw04pL1L84DHpCFMZO5zSaxiI9UL8DUYmelJnc18d8s
+        dxYK5d+pmLGpCE+Czj43MZha4MWRRMnMXOUB3BzLLa7o43YHV5mRCEqZwXa0Q9zzK6UgJprb7n6Pk
+        uri4M/Dg==;
+Received: from [2001:4bb8:184:af1:3dc3:9c83:fc6c:e0f] (helo=localhost)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kFgmk-0001Qw-Tu; Tue, 08 Sep 2020 16:47:59 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        iommu@lists.linux-foundation.org
+Cc:     Tomasz Figa <tfiga@chromium.org>, Joerg Roedel <joro@8bytes.org>,
+        Robin Murphy <robin.murphy@arm.com>, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org
+Subject: dma-mapping cleanups
+Date:   Tue,  8 Sep 2020 18:47:46 +0200
+Message-Id: <20200908164758.3177341-1-hch@lst.de>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-References: <20200908042708.2511528-1-masahiroy@kernel.org>
-In-Reply-To: <20200908042708.2511528-1-masahiroy@kernel.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 8 Sep 2020 08:59:48 +0200
-Message-ID: <CAMuHMdVobzKWKnN0ScqSY+Jv3N1ri8=mWEd-SZfH5+je+CVVcQ@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: preprocess module linker script
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kbuild <linux-kbuild@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Paul Mackerras <paulus@samba.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Will Deacon <will@kernel.org>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Richard Weinberger <richard@nod.at>,
-        Russell King <linux@armlinux.org.uk>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Arnd Bergmann <arnd@arndb.de>, Jeff Dike <jdike@addtoit.com>,
-        Jessica Yu <jeyu@kernel.org>,
-        linux-um <linux-um@lists.infradead.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Sep 8, 2020 at 6:29 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
-> There was a request to preprocess the module linker script like we
-> do for the vmlinux one. (https://lkml.org/lkml/2020/8/21/512)
->
-> The difference between vmlinux.lds and module.lds is that the latter
-> is needed for external module builds, thus must be cleaned up by
-> 'make mrproper' instead of 'make clean'. Also, it must be created
-> by 'make modules_prepare'.
->
-> You cannot put it in arch/$(SRCARCH)/kernel/, which is cleaned up by
-> 'make clean'. I moved arch/$(SRCARCH)/kernel/module.lds to
-> arch/$(SRCARCH)/include/asm/module.lds.h, which is included from
-> scripts/module.lds.S.
->
-> scripts/module.lds is fine because 'make clean' keeps all the
-> build artifacts under scripts/.
->
-> You can add arch-specific sections in <asm/module.lds.h>.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> Tested-by: Jessica Yu <jeyu@kernel.org>
-> Acked-by: Will Deacon <will@kernel.org>
+Hi all,
 
->  arch/m68k/Makefile                                     |  1 -
->  .../{kernel/module.lds => include/asm/module.lds.h}    |  0
-
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+this series contains just the cleanup parts from the previous
+"a saner API for allocating DMA addressable pages" series.  The
+intent is to get this in to reduce the amount of patchbombing
+for iterations of the real API work.
