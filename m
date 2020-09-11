@@ -2,38 +2,38 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7775326657F
-	for <lists+linux-ia64@lfdr.de>; Fri, 11 Sep 2020 19:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D68432666E1
+	for <lists+linux-ia64@lfdr.de>; Fri, 11 Sep 2020 19:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726225AbgIKREb (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 11 Sep 2020 13:04:31 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:42454 "EHLO
+        id S1726044AbgIKRej (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 11 Sep 2020 13:34:39 -0400
+Received: from us-smtp-1.mimecast.com ([205.139.110.61]:56545 "EHLO
         us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726149AbgIKPCf (ORCPT
+        by vger.kernel.org with ESMTP id S1726530AbgIKReh (ORCPT
         <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 11 Sep 2020 11:02:35 -0400
+        Fri, 11 Sep 2020 13:34:37 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1599836521;
+        s=mimecast20190719; t=1599845675;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=aqOXOsJvIbNEqFwkhRp+QZQLG6zgsourWbiS+9XuNPA=;
-        b=RaJNbAbSjZrCCyjzXnmQ69ct6+LyFb+uNkBB3Y/AaA98CKSZPyYhsOMmleg7rIr9lEKPdr
-        O669N0nieup4IKTIQbxwOfBSSvK7uRAV7X/+RdU5dDFFdt3WBA1O/GOgnuJFTOENg3g8Z+
-        sjVWP+3ZUt3WfgPCc3Ghd6JY9CVhg1c=
+        bh=3wQZZ/pIgaDYYjVwwj/uXJpmYwhi/E/FOyuVoYaddyI=;
+        b=ECDpLFUiZNbJUIfr7gsqPtUMVVFuhR2TryMqDSpsz/46KnFlhfxJbfIpnSsedpAFE1SeRw
+        UV0rlQ6HJo+XNKl6nywZXro1Zr3CZlpi3jcNvBHu2i/PontAJzhacwsWTsM0TgXQ5ucAHt
+        Z29yMJW8YFTTII1uEGchkIy1mFsEYM8=
 Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
  [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-483-M51dVCT5PPeWogUmp5e5ZA-1; Fri, 11 Sep 2020 10:59:56 -0400
-X-MC-Unique: M51dVCT5PPeWogUmp5e5ZA-1
+ us-mta-488-R3hXQyIRMjuP3be8phAUPQ-1; Fri, 11 Sep 2020 13:34:31 -0400
+X-MC-Unique: R3hXQyIRMjuP3be8phAUPQ-1
 Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id DA960100CA8F;
-        Fri, 11 Sep 2020 14:59:54 +0000 (UTC)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 88FBD425D8;
+        Fri, 11 Sep 2020 17:34:29 +0000 (UTC)
 Received: from [10.36.113.186] (ovpn-113-186.ams2.redhat.com [10.36.113.186])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id F264B75120;
-        Fri, 11 Sep 2020 14:59:51 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with ESMTP id CD84175121;
+        Fri, 11 Sep 2020 17:34:26 +0000 (UTC)
 Subject: Re: [PATCH 1/3] mm: replace memmap_context by memplug_context
 To:     Laurent Dufour <ldufour@linux.ibm.com>, akpm@linux-foundation.org,
         Oscar Salvador <osalvador@suse.de>, mhocko@kernel.org,
@@ -45,6 +45,8 @@ Cc:     linux-mm@kvack.org, "Rafael J . Wysocki" <rafael@kernel.org>,
         linux-kernel@vger.kernel.org
 References: <20200911134831.53258-1-ldufour@linux.ibm.com>
  <20200911134831.53258-2-ldufour@linux.ibm.com>
+ <09528ef5-29fd-056d-4e58-fc13e55f418f@redhat.com>
+ <6552ef9a-ac02-e79f-2eb6-08380ba4b478@linux.ibm.com>
 From:   David Hildenbrand <david@redhat.com>
 Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  mQINBFXLn5EBEAC+zYvAFJxCBY9Tr1xZgcESmxVNI/0ffzE/ZQOiHJl6mGkmA1R7/uUpiCjJ
@@ -91,45 +93,44 @@ Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
  jPrnvUsUUsjRoRNJjKKA/REq+sAnhkNPPZ/NNMjaZ5b8Tovi8C0tmxiCHaQYqj7G2rgnT0kt
  WNyWQQ==
 Organization: Red Hat GmbH
-Message-ID: <09528ef5-29fd-056d-4e58-fc13e55f418f@redhat.com>
-Date:   Fri, 11 Sep 2020 16:59:51 +0200
+Message-ID: <a987f876-9d59-f998-b8ab-5f6b79b35ffb@redhat.com>
+Date:   Fri, 11 Sep 2020 19:34:25 +0200
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
  Thunderbird/68.11.0
 MIME-Version: 1.0
-In-Reply-To: <20200911134831.53258-2-ldufour@linux.ibm.com>
+In-Reply-To: <6552ef9a-ac02-e79f-2eb6-08380ba4b478@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
->  		struct page *start;
->  		struct memmap_init_callback_data args;
-> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
-> index 375515803cd8..cd2bd21d3a4d 100644
-> --- a/include/linux/memory_hotplug.h
-> +++ b/include/linux/memory_hotplug.h
-> @@ -15,6 +15,15 @@ struct memory_block;
->  struct resource;
->  struct vmem_altmap;
->  
-> +/*
-> + * Memory plugin context, use to differentiate memory added at boot time and
+On 11.09.20 18:23, Laurent Dufour wrote:
+> Le 11/09/2020 à 16:59, David Hildenbrand a écrit :
+>>>   		struct page *start;
+>>>   		struct memmap_init_callback_data args;
+>>> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+>>> index 375515803cd8..cd2bd21d3a4d 100644
+>>> --- a/include/linux/memory_hotplug.h
+>>> +++ b/include/linux/memory_hotplug.h
+>>> @@ -15,6 +15,15 @@ struct memory_block;
+>>>   struct resource;
+>>>   struct vmem_altmap;
+>>>   
+>>> +/*
+>>> + * Memory plugin context, use to differentiate memory added at boot time and
+>>
+>> "Memory plugin context" sounds weird.
+> 
+> Any suggestion ?
+> 
 
-"Memory plugin context" sounds weird.
-
-> + * hot-plugged memory.
-> + */
-> +enum memplug_context {
-> +	MEMPLUG_EARLY,
-> +	MEMPLUG_HOTPLUG,
-> +};
-
-Not fully sure this is the right place, though. memory_hotplug.h is
-about MEMPLUG_HOTPLUG only ... I'd leave it at the old spot.
+I'm not a native speaker, but "plugin" sounds weird in this context.
+Maybe simply drop it and start right away with "Differentiate memory
+added ..."
 
 -- 
 Thanks,
