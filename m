@@ -2,40 +2,121 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C1B722663D5
-	for <lists+linux-ia64@lfdr.de>; Fri, 11 Sep 2020 18:26:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E044B2663C2
+	for <lists+linux-ia64@lfdr.de>; Fri, 11 Sep 2020 18:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725875AbgIKQ0C (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 11 Sep 2020 12:26:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33316 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726438AbgIKPYF (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 11 Sep 2020 11:24:05 -0400
-Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35D4DC061371;
-        Fri, 11 Sep 2020 07:32:56 -0700 (PDT)
-Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kGk6W-00EMOm-ND; Fri, 11 Sep 2020 14:32:44 +0000
-Date:   Fri, 11 Sep 2020 15:32:44 +0100
-From:   Al Viro <viro@zeniv.linux.org.uk>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     tony.luck@intel.com, fenghua.yu@intel.com,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Anant Thazhemadam <anant.thazhemadam@gmail.com>
-Subject: Re: [PATCH] ia64: remove perfmon
-Message-ID: <20200911143244.GA3421308@ZenIV.linux.org.uk>
-References: <20200911094920.1173631-1-hch@lst.de>
+        id S1726659AbgIKQX6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 11 Sep 2020 12:23:58 -0400
+Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:24600 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726252AbgIKQXQ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 11 Sep 2020 12:23:16 -0400
+Received: from pps.filterd (m0098396.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 08BG37l7037897;
+        Fri, 11 Sep 2020 12:23:07 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=subject : to : cc :
+ references : from : message-id : date : mime-version : in-reply-to :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=lOnrFIuEaE/pDiC6n1rHdJwCuxXfzojQQVwHfi0mask=;
+ b=PQxQZ0JSl2AM7fUeedp6YI8bgfEO9wrdeYcMybbhc2z3RvRTDmByCAzYN4R5RU30V9cz
+ xXH/oQIyvY+rHHxv7iCVZ1P4W+vL6Sf4A4e5SIOO3iRRb8LRXseg8RUWRg28TbU9N0SI
+ 2B01ysIprxD2ifbGkgdIWJOCg5Uhb+3sP46PpeAQSWSwjGycf48vQ1KS3zpTNI9y2s0v
+ mMfTwM7Ub/Dw5/gxJcpYkEqeVVGuSKMYw1z6u26I39qy/7pg3RlP4I/eWNkssKPRzJCR
+ pP7ZJBHc4Ogmll7zSfe84084/ZbO5hbMJ187sbr7iwfrbc07anaD/dMYo11LFjfW6FyA TQ== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 33gc820u4f-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 11 Sep 2020 12:23:07 -0400
+Received: from m0098396.ppops.net (m0098396.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 08BGI7ip092466;
+        Fri, 11 Sep 2020 12:23:06 -0400
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0a-001b2d01.pphosted.com with ESMTP id 33gc820u3p-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 11 Sep 2020 12:23:06 -0400
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 08BGMnk7032383;
+        Fri, 11 Sep 2020 16:23:04 GMT
+Received: from b06avi18878370.portsmouth.uk.ibm.com (b06avi18878370.portsmouth.uk.ibm.com [9.149.26.194])
+        by ppma04ams.nl.ibm.com with ESMTP id 33c2a8fdpy-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Fri, 11 Sep 2020 16:23:04 +0000
+Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
+        by b06avi18878370.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 08BGN1fA53608874
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 11 Sep 2020 16:23:01 GMT
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 1BF4311C052;
+        Fri, 11 Sep 2020 16:23:01 +0000 (GMT)
+Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 8F87B11C04A;
+        Fri, 11 Sep 2020 16:23:00 +0000 (GMT)
+Received: from pomme.local (unknown [9.145.47.39])
+        by d06av25.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Fri, 11 Sep 2020 16:23:00 +0000 (GMT)
+Subject: Re: [PATCH 1/3] mm: replace memmap_context by memplug_context
+To:     David Hildenbrand <david@redhat.com>, akpm@linux-foundation.org,
+        Oscar Salvador <osalvador@suse.de>, mhocko@kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     linux-mm@kvack.org, "Rafael J . Wysocki" <rafael@kernel.org>,
+        nathanl@linux.ibm.com, cheloha@linux.ibm.com,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20200911134831.53258-1-ldufour@linux.ibm.com>
+ <20200911134831.53258-2-ldufour@linux.ibm.com>
+ <09528ef5-29fd-056d-4e58-fc13e55f418f@redhat.com>
+From:   Laurent Dufour <ldufour@linux.ibm.com>
+Message-ID: <6552ef9a-ac02-e79f-2eb6-08380ba4b478@linux.ibm.com>
+Date:   Fri, 11 Sep 2020 18:23:00 +0200
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:68.0)
+ Gecko/20100101 Thunderbird/68.12.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20200911094920.1173631-1-hch@lst.de>
+In-Reply-To: <09528ef5-29fd-056d-4e58-fc13e55f418f@redhat.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-11_08:2020-09-10,2020-09-11 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 spamscore=0
+ impostorscore=0 priorityscore=1501 adultscore=0 clxscore=1015
+ suspectscore=0 lowpriorityscore=0 mlxlogscore=999 malwarescore=0
+ phishscore=0 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2006250000 definitions=main-2009110127
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Sep 11, 2020 at 11:49:19AM +0200, Christoph Hellwig wrote:
-> perfmon has been marked broken and thus been disabled for all builds
-> for more than two years.  Remove it entirely.
+Le 11/09/2020 à 16:59, David Hildenbrand a écrit :
+>>   		struct page *start;
+>>   		struct memmap_init_callback_data args;
+>> diff --git a/include/linux/memory_hotplug.h b/include/linux/memory_hotplug.h
+>> index 375515803cd8..cd2bd21d3a4d 100644
+>> --- a/include/linux/memory_hotplug.h
+>> +++ b/include/linux/memory_hotplug.h
+>> @@ -15,6 +15,15 @@ struct memory_block;
+>>   struct resource;
+>>   struct vmem_altmap;
+>>   
+>> +/*
+>> + * Memory plugin context, use to differentiate memory added at boot time and
+> 
+> "Memory plugin context" sounds weird.
 
-Enthusiastically-ACKed-by: Al Viro <viro@zeniv.linux.org.uk>
+Any suggestion ?
+
+>> + * hot-plugged memory.
+>> + */
+>> +enum memplug_context {
+>> +	MEMPLUG_EARLY,
+>> +	MEMPLUG_HOTPLUG,
+>> +};
+> 
+> Not fully sure this is the right place, though. memory_hotplug.h is
+> about MEMPLUG_HOTPLUG only ... I'd leave it at the old spot.
+
+Fair enough.
+
