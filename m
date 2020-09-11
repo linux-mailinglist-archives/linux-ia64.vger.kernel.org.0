@@ -2,88 +2,40 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8F52266385
-	for <lists+linux-ia64@lfdr.de>; Fri, 11 Sep 2020 18:19:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1B722663D5
+	for <lists+linux-ia64@lfdr.de>; Fri, 11 Sep 2020 18:26:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726493AbgIKQSz (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 11 Sep 2020 12:18:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58834 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726519AbgIKPaa (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 11 Sep 2020 11:30:30 -0400
-Received: from localhost (83-86-74-64.cable.dynamic.v4.ziggo.nl [83.86.74.64])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id AED3A221F1;
-        Fri, 11 Sep 2020 14:00:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1599832855;
-        bh=AIEysMnma8oXpbG6AIqoQmLe/zMLbrm7nTct9i4ClRg=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=mT0i8FPot4WelBgGvxutd73msYMtd3Ktgf77cdHibTuwVKVRDn4VFno9l1PmzIJWU
-         hvhb2J+YtYWKGnRfzZ9vQgrChNk0kvCxvToMGUWto/AbdbT6JJyGqDHKnx6LOTBq1R
-         cis00TqGiSz5x0Vg9tppQY/5IftmumCe8eKQTYa8=
-Date:   Fri, 11 Sep 2020 16:01:00 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Laurent Dufour <ldufour@linux.ibm.com>
-Cc:     akpm@linux-foundation.org, David Hildenbrand <david@redhat.com>,
-        Oscar Salvador <osalvador@suse.de>, mhocko@kernel.org,
-        linux-mm@kvack.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        nathanl@linux.ibm.com, cheloha@linux.ibm.com,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] mm: don't panic when links can't be created in sysfs
-Message-ID: <20200911140100.GA3812164@kroah.com>
-References: <20200911134831.53258-1-ldufour@linux.ibm.com>
- <20200911134831.53258-4-ldufour@linux.ibm.com>
+        id S1725875AbgIKQ0C (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 11 Sep 2020 12:26:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33316 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726438AbgIKPYF (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 11 Sep 2020 11:24:05 -0400
+Received: from ZenIV.linux.org.uk (zeniv.linux.org.uk [IPv6:2002:c35c:fd02::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35D4DC061371;
+        Fri, 11 Sep 2020 07:32:56 -0700 (PDT)
+Received: from viro by ZenIV.linux.org.uk with local (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kGk6W-00EMOm-ND; Fri, 11 Sep 2020 14:32:44 +0000
+Date:   Fri, 11 Sep 2020 15:32:44 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     tony.luck@intel.com, fenghua.yu@intel.com,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Anant Thazhemadam <anant.thazhemadam@gmail.com>
+Subject: Re: [PATCH] ia64: remove perfmon
+Message-ID: <20200911143244.GA3421308@ZenIV.linux.org.uk>
+References: <20200911094920.1173631-1-hch@lst.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20200911134831.53258-4-ldufour@linux.ibm.com>
+In-Reply-To: <20200911094920.1173631-1-hch@lst.de>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Sep 11, 2020 at 03:48:31PM +0200, Laurent Dufour wrote:
-> At boot time, or when doing memory hot-add operations, if the links in
-> sysfs can't be created, the system is still able to run, so just report the
-> error in the kernel log.
-> 
-> Since the number of memory blocks managed could be high, the messages are
-> rate limited.
-> 
-> As a consequence, link_mem_sections() has no status to report anymore.
-> 
-> Signed-off-by: Laurent Dufour <ldufour@linux.ibm.com>
-> Cc: David Hildenbrand <david@redhat.com>
-> ---
->  drivers/base/node.c  | 25 +++++++++++++++++--------
->  include/linux/node.h | 17 ++++++++---------
->  mm/memory_hotplug.c  |  5 ++---
->  3 files changed, 27 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/base/node.c b/drivers/base/node.c
-> index 862516c5a5ae..749a1c8ea992 100644
-> --- a/drivers/base/node.c
-> +++ b/drivers/base/node.c
-> @@ -811,12 +811,21 @@ static int register_mem_sect_under_node(struct memory_block *mem_blk,
->  		ret = sysfs_create_link_nowarn(&node_devices[nid]->dev.kobj,
->  					&mem_blk->dev.kobj,
->  					kobject_name(&mem_blk->dev.kobj));
-> -		if (ret)
-> -			return ret;
-> +		if (ret && ret != -EEXIST)
-> +			pr_err_ratelimited(
-> +				"can't create %s to %s link in sysfs (%d)\n",
-> +				kobject_name(&node_devices[nid]->dev.kobj),
-> +				kobject_name(&mem_blk->dev.kobj), ret);
+On Fri, Sep 11, 2020 at 11:49:19AM +0200, Christoph Hellwig wrote:
+> perfmon has been marked broken and thus been disabled for all builds
+> for more than two years.  Remove it entirely.
 
-dev_err_ratelimited()?
-
-Same elsewhere in this patch.
-
-thanks,
-
-greg k-h
+Enthusiastically-ACKed-by: Al Viro <viro@zeniv.linux.org.uk>
