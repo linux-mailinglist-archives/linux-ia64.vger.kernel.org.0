@@ -2,90 +2,48 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1981B268712
-	for <lists+linux-ia64@lfdr.de>; Mon, 14 Sep 2020 10:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE7D826875B
+	for <lists+linux-ia64@lfdr.de>; Mon, 14 Sep 2020 10:40:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726151AbgINITb (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 14 Sep 2020 04:19:31 -0400
-Received: from mx2.suse.de ([195.135.220.15]:59616 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726094AbgINITb (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 14 Sep 2020 04:19:31 -0400
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 5C04CAC46;
-        Mon, 14 Sep 2020 08:19:45 +0000 (UTC)
-Date:   Mon, 14 Sep 2020 10:19:26 +0200
-From:   Oscar Salvador <osalvador@suse.de>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     Laurent Dufour <ldufour@linux.ibm.com>, akpm@linux-foundation.org,
-        mhocko@kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-mm@kvack.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        nathanl@linux.ibm.com, cheloha@linux.ibm.com,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Michal Hocko <mhocko@suse.com>
-Subject: Re: [PATCH 2/3] mm: don't rely on system state to detect hot-plug
- operations
-Message-ID: <20200914081921.GA15113@linux>
-References: <20200911134831.53258-1-ldufour@linux.ibm.com>
- <20200911134831.53258-3-ldufour@linux.ibm.com>
- <f50fe4ae-faf0-6e03-b87e-45ca8c53960d@redhat.com>
+        id S1726271AbgINIkj convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Mon, 14 Sep 2020 04:40:39 -0400
+Received: from mail.bnv.gob.ve ([201.249.200.115]:34618 "EHLO
+        correo.bnv.gob.ve" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1726248AbgINIki (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 14 Sep 2020 04:40:38 -0400
+X-Greylist: delayed 11773 seconds by postgrey-1.27 at vger.kernel.org; Mon, 14 Sep 2020 04:40:34 EDT
+Received: from localhost (localhost.bnv.gob.ve [127.0.0.1])
+        by correo.bnv.gob.ve (Postfix) with ESMTP id D065D34C6705;
+        Sun, 13 Sep 2020 21:14:20 -0400 (-04)
+Received: from correo.bnv.gob.ve ([127.0.0.1])
+        by localhost (correo.bnv.gob.ve [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id GKiIN-1rUqcn; Sun, 13 Sep 2020 21:14:20 -0400 (-04)
+Received: from localhost (localhost.bnv.gob.ve [127.0.0.1])
+        by correo.bnv.gob.ve (Postfix) with ESMTP id B747C34C043C;
+        Sun, 13 Sep 2020 20:26:26 -0400 (-04)
+X-Virus-Scanned: amavisd-new at bnv.gob.ve
+Received: from correo.bnv.gob.ve ([127.0.0.1])
+        by localhost (correo.bnv.gob.ve [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id WvOl2jpaIylh; Sun, 13 Sep 2020 20:26:26 -0400 (-04)
+Received: from [192.168.8.101] (8ta-229-1-199.telkomadsl.co.za [197.229.1.199])
+        by correo.bnv.gob.ve (Postfix) with ESMTPSA id 7C15434A4217;
+        Sun, 13 Sep 2020 19:14:29 -0400 (-04)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f50fe4ae-faf0-6e03-b87e-45ca8c53960d@redhat.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Spende von 2.000.000,00 Euro.
+To:     Recipients <manuelfranco@info.com>
+From:   "manuel franco" <manuelfranco@info.com>
+Date:   Mon, 14 Sep 2020 01:14:20 +0200
+Reply-To: manuelfrancospende11@gmail.com
+Message-Id: <20200913231429.7C15434A4217@correo.bnv.gob.ve>
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Sep 14, 2020 at 09:57:46AM +0200, David Hildenbrand wrote:
-> >  /* register memory section under specified node if it spans that node */
-> > +struct rmsun_args {
-> > +	int nid;
-> > +	enum memplug_context context;
-> > +};
+ Sie haben eine Spende von 2.000.000,00 Euro.
 
-Uhmf, that is a not so descriptive name.
-
-> Instead of handling this in register_mem_sect_under_node(), I
-> think it would be better two have two separate
-> register_mem_sect_under_node() implementations.
-> 
-> static int register_mem_sect_under_node_hotplug(struct memory_block *mem_blk,
-> 						void *arg)
-> {
-> 	const int nid = *(int *)arg;
-> 	int ret;
-> 
-> 	/* Hotplugged memory has no holes and belongs to a single node. */
-> 	mem_blk->nid = nid;
-> 	ret = sysfs_create_link_nowarn(&node_devices[nid]->dev.kobj,
-> 				       &mem_blk->dev.kobj,
-> 				       kobject_name(&mem_blk->dev.kobj));
-> 	if (ret)
-> 		returnr et;
-> 	return sysfs_create_link_nowarn(&mem_blk->dev.kobj,
-> 					&node_devices[nid]->dev.kobj,
-> 					kobject_name(&node_devices[nid]->dev.kobj));
-> 
-> }
-> 
-> Cleaner, right? :) No unnecessary checks.
-
-I tend to agree here, I like more a simplistic version for hotplug.
-
-> One could argue if link_mem_section_hotplug() would be better than passing around the context.
-
-I am not sure if I would duplicate the code there.
-We could just pass the pointer of the function we want to call to
-link_mem_sections? either register_mem_sect_under_node_hotplug or
-register_mem_sect_under_node_early?
-Would not that be clean and clear enough?
-
--- 
-Oscar Salvador
-SUSE L3
+Mein Name ist Manuel Franco aus den USA.
+Ich habe die America-Lotterie im Wert von 768 Millionen US-Dollar gewonnen und spende einen Teil davon an nur 5 glückliche Menschen und einige Waisenhäuser als Wohlwollen für die Menschheit.
