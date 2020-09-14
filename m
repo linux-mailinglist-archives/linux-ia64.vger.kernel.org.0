@@ -2,238 +2,155 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 82ECC2692CA
-	for <lists+linux-ia64@lfdr.de>; Mon, 14 Sep 2020 19:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08AFC26954B
+	for <lists+linux-ia64@lfdr.de>; Mon, 14 Sep 2020 21:12:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725967AbgINRPg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 14 Sep 2020 13:15:36 -0400
-Received: from us-smtp-1.mimecast.com ([205.139.110.61]:45648 "EHLO
-        us-smtp-delivery-1.mimecast.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726044AbgINRPR (ORCPT
+        id S1725953AbgINTMt (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 14 Sep 2020 15:12:49 -0400
+Received: from mx0b-00082601.pphosted.com ([67.231.153.30]:21534 "EHLO
+        mx0a-00082601.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725951AbgINTMq (ORCPT
         <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 14 Sep 2020 13:15:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1600103713;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-        bh=HzTW20ZKs/inGf15Jbec1gHB6oz2+QU3swiUkNg053E=;
-        b=gbTv2DthXAcx+XenFPDihRBg1PqVYJO3ohwjMlYQK+BRtIrxXrmwIowJWLsqmWnqs62m+8
-        A6fjg8EYlpSYRadSlQZZFfnxfdfWRmEMQtwH4feIHaTNZyyVGoSFZL41a75qSmGWtQCTy3
-        FsuwMv43cakqd5vK9/9qILr1co7kvkI=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-100-cCp3waOIOXisWoEJqP5Tqw-1; Mon, 14 Sep 2020 13:15:06 -0400
-X-MC-Unique: cCp3waOIOXisWoEJqP5Tqw-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id CF30A10066FF;
-        Mon, 14 Sep 2020 17:15:04 +0000 (UTC)
-Received: from [10.36.112.147] (ovpn-112-147.ams2.redhat.com [10.36.112.147])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id E4C8D5DA8F;
-        Mon, 14 Sep 2020 17:15:01 +0000 (UTC)
-Subject: Re: [PATCH v2 2/3] mm: don't rely on system state to detect hot-plug
- operations
-To:     Laurent Dufour <ldufour@linux.ibm.com>, akpm@linux-foundation.org,
-        Oscar Salvador <osalvador@suse.de>, mhocko@kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     linux-mm@kvack.org, "Rafael J . Wysocki" <rafael@kernel.org>,
-        nathanl@linux.ibm.com, cheloha@linux.ibm.com,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Michal Hocko <mhocko@suse.com>
-References: <20200914165042.96218-1-ldufour@linux.ibm.com>
- <20200914165042.96218-3-ldufour@linux.ibm.com>
-From:   David Hildenbrand <david@redhat.com>
-Autocrypt: addr=david@redhat.com; prefer-encrypt=mutual; keydata=
- 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
- WNyWQQ==
-Organization: Red Hat GmbH
-Message-ID: <c378a52b-ab7b-0cb9-cd34-68e20a9d02b0@redhat.com>
-Date:   Mon, 14 Sep 2020 19:15:01 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.11.0
-MIME-Version: 1.0
-In-Reply-To: <20200914165042.96218-3-ldufour@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
+        Mon, 14 Sep 2020 15:12:46 -0400
+Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
+        by m0089730.ppops.net (8.16.0.42/8.16.0.42) with SMTP id 08EJ9eMh029619;
+        Mon, 14 Sep 2020 12:12:40 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.com; h=from : to : cc : subject
+ : date : message-id : references : in-reply-to : content-type : content-id
+ : content-transfer-encoding : mime-version; s=facebook;
+ bh=8p2GSGeYhIMJwp9yx6OcaWrEUp1KrWgWtJRbezC6TdE=;
+ b=Kefdl2HwwMHZN6NK9vIykkjn3K4UTLIMx25qbgCWIaIXtUCRpsLa9Sp7C3uj1vlX+jVx
+ F+bCsdPBJQeDprIrUIEHVOdQSPBwGDnip9mgjAKDIcEBVrJxlnYQ2ZAUqARnUdl7pkGz
+ OEkpPqihfH0i3q9ylpIs3izWSvzNyjyv4hw= 
+Received: from mail.thefacebook.com ([163.114.132.120])
+        by m0089730.ppops.net with ESMTP id 33gstxttjp-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 14 Sep 2020 12:12:40 -0700
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (100.104.98.9) by
+ o365-in.thefacebook.com (100.104.94.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1979.3; Mon, 14 Sep 2020 12:12:39 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=CpI/AuQxwcZVcFw1a0i6A1t1rfop0w0QNJaMuX7XNiYciYY+tZtoR8QSUXjwhzDuJnF/Y8i4UXbIPXy3cO7w8DdFQHYo+gvicHY9bjQp37t0Rznw0UAyxX9lUXA5oczMLzAG6g13s9E42ArqFsH0D4+gKAP5Ng0VOeTA+FRGlYZEKgdz8aTeGoepX3GDNG1d4P2wkbf6yw7YLSJHY+XgKV2SlJAPVQf4pEGeKHKYp70NYmgRpFeoZdN6fewi6TANKZPA+UET1MAea5MwpDai86sd/7P+ZyQhlCXD0yWCbsXiivOAzhTu5B4b9cnMavbd14irfDbP16sumL/EWlXBxQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8p2GSGeYhIMJwp9yx6OcaWrEUp1KrWgWtJRbezC6TdE=;
+ b=OLs3mJLmQCsbjbpW94RYeUDXDm3IsLIeyxEu3YyhfxWljFKoDPTYNTF5M5PpFlRpZfC7oxKF7oN07STSYLd190CLAWMYWNrLwre4tYH6ggmK8poKO41gzUGYutytMrNP/qoK9DiYrtBJbdieQOkFXiMR5GRKUKChLsovdmfOsSJZM5sBF/K13sUFqPFkIsfENA560+2Tsc92vY58SWeKGO6hcw2OQVjw2JjP9N+O4AQP2gDvvzbvpp7j7OJveFzjlaUVjyelj3kCTad5WtqaRt59yVIe+KaQeSYC5Q6m1GGh/q4+3utAY9lPKT2S6pOicWjVaqaVK5ci9Sd7uPdW4w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=fb.com; dmarc=pass action=none header.from=fb.com; dkim=pass
+ header.d=fb.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fb.onmicrosoft.com;
+ s=selector2-fb-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=8p2GSGeYhIMJwp9yx6OcaWrEUp1KrWgWtJRbezC6TdE=;
+ b=i8usebn5b3epGGYiNO6qfY99CnuEriIEHW+LO560cFDjNhemxyzwP9eghqo4hj2hkO2YVuk8SbwLYxPk/hTcHj8v0lmpQklIQeLveWQqFJLgO+HaknIBfiGeUOd8W90ATMHj9S8jYOgYxExOSPWK2rK7sjDX5GtEZEBgWJ62Gf0=
+Received: from BY5PR15MB3667.namprd15.prod.outlook.com (2603:10b6:a03:1f9::18)
+ by BYAPR15MB2774.namprd15.prod.outlook.com (2603:10b6:a03:15d::32) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3370.16; Mon, 14 Sep
+ 2020 19:12:28 +0000
+Received: from BY5PR15MB3667.namprd15.prod.outlook.com
+ ([fe80::2d08:987a:126:1c9c]) by BY5PR15MB3667.namprd15.prod.outlook.com
+ ([fe80::2d08:987a:126:1c9c%7]) with mapi id 15.20.3370.019; Mon, 14 Sep 2020
+ 19:12:28 +0000
+From:   Nick Terrell <terrelln@fb.com>
+To:     Ben Hutchings <ben@decadent.org.uk>
+CC:     "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "yamada.masahiro@socionext.com" <yamada.masahiro@socionext.com>,
+        "Linux Kbuild mailing list" <linux-kbuild@vger.kernel.org>
+Subject: Re: vmlinux link failure on ia64 with zstd
+Thread-Topic: vmlinux link failure on ia64 with zstd
+Thread-Index: AQHWigdFs5Gu/R5JIkizCKuPIzSd4KlogeoA
+Date:   Mon, 14 Sep 2020 19:12:28 +0000
+Message-ID: <6A76267A-6B60-4428-94DF-E05706EB85FB@fb.com>
+References: <f0a93b2d435252b3878ce821142677754f5e434c.camel@decadent.org.uk>
+In-Reply-To: <f0a93b2d435252b3878ce821142677754f5e434c.camel@decadent.org.uk>
+Accept-Language: en-US
 Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+authentication-results: decadent.org.uk; dkim=none (message not signed)
+ header.d=none;decadent.org.uk; dmarc=none action=none header.from=fb.com;
+x-originating-ip: [2620:10d:c090:400::5:83bf]
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: c767fc87-5cd2-43b5-9537-08d858e21fa9
+x-ms-traffictypediagnostic: BYAPR15MB2774:
+x-microsoft-antispam-prvs: <BYAPR15MB2774A8C0E9E5785241C581CAAB230@BYAPR15MB2774.namprd15.prod.outlook.com>
+x-fb-source: Internal
+x-ms-oob-tlc-oobclassifiers: OLM:644;
+x-ms-exchange-senderadcheck: 1
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: gtESJTPIl+vru51BfCjFt7zmysexWGref8VTG40TuWYA4kZAEp2trVnVE5/u3KoRBfUD7ynTOuLDm3s9h1aHV9PBhFYYSnYe8JRrbkf15a15FBTPtQFACQo8oCL+FfFBc2ZubmNA73t16DyDE9gE2YvgjvA9EaEmUicI0WAfcPYQ91lcaDul1kK9rkoq3eEYXTWmySqMM6cz3KPYsnDeuQOnYoM3GMwjLbzktxeKYojGz1kRkUCALZQ4G1NwA6tpJIJjOmFbePCuQA7NcJAHYhyYh6cn+SYcFoHPchbumfyjcgzpSG728K+e/cCNAkvRV6PUczRsTGMwXsVJmQobdXE1NMFOTLB227l9H/ylnQUYqSRhi/yv9LMGGsATbH9LOLNQ16Exk/Gxa4tK9L6IZg==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR15MB3667.namprd15.prod.outlook.com;PTR:;CAT:NONE;SFS:(39860400002)(376002)(366004)(396003)(136003)(346002)(83380400001)(53546011)(36756003)(8676002)(6916009)(6512007)(6506007)(5660300002)(966005)(16799955002)(2906002)(66946007)(71200400001)(33656002)(66446008)(54906003)(66556008)(64756008)(186003)(2616005)(4326008)(91956017)(76116006)(66476007)(86362001)(6486002)(8936002)(316002)(478600001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata: VpF5M8jQMHKAHMOCt0X9Iy8JV7WjVEXDO5tLWJkM+oOgdsYaAvFPoH4qP1Gu5abfncDnqzlDzavskNPEQsxWHZ+gns4FxpFIGB4RdjigLqdl7AqTUigQ+NDmwSyCtYLEnW7SXQzJ0jMvhq5kGXSx6ah1D8czfyOOboMmwzJdtcdJb5MJZijZRggFCZZpv1W8MtycJv2inHXNiTJqfcbE0YY4UeYrfgr96+oM0KXndVA6Oqh+xYyqSuKqUX4UTA6GMRTy/4XBTJfoXv6f8sNoGWgEUSXoAchDjOzjPmREV3yGv8Xheab21Zsc5gfjUrQME4xlisqa+RbosFVGLD5Y/+IBAE5JPBt00EQg3frjFXCEWciyjBvY6BfacinCW28rWBlNYpLRXcDqYQL2ddKHrhaXtwmYya3WYXnaUrd0tmDWLUMhBfkvIiFpdwBMobD4TsP/serT6NnHNrspuqQ2KayRj97fnmvkJWxYc3qzKug6RqDPxg/DbXrZTqgveFTl3A+m8+6F56ZQ1HkmeHOLrI+ripw94cW/p+Wtdx0YPzUTvUwnUKvNHOwzHI993Njl7QHXXQvsmW4gJ6RIRL4GD7EeJr0xqbJCmi7g7FSFaA6DBXxVtctVAJ7UKcDximodmsEnqXChEOzbjsdP5irELaubXNfz8M6x0w/As78PZjX/S0rtKkAZia0N1BU5s3tf
+x-ms-exchange-transport-forked: True
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <1F2A9DF5059E0F40B7FB4D4CEBF47D90@namprd15.prod.outlook.com>
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR15MB3667.namprd15.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: c767fc87-5cd2-43b5-9537-08d858e21fa9
+X-MS-Exchange-CrossTenant-originalarrivaltime: 14 Sep 2020 19:12:28.8816
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 8ae927fe-1255-47a7-a2af-5f3a069daaa2
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: G3hfqTcVjg7ZCZQ9x++kYlr9Ch6TNoVV9xbztFpLG/l1gbI0dibp7PS0/wK/F2YY
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR15MB2774
+X-OriginatorOrg: fb.com
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.235,18.0.687
+ definitions=2020-09-14_07:2020-09-14,2020-09-14 signatures=0
+X-Proofpoint-Spam-Details: rule=fb_default_notspam policy=fb_default score=0 spamscore=0 clxscore=1011
+ malwarescore=0 lowpriorityscore=0 suspectscore=0 mlxscore=0
+ mlxlogscore=999 bulkscore=0 priorityscore=1501 phishscore=0
+ impostorscore=0 adultscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.12.0-2006250000 definitions=main-2009140149
+X-FB-Internal: deliver
 Sender: linux-ia64-owner@vger.kernel.org
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
->  arch/ia64/mm/init.c  |  4 +--
->  drivers/base/node.c  | 86 ++++++++++++++++++++++++++++----------------
->  include/linux/node.h | 11 +++---
->  mm/memory_hotplug.c  |  5 +--
->  4 files changed, 68 insertions(+), 38 deletions(-)
-> 
-> diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-> index b5054b5e77c8..8e7b8c6c576e 100644
-> --- a/arch/ia64/mm/init.c
-> +++ b/arch/ia64/mm/init.c
-> @@ -538,7 +538,7 @@ virtual_memmap_init(u64 start, u64 end, void *arg)
->  	if (map_start < map_end)
->  		memmap_init_zone((unsigned long)(map_end - map_start),
->  				 args->nid, args->zone, page_to_pfn(map_start),
-> -				 MEMPLUG_EARLY, NULL);
-> +				 MEMINIT_EARLY, NULL);
-
-Patch #1.
-
->  	return 0;
->  }
->  
-> @@ -548,7 +548,7 @@ memmap_init (unsigned long size, int nid, unsigned long zone,
->  {
->  	if (!vmem_map) {
->  		memmap_init_zone(size, nid, zone, start_pfn,
-> -				 MEMPLUG_EARLY, NULL);
-> +				 MEMINIT_EARLY, NULL);
->  	} else {
->  		struct page *start;
->  		struct memmap_init_callback_data args;
-> diff --git a/drivers/base/node.c b/drivers/base/node.c
-> index 508b80f6329b..01ee73c9d675 100644
-> --- a/drivers/base/node.c
-> +++ b/drivers/base/node.c
-> @@ -761,14 +761,36 @@ static int __ref get_nid_for_pfn(unsigned long pfn)
->  	return pfn_to_nid(pfn);
->  }
->  
-> +static int do_register_memory_block_under_node(int nid,
-> +					       struct memory_block *mem_blk)
-> +{
-> +	int ret;
-> +
-> +	/*
-> +	 * If this memory block spans multiple nodes, we only indicate
-> +	 * the last processed node.
-> +	 */
-> +	mem_blk->nid = nid;
-> +
-> +	ret = sysfs_create_link_nowarn(&node_devices[nid]->dev.kobj,
-> +				       &mem_blk->dev.kobj,
-> +				       kobject_name(&mem_blk->dev.kobj));
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_create_link_nowarn(&mem_blk->dev.kobj,
-> +				&node_devices[nid]->dev.kobj,
-> +				kobject_name(&node_devices[nid]->dev.kobj));
-> +}
-> +
->  /* register memory section under specified node if it spans that node */
-> -static int register_mem_sect_under_node(struct memory_block *mem_blk,
-> -					 void *arg)
-> +static int register_mem_block_under_node_early(struct memory_block *mem_blk,
-> +					       void *arg)
->  {
->  	unsigned long memory_block_pfns = memory_block_size_bytes() / PAGE_SIZE;
->  	unsigned long start_pfn = section_nr_to_pfn(mem_blk->start_section_nr);
->  	unsigned long end_pfn = start_pfn + memory_block_pfns - 1;
-> -	int ret, nid = *(int *)arg;
-> +	int nid = *(int *)arg;
->  	unsigned long pfn;
->  
->  	for (pfn = start_pfn; pfn <= end_pfn; pfn++) {
-> @@ -785,38 +807,34 @@ static int register_mem_sect_under_node(struct memory_block *mem_blk,
->  		}
->  
->  		/*
-> -		 * We need to check if page belongs to nid only for the boot
-> -		 * case, during hotplug we know that all pages in the memory
-> -		 * block belong to the same node.
-> -		 */
-> -		if (system_state == SYSTEM_BOOTING) {
-> -			page_nid = get_nid_for_pfn(pfn);
-> -			if (page_nid < 0)
-> -				continue;
-> -			if (page_nid != nid)
-> -				continue;
-> -		}
-> -
-> -		/*
-> -		 * If this memory block spans multiple nodes, we only indicate
-> -		 * the last processed node.
-> +		 * We need to check if page belongs to nid only at the boot
-> +		 * case because node's ranges can be interleaved.
->  		 */
-> -		mem_blk->nid = nid;
-> -
-> -		ret = sysfs_create_link_nowarn(&node_devices[nid]->dev.kobj,
-> -					&mem_blk->dev.kobj,
-> -					kobject_name(&mem_blk->dev.kobj));
-> -		if (ret)
-> -			return ret;
-> +		page_nid = get_nid_for_pfn(pfn);
-> +		if (page_nid < 0)
-> +			continue;
-> +		if (page_nid != nid)
-> +			continue;
->  
-> -		return sysfs_create_link_nowarn(&mem_blk->dev.kobj,
-> -				&node_devices[nid]->dev.kobj,
-> -				kobject_name(&node_devices[nid]->dev.kobj));
-> +		/* The memory block is registered to the first matching node */
-
-That comment is misleading in that context.
-
-A memory block is registered if there is at least a page that belongs to
-the nid. It's perfectly fine to have a single memory block belong to
-multiple NUMA nodes (when the split is within a memory block). I'd just
-drop it.
-
-[...]
-
--- 
-Thanks,
-
-David / dhildenb
-
+DQoNCj4gT24gU2VwIDEzLCAyMDIwLCBhdCAxMjo1MSBQTSwgQmVuIEh1dGNoaW5ncyA8YmVuQGRl
+Y2FkZW50Lm9yZy51az4gd3JvdGU6DQo+IA0KPiBFbmFibGluZyBDT05GSUdfUkRfWlNURCAod2hp
+Y2ggaXMgZW5hYmxlZCBieSBkZWZhdWx0KSByZXN1bHRlZCBpbiBhDQo+IGxpbmsgZmFpbHVyZSBv
+biBpYTY0Og0KPiANCj4gKyBsZCAtciAtbyB2bWxpbnV4Lm8gLS13aG9sZS1hcmNoaXZlIGFyY2gv
+aWE2NC9rZXJuZWwvaGVhZC5vIGluaXQvYnVpbHQtaW4uYSB1c3IvYnVpbHQtaW4uYSBhcmNoL2lh
+NjQva2VybmVsL2J1aWx0LWluLmEgYXJjaC9pYTY0L21tL2J1aWx0LWluLmEga2VybmVsL2J1aWx0
+LWluLmEgY2VydHMvYnVpbHQtaW4uYSBtbS9idWlsdC1pbi5hIGZzL2J1aWx0LWluLmEgaXBjL2J1
+aWx0LWluLmEgc2VjdXJpdHkvYnVpbHQtaW4uYSBjcnlwdG8vYnVpbHQtaW4uYSBibG9jay9idWls
+dC1pbi5hIGxpYi9idWlsdC1pbi5hIGFyY2gvaWE2NC9saWIvYnVpbHQtaW4uYSBsaWIvbGliLmEg
+YXJjaC9pYTY0L2xpYi9saWIuYSBkcml2ZXJzL2J1aWx0LWluLmEgc291bmQvYnVpbHQtaW4uYSBu
+ZXQvYnVpbHQtaW4uYSB2aXJ0L2J1aWx0LWluLmEgYXJjaC9pYTY0L3BjaS9idWlsdC1pbi5hIGFy
+Y2gvaWE2NC9ocC9jb21tb24vYnVpbHQtaW4uYSAtLW5vLXdob2xlLWFyY2hpdmUgLS1zdGFydC1n
+cm91cCAtLWVuZC1ncm91cA0KPiBsZDogbGliL3pzdGQvZW50cm9weV9jb21tb24ubzogbGlua2lu
+ZyBjb25zdGFudC1ncCBmaWxlcyB3aXRoIG5vbi1jb25zdGFudC1ncCBmaWxlcw0KPiBsZDogZmFp
+bGVkIHRvIG1lcmdlIHRhcmdldCBzcGVjaWZpYyBkYXRhIG9mIGZpbGUgbGliL3pzdGQvZW50cm9w
+eV9jb21tb24ubw0KPiBsZDogbGliL3pzdGQvZnNlX2RlY29tcHJlc3MubzogbGlua2luZyBjb25z
+dGFudC1ncCBmaWxlcyB3aXRoIG5vbi1jb25zdGFudC1ncCBmaWxlcw0KPiBsZDogZmFpbGVkIHRv
+IG1lcmdlIHRhcmdldCBzcGVjaWZpYyBkYXRhIG9mIGZpbGUgbGliL3pzdGQvZnNlX2RlY29tcHJl
+c3Mubw0KPiBsZDogbGliL3pzdGQvenN0ZF9jb21tb24ubzogbGlua2luZyBjb25zdGFudC1ncCBm
+aWxlcyB3aXRoIG5vbi1jb25zdGFudC1ncCBmaWxlcw0KPiBsZDogZmFpbGVkIHRvIG1lcmdlIHRh
+cmdldCBzcGVjaWZpYyBkYXRhIG9mIGZpbGUgbGliL3pzdGQvenN0ZF9jb21tb24ubw0KDQpJ4oCZ
+dmUgbmV2ZXIgc2VlbiBhbnl0aGluZyBsaWtlIHRoaXMgZXJyb3IgYmVmb3JlLiBJIGRpZCBzb21l
+IHNlYXJjaGluZywgYW5kIGZvdW5kIHRoYXQgaXQgbWF5IHNob3cgdXAgaWYgYW4gb2JqZWN0IGZp
+bGUgaXMgZW1wdHkuDQoNClRoZXNlIHRocmVlIGZpbGVzIGFyZSBhbGwgaW5jbHVkZWQgaW4gYm90
+aCB0aGUgenN0ZF9jb21wcmVzcyBhbmQgdGhlIHpzdGRfZGVjb21wcmVzcyBtb2R1bGVzLiBXZSB1
+c2VkIHRvIGV4Y2x1ZGUgdGhlc2UgMyBmaWxlcyBmcm9tIHRoZSB6c3RkX2RlY29tcHJlc3MgbW9k
+dWxlIHdoZW4gYm90aCBtb2R1bGVzIGFyZSBidWlsdC1pbi4gQnV0IHRoZW4gY29tbWl0IGRjMzVk
+YTE2YTJlMiBbMF0gcmVtb3ZlZCB0aGF0LCBiZWNhdXNlIEtidWlsZCBpcyBzdXBwb3NlZCB0byBo
+YW5kbGUgdGhhdCBjYXNlLg0KDQpJZiB5b3UgcmV2ZXJ0IGNvbW1pdCBkYzM1ZGExNmEyZTIgWzBd
+IGRvZXMgdGhhdCBmaXggdGhlIGlzc3VlPyBJ4oCZbSBhdHRlbXB0aW5nIHRvIGJ1aWxkIHdpdGgg
+SUE2NCwgYW5kIEnigJlsbCBsZXQgeW91IGtub3cgaWYgSSBhbSBhYmxlIHRvIHJlcHJvZHVjZSB0
+aGUgaXNzdWUgYW5kIHRlc3QgaWYgdGhpcyBmaXhlcyBpdC4NCg0KQ0M6IE1hc2FoaXJvIFlhbWFk
+YSA8eWFtYWRhLm1hc2FoaXJvQHNvY2lvbmV4dC5jb20+IGF1dGhvciBvZiB0aGUgY29tbWl0IGFu
+ZCB0aGUgbGludXgta2J1aWxkIG1haWxpbmcgbGlzdC4NCg0KWzBdIGh0dHBzOi8vZ2l0aHViLmNv
+bS90b3J2YWxkcy9saW51eC9jb21taXQvZGMzNWRhMTZhMmUyM2RiMDQ4MjJmMDEyOWNkNWIyOGI3
+YjBlNzJiNA0KDQpCZXN0LA0KTmljaw0KDQo+IFRoaXMgaXMgc2VlbiBvbiBEZWJpYW4gdW5zdGFi
+bGUsIHdpdGggZ2NjIDEwLjIgYW5kIGJpbnV0aWxzIDIuMzUuICBBDQo+IGZ1bGwgYnVpbGQgbG9n
+IGlzIGF2YWlsYWJsZSBhdDoNCj4gaHR0cHM6Ly9idWlsZGQuZGViaWFuLm9yZy9zdGF0dXMvZmV0
+Y2gucGhwP3BrZz1saW51eCZhcmNoPWlhNjQmdmVyPTUuOX5yYzQtMX5leHAxJnN0YW1wPTE1OTk5
+NTUxNjYmcmF3PTENCj4gDQo+IEJlbi4NCj4gDQo+IC0tIA0KPiBCZW4gSHV0Y2hpbmdzDQo+IEh1
+bW91ciBpcyB0aGUgYmVzdCBhbnRpZG90ZSB0byByZWFsaXR5Lg0KPiANCg0K
