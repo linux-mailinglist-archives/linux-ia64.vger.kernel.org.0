@@ -2,88 +2,83 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3703E270CFB
-	for <lists+linux-ia64@lfdr.de>; Sat, 19 Sep 2020 12:26:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CE76271E1E
+	for <lists+linux-ia64@lfdr.de>; Mon, 21 Sep 2020 10:38:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726159AbgISK0P (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 19 Sep 2020 06:26:15 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34152 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726041AbgISK0P (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sat, 19 Sep 2020 06:26:15 -0400
-Received: from linux-8ccs (p57a236d4.dip0.t-ipconnect.de [87.162.54.212])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id EEFFF207FF;
-        Sat, 19 Sep 2020 10:26:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1600511174;
-        bh=QS+/7ck8Ms+3NScVBhWMouEzmGA4XUAFNHh7y81UkaA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Dhs4E9cCPWR5U6/L6w+Ot0AP6OfHcv183sxqnUkXXz/AnXJDt0AXHHvcqCMVei5i6
-         GKnSZS2OKXzMu25vZ30nutYcHd1k1XhpuBjem46GWue0KNcO/LOyTnnK8hzbEj6OMj
-         lh64cXJ94R44/ThRRJAbdzF0qE+FcmC0n0GycrxI=
-Date:   Sat, 19 Sep 2020 12:26:01 +0200
-From:   Jessica Yu <jeyu@kernel.org>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     linux-kbuild@vger.kernel.org, Will Deacon <will@kernel.org>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Jeff Dike <jdike@addtoit.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Richard Weinberger <richard@nod.at>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-riscv@lists.infradead.org, linux-um@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2] kbuild: preprocess module linker script
-Message-ID: <20200919102601.GA22693@linux-8ccs>
-References: <20200908042708.2511528-1-masahiroy@kernel.org>
+        id S1726498AbgIUIiy (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 21 Sep 2020 04:38:54 -0400
+Received: from mail-oi1-f196.google.com ([209.85.167.196]:36324 "EHLO
+        mail-oi1-f196.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726236AbgIUIix (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 21 Sep 2020 04:38:53 -0400
+Received: by mail-oi1-f196.google.com with SMTP id v20so16082981oiv.3;
+        Mon, 21 Sep 2020 01:38:53 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=Pa6G2bx61W/Cf4WZHIkwrfJ5Kz2A4o6ODkqkJ4p7GqA=;
+        b=SqNtkDn63EQRoH/HX02/foCj9z4yc6Q4ULNtqTBPoOaMkFaLQxoBTld/XoZVlGOhqb
+         Kt0AfLOdxmtb35lqCXoQjjsuvfXUKGbDhGlyguoOEJXEPaR72m7wf5NMEzVyTXAla5fF
+         /safK1sRbGqW3BWevKkuKyLKlozJ1oTJD1rC+F0j6sTQmG3sb4cZU8ygdkT2JznsLW/e
+         sdEpdb96tnoxcT1vxVEZoZSsaI7FhWjtk1ArTGOamrQFaOWxWJ/buRJDtUf8LC1w8gqV
+         ySkCSdop5nbjzJg/RA+P2CEPTJYmRPmAIv8h8VWrjGreX80JvnmCGRiygh07dD+U2Qe3
+         WMBA==
+X-Gm-Message-State: AOAM531rFBxaUo9KmR1timwja5c4z9aXs1yOcCsgaB60VFjFyQLK228H
+        KszNFtz7MhddPpNLm7R2hJXU5FwccfPyxMG2KF6GAyGe
+X-Google-Smtp-Source: ABdhPJxdfiBZSeHQ+m6gdcbod/Xp7BOk3ApwBWOI6WG/htW+WxutIfzqMqym28SxpL9hK3U47rczY1qM7i1pISxqEvo=
+X-Received: by 2002:aca:4441:: with SMTP id r62mr15963441oia.153.1600677532744;
+ Mon, 21 Sep 2020 01:38:52 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20200908042708.2511528-1-masahiroy@kernel.org>
-X-OS:   Linux linux-8ccs 4.12.14-lp150.12.61-default x86_64
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20200921082716.29247-1-geert@linux-m68k.org>
+In-Reply-To: <20200921082716.29247-1-geert@linux-m68k.org>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 21 Sep 2020 10:38:41 +0200
+Message-ID: <CAMuHMdXCQ-FgPXHVjnXujMvi_tg12AzXo5i2+i=JAnUmeNci_Q@mail.gmail.com>
+Subject: Re: Build regressions/improvements in v5.9-rc6
+To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     Jan Kara <jack@suse.cz>, Dan Williams <dan.j.williams@intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-+++ Masahiro Yamada [08/09/20 13:27 +0900]:
->There was a request to preprocess the module linker script like we
->do for the vmlinux one. (https://lkml.org/lkml/2020/8/21/512)
->
->The difference between vmlinux.lds and module.lds is that the latter
->is needed for external module builds, thus must be cleaned up by
->'make mrproper' instead of 'make clean'. Also, it must be created
->by 'make modules_prepare'.
->
->You cannot put it in arch/$(SRCARCH)/kernel/, which is cleaned up by
->'make clean'. I moved arch/$(SRCARCH)/kernel/module.lds to
->arch/$(SRCARCH)/include/asm/module.lds.h, which is included from
->scripts/module.lds.S.
->
->scripts/module.lds is fine because 'make clean' keeps all the
->build artifacts under scripts/.
->
->You can add arch-specific sections in <asm/module.lds.h>.
->
->Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
->Tested-by: Jessica Yu <jeyu@kernel.org>
->Acked-by: Will Deacon <will@kernel.org>
+On Mon, Sep 21, 2020 at 10:32 AM Geert Uytterhoeven
+<geert@linux-m68k.org> wrote:
+> JFYI, when comparing v5.9-rc6[1] to v5.9-rc5[3], the summaries are:
+>   - build errors: +3/-5
 
-Acked-by: Jessica Yu <jeyu@kernel.org>
+  + /kisskb/src/drivers/dax/super.c: error: redefinition of
+'dax_supported':  => 325:6
 
-Thanks for working on this! 
+m68k-defconfig
+sun3_defconfig
+mips-allmodconfig
+sparc-allmodconfig
+sparc64-allmodconfig
+mips-allmodconfig
+powernv_defconfig+THIN
+(many more reported in the wild)
 
+  + error: modpost: "rcu_idle_enter" [drivers/acpi/processor.ko]
+undefined!:  => N/A
+  + error: modpost: "rcu_idle_exit" [drivers/acpi/processor.ko]
+undefined!:  => N/A
+
+ia64-defconfig
+
+> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/ba4f184e126b751d1bffad5897f263108befc780/ (all 192 configs)
+> [3] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/856deb866d16e29bd65952e0289066f6078af773/ (all 192 configs)
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
