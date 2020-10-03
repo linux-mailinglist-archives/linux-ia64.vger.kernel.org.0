@@ -2,64 +2,59 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C8306281BC8
-	for <lists+linux-ia64@lfdr.de>; Fri,  2 Oct 2020 21:23:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E74932826E1
+	for <lists+linux-ia64@lfdr.de>; Sat,  3 Oct 2020 23:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388556AbgJBTXM convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Fri, 2 Oct 2020 15:23:12 -0400
-Received: from mx.metalurgs.lv ([81.198.125.103]:50644 "EHLO mx.metalurgs.lv"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2388574AbgJBTXM (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 2 Oct 2020 15:23:12 -0400
-X-Greylist: delayed 427 seconds by postgrey-1.27 at vger.kernel.org; Fri, 02 Oct 2020 15:23:12 EDT
-Received: from mx.metalurgs.lv (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id C345861D95
-        for <linux-ia64@vger.kernel.org>; Fri,  2 Oct 2020 22:16:04 +0300 (EEST)
-Received: from kas30pipe.localhost (localhost [127.0.0.1])
-        by mx.metalurgs.lv (Postfix) with ESMTP id 8424562A08
-        for <linux-ia64@vger.kernel.org>; Fri,  2 Oct 2020 22:16:04 +0300 (EEST)
-Received: by mx.metalurgs.lv (Postfix, from userid 1005)
-        id E8BFB620CE; Fri,  2 Oct 2020 22:16:02 +0300 (EEST)
-Received: from [100.64.1.74] (unknown [190.15.125.50])
-        (Authenticated sender: admin)
-        by mx.metalurgs.lv (Postfix) with ESMTPA id 7AA7F61DB0;
-        Fri,  2 Oct 2020 22:15:56 +0300 (EEST)
+        id S1725952AbgJCViX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 3 Oct 2020 17:38:23 -0400
+Received: from 70-252-206-104.staticrdns.eonix.net ([104.206.252.70]:45360
+        "EHLO 70-252-206-104.staticrdns.eonix.net" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S1725913AbgJCViX (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 3 Oct 2020 17:38:23 -0400
+X-Greylist: delayed 26623 seconds by postgrey-1.27 at vger.kernel.org; Sat, 03 Oct 2020 17:38:22 EDT
+Received: from User (localhost [IPv6:::1])
+        by 70-252-206-104.staticrdns.eonix.net (Postfix) with SMTP id 5F6B155CEB9;
+        Sat,  3 Oct 2020 06:49:37 -0400 (EDT)
+Reply-To: <stewart.macdonald58@rockhopperexplorationplc.co.uk>
+From:   "MacDonald" <stewart.macdonald58@rockhopperexplorationplc.co.uk>
+Subject: Please Check this out and reply urgently
+Date:   Sat, 3 Oct 2020 03:49:41 -0700
 MIME-Version: 1.0
-Content-Description: Mail message body
-To:     Recipients <financialcapability6@gmail.com>
-From:   "Mr. Hashim Bin" <financialcapability6@gmail.com>
-Date:   Fri, 02 Oct 2020 16:15:46 -0300
-Reply-To: binmurrah@gmail.com
-X-SpamTest-Envelope-From: financialcapability6@gmail.com
-X-SpamTest-Group-ID: 00000000
-X-SpamTest-Info: Profiles 71303 [Jan 01 2015]
-X-SpamTest-Info: {TO: forged address, i.e. recipient, investors, public, etc.}
-X-SpamTest-Info: {DATE: unreal year}
-X-SpamTest-Method: none
-X-SpamTest-Rate: 55
-X-SpamTest-Status: Not detected
-X-SpamTest-Status-Extended: not_detected
-X-SpamTest-Version: SMTP-Filter Version 3.0.0 [0284], KAS30/Release
-Message-ID: <20201002191602.E8BFB620CE@mx.metalurgs.lv>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Transfer-Encoding: 8BIT
-Subject: Low Rate Loan.
-X-Anti-Virus: Kaspersky Anti-Virus for Linux Mail Server 5.6.39/RELEASE,
-         bases: 20140401 #7726142, check: 20201002 notchecked
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20201003104937.5F6B155CEB9@70-252-206-104.staticrdns.eonix.net>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hello Dear,
+Attention please!
 
-We are Investment Company offering Corporate and Personal
-Loan at 3% Interest Rate for a duration of 10Years.
+I am the Chief Financial Officer of Rockhopper and Gas company London UK, and by the virtue, as the Chief Financial Officer. I got your contact through a directory search and decided to propose this business. I am seeking your assistance in remitting of some funds,  Ninety five million  to your account for private investment purpose, hence my request for your assistance.
+ 
+  
+ SOURCE OF THE FUND:
 
-We also pay 1% commission to brokers, who introduce project
-owners for finance or other opportunities.
+The fund to be transferred into your account is accrued from an over-invoiced contract amount awarded for the completion of the last phase of our refinery, valves and depot for storage of product all over our branches here in the UK which include laying of  distribution pipelines. The contract which was originally valued for One Hundred and Twenty Seven Million was manipulated to read, Two Hundred and Twenty Two Million.  The extra, Ninety Five Million, is what I want to move to your account, the original contractors who executed the job has been paid all their contract bills remaining this Ninety Five Million.
+  
+ DISBURSEMENT:
 
-Please get back to me if you are interested for more
-details.
+I have resolved that you take Forty percent  of the total amount for your assistance. that is, fronting you as a sub contractor to claim the remaining balance of Ninety Five Million  which is left now in our bank from the over invoice contract because it is impossible for me to claim the over invoiced amount without your assistance as a Foreign Contractor. In addition Ten percent has been mapped out for any miscellaneous expenses that   might be incurred by both of us during this business while Fifty percent  will be my own share.
 
-Yours faithfully,
-Hashim Bin 
+SECURITY:
+
+All modalities to effect the payment and subsequent transfer of this money has been worked out, so this transaction is Hundred percent risk free, though you are required to treat it with strictest confidence, on our acceptance please send to me your personal details and your direct mobile phone number for speedy correspondence.
+  
+I am looking forward to doing business with you. Your prompt reply will be highly appreciated. Do kindly furnish me with your contact details if you are interested in partnering with me on this transaction.
+ 
+  
+Yours Faithfully,
+
+Stewart MacDonald
+Chief Financial Officer
+Rockhopper Exploration PLC
