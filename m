@@ -2,103 +2,90 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0682A282944
-	for <lists+linux-ia64@lfdr.de>; Sun,  4 Oct 2020 08:54:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E19CA28296C
+	for <lists+linux-ia64@lfdr.de>; Sun,  4 Oct 2020 09:37:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725827AbgJDGyK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 4 Oct 2020 02:54:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59470 "EHLO
+        id S1725826AbgJDHht (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 4 Oct 2020 03:37:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725825AbgJDGyK (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 4 Oct 2020 02:54:10 -0400
-Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97FF0C0613CE;
-        Sat,  3 Oct 2020 23:54:09 -0700 (PDT)
-Received: by mail-ed1-x541.google.com with SMTP id n22so6124834edt.4;
-        Sat, 03 Oct 2020 23:54:09 -0700 (PDT)
+        with ESMTP id S1725820AbgJDHht (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 4 Oct 2020 03:37:49 -0400
+Received: from mail-pf1-x443.google.com (mail-pf1-x443.google.com [IPv6:2607:f8b0:4864:20::443])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F1D4C0613CE;
+        Sun,  4 Oct 2020 00:37:48 -0700 (PDT)
+Received: by mail-pf1-x443.google.com with SMTP id x22so4404910pfo.12;
+        Sun, 04 Oct 2020 00:37:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
-        h=from:date:to:cc:subject:in-reply-to:message-id:references
-         :user-agent:mime-version;
-        bh=EPLwvj5pya/JFWydy8L2Gp24s9uoCH6NbYu2uRRH6ik=;
-        b=UG4DnuWuqE6SNkZ5M9hwm9iv1P4o4gLy5ReBNtNlbStSNV/RfwSPM1CzXqSYuQHzDb
-         OiWhQQIBIvlUIuAv+4kKBcyLNIdnmTi/4+FXaCdwsW5NtFArKBHf0SgAR78thGCGYIty
-         1423smC0NAJevTWU4kHKW2+fPLrxM+OVMKp3O3QPmx2zw79B/x8wwM0z0AgUyIeBut5J
-         dTXu0AepR08jsr/AXzTLmplBGQr12f61wq+6dujLJlcAFhpxYUAyi+rC4oBi38W7lpJ4
-         PIy4987RpSSFAdYaeSFT+ezfRumdUfnX6UHQmhTxkt0Iu/AmvSpwuWd0ZOqark6tU9Yf
-         kySA==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=WfCbCO1Ao7anoEBmTDmMuxXQu7QeWRK6G03kQt12ZFU=;
+        b=OffVEwzk5rWoDFgvuWzdXLhu4jOQ8cNgoiW4XmVFPkjqhY1t6d853/dAmIUPxImWBn
+         QO1LuG62Lvv9pWLJ3lETIQjMOapNbwHJ/ION/X0kTchfnEwSwQqX6AJoFHYjlygwm38h
+         9Xh9+8Y18FG25ENDFXw44gvp0OTHyea0SzKyP6GSVBZVihPvrkLkSQtoT2OVkx+EuCj0
+         QVPbvcdCMWPn1ho90VrvQguO2suyFftIr7hGdPlSfoRn5Oq16aO9Vfu9SJfgYmr2Qfnb
+         eanYhreeIU86bNc4iy275YpYSNzs8Kai4eN1nVOlmhl5UrREwyOtOQt1FFnqp4inPPdm
+         vG/g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:date:to:cc:subject:in-reply-to:message-id
-         :references:user-agent:mime-version;
-        bh=EPLwvj5pya/JFWydy8L2Gp24s9uoCH6NbYu2uRRH6ik=;
-        b=ZCgRHC5J52AbCvOYdEqjIwOi700FA2kuaaD8Eq2KKzVPreOzmCw6r99wcXMdTIqdJ2
-         XyD6btXzcfyd6wAKNYsvRk5pVI/JHBwUxB7XsC6kUtbO14CdF4ov+OJcJOk/F2bRufC/
-         hyqrumHoK20THSVBFw2f7JvfnY8QC9nWA+zv+XO/s7N3qBF+akBX3i5ZNkB77SKm/RJL
-         KUr1nWjucslj0xMP3pNA4Jfian8T7sVd5IOEbhmkIcqjUGpKswbj7STAAFDGBJlFfNo1
-         TH3oy6NI/ldGMasKuU075cv3Lk3jK2lzuofRIO2Xc+nW7FAcl3OLAlPTDIRuL5AaayNh
-         E0FA==
-X-Gm-Message-State: AOAM530h27mVaunNCT6GB8JNiS5WS8wZmdOEk4tYnjnYTp4e67kpbqne
-        ltatn9P6mOApEwOxymAl3PQ=
-X-Google-Smtp-Source: ABdhPJzI48R2EuzLCKnqeLePDQ2Dv05WLcSgKkMSb9kmFpHlLInEpkzuSRIfJllzfN1l2U+/csG/Ww==
-X-Received: by 2002:a05:6402:b68:: with SMTP id cb8mr11568608edb.350.1601794447224;
-        Sat, 03 Oct 2020 23:54:07 -0700 (PDT)
-Received: from felia ([2001:16b8:2d26:f700:8d52:b46b:d125:e62a])
-        by smtp.gmail.com with ESMTPSA id k18sm4876538ejk.42.2020.10.03.23.54.05
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=WfCbCO1Ao7anoEBmTDmMuxXQu7QeWRK6G03kQt12ZFU=;
+        b=ELO6zVj8SDvkVuaOH7aOKK8hHK8EaExiPIwYWo0jVO3Y0xfPx6bTYFNJeGIuazHIof
+         w7kOm8o1U4h0eeECfnBb+equkObQp9N4TFlkKIMbwIDcYG/zCGTwUnWc6LHQ0eiCH9wV
+         XPvbTNJ9q5Z6YExNwSboVNEZrNfhxv4mMr+1Asg9Ft9qWSbPMdeLzaPHwTu4uBYewTkP
+         GEC7vRVltVUeBdBZ/FTWis8bm5qV29Xs3nBnqvsj1k8y+dwKmfkyZAOFhFA0IecG9we+
+         ORjuqOFUzhY2uD1sPHZTezXIGdsT8QQeqwU1do7/891IE113n0r+/ZotziMVGdLNQlkJ
+         OFrw==
+X-Gm-Message-State: AOAM530YC/CbWZHe8sscsyscLOiy0S49ymnMWg0RpWj7z/zKSJKm7GIX
+        LG16cwgroskmOQaDE1k224w=
+X-Google-Smtp-Source: ABdhPJxEpvyqMNGI4mta5dKV03BltD2crZS1TfUy42HTMCK33lGoq7cjYrelzKeNdW5nWmi334LwQg==
+X-Received: by 2002:a63:f746:: with SMTP id f6mr9198685pgk.128.1601797067284;
+        Sun, 04 Oct 2020 00:37:47 -0700 (PDT)
+Received: from Ryzen-9-3900X.localdomain (ip68-3-136-221.ph.ph.cox.net. [68.3.136.221])
+        by smtp.gmail.com with ESMTPSA id ie13sm6668209pjb.5.2020.10.04.00.37.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Oct 2020 23:54:06 -0700 (PDT)
-From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
-X-Google-Original-From: Lukas Bulwahn <lukas@gmail.com>
-Date:   Sun, 4 Oct 2020 08:54:05 +0200 (CEST)
-X-X-Sender: lukas@felia
+        Sun, 04 Oct 2020 00:37:46 -0700 (PDT)
+Date:   Sun, 4 Oct 2020 00:37:43 -0700
+From:   Nathan Chancellor <natechancellor@gmail.com>
 To:     Ujjwal Kumar <ujjwalkumar0501@gmail.com>
-cc:     Masahiro Yamada <masahiroy@kernel.org>,
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
         Michal Marek <michal.lkml@markovi.net>,
         Andrew Morton <akpm@linux-foundation.org>,
         Kees Cook <keescook@chromium.org>,
         Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
         Nick Desaulniers <ndesaulniers@google.com>,
         linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
         clang-built-linux@googlegroups.com,
         linux-kernel-mentees@lists.linuxfoundation.org
 Subject: Re: [PATCH RFC 1/2] kconfig: use interpreters to invoke scripts
-In-Reply-To: <d398ec09-2146-1fef-c594-643a9c868b06@gmail.com>
-Message-ID: <alpine.DEB.2.21.2010040852150.28226@felia>
+Message-ID: <20201004073743.GA31645@Ryzen-9-3900X.localdomain>
 References: <d398ec09-2146-1fef-c594-643a9c868b06@gmail.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d398ec09-2146-1fef-c594-643a9c868b06@gmail.com>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-
-
-On Sat, 3 Oct 2020, Ujjwal Kumar wrote:
-
+On Sat, Oct 03, 2020 at 08:50:10PM +0530, Ujjwal Kumar wrote:
 > We cannot rely on execute bits to be set on files in the repository.
 > The build script should use the explicit interpreter when invoking any
 > script from the repository.
 > 
 > Link: https://lore.kernel.org/lkml/20200830174409.c24c3f67addcce0cea9a9d4c@linux-foundation.org/
 > Link: https://lore.kernel.org/lkml/202008271102.FEB906C88@keescook/
->
-
-Reproduced the setup described in the cover letter on next-20201002.
-
-The issue for make defconfig was resolved with this patch. So:
-
-Tested-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-
-
-Lukas
- 
+> 
 > Suggested-by: Andrew Morton <akpm@linux-foundation.org>
 > Suggested-by: Kees Cook <keescook@chromium.org>
 > Suggested-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
 > Signed-off-by: Ujjwal Kumar <ujjwalkumar0501@gmail.com>
+
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+
 > ---
 >  init/Kconfig | 16 ++++++++--------
 >  1 file changed, 8 insertions(+), 8 deletions(-)
@@ -151,5 +138,4 @@ Lukas
 >  	depends on CC_HAS_ASM_GOTO
 > -- 
 > 2.26.2
-> 
 > 
