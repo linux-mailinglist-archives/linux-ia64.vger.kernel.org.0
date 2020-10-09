@@ -2,99 +2,156 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D3F042889AF
-	for <lists+linux-ia64@lfdr.de>; Fri,  9 Oct 2020 15:24:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 202AC289BBB
+	for <lists+linux-ia64@lfdr.de>; Sat, 10 Oct 2020 00:25:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2388368AbgJINYU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 9 Oct 2020 09:24:20 -0400
-Received: from mout.kundenserver.de ([217.72.192.74]:46603 "EHLO
-        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729935AbgJINYT (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 9 Oct 2020 09:24:19 -0400
-X-Greylist: delayed 77759 seconds by postgrey-1.27 at vger.kernel.org; Fri, 09 Oct 2020 09:24:18 EDT
-Received: from mail-qt1-f172.google.com ([209.85.160.172]) by
- mrelayeu.kundenserver.de (mreue107 [212.227.15.145]) with ESMTPSA (Nemesis)
- id 1MMWcT-1kkKXf3tId-00JexZ; Fri, 09 Oct 2020 15:24:17 +0200
-Received: by mail-qt1-f172.google.com with SMTP id a9so7859533qto.11;
-        Fri, 09 Oct 2020 06:24:16 -0700 (PDT)
-X-Gm-Message-State: AOAM530WHgGrxL6ntwhqIOGGembKg7p1QaNkgVRkRHMEDuuijyjQgYSh
-        u/bud+xqkGchs77OqAcoI/ljAp5i1u5V7exW/7w=
-X-Google-Smtp-Source: ABdhPJwGWpnh6YXeCGHXzt9gF5qvqtLcAd925kccJGJ5ZmJZWEn/UPjGcEgDedqfjgtQvXwD6o8XYMv1z/4WvobnVTM=
-X-Received: by 2002:ac8:7cba:: with SMTP id z26mr11806879qtv.7.1602249855606;
- Fri, 09 Oct 2020 06:24:15 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-6-arnd@arndb.de>
- <0bf8d0e5-5792-a2dd-884a-c82693b64b19@linux-m68k.org>
-In-Reply-To: <0bf8d0e5-5792-a2dd-884a-c82693b64b19@linux-m68k.org>
-From:   Arnd Bergmann <arnd@arndb.de>
-Date:   Fri, 9 Oct 2020 15:23:59 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a3E1x_T29Az_d-A+wTpqCWj6Z40TaOjcsX-kc+xfpBrRA@mail.gmail.com>
-Message-ID: <CAK8P3a3E1x_T29Az_d-A+wTpqCWj6Z40TaOjcsX-kc+xfpBrRA@mail.gmail.com>
-Subject: Re: [PATCH 05/13] m68k: coldfire: use legacy_timer_tick()
-To:     Greg Ungerer <gerg@linux-m68k.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
+        id S2389879AbgJIWZH (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 9 Oct 2020 18:25:07 -0400
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:39400 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1727737AbgJIWZH (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 9 Oct 2020 18:25:07 -0400
+X-Greylist: delayed 369 seconds by postgrey-1.27 at vger.kernel.org; Fri, 09 Oct 2020 18:25:06 EDT
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id DF3BA29EC3;
+        Fri,  9 Oct 2020 18:18:51 -0400 (EDT)
+Date:   Sat, 10 Oct 2020 09:18:53 +1100 (AEDT)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Arnd Bergmann <arnd@arndb.de>
+cc:     linux-kernel@vger.kernel.org, Russell King <linux@armlinux.org.uk>,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
-        Finn Thain <fthain@telegraphics.com.au>,
         Philip Blundell <philb@gnu.org>,
         Joshua Thompson <funaho@jurai.org>,
         Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>,
         Thomas Gleixner <tglx@linutronix.de>,
         Daniel Lezcano <daniel.lezcano@linaro.org>,
         John Stultz <john.stultz@linaro.org>,
         Stephen Boyd <sboyd@kernel.org>,
         Linus Walleij <linus.walleij@linaro.org>,
-        linux-ia64@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Provags-ID: V03:K1:JQvpWcu5Jl6BcKmr/8ZVI76SSQVrnUeCc35OS4bkOopkV0+zmNP
- p7ZLkN+6c5YtWJNw2pQ5qowJO1v9d+nb6Lcy5Cg/NHpCiSk/kwPHF+euecNL/wUe6+vCrgD
- gjvohbjZZsWnNrNVbha+w6YUTIub42e/aFGTW5Cl9hBAK37VeNsb7bYiwkQrCeXRNGHd9bT
- vA3dVZ5nGBxP6e61VzmRw==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:qj1hkf71bCk=:yjSMWwLaj6e9pAScIgdV9V
- mlqTqlo5/vFQVpDrkHUq9igfmJ+uGnfDv73xoBmjSdQr4B10SpinjrnahKky4skVux0byowah
- +rqj6oaj6h3DPirrq38PHcsmblzvnxaO+sK2VWDUNIa5D1U15ijSqI1E0DwJ6Si72hME7Adzd
- E7BJ5hYBeLgNe8S9aRIWUm8Y8v0UaDNnlkARhhT7jJQLU6Ok2fr8N0i078sAgGjSYopMzbbAc
- eFVVU1MsEzW/YHTWCU10OMG+0f1CHFo1Os3eHhUenp9WtC7z8r36oGzbErPZ8msjjdV5SQKYU
- +rumUjJiDN+zDi2xusb4RcHCz20Kj47Ul48Xy78QPwl5bAu5u1sMjRpsUWpV8hF7GWgvAuLdZ
- HlF/Inj40sWAibMi0PsnkU/xxgGcvPHoWzoRACDwPF9NaVGkE/J5nZqOXlrBv86x7jArcq9TY
- GoQkM/ct+xt6P14SBTD0SLetXvRunXLVihhcN+jJp35tvQ/lBCMBL8yPXIWeLKvnI0CcBGNeg
- PLSEGBhvuun9BpV6a9EIDVIYZCBlxMtin76oPehygd7o4m5Li4vQQj0h17xFxnY34WNgHD3TO
- UOj3Ka3h52hbK3sP1Y+3RhL2jsG81CDLSUqyH4gz/WQlNwFAqrcC742iPaKsb1J6G1BQCs5pc
- p7wZEUXyLU+BNsJga+datGlT0YUauY5uWgqH9fZ0RebtZgRqZ2DgjDe57tYt0RsZLeey/6kb8
- epx5bCcrIHzQw779DKOQHpZg8EBO8BL1FtE79gyiMalolK5A+dA7pi24Ya5UFtbq/fvwvxPsv
- DxgDHVV7iy9UYeHfxeoWt/PJN48QKmtlLM88vrFitFzDyKrTgXeDpnlklMpqgFqB+Nroy0c
+        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org,
+        linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 01/13] timekeeping: add CONFIG_LEGACY_TIMER_TICK
+In-Reply-To: <20201008154651.1901126-2-arnd@arndb.de>
+Message-ID: <alpine.LNX.2.23.453.2010100820110.12@nippy.intranet>
+References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-2-arnd@arndb.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Oct 9, 2020 at 2:53 PM Greg Ungerer <gerg@linux-m68k.org> wrote:
->
-> Hi Arnd,
->
-> On 9/10/20 1:46 am, Arnd Bergmann wrote:
-> > Replace the indirect function calls in the timer code
-> > with direct calls to the newly added legacy_timer_tick()
-> > helper for those that have not yet been converted to
-> > generic clockevents.
-> >
-> > This makes the timer code a little more self-contained.
-> >
-> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
->
-> I tested this series on a couple of different ColdFire parts
-> (5208 and 5475) and under QEMU emulating the 5208. All checked
-> out good, all worked as expected. So for the ColdFire changes:
->
-> Tested-by: Greg Ungerer <gerg@linux-m68k.org>
+Hi Arnd,
 
-Awesome, thanks for testing!
+On Thu, 8 Oct 2020, Arnd Bergmann wrote:
 
-        Arnd
+> All platforms that currently do not use generic clockevents roughly call
+> the same set of functions in their timer interrupts: xtime_update(),
+> update_process_times() and profile_tick(), sometimes in a different
+> sequence.
+> 
+> Add a helper function that performs all three of them, to make the
+> callers more uniform and simplify the interface.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  include/linux/timekeeping.h |  1 +
+>  kernel/time/Kconfig         |  7 +++++++
+>  kernel/time/Makefile        |  1 +
+>  kernel/time/tick-legacy.c   | 19 +++++++++++++++++++
+>  4 files changed, 28 insertions(+)
+>  create mode 100644 kernel/time/tick-legacy.c
+> 
+> diff --git a/include/linux/timekeeping.h b/include/linux/timekeeping.h
+> index 7f7e4a3f4394..3670cb1670ff 100644
+> --- a/include/linux/timekeeping.h
+> +++ b/include/linux/timekeeping.h
+> @@ -12,6 +12,7 @@ extern int timekeeping_suspended;
+>  /* Architecture timer tick functions: */
+>  extern void update_process_times(int user);
+>  extern void xtime_update(unsigned long ticks);
+> +extern void legacy_timer_tick(unsigned long ticks);
+>  
+>  /*
+>   * Get and set timeofday
+> diff --git a/kernel/time/Kconfig b/kernel/time/Kconfig
+> index a09b1d61df6a..f2b0cfeade47 100644
+> --- a/kernel/time/Kconfig
+> +++ b/kernel/time/Kconfig
+> @@ -61,6 +61,13 @@ config POSIX_CPU_TIMERS_TASK_WORK
+>  	bool
+>  	default y if POSIX_TIMERS && HAVE_POSIX_CPU_TIMERS_TASK_WORK
+>  
+> +config LEGACY_TIMER_TICK
+> +	bool
+> +	help
+> +	  The legacy timer tick helper is used by platforms that
+> +	  lack support for the generic clockevent framework.
+> +	  New platforms should use generic clockevents instead.
+> +
+>  if GENERIC_CLOCKEVENTS
+>  menu "Timers subsystem"
+>  
+> diff --git a/kernel/time/Makefile b/kernel/time/Makefile
+> index c8f00168afe8..1fb1c1ef6a19 100644
+> --- a/kernel/time/Makefile
+> +++ b/kernel/time/Makefile
+> @@ -16,6 +16,7 @@ ifeq ($(CONFIG_GENERIC_CLOCKEVENTS_BROADCAST),y)
+>  endif
+>  obj-$(CONFIG_GENERIC_SCHED_CLOCK)		+= sched_clock.o
+>  obj-$(CONFIG_TICK_ONESHOT)			+= tick-oneshot.o tick-sched.o
+> +obj-$(CONFIG_LEGACY_TIMER_TICK)			+= tick-legacy.o
+>  obj-$(CONFIG_HAVE_GENERIC_VDSO)			+= vsyscall.o
+>  obj-$(CONFIG_DEBUG_FS)				+= timekeeping_debug.o
+>  obj-$(CONFIG_TEST_UDELAY)			+= test_udelay.o
+> diff --git a/kernel/time/tick-legacy.c b/kernel/time/tick-legacy.c
+> new file mode 100644
+> index 000000000000..73c5a0af4743
+> --- /dev/null
+> +++ b/kernel/time/tick-legacy.c
+> @@ -0,0 +1,19 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/*
+> + * Timer tick function for architectures that lack generic clockevents,
+> + * consolidated here from m68k/ia64/parisc/arm.
+> + */
+> +
+> +#include <linux/irq.h>
+> +#include <linux/profile.h>
+> +#include <linux/timekeeper_internal.h>
+> +
+> +#include "tick-internal.h"
+> +
+> +void legacy_timer_tick(unsigned long ticks)
+> +{
+> +	if (ticks)
+> +		xtime_update(ticks);
+> +	update_process_times(user_mode(get_irq_regs()));
+> +	profile_tick(CPU_PROFILING);
+> +}
+> 
+
+It's good to see this code refactored in this way because, as well as 
+de-duplication, it reveals the logic that's common to the relevant 
+platforms and may shed some light on the need for that logic.
+
+Yet it's not clear to me that the clockevents framework is able to replace 
+that logic on all of the affected hardware. I suppose it remains to be 
+seen.
+
+I hate to quibble about naming, but you seem to be using "legacy" here to 
+mean "deprecated" (?) Is it a good idea to prepend such adjectives to 
+symbol names?
+
+IMO, the term "legacy" is redundant in this context. That term covers a 
+large portion of kernel code, a large number of hardware features in 
+current silicon, a large portion of the userspace ABI, a large number of 
+production Linux systems, probably all "Unix" systems, etc.
+
+As a corollary, cutting edge ("non-legacy") code is often kept out of open 
+source projects by the owners of the intellectual property rights.
