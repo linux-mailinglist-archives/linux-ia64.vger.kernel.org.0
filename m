@@ -2,112 +2,188 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EC93528C2D8
-	for <lists+linux-ia64@lfdr.de>; Mon, 12 Oct 2020 22:44:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A5D3F28C44E
+	for <lists+linux-ia64@lfdr.de>; Mon, 12 Oct 2020 23:48:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1729330AbgJLUoj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 12 Oct 2020 16:44:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40560 "EHLO
+        id S1730251AbgJLVst (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 12 Oct 2020 17:48:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1729162AbgJLUoj (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 12 Oct 2020 16:44:39 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0312C0613D0;
-        Mon, 12 Oct 2020 13:44:38 -0700 (PDT)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1602535477;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=2D9ftb4BNlPgU4fGOVcc9hqHah5NjLimpJgfMw28f+o=;
-        b=3/o7m4+JNTO8cP79WuCRiuRnkNMsIzvD57ZEvEm9wyGyPse3QVqeClMl/XBroA5Gw5sryY
-        yt1B4FPqa8dQZVnOskzF4aK2RvAdaPtSNuvrq2kiHKwjtrI2O56Doey5MrVWZ1PmMtFe51
-        nIgCRI/OA1S/wFNBCKjgyh2PPtOYor7ZlBPcXGGO9efhAqy/xfK5oMj09dFsWK+REE51vs
-        QtnliaSEueOg5DKUKyvIr/bYO3yvxWZ6lOX7iWnhT5LL+Vf3dHfFjZNNjjcYZWGXKeWwU4
-        VdlYT89JkZ+cBgIEAmwK1KJnZbO6NmNDuL/ib8buYfCUf/2RV6R9QHIynPbu9A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1602535477;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=2D9ftb4BNlPgU4fGOVcc9hqHah5NjLimpJgfMw28f+o=;
-        b=qK6+kw4fzMu2UlI7byqtGAmPcI78XzzYUsSPXcvpiK8RQ/WaolXUVuLHhBgI49kAgKr+DQ
-        n59ZXMNHRPEyWhCQ==
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Finn Thain <fthain@telegraphics.com.au>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "linux-ia64\@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [PATCH 11/13] timekeeping: remove xtime_update
-In-Reply-To: <CAK8P3a2hY+Vc3S32KKBJj7gUaUFQb4=rKsRJwCwhAbYP7CakzA@mail.gmail.com>
-References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-12-arnd@arndb.de> <CAMuHMdU7bn7rzG-0xzr4St1uArGoOhw6dy7HCkrHRvYqM38Wxg@mail.gmail.com> <CAK8P3a2hY+Vc3S32KKBJj7gUaUFQb4=rKsRJwCwhAbYP7CakzA@mail.gmail.com>
-Date:   Mon, 12 Oct 2020 22:44:36 +0200
-Message-ID: <87pn5np423.fsf@nanos.tec.linutronix.de>
+        with ESMTP id S1729273AbgJLVst (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 12 Oct 2020 17:48:49 -0400
+Received: from mail-pg1-x544.google.com (mail-pg1-x544.google.com [IPv6:2607:f8b0:4864:20::544])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C705C0613D0;
+        Mon, 12 Oct 2020 14:48:49 -0700 (PDT)
+Received: by mail-pg1-x544.google.com with SMTP id j7so4952122pgk.5;
+        Mon, 12 Oct 2020 14:48:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=5hpUBhYkynzWSO/MyOJOUvzRQxBbeKodFS5ENFGt1Cw=;
+        b=LTRLFCNLVioFU/DVKBPzF3b0xS54PVoSo7PO4zXv9Ign+qVU4TULsnKmBdI4qvOy/K
+         pwBGlElzg1R9+sWqnbQQXfVzpsrckEDujiqzp3mQtlJNPNMvZlN9zNpsLq3lxuKdfNa7
+         OARt4MdYOUqz02g0z/Esn5buWbAaAR/qSjB56C4pdvnmM29FFMFHiYPGDVD9hg8rGplG
+         YUJwD5EpvWwwHXwyvcTvLC8+n0zr8llmK02cgWznQ13JMUcw1SzhTnkjQxz1YaQklGHk
+         Nl95KEpncg+Ojoov5rNEx1o0L1HxPARbL9XvxVFhmLTI1ISROf0Fpys5Kua7ZrpF3ZRW
+         ax0A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=5hpUBhYkynzWSO/MyOJOUvzRQxBbeKodFS5ENFGt1Cw=;
+        b=NZnfnhy1uuOnKIHixSG+R45bSPikgKujDrXVkRFSb05BNpgQJwGxnfbYVo4zQLBl6e
+         LHUpIJ1WY1YARdg2KqZjPqwpgQYgRRt07VYQ2nRqQWIAWLQWV5r9yg7OngJx67NzR95V
+         /O6ZmWkY6xLR3jBNNByjHGlF41vR5YAmm2DMpRQtY20jzUFEcDLzOtPWYHP/9Wb9VeGa
+         tWY9+bLKyoqOH0kAbxXVuP3jvfgqqdBrfGA7tFO4/5Okv5ndFej4LHC3l6ajklFQnW1I
+         y5jJeNE+ZTV26y+/kZhBKf7cUiGZvMEe0NMeX4nbOWSZNWPjyGEUovwWhxXGwdQhnv4p
+         hrUA==
+X-Gm-Message-State: AOAM5313kDRcIQvykHMgLrHngHrlZGJ9ifdALyn+JxFedY4QIpPxcqbm
+        XKPRMxx7j6wtIJyPoIphu/I=
+X-Google-Smtp-Source: ABdhPJz5Lp2adF9xI3yV5LRvSTjct73bdnYZ9/vx/AS1+EGaAwshFUhsI9eDn+I6rbF84Pp9iczIxw==
+X-Received: by 2002:a17:90a:ec13:: with SMTP id l19mr22866654pjy.51.1602539328974;
+        Mon, 12 Oct 2020 14:48:48 -0700 (PDT)
+Received: from localhost.localdomain ([2405:201:a404:280a:90bd:7a49:dcda:1fb1])
+        by smtp.gmail.com with ESMTPSA id y80sm16836402pfb.144.2020.10.12.14.48.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Oct 2020 14:48:48 -0700 (PDT)
+Subject: Re: [PATCH v2 2/2] kbuild: use interpreters to invoke scripts
+To:     Bernd Petrovitsch <bernd@petrovitsch.priv.at>
+Cc:     Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        clang-built-linux@googlegroups.com,
+        linux-kernel-mentees@lists.linuxfoundation.org
+References: <20201012170631.1241502-1-ujjwalkumar0501@gmail.com>
+ <20201012170631.1241502-3-ujjwalkumar0501@gmail.com>
+ <alpine.DEB.2.21.2010122019410.17866@felia>
+ <b4fdc7c5-8edf-3895-69fc-1bcf9efb5d4a@gmail.com>
+ <53b7257e-b192-07da-9dd3-06497ce826f0@petrovitsch.priv.at>
+From:   Ujjwal Kumar <ujjwalkumar0501@gmail.com>
+Message-ID: <4969477f-8833-9b5e-6756-0d72fe59ef4d@gmail.com>
+Date:   Tue, 13 Oct 2020 03:18:39 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.3.1
 MIME-Version: 1.0
-Content-Type: text/plain
+In-Reply-To: <53b7257e-b192-07da-9dd3-06497ce826f0@petrovitsch.priv.at>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Oct 12 2020 at 15:37, Arnd Bergmann wrote:
-> On Mon, Oct 12, 2020 at 3:16 PM Geert Uytterhoeven <geert@linux-m68k.org> wrote:
->> On Thu, Oct 8, 2020 at 5:48 PM Arnd Bergmann <arnd@arndb.de> wrote:
->> The comment about xtime_update() in arch/ia64/kernel/time.c needs
->> an update.
->
-> I think the correct action for ia64 would be to make it a
-> proper clockevent driver with oneshot support, and remove
-> the rest of this logic.
+On 13/10/20 12:24 am, Bernd Petrovitsch wrote:
+> Hi all!
+> 
+>>>> diff --git a/arch/ia64/Makefile b/arch/ia64/Makefile
+>>>> index 703b1c4f6d12..86d42a2d09cb 100644
+>>>> --- a/arch/ia64/Makefile
+>>>> +++ b/arch/ia64/Makefile
+>>>> @@ -27,8 +27,8 @@ cflags-y	:= -pipe $(EXTRA) -ffixed-r13 -mfixed-range=f12-f15,f32-f127 \
+>>>>  		   -falign-functions=32 -frename-registers -fno-optimize-sibling-calls
+>>>>  KBUILD_CFLAGS_KERNEL := -mconstant-gp
+>>>>
+>>>> -GAS_STATUS	= $(shell $(srctree)/arch/ia64/scripts/check-gas "$(CC)" "$(OBJDUMP)")
+>>>> -KBUILD_CPPFLAGS += $(shell $(srctree)/arch/ia64/scripts/toolchain-flags "$(CC)" "$(OBJDUMP)" "$(READELF)")
+>>>> +GAS_STATUS	= $(shell $(CONFIG_SHELL) $(srctree)/arch/ia64/scripts/check-gas "$(CC)" "$(OBJDUMP)")
+>>>> +KBUILD_CPPFLAGS += $(shell $(CONFIG_SHELL) $(srctree)/arch/ia64/scripts/toolchain-flags "$(CC)" "$(OBJDUMP)" "$(READELF)")
+>>>
+>>> Here is an instance of what Masahiro-san pointed out being wrong.
+>>>
+>>> Ujjwal, will you send a v3?
+>>
+>> Following is the quoted text from the reply mail from Masahiro
+>>
+>>>> -GAS_STATUS     = $(shell $(srctree)/arch/ia64/scripts/check-gas "$(CC)" "$(OBJDUMP)")
+>>>> -KBUILD_CPPFLAGS += $(shell $(srctree)/arch/ia64/scripts/toolchain-flags "$(CC)" "$(OBJDUMP)" "$(READELF)")
+>>>> +GAS_STATUS     = $($(CONFIG_SHELL) $(srctree)/arch/ia64/scripts/check-gas "$(CC)" "$(OBJDUMP)")
+>>>> +KBUILD_CPPFLAGS += $($(CONFIG_SHELL) $(srctree)/arch/ia64/scripts/toolchain-flags "$(CC)" "$(OBJDUMP)" "$(READELF)")
+>>>
+>>>
+>>>
+>>> These changes look wrong to me.
+>>>
+>>> $($(CONFIG_SHELL)    ->  $(shell $(CONFIG_SHELL)
+>>>
+>>
+>> From the above text, I understand as follows:
+> 
+> Did you actually *test* that (expecially) these lines work
+> afterwards as good as before?
 
-Correct action would be to remove all of arch/ia64 :)
+Yes, I did check my changes. TBH, I spent a considerable
+amount of time in doing so (given that I'm new to the
+community). And I explicitly mentioned the ones I couldn't
+test in the cover letter.
 
-> I could try to rewrite the comment, but I tried not to touch that
-> part since I don't understand the logic behind it. Maybe the
-> ia64 maintainers can comment here why it even tries to skip
-> a timer tick. Is there a danger of ending up with the timer irq
-> permanently disabled if the timer_interrupt() function returns
-> with the itm register in the past, or is this simply about not having
-> too many interrupts in a row?
+But I'm afraid this particular change that Masahiro pointed
+must have been overlooked by me (and possibly by others
+involved in the process). Being the author of the patch I
+accept my mistake.
 
-There was a comment in the initial ia64 code:
+Because this construct was new to me I read about it
+thoroughly in the docs.
+As soon as it was pointed out to me, I at once realised
+that the change proposed by me was wrong (i didn't
+have to look at the docs).
 
-                * There is a race condition here: to be on the "safe"
-                * side, we process timer ticks until itm.next is
-                * ahead of the itc by at least half the timer
-                * interval.  This should give us enough time to set
-                * the new itm value without losing a timer tick.
+> 
+>> That my proposed change:
+>> $(shell $(src...)    ->  $($(CONFIG_SHELL) $(src...)
+>>
+>> is WRONG
+> 
+> Yup, as it's in a Makefile and that's a Makefile construct> 
+>> and in the next line he suggested the required correction.
+>> That being:
+>> $($(CONFIG_SHELL)    ->  $(shell $(CONFIG_SHELL)
+> 
+> Such stuff should generally not be needed as the to-be-used
+> shell can be set in Makefiles via a "SHELL = " assignment
 
-The ITM (Interval Timer Match) register is raising an interrupt when the
-ITM value matches the ITC (Interval Timer Counter) register. If the new
-counter is already past the match then the timer interrupt will happen
-once ITC wrapped around and reaches the match value again. Might take
-ages for a 64bit counter to do that. :)
+It's not about setting shell but rather using it at required
+place. The 'shell function' is meant to execute provided 
+commands in an environment outside of make; and executing
+commands in that environment is somewhat similar to running
+commands on a terminal.
+Invoking a script file without setting the x bits will give
+a permission denied error.
+Similar thing happens when 'shell function' tries to invoke
+the provided script. So the task was simply to prepend the
+$CONFIG_SHELL (or $SHELL whichever is configured; simple sh
+would also suffice) with the script file in 'shell function'.
 
-IIRC, PXA had the same problem and HPET definitely has it as well. Seems
-Intel patented the concept of broken timers, but at least they listened
-when they proposed to implement the TSC deadline timer on x86 in the
-exact same way.
+> (defaulting to /bin/sh - what else;-).
+> Flags for the shell can BTW set with ".SHELLFLAGS = ".
 
-See hpet_clkevt_set_next_event() for the gory details how to handle that
-correctly.
+setting flags might not be the solution either.
 
-Thanks,
+> 
+> So please
+> -) learn basic "Makefile" + "make" before brainlessly patching
+>    a Makefile.
+> -) actually testy your changes to make sure the patch didn't
+>    broke anything
+> -) and - last but not least - check if there isn't a shell
+>    already set (and which).
 
-        tglx
+btw, I do agree with your points.
+
+> 
+> MfG,
+> 	Bernd
+> 
+
+If I said anything incorrect please correct me.
+
+
+Thanks
+Ujjwal Kumar
