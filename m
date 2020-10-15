@@ -2,174 +2,155 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2180128D208
-	for <lists+linux-ia64@lfdr.de>; Tue, 13 Oct 2020 18:18:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BFDF28E9C6
+	for <lists+linux-ia64@lfdr.de>; Thu, 15 Oct 2020 03:19:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2389433AbgJMQSD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 13 Oct 2020 12:18:03 -0400
-Received: from conssluserg-06.nifty.com ([210.131.2.91]:21313 "EHLO
-        conssluserg-06.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S2389429AbgJMQSD (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 13 Oct 2020 12:18:03 -0400
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178]) (authenticated)
-        by conssluserg-06.nifty.com with ESMTP id 09DGHa36006473;
-        Wed, 14 Oct 2020 01:17:36 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 09DGHa36006473
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1602605857;
-        bh=PTNol6ZKZ6WikiQS1iwVWRfK1eVWXWR50IMrdlrgv8M=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=q7/RJVmC0Rm2kzu4LxJqza6MaZHKRJgBPSgg2aZOe+OkSkgURy9o9u2QyfUqYw85Z
-         lsEIBoK9SCxjmuz1dorQtiSLg6LRYBgf4TW0QkEi67tltKA31tBkkoo3xOWZcd3M5M
-         V+g8EYvhGkW++rbWQzPruAO5zLvCSUnSnzODvuboM885IU5F8khmy6b1dnrywrzGrd
-         7z2lU2frrVbEM1nW6eeszBtPmeD5l2XJ6+1kpqn8LOwZyfSnl2m1Smr43Yi1tbAIyn
-         J0btJWgtd3Sn1vLG0yoUtj+Wa22s9A5EnROF5GQi0QZyD1+VwiJV0yqL8d+94Cn30u
-         S2tqpE1EYlA2Q==
-X-Nifty-SrcIP: [209.85.215.178]
-Received: by mail-pg1-f178.google.com with SMTP id x16so17882456pgj.3;
-        Tue, 13 Oct 2020 09:17:36 -0700 (PDT)
-X-Gm-Message-State: AOAM532WH6opO6P4+foHCAe2UjSQRMA9vPHLQb3oQc+/JhbsND+Ot/MR
-        jMezjliZYjUmi3llOk5T7D8VDg1HukUyPN2Wr2Y=
-X-Google-Smtp-Source: ABdhPJzoZHD68/Bv80yh/fLdH9j83UlF0155g7tzFH3hJt8WHYLx/UCm8PIQzsWZMa1AG2H0V0LitxpCakYhO3exLY4=
-X-Received: by 2002:aa7:90cf:0:b029:156:2bff:5a87 with SMTP id
- k15-20020aa790cf0000b02901562bff5a87mr429693pfk.63.1602605855902; Tue, 13 Oct
- 2020 09:17:35 -0700 (PDT)
-MIME-Version: 1.0
-References: <20201012170631.1241502-1-ujjwalkumar0501@gmail.com> <20201012170631.1241502-2-ujjwalkumar0501@gmail.com>
-In-Reply-To: <20201012170631.1241502-2-ujjwalkumar0501@gmail.com>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Wed, 14 Oct 2020 01:16:59 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAQUXwH0KoNNQo9F1UCkkah2S1gJZKJFB1+91M3ZGSHQSQ@mail.gmail.com>
-Message-ID: <CAK7LNAQUXwH0KoNNQo9F1UCkkah2S1gJZKJFB1+91M3ZGSHQSQ@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] kconfig: use interpreters to invoke scripts
-To:     Ujjwal Kumar <ujjwalkumar0501@gmail.com>
-Cc:     Michal Marek <michal.lkml@markovi.net>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Kees Cook <keescook@chromium.org>,
-        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        id S2387802AbgJOBTC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 14 Oct 2020 21:19:02 -0400
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:51716 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S2387621AbgJOBTB (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 14 Oct 2020 21:19:01 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 902C22ACDE;
+        Wed, 14 Oct 2020 21:18:55 -0400 (EDT)
+Date:   Thu, 15 Oct 2020 12:18:57 +1100 (AEDT)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Arnd Bergmann <arnd@arndb.de>
+cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Philip Blundell <philb@gnu.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Sam Creasey <sammy@sammy.net>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
         linux-ia64@vger.kernel.org,
-        clang-built-linux <clang-built-linux@googlegroups.com>,
-        linux-kernel-mentees@lists.linuxfoundation.org
-Content-Type: text/plain; charset="UTF-8"
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [RFC 13/13] m68k: mac: convert to generic clockevent
+In-Reply-To: <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com>
+Message-ID: <alpine.LNX.2.23.453.2010150937430.16@nippy.intranet>
+References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-14-arnd@arndb.de> <alpine.LNX.2.23.453.2010091900150.12@nippy.intranet> <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Oct 13, 2020 at 2:08 AM Ujjwal Kumar <ujjwalkumar0501@gmail.com> wrote:
->
-> We cannot rely on execute bits to be set on files in the repository.
-> The build script should use the explicit interpreter when invoking any
-> script from the repository.
->
-> Link: https://lore.kernel.org/lkml/20200830174409.c24c3f67addcce0cea9a9d4c@linux-foundation.org/
-> Link: https://lore.kernel.org/lkml/202008271102.FEB906C88@keescook/
->
-> Suggested-by: Andrew Morton <akpm@linux-foundation.org>
-> Suggested-by: Kees Cook <keescook@chromium.org>
-> Suggested-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-> Signed-off-by: Ujjwal Kumar <ujjwalkumar0501@gmail.com>
-> ---
+On Sat, 10 Oct 2020, Arnd Bergmann wrote:
 
+> > Perhaps patch 13 does not belong in this series (?).
+> >
+> > All m68k platforms will need conversion before the TODO can be removed 
+> > from Documentation/features/time/clockevents/arch-support.txt.
+> 
+> Yes, correct. I marked this patch as RFC instead of PATCH, as I'm just 
+> trying to find out where it should be headed. I would hope the other 
+> patches can just get merged.
+> 
 
+I wonder whether we can improve support for your proposed configuration 
+i.e. a system with no oneshot clockevent device.
 
-The patch prefix 'kconfig:' should be used for changes
-under scripts/kconfig/.
+The 16 platforms you identified are not all in that category but I suspect 
+that there are others which are (though they don't appear in this series 
+because they already use GENERIC_CLOCKEVENTS).
 
+One useful optimization would be some way to elide oneshot clockevent 
+support (perhaps with the help of Link Time Optimization).
 
-I want to see both prefixed with "kbuild:".
+> > On m68k, HZ is fixed at 100. Without addressing that, would there be 
+> > any benefit from adopting GENERIC_CLOCKEVENTS as per this RFC patch?
+> 
+> I don't think so, I mainly did it to see if there is a problem with 
+> mixing the two modes, and I couldn't find any. The behavior seems 
+> unchanged before and after my patch, the main difference being a few 
+> extra kilobytes in kernel .text for the generic clockevents code.
+> 
 
-1/2:   kbuild: use interpreters in Kconfig files to invoke scripts
-2/2:   kbuild: use interpreters in Makefiles to invoke scripts
+I think that is a good reason to convert all m68k platforms at once and to 
+elide some of the dead code.
 
+> > On Thu, 8 Oct 2020, Arnd Bergmann wrote:
+> >
+> > > Now that the infrastructure allows kernels to have both legacy timer 
+> > > ticks and clockevent drivers in the same image, start by moving one 
+> > > platform to generic clockevents.
+> > >
+> > > As qemu only supports the q800 platform among the classic m68k, use 
+> > > that as an example.
+> > >
+> >
+> > Correct VIA emulation is suprisingly difficult, so this kind of work 
+> > should be tested on real hardware.
+> >
+> > I say that because when I did the clocksource conversion for m68k I 
+> > ran into a bug in QEMU (since fixed) and also because I once worked on 
+> > some of the bugs in the emulated VIA device used in MAME/MESS.
+> 
+> Good point, though I would be surprised if anything went wrong with this 
+> patch on real hardware but not in emulation, as all the register-level 
+> interactions with the timer are the same.
+> 
 
-More preferably, those two patches should be squashed into a
-single patch titled "kbuild: use interpreters to invoke scripts"
+On the subject of register accesses, via1[ACR] is shared with ADB drivers, 
+so this patch probably has to protect those accesses with 
+local_irq_save/restore or local_irq_disable/enable. (I can't be sure of 
+the contexts in which .set_state_shutdown and .set_state_periodic methods 
+are called.)
 
+> Adding oneshot mode is a completely different matter though, that 
+> clearly needs to be tested on real hardware.
+> 
 
+Right, and many emulators trade-off timing accuracy for performance which 
+makes them unsuitable for testing invasive changes of that sort.
 
-BTW, I notice some code left unconverted.
+> > > I also tried adding oneshot mode, which was successful but broke the 
+> > > clocksource. It's probably not hard to make it work properly, but 
+> > > this is where I've stopped.
+> > >
+> >
+> > I'm not so sure that one timer is able to support both a clocksource 
+> > driver and a clockevent driver. In some cases we may have to drop the 
+> > clocksource driver (i.e. fall back on the jiffies clocksource).
+> >
+> > Anyway, even on Macs with only one VIA chip we still have two timers. 
+> > So I think we should try to use Timer 1 as a freerunning clocksource 
+> > and Timer 2 as a oneshot clock event. This may result in better 
+> > accuracy and simpler code. This may require some experimentation 
+> > though.
+> 
+> Ah, good. This is partly what I had been hoping for, as my patch can be 
+> used as a starting point for that if you want to give it a go.
+> 
 
-For example,
-https://github.com/torvalds/linux/blob/master/init/Kconfig#L68
-https://github.com/torvalds/linux/blob/v5.9/certs/Makefile#L25
+After looking at the chip documentation I don't think it's viable to use 
+the hardware timers in the way I proposed. A VIA register access requires 
+at least one full VIA clock cycle (about 1.3 us) which means register 
+accesses themselves cause timing delays. They also make clocksource reads 
+expensive.
 
-Maybe more...
+I think this rules out oneshot clockevent devices because if the system 
+offered such a device it would preferentially get used as a tick device.
 
+So I think your approach (periodic clockevent device driven by the 
+existing periodic tick interrupt) is best for this platform due to 
+simplicity (not much code) and performance (good accuracy, no additional 
+overhead).
 
+I suspect the same approach would work equally well on other platforms too 
+(even though they are probably be capable of oneshot clockevent devices).
 
-I know it is difficult to cover everything, but please
-re-check the remaining code.
-
-
-
-
-
-
-
->  init/Kconfig | 16 ++++++++--------
->  1 file changed, 8 insertions(+), 8 deletions(-)
->
-> diff --git a/init/Kconfig b/init/Kconfig
-> index c9446911cf41..8adf3194d26f 100644
-> --- a/init/Kconfig
-> +++ b/init/Kconfig
-> @@ -30,12 +30,12 @@ config CC_IS_GCC
->
->  config GCC_VERSION
->         int
-> -       default $(shell,$(srctree)/scripts/gcc-version.sh $(CC)) if CC_IS_GCC
-> +       default $(shell,$(CONFIG_SHELL) $(srctree)/scripts/gcc-version.sh $(CC)) if CC_IS_GCC
->         default 0
->
->  config LD_VERSION
->         int
-> -       default $(shell,$(LD) --version | $(srctree)/scripts/ld-version.sh)
-> +       default $(shell,$(LD) --version | $(AWK) -f $(srctree)/scripts/ld-version.sh)
->
->  config CC_IS_CLANG
->         def_bool $(success,echo "$(CC_VERSION_TEXT)" | grep -q clang)
-> @@ -45,20 +45,20 @@ config LD_IS_LLD
->
->  config CLANG_VERSION
->         int
-> -       default $(shell,$(srctree)/scripts/clang-version.sh $(CC))
-> +       default $(shell,$(CONFIG_SHELL) $(srctree)/scripts/clang-version.sh $(CC))
->
->  config CC_CAN_LINK
->         bool
-> -       default $(success,$(srctree)/scripts/cc-can-link.sh $(CC) $(CLANG_FLAGS) $(m64-flag)) if 64BIT
-> -       default $(success,$(srctree)/scripts/cc-can-link.sh $(CC) $(CLANG_FLAGS) $(m32-flag))
-> +       default $(success,$(CONFIG_SHELL) $(srctree)/scripts/cc-can-link.sh $(CC) $(CLANG_FLAGS) $(m64-flag)) if 64BIT
-> +       default $(success,$(CONFIG_SHELL) $(srctree)/scripts/cc-can-link.sh $(CC) $(CLANG_FLAGS) $(m32-flag))
->
->  config CC_CAN_LINK_STATIC
->         bool
-> -       default $(success,$(srctree)/scripts/cc-can-link.sh $(CC) $(CLANG_FLAGS) $(m64-flag) -static) if 64BIT
-> -       default $(success,$(srctree)/scripts/cc-can-link.sh $(CC) $(CLANG_FLAGS) $(m32-flag) -static)
-> +       default $(success,$(CONFIG_SHELL) $(srctree)/scripts/cc-can-link.sh $(CC) $(CLANG_FLAGS) $(m64-flag) -static) if 64BIT
-> +       default $(success,$(CONFIG_SHELL) $(srctree)/scripts/cc-can-link.sh $(CC) $(CLANG_FLAGS) $(m32-flag) -static)
->
->  config CC_HAS_ASM_GOTO
-> -       def_bool $(success,$(srctree)/scripts/gcc-goto.sh $(CC))
-> +       def_bool $(success,$(CONFIG_SHELL) $(srctree)/scripts/gcc-goto.sh $(CC))
->
->  config CC_HAS_ASM_GOTO_OUTPUT
->         depends on CC_HAS_ASM_GOTO
-> --
-> 2.25.1
->
-> --
-> You received this message because you are subscribed to the Google Groups "Clang Built Linux" group.
-> To unsubscribe from this group and stop receiving emails from it, send an email to clang-built-linux+unsubscribe@googlegroups.com.
-> To view this discussion on the web visit https://groups.google.com/d/msgid/clang-built-linux/20201012170631.1241502-2-ujjwalkumar0501%40gmail.com.
-
-
-
--- 
-Best Regards
-Masahiro Yamada
+>      Arnd
+> 
