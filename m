@@ -2,38 +2,38 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 23B1C299C28
-	for <lists+linux-ia64@lfdr.de>; Tue, 27 Oct 2020 00:56:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BBC6D299FEA
+	for <lists+linux-ia64@lfdr.de>; Tue, 27 Oct 2020 01:26:42 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2411042AbgJZX4I (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 26 Oct 2020 19:56:08 -0400
-Received: from mail.kernel.org ([198.145.29.99]:34892 "EHLO mail.kernel.org"
+        id S2442411AbgJ0A0T (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 26 Oct 2020 20:26:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56950 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2404516AbgJZXzy (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 26 Oct 2020 19:55:54 -0400
+        id S2409422AbgJZXxI (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 26 Oct 2020 19:53:08 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2F11321D7B;
-        Mon, 26 Oct 2020 23:55:53 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id AADF32222C;
+        Mon, 26 Oct 2020 23:53:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603756553;
-        bh=b0aSR3s+f7POOM80evIJLhUdfl2lkDPiYgyYitdmhcY=;
+        s=default; t=1603756387;
+        bh=OceeY6QE41vNN3LO6sLR3LfqQEOrKWi7nX8CZOQFmuk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OFSngjRALLWk81PIWJ8e/AKQTpxI2CsFm7VrCuHg8Vc9jLABsSb6eToNg6WzcPQ26
-         gXlj0pEyHSBUrP64zV1ygIxfW7Xs63w1LFAAacPeEgNxXK1e++NovMdVy958f1AUHN
-         5Fga8XJEKOKAUjzgHqEZGxP3H2RwrQA1hw8vz7r8=
+        b=ZXdfn2rmtHI90AuOBuFUUyzMFl4CHR3pLj5ZmDrpyNe976+cigtk76VhUMkX0INjq
+         YDSJJHVn/x8Q9hKoTUc+U6UPNg3PHly7Hk7O7OAn/ICWCoOz1D3GjbwntTBZTtHxZM
+         9JiEM6g9cDfCbzKD4GVsibZb+1vCGnWO7LYR4E6Q=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
         Ingo Molnar <mingo@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 30/80] ia64: kprobes: Use generic kretprobe trampoline handler
-Date:   Mon, 26 Oct 2020 19:54:26 -0400
-Message-Id: <20201026235516.1025100-30-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.8 050/132] ia64: kprobes: Use generic kretprobe trampoline handler
+Date:   Mon, 26 Oct 2020 19:50:42 -0400
+Message-Id: <20201026235205.1023962-50-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201026235516.1025100-1-sashal@kernel.org>
-References: <20201026235516.1025100-1-sashal@kernel.org>
+In-Reply-To: <20201026235205.1023962-1-sashal@kernel.org>
+References: <20201026235205.1023962-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -58,7 +58,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 75 deletions(-)
 
 diff --git a/arch/ia64/kernel/kprobes.c b/arch/ia64/kernel/kprobes.c
-index b8356edbde659..b3dc39050c1ad 100644
+index 7a7df944d7986..fc1ff8a4d7de6 100644
 --- a/arch/ia64/kernel/kprobes.c
 +++ b/arch/ia64/kernel/kprobes.c
 @@ -396,83 +396,9 @@ static void kretprobe_trampoline(void)
