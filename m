@@ -2,38 +2,38 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F3A9299F21
-	for <lists+linux-ia64@lfdr.de>; Tue, 27 Oct 2020 01:21:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F37A29A1CA
+	for <lists+linux-ia64@lfdr.de>; Tue, 27 Oct 2020 01:49:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2438645AbgJ0AFp (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 26 Oct 2020 20:05:45 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53612 "EHLO mail.kernel.org"
+        id S2409124AbgJ0AoD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 26 Oct 2020 20:44:03 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49558 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2437745AbgJ0AEq (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 26 Oct 2020 20:04:46 -0400
+        id S2409073AbgJZXuR (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 26 Oct 2020 19:50:17 -0400
 Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 0091321707;
-        Tue, 27 Oct 2020 00:04:45 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id 6693A20878;
+        Mon, 26 Oct 2020 23:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603757086;
-        bh=gfvhf4cXfm1kfoCV7H8bBKlJtQofh/7DqlLNEQRLPXI=;
+        s=default; t=1603756217;
+        bh=OceeY6QE41vNN3LO6sLR3LfqQEOrKWi7nX8CZOQFmuk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mVRtfM8hUuzLcERLvLuBkq4+R7Bwv1/+JxPaqmXylucURyQoWf3PTRh9p6T/aihw9
-         SaayicOJC8tw6II/HpoiZSD9/B+uKOCrCuBGh5rZwifAIj87m0I2+qLVsjDrhpJrnn
-         pe9t+cvJuITpZ0hlvSur7QkvD1zlPsuWolU8zR7o=
+        b=PTDR2zEaXDTaIt4iufvltZ5Z12q1w4HL6FgSPzfRmJJsTAQg20xQ8mjXkDEHMi73A
+         xwwV9MBTBjtZXrH4EgZVnp6Cxy0Yrr8/ftfghZTnuB/7xe5xkchdO35eNeCFgpCgB3
+         sbJ3bZzWkt1+5RJ2iEOfIL/Tevm4+sZPcnmrprig=
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
         Ingo Molnar <mingo@kernel.org>,
         Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 25/60] ia64: kprobes: Use generic kretprobe trampoline handler
-Date:   Mon, 26 Oct 2020 20:03:40 -0400
-Message-Id: <20201027000415.1026364-25-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.9 057/147] ia64: kprobes: Use generic kretprobe trampoline handler
+Date:   Mon, 26 Oct 2020 19:47:35 -0400
+Message-Id: <20201026234905.1022767-57-sashal@kernel.org>
 X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201027000415.1026364-1-sashal@kernel.org>
-References: <20201027000415.1026364-1-sashal@kernel.org>
+In-Reply-To: <20201026234905.1022767-1-sashal@kernel.org>
+References: <20201026234905.1022767-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -58,10 +58,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 2 insertions(+), 75 deletions(-)
 
 diff --git a/arch/ia64/kernel/kprobes.c b/arch/ia64/kernel/kprobes.c
-index aa41bd5cf9b77..8207b897b49dd 100644
+index 7a7df944d7986..fc1ff8a4d7de6 100644
 --- a/arch/ia64/kernel/kprobes.c
 +++ b/arch/ia64/kernel/kprobes.c
-@@ -409,83 +409,9 @@ static void kretprobe_trampoline(void)
+@@ -396,83 +396,9 @@ static void kretprobe_trampoline(void)
  {
  }
  
@@ -146,7 +146,7 @@ index aa41bd5cf9b77..8207b897b49dd 100644
  	/*
  	 * By returning a non-zero value, we are telling
  	 * kprobe_handler() that we don't want the post_handler
-@@ -498,6 +424,7 @@ void __kprobes arch_prepare_kretprobe(struct kretprobe_instance *ri,
+@@ -485,6 +411,7 @@ void __kprobes arch_prepare_kretprobe(struct kretprobe_instance *ri,
  				      struct pt_regs *regs)
  {
  	ri->ret_addr = (kprobe_opcode_t *)regs->b0;
