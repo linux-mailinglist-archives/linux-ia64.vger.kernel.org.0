@@ -2,158 +2,142 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F37A29A1CA
-	for <lists+linux-ia64@lfdr.de>; Tue, 27 Oct 2020 01:49:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 886FC29AAA4
+	for <lists+linux-ia64@lfdr.de>; Tue, 27 Oct 2020 12:30:08 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2409124AbgJ0AoD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 26 Oct 2020 20:44:03 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49558 "EHLO mail.kernel.org"
+        id S1749960AbgJ0LaH (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 27 Oct 2020 07:30:07 -0400
+Received: from mail.kernel.org ([198.145.29.99]:45136 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2409073AbgJZXuR (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 26 Oct 2020 19:50:17 -0400
-Received: from sasha-vm.mshome.net (c-73-47-72-35.hsd1.nh.comcast.net [73.47.72.35])
+        id S2438783AbgJ0LaH (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 27 Oct 2020 07:30:07 -0400
+Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
         (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
         (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 6693A20878;
-        Mon, 26 Oct 2020 23:50:16 +0000 (UTC)
+        by mail.kernel.org (Postfix) with ESMTPSA id BFD8B2072D;
+        Tue, 27 Oct 2020 11:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603756217;
-        bh=OceeY6QE41vNN3LO6sLR3LfqQEOrKWi7nX8CZOQFmuk=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PTDR2zEaXDTaIt4iufvltZ5Z12q1w4HL6FgSPzfRmJJsTAQg20xQ8mjXkDEHMi73A
-         xwwV9MBTBjtZXrH4EgZVnp6Cxy0Yrr8/ftfghZTnuB/7xe5xkchdO35eNeCFgpCgB3
-         sbJ3bZzWkt1+5RJ2iEOfIL/Tevm4+sZPcnmrprig=
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.9 057/147] ia64: kprobes: Use generic kretprobe trampoline handler
-Date:   Mon, 26 Oct 2020 19:47:35 -0400
-Message-Id: <20201026234905.1022767-57-sashal@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20201026234905.1022767-1-sashal@kernel.org>
-References: <20201026234905.1022767-1-sashal@kernel.org>
+        s=default; t=1603798206;
+        bh=D+57eBxZmqbGtpUmyagmHDBw1nHF2DKjanAqVX/AUkU=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Q9RaU3X/IJD/4dR3n3h9Ry46q2+Cd8ehNOxEB9JeoN0lGPicebs+j0qlAtlVAlW8F
+         F0vBvYTqv4GdHlkIa6G/HY/NJCiv0uBzWYkm4yxUz82hTQedsGnDaIAnFDeQrWUA7f
+         J4FEjdA0fGYuRF4Pc52GN10CIYKMe57/A5m9zfC0=
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Matt Turner <mattst88@gmail.com>, Meelis Roos <mroos@linux.ee>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Luck <tony.luck@intel.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mm@kvack.org, linux-snps-arc@lists.infradead.org
+Subject: [PATCH 00/13] arch, mm: deprecate DISCONTIGMEM
+Date:   Tue, 27 Oct 2020 13:29:42 +0200
+Message-Id: <20201027112955.14157-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Masami Hiramatsu <mhiramat@kernel.org>
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-[ Upstream commit e792ff804f49720ce003b3e4c618b5d996256a18 ]
+Hi,
 
-Use the generic kretprobe trampoline handler. Don't use
-framepointer verification.
+It's been a while since DISCONTIGMEM is generally considered deprecated,
+but it is still used by four architectures. This set replaces DISCONTIGMEM
+with a different way to handle holes in the memory map and marks
+DISCONTIGMEM configuration as BROKEN in Kconfigs of these architectures with
+the intention to completely remove it in several releases.
 
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://lore.kernel.org/r/159870606883.1229682.12331813108378725668.stgit@devnote2
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/ia64/kernel/kprobes.c | 77 +-------------------------------------
- 1 file changed, 2 insertions(+), 75 deletions(-)
+While for 64-bit alpha and ia64 the switch to SPARSEMEM is quite obvious
+and was a matter of moving some bits around, for smaller 32-bit arc and
+m68k SPARSEMEM is not necessarily the best thing to do.
 
-diff --git a/arch/ia64/kernel/kprobes.c b/arch/ia64/kernel/kprobes.c
-index 7a7df944d7986..fc1ff8a4d7de6 100644
---- a/arch/ia64/kernel/kprobes.c
-+++ b/arch/ia64/kernel/kprobes.c
-@@ -396,83 +396,9 @@ static void kretprobe_trampoline(void)
- {
- }
- 
--/*
-- * At this point the target function has been tricked into
-- * returning into our trampoline.  Lookup the associated instance
-- * and then:
-- *    - call the handler function
-- *    - cleanup by marking the instance as unused
-- *    - long jump back to the original return address
-- */
- int __kprobes trampoline_probe_handler(struct kprobe *p, struct pt_regs *regs)
- {
--	struct kretprobe_instance *ri = NULL;
--	struct hlist_head *head, empty_rp;
--	struct hlist_node *tmp;
--	unsigned long flags, orig_ret_address = 0;
--	unsigned long trampoline_address =
--		((struct fnptr *)kretprobe_trampoline)->ip;
--
--	INIT_HLIST_HEAD(&empty_rp);
--	kretprobe_hash_lock(current, &head, &flags);
--
--	/*
--	 * It is possible to have multiple instances associated with a given
--	 * task either because an multiple functions in the call path
--	 * have a return probe installed on them, and/or more than one return
--	 * return probe was registered for a target function.
--	 *
--	 * We can handle this because:
--	 *     - instances are always inserted at the head of the list
--	 *     - when multiple return probes are registered for the same
--	 *       function, the first instance's ret_addr will point to the
--	 *       real return address, and all the rest will point to
--	 *       kretprobe_trampoline
--	 */
--	hlist_for_each_entry_safe(ri, tmp, head, hlist) {
--		if (ri->task != current)
--			/* another task is sharing our hash bucket */
--			continue;
--
--		orig_ret_address = (unsigned long)ri->ret_addr;
--		if (orig_ret_address != trampoline_address)
--			/*
--			 * This is the real return address. Any other
--			 * instances associated with this task are for
--			 * other calls deeper on the call stack
--			 */
--			break;
--	}
--
--	regs->cr_iip = orig_ret_address;
--
--	hlist_for_each_entry_safe(ri, tmp, head, hlist) {
--		if (ri->task != current)
--			/* another task is sharing our hash bucket */
--			continue;
--
--		if (ri->rp && ri->rp->handler)
--			ri->rp->handler(ri, regs);
--
--		orig_ret_address = (unsigned long)ri->ret_addr;
--		recycle_rp_inst(ri, &empty_rp);
--
--		if (orig_ret_address != trampoline_address)
--			/*
--			 * This is the real return address. Any other
--			 * instances associated with this task are for
--			 * other calls deeper on the call stack
--			 */
--			break;
--	}
--	kretprobe_assert(ri, orig_ret_address, trampoline_address);
--
--	kretprobe_hash_unlock(current, &flags);
--
--	hlist_for_each_entry_safe(ri, tmp, &empty_rp, hlist) {
--		hlist_del(&ri->hlist);
--		kfree(ri);
--	}
-+	regs->cr_iip = __kretprobe_trampoline_handler(regs, kretprobe_trampoline, NULL);
- 	/*
- 	 * By returning a non-zero value, we are telling
- 	 * kprobe_handler() that we don't want the post_handler
-@@ -485,6 +411,7 @@ void __kprobes arch_prepare_kretprobe(struct kretprobe_instance *ri,
- 				      struct pt_regs *regs)
- {
- 	ri->ret_addr = (kprobe_opcode_t *)regs->b0;
-+	ri->fp = NULL;
- 
- 	/* Replace the return addr with trampoline addr */
- 	regs->b0 = ((struct fnptr *)kretprobe_trampoline)->ip;
+On 32-bit machines SPARSEMEM would require large sections to make section
+index fit in the page flags, but larger sections mean that more memory is
+wasted for unused memory map.
+
+Besides, pfn_to_page() and page_to_pfn() become less efficient, at least on
+arc.
+
+So I've decided to generalize arm's approach for freeing of unused parts of
+the memory map with FLATMEM and enable it for both arc and m68k. The
+details are in the description of patches 10 (arc) and 13 (m68k).
+
+Mike Rapoport (13):
+  alpha: switch from DISCONTIGMEM to SPARSEMEM
+  ia64: remove custom __early_pfn_to_nid()
+  ia64: remove 'ifdef CONFIG_ZONE_DMA32' statements
+  ia64: discontig: paging_init(): remove local max_pfn calculation
+  ia64: split virtual map initialization out of paging_init()
+  ia64: forbid using VIRTUAL_MEM_MAP with FLATMEM
+  ia64: make SPARSEMEM default and disable DISCONTIGMEM
+  arm: remove CONFIG_ARCH_HAS_HOLES_MEMORYMODEL
+  arm, arm64: move free_unused_memmap() to generic mm
+  arc: use FLATMEM with freeing of unused memory map instead of DISCONTIGMEM
+  m68k/mm: make node data and node setup depend on CONFIG_DISCONTIGMEM
+  m68k/mm: enable use of generic memory_model.h for !DISCONTIGMEM
+  m68k: deprecate DISCONTIGMEM
+
+ Documentation/vm/memory-model.rst   |  3 +-
+ arch/Kconfig                        |  3 ++
+ arch/alpha/Kconfig                  |  8 +++
+ arch/alpha/include/asm/mmzone.h     | 14 +----
+ arch/alpha/include/asm/page.h       |  7 +--
+ arch/alpha/include/asm/pgtable.h    | 12 ++---
+ arch/alpha/include/asm/sparsemem.h  | 18 +++++++
+ arch/alpha/kernel/setup.c           |  1 +
+ arch/arc/Kconfig                    |  3 +-
+ arch/arc/include/asm/page.h         | 20 ++++++--
+ arch/arc/mm/init.c                  | 29 ++++++++---
+ arch/arm/Kconfig                    | 10 +---
+ arch/arm/mach-bcm/Kconfig           |  1 -
+ arch/arm/mach-davinci/Kconfig       |  1 -
+ arch/arm/mach-exynos/Kconfig        |  1 -
+ arch/arm/mach-highbank/Kconfig      |  1 -
+ arch/arm/mach-omap2/Kconfig         |  1 -
+ arch/arm/mach-s5pv210/Kconfig       |  1 -
+ arch/arm/mach-tango/Kconfig         |  1 -
+ arch/arm/mm/init.c                  | 78 ----------------------------
+ arch/arm64/Kconfig                  |  4 +-
+ arch/arm64/mm/init.c                | 68 ------------------------
+ arch/ia64/Kconfig                   | 11 ++--
+ arch/ia64/include/asm/meminit.h     |  2 -
+ arch/ia64/mm/contig.c               | 58 ++++++++++-----------
+ arch/ia64/mm/discontig.c            | 44 ++++++++--------
+ arch/ia64/mm/init.c                 | 14 -----
+ arch/ia64/mm/numa.c                 | 30 -----------
+ arch/m68k/Kconfig.cpu               | 32 ++++++++++--
+ arch/m68k/include/asm/page.h        |  2 +
+ arch/m68k/include/asm/page_mm.h     |  7 ++-
+ arch/m68k/include/asm/virtconvert.h |  2 +-
+ arch/m68k/mm/init.c                 |  8 +--
+ fs/proc/kcore.c                     |  2 -
+ include/linux/mm.h                  |  3 --
+ include/linux/mmzone.h              | 42 ---------------
+ mm/memblock.c                       | 80 +++++++++++++++++++++++++++++
+ mm/mmzone.c                         | 14 -----
+ mm/page_alloc.c                     | 16 ++++--
+ mm/vmstat.c                         |  4 --
+ 40 files changed, 272 insertions(+), 384 deletions(-)
+ create mode 100644 arch/alpha/include/asm/sparsemem.h
+
+
+base-commit: 3650b228f83adda7e5ee532e2b90429c03f7b9ec
 -- 
-2.25.1
+2.28.0
 
