@@ -2,140 +2,164 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5864629AAD5
-	for <lists+linux-ia64@lfdr.de>; Tue, 27 Oct 2020 12:31:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DDCA29D7B4
+	for <lists+linux-ia64@lfdr.de>; Wed, 28 Oct 2020 23:28:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1749975AbgJ0Lbg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 27 Oct 2020 07:31:36 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46842 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S2899178AbgJ0Lbf (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 27 Oct 2020 07:31:35 -0400
-Received: from aquarius.haifa.ibm.com (nesher1.haifa.il.ibm.com [195.110.40.7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 78A2622283;
-        Tue, 27 Oct 2020 11:31:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1603798294;
-        bh=Chq+OW8jPYeS0x1/w/NuhbNqJg7T410wGKW7Vwcmmh0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AC/jQYaY123wRTdPEyISNQSkrk6fK6qDgIgZMnbaYj/xrL1krmjOm1LUo+gXLR4O/
-         tvpoLxCRFDQgp+0/HxwTDihCaFuJJPQpjNci9DHja12IL0KC4fU5Ba+WHbgEJL1Jgn
-         IrewywqVQYbPHxnQr4exw1rwLPXvUWiSB9GpQpzY=
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
+        id S1733059AbgJ1W0L (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 28 Oct 2020 18:26:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55020 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1732948AbgJ1W0L (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 28 Oct 2020 18:26:11 -0400
+Received: from mail-oi1-x244.google.com (mail-oi1-x244.google.com [IPv6:2607:f8b0:4864:20::244])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4AB0C0613CF;
+        Wed, 28 Oct 2020 15:26:10 -0700 (PDT)
+Received: by mail-oi1-x244.google.com with SMTP id y186so1247048oia.3;
+        Wed, 28 Oct 2020 15:26:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-transfer-encoding:content-language;
+        bh=s9cgYbyfQqq5UrYB+51r7q1mjBjejxSSOe4Pf+0dXSc=;
+        b=rXNAYzp0HeMoYo9Rs2j7a7wVExN8Iyb5gKJa3ilnzOfGHJwcd+RFugTbbv4YUD3Mnj
+         2VUO9dlRzbWeNmhZQWRmIldeVTDDuir4KELQdTV8pKPdUaKgxaJ0IfJxBnM0G7vRBCYg
+         wiT8wBbr85sNx5oNi5w1j5zdrDvcm3y/EvCc8kg4eRMh6e4OhiTUEBlFVB0b+ClJRPsJ
+         TUQPC9Lpnd7T4yc2WOtO43nneYC6WKlAT53mGvvaNge6Yx9M/aeXZ+pqCJrHxuwPUVlT
+         Z3sxPuGh8uWER8Un/fum42c093n9HO5gFE6T+nYBivL+DRtjuefzSY2LaKQepJTmgDcw
+         UYFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-transfer-encoding
+         :content-language;
+        bh=s9cgYbyfQqq5UrYB+51r7q1mjBjejxSSOe4Pf+0dXSc=;
+        b=uN/mP0tUlWurG3Gdw3cZBQcgxc7YWvs/03LTDg72jKxT8k/J8lpYBgfjHSKMnkWjXT
+         a4T18xEnehlAK+qWWdXj0aUS1JkX5OMeT440pzo0trxU5FWp9KVRJemW063Ow+MVFtOU
+         vcKzYIzv8x9RRNl/JdDkPyy5vTKgvQA8TDHovaj+FnmwK6e9msAOQaBVwVwM4ihNxJqb
+         po3xrCLmCc1m5zAbJz0v8nFTIkb4ajsA+Pd6rfZH+ga9H25cv3yxGOqqpTdPJr9Efys1
+         lPbOquO330J2BhN3V5EtdIuwnOsSSLdqqvAy6ANNgkZJHnV9jM5z/xVldqnmdT/PlB4O
+         KPFw==
+X-Gm-Message-State: AOAM531sgsd7dD0lVgqQfpGEoAnzlmkHgAAkX6eiSl3x95UbwolhUzBS
+        kg4IzazG4GX9xIPTKdkUBK3XtyklJZvNRg==
+X-Google-Smtp-Source: ABdhPJxTVCFgGb7WglQERoAc+UBIhCpYSdy5fzH3i6p6S1gDc3JwHMqoX8TTAJWZ5WiJDakcD5Jdcg==
+X-Received: by 2002:a17:90b:4a83:: with SMTP id lp3mr209008pjb.138.1603908889414;
+        Wed, 28 Oct 2020 11:14:49 -0700 (PDT)
+Received: from ?IPv6:2001:df0:0:200c:70b5:cf21:2a3a:f170? ([2001:df0:0:200c:70b5:cf21:2a3a:f170])
+        by smtp.gmail.com with ESMTPSA id i21sm60510pgh.2.2020.10.28.11.14.41
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 28 Oct 2020 11:14:48 -0700 (PDT)
+Subject: Re: [PATCH 11/13] m68k/mm: make node data and node setup depend on
+ CONFIG_DISCONTIGMEM
+To:     Mike Rapoport <rppt@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Alexey Dobriyan <adobriyan@gmail.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
         Greg Ungerer <gerg@linux-m68k.org>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Jonathan Corbet <corbet@lwn.net>,
         Matt Turner <mattst88@gmail.com>, Meelis Roos <mroos@linux.ee>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Mike Rapoport <rppt@kernel.org>,
         Mike Rapoport <rppt@linux.ibm.com>,
         Russell King <linux@armlinux.org.uk>,
         Tony Luck <tony.luck@intel.com>,
         Vineet Gupta <vgupta@synopsys.com>,
-        Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mm@kvack.org, linux-snps-arc@lists.infradead.org
-Subject: [PATCH 13/13] m68k: deprecate DISCONTIGMEM
-Date:   Tue, 27 Oct 2020 13:29:55 +0200
-Message-Id: <20201027112955.14157-14-rppt@kernel.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <20201027112955.14157-1-rppt@kernel.org>
+        Will Deacon <will@kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        Linux FS Devel <linux-fsdevel@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux MM <linux-mm@kvack.org>,
+        arcml <linux-snps-arc@lists.infradead.org>
 References: <20201027112955.14157-1-rppt@kernel.org>
+ <20201027112955.14157-12-rppt@kernel.org>
+ <CAMuHMdU4r4CJ1kBu7gx1jkputjDn2S8Lqkj7RPfa3XUnM1QOFg@mail.gmail.com>
+ <20201028111631.GF1428094@kernel.org>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <fd55643a-a17b-5a23-4c77-9e832c1e5128@gmail.com>
+Date:   Thu, 29 Oct 2020 07:14:38 +1300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:60.0) Gecko/20100101
+ Thunderbird/60.6.1
 MIME-Version: 1.0
+In-Reply-To: <20201028111631.GF1428094@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Language: en-US
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Mike Rapoport <rppt@linux.ibm.com>
+Hi Mike,
 
-DISCONTIGMEM was intended to provide more efficient support for systems
-with holes in their physical address space that FLATMEM did.
+On 29/10/20 12:16 AM, Mike Rapoport wrote:
+> Hi Geert,
+>
+> On Wed, Oct 28, 2020 at 10:25:49AM +0100, Geert Uytterhoeven wrote:
+>> Hi Mike,
+>>
+>> On Tue, Oct 27, 2020 at 12:31 PM Mike Rapoport <rppt@kernel.org> wrote:
+>>> From: Mike Rapoport <rppt@linux.ibm.com>
+>>>
+>>> The pg_data_t node structures and their initialization currently depends on
+>>> !CONFIG_SINGLE_MEMORY_CHUNK. Since they are required only for DISCONTIGMEM
+>>> make this dependency explicit and replace usage of
+>>> CONFIG_SINGLE_MEMORY_CHUNK with CONFIG_DISCONTIGMEM where appropriate.
+>>>
+>>> The CONFIG_SINGLE_MEMORY_CHUNK was implicitly disabled on the ColdFire MMU
+>>> variant, although it always presumed a single memory bank. As there is no
+>>> actual need for DISCONTIGMEM in this case, make sure that ColdFire MMU
+>>> systems set CONFIG_SINGLE_MEMORY_CHUNK to 'y'.
+>>>
+>>> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+>> Thanks for your patch!
+>>
+>>> ---
+>>>   arch/m68k/Kconfig.cpu           | 6 +++---
+>>>   arch/m68k/include/asm/page_mm.h | 2 +-
+>>>   arch/m68k/mm/init.c             | 4 ++--
+>>>   3 files changed, 6 insertions(+), 6 deletions(-)
+>> Is there any specific reason you didn't convert the checks for
+>> CONFIG_SINGLE_MEMORY_CHUNK in arch/m68k/kernel/setup_mm.c
+> In arch/m68k/kernel/setup_mm.c the CONFIG_SINGLE_MEMORY_CHUNK is needed
+> for the case when a system has two banks, the kernel is loaded into the
+> second bank and so the first bank cannot be used as normal memory. It
+> does not matter what memory model will be used in this case.
 
-Yet, it's overhead in terms of the memory consumption seems to overweight
-the savings on the unused memory map.
 
-For a ARAnyM system with 16 MBytes of FastRAM configured, the memory usage
-reported after page allocator initialization is
+That case used to be detected just fine at run time (by dint of the 
+second memory chunk having an address below the first; the chunk the 
+kernel resides in is always listed first), even without using 
+CONFIG_SINGLE_MEMORY_CHUNK.
 
-Memory: 23828K/30720K available (3206K kernel code, 535K rwdata, 936K rodata, 768K init, 193K bss, 6892K reserved, 0K cma-reserved)
+Unless you changed that behaviour (and I see nothing in your patch that 
+would indicate that), this is still true.
 
-and with DISCONTIGMEM disabled and with relatively large hole in the memory
-map it is:
+Converting the check as Geert suggested, without also adding a test for 
+out-of-order memory bank addresses, would implicitly treat DISCONTIGMEM 
+as  SINGLE_MEMORY_CHUNK, regardless of bank ordering. I don't think that 
+is what we really want?
 
-Memory: 23864K/30720K available (3197K kernel code, 516K rwdata, 936K rodata, 764K init, 179K bss, 6856K reserved, 0K cma-reserved)
+Cheers,
 
-Moreover, since m68k already has custom pfn_valid() it is possible to
-define HAVE_ARCH_PFN_VALID to enable freeing of unused memory map. The
-minimal size of a hole that can be freed should not be less than
-MAX_ORDER_NR_PAGES so to achieve more substantial memory savings let m68k
-also define custom FORCE_MAX_ZONEORDER.
+     Michael
 
-With FORCE_MAX_ZONEORDER set to 9 memory usage becomes:
 
-Memory: 23880K/30720K available (3197K kernel code, 516K rwdata, 936K rodata, 764K init, 179K bss, 6840K reserved, 0K cma-reserved)
-
-Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
----
- arch/m68k/Kconfig.cpu | 26 +++++++++++++++++++++++++-
- 1 file changed, 25 insertions(+), 1 deletion(-)
-
-diff --git a/arch/m68k/Kconfig.cpu b/arch/m68k/Kconfig.cpu
-index 3af0fca03803..763bc80a27aa 100644
---- a/arch/m68k/Kconfig.cpu
-+++ b/arch/m68k/Kconfig.cpu
-@@ -21,6 +21,7 @@ choice
- config M68KCLASSIC
- 	bool "Classic M68K CPU family support"
- 	select NEED_MULTIPLE_NODES if DISCONTIGMEM
-+	select HAVE_ARCH_PFN_VALID if FLATMEM && !SINGLE_MEMORY_CHUNK
- 
- config COLDFIRE
- 	bool "Coldfire CPU family support"
-@@ -378,11 +379,34 @@ config SINGLE_MEMORY_CHUNK
- 	help
- 	  Ignore all but the first contiguous chunk of physical memory for VM
- 	  purposes.  This will save a few bytes kernel size and may speed up
--	  some operations.  Say N if not sure.
-+	  some operations.
-+	  When this option os set to N, you may want to lower "Maximum zone
-+	  order" to save memory that could be wasted for unused memory map.
-+	  Say N if not sure.
- 
- config ARCH_DISCONTIGMEM_ENABLE
-+	depends on BROKEN
- 	def_bool MMU && !SINGLE_MEMORY_CHUNK
- 
-+config FORCE_MAX_ZONEORDER
-+	int "Maximum zone order" if ADVANCED
-+	depends on !SINGLE_MEMORY_CHUNK
-+	default "11"
-+	help
-+	  The kernel memory allocator divides physically contiguous memory
-+	  blocks into "zones", where each zone is a power of two number of
-+	  pages.  This option selects the largest power of two that the kernel
-+	  keeps in the memory allocator.  If you need to allocate very large
-+	  blocks of physically contiguous memory, then you may need to
-+	  increase this value.
-+
-+	  For systems that have holes in their physical address space this
-+	  value also defines the minimal size of the hole that allows
-+	  freeing unused memory map.
-+
-+	  This config option is actually maximum order plus one. For example,
-+	  a value of 11 means that the largest free memory block is 2^10 pages.
-+
- config 060_WRITETHROUGH
- 	bool "Use write-through caching for 68060 supervisor accesses"
- 	depends on ADVANCED && M68060
--- 
-2.28.0
-
+>
+>> and arch/m68k/include/asm/virtconvert.h?
+>   
+> I remember I had build errors and troubles with include file
+> dependencies if I changed it there, but I might be mistaken. I'll
+> recheck again.
+>
+>> Gr{oetje,eeting}s,
+>>
+>>                          Geert
+>>
+>> -- 
+>> Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+>>
+>> In personal conversations with technical people, I call myself a hacker. But
+>> when I'm talking to journalists I just say "programmer" or something like that.
+>>                                  -- Linus Torvalds
