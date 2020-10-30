@@ -2,107 +2,86 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id E119B2A0F9E
-	for <lists+linux-ia64@lfdr.de>; Fri, 30 Oct 2020 21:37:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 393AF2A115E
+	for <lists+linux-ia64@lfdr.de>; Sat, 31 Oct 2020 00:02:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727617AbgJ3Uhx (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 30 Oct 2020 16:37:53 -0400
-Received: from mail.kernel.org ([198.145.29.99]:50714 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727205AbgJ3Uhx (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 30 Oct 2020 16:37:53 -0400
-Received: from mail-qk1-f176.google.com (mail-qk1-f176.google.com [209.85.222.176])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id D3CDC22202;
-        Fri, 30 Oct 2020 20:37:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1604090272;
-        bh=KMeucbRcvCAihtlPektQKjQQmEbPkfEfXwxxqluaaUQ=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=n0aOfPqikD2DqyDNtRdaMMz7zhgr2XFWvlOW8+szCciZ5IZ8WuBMCbDXaTreNOhYd
-         drDknWEy+B/EaXYzq5iB3C7eEB5kYGx8pLc4oN9CU7d1t1kT1X64Yy9dWE2pXXHTOA
-         G8RJawjTEvYxNFoGoVoK9qn4pWo9Mc5PTx0Qdo+w=
-Received: by mail-qk1-f176.google.com with SMTP id a64so2754066qkc.5;
-        Fri, 30 Oct 2020 13:37:51 -0700 (PDT)
-X-Gm-Message-State: AOAM532yFFpy7QyyLX+gbCSHHioLAcA4NL7gZ0NaQvbkgAJLMOyyXuSr
-        Cj8izF7fDS/91wYsBh0mTe+Wg3ElKglIr0B/DAM=
-X-Google-Smtp-Source: ABdhPJw19dZY4Xih4GL4dANiN8uMa27xGqxcu4F9ebbgd48VSQ+Qm0ZF3KNUOEKXfjfqBfqrvnQ2vDND7Ej01f3sHHE=
-X-Received: by 2002:a05:620a:22c9:: with SMTP id o9mr4110937qki.286.1604090270867;
- Fri, 30 Oct 2020 13:37:50 -0700 (PDT)
+        id S1725915AbgJ3XCV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 30 Oct 2020 19:02:21 -0400
+Received: from server.msgroupspa.com ([185.149.113.111]:55162 "EHLO
+        server.msgroupspa.com" rhost-flags-OK-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1725780AbgJ3XCU (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 30 Oct 2020 19:02:20 -0400
+X-Greylist: delayed 53432 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Oct 2020 19:02:11 EDT
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=msgroupspa.com; s=default; h=Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=gOeEglh1DIJatPKqyvOsPs4e0Zw8Lzg9wwjnNfQdiM8=; b=f0J1AWuajA3oZ1Dpfc1x8K8xEJ
+        AUip3Gv2UXILC1QLa9azjb3AcsLQqGjiyvcdNpmgT4E3ckADFb84tXlqXdyZsQiNBG2DujmkXqT6T
+        d2mjFNqNRzqSvTZ5qo3MQnCtCov24Wb4wcnpMjift4pdGB4JPDnKAHB+AICh1brF5U0xFQPetWE6H
+        BdPwBb7MNTVWN2mlAPb66Psghg7IoDbQVF1Tmf3H0jaTjlEaWeH4lQoLQpQIzRJYm5NbY0Di4+n63
+        5jJQ9+O4mZNL1aiyS8rwPAgEOxxbLBRAAH3FJTu26AO783jjZImRhbqNmO2ZZgHvlSfFh6vWgR2oo
+        WibXGz9w==;
+Received: from [::1] (port=55834 helo=server.msgroupspa.com)
+        by server.msgroupspa.com with esmtpa (Exim 4.93)
+        (envelope-from <no-reply@msgroupspa.com>)
+        id 1kYPS7-0006MI-86; Fri, 30 Oct 2020 16:08:03 +0800
 MIME-Version: 1.0
-References: <20201030151758.1241164-1-arnd@kernel.org> <20201030151758.1241164-8-arnd@kernel.org>
- <2e2d7b65-0aa8-55aa-d395-52cfb048adef@gmx.de> <CAK8P3a0dPxWu6obX6jca8TsDQw6xsBmrihu8oH0TxR-BxYV3vw@mail.gmail.com>
- <b4779fce-5218-8aea-a416-b2806c9d062d@gmx.de>
-In-Reply-To: <b4779fce-5218-8aea-a416-b2806c9d062d@gmx.de>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Fri, 30 Oct 2020 21:37:34 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3F9Dx5fnE1nsEQqNH-fBM3-tFK7Kj3CECmNF8U4n8mug@mail.gmail.com>
-Message-ID: <CAK8P3a3F9Dx5fnE1nsEQqNH-fBM3-tFK7Kj3CECmNF8U4n8mug@mail.gmail.com>
-Subject: Re: [PATCH v2 07/15] parisc: use legacy_timer_tick
-To:     Helge Deller <deller@gmx.de>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Finn Thain <fthain@telegraphics.com.au>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-ia64@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+Date:   Fri, 30 Oct 2020 16:08:03 +0800
+From:   "Mr. John Galvan" <no-reply@msgroupspa.com>
+To:     undisclosed-recipients:;
+Subject: Hello/Hallo
+Reply-To: galvan.johnny@outlook.com
+User-Agent: Roundcube Webmail/1.4.8
+Message-ID: <0d2cf4301ff4649fbf993b8f3f7e83c8@msgroupspa.com>
+X-Sender: no-reply@msgroupspa.com
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - server.msgroupspa.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - msgroupspa.com
+X-Get-Message-Sender-Via: server.msgroupspa.com: authenticated_id: no-reply@msgroupspa.com
+X-Authenticated-Sender: server.msgroupspa.com: no-reply@msgroupspa.com
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Oct 30, 2020 at 8:48 PM Helge Deller <deller@gmx.de> wrote:
-> On 10/30/20 8:33 PM, Arnd Bergmann wrote:
-> > On Fri, Oct 30, 2020 at 6:13 PM Helge Deller <deller@gmx.de> wrote:
-> >>
-> >> On 10/30/20 4:17 PM, Arnd Bergmann wrote:
-> >>> From: Arnd Bergmann <arnd@arndb.de>
-> >>>
-> >>> parisc has selected CONFIG_GENERIC_CLOCKEVENTS since commit 43b1f6abd590
-> >>> ("parisc: Switch to generic sched_clock implementation"), but does not
-> >>> appear to actually be using it, and instead calls the low-level
-> >>> timekeeping functions directly.
-> >>
-> >> Arnd, thank you for this patch!
-> >> It reminded me that I really missed to fully implement the clockevents on parisc!
-> >>
-> >> Your other patch ("RFC: m68k: mac: convert to generic clockevent")
-> >> was a big help too, as it showed how it might work on parisc as well.
-> >>
-> >> Here is now a current version of the clockevents-enabling-patch for parisc:
-> >> https://git.kernel.org/pub/scm/linux/kernel/git/deller/parisc-linux.git/commit/?h=for-next&id=3b7ab4a74a2d1972dbeb33285d85f1500b2ff96a
-> >
-> > Ah, nice!
-> >
-> >>> Remove the GENERIC_CLOCKEVENTS select again, and instead convert to
-> >>> the newly added legacy_timer_tick() helper.
-> >>
-> >> My patch still needs more testing, but if it turns to work
-> >> out right, would you mind to drop your patch for parisc?
-> >
-> > I think it would be easier if you could base your patch on top of
-> > my series, as they would otherwise inevitably conflict. I could either
-> > add it to my tree, or you could merge my branch into your tree.
->
-> Couldn't you drop your patch and include mine in your tree instead?
-> That way nothing conflicts, and they get merged together?
 
-That only works if nobody merges this branch into another one,
-otherwise we end up with multiple copies of the later commits.
 
-       Arnd
+-- 
+Sir/Madam,
+
+I have access to very vital information that can be used to move a huge 
+amount of money. I have done my homework very well and I have the 
+machineries in place to get it done since I am still in active service. 
+If it was possible for me to do it alone I would not have bothered 
+contacting you. Ultimately I need an honest foreigner to play an 
+important role in the completion of this business transaction. Send 
+responds to this email: galvan.johnny@outlook.com
+
+Regards,
+John Galvan
+
+---------------------------------------------------------------
+
+Sir / Madam,
+
+Ich habe Zugang zu sehr wichtigen Informationen, mit denen ich eine 
+große Menge Geld bewegen kann. Ich habe meine Hausaufgaben sehr gut 
+gemacht und ich habe die Maschinen, um sie zu erledigen, da ich immer 
+noch im aktiven Dienst bin. Wenn es mir möglich gewesen wäre, es alleine 
+zu tun, hätte ich mich nicht darum gekümmert, Sie zu kontaktieren. 
+Letztendlich brauche ich einen ehrlichen Ausländer, der eine wichtige 
+Rolle beim Abschluss dieses Geschäftsvorgangs spielt. Senden Sie 
+Antworten auf diese E-Mail: galvan.johnny@outlook.com
+
+Grüße,
+John Galvan
