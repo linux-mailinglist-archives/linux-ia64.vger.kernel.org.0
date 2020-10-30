@@ -2,199 +2,82 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 91B962A0643
-	for <lists+linux-ia64@lfdr.de>; Fri, 30 Oct 2020 14:12:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9CC3C2A08F5
+	for <lists+linux-ia64@lfdr.de>; Fri, 30 Oct 2020 16:01:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726362AbgJ3NMf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 30 Oct 2020 09:12:35 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37264 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1725999AbgJ3NMf (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 30 Oct 2020 09:12:35 -0400
-Received: from [192.168.0.244] (118-211-2-196.tpgi.com.au [118.211.2.196])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 1167B206FA;
-        Fri, 30 Oct 2020 13:12:27 +0000 (UTC)
-Subject: Re: [RFC 13/13] m68k: mac: convert to generic clockevent
-To:     Finn Thain <fthain@telegraphics.com.au>,
-        Arnd Bergmann <arnd@kernel.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-ia64@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-References: <20201008154651.1901126-1-arnd@arndb.de>
- <20201008154651.1901126-14-arnd@arndb.de>
- <alpine.LNX.2.23.453.2010091900150.12@nippy.intranet>
- <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com>
- <alpine.LNX.2.23.453.2010150937430.16@nippy.intranet>
- <CAK8P3a3i6cum_9xGgsbxjXXvbRsP8Po5qLZ0Agb3c4gZTKC9GQ@mail.gmail.com>
- <alpine.LNX.2.23.453.2010241025410.6@nippy.intranet>
-From:   Greg Ungerer <gerg@linux-m68k.org>
-Message-ID: <580c3542-92cc-7e33-a43d-bf6a68134a46@linux-m68k.org>
-Date:   Fri, 30 Oct 2020 23:12:29 +1000
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726859AbgJ3PBR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 30 Oct 2020 11:01:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39472 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726814AbgJ3PAa (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 30 Oct 2020 11:00:30 -0400
+Received: from mail-ed1-x543.google.com (mail-ed1-x543.google.com [IPv6:2a00:1450:4864:20::543])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8FC2C0613E2
+        for <linux-ia64@vger.kernel.org>; Fri, 30 Oct 2020 07:59:35 -0700 (PDT)
+Received: by mail-ed1-x543.google.com with SMTP id dg9so6922578edb.12
+        for <linux-ia64@vger.kernel.org>; Fri, 30 Oct 2020 07:59:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
+        b=TjZDjTDUyG5IOPAjtKhDz6bJNm6DqwPh3GYjQnJOtk58Qe+VS+LrjG9D+UJTL89L5a
+         hPszd6YttBU2gVDN4Hgd0nVvKmUsgBGa0RfR9y4dU1VG6wqrOSeXXlqa/jT4b2a91QjD
+         sT+ma7QKBtdbME0ZKxl0kc6DEI2BSZsRxuMkNkQsvOWxO6URWAKkh65L3Tk879AJ4LqG
+         Bj9eXYFDUcjXqha9S32esb82rsLCjf9rEdFYrDoZfWxC18Um3HNxqbzetSufrWkdrmWB
+         Hgfuw2XlX0g8ZkLr3paRT5DvZbKL3ccSJq24BaLzNsiQWn1tArC4uUyPSHMQ3hVqPZo6
+         Sb9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=9fkQXWnoPSypfyxvIrXWSyd1r4Ua0eeDJczOBpIf/BU=;
+        b=mwSPiZvrLl4fLWcWucF39rGeBKhU1FkQhU8YpxZ4GxdSjdbQ+288EkuSQ4LJFIbURB
+         TEwDbf8ai4e1JLVB0MkeDtLsJ2Y3pPQwVUEoznUdy4BOB/+mSc0L1+rk9MQuJyv+2M5z
+         hQ2e2xQfLi85n7HrXvi65QhKmvedCdYpjMv9Bg0ZLeZnFcc46vpKxQ41CSYhouebY7sR
+         P2BVyUg5kxiqB7AEoPpXgnWLPSonzdLUD4GMGPQ56xhCC4n9V46804QTDt8qjnEYxLde
+         N7WCq1TUfKnZW2LlG4CLXRqpMec+TJLuCPwt1be8w4dyFPcynz+LQ9AQ445lmv1i4puV
+         DJiA==
+X-Gm-Message-State: AOAM532W6t0eHpKOpmRBjsw/ADzMSt57+LejLNKnCRNkABoPJw+RKjsZ
+        NDOB2Mvxux45L6aUMyBMl7xncerE7u8kTDEFtQ==
+X-Google-Smtp-Source: ABdhPJz0XXuJnPS5g3+lbBiW+XXmkDUqYoNBDu76t3os6QvlPQSI6Onyl30CWs+Md1o+E0r28qs03HXLpOQosKz8YWo=
+X-Received: by 2002:a50:f307:: with SMTP id p7mr2761574edm.235.1604069974505;
+ Fri, 30 Oct 2020 07:59:34 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <alpine.LNX.2.23.453.2010241025410.6@nippy.intranet>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Received: by 2002:a50:f14c:0:0:0:0:0 with HTTP; Fri, 30 Oct 2020 07:59:34
+ -0700 (PDT)
+Reply-To: li.anable85@gmail.com
+From:   Liliane Abel <k.griest04@gmail.com>
+Date:   Fri, 30 Oct 2020 15:59:34 +0100
+Message-ID: <CABAZL7=b-NWks3DKb=fdDjnu_xt_-CcJCqf-F5s0yQCFVH73-A@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+Dearest
 
-On 30/10/20 10:41 am, Finn Thain wrote:
-> On Fri, 23 Oct 2020, Arnd Bergmann wrote:
->> On Sun, Oct 18, 2020 at 2:55 AM Finn Thain <fthain@telegraphics.com.au>  wrote:
->>> On Thu, 15 Oct 2020, Arnd Bergmann wrote:
->>>> On Thu, Oct 15, 2020 at 3:19 AM Finn Thain <fthain@telegraphics.com.au> wrote:
->>>>> On Sat, 10 Oct 2020, Arnd Bergmann wrote:
->>>
->>> That configuration still produces the same 5 KiB of bloat. I see that
->>> kernel/time/Kconfig has this --
->>>
->>> # Core internal switch. Selected by NO_HZ_COMMON / HIGH_RES_TIMERS. This is
->>> # only related to the tick functionality. Oneshot clockevent devices
->>> # are supported independent of this.
->>> config TICK_ONESHOT
->>>          bool
->>>
->>> But my question was really about both kinds of dead code (oneshot
->>> device support and oneshot tick support). Anyway, after playing with
->>> the code for a bit I don't see any easy way to reduce the growth in
->>> text size.
->>
->> Did you look more deeply into where those 5KB are? Is this just the code
->> in kernel/time/{clockevents,tick-common}.c and the added platform
->> specific bits, or is there something more?
-> 
-> What I did was to list the relevant functions using scripts/bloat-o-meter
-> and tried stubbing out some code related to oneshot clockevent devices. I
-> didn't find any low fruit and don't plan to pursue that without the help
-> of LTO.
-> 
->> I suppose the sysfs interface and the clockevents_update_freq() logic
->> are not really needed on m68k, but it wouldn't make much sense to split
->> those out either.
->>
->> How does the 5KB bloat compare to the average bloat we get from one
->> release to the next? Geert has been collecting statistics for this.
->>
-> 
-> Perhaps that 5 KB is justified by gaining the hrtimers feature... hard to
-> say; it's never been available on these platforms. I can see the value in
-> it though.
-> 
->>>> Yes, makes sense. I think the one remaining problem with the
->>>> periodic mode in this driver is that it can drop timer ticks when
->>>> interrupts are disabled for too long, while in oneshot mode there
->>>> may be a way to know how much time has passed since the last tick as
->>>> long as the counter does not overflow.
->>>
->>> Is there any benefit from adopting a oneshot tick (rather than
->>> periodic) if no clocksource is consulted when calculating the next
->>> interval? (I'm assuming NO_HZ is not in use, for reasons discussed
->>> below.)
->>
->> If the clocksource does not set CLOCK_SOURCE_IS_CONTINOUS, the kernel
->> will keep using periodic timers and not allow hrtimers.
->>
-> 
-> IIUC, when HIGH_RES_TIMERS=y, the kernel will enable hrtimers only if the
-> platform provides both a continuous clocksource device and a oneshot
-> clockevent device. However, the "jiffies" clocksource does not set
-> CLOCK_SOURCE_IS_CONTINOUS and neither does the one in
-> arch/arm/mach-rpc/time.c.
-> 
-> When HIGH_RES_TIMERS=n and NO_HZ_COMMON=n (which is presently the case for
-> all platforms with GENERIC_CLOCKEVENTS=n) there's no use for a oneshot
-> clockevent device, right?
-> 
-> It seems likely that NO_HZ_COMMON=n because the clocksources on these
-> platforms produce a periodic interrupt regardless (e.g.
-> clocksource/i8253.c, arm/rpc, m68k platform timers etc.).
-> 
-> Finally, HIGH_RES_TIMERS=n seems likely if the only clocksource is
-> unreliable (e.g. because it loses time due to interrupt priorities). There
-> may be a few of platforms in this category (Mac, Atari?).
-> 
->>>> I would agree that despite this oneshot mode is probably worse
->>>> overall for timekeeping if the register accesses introduce
->>>> systematic errors.
->>>>
->>>
->>> It probably has to be tried. But consulting a VIA clocksource on every
->>> tick would be expensive on this platform, so if that was the only way
->>> to avoid cumulative errors, I'd probably just stick with the periodic
->>> tick.
->>
->> I'm sure there is a tradeoff somewhere. Without hrtimers, some events
->> will take longer when they have to wait for the next tick, and using
->> NO_HZ_FULL can help help make things faster on some workloads.
->>
-> 
-> Yes, such a tradeoff is discussed in drivers/iio/adc/ep93xx_adc.c.
-> 
-> But OTOH, Documentation/timers/timers-howto.rst says,
-> 
->      On slower systems, (embedded, OR perhaps a speed-stepped PC!) the
->      overhead of setting up the hrtimers for usleep *may* not be worth it
-> 
-> I guess it has to be tried.
-> 
->> ...
->>> The other 11 platforms in that category also have 'synthetic'
->>> clocksources derived from a timer reload interrupt. In 3 cases, the
->>> clocksource read method does not (or can not) check for a pending
->>> counter reload interrupt. For these also, I see no practical
->>> alternative to the approach you've taken in your RFC patch:
->>>
->>> arch/m68k/68000/timers.c
->>> arch/m68k/atari/time.c
->>> arch/m68k/coldfire/timers.c
->>
->> Agreed. It's possible there is a way, but I don't see one either.
->>
-> 
-> For arch/m68k/68000/timers.c, I suppose we may be able to check for the
-> TMR1 bit in the Interrupt Status Register at 0xFFFFF30C or the COMP bit in
-> the Timer Status Register at 0xFFFFF60A. But testing that patch could be
-> difficult.
-> 
-> I expect that equivalent flags are available in Coldfire registers, making
-> it possible to improve upon mcftmr_read_clk() and m68328_read_clk() if
-> need be -- that is, if it turns out that the clocksource interrupt was
-> subject to higher priority IRQs that would slow down the clocksource or
-> defeat its monotonicity.
-> 
-> The other difficulty is a lack of hardware timers. There's only one timer
-> on MC68EZ328. On Atari, for now only Timer C is available though Michael
-> has said that it would be possible to free up Timer D. Some Coldfire chips
-> have only 2 timers and the second timer seems to be allocated to
-> profiling.
+Greeting my dear, I am Liliane Abel by name, The only daughter of late
+Mr.Benson Abel. My father is one of the top Politician in our country
+and my mother is a farmers and cocoa merchant when they were both
+alive. After the death of my mother, long ago, my father was
+controlling their business until he was poisoned by his business
+associates which he suffered and died.
 
-FWIW, I would have no problem with ditching the profiling clock,
-and using both on ColdFire platforms that have this. I doubt anyone has 
-used that profiling setup in a _very_ long time.
-
-Regards
-Greg
-
-
+Before the death of my father, He told me about (two million five
+hundred thousand united states dollars) which he deposited in the bank
+in Lome-Togo, It was the money he intended to transfer overseas for
+investment before he was poisoned. He also instructed me that I should
+seek for foreign partners in any country of my choice who will assist
+me transfer this money in overseas account where the money will be
+wisely invested.
+I am seeking for your kind assistance in the following ways:  (1) to
+provide a safe bank account into where the money will be transferred
+for investment. (2) To serve as a guardian of this fund since I am a
+girl of 19 years old. (3) To make arrangement for me to come over to
+your country to further my education. This is my reason for writing to
+you. Please if you are willing to assist me I will offer you 25% of
+the total money. Reply if  you are interested
+Best regards.
+Liliane Abel.
