@@ -2,133 +2,211 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 286AA29F0F5
-	for <lists+linux-ia64@lfdr.de>; Thu, 29 Oct 2020 17:15:13 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E2C929F9E5
+	for <lists+linux-ia64@lfdr.de>; Fri, 30 Oct 2020 01:42:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726159AbgJ2QPK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 29 Oct 2020 12:15:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53350 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726367AbgJ2QPC (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 29 Oct 2020 12:15:02 -0400
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D02AC0613CF
-        for <linux-ia64@vger.kernel.org>; Thu, 29 Oct 2020 09:15:02 -0700 (PDT)
-Received: by mail-il1-x142.google.com with SMTP id n5so3603710ile.7
-        for <linux-ia64@vger.kernel.org>; Thu, 29 Oct 2020 09:15:02 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=to:from:subject:message-id:date:user-agent:mime-version
-         :content-language:content-transfer-encoding;
-        bh=89gVg8cd0IQxuIKJoArlxuVDHaXxRJdwosnxMVGQKDQ=;
-        b=RRBeDUy1mq1x1SBlgef4PBAhFA+4kNIpaWkmOV2vttgVYR+H5XBXhg/JaOH771KazL
-         lncFpnvgxk/NSifwSY/JsT/ClOamjmutsv6faBGV0N7z8FKMG5pjCJDEJk8QpAKnmfIZ
-         czSrE2offNnkvu2kVYafP1aHPm+lgNlZISURDs8lGF8fjqlAWEd+nW9oKbmsFTEgM42W
-         SnSb6zlLoQ9Ny21HYZ0nZ/ceAE/iqEygixHHQJ80F/3e1ZCcw4FzfYfGohW4XkqyUmTl
-         KvaBOclj9CZDWw5ZGsHp8S3tsg6xi6v+kwBULqrjyF0x9PKoESEOR9cbk1SzknxIAHE3
-         VV7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:from:subject:message-id:date:user-agent
-         :mime-version:content-language:content-transfer-encoding;
-        bh=89gVg8cd0IQxuIKJoArlxuVDHaXxRJdwosnxMVGQKDQ=;
-        b=Ejv0FpLcR9NvnpdsX0si59z/KdAurbvjB/lDYa4sekeYI7rxl4BGZ1sXKQBy185dKB
-         kQHAguSKpXXBKdTBvqq+xtbVFb5GjvfI+7Qfg9pjqNY5Wm4siLMtU0MOmq1Eg3hVhotC
-         9e8RMzLGjGvSjOMWt1uENp1llLCP9B2BPBEFlBjxHyXSa85apDPIrP8re4hZZpKcM0TU
-         vyXnxREZxmMezh2BW04IIIAFstztxjL2cIO4nH5VOyjraoh8Ep0/gIY2BgMZ4fTWoBOI
-         84CsIom7F8EzbwORycVZ02f6N7YwNxDxYzLUCkrKHu7OlQf251eynISzgm2DCqjcpUkC
-         OLxQ==
-X-Gm-Message-State: AOAM533H0r9ru9hoEPI3+8RdPRxD0g/anTfoeLJuhi4cVpfXcXJQiuxl
-        H0VpDLnJat5scRg7ao71wU2tX0ncjpiSNA==
-X-Google-Smtp-Source: ABdhPJxZBhvv9IOuP7CTUf7WiFpkEfC2abbhh+SYjQe6QooiHApxCAq71Ssm55r56T6aEOZpbUOAKA==
-X-Received: by 2002:a05:6e02:1348:: with SMTP id k8mr3612378ilr.306.1603988101333;
-        Thu, 29 Oct 2020 09:15:01 -0700 (PDT)
-Received: from [192.168.1.30] ([65.144.74.34])
-        by smtp.gmail.com with ESMTPSA id m9sm806701ioc.15.2020.10.29.09.15.00
-        for <linux-ia64@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 29 Oct 2020 09:15:00 -0700 (PDT)
-To:     linux-ia64@vger.kernel.org
-From:   Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH] ia64: add support for TIF_NOTIFY_SIGNAL
-Message-ID: <d3a2aa1e-0fae-1d3f-519f-d32adc608c38@kernel.dk>
-Date:   Thu, 29 Oct 2020 10:15:00 -0600
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S1726094AbgJ3Ami (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 29 Oct 2020 20:42:38 -0400
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:54046 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725797AbgJ3Ami (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 29 Oct 2020 20:42:38 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id 55B4C2A441;
+        Thu, 29 Oct 2020 20:41:36 -0400 (EDT)
+Date:   Fri, 30 Oct 2020 11:41:36 +1100 (AEDT)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Arnd Bergmann <arnd@kernel.org>
+cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Philip Blundell <philb@gnu.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Sam Creasey <sammy@sammy.net>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-ia64@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [RFC 13/13] m68k: mac: convert to generic clockevent
+In-Reply-To: <CAK8P3a3i6cum_9xGgsbxjXXvbRsP8Po5qLZ0Agb3c4gZTKC9GQ@mail.gmail.com>
+Message-ID: <alpine.LNX.2.23.453.2010241025410.6@nippy.intranet>
+References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-14-arnd@arndb.de> <alpine.LNX.2.23.453.2010091900150.12@nippy.intranet> <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com> <alpine.LNX.2.23.453.2010150937430.16@nippy.intranet>
+ <CAK8P3a3i6cum_9xGgsbxjXXvbRsP8Po5qLZ0Agb3c4gZTKC9GQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Wire up TIF_NOTIFY_SIGNAL handling for ia64.
+On Fri, 23 Oct 2020, Arnd Bergmann wrote:
 
-Cc: linux-ia64@vger.kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
----
+> On Sun, Oct 18, 2020 at 2:55 AM Finn Thain <fthain@telegraphics.com.au>  wrote:
+> > On Thu, 15 Oct 2020, Arnd Bergmann wrote:
+> > > On Thu, Oct 15, 2020 at 3:19 AM Finn Thain <fthain@telegraphics.com.au> wrote:
+> > > > On Sat, 10 Oct 2020, Arnd Bergmann wrote:
+> >
+> > That configuration still produces the same 5 KiB of bloat. I see that 
+> > kernel/time/Kconfig has this --
+> >
+> > # Core internal switch. Selected by NO_HZ_COMMON / HIGH_RES_TIMERS. This is
+> > # only related to the tick functionality. Oneshot clockevent devices
+> > # are supported independent of this.
+> > config TICK_ONESHOT
+> >         bool
+> >
+> > But my question was really about both kinds of dead code (oneshot 
+> > device support and oneshot tick support). Anyway, after playing with 
+> > the code for a bit I don't see any easy way to reduce the growth in 
+> > text size.
+> 
+> Did you look more deeply into where those 5KB are? Is this just the code 
+> in kernel/time/{clockevents,tick-common}.c and the added platform 
+> specific bits, or is there something more?
 
-5.11 has support queued up for TIF_NOTIFY_SIGNAL, see this posting
-for details:
+What I did was to list the relevant functions using scripts/bloat-o-meter 
+and tried stubbing out some code related to oneshot clockevent devices. I 
+didn't find any low fruit and don't plan to pursue that without the help 
+of LTO.
 
-https://lore.kernel.org/io-uring/20201026203230.386348-1-axboe@kernel.dk/
+> I suppose the sysfs interface and the clockevents_update_freq() logic 
+> are not really needed on m68k, but it wouldn't make much sense to split 
+> those out either.
+> 
+> How does the 5KB bloat compare to the average bloat we get from one 
+> release to the next? Geert has been collecting statistics for this.
+> 
 
-As part of that work, I'm adding TIF_NOTIFY_SIGNAL support to all archs,
-as that will enable a set of cleanups once all of them support it. I'm
-happy carrying this patch if need be, or it can be funelled through the
-arch tree. Let me know.
+Perhaps that 5 KB is justified by gaining the hrtimers feature... hard to 
+say; it's never been available on these platforms. I can see the value in 
+it though.
 
- arch/ia64/include/asm/thread_info.h | 4 +++-
- arch/ia64/kernel/process.c          | 3 ++-
- 2 files changed, 5 insertions(+), 2 deletions(-)
+> > > Yes, makes sense. I think the one remaining problem with the 
+> > > periodic mode in this driver is that it can drop timer ticks when 
+> > > interrupts are disabled for too long, while in oneshot mode there 
+> > > may be a way to know how much time has passed since the last tick as 
+> > > long as the counter does not overflow.
+> >
+> > Is there any benefit from adopting a oneshot tick (rather than 
+> > periodic) if no clocksource is consulted when calculating the next 
+> > interval? (I'm assuming NO_HZ is not in use, for reasons discussed 
+> > below.)
+> 
+> If the clocksource does not set CLOCK_SOURCE_IS_CONTINOUS, the kernel 
+> will keep using periodic timers and not allow hrtimers.
+> 
 
-diff --git a/arch/ia64/include/asm/thread_info.h b/arch/ia64/include/asm/thread_info.h
-index 64a1011f6812..759d7d68a5f2 100644
---- a/arch/ia64/include/asm/thread_info.h
-+++ b/arch/ia64/include/asm/thread_info.h
-@@ -104,6 +104,7 @@ struct thread_info {
- #define TIF_SYSCALL_AUDIT	3	/* syscall auditing active */
- #define TIF_SINGLESTEP		4	/* restore singlestep on return to user mode */
- #define TIF_NOTIFY_RESUME	6	/* resumption notification requested */
-+#define TIF_NOTIFY_SIGNAL	7	/* signal notification exist */
- #define TIF_MEMDIE		17	/* is terminating due to OOM killer */
- #define TIF_MCA_INIT		18	/* this task is processing MCA or INIT */
- #define TIF_DB_DISABLED		19	/* debug trap disabled for fsyscall */
-@@ -115,6 +116,7 @@ struct thread_info {
- #define _TIF_SINGLESTEP		(1 << TIF_SINGLESTEP)
- #define _TIF_SYSCALL_TRACEAUDIT	(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT|_TIF_SINGLESTEP)
- #define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
-+#define _TIF_SIGNAL_NOTIFY	(1 << TIF_SIGNAL_NOTIFY)
- #define _TIF_SIGPENDING		(1 << TIF_SIGPENDING)
- #define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
- #define _TIF_MCA_INIT		(1 << TIF_MCA_INIT)
-@@ -124,7 +126,7 @@ struct thread_info {
- 
- /* "work to do on user-return" bits */
- #define TIF_ALLWORK_MASK	(_TIF_SIGPENDING|_TIF_NOTIFY_RESUME|_TIF_SYSCALL_AUDIT|\
--				 _TIF_NEED_RESCHED|_TIF_SYSCALL_TRACE)
-+				 _TIF_NEED_RESCHED|_TIF_SYSCALL_TRACE|_TIF_NOTIFY_SIGNAL)
- /* like TIF_ALLWORK_BITS but sans TIF_SYSCALL_TRACE or TIF_SYSCALL_AUDIT */
- #define TIF_WORK_MASK		(TIF_ALLWORK_MASK&~(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT))
- 
-diff --git a/arch/ia64/kernel/process.c b/arch/ia64/kernel/process.c
-index 6b61a703bcf5..0e0146daa88d 100644
---- a/arch/ia64/kernel/process.c
-+++ b/arch/ia64/kernel/process.c
-@@ -171,7 +171,8 @@ do_notify_resume_user(sigset_t *unused, struct sigscratch *scr, long in_syscall)
- 	}
- 
- 	/* deal with pending signal delivery */
--	if (test_thread_flag(TIF_SIGPENDING)) {
-+	if (test_thread_flag(TIF_SIGPENDING) ||
-+	    test_thread_flags(TIF_NOTIFY_SIGNAL)) {
- 		local_irq_enable();	/* force interrupt enable */
- 		ia64_do_signal(scr, in_syscall);
- 	}
--- 
-2.29.0
+IIUC, when HIGH_RES_TIMERS=y, the kernel will enable hrtimers only if the 
+platform provides both a continuous clocksource device and a oneshot 
+clockevent device. However, the "jiffies" clocksource does not set 
+CLOCK_SOURCE_IS_CONTINOUS and neither does the one in 
+arch/arm/mach-rpc/time.c.
 
--- 
-Jens Axboe
+When HIGH_RES_TIMERS=n and NO_HZ_COMMON=n (which is presently the case for 
+all platforms with GENERIC_CLOCKEVENTS=n) there's no use for a oneshot 
+clockevent device, right?
 
+It seems likely that NO_HZ_COMMON=n because the clocksources on these 
+platforms produce a periodic interrupt regardless (e.g. 
+clocksource/i8253.c, arm/rpc, m68k platform timers etc.).
+
+Finally, HIGH_RES_TIMERS=n seems likely if the only clocksource is 
+unreliable (e.g. because it loses time due to interrupt priorities). There 
+may be a few of platforms in this category (Mac, Atari?).
+
+> > > I would agree that despite this oneshot mode is probably worse 
+> > > overall for timekeeping if the register accesses introduce 
+> > > systematic errors.
+> > >
+> >
+> > It probably has to be tried. But consulting a VIA clocksource on every 
+> > tick would be expensive on this platform, so if that was the only way 
+> > to avoid cumulative errors, I'd probably just stick with the periodic 
+> > tick.
+> 
+> I'm sure there is a tradeoff somewhere. Without hrtimers, some events 
+> will take longer when they have to wait for the next tick, and using 
+> NO_HZ_FULL can help help make things faster on some workloads.
+> 
+
+Yes, such a tradeoff is discussed in drivers/iio/adc/ep93xx_adc.c.
+
+But OTOH, Documentation/timers/timers-howto.rst says,
+
+    On slower systems, (embedded, OR perhaps a speed-stepped PC!) the 
+    overhead of setting up the hrtimers for usleep *may* not be worth it
+
+I guess it has to be tried.
+
+> ...
+> > The other 11 platforms in that category also have 'synthetic' 
+> > clocksources derived from a timer reload interrupt. In 3 cases, the 
+> > clocksource read method does not (or can not) check for a pending 
+> > counter reload interrupt. For these also, I see no practical 
+> > alternative to the approach you've taken in your RFC patch:
+> >
+> > arch/m68k/68000/timers.c
+> > arch/m68k/atari/time.c
+> > arch/m68k/coldfire/timers.c
+> 
+> Agreed. It's possible there is a way, but I don't see one either.
+> 
+
+For arch/m68k/68000/timers.c, I suppose we may be able to check for the 
+TMR1 bit in the Interrupt Status Register at 0xFFFFF30C or the COMP bit in 
+the Timer Status Register at 0xFFFFF60A. But testing that patch could be 
+difficult.
+
+I expect that equivalent flags are available in Coldfire registers, making 
+it possible to improve upon mcftmr_read_clk() and m68328_read_clk() if 
+need be -- that is, if it turns out that the clocksource interrupt was 
+subject to higher priority IRQs that would slow down the clocksource or 
+defeat its monotonicity.
+
+The other difficulty is a lack of hardware timers. There's only one timer 
+on MC68EZ328. On Atari, for now only Timer C is available though Michael 
+has said that it would be possible to free up Timer D. Some Coldfire chips 
+have only 2 timers and the second timer seems to be allocated to 
+profiling.
+
+> > That leaves 8 platforms that have reliable clocksource devices which 
+> > should be able to provide an accurate reading even in the presence of 
+> > a dropped tick (due to drivers disabling interrupts for too long):
+> >
+> > arch/arm/mach-rpc/time.c
+> > arch/m68k/amiga/config.c
+> > arch/m68k/bvme6000/config.c
+> > arch/m68k/coldfire/sltimers.c
+> > arch/m68k/hp300/time.c
+> > arch/m68k/mac/via.c
+> > arch/m68k/mvme147/config.c
+> > arch/m68k/mvme16x/config.c
+> >
+> > But is there any reason to adopt a oneshot tick on any of these platforms,
+> > if NO_HZ won't eliminate the timer interrupt that's needed to run a
+> > 'synthetic' clocksource?
+> 
+> I would expect that these could be changed to behave more like 
+> drivers/clocksource/i8253.c, which does support a clocksource in oneshot 
+> mode.
+> 
+
+I think you meant to write, "... support a clockevent device in oneshot 
+mode". I would agree.
+
+Since Macs do have a spare hardware timer, I will attempt to convert 
+arch/m68k/mac/via.c to a oneshot clockevent, using your 
+GENERIC_CLOCKEVENTS patch series as a basis, and see what effect that has 
+in the NO_HZ_COMMON=n, HIGH_RES_TIMERS=y case.
+
+>      Arnd
+> 
