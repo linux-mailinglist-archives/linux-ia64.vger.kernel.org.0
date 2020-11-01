@@ -2,48 +2,58 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8158A2A129E
-	for <lists+linux-ia64@lfdr.de>; Sat, 31 Oct 2020 02:27:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E06232A1BCA
+	for <lists+linux-ia64@lfdr.de>; Sun,  1 Nov 2020 04:43:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726328AbgJaB1R (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 30 Oct 2020 21:27:17 -0400
-Received: from 93804.cloudwaysapps.com ([178.62.255.238]:56716 "EHLO
-        93804.cloudwaysapps.com" rhost-flags-OK-FAIL-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726112AbgJaB1P (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 30 Oct 2020 21:27:15 -0400
-X-Greylist: delayed 12185 seconds by postgrey-1.27 at vger.kernel.org; Fri, 30 Oct 2020 21:27:03 EDT
-Received: from 127.0.0.1 (93804.cloudwaysapps.com [127.0.0.1])
-        by 93804.cloudwaysapps.com (Postfix) with SMTP id C0065220DE;
-        Fri, 30 Oct 2020 19:28:41 +0000 (UTC)
-Received: from [10.92.248.238] by 127.0.0.1 with ESMTP id <744952-75524> for <linux-acpi@vger.kernel.org>; Sat, 31 Oct 2020 02:20:53 +0600
-Message-ID: <dic5wasb-2c8kb$78@lu916y>
-From:   "JOHN PHIL" <gerradfinancialplanning@gmail.com>
-Reply-To: "JOHN PHIL" <gerradfinancialplanning@gmail.com>
-To:     linux-acpi@vger.kernel.org
-Subject: November Equity Investment 20-20 
-Date:   Sat, 31 Oct 20 02:20:53 GMT
-X-Mailer: Microsoft Outlook IMO, Build 9.0.2416 (9.0.2910.0)
+        id S1726696AbgKADnS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 31 Oct 2020 23:43:18 -0400
+Received: from kvm5.telegraphics.com.au ([98.124.60.144]:41242 "EHLO
+        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726677AbgKADnS (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 31 Oct 2020 23:43:18 -0400
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by kvm5.telegraphics.com.au (Postfix) with ESMTP id F00E729D09;
+        Sat, 31 Oct 2020 23:43:11 -0400 (EDT)
+Date:   Sun, 1 Nov 2020 14:43:11 +1100 (AEDT)
+From:   Finn Thain <fthain@telegraphics.com.au>
+To:     Arnd Bergmann <arnd@kernel.org>
+cc:     linux-kernel@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Philip Blundell <philb@gnu.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Sam Creasey <sammy@sammy.net>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-ia64@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>
+Subject: Re: [PATCH v2 00/15] timers: clean up ARCH_GETTIMEOFFSET,
+ LEGACY_TIMER_TICK
+In-Reply-To: <20201030151758.1241164-1-arnd@kernel.org>
+Message-ID: <alpine.LNX.2.23.453.2011011441010.32@nippy.intranet>
+References: <20201030151758.1241164-1-arnd@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/alternative;
-        boundary="07B_9ED_4_"
-X-Priority: 1
-X-MSMail-Priority: High
+Content-Type: text/plain; charset=US-ASCII
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+On Fri, 30 Oct 2020, Arnd Bergmann wrote:
 
---07B_9ED_4_
-Content-Type: text/plain;
-Content-Transfer-Encoding: quoted-printable
+> CONFIG_ARCH_GETTIMEOFFSET has been gradually phased out from all 
+> platforms, with only ARM EBSA110 recently. As this has no more known 
+> users, the first three patches remove EBSA110 along with one platform 
+> specific driver and the ARCH_GETTIMEOFFSET infrastructure.
+> 
 
-How are you doing today I have a proposal which i think may interest you a=
-nd benefit you.I will like to give you full details of this via email:  ge=
-rradfinancialplanning@gmail.com
-Thanks.
-
-John PHIL
-
---07B_9ED_4_--
-
+The CONFIG_ARCH_GETTIMEOFFSET patches weren't part of v1. Is there some 
+kind of dependency here?
