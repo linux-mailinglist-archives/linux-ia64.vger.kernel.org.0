@@ -2,107 +2,73 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B1A852A8D63
-	for <lists+linux-ia64@lfdr.de>; Fri,  6 Nov 2020 04:12:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 87F192AB5A0
+	for <lists+linux-ia64@lfdr.de>; Mon,  9 Nov 2020 11:59:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725981AbgKFDMV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 5 Nov 2020 22:12:21 -0500
-Received: from kvm5.telegraphics.com.au ([98.124.60.144]:47340 "EHLO
-        kvm5.telegraphics.com.au" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725972AbgKFDMV (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 5 Nov 2020 22:12:21 -0500
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by kvm5.telegraphics.com.au (Postfix) with ESMTP id D3BE7232E6;
-        Thu,  5 Nov 2020 22:12:18 -0500 (EST)
-Date:   Fri, 6 Nov 2020 14:12:08 +1100 (AEDT)
-From:   Finn Thain <fthain@telegraphics.com.au>
-To:     Greg Ungerer <gerg@linux-m68k.org>
-cc:     Arnd Bergmann <arnd@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        linux-ia64@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [RFC 13/13] m68k: mac: convert to generic clockevent
-In-Reply-To: <580c3542-92cc-7e33-a43d-bf6a68134a46@linux-m68k.org>
-Message-ID: <alpine.LNX.2.23.453.2011061352370.6@nippy.intranet>
-References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-14-arnd@arndb.de> <alpine.LNX.2.23.453.2010091900150.12@nippy.intranet> <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com> <alpine.LNX.2.23.453.2010150937430.16@nippy.intranet>
- <CAK8P3a3i6cum_9xGgsbxjXXvbRsP8Po5qLZ0Agb3c4gZTKC9GQ@mail.gmail.com> <alpine.LNX.2.23.453.2010241025410.6@nippy.intranet> <580c3542-92cc-7e33-a43d-bf6a68134a46@linux-m68k.org>
+        id S1727930AbgKIK7M (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 9 Nov 2020 05:59:12 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:38981 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1727183AbgKIK7M (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 9 Nov 2020 05:59:12 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1kc4tC-001d7b-DU; Mon, 09 Nov 2020 11:59:10 +0100
+Received: from 87-77-186-169.mna.fu-berlin.de ([87.77.186.169])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1kc4tC-002FXn-6K; Mon, 09 Nov 2020 11:59:10 +0100
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     linux-sh@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+References: <5fcc82b4-89ae-3bca-10ab-6ad933565cee@kernel.dk>
+ <ae29ab73-ee7a-2bb7-3fd8-3037f40c1cbd@kernel.dk>
+ <5611bde9-67e7-6ff6-defc-9b02ea830fac@physik.fu-berlin.de>
+ <9ea14eb3-d698-5499-ba4c-c6a3c35cd8d4@kernel.dk>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Subject: Re: [PATCH] sh: add support for TIF_NOTIFY_SIGNAL
+Message-ID: <47f79645-53b7-b11c-167a-f5721b53df02@physik.fu-berlin.de>
+Date:   Mon, 9 Nov 2020 11:59:09 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+In-Reply-To: <9ea14eb3-d698-5499-ba4c-c6a3c35cd8d4@kernel.dk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.77.186.169
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, 30 Oct 2020, Greg Ungerer wrote:
+Hi Jens!
 
-> > 
-> > > ...
-> > > > The other 11 platforms in that category also have 'synthetic' 
-> > > > clocksources derived from a timer reload interrupt. In 3 cases, 
-> > > > the clocksource read method does not (or can not) check for a 
-> > > > pending counter reload interrupt. For these also, I see no 
-> > > > practical alternative to the approach you've taken in your RFC 
-> > > > patch:
-> > > > 
-> > > > arch/m68k/68000/timers.c
-> > > > arch/m68k/atari/time.c
-> > > > arch/m68k/coldfire/timers.c
-> > > 
-> > > Agreed. It's possible there is a way, but I don't see one either.
-> > > 
-> > 
-> > For arch/m68k/68000/timers.c, I suppose we may be able to check for 
-> > the TMR1 bit in the Interrupt Status Register at 0xFFFFF30C or the 
-> > COMP bit in the Timer Status Register at 0xFFFFF60A. But testing that 
-> > patch could be difficult.
-> > 
-> > I expect that equivalent flags are available in Coldfire registers, 
-> > making it possible to improve upon mcftmr_read_clk() and 
-> > m68328_read_clk() if need be -- that is, if it turns out that the 
-> > clocksource interrupt was subject to higher priority IRQs that would 
-> > slow down the clocksource or defeat its monotonicity.
-> > 
-> > The other difficulty is a lack of hardware timers. There's only one 
-> > timer on MC68EZ328. On Atari, for now only Timer C is available though 
-> > Michael has said that it would be possible to free up Timer D. Some 
-> > Coldfire chips have only 2 timers and the second timer seems to be 
-> > allocated to profiling.
+On 11/5/20 6:15 PM, Jens Axboe wrote:
+> On 11/5/20 9:20 AM, John Paul Adrian Glaubitz wrote:
+>> Hi Jens!
+>>
+>> On 11/5/20 5:17 PM, Jens Axboe wrote:
+>>> Gentle nudge on this one.
+>>
+>> I can build- and boot-test on SH and IA64.
 > 
-> FWIW, I would have no problem with ditching the profiling clock, and 
-> using both on ColdFire platforms that have this. I doubt anyone has used 
-> that profiling setup in a _very_ long time.
-> 
+> That'd be great, thanks!
 
-If we ditched the Coldfire profiling clock, it would be possible to 
-dedicate one hardware timer to the clocksource device and the other to the 
-(oneshot) clockevent device.
+Sorry for the delay. I'm busy at the moment and my SH board is currently
+building the Perl 5.32 package for Debian. Will try to test your patches
+by tomorrow, also ia64.
 
-That's a win if it means that the clocksource can use the full counter 
-width (making timer interrupts less frequent and timer interrupt latency 
-less problematic) and run at higher frequency (making the clocksource more 
-precise).
+Adrian
 
-Also, note that hrtimers won't work with a periodic clockevent device (as 
-in Arnd's RFC patch). If you want hrtimers, I think you'll need both 
-hardware timers or else re-implement the existing synthetic clocksource 
-using the same oneshot timer driving a new oneshot clockevent device.
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
-Please note that the lack of a spare hardware timer is a separate issue to 
-the failure of mcftmr_read_clk() and m68328_read_clk() to check the timer 
-reload interrupt flag (which may make those clocksources needlessly 
-susceptible to issues caused by timer interrupt latency...).
