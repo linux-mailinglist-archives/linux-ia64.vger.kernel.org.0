@@ -2,118 +2,98 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6556E2B5AD8
-	for <lists+linux-ia64@lfdr.de>; Tue, 17 Nov 2020 09:16:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 00CEF2B683B
+	for <lists+linux-ia64@lfdr.de>; Tue, 17 Nov 2020 16:07:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726502AbgKQIPn (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 17 Nov 2020 03:15:43 -0500
-Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:10180 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
-        by vger.kernel.org with ESMTP id S1726231AbgKQIPm (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 17 Nov 2020 03:15:42 -0500
-Received: from pps.filterd (m0098413.ppops.net [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com (8.16.0.42/8.16.0.42) with SMTP id 0AH814dC114847;
-        Tue, 17 Nov 2020 03:15:07 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=MgojLclnAYOswLAieBVjfNC24dXThJ4NVpQsLaiik5E=;
- b=TGntiDlqS5lLNk5h6JaZN5NtNqD0A8LpOmFHhCVhG38uFwhja5GddMUMiv7qGT9usE9W
- 07e7ujB4TtqYLdFU84qQH65osmUcr+EbKNL+fglujKsIZmHHh/8KblhrK8MsG9kpFBDo
- oJ4qjWE2KkyO1iI7Ce+/M88paMXfe92YLAlnjfNaZhSYRIfa0pV3MBX//HAQfB7nTij8
- rEafhv65TCkPC9pAllxgYAFRNvsBEt8lq/LbWcpgSjlLi5svy48hmtv8wIojuKKR8TTu
- NHHldFeV4404DH4jbHYf9DM2Ph5nUFNE+ictyxBT0Yvavza3Pv9Y+GpU0siCR2/Ut4Qj uA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 34v8t3ka3m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 17 Nov 2020 03:15:07 -0500
-Received: from m0098413.ppops.net (m0098413.ppops.net [127.0.0.1])
-        by pps.reinject (8.16.0.36/8.16.0.36) with SMTP id 0AH83VgO126987;
-        Tue, 17 Nov 2020 03:15:06 -0500
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0b-001b2d01.pphosted.com with ESMTP id 34v8t3ka2r-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 17 Nov 2020 03:15:06 -0500
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 0AH8Ckxo019666;
-        Tue, 17 Nov 2020 08:15:04 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by ppma03ams.nl.ibm.com with ESMTP id 34t6v8auuw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 17 Nov 2020 08:15:04 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 0AH8F2J7000742
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 17 Nov 2020 08:15:02 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 435C9A4054;
-        Tue, 17 Nov 2020 08:15:02 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B4CD2A405B;
-        Tue, 17 Nov 2020 08:14:59 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.171.34.138])
-        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Tue, 17 Nov 2020 08:14:59 +0000 (GMT)
-Date:   Tue, 17 Nov 2020 10:14:57 +0200
-From:   Mike Rapoport <rppt@linux.ibm.com>
+        id S1730013AbgKQPGc (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 17 Nov 2020 10:06:32 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47482 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1730019AbgKQPGc (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 17 Nov 2020 10:06:32 -0500
+Received: from mail-io1-xd44.google.com (mail-io1-xd44.google.com [IPv6:2607:f8b0:4864:20::d44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCE55C0617A6
+        for <linux-ia64@vger.kernel.org>; Tue, 17 Nov 2020 07:06:32 -0800 (PST)
+Received: by mail-io1-xd44.google.com with SMTP id t8so21397991iov.8
+        for <linux-ia64@vger.kernel.org>; Tue, 17 Nov 2020 07:06:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=mAedU4t44s+CgP7BWSKOczJQUzvXruGZmgIhbIOpNbA=;
+        b=VOazJTnJQnHbzHw9PfPr9ptrTuUKYf/vg1fMVeue5DXCKQXTXhFmLvhRHEP9bRk1rC
+         e+r1gYJ1S/TGJB7IrOUZuvjRMmBItOyL6BgnugpIKbtOiWVhe32VuTPmkeAQcB79/sNB
+         EYGHM9csH0IJD5KmV710TtfhBr70OK59w31LbikcKUg8JX6ounM06l37Z4GaYmO0qXYB
+         pVJLX6T5I64mZj2Od+vxLoPWfhXcdiqWnJnXmMLpW9Q0gtN4BAPCx6xhkgiwsyh5am+c
+         V1WcZ9hnlvNNl0XB8tvRWL56B1mvvJaa+Qnc2uZpcr0K6AoY/l/LgefVgQCKOH7rk8R5
+         emeQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=mAedU4t44s+CgP7BWSKOczJQUzvXruGZmgIhbIOpNbA=;
+        b=g7U3XP9MAruWDPf2TbZwh4tOftdSW8rYKhC2us1alqVW2HzXF87UVd5SD6Su1wwkth
+         b8GehkjfVUKma/sETT2friEYGsGtRE3rOZjwOeeOrp5mnLFQ6oxpzVnpFC0xg5VhzVvK
+         5GP1iLexi4DRM5mvkPXCa0Wv0ofzNolurzK98jrYcfARDrruwxreyK7ziGXcCkuffY7n
+         pA4siaAobF1GVW6XdOy/KucGlyUGQYRGFHnUirQOZnUBZxO02AyuJZQyicJVK1P+D1yx
+         rMSfBG7k1fYt7nqixDzSSqFh9CNE8O+q4dXQcjeZn+ARf5UMbD7lcDJVLZ6MyaEPTYux
+         HoHg==
+X-Gm-Message-State: AOAM530I/jVNUhyWdXYFVSABlkweHrTdmiI4p4YBL6pT5NRoe75xZzPR
+        C5moJtvFJj3Z0QhjDDvXC7FevcXNrjnLBg==
+X-Google-Smtp-Source: ABdhPJzZBbOlgwAgjosKHLJqLPpaKwqacd3HcBX36A+/NFjfZbtDM4IU1Jwlottzqx/pawn08DcD8g==
+X-Received: by 2002:a02:6a59:: with SMTP id m25mr4023124jaf.132.1605625591794;
+        Tue, 17 Nov 2020 07:06:31 -0800 (PST)
+Received: from [192.168.1.30] ([65.144.74.34])
+        by smtp.gmail.com with ESMTPSA id j12sm10717065iow.27.2020.11.17.07.06.30
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 17 Nov 2020 07:06:31 -0800 (PST)
+Subject: Re: [PATCH] sh: add support for TIF_NOTIFY_SIGNAL
 To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Alexey Dobriyan <adobriyan@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Matt Turner <mattst88@gmail.com>, Meelis Roos <mroos@linux.ee>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mm@kvack.org, linux-snps-arc@lists.infradead.org
-Subject: Re: [PATCH v2 00/13] arch, mm: deprecate DISCONTIGMEM
-Message-ID: <20201117081457.GA370809@linux.ibm.com>
-References: <20201101170454.9567-1-rppt@kernel.org>
- <43c53597-6267-bdc2-a975-0aab5daa0d37@physik.fu-berlin.de>
- <20201117062316.GB370813@kernel.org>
- <d34f431a-288d-82a9-2632-85e8e695df12@physik.fu-berlin.de>
+Cc:     linux-sh@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+References: <5fcc82b4-89ae-3bca-10ab-6ad933565cee@kernel.dk>
+ <ae29ab73-ee7a-2bb7-3fd8-3037f40c1cbd@kernel.dk>
+ <5611bde9-67e7-6ff6-defc-9b02ea830fac@physik.fu-berlin.de>
+ <9ea14eb3-d698-5499-ba4c-c6a3c35cd8d4@kernel.dk>
+ <47f79645-53b7-b11c-167a-f5721b53df02@physik.fu-berlin.de>
+ <9d9acec6-1e8c-2d68-5dfa-d58c11cf5cc4@kernel.dk>
+ <070780c4-445e-6373-c8f4-1c72d0f3b4e0@physik.fu-berlin.de>
+From:   Jens Axboe <axboe@kernel.dk>
+Message-ID: <1047f3e5-4599-c34f-3176-9f41d2e1246b@kernel.dk>
+Date:   Tue, 17 Nov 2020 08:06:30 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d34f431a-288d-82a9-2632-85e8e695df12@physik.fu-berlin.de>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.312,18.0.737
- definitions=2020-11-17_02:2020-11-13,2020-11-17 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 bulkscore=0
- adultscore=0 phishscore=0 spamscore=0 suspectscore=1 malwarescore=0
- priorityscore=1501 mlxscore=0 lowpriorityscore=0 mlxlogscore=997
- clxscore=1011 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2011170054
+In-Reply-To: <070780c4-445e-6373-c8f4-1c72d0f3b4e0@physik.fu-berlin.de>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Adrian,
-
-On Tue, Nov 17, 2020 at 09:07:25AM +0100, John Paul Adrian Glaubitz wrote:
-> Hi Mike!
+On 11/16/20 10:26 PM, John Paul Adrian Glaubitz wrote:
+> Hi Jens!
 > 
-> On 11/17/20 7:23 AM, Mike Rapoport wrote:
-> > There were minor differences only for m68k between the versions. I've
-> > verified them on ARAnyM but if you have a real machine a run there would
-> > be nice.
+> On 11/9/20 3:14 PM, Jens Axboe wrote:
+>>> Sorry for the delay. I'm busy at the moment and my SH board is currently
+>>> building the Perl 5.32 package for Debian. Will try to test your patches
+>>> by tomorrow, also ia64.
+>>
+>> Thanks, both would be appreciated! Just CC'ed you on the updated patch
+>> for sh.
 > 
-> I do have a real machine (Amiga 68060) but it's currently not set up (but it
-> will be in the near future). So I'm not sure if I can test the change within
-> a short time frame.
->
-> I will certainly report back when I run into issues on real hardware.
+> Is this still relevant for testing? I'm ready to test now, much later than
+> I thought, sorry.
+> 
+> I'm going to build Linus' latest kernel for my SH and IA64 machines now
+> and then I can test additional patches on top of it.
 
-I hope there won't be any :)
+Thanks, would definitely still appreciate testing. You can just run
+linux-next if you want, it's got everything in there. Or apply the
+separate patches to -git, either approach is fine.
 
 -- 
-Sincerely yours,
-Mike.
+Jens Axboe
+
