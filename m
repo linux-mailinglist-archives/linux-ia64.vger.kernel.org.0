@@ -2,55 +2,45 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 908C32B5945
-	for <lists+linux-ia64@lfdr.de>; Tue, 17 Nov 2020 06:25:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EEB72B5947
+	for <lists+linux-ia64@lfdr.de>; Tue, 17 Nov 2020 06:27:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725774AbgKQFZC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 17 Nov 2020 00:25:02 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:40265 "EHLO
+        id S1726019AbgKQF0s (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 17 Nov 2020 00:26:48 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:41891 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725355AbgKQFZB (ORCPT
+        by vger.kernel.org with ESMTP id S1725613AbgKQF0s (ORCPT
         <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 17 Nov 2020 00:25:01 -0500
+        Tue, 17 Nov 2020 00:26:48 -0500
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.94)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1ketU5-001CTB-2k; Tue, 17 Nov 2020 06:24:53 +0100
+          id 1ketVu-001CtB-M7; Tue, 17 Nov 2020 06:26:46 +0100
 Received: from p57bd9382.dip0.t-ipconnect.de ([87.189.147.130] helo=[192.168.178.139])
           by inpost2.zedat.fu-berlin.de (Exim 4.94)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1ketU4-000ZYQ-Qv; Tue, 17 Nov 2020 06:24:52 +0100
-Subject: Re: [PATCH v2 00/13] arch, mm: deprecate DISCONTIGMEM
-To:     Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Matt Turner <mattst88@gmail.com>, Meelis Roos <mroos@linux.ee>,
-        Michael Schmitz <schmitzmic@gmail.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mm@kvack.org, linux-snps-arc@lists.infradead.org
-References: <20201101170454.9567-1-rppt@kernel.org>
+          id 1ketVu-000Zmr-FH; Tue, 17 Nov 2020 06:26:46 +0100
+Subject: Re: [PATCH] sh: add support for TIF_NOTIFY_SIGNAL
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     linux-sh@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+References: <5fcc82b4-89ae-3bca-10ab-6ad933565cee@kernel.dk>
+ <ae29ab73-ee7a-2bb7-3fd8-3037f40c1cbd@kernel.dk>
+ <5611bde9-67e7-6ff6-defc-9b02ea830fac@physik.fu-berlin.de>
+ <9ea14eb3-d698-5499-ba4c-c6a3c35cd8d4@kernel.dk>
+ <47f79645-53b7-b11c-167a-f5721b53df02@physik.fu-berlin.de>
+ <9d9acec6-1e8c-2d68-5dfa-d58c11cf5cc4@kernel.dk>
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <43c53597-6267-bdc2-a975-0aab5daa0d37@physik.fu-berlin.de>
-Date:   Tue, 17 Nov 2020 06:24:51 +0100
+Message-ID: <070780c4-445e-6373-c8f4-1c72d0f3b4e0@physik.fu-berlin.de>
+Date:   Tue, 17 Nov 2020 06:26:45 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.4.0
 MIME-Version: 1.0
-In-Reply-To: <20201101170454.9567-1-rppt@kernel.org>
+In-Reply-To: <9d9acec6-1e8c-2d68-5dfa-d58c11cf5cc4@kernel.dk>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -60,33 +50,21 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi!
+Hi Jens!
 
-On 11/1/20 6:04 PM, Mike Rapoport wrote:
-> It's been a while since DISCONTIGMEM is generally considered deprecated,
-> but it is still used by four architectures. This set replaces DISCONTIGMEM
-> with a different way to handle holes in the memory map and marks
-> DISCONTIGMEM configuration as BROKEN in Kconfigs of these architectures with
-> the intention to completely remove it in several releases.
+On 11/9/20 3:14 PM, Jens Axboe wrote:
+>> Sorry for the delay. I'm busy at the moment and my SH board is currently
+>> building the Perl 5.32 package for Debian. Will try to test your patches
+>> by tomorrow, also ia64.
 > 
-> While for 64-bit alpha and ia64 the switch to SPARSEMEM is quite obvious
-> and was a matter of moving some bits around, for smaller 32-bit arc and
-> m68k SPARSEMEM is not necessarily the best thing to do.
-> 
-> On 32-bit machines SPARSEMEM would require large sections to make section
-> index fit in the page flags, but larger sections mean that more memory is
-> wasted for unused memory map.
-> 
-> Besides, pfn_to_page() and page_to_pfn() become less efficient, at least on
-> arc.
-> 
-> So I've decided to generalize arm's approach for freeing of unused parts of
-> the memory map with FLATMEM and enable it for both arc and m68k. The
-> details are in the description of patches 10 (arc) and 13 (m68k).
+> Thanks, both would be appreciated! Just CC'ed you on the updated patch
+> for sh.
 
-Apologies for the late reply. Is this still relevant for testing?
+Is this still relevant for testing? I'm ready to test now, much later than
+I thought, sorry.
 
-I have already successfully tested v1 of the patch set, shall I test v2?
+I'm going to build Linus' latest kernel for my SH and IA64 machines now
+and then I can test additional patches on top of it.
 
 Adrian
 
