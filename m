@@ -2,91 +2,97 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 64E0A2B5592
-	for <lists+linux-ia64@lfdr.de>; Tue, 17 Nov 2020 01:11:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 908C32B5945
+	for <lists+linux-ia64@lfdr.de>; Tue, 17 Nov 2020 06:25:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1731037AbgKQALB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 16 Nov 2020 19:11:01 -0500
-Received: from anhedonia.sammy.net ([67.23.44.4]:54043 "EHLO sammy.net"
-        rhost-flags-OK-FAIL-OK-OK) by vger.kernel.org with ESMTP
-        id S1726310AbgKQALA (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 16 Nov 2020 19:11:00 -0500
-X-Greylist: delayed 2620 seconds by postgrey-1.27 at vger.kernel.org; Mon, 16 Nov 2020 19:11:00 EST
-Received: from sammy by sammy.net with local (Exim 4.63)
-        (envelope-from <sammy@sammy.net>)
-        id 1kentn-00010k-IZ; Mon, 16 Nov 2020 18:27:03 -0500
-Date:   Mon, 16 Nov 2020 18:27:03 -0500
-From:   Sam Creasey <sammy@sammy.net>
-To:     Finn Thain <fthain@telegraphics.com.au>
-Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
-        Arnd Bergmann <arnd@kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        id S1725774AbgKQFZC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 17 Nov 2020 00:25:02 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:40265 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725355AbgKQFZB (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 17 Nov 2020 00:25:01 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1ketU5-001CTB-2k; Tue, 17 Nov 2020 06:24:53 +0100
+Received: from p57bd9382.dip0.t-ipconnect.de ([87.189.147.130] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1ketU4-000ZYQ-Qv; Tue, 17 Nov 2020 06:24:52 +0100
+Subject: Re: [PATCH v2 00/13] arch, mm: deprecate DISCONTIGMEM
+To:     Mike Rapoport <rppt@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Alexey Dobriyan <adobriyan@gmail.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Matt Turner <mattst88@gmail.com>, Meelis Roos <mroos@linux.ee>,
+        Michael Schmitz <schmitzmic@gmail.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
         Russell King <linux@armlinux.org.uk>,
         Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        John Stultz <john.stultz@linaro.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>
-Subject: Re: [RFC 13/13] m68k: mac: convert to generic clockevent
-Message-ID: <20201116232703.GV14088@anhedonia-3>
-References: <20201008154651.1901126-1-arnd@arndb.de> <20201008154651.1901126-14-arnd@arndb.de> <alpine.LNX.2.23.453.2010091900150.12@nippy.intranet> <CAK8P3a3rM7gJjdTtcKzr6yi15n6xs-yhEpmSOf3QHfahQwxqkw@mail.gmail.com> <alpine.LNX.2.23.453.2010150937430.16@nippy.intranet> <CAK8P3a3i6cum_9xGgsbxjXXvbRsP8Po5qLZ0Agb3c4gZTKC9GQ@mail.gmail.com> <CAMuHMdUyGH=ORa4yHivMeJZaGQ3kEXi1kr9=P+u1y3QQnC+-4g@mail.gmail.com> <alpine.LNX.2.23.453.2011061343030.13@nippy.intranet>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <alpine.LNX.2.23.453.2011061343030.13@nippy.intranet>
-User-Agent: Mutt/1.4.2.2i
+        Vineet Gupta <vgupta@synopsys.com>,
+        Will Deacon <will@kernel.org>, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mm@kvack.org, linux-snps-arc@lists.infradead.org
+References: <20201101170454.9567-1-rppt@kernel.org>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <43c53597-6267-bdc2-a975-0aab5daa0d37@physik.fu-berlin.de>
+Date:   Tue, 17 Nov 2020 06:24:51 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.4.0
+MIME-Version: 1.0
+In-Reply-To: <20201101170454.9567-1-rppt@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.147.130
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Nov 06, 2020 at 01:52:01PM +1100, Finn Thain wrote:
-> On Fri, 23 Oct 2020, Geert Uytterhoeven wrote:
-> 
-> > > > > The arm/rpc timer seems to be roughly in the same category as most 
-> > > > > of the m68k ones or the i8253 counter on a PC. It's possible that 
-> > > > > some of them could use the same logic as 
-> > > > > drivers/clocksource/i8253.o as long as there is any hardware 
-> > > > > oneshot mode.
-> > > >
-> > > > There appear to be 15 platforms in that category. 4 have no 
-> > > > clocksource besides the jiffies clocksource, meaning there's no 
-> > > > practical alternative to using a periodic tick, like you did in your 
-> > > > RFC patch:
-> > > >
-> > > > arch/m68k/apollo/config.c
-> > > > arch/m68k/q40/q40ints.c
-> > > > arch/m68k/sun3/sun3ints.c
-> > > > arch/m68k/sun3x/time.c
-> > >
-> > > Do any of these have users? I'm fairly sure sun3x has never worked in 
-> > > mainline, sun3 seems to still need the same few patches it did 20 
-> > > years ago. I couldn't find much about Linux on Apollo or q40, the 
-> > > information on the web for either of them seems to all be for 
-> > > linux-2.4 kernels.
-> > 
-> > They probably don't have any users.
-> 
-> I have access to several Sun 3 machines but no time to work on that port, 
-> unfortunately.
-> 
-> Are these 4 platforms (those with no clocksource besides the "jiffies" 
-> clocksource) the only reason for CONFIG_TIME_LOW_RES on m68k?
+Hi!
 
-Sun3x was probably at least as close (if not closer) than Sun3 to
-working in mainline back in the day, but unfortunately I'm in the same
-place as Finn...  I've got the hardware, but time is harder to come
-by.
+On 11/1/20 6:04 PM, Mike Rapoport wrote:
+> It's been a while since DISCONTIGMEM is generally considered deprecated,
+> but it is still used by four architectures. This set replaces DISCONTIGMEM
+> with a different way to handle holes in the memory map and marks
+> DISCONTIGMEM configuration as BROKEN in Kconfigs of these architectures with
+> the intention to completely remove it in several releases.
+> 
+> While for 64-bit alpha and ia64 the switch to SPARSEMEM is quite obvious
+> and was a matter of moving some bits around, for smaller 32-bit arc and
+> m68k SPARSEMEM is not necessarily the best thing to do.
+> 
+> On 32-bit machines SPARSEMEM would require large sections to make section
+> index fit in the page flags, but larger sections mean that more memory is
+> wasted for unused memory map.
+> 
+> Besides, pfn_to_page() and page_to_pfn() become less efficient, at least on
+> arc.
+> 
+> So I've decided to generalize arm's approach for freeing of unused parts of
+> the memory map with FLATMEM and enable it for both arc and m68k. The
+> details are in the description of patches 10 (arc) and 13 (m68k).
 
--- Sam
+Apologies for the late reply. Is this still relevant for testing?
+
+I have already successfully tested v1 of the patch set, shall I test v2?
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
