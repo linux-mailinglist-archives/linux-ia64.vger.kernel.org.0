@@ -2,72 +2,239 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 97F4F2C8417
-	for <lists+linux-ia64@lfdr.de>; Mon, 30 Nov 2020 13:28:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 326962C883F
+	for <lists+linux-ia64@lfdr.de>; Mon, 30 Nov 2020 16:37:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725849AbgK3M2K (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 30 Nov 2020 07:28:10 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:40355 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725298AbgK3M2K (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 30 Nov 2020 07:28:10 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1kjiH9-001Zqo-Hz; Mon, 30 Nov 2020 13:27:27 +0100
-Received: from p57bd9091.dip0.t-ipconnect.de ([87.189.144.145] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1kjiH9-001cul-0G; Mon, 30 Nov 2020 13:27:27 +0100
-Subject: Re: vmlinux link failure on ia64 with zstd
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        Nick Terrell <terrelln@fb.com>
-Cc:     Ben Hutchings <ben@decadent.org.uk>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Tony Luck <tony.luck@intel.com>
-References: <f0a93b2d435252b3878ce821142677754f5e434c.camel@decadent.org.uk>
- <6A76267A-6B60-4428-94DF-E05706EB85FB@fb.com>
- <CAK7LNAToB3n9Y9OPXR55VKbDAkYgm1kUDO8gUu0Ak_+=6AhzCw@mail.gmail.com>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <067e9ef5-7555-6f8d-f744-e6400184d6ef@physik.fu-berlin.de>
-Date:   Mon, 30 Nov 2020 13:27:26 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+        id S1728211AbgK3Php (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 30 Nov 2020 10:37:45 -0500
+Received: from mail.kernel.org ([198.145.29.99]:43360 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728156AbgK3Pho (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 30 Nov 2020 10:37:44 -0500
+Received: from mail.kernel.org (ip5f5ad5b3.dynamic.kabel-deutschland.de [95.90.213.179])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 15E11208DB;
+        Mon, 30 Nov 2020 15:36:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606750605;
+        bh=Nq7nieU9NxFApiiKqP1AICqSGy1X7FthNYZ1ce3w7kc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=uAX1dK/KSSKf4Arojv/EDH+dOAzk9oYTaBF/88x9pGVVKS4rmWxOABF74+EklXubT
+         3+gsW9AXa1g6BYYtD5C2JQEufVOJpgzUdCkv/M3UdVc749uXzTGDSzsP8ZCOpFGEQ1
+         WwhTpLqH+/ozooez/Vwhu2kwSmK5XfW3EFpaJgKI=
+Received: from mchehab by mail.kernel.org with local (Exim 4.94)
+        (envelope-from <mchehab@kernel.org>)
+        id 1kjlEI-00CjvH-B9; Mon, 30 Nov 2020 16:36:42 +0100
+From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+        linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        "Daniel W. S. Almeida" <dwlsalmeida@gmail.com>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Andrew Cooper <andrew.cooper3@citrix.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Kees Cook <keescook@chromium.org>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Rich Felker <dalias@libc.org>,
+        Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Will Deacon <will@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        openrisc@lists.librecores.org, x86@kernel.org
+Subject: [PATCH 0/6] Add documentation for Documentation/features at the built docs
+Date:   Mon, 30 Nov 2020 16:36:29 +0100
+Message-Id: <cover.1606748711.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-In-Reply-To: <CAK7LNAToB3n9Y9OPXR55VKbDAkYgm1kUDO8gUu0Ak_+=6AhzCw@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.144.145
+Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Masahiro!
+Hi Jon,
 
-On 9/15/20 8:48 AM, Masahiro Yamada wrote:
-> dc35da16a2e2 is more than two years old (i.e. v4.17)
-> 
-> Are we discussing a long-standing issue
-> or something that arose recently?
+This series got already submitted last year:
 
-Kernels up to 5.7.0 built fine on ia64 in Debian [1], but I assume that zstd was
-only recently enabled in Debian's standard kernel.
+   https://lore.kernel.org/lkml/cover.1561222784.git.mchehab+samsung@kernel.org/
 
-Adrian
+Yet, on that time, there were too many other patches related to ReST
+conversion floating around. So, at the end, I guess this one got missed.
 
-> [1] https://buildd.debian.org/status/logs.php?pkg=linux&arch=ia64
+So, I did a rebase on the top of upstream, and added a few new changes.
+
+Patch 1 contains the original implementation back then. It adds a
+get_feat.pl script that parses the contents of Documentation/features.
+
+Patch 2 is new: it re-implements the output of the full contents of the
+features table as a set of per-subsystem tables. 
+
+Patch 3 replaces the existing Documentation/features/list-arch.sh
+by a call to the new script, in order to avoid having two scripts
+doing the same thing.
+
+Patch 4 is a sphinx extension to allow generating features output
+via a meta-tag.
+
+Patch 5 adds a complete feature list covering all archs at the
+admin guide.
+
+Patch 6 adds a per-arch feature list on each architecture book.
+
+-
+
+The scripts/get_feat.pl supports several types of output:
+
+- $ scripts/get_feat.pl current
+
+  Outputs the supported feadures by the architecture of the
+  running Kernel, as an ASCII table;
+
+- $  scripts/get_feat.pl list
+
+  Outputs the supported features on an easy to be parsed
+  format. By default, it uses the current architecture as well;
+
+- $  scripts/get_feat.pl rest --feature jump-labels
+
+  Output what architecture supports a given feature
+  (on the above example, "jump-labels" feature)
+
+- $ scripts/get_feat.pl rest --arch um
+
+  Outputs the features support for an specific architecture
+  (on the above example, for "um" architecture.
+
+- $ scripts/get_feat.pl rest
+
+  Outputs a text file with ASCII tables (ReST compatible)
+  with all features, grouped per subsystem.
+
+  E. g. something like:
+	
+        ===================================
+        Feature status on all architectures
+        ===================================
+        
+        Subsystem: core
+        ===============
+        
+        +---------------------+---------------------------------+-------------------------------------------------------------------------+------------+------+
+        |Feature              |Kconfig                          |Description                                                              |Architecture|Status|
+        +=====================+=================================+=========================================================================+============+======+
+        |cBPF-JIT             |HAVE_CBPF_JIT                    |arch supports cBPF JIT optimizations                                     |alpha       |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |arc         |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |arm         |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |arm64       |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |c6x         |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |csky        |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |h8300       |TODO  |
+        |                     |                                 |                                                                         +------------+------+
+        |                     |                                 |                                                                         |hexagon     |TODO  |
+...
+
+Adding those patchsets will basically place the contents of all
+files under Documentation/features (currently, 45 files) at the
+Kernel documentation, which is, IMO, a good thing to do.
+
+Regards,
+Mauro
+
+Mauro Carvalho Chehab (6):
+  scripts: get_feat.pl: add a script to handle Documentation/features
+  scripts: get_feat.pl: improve matrix output
+  scripts: get_feat.pl: use its implementation for list-arch.sh
+  sphinx: kernel_feat.py: add a script to parse feature files
+  docs: admin-guide: add a features list
+  docs: archis: add a per-architecture features list
+
+ Documentation/admin-guide/features.rst |   3 +
+ Documentation/admin-guide/index.rst    |   1 +
+ Documentation/arm/features.rst         |   3 +
+ Documentation/arm/index.rst            |   2 +
+ Documentation/arm64/features.rst       |   3 +
+ Documentation/arm64/index.rst          |   2 +
+ Documentation/conf.py                  |   2 +-
+ Documentation/features/list-arch.sh    |  17 +-
+ Documentation/ia64/features.rst        |   3 +
+ Documentation/ia64/index.rst           |   2 +
+ Documentation/index.rst                |   2 +-
+ Documentation/m68k/features.rst        |   3 +
+ Documentation/m68k/index.rst           |   2 +
+ Documentation/mips/features.rst        |   3 +
+ Documentation/mips/index.rst           |   2 +
+ Documentation/nios2/index.rst          |  12 +
+ Documentation/openrisc/features.rst    |   3 +
+ Documentation/openrisc/index.rst       |   2 +
+ Documentation/parisc/features.rst      |   3 +
+ Documentation/parisc/index.rst         |   2 +
+ Documentation/powerpc/features.rst     |   3 +
+ Documentation/powerpc/index.rst        |   2 +
+ Documentation/riscv/features.rst       |   3 +
+ Documentation/riscv/index.rst          |   2 +
+ Documentation/s390/features.rst        |   3 +
+ Documentation/s390/index.rst           |   2 +
+ Documentation/sh/features.rst          |   3 +
+ Documentation/sh/index.rst             |   2 +
+ Documentation/sparc/features.rst       |   3 +
+ Documentation/sparc/index.rst          |   2 +
+ Documentation/sphinx/kernel_feat.py    | 169 ++++++++
+ Documentation/x86/features.rst         |   3 +
+ Documentation/x86/index.rst            |   1 +
+ Documentation/xtensa/features.rst      |   3 +
+ Documentation/xtensa/index.rst         |   2 +
+ scripts/get_feat.pl                    | 552 +++++++++++++++++++++++++
+ 36 files changed, 810 insertions(+), 17 deletions(-)
+ create mode 100644 Documentation/admin-guide/features.rst
+ create mode 100644 Documentation/arm/features.rst
+ create mode 100644 Documentation/arm64/features.rst
+ create mode 100644 Documentation/ia64/features.rst
+ create mode 100644 Documentation/m68k/features.rst
+ create mode 100644 Documentation/mips/features.rst
+ create mode 100644 Documentation/nios2/index.rst
+ create mode 100644 Documentation/openrisc/features.rst
+ create mode 100644 Documentation/parisc/features.rst
+ create mode 100644 Documentation/powerpc/features.rst
+ create mode 100644 Documentation/riscv/features.rst
+ create mode 100644 Documentation/s390/features.rst
+ create mode 100644 Documentation/sh/features.rst
+ create mode 100644 Documentation/sparc/features.rst
+ create mode 100644 Documentation/sphinx/kernel_feat.py
+ create mode 100644 Documentation/x86/features.rst
+ create mode 100644 Documentation/xtensa/features.rst
+ create mode 100755 scripts/get_feat.pl
 
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+2.28.0
+
 
