@@ -2,456 +2,74 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C5802C8844
-	for <lists+linux-ia64@lfdr.de>; Mon, 30 Nov 2020 16:40:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EA42F2C8B94
+	for <lists+linux-ia64@lfdr.de>; Mon, 30 Nov 2020 18:45:52 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727450AbgK3PiH (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 30 Nov 2020 10:38:07 -0500
-Received: from mail.kernel.org ([198.145.29.99]:43502 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1727016AbgK3PiH (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 30 Nov 2020 10:38:07 -0500
-Received: from mail.kernel.org (ip5f5ad5b3.dynamic.kabel-deutschland.de [95.90.213.179])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2E293208FE;
-        Mon, 30 Nov 2020 15:36:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=default; t=1606750605;
-        bh=0DZIgPt81ePJ9MlFFkPWiF0x1oIC/jHfOBLqtU2LcVQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TRWg1GIgqep5FzBHzkhpbCADpinxgS3ZjWHDVNibMKTRwXUJQmJyz7Cx5qxuqtlb0
-         C1IRZBGOAVGVeXjpV5tj7szk81cPRFjh/SC/zJkd+dJOYYH5AisFE3uHGXVbuxprSq
-         xv247OkjYg7f0ThknaQ0sapQBHmSRChC6tg3L3Jw=
-Received: from mchehab by mail.kernel.org with local (Exim 4.94)
-        (envelope-from <mchehab@kernel.org>)
-        id 1kjlEI-00CjvU-Hk; Mon, 30 Nov 2020 16:36:42 +0100
-From:   Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-To:     Linux Doc Mailing List <linux-doc@vger.kernel.org>
-Cc:     Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        "Jonathan Corbet" <corbet@lwn.net>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Andrew Cooper <andrew.cooper3@citrix.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Rich Felker <dalias@libc.org>,
-        Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
+        id S1726505AbgK3Rpp (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 30 Nov 2020 12:45:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49936 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1725980AbgK3Rpp (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 30 Nov 2020 12:45:45 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F43FC0613CF;
+        Mon, 30 Nov 2020 09:45:05 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=hRlE8DF/ZubZzMQwEJPth9qcfK7FAspGEHghdXZxGCs=; b=j4c2SoVXehKHxeI01LLeQ7z0L/
+        N2yFZ9GsmRGzxYdH3I2RchZyLMOhi+8J59OdcJxlFB2nvPbn4KgU9LPKAcbodB5zYkjbUdZQQgz86
+        W0ppLcXX65vbNyMNW+vRXuVSwOvmSTfEbGgzciwqZaepSJS2uB6iPBvTUxwgjzR3nnbt0N6B4qhHj
+        EPBMdY+sT5BzXe7nYJjv8YS7zwS98yAJDijD37bKG6o79JmBgS7fULh3mSh/oCNH3SbuWIBI6AHCk
+        DqVhYyCz5mfK7lg4Yi1MFurO7XL4qlaLkvPxWFk85IS4GB8TXfKdMfIuSvDmVoNtDYOeXshOkhHl9
+        RT5ose+g==;
+Received: from [2601:1c0:6280:3f0::cc1f] (helo=smtpauth.infradead.org)
+        by casper.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kjnER-0005NY-Qt; Mon, 30 Nov 2020 17:45:00 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Christoph Hellwig <hch@lst.de>,
         Tony Luck <tony.luck@intel.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, openrisc@lists.librecores.org,
-        x86@kernel.org
-Subject: [PATCH 6/6] docs: archis: add a per-architecture features list
-Date:   Mon, 30 Nov 2020 16:36:35 +0100
-Message-Id: <9c39d4dd93e05c0008205527d2c3450912f029ed.1606748711.git.mchehab+huawei@kernel.org>
-X-Mailer: git-send-email 2.28.0
-In-Reply-To: <cover.1606748711.git.mchehab+huawei@kernel.org>
-References: <cover.1606748711.git.mchehab+huawei@kernel.org>
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
+Subject: [PATCH] ia64: remove duplicate entries in generic_defconfig
+Date:   Mon, 30 Nov 2020 09:44:56 -0800
+Message-Id: <20201130174456.25104-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Sender: Mauro Carvalho Chehab <mchehab@kernel.org>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Add a feature list matrix for each architecture to their
-respective Kernel books.
+Fix ia64 generic_defconfig duplicate entries, as warned by:
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+  + arch/ia64/configs/generic_defconfig: warning: override: reassigning to symbol ATA:  => 58
+  + arch/ia64/configs/generic_defconfig: warning: override: reassigning to symbol ATA_PIIX:  => 59
+
+These 2 symbols still have the same value as in the removed lines.
+
+Fixes: c331649e6371 ("ia64: Use libata instead of the legacy ide driver in defconfigs")
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Fenghua Yu <fenghua.yu@intel.com>
+Cc: linux-ia64@vger.kernel.org
 ---
- Documentation/arm/features.rst      |  3 +++
- Documentation/arm/index.rst         |  2 ++
- Documentation/arm64/features.rst    |  3 +++
- Documentation/arm64/index.rst       |  2 ++
- Documentation/ia64/features.rst     |  3 +++
- Documentation/ia64/index.rst        |  2 ++
- Documentation/index.rst             |  2 +-
- Documentation/m68k/features.rst     |  3 +++
- Documentation/m68k/index.rst        |  2 ++
- Documentation/mips/features.rst     |  3 +++
- Documentation/mips/index.rst        |  2 ++
- Documentation/nios2/index.rst       | 12 ++++++++++++
- Documentation/openrisc/features.rst |  3 +++
- Documentation/openrisc/index.rst    |  2 ++
- Documentation/parisc/features.rst   |  3 +++
- Documentation/parisc/index.rst      |  2 ++
- Documentation/powerpc/features.rst  |  3 +++
- Documentation/powerpc/index.rst     |  2 ++
- Documentation/riscv/features.rst    |  3 +++
- Documentation/riscv/index.rst       |  2 ++
- Documentation/s390/features.rst     |  3 +++
- Documentation/s390/index.rst        |  2 ++
- Documentation/sh/features.rst       |  3 +++
- Documentation/sh/index.rst          |  2 ++
- Documentation/sparc/features.rst    |  3 +++
- Documentation/sparc/index.rst       |  2 ++
- Documentation/x86/features.rst      |  3 +++
- Documentation/x86/index.rst         |  1 +
- Documentation/xtensa/features.rst   |  3 +++
- Documentation/xtensa/index.rst      |  2 ++
- 30 files changed, 82 insertions(+), 1 deletion(-)
- create mode 100644 Documentation/arm/features.rst
- create mode 100644 Documentation/arm64/features.rst
- create mode 100644 Documentation/ia64/features.rst
- create mode 100644 Documentation/m68k/features.rst
- create mode 100644 Documentation/mips/features.rst
- create mode 100644 Documentation/nios2/index.rst
- create mode 100644 Documentation/openrisc/features.rst
- create mode 100644 Documentation/parisc/features.rst
- create mode 100644 Documentation/powerpc/features.rst
- create mode 100644 Documentation/riscv/features.rst
- create mode 100644 Documentation/s390/features.rst
- create mode 100644 Documentation/sh/features.rst
- create mode 100644 Documentation/sparc/features.rst
- create mode 100644 Documentation/x86/features.rst
- create mode 100644 Documentation/xtensa/features.rst
+ arch/ia64/configs/generic_defconfig |    2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/Documentation/arm/features.rst b/Documentation/arm/features.rst
-new file mode 100644
-index 000000000000..7414ec03dd15
---- /dev/null
-+++ b/Documentation/arm/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features arm
-diff --git a/Documentation/arm/index.rst b/Documentation/arm/index.rst
-index 5fc072dd0c5e..a2e9e1bba7b9 100644
---- a/Documentation/arm/index.rst
-+++ b/Documentation/arm/index.rst
-@@ -23,6 +23,8 @@ ARM Architecture
-    vlocks
-    porting
- 
-+   features
-+
- SoC-specific documents
- ======================
- 
-diff --git a/Documentation/arm64/features.rst b/Documentation/arm64/features.rst
-new file mode 100644
-index 000000000000..dfa4cb3cd3ef
---- /dev/null
-+++ b/Documentation/arm64/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features arm64
-diff --git a/Documentation/arm64/index.rst b/Documentation/arm64/index.rst
-index 937634c49979..97d65ba12a35 100644
---- a/Documentation/arm64/index.rst
-+++ b/Documentation/arm64/index.rst
-@@ -24,6 +24,8 @@ ARM64 Architecture
-     tagged-address-abi
-     tagged-pointers
- 
-+    features
-+
- .. only::  subproject and html
- 
-    Indices
-diff --git a/Documentation/ia64/features.rst b/Documentation/ia64/features.rst
-new file mode 100644
-index 000000000000..d7226fdcf5f8
---- /dev/null
-+++ b/Documentation/ia64/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features ia64
-diff --git a/Documentation/ia64/index.rst b/Documentation/ia64/index.rst
-index 4bdfe28067ee..761f2154dfa2 100644
---- a/Documentation/ia64/index.rst
-+++ b/Documentation/ia64/index.rst
-@@ -15,3 +15,5 @@ IA-64 Architecture
-    irq-redir
-    mca
-    serial
-+
-+   features
-diff --git a/Documentation/index.rst b/Documentation/index.rst
-index 57719744774c..5888e8a7272f 100644
---- a/Documentation/index.rst
-+++ b/Documentation/index.rst
-@@ -160,7 +160,7 @@ implementation.
-    ia64/index
-    m68k/index
-    mips/index
--   nios2/nios2
-+   nios2/index
-    openrisc/index
-    parisc/index
-    powerpc/index
-diff --git a/Documentation/m68k/features.rst b/Documentation/m68k/features.rst
-new file mode 100644
-index 000000000000..5107a2119472
---- /dev/null
-+++ b/Documentation/m68k/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features m68k
-diff --git a/Documentation/m68k/index.rst b/Documentation/m68k/index.rst
-index b89cb6a86d9b..0f890dbb5fe2 100644
---- a/Documentation/m68k/index.rst
-+++ b/Documentation/m68k/index.rst
-@@ -10,6 +10,8 @@ m68k Architecture
-    kernel-options
-    buddha-driver
- 
-+   features
-+
- .. only::  subproject and html
- 
-    Indices
-diff --git a/Documentation/mips/features.rst b/Documentation/mips/features.rst
-new file mode 100644
-index 000000000000..1973d729b29a
---- /dev/null
-+++ b/Documentation/mips/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features mips
-diff --git a/Documentation/mips/index.rst b/Documentation/mips/index.rst
-index 35cceea4e8bc..037f85a08fe3 100644
---- a/Documentation/mips/index.rst
-+++ b/Documentation/mips/index.rst
-@@ -11,6 +11,8 @@ MIPS-specific Documentation
-    booting
-    ingenic-tcu
- 
-+   features
-+
- .. only::  subproject and html
- 
-    Indices
-diff --git a/Documentation/nios2/index.rst b/Documentation/nios2/index.rst
-new file mode 100644
-index 000000000000..4468fe1a1037
---- /dev/null
-+++ b/Documentation/nios2/index.rst
-@@ -0,0 +1,12 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+==============================
-+Nios II Specific Documentation
-+==============================
-+
-+.. toctree::
-+   :maxdepth: 2
-+   :numbered:
-+
-+   nios2
-+   features
-diff --git a/Documentation/openrisc/features.rst b/Documentation/openrisc/features.rst
-new file mode 100644
-index 000000000000..3f7c40d219f2
---- /dev/null
-+++ b/Documentation/openrisc/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features openrisc
-diff --git a/Documentation/openrisc/index.rst b/Documentation/openrisc/index.rst
-index 748b3eea1707..6879f998b87a 100644
---- a/Documentation/openrisc/index.rst
-+++ b/Documentation/openrisc/index.rst
-@@ -10,6 +10,8 @@ OpenRISC Architecture
-    openrisc_port
-    todo
- 
-+   features
-+
- .. only::  subproject and html
- 
-    Indices
-diff --git a/Documentation/parisc/features.rst b/Documentation/parisc/features.rst
-new file mode 100644
-index 000000000000..501d7c450037
---- /dev/null
-+++ b/Documentation/parisc/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features parisc
-diff --git a/Documentation/parisc/index.rst b/Documentation/parisc/index.rst
-index aa3ee0470425..240685751825 100644
---- a/Documentation/parisc/index.rst
-+++ b/Documentation/parisc/index.rst
-@@ -10,6 +10,8 @@ PA-RISC Architecture
-    debugging
-    registers
- 
-+   features
-+
- .. only::  subproject and html
- 
-    Indices
-diff --git a/Documentation/powerpc/features.rst b/Documentation/powerpc/features.rst
-new file mode 100644
-index 000000000000..aeae73df86b0
---- /dev/null
-+++ b/Documentation/powerpc/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features powerpc
-diff --git a/Documentation/powerpc/index.rst b/Documentation/powerpc/index.rst
-index 6ec64b0d5257..bf5f1a2bdbdf 100644
---- a/Documentation/powerpc/index.rst
-+++ b/Documentation/powerpc/index.rst
-@@ -34,6 +34,8 @@ powerpc
-     vas-api
-     vcpudispatch_stats
- 
-+    features
-+
- .. only::  subproject and html
- 
-    Indices
-diff --git a/Documentation/riscv/features.rst b/Documentation/riscv/features.rst
-new file mode 100644
-index 000000000000..c70ef6ac2368
---- /dev/null
-+++ b/Documentation/riscv/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features riscv
-diff --git a/Documentation/riscv/index.rst b/Documentation/riscv/index.rst
-index fa33bffd8992..6e6e39482502 100644
---- a/Documentation/riscv/index.rst
-+++ b/Documentation/riscv/index.rst
-@@ -9,6 +9,8 @@ RISC-V architecture
-     pmu
-     patch-acceptance
- 
-+    features
-+
- .. only::  subproject and html
- 
-    Indices
-diff --git a/Documentation/s390/features.rst b/Documentation/s390/features.rst
-new file mode 100644
-index 000000000000..57c296a9d8f3
---- /dev/null
-+++ b/Documentation/s390/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features s390
-diff --git a/Documentation/s390/index.rst b/Documentation/s390/index.rst
-index cf71df5776b4..b10ca9192557 100644
---- a/Documentation/s390/index.rst
-+++ b/Documentation/s390/index.rst
-@@ -19,6 +19,8 @@ s390 Architecture
- 
-     text_files
- 
-+    features
-+
- .. only::  subproject and html
- 
-    Indices
-diff --git a/Documentation/sh/features.rst b/Documentation/sh/features.rst
-new file mode 100644
-index 000000000000..f722af3b6c99
---- /dev/null
-+++ b/Documentation/sh/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features sh
-diff --git a/Documentation/sh/index.rst b/Documentation/sh/index.rst
-index 7b9a79a28167..c64776738cf6 100644
---- a/Documentation/sh/index.rst
-+++ b/Documentation/sh/index.rst
-@@ -11,6 +11,8 @@ SuperH Interfaces Guide
-     new-machine
-     register-banks
- 
-+    features
-+
- Memory Management
- =================
- 
-diff --git a/Documentation/sparc/features.rst b/Documentation/sparc/features.rst
-new file mode 100644
-index 000000000000..c0c92468b0fe
---- /dev/null
-+++ b/Documentation/sparc/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features sparc
-diff --git a/Documentation/sparc/index.rst b/Documentation/sparc/index.rst
-index 71cff621f243..ae884224eec2 100644
---- a/Documentation/sparc/index.rst
-+++ b/Documentation/sparc/index.rst
-@@ -9,3 +9,5 @@ Sparc Architecture
-    adi
- 
-    oradax/oracle-dax
-+
-+   features
-diff --git a/Documentation/x86/features.rst b/Documentation/x86/features.rst
-new file mode 100644
-index 000000000000..b663f15053ce
---- /dev/null
-+++ b/Documentation/x86/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features x86
-diff --git a/Documentation/x86/index.rst b/Documentation/x86/index.rst
-index b224d12c880b..b4fcb6f258b2 100644
---- a/Documentation/x86/index.rst
-+++ b/Documentation/x86/index.rst
-@@ -33,3 +33,4 @@ x86-specific Documentation
-    i386/index
-    x86_64/index
-    sva
-+   features
-diff --git a/Documentation/xtensa/features.rst b/Documentation/xtensa/features.rst
-new file mode 100644
-index 000000000000..6b92c7bfa19d
---- /dev/null
-+++ b/Documentation/xtensa/features.rst
-@@ -0,0 +1,3 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+
-+.. kernel-feat:: $srctree/Documentation/features xtensa
-diff --git a/Documentation/xtensa/index.rst b/Documentation/xtensa/index.rst
-index 52fa04eb39a3..69952446a9be 100644
---- a/Documentation/xtensa/index.rst
-+++ b/Documentation/xtensa/index.rst
-@@ -10,3 +10,5 @@ Xtensa Architecture
-    atomctl
-    booting
-    mmu
-+
-+   features
--- 
-2.28.0
-
+--- linux-next-20201130.orig/arch/ia64/configs/generic_defconfig
++++ linux-next-20201130/arch/ia64/configs/generic_defconfig
+@@ -55,8 +55,6 @@ CONFIG_CHR_DEV_SG=m
+ CONFIG_SCSI_FC_ATTRS=y
+ CONFIG_SCSI_SYM53C8XX_2=y
+ CONFIG_SCSI_QLOGIC_1280=y
+-CONFIG_ATA=y
+-CONFIG_ATA_PIIX=y
+ CONFIG_SATA_VITESSE=y
+ CONFIG_MD=y
+ CONFIG_BLK_DEV_MD=m
