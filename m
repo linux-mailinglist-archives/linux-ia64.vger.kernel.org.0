@@ -2,30 +2,25 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 309EC2CACD4
-	for <lists+linux-ia64@lfdr.de>; Tue,  1 Dec 2020 20:57:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2450B2CB598
+	for <lists+linux-ia64@lfdr.de>; Wed,  2 Dec 2020 08:16:30 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S2392461AbgLAT4a (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 1 Dec 2020 14:56:30 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:39955 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S2388704AbgLAT42 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 1 Dec 2020 14:56:28 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1kkBkR-003edd-JW; Tue, 01 Dec 2020 20:55:39 +0100
-Received: from p57bd9091.dip0.t-ipconnect.de ([87.189.144.145] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1kkBkQ-001scM-TR; Tue, 01 Dec 2020 20:55:39 +0100
-Subject: Re: [PATCH v2 00/13] arch, mm: deprecate DISCONTIGMEM
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Mike Rapoport <rppt@kernel.org>
+        id S2387526AbgLBHPV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 2 Dec 2020 02:15:21 -0500
+Received: from mail.kernel.org ([198.145.29.99]:40852 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1728105AbgLBHPU (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 2 Dec 2020 02:15:20 -0500
+Date:   Wed, 2 Dec 2020 09:14:27 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=default; t=1606893279;
+        bh=r9lBvNLf060yzQHPZcKoDIPwOZLCXF+OC0jER6EqYE8=;
+        h=From:To:Cc:Subject:References:In-Reply-To:From;
+        b=wT49VF25j17+qMQAVEXVRjsH4L8jOTzl07zqrb3R6/MykEtip20Xt9J18zFMOaZ2v
+         UIE8Gqusz6j75TITTsJbOfI3E3FfrTzJ6BOWagH5bzy9BLdh+yt2jnejJgPuPHA9os
+         2VTy7RW8ddzE/3xCPSiM0eGtnB7iUkiaQi7so7e4=
+From:   Mike Rapoport <rppt@kernel.org>
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Alexey Dobriyan <adobriyan@gmail.com>,
         Catalin Marinas <catalin.marinas@arm.com>,
@@ -44,8 +39,9 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
         linux-mm@kvack.org, linux-snps-arc@lists.infradead.org,
         Jens Axboe <axboe@kernel.dk>
-References: <20201101170454.9567-1-rppt@kernel.org>
- <43c53597-6267-bdc2-a975-0aab5daa0d37@physik.fu-berlin.de>
+Subject: Re: [PATCH v2 00/13] arch, mm: deprecate DISCONTIGMEM
+Message-ID: <20201202071427.GD751215@kernel.org>
+References: <43c53597-6267-bdc2-a975-0aab5daa0d37@physik.fu-berlin.de>
  <20201117062316.GB370813@kernel.org>
  <a7d01146-77f9-d363-af99-af3aee3789b4@physik.fu-berlin.de>
  <20201201102901.GF557259@kernel.org>
@@ -54,39 +50,44 @@ References: <20201101170454.9567-1-rppt@kernel.org>
  <49a2022c-f106-55ec-9390-41307a056517@physik.fu-berlin.de>
  <20201201135623.GA751215@kernel.org>
  <4c752ff0-27a6-b9d7-ab81-8aac1a3b7b65@physik.fu-berlin.de>
-Message-ID: <ea5bae0e-9f27-355f-d841-cf8b362b0b70@physik.fu-berlin.de>
-Date:   Tue, 1 Dec 2020 20:55:37 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.0
+ <ea5bae0e-9f27-355f-d841-cf8b362b0b70@physik.fu-berlin.de>
 MIME-Version: 1.0
-In-Reply-To: <4c752ff0-27a6-b9d7-ab81-8aac1a3b7b65@physik.fu-berlin.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.144.145
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ea5bae0e-9f27-355f-d841-cf8b362b0b70@physik.fu-berlin.de>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Mike!
+Hi Adrian,
 
-On 12/1/20 4:07 PM, John Paul Adrian Glaubitz wrote:
-> This fixes the issue for me.
+On Tue, Dec 01, 2020 at 08:55:37PM +0100, John Paul Adrian Glaubitz wrote:
+> Hi Mike!
 > 
-> Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> On 12/1/20 4:07 PM, John Paul Adrian Glaubitz wrote:
+> > This fixes the issue for me.
+> > 
+> > Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> 
+> I just booted the kernel from the linux-mm branch and I can't get the hpsa driver
+> to work anymore. Even if I compile it into the kernel, the driver is no longer
+> loaded and hence I can't access the disks.
+> 
+> Any idea what could be wrong?
 
-I just booted the kernel from the linux-mm branch and I can't get the hpsa driver
-to work anymore. Even if I compile it into the kernel, the driver is no longer
-loaded and hence I can't access the disks.
+I know nearly nothing about SCSI, I can only suggest to enable all the
+debug options available and see if anything shows up :)
 
-Any idea what could be wrong?
-
-Adrian
+> Adrian
+> 
+> -- 
+>  .''`.  John Paul Adrian Glaubitz
+> : :' :  Debian Developer - glaubitz@debian.org
+> `. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+>   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+> 
+> 
 
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+Sincerely yours,
+Mike.
