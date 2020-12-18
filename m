@@ -2,130 +2,254 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 151FC2DE7F4
-	for <lists+linux-ia64@lfdr.de>; Fri, 18 Dec 2020 18:20:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3AC72DEB19
+	for <lists+linux-ia64@lfdr.de>; Fri, 18 Dec 2020 22:30:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727787AbgLRRTr (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 18 Dec 2020 12:19:47 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57928 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725797AbgLRRTr (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 18 Dec 2020 12:19:47 -0500
-Received: from mail-oi1-x236.google.com (mail-oi1-x236.google.com [IPv6:2607:f8b0:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D85F0C0617A7;
-        Fri, 18 Dec 2020 09:19:06 -0800 (PST)
-Received: by mail-oi1-x236.google.com with SMTP id q25so3532739oij.10;
-        Fri, 18 Dec 2020 09:19:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=sender:date:from:to:cc:subject:message-id:mime-version
-         :content-disposition:user-agent;
-        bh=yN8pXNZweJHRV+CIZdCyGPF9KgAKkYFH5yQW0e//tEA=;
-        b=SNG5jPvU/IZiNrihKKiofbkedRSFiEUU0rlpuTRWSAV1yJBfz+O64zAcNG+X9jz8Yg
-         lVD81nJNvZ1BhECARLCVBqI53pyP6qWwGSvTwtS3Rx0GR8lDi+EFzIxTIrlwjcFAPBfH
-         fvEfUBaEtOlkJxlCrwoXum/cGNDG0Nbinc2ZjLkLZp2Oz9nEmJqWgdbqTeIAU6qlhOUC
-         cWzkfJ742wWzcTOInNHHfOHb2qZl4KEWlj7rN0+brKtlOhiXWJsjrBl1/lms9oRhM1YK
-         i5qn9qqSgpyPm8ebSCkhCaGdYt8BatJx5f1dy3jeAp8RZTtk8aJQgh0nxOV9ofR/5hFF
-         LZBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:sender:date:from:to:cc:subject:message-id
-         :mime-version:content-disposition:user-agent;
-        bh=yN8pXNZweJHRV+CIZdCyGPF9KgAKkYFH5yQW0e//tEA=;
-        b=JSO4S3fy1n0RK1XteXNp4gvfbEfoHqBF+i9loEwvfCNLkQXY32uOkyyJy0T1QY/9A3
-         6q/ofYNQg9FYHRAg77maFzUUvKLN2iWnrOFlTNK69O0QWvRMs5oMkGP5zqns88W2vrt+
-         NpYfbp32WbtDJ4afv4S05mxFSIiXm91B21nyJgd6Ah4uFcwy1Yn8t3UoT1HcT21v/ior
-         ypbAMJfrbF/U/uCBBZfdLATpYQBIBsFE5nwzXlmGWWS58JW/TffPYOwk5YrWjjwOeOMS
-         0xahIVqnVUPGaijG2y7bInPgYTv29VOJJyJNsKcLX7dNcCxsF5H7ruMNj1k5PJkDsFo6
-         jbdg==
-X-Gm-Message-State: AOAM530H3rbxwbuNUrmHsCr3BWAfmrCia0sLtJTR2/2XWgYYJwdfWcX5
-        GNZICyLCuFsGG3vifVCgRCfvI/ono0A=
-X-Google-Smtp-Source: ABdhPJxUgmkw8GklMtkDhP0vMaUqWj6hBFAvs0kvb68WADoTS2bdbei5/8Zx+v6lpOwoPlRAB2Guxg==
-X-Received: by 2002:aca:4355:: with SMTP id q82mr2153648oia.132.1608311946135;
-        Fri, 18 Dec 2020 09:19:06 -0800 (PST)
-Received: from localhost ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 65sm2003060otp.35.2020.12.18.09.19.04
-        (version=TLS1_2 cipher=ECDHE-ECDSA-CHACHA20-POLY1305 bits=256/256);
-        Fri, 18 Dec 2020 09:19:05 -0800 (PST)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 18 Dec 2020 09:19:03 -0800
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        id S1725901AbgLRVai (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 18 Dec 2020 16:30:38 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:33483 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1725836AbgLRVai (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 18 Dec 2020 16:30:38 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1kqNJr-000dfM-3d; Fri, 18 Dec 2020 22:29:47 +0100
+Received: from p5b13a238.dip0.t-ipconnect.de ([91.19.162.56] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1kqNJq-003t0R-Pt; Fri, 18 Dec 2020 22:29:47 +0100
+Subject: Re: [PATCH v2 05/15] ia64: convert to legacy_timer_tick
+To:     Arnd Bergmann <arnd@kernel.org>, linux-kernel@vger.kernel.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Russell King <linux@armlinux.org.uk>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Finn Thain <fthain@telegraphics.com.au>,
+        Philip Blundell <philb@gnu.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Sam Creasey <sammy@sammy.net>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        John Stultz <john.stultz@linaro.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        linux-ia64@vger.kernel.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
         Mike Rapoport <rppt@linux.ibm.com>,
-        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ia64: fix build failure caused by memory model changes
-Message-ID: <20201218171903.GA6466@roeck-us.net>
+        Anatoly Pugachev <matorola@gmail.com>
+References: <20201030151758.1241164-1-arnd@kernel.org>
+ <20201030151758.1241164-6-arnd@kernel.org>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <59efce0e-a28d-9424-82ca-fb7f3a1b9c29@physik.fu-berlin.de>
+Date:   Fri, 18 Dec 2020 22:29:45 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.5.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-User-Agent: Mutt/1.9.4 (2018-02-28)
+In-Reply-To: <20201030151758.1241164-6-arnd@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.162.56
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Dec 18, 2020 at 06:35:50PM +0200, Mike Rapoport wrote:
-> From: Mike Rapoport <rppt@linux.ibm.com>
-> 
-> The change of ia64's default memory model to SPARSEMEM causes defconfig
-> build to fail:
-> 
->   CC      kernel/async.o
-> In file included from include/linux/numa.h:25,
->                  from include/linux/async.h:13,
->                  from kernel/async.c:47:
-> arch/ia64/include/asm/sparsemem.h:14:40: warning: "PAGE_SHIFT" is not defined, evaluates to 0 [-Wundef]
->    14 | #if ((CONFIG_FORCE_MAX_ZONEORDER - 1 + PAGE_SHIFT) > SECTION_SIZE_BITS)
->       |                                        ^~~~~~~~~~
-> In file included from include/linux/gfp.h:6,
->                  from include/linux/xarray.h:14,
->                  from include/linux/radix-tree.h:19,
->                  from include/linux/idr.h:15,
->                  from include/linux/kernfs.h:13,
->                  from include/linux/sysfs.h:16,
->                  from include/linux/kobject.h:20,
->                  from include/linux/energy_model.h:7,
->                  from include/linux/device.h:16,
->                  from include/linux/async.h:14,
->                  from kernel/async.c:47:
-> include/linux/mmzone.h:1156:2: error: #error Allocator MAX_ORDER exceeds SECTION_SIZE
->  1156 | #error Allocator MAX_ORDER exceeds SECTION_SIZE
->       |  ^~~~~
-> 
-> The error cause is the missing definition of PAGE_SHIFT in the calculation
-> of SECTION_SIZE_BITS.
-> 
-> Add include of <asm/page.h> to arch/ia64/include/asm/sparsemem.h to solve
-> the problem.
-> 
-> Fixes: 214496cb1870 ("ia64: make SPARSEMEM default and disable DISCONTIGMEM")
-> Reported-by: Guenter Roeck <linux@roeck-us.net>
-> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+Hi Arnd!
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+On 10/30/20 4:17 PM, Arnd Bergmann wrote:
+> ia64 is the only architecture that calls xtime_update() in a loop,
+> once for each jiffie that has passed since the last event.
+> 
+> Before commit 3171a0305d62 ("[PATCH] simplify update_times (avoid
+> jiffies/jiffies_64 aliasing problem)") in 2006, it could not actually do
+> this any differently, but now it seems simpler to just pass the number
+> of jiffies that passed in the meantime.
+> 
+> While this loses the ability process interrupts in the middle of
+> the timer tick by calling local_irq_enable(), doing so is fairly
+> peculiar anyway and it seems better to just do what everyone
+> else does here.
 
-> ---
-> 
-> Surprisingly, only Guenter's bot caught this.
-> 
-> @Andrew, if you prefer I can take this via memblock tree.
-> 
->  arch/ia64/include/asm/sparsemem.h | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/ia64/include/asm/sparsemem.h b/arch/ia64/include/asm/sparsemem.h
-> index dd8c166ffd7b..42ed5248fae9 100644
-> --- a/arch/ia64/include/asm/sparsemem.h
-> +++ b/arch/ia64/include/asm/sparsemem.h
-> @@ -3,6 +3,7 @@
->  #define _ASM_IA64_SPARSEMEM_H
->  
->  #ifdef CONFIG_SPARSEMEM
-> +#include <asm/page.h>
->  /*
->   * SECTION_SIZE_BITS            2^N: how big each section will be
->   * MAX_PHYSMEM_BITS             2^N: how much memory we can have in that space
-> -- 
-> 2.28.0
-> 
+This broke the hpsa block device driver on my HP RX2600.
+
+I'm seeing this backtrace now:
+
+[  905.883273] usb 1-2: SerialNumber: A60020000001                                                                                                                         
+[  905.918170]  sda: sda1 sda2 sda3                                                                                                                                        
+[  905.920107] sd 0:1:0:0: [sda] Attached SCSI disk                                                                                                                        
+[  905.944102] usb-storage 1-2:1.0: USB Mass Storage device detected                                                                                                       
+[  905.944102] scsi host1: usb-storage 1-2:1.0                                                                                                                             
+[  905.944102] usbcore: registered new interface driver usb-storage                                                                                                        
+[  905.944117] usbcore: registered new interface driver uas                                                                                                                
+[  905.948117] scsi 1:0:0:0: CD-ROM            TEAC     DV-W28EAW        H.0C PQ: 0 ANSI: 0                                                                                
+[  905.952013] usb 2-1: new full-speed USB device number 2 using ohci-pci                                                                                                  
+[  905.956102] sr 1:0:0:0: Power-on or device reset occurred                                                                                                               
+[  905.968107] sr 1:0:0:0: [sr0] scsi3-mmc drive: 24x/24x writer cd/rw xa/form2 cdda tray                                                                                  
+[  905.968107] cdrom: Uniform CD-ROM driver Revision: 3.20                                                                                                                 
+[  906.028013] ioc0: LSISAS1068 B0: Capabilities={Initiator}                                                                                                               
+[  906.028110] tg3 0000:01:02.0 eth0: Tigon3 [partno(BCM95700A6) rev 2100] (PCIX:66MHz:64-bit) MAC address 00:17:a4:99:2d:09                                               
+[  906.026167] usb 2-1: New USB device found, idVendor=03f0, idProduct=1126, bcdDevice= 0.01                                                                               
+[  906.028110] tg3 0000:01:02.0 eth0: attached PHY is 5704 (10/100/1000Base-T Ethernet) (WireSpeed[1], EEE[0])                                                             
+[  906.028110] tg3 0000:01:02.0 eth0: RXcsums[1] LinkChgREG[0] MIirq[0] ASF[0] TSOcap[1]                                                                                   
+[  906.030214] usb 2-1: New USB device strings: Mfr=1, Product=2, SerialNumber=63                                                                                          
+[  906.032240] tg3 0000:01:02.0 eth0: dma_rwctrl[769f0000] dma_mask[64-bit]                                                                                                
+[  906.036102] GSI 30 (level, low) -> CPU 2 (0x0200) vector 67                                                                                                             
+[  906.034186] usb 2-1: Product: Virtual Management Device                                                                                                                 
+[  906.038235] usb 2-1: Manufacturer: HP                                                                                                                                   
+[  906.040017] usb 2-1: SerialNumber: 0017a499dd1c                                                                                                                         
+[  906.056108] hid: raw HID events driver (C) Jiri Kosina                                                                                                                  
+[  906.080013] usbcore: registered new interface driver usbhid                                                                                                             
+[  906.080013] usbhid: USB HID core driver                                                                                                                                 
+[  906.080107] input: HP Virtual Management Device as /devices/pci0000:00/0000:00:02.0/usb2/2-1/2-1:1.0/0003:03F0:1126.0001/input/input2                                   
+[  906.088110] hid-generic 0003:03F0:1126.0001: input,hidraw0: USB HID v1.11 Keyboard [HP Virtual Management Device] on usb-0000:00:02.0-1/input0                          
+[  906.088110] input: HP Virtual Management Device as /devices/pci0000:00/0000:00:02.0/usb2/2-1/2-1:1.1/0003:03F0:1126.0002/input/input3                                   
+[  906.092110] hid-generic 0003:03F0:1126.0002: input,hidraw1: USB HID v1.01 Mouse [HP Virtual Management Device] on usb-0000:00:02.0-1/input1                             
+[  906.104104] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  906.108288] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  906.108288] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  906.152107] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  906.170926] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  906.170926] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  906.218925] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  906.222925] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  906.222925] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  906.266926] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  906.272016] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  906.272016] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  906.272107] scsi host2: ioc0: LSISAS1068 B0, FwRev=010f0000h, Ports=1, MaxQ=511, IRQ=62                                                                                 
+[  906.324110] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  906.330925] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  906.330925] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  906.378925] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  906.382926] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  906.382926] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  906.386926] tg3 0000:01:02.1 eth1: Tigon3 [partno(BCM95700A6) rev 2100] (PCIX:66MHz:64-bit) MAC address 00:17:a4:99:2d:08                                               
+[  906.386926] tg3 0000:01:02.1 eth1: attached PHY is 5704 (10/100/1000Base-T Ethernet) (WireSpeed[1], EEE[0])                                                             
+[  906.388016] tg3 0000:01:02.1 eth1: RXcsums[1] LinkChgREG[0] MIirq[0] ASF[0] TSOcap[1]                                                                                   
+[  906.388016] tg3 0000:01:02.1 eth1: dma_rwctrl[769f0000] dma_mask[64-bit]                                                                                                
+[  906.396108] tg3 0000:01:02.1 enp1s2f1: renamed from eth1                                                                                                                
+[  906.408107] tg3 0000:01:02.0 enp1s2f0: renamed from eth0                                                                                                                
+Begin: Loading essential drivers ... done.                                                                                                                                 
+Begin: Running /scripts/init-premount ... done.                                                                                                                            
+Begin: Mounting root file system ... Begin: Running /scripts/local-top ... done.                                                                                           
+Begin: Running /scripts/local-premount ... done.                                                                                                                           
+Begin: Will now check root file system ... fsck from util-linux 2.36                                                                                                       
+[/sbin/fsck.ext4 (1) -- /dev/sda2] fsck.ext4 -a -C0 /dev/sda2                                                                                                              
+/dev/sda2: clean, 317994/2068416 files, 6480495/8257536 blocks                                                                                                             
+[  906.666923] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  906.670923] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  906.670923] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+done.                                                                                                                                                                      
+[  906.722166] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:                                                                                                         
+[  906.722166] rcu:     2-....: (3 ticks this GP) idle=fe6/1/0x4000000000000000 softirq=693/698 fqs=4                                                                      
+[  906.722166]  (detected by 0, t=6115 jiffies, g=465, q=80)                                                                                                               
+[  906.722166] Task dump for CPU 2:                                                                                                                                        
+[  906.722166] task:modprobe        state:R  running task     stack:    0 pid:  162 ppid:   146 flags:0x00000002                                                           
+[  906.722166]                                                                                                                                                             
+[  906.722166] Call Trace:                                                                                                                                                 
+[  906.722166]  [<0000000000000fd6>] 0xfd6                                                                                                                                 
+[  906.722166]                                 sp=e000010046d27c70 bsp=e000010046d20e80                                                                                    
+[  906.782168] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:                                                                                                         
+[  906.782168] rcu:     2-....: (18 ticks this GP) idle=fe6/1/0x4000000000000000 softirq=693/698 fqs=18                                                                    
+[  906.782168]  (detected by 0, t=22157 jiffies, g=465, q=80)                                                                                                              
+[  906.782168] Task dump for CPU 2:                                                                                                                                        
+[  906.782168] task:modprobe        state:R  running task     stack:    0 pid:  162 ppid:   146 flags:0x00000002                                                           
+[  906.782168]                                                                                                                                                             
+[  906.782168] Call Trace:                                                                                                                                                 
+[  906.782168]  [<0000001d00000065>] 0x1d00000065                                                                                                                          
+[  906.782168]                                 sp=e000010046d27c70 bsp=e000010046d20d48                                                                                    
+[  906.844107] EXT4-fs (sda2): mounted filesystem with ordered data mode. Opts: (null)                                                                                     
+done.                                                                                                                                                                      
+Begin: Running /scripts/local-bottom ... done.                                                                                                                             
+Begin: Running /scripts/init-bottom ... done.                                                                                                                              
+[  906.978917] Not activating Mandatory Access Control as /sbin/tomoyo-init does not exist.                                                                                
+[  907.726923] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  907.734923] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  907.734923] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  907.790923] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  907.802923] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  907.802923] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  907.860014] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  907.886923] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  907.886923] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  907.930923] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  907.942923] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  907.942923] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  907.976107] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  907.982923] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  907.982923] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  908.106923] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  908.110923] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  908.110923] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  908.256014] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  908.258922] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  908.258922] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  908.428014] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  908.434923] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  908.434923] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  908.710922] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  908.714922] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  908.714922] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  908.754922] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1                           
+[  908.758922] hpsa 0000:05:00.0: device is ready.                                                                                                                         
+[  908.758922] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1        
+[  908.788106] systemd[1]: Inserted module 'autofs4'                                                                                                                       
+[  908.972107] systemd[1]: systemd 246.6-5 running in system mode. (+PAM +AUDIT +SELINUX +IMA +APPARMOR +SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT +GNUTLS +ACL +XZ +LZ4 +ZSTD -SECCOMP +BLKID +ELFUTILS +KMOD +IDN2 -IDN +PCRE2 default-hierarchy=hybrid)                                                                                         
+[  908.976013] systemd[1]: Detected architecture ia64.                                                                                                                     
+
+Welcome to Debian GNU/Linux bullseye/sid!
+
+[  909.020014] systemd[1]: Set hostname to <glendronach>.
+[  909.178923] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1
+[  909.182922] hpsa 0000:05:00.0: device is ready.
+[  909.182922] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1
+[  909.242922] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1
+[  909.254922] hpsa 0000:05:00.0: device is ready.
+[  909.254922] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1
+[  909.322922] hpsa 0000:05:00.0: scsi 0:1:0:0: resetting logical  Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1
+[  909.334922] hpsa 0000:05:00.0: device is ready.
+[  909.334922] hpsa 0000:05:00.0: scsi 0:1:0:0: reset logical  completed successfully Direct-Access     HP       LOGICAL VOLUME   RAID-0 SSDSmartPathCap- En- Exp=1
+[  909.360108] INFO: task systemd-sysv-ge:200 blocked for more than 127 seconds.
+[  909.360108]       Not tainted 5.10.0+ #130
+[  909.360108] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  909.360108] task:systemd-sysv-ge state:D stack:    0 pid:  200 ppid:   189 flags:0x00000000
+[  909.364108] 
+[  909.364108] Call Trace:
+[  909.364423]  [<a00000010109b210>] __schedule+0x890/0x21e0
+[  909.364423]                                 sp=e0000100487d7b70 bsp=e0000100487d1748
+[  909.368423]  [<a00000010109cc00>] schedule+0xa0/0x240
+[  909.368423]                                 sp=e0000100487d7b90 bsp=e0000100487d16e0
+[  909.368558]  [<a00000010109ce70>] io_schedule+0x70/0xa0
+[  909.368558]                                 sp=e0000100487d7b90 bsp=e0000100487d16c0
+[  909.372290]  [<a00000010109e1c0>] bit_wait_io+0x20/0xe0
+[  909.372290]                                 sp=e0000100487d7b90 bsp=e0000100487d1698
+[  909.374168] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[  909.376290]  [<a00000010109d860>] __wait_on_bit+0xc0/0x1c0
+[  909.376290]                                 sp=e0000100487d7b90 bsp=e0000100487d1648
+[  909.374168] rcu:     3-....: (2 ticks this GP) idle=19e/1/0x4000000000000002 softirq=1581/1581 fqs=2 
+[  909.374168]  (detected by 0, t=5661 jiffies, g=1089, q=3)
+[  909.376290]  [<a00000010109da80>] out_of_line_wait_on_bit+0x120/0x140
+[  909.376290]                                 sp=e0000100487d7b90 bsp=e0000100487d1610
+[  909.374168] Task dump for CPU 3:
+[  909.374168] task:khungtaskd      state:R  running task
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
