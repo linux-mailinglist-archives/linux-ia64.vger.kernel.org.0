@@ -2,105 +2,90 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD6D2DE709
-	for <lists+linux-ia64@lfdr.de>; Fri, 18 Dec 2020 16:57:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A748D2DE782
+	for <lists+linux-ia64@lfdr.de>; Fri, 18 Dec 2020 17:36:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727058AbgLRP4s (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 18 Dec 2020 10:56:48 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45188 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1725797AbgLRP4r (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 18 Dec 2020 10:56:47 -0500
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28006C0617A7;
-        Fri, 18 Dec 2020 07:56:07 -0800 (PST)
-Received: by mail-pg1-x530.google.com with SMTP id n16so1591298pgm.0;
-        Fri, 18 Dec 2020 07:56:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=abkacR5EtfH7n3c7FX6aX1PPXUx2EG3knfWGOF7I8KQ=;
-        b=CBfVYlZ7drbVWtqD4bM3rkW3OWAqtTHQ4tOTswiI8hMNopfxOrNSevY5aJbqvp0mM5
-         TCt5A9KlDha/typLUMvAinFqZihBhKDs4BnfOvsBgN1UEuOfn2IctSX1c7RAJE00PX2w
-         n7klcFUYA8+Wh03OFueMg42mGZ0RkQcUL9Og1KFLwVu3sptluQTtOKanGWeSuBQ6+cvG
-         IQarphsJdlgszUZ2XFgxxcoIxIFcXYZtA7DiUUAY+OhzWh0reHMzfpVaZ6Tbo/44jQMr
-         d42Q7DDFcqvQMmrXsNBpvMeT3nysS6sMGtm6mQ7XQdIwUbkG3/ZAqQL4skrB49QcSHxQ
-         YUtg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=abkacR5EtfH7n3c7FX6aX1PPXUx2EG3knfWGOF7I8KQ=;
-        b=c/cqZzY4wqpKKkqKdHgyX4S3xg6deNWnLSVFQPtsPb8AwR6RuB6RLa4ecouD90os4O
-         2GSt6P1LZRf220aaKYHUfUL6uhmoAYRT9Sh0c0/uawl0vUDAgeZAHgx9NZpFYBwwMVFF
-         FQ0jrU1k6+AdenjeO4qLaNid17eDP4yISZn1oPo6GFjECc7VsCTtf57JW4dSpcTMLMBr
-         5eA6b5vEe+wEvdKELJElYKm8zXuPJP04ZgWm++vjzow4//9TH9BSyY2s1ElUNkXvnV7H
-         mUF1Twguozcq4Rk24I0wICZ6xIO9Uh781mcprCN3Dfu4b3rPsCaudi7nruYhdcQawAxB
-         7/aw==
-X-Gm-Message-State: AOAM532YaV5M8Qr692GEUlIfNqCbePWCm9v0zqJPzG0ljVRW99BXhYiu
-        Kh5JCfLCUEQnfPiiKTGXqN9dY/gnFJMQfoTE5fM=
-X-Google-Smtp-Source: ABdhPJx7CKHKNahHF7wOhrRaWmRijCkWWyTNv/8H9aIqR6dzxIZFoFPjsHMLJGY+VN1uh1mCeWPnu3uWBQAXjL7LLn4=
-X-Received: by 2002:a63:b1e:: with SMTP id 30mr4683229pgl.203.1608306966654;
- Fri, 18 Dec 2020 07:56:06 -0800 (PST)
+        id S1725825AbgLRQgk (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 18 Dec 2020 11:36:40 -0500
+Received: from mail.kernel.org ([198.145.29.99]:44942 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1725803AbgLRQgj (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 18 Dec 2020 11:36:39 -0500
+From:   Mike Rapoport <rppt@kernel.org>
+Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Mike Rapoport <rppt@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ia64: fix build failure caused by memory model changes
+Date:   Fri, 18 Dec 2020 18:35:50 +0200
+Message-Id: <20201218163550.8838-1-rppt@kernel.org>
+X-Mailer: git-send-email 2.28.0
 MIME-Version: 1.0
-References: <20201218143122.19459-1-info@metux.net> <20201218143122.19459-2-info@metux.net>
-In-Reply-To: <20201218143122.19459-2-info@metux.net>
-From:   Andy Shevchenko <andy.shevchenko@gmail.com>
-Date:   Fri, 18 Dec 2020 17:55:50 +0200
-Message-ID: <CAHp75VfYz_K2BYOxqmSx0q+1F2F9Lp1eb70RrNYzJHs3FX+quQ@mail.gmail.com>
-Subject: Re: [PATCH 01/23] kernel: irq: irqdescs: warn on spurious IRQ
-To:     "Enrico Weigelt, metux IT consult" <info@metux.net>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Jiri Olsa <jolsa@redhat.com>,
-        Namhyung Kim <namhyung@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, msalter@redhat.com,
-        jacquiot.aurelien@gmail.com, gerg@linux-m68k.org,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        James Bottomley <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
-        Marc Zyngier <maz@kernel.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org,
-        linux-c6x-dev@linux-c6x.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org,
-        "open list:LINUX FOR POWERPC PA SEMI PWRFICIENT" 
-        <linuxppc-dev@lists.ozlabs.org>, linux-s390@vger.kernel.org,
-        Linux-SH <linux-sh@vger.kernel.org>, sparclinux@vger.kernel.org,
-        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
-        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Dec 18, 2020 at 4:37 PM Enrico Weigelt, metux IT consult
-<info@metux.net> wrote:
+From: Mike Rapoport <rppt@linux.ibm.com>
 
-> +               if (printk_ratelimit())
-> +                       pr_warn("spurious IRQ: irq=%d hwirq=%d nr_irqs=%d\n",
-> +                               irq, hwirq, nr_irqs);
+The change of ia64's default memory model to SPARSEMEM causes defconfig
+build to fail:
 
-Perhaps you missed pr_warn_ratelimit() macro which is already in the
-kernel for a long time.
+  CC      kernel/async.o
+In file included from include/linux/numa.h:25,
+                 from include/linux/async.h:13,
+                 from kernel/async.c:47:
+arch/ia64/include/asm/sparsemem.h:14:40: warning: "PAGE_SHIFT" is not defined, evaluates to 0 [-Wundef]
+   14 | #if ((CONFIG_FORCE_MAX_ZONEORDER - 1 + PAGE_SHIFT) > SECTION_SIZE_BITS)
+      |                                        ^~~~~~~~~~
+In file included from include/linux/gfp.h:6,
+                 from include/linux/xarray.h:14,
+                 from include/linux/radix-tree.h:19,
+                 from include/linux/idr.h:15,
+                 from include/linux/kernfs.h:13,
+                 from include/linux/sysfs.h:16,
+                 from include/linux/kobject.h:20,
+                 from include/linux/energy_model.h:7,
+                 from include/linux/device.h:16,
+                 from include/linux/async.h:14,
+                 from kernel/async.c:47:
+include/linux/mmzone.h:1156:2: error: #error Allocator MAX_ORDER exceeds SECTION_SIZE
+ 1156 | #error Allocator MAX_ORDER exceeds SECTION_SIZE
+      |  ^~~~~
 
+The error cause is the missing definition of PAGE_SHIFT in the calculation
+of SECTION_SIZE_BITS.
+
+Add include of <asm/page.h> to arch/ia64/include/asm/sparsemem.h to solve
+the problem.
+
+Fixes: 214496cb1870 ("ia64: make SPARSEMEM default and disable DISCONTIGMEM")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
+---
+
+Surprisingly, only Guenter's bot caught this.
+
+@Andrew, if you prefer I can take this via memblock tree.
+
+ arch/ia64/include/asm/sparsemem.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/ia64/include/asm/sparsemem.h b/arch/ia64/include/asm/sparsemem.h
+index dd8c166ffd7b..42ed5248fae9 100644
+--- a/arch/ia64/include/asm/sparsemem.h
++++ b/arch/ia64/include/asm/sparsemem.h
+@@ -3,6 +3,7 @@
+ #define _ASM_IA64_SPARSEMEM_H
+ 
+ #ifdef CONFIG_SPARSEMEM
++#include <asm/page.h>
+ /*
+  * SECTION_SIZE_BITS            2^N: how big each section will be
+  * MAX_PHYSMEM_BITS             2^N: how much memory we can have in that space
 -- 
-With Best Regards,
-Andy Shevchenko
+2.28.0
+
