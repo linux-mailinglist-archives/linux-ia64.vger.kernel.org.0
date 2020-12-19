@@ -2,96 +2,136 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 71CD72DEBA0
-	for <lists+linux-ia64@lfdr.de>; Fri, 18 Dec 2020 23:33:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DBB472DEDFB
+	for <lists+linux-ia64@lfdr.de>; Sat, 19 Dec 2020 10:26:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1725855AbgLRWdO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 18 Dec 2020 17:33:14 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:37089 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1725836AbgLRWdO (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 18 Dec 2020 17:33:14 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1kqOIU-000s3X-8m; Fri, 18 Dec 2020 23:32:26 +0100
-Received: from p5b13a238.dip0.t-ipconnect.de ([91.19.162.56] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1kqOIU-0041lK-0s; Fri, 18 Dec 2020 23:32:26 +0100
-Subject: Re: [PATCH v2 05/15] ia64: convert to legacy_timer_tick
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Russell King <linux@armlinux.org.uk>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Finn Thain <fthain@telegraphics.com.au>,
-        Philip Blundell <philb@gnu.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Sam Creasey <sammy@sammy.net>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        id S1726407AbgLSJ0O (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 19 Dec 2020 04:26:14 -0500
+Received: from mail.kernel.org ([198.145.29.99]:54338 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1726367AbgLSJ0N (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sat, 19 Dec 2020 04:26:13 -0500
+From:   Arnd Bergmann <arnd@kernel.org>
+Authentication-Results: mail.kernel.org; dkim=permerror (bad message/signature format)
+To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         John Stultz <john.stultz@linaro.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
         Stephen Boyd <sboyd@kernel.org>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
         Linus Walleij <linus.walleij@linaro.org>,
-        linux-ia64@vger.kernel.org,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Anatoly Pugachev <matorola@gmail.com>
-References: <20201030151758.1241164-1-arnd@kernel.org>
- <20201030151758.1241164-6-arnd@kernel.org>
- <59efce0e-a28d-9424-82ca-fb7f3a1b9c29@physik.fu-berlin.de>
- <CAK8P3a0s5Wt=9sZXAV1JzebZFXVy4qn3KNvygEfPeH3eVMyO_w@mail.gmail.com>
- <ccc941a9-9b7f-2a37-664e-c01d60c200da@physik.fu-berlin.de>
-Message-ID: <7df57999-40dc-507a-acba-605a4057c83e@physik.fu-berlin.de>
-Date:   Fri, 18 Dec 2020 23:32:24 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH] ia64: fix timer cleanup regression
+Date:   Sat, 19 Dec 2020 10:24:42 +0100
+Message-Id: <20201219092516.1364230-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <ccc941a9-9b7f-2a37-664e-c01d60c200da@physik.fu-berlin.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.162.56
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Arnd!
+From: Arnd Bergmann <arnd@arndb.de>
 
-On 12/18/20 11:13 PM, John Paul Adrian Glaubitz wrote:
->> I've attached a patch for a partial revert of my original change, this
->> should still work with the final cleanup on top, but restore the loop
->> plus the local_irq_enable()/local_irq_disable() that I dropped from
->> the original code. Does this make a difference?
-> 
-> I'll give it a try and report back.
+A cleanup patch from my legacy timer series broke ia64 and led
+to RCU stall errors and a fast system clock:
 
-Yes. That solves the timer issues. Now there is unfortunately still a
-second, unrelated regression with the hpsa driver that was introduced
-by one of the ia64 patches in the mm tree from Andrew which makes the
-hpsa driver not load at all.
+[  909.360108] INFO: task systemd-sysv-ge:200 blocked for more than 127 seconds.
+[  909.360108]       Not tainted 5.10.0+ #130
+[  909.360108] "echo 0 > /proc/sys/kernel/hung_task_timeout_secs" disables this message.
+[  909.360108] task:systemd-sysv-ge state:D stack:    0 pid:  200 ppid:   189 flags:0x00000000
+[  909.364108]
+[  909.364108] Call Trace:
+[  909.364423]  [<a00000010109b210>] __schedule+0x890/0x21e0
+[  909.364423]                                 sp=e0000100487d7b70 bsp=e0000100487d1748
+[  909.368423]  [<a00000010109cc00>] schedule+0xa0/0x240
+[  909.368423]                                 sp=e0000100487d7b90 bsp=e0000100487d16e0
+[  909.368558]  [<a00000010109ce70>] io_schedule+0x70/0xa0
+[  909.368558]                                 sp=e0000100487d7b90 bsp=e0000100487d16c0
+[  909.372290]  [<a00000010109e1c0>] bit_wait_io+0x20/0xe0
+[  909.372290]                                 sp=e0000100487d7b90 bsp=e0000100487d1698
+[  909.374168] rcu: INFO: rcu_sched detected stalls on CPUs/tasks:
+[  909.376290]  [<a00000010109d860>] __wait_on_bit+0xc0/0x1c0
+[  909.376290]                                 sp=e0000100487d7b90 bsp=e0000100487d1648
+[  909.374168] rcu:     3-....: (2 ticks this GP) idle=19e/1/0x4000000000000002 softirq=1581/1581 fqs=2
+[  909.374168]  (detected by 0, t=5661 jiffies, g=1089, q=3)
+[  909.376290]  [<a00000010109da80>] out_of_line_wait_on_bit+0x120/0x140
+[  909.376290]                                 sp=e0000100487d7b90 bsp=e0000100487d1610
+[  909.374168] Task dump for CPU 3:
+[  909.374168] task:khungtaskd      state:R  running task
 
-Haven't figured out yet what the problem is.
+Revert most of my patch to make this work again, including the extra
+update_process_times()/profile_tick() and the local_irq_enable() in the
+loop that I expected not to be needed here.
 
-Adrian
+I have not found out exactly what goes wrong, and would suggest that
+someone with hardware access tries to convert this code into a singleshot
+clockevent driver, which should give better behavior in all cases.
 
+Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Fixes: 2b49ddcef297 ("ia64: convert to legacy_timer_tick")
+Cc: John Stultz <john.stultz@linaro.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Frederic Weisbecker <fweisbec@gmail.com>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+ arch/ia64/kernel/time.c | 31 ++++++++++++++++++-------------
+ 1 file changed, 18 insertions(+), 13 deletions(-)
+
+diff --git a/arch/ia64/kernel/time.c b/arch/ia64/kernel/time.c
+index 9431edb08508..e3d9c8088d56 100644
+--- a/arch/ia64/kernel/time.c
++++ b/arch/ia64/kernel/time.c
+@@ -161,29 +161,34 @@ void vtime_account_idle(struct task_struct *tsk)
+ static irqreturn_t
+ timer_interrupt (int irq, void *dev_id)
+ {
+-	unsigned long cur_itm, new_itm, ticks;
++	unsigned long new_itm;
+ 
+ 	if (cpu_is_offline(smp_processor_id())) {
+ 		return IRQ_HANDLED;
+ 	}
+ 
+ 	new_itm = local_cpu_data->itm_next;
+-	cur_itm = ia64_get_itc();
+ 
+-	if (!time_after(cur_itm, new_itm)) {
++	if (!time_after(ia64_get_itc(), new_itm))
+ 		printk(KERN_ERR "Oops: timer tick before it's due (itc=%lx,itm=%lx)\n",
+-		       cur_itm, new_itm);
+-		ticks = 1;
+-	} else {
+-		ticks = DIV_ROUND_UP(cur_itm - new_itm,
+-				     local_cpu_data->itm_delta);
+-		new_itm += ticks * local_cpu_data->itm_delta;
+-	}
++		       ia64_get_itc(), new_itm);
++
++	while (1) {
++		new_itm += local_cpu_data->itm_delta;
++
++		legacy_timer_tick(smp_processor_id() == time_keeper_id);
+ 
+-	if (smp_processor_id() != time_keeper_id)
+-		ticks = 0;
++		local_cpu_data->itm_next = new_itm;
+ 
+-	legacy_timer_tick(ticks);
++		if (time_after(new_itm, ia64_get_itc()))
++			break;
++
++		/*
++		 * Allow IPIs to interrupt the timer loop.
++		 */
++		local_irq_enable();
++		local_irq_disable();
++	}
+ 
+ 	do {
+ 		/*
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+2.29.2
 
