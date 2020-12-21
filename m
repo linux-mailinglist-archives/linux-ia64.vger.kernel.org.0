@@ -2,82 +2,100 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 920D22DF685
-	for <lists+linux-ia64@lfdr.de>; Sun, 20 Dec 2020 19:42:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 99EC22DF8EE
+	for <lists+linux-ia64@lfdr.de>; Mon, 21 Dec 2020 06:45:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726901AbgLTSmf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 20 Dec 2020 13:42:35 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:48451 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1726805AbgLTSmf (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 20 Dec 2020 13:42:35 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1kr3eT-000cVP-K0; Sun, 20 Dec 2020 19:41:53 +0100
-Received: from p5b13a238.dip0.t-ipconnect.de ([91.19.162.56] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1kr3eT-000cIC-Er; Sun, 20 Dec 2020 19:41:53 +0100
-Subject: Re: where to start with ia64 kernel
-To:     Anatoly Pugachev <matorola@gmail.com>
-References: <CADxRZqwfMr9==xFQaaEOk7jYVoROEEyQ_12KpBCtwL3SXoCM-A@mail.gmail.com>
-Cc:     linux-ia64@vger.kernel.org
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <202178aa-7f8d-5c77-115d-3390614e7500@physik.fu-berlin.de>
-Date:   Sun, 20 Dec 2020 19:41:53 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.5.1
+        id S1727517AbgLUFpJ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 21 Dec 2020 00:45:09 -0500
+Received: from bilbo.ozlabs.org ([203.11.71.1]:55417 "EHLO ozlabs.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1727066AbgLUFpJ (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 21 Dec 2020 00:45:09 -0500
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4CzpLk1qPgz9sVk;
+        Mon, 21 Dec 2020 16:44:14 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1608529465;
+        bh=8q8pjXmt3fb3/FcKFZZhBpNNcXsp66j8Isw1H4VoFss=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=ZnWF70NmUxyOGkj7ajnBegDo04rv8gH5Ux9NWJhGuiFgnNMVogs2qsK/JPPvTOxX3
+         hzwMtUhjiDSqvHc4ZZWFFrTwkUdkYXJq/1ML2X0U5qamtbWBfarkCtNAXDelPjKyYu
+         4R5GrwJUkFnZSYIfsBFzv3+C8RVv3a9uzsg9fDjFKnZkRtQDx75FnOmDIw99taeAnd
+         QCskX9h/ngj+6oMYoBPKKaJh3wx/SkbDouSAAbUuPyGD0ebzLrrNquc0B/69DXdzQf
+         fJmTp61f2fzdZls70bVcMCLTyxKnMkjf3NMjT+RK4eF560XOppbITSBixDl2QbJUdX
+         VnJ3dZzhE+mIA==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Andy Shevchenko <andy.shevchenko@gmail.com>,
+        "Enrico Weigelt\, metux IT consult" <info@metux.net>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Jiri Olsa <jolsa@redhat.com>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, msalter@redhat.com,
+        jacquiot.aurelien@gmail.com, gerg@linux-m68k.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>,
+        "maintainer\:X86 ARCHITECTURE \(32-BIT AND 64-BIT\)" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Bartosz Golaszewski <bgolaszewski@baylibre.com>,
+        Marc Zyngier <maz@kernel.org>,
+        Tony Lindgren <tony@atomide.com>,
+        Arnd Bergmann <arnd@arndb.de>, linux-alpha@vger.kernel.org,
+        linux-c6x-dev@linux-c6x.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org,
+        "open list\:LINUX FOR POWERPC PA SEMI PWRFICIENT" 
+        <linuxppc-dev@lists.ozlabs.org>, linux-s390@vger.kernel.org,
+        Linux-SH <linux-sh@vger.kernel.org>, sparclinux@vger.kernel.org,
+        "open list\:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Linux OMAP Mailing List <linux-omap@vger.kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>
+Subject: Re: [PATCH 01/23] kernel: irq: irqdescs: warn on spurious IRQ
+In-Reply-To: <CAHp75VfYz_K2BYOxqmSx0q+1F2F9Lp1eb70RrNYzJHs3FX+quQ@mail.gmail.com>
+References: <20201218143122.19459-1-info@metux.net> <20201218143122.19459-2-info@metux.net> <CAHp75VfYz_K2BYOxqmSx0q+1F2F9Lp1eb70RrNYzJHs3FX+quQ@mail.gmail.com>
+Date:   Mon, 21 Dec 2020 16:44:13 +1100
+Message-ID: <87ft3zyaqa.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-In-Reply-To: <CADxRZqwfMr9==xFQaaEOk7jYVoROEEyQ_12KpBCtwL3SXoCM-A@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.162.56
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Anatoly!
+Andy Shevchenko <andy.shevchenko@gmail.com> writes:
+> On Fri, Dec 18, 2020 at 4:37 PM Enrico Weigelt, metux IT consult
+> <info@metux.net> wrote:
+>
+>> +               if (printk_ratelimit())
+>> +                       pr_warn("spurious IRQ: irq=%d hwirq=%d nr_irqs=%d\n",
+>> +                               irq, hwirq, nr_irqs);
+>
+> Perhaps you missed pr_warn_ratelimit() macro which is already in the
+> kernel for a long time.
 
-On 12/20/20 7:13 PM, Anatoly Pugachev wrote:
-> I have Integrity BL870c i4 blade installed with debian sid, somewhat
-> working 4.15/4.14.x kernel series...
-> 
-> 4.16.x kernel (and more recent ones, including latest git) does not boot ...
-> tried to bisect (but some kernel revisions does not even compile - git
-> bisect skip).
+pr_warn_ratelimited() which calls printk_ratelimited().
 
-Any kernel newer than 4.14.x will not boot on large ia64 NUMA systems due
-to the changes in 543cea9a [1][2]. This bug does not affect systems like
-the RX-2600 which boot Linux 5.9 just fine.
+And see the comment above printk_ratelimit():
 
-There are two minor regressions in 5.10, one has already been bisected [3]
+/*
+ * Please don't use printk_ratelimit(), because it shares ratelimiting state
+ * with all other unrelated printk_ratelimit() callsites.  Instead use
+ * printk_ratelimited() or plain old __ratelimit().
+ */
 
-> Does it make sense to try to start reporting bugs and hangs with ia64
-> 4.x kernel series, being 5.10 is out...
 
-Not really as 5.9.0 boots on smaller systems like the RX-2600 and the issue
-with the larger systems has already been bisected to 543cea9a.
-
-The problem with the regression you are seeing is that multiple attempts to
-fix the issue have so far failed and we haven't found a working fix yet.
-
-Adrian
-
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?id=543cea9accd9804307541cb93d3ed7ec94b07237
-> [2] https://marc.info/?l=linux-ia64&m=156144480821712&w=2
-> [3] https://marc.info/?l=linux-arm-kernel&m=160832710326221&w=2
-
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+cheers
