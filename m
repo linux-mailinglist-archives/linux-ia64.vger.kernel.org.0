@@ -2,76 +2,91 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D392B2E82E4
-	for <lists+linux-ia64@lfdr.de>; Fri,  1 Jan 2021 05:15:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 81D162E83E9
+	for <lists+linux-ia64@lfdr.de>; Fri,  1 Jan 2021 15:07:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726390AbhAAEPf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 31 Dec 2020 23:15:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32820 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726365AbhAAEPf (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 31 Dec 2020 23:15:35 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07137C061573;
-        Thu, 31 Dec 2020 20:14:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-        Content-Description:In-Reply-To:References;
-        bh=MrqRlFnmAr3VO2kikjWYwVGKANP+pM6Y3zXnpk6GwW8=; b=OUvivIw3gcgN56o2JgejJMVBYy
-        o+iQ18C+kRx+P9ZvX4S6HvnKNhitdQcAt5k/oX2HjLas5kwyNibSh/KxBA09hsn5XYa1UvM7eNnt/
-        Ok0vt9+X5z72MfXhgZSP0hH8w9PbaW0uLo+ZJxDBkZUT/N/Ait8qV2kO4UqqcqV2DABMaaP6An/XJ
-        IpyzMs6paBZ1IV5pWz6CDvCDXXtKD+JHWVyoUemxW3G58n65MqX0Eh5Wwl32K8GoHfzxOnGGTOvPK
-        DyWW39ysvor44Z/vbEH1RSOPJudkBFLY8m/T3EOIPU+CAiZLrEF99L4gYXZyz/HlvCxTN4GrWfRk2
-        cCP+RFyQ==;
-Received: from [2601:1c0:6280:3f0::2c43] (helo=smtpauth.infradead.org)
-        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
-        id 1kvBpw-0006Q6-24; Fri, 01 Jan 2021 04:14:48 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org
-Subject: [PATCH RESEND] ia64: remove duplicate entries in generic_defconfig
-Date:   Thu, 31 Dec 2020 20:14:42 -0800
-Message-Id: <20210101041442.4591-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.26.2
+        id S1726747AbhAAOHD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 1 Jan 2021 09:07:03 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:49047 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726257AbhAAOHD (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 1 Jan 2021 09:07:03 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1kvL4P-001faf-R3; Fri, 01 Jan 2021 15:06:21 +0100
+Received: from p5b13a2ad.dip0.t-ipconnect.de ([91.19.162.173] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1kvL4P-003DXN-30; Fri, 01 Jan 2021 15:06:21 +0100
+Subject: Re: [PATCH] sh: add support for TIF_NOTIFY_SIGNAL
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     linux-sh@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+References: <5fcc82b4-89ae-3bca-10ab-6ad933565cee@kernel.dk>
+ <ae29ab73-ee7a-2bb7-3fd8-3037f40c1cbd@kernel.dk>
+ <5611bde9-67e7-6ff6-defc-9b02ea830fac@physik.fu-berlin.de>
+ <9ea14eb3-d698-5499-ba4c-c6a3c35cd8d4@kernel.dk>
+ <47f79645-53b7-b11c-167a-f5721b53df02@physik.fu-berlin.de>
+ <9d9acec6-1e8c-2d68-5dfa-d58c11cf5cc4@kernel.dk>
+ <070780c4-445e-6373-c8f4-1c72d0f3b4e0@physik.fu-berlin.de>
+ <1047f3e5-4599-c34f-3176-9f41d2e1246b@kernel.dk>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <31b34cfc-8d6e-d3b4-e29f-1ec485f5b368@physik.fu-berlin.de>
+Date:   Fri, 1 Jan 2021 15:06:20 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <1047f3e5-4599-c34f-3176-9f41d2e1246b@kernel.dk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.162.173
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Fix ia64 generic_defconfig duplicate entries, as warned by:
+Hi Jens!
 
-  + arch/ia64/configs/generic_defconfig: warning: override: reassigning to symbol ATA:  => 58
-  + arch/ia64/configs/generic_defconfig: warning: override: reassigning to symbol ATA_PIIX:  => 59
+On 11/17/20 4:06 PM, Jens Axboe wrote:
+> On 11/16/20 10:26 PM, John Paul Adrian Glaubitz wrote:
+>> Hi Jens!
+>>
+>> On 11/9/20 3:14 PM, Jens Axboe wrote:
+>>>> Sorry for the delay. I'm busy at the moment and my SH board is currently
+>>>> building the Perl 5.32 package for Debian. Will try to test your patches
+>>>> by tomorrow, also ia64.
+>>>
+>>> Thanks, both would be appreciated! Just CC'ed you on the updated patch
+>>> for sh.
+>>
+>> Is this still relevant for testing? I'm ready to test now, much later than
+>> I thought, sorry.
+>>
+>> I'm going to build Linus' latest kernel for my SH and IA64 machines now
+>> and then I can test additional patches on top of it.
+> 
+> Thanks, would definitely still appreciate testing. You can just run
+> linux-next if you want, it's got everything in there. Or apply the
+> separate patches to -git, either approach is fine.
 
-These 2 symbols still have the same value as in the removed lines.
+Apologies for the late reply.
 
-Fixes: c331649e6371 ("ia64: Use libata instead of the legacy ide driver in defconfigs")
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: linux-ia64@vger.kernel.org
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-#Cc: Fenghua Yu <fenghua.yu@intel.com>
----
- arch/ia64/configs/generic_defconfig |    2 --
- 1 file changed, 2 deletions(-)
+I just pulled Linus' latest tree today with your patch for SH included and
+I'm not seeing any regressions.
 
---- lnx-511-rc1.orig/arch/ia64/configs/generic_defconfig
-+++ lnx-511-rc1/arch/ia64/configs/generic_defconfig
-@@ -55,8 +55,6 @@ CONFIG_CHR_DEV_SG=m
- CONFIG_SCSI_FC_ATTRS=y
- CONFIG_SCSI_SYM53C8XX_2=y
- CONFIG_SCSI_QLOGIC_1280=y
--CONFIG_ATA=y
--CONFIG_ATA_PIIX=y
- CONFIG_SATA_VITESSE=y
- CONFIG_MD=y
- CONFIG_BLK_DEV_MD=m
+Is there away to test the change itself?
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
