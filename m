@@ -2,79 +2,76 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B357B2E358B
-	for <lists+linux-ia64@lfdr.de>; Mon, 28 Dec 2020 10:42:01 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D392B2E82E4
+	for <lists+linux-ia64@lfdr.de>; Fri,  1 Jan 2021 05:15:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1727030AbgL1Jlq (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 28 Dec 2020 04:41:46 -0500
-Received: from mail-ot1-f41.google.com ([209.85.210.41]:43080 "EHLO
-        mail-ot1-f41.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1727029AbgL1Jlp (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 28 Dec 2020 04:41:45 -0500
-Received: by mail-ot1-f41.google.com with SMTP id q25so8666598otn.10;
-        Mon, 28 Dec 2020 01:41:30 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ZS9a88Scl53N05Sj13evYPqONiaARLlh+dxiXCJPwIU=;
-        b=T48CJwz0CGkUjiAZd/ztQclvnTiT0F0PyqritehKMhRR2NhXJPULlusn4TU+e2HHXs
-         EMLOQJYMKp6vMZv3DeXiwSI1lDYCYroMGZJZuaLCWj+eSRSnZ1mbr832mxpCU4HXXFEw
-         DgmtMFMJC99oDg26+rQCNIMvSSclbaUa4IeJhBHsEb7U2kRxxKIZK0HOIL+JNHfAlJd3
-         Cr1ah1Wt7Dg3ULKvtF6T/gZ57sskm5LYbeFCmM7eTyxCTkxVk3bvcuQCKwaaQBh5TyOH
-         vOlHkigAzIx6nM5IqX+kGp5DAqI3oUs8Jlf+UmY5VnHqofhkmcvLmUDjFYqIZKL+CciU
-         Wl7g==
-X-Gm-Message-State: AOAM532QjEKzAS6cU8FSu610S7OeuP2bClNz4Ti7ZgMWw9CF0EzGhZjY
-        SREflNZ3bK6IAKuRlVMYQr1ReRvqKNfD+bGlq3EIZjHR
-X-Google-Smtp-Source: ABdhPJzJe671dEE7/2qZKeiNG/rmbNcU++vGT457O4SxJbXgJ2WBkuqdzzR0x5UwphjBMZUtrJWf0my//P50M30O4uY=
-X-Received: by 2002:a05:6830:210a:: with SMTP id i10mr32360322otc.145.1609148464742;
- Mon, 28 Dec 2020 01:41:04 -0800 (PST)
+        id S1726390AbhAAEPf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 31 Dec 2020 23:15:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32820 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1726365AbhAAEPf (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 31 Dec 2020 23:15:35 -0500
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1231::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 07137C061573;
+        Thu, 31 Dec 2020 20:14:54 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
+        Content-Description:In-Reply-To:References;
+        bh=MrqRlFnmAr3VO2kikjWYwVGKANP+pM6Y3zXnpk6GwW8=; b=OUvivIw3gcgN56o2JgejJMVBYy
+        o+iQ18C+kRx+P9ZvX4S6HvnKNhitdQcAt5k/oX2HjLas5kwyNibSh/KxBA09hsn5XYa1UvM7eNnt/
+        Ok0vt9+X5z72MfXhgZSP0hH8w9PbaW0uLo+ZJxDBkZUT/N/Ait8qV2kO4UqqcqV2DABMaaP6An/XJ
+        IpyzMs6paBZ1IV5pWz6CDvCDXXtKD+JHWVyoUemxW3G58n65MqX0Eh5Wwl32K8GoHfzxOnGGTOvPK
+        DyWW39ysvor44Z/vbEH1RSOPJudkBFLY8m/T3EOIPU+CAiZLrEF99L4gYXZyz/HlvCxTN4GrWfRk2
+        cCP+RFyQ==;
+Received: from [2601:1c0:6280:3f0::2c43] (helo=smtpauth.infradead.org)
+        by merlin.infradead.org with esmtpsa (Exim 4.92.3 #3 (Red Hat Linux))
+        id 1kvBpw-0006Q6-24; Fri, 01 Jan 2021 04:14:48 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org
+Subject: [PATCH RESEND] ia64: remove duplicate entries in generic_defconfig
+Date:   Thu, 31 Dec 2020 20:14:42 -0800
+Message-Id: <20210101041442.4591-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-References: <20201228093636.893535-1-geert@linux-m68k.org>
-In-Reply-To: <20201228093636.893535-1-geert@linux-m68k.org>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Mon, 28 Dec 2020 10:40:53 +0100
-Message-ID: <CAMuHMdURjQ0pTaOoj1zQEz6_Z4F0X6zxqskmo=_AppTapUkY6A@mail.gmail.com>
-Subject: Re: Build regressions/improvements in v5.11-rc1
-To:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Cc:     Mike Rapoport <rppt@kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Dec 28, 2020 at 10:38 AM Geert Uytterhoeven
-<geert@linux-m68k.org> wrote:
-> Below is the list of build error/warning regressions/improvements in
-> v5.11-rc1[1] compared to v5.10[2].
->
-> Summarized:
->   - build errors: +1/-3
->   - build warnings: +12/-132
->
-> Happy fixing! ;-)
->
-> Thanks to the linux-next team for providing the build service.
->
-> [1] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/5c8fe583cce542aa0b84adc939ce85293de36e5e/ (all 192 configs)
-> [2] http://kisskb.ellerman.id.au/kisskb/branch/linus/head/2c85ebc57b3e1817b6ce1a6b703928e113a90442/ (all 192 configs)
->
->
-> *** ERRORS ***
->
-> 1 error regressions:
->   + /kisskb/src/include/linux/mmzone.h: error: #error Allocator MAX_ORDER exceeds SECTION_SIZE:  => 1156:2
+Fix ia64 generic_defconfig duplicate entries, as warned by:
 
-ia64-defconfig (fix available)
+  + arch/ia64/configs/generic_defconfig: warning: override: reassigning to symbol ATA:  => 58
+  + arch/ia64/configs/generic_defconfig: warning: override: reassigning to symbol ATA_PIIX:  => 59
 
-Gr{oetje,eeting}s,
+These 2 symbols still have the same value as in the removed lines.
 
-                        Geert
+Fixes: c331649e6371 ("ia64: Use libata instead of the legacy ide driver in defconfigs")
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: linux-ia64@vger.kernel.org
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+#Cc: Fenghua Yu <fenghua.yu@intel.com>
+---
+ arch/ia64/configs/generic_defconfig |    2 --
+ 1 file changed, 2 deletions(-)
 
--- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+--- lnx-511-rc1.orig/arch/ia64/configs/generic_defconfig
++++ lnx-511-rc1/arch/ia64/configs/generic_defconfig
+@@ -55,8 +55,6 @@ CONFIG_CHR_DEV_SG=m
+ CONFIG_SCSI_FC_ATTRS=y
+ CONFIG_SCSI_SYM53C8XX_2=y
+ CONFIG_SCSI_QLOGIC_1280=y
+-CONFIG_ATA=y
+-CONFIG_ATA_PIIX=y
+ CONFIG_SATA_VITESSE=y
+ CONFIG_MD=y
+ CONFIG_BLK_DEV_MD=m
