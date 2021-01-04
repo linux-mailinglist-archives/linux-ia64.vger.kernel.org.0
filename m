@@ -2,64 +2,73 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F2AD62E92A0
-	for <lists+linux-ia64@lfdr.de>; Mon,  4 Jan 2021 10:34:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F9232E9989
+	for <lists+linux-ia64@lfdr.de>; Mon,  4 Jan 2021 17:02:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726176AbhADJdv (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 4 Jan 2021 04:33:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:42248 "EHLO mail.kernel.org"
+        id S1727811AbhADQBJ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 4 Jan 2021 11:01:09 -0500
+Received: from mga01.intel.com ([192.55.52.88]:14845 "EHLO mga01.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726026AbhADJdv (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 4 Jan 2021 04:33:51 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 686C021D79;
-        Mon,  4 Jan 2021 09:33:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1609752790;
-        bh=5n7vJCpQwW8zSmDr93dZa9kN4blfmo8jxJGKpx5U5Hs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ftoL/c1zbxvRqYOhI6xG9lR6Zd8xQrcIdkz21Bod+Eobw5xzXnq8lJZhQqQnqbZwQ
-         lVj/vjSUMIsVwWbtXNUW60C3IuJ7KZGOwA0oIfJ7HklKAEgM9JBR4+Q7oTzyS8uDBc
-         v6dgpKp4qKB05yh2INfdD2sJD7dpemaIxsiuFOPQ55/n7DU/bFF9BiWlXZD/xCMzqJ
-         b1bHhuWTzZs5l+bkGEcJW8V7TXrrtwMr8bBbHClUFyNvoxWzJz1KPYMyTKcW/k1+l0
-         S0d7cfLN2XIfwG8pGt8IJEngpGTZ9GKzjXU4IHBP8xu/PH/pkDYZ3mWjxl4SzCIKxC
-         6/zq5OVpFTZFA==
-Received: by mail-ot1-f50.google.com with SMTP id b24so25471500otj.0;
-        Mon, 04 Jan 2021 01:33:10 -0800 (PST)
-X-Gm-Message-State: AOAM530852ciU5J6jvG9qCBuFeEGkI1Wq2BNc0rYazF6EjJdgB9SaPQQ
-        zoIXx1eUt2CEXbvmREC8d2B3EJWDaKQiWW58pXA=
-X-Google-Smtp-Source: ABdhPJyvdjWMT5twGvJHH6XoUBUHgxZe3u552CGxz2czq0O52xp1FBCMoMRuQcdfPTQIS7jtnngPTRPudqMRlUqi1l0=
-X-Received: by 2002:a9d:7a4b:: with SMTP id z11mr51940100otm.305.1609752789802;
- Mon, 04 Jan 2021 01:33:09 -0800 (PST)
-MIME-Version: 1.0
-References: <20210104085806.4176886-1-arnd@kernel.org> <ad54481b-15da-e795-0c1a-bd54d3e8ab87@physik.fu-berlin.de>
-In-Reply-To: <ad54481b-15da-e795-0c1a-bd54d3e8ab87@physik.fu-berlin.de>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Mon, 4 Jan 2021 10:32:53 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3zDB5wh-bdg+fq6nvg9gHrESFhhgss4f47VJ1JOvoE1Q@mail.gmail.com>
-Message-ID: <CAK8P3a3zDB5wh-bdg+fq6nvg9gHrESFhhgss4f47VJ1JOvoE1Q@mail.gmail.com>
-Subject: Re: [PATCH] ia64: fix xchg() warning
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-ia64@vger.kernel.org,
+        id S1727785AbhADQBI (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 4 Jan 2021 11:01:08 -0500
+IronPort-SDR: LY0IhoNdLQZksucFQmZA9WCpG8buArL1LE9vaGFuZDj54kVdPr1/AzN0YhyiJJceGLeYRxKR5A
+ AkiihvIbMokg==
+X-IronPort-AV: E=McAfee;i="6000,8403,9854"; a="195494085"
+X-IronPort-AV: E=Sophos;i="5.78,474,1599548400"; 
+   d="scan'208";a="195494085"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Jan 2021 08:00:27 -0800
+IronPort-SDR: gRxx+WKWDxZsIc1NEWudMjU3+XMIeKAERsZSqb04jHajrz5fqAY8SH/Eb7zfhdNLYTuBwaH/ue
+ qYJCCthTRgvA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.78,474,1599548400"; 
+   d="scan'208";a="421412074"
+Received: from fmsmsx603.amr.corp.intel.com ([10.18.126.83])
+  by orsmga001.jf.intel.com with ESMTP; 04 Jan 2021 08:00:27 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx603.amr.corp.intel.com (10.18.126.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 4 Jan 2021 08:00:26 -0800
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.1713.5; Mon, 4 Jan 2021 08:00:26 -0800
+Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
+ fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.1713.004;
+ Mon, 4 Jan 2021 08:00:26 -0800
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Arnd Bergmann <arnd@kernel.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+CC:     "Yu, Fenghua" <fenghua.yu@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
         "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Subject: RE: [PATCH] ia64: fix xchg() warning
+Thread-Topic: [PATCH] ia64: fix xchg() warning
+Thread-Index: AQHW4ne7MfwZlffP1Ui4sWDmvkQA/6oXsvCAgAAHY4D//+Wi4A==
+Date:   Mon, 4 Jan 2021 16:00:26 +0000
+Message-ID: <71274a7cdf7d48bf9c2fda873fa37727@intel.com>
+References: <20210104085806.4176886-1-arnd@kernel.org>
+ <ad54481b-15da-e795-0c1a-bd54d3e8ab87@physik.fu-berlin.de>
+ <CAK8P3a3zDB5wh-bdg+fq6nvg9gHrESFhhgss4f47VJ1JOvoE1Q@mail.gmail.com>
+In-Reply-To: <CAK8P3a3zDB5wh-bdg+fq6nvg9gHrESFhhgss4f47VJ1JOvoE1Q@mail.gmail.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.5.1.3
+x-originating-ip: [10.1.200.100]
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
+MIME-Version: 1.0
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Jan 4, 2021 at 10:06 AM John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> wrote:
->
-> Hi Arnd!
->
-> On 1/4/21 9:58 AM, Arnd Bergmann wrote:
-> > Change it to a compound expression like the other architectures have
-> > to get a clean defconfig build.
->
-> Slightly OT: Has your other fix for the timer regression on ia64 already been
-> merged? I can test this patch later today.
-
-I have not received any reply from the ia64 maintainers, I assume they were
-both out of office for Christmas.
-
-      Arnd
+PiBJIGhhdmUgbm90IHJlY2VpdmVkIGFueSByZXBseSBmcm9tIHRoZSBpYTY0IG1haW50YWluZXJz
+LCBJIGFzc3VtZSB0aGV5IHdlcmUNCj4gYm90aCBvdXQgb2Ygb2ZmaWNlIGZvciBDaHJpc3RtYXMu
+DQoNCkknbSBiYWNrIGluIHRoZSBvZmZpY2UgLi4uIGJ1dCBoYXZlIG5vIHdvcmtpbmcgaWE2NCBt
+YWNoaW5lcywgbm9yIHRpbWUgdG8gbG9vayBhdCBwYXRjaGVzIDotKA0KDQpTaG91bGQgZHJvcCBt
+ZSBmcm9tIHRoZSBNQUlOVEFJTlRFUlMgZmlsZS4NCg0KLVRvbnkNCg==
