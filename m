@@ -2,80 +2,63 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A55222E9240
-	for <lists+linux-ia64@lfdr.de>; Mon,  4 Jan 2021 10:00:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84F232E9257
+	for <lists+linux-ia64@lfdr.de>; Mon,  4 Jan 2021 10:08:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726303AbhADI6v (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 4 Jan 2021 03:58:51 -0500
-Received: from mail.kernel.org ([198.145.29.99]:39432 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726825AbhADI6v (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 4 Jan 2021 03:58:51 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6EF3E207AE;
-        Mon,  4 Jan 2021 08:58:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1609750690;
-        bh=V8PHXZ6MO5UWZbjzEqwye25+ofsH5oNZHJoowbG+BoI=;
-        h=From:To:Cc:Subject:Date:From;
-        b=rOnolACyk9lJQFhMEpY4NKKtR6xjjHhUxNalQGHRvqs59GyHqgg2OVRH3J4dqwIwq
-         5CfreMl8R3msAycB+miXtInUXlLNjHbHKP6n4A27kAFuAgy6qcRWT7wV/LhdxcOu+D
-         WpOOPXjPi42bvQZTrp2ehdmttO1J7+DANe2kbg7xo6OFhvjHbrbw7GsykB6hpKPQ8z
-         69uAT+t6QETj3Oei9vpsZU9INPZugS7ijTC7BRhrquGFRzrUq8pU02Zw/r8nYHO8hw
-         LMxiLfvYz7Mc4bgYKkh1DZgrN4ZgjWgNZilJP6A7IQy7Y0VEGIKutRa33ugafB3AwW
-         PdSkqp0B+mhrw==
-From:   Arnd Bergmann <arnd@kernel.org>
-To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>
+        id S1726606AbhADJHK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 4 Jan 2021 04:07:10 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:39637 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1726289AbhADJHK (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 4 Jan 2021 04:07:10 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1kwLoq-001y5O-Ke; Mon, 04 Jan 2021 10:06:28 +0100
+Received: from p5b13a61e.dip0.t-ipconnect.de ([91.19.166.30] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1kwLop-002VEH-Tk; Mon, 04 Jan 2021 10:06:28 +0100
+Subject: Re: [PATCH] ia64: fix xchg() warning
+To:     Arnd Bergmann <arnd@kernel.org>, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>
 Cc:     Arnd Bergmann <arnd@arndb.de>, linux-ia64@vger.kernel.org,
         linux-kernel@vger.kernel.org
-Subject: [PATCH] ia64: fix xchg() warning
-Date:   Mon,  4 Jan 2021 09:58:02 +0100
-Message-Id: <20210104085806.4176886-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.29.2
+References: <20210104085806.4176886-1-arnd@kernel.org>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <ad54481b-15da-e795-0c1a-bd54d3e8ab87@physik.fu-berlin.de>
+Date:   Mon, 4 Jan 2021 10:06:27 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.6.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210104085806.4176886-1-arnd@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.166.30
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hi Arnd!
 
-The definition if xchg() causes a harmless warning in some files, like:
+On 1/4/21 9:58 AM, Arnd Bergmann wrote:
+> Change it to a compound expression like the other architectures have
+> to get a clean defconfig build.
 
-In file included from ../arch/ia64/include/uapi/asm/intrinsics.h:22,
-                 from ../arch/ia64/include/asm/intrinsics.h:11,
-                 from ../arch/ia64/include/asm/bitops.h:19,
-                 from ../include/linux/bitops.h:32,
-                 from ../include/linux/kernel.h:11,
-                 from ../fs/nfs/read.c:12:
-../fs/nfs/read.c: In function 'nfs_read_completion':
-../arch/ia64/include/uapi/asm/cmpxchg.h:57:2: warning: value computed is not used [-Wunused-value]
-   57 | ((__typeof__(*(ptr))) __xchg((unsigned long) (x), (ptr), sizeof(*(ptr))))
-      | ~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../fs/nfs/read.c:196:5: note: in expansion of macro 'xchg'
-  196 |     xchg(&nfs_req_openctx(req)->error, error);
-      |     ^~~~
+Slightly OT: Has your other fix for the timer regression on ia64 already been
+merged? I can test this patch later today.
 
-Change it to a compound expression like the other architectures have
-to get a clean defconfig build.
+Adrian
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
----
- arch/ia64/include/uapi/asm/cmpxchg.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/ia64/include/uapi/asm/cmpxchg.h b/arch/ia64/include/uapi/asm/cmpxchg.h
-index d69c979936d4..5d90307fd6e0 100644
---- a/arch/ia64/include/uapi/asm/cmpxchg.h
-+++ b/arch/ia64/include/uapi/asm/cmpxchg.h
-@@ -54,7 +54,7 @@ extern void ia64_xchg_called_with_bad_pointer(void);
- })
- 
- #define xchg(ptr, x)							\
--((__typeof__(*(ptr))) __xchg((unsigned long) (x), (ptr), sizeof(*(ptr))))
-+({(__typeof__(*(ptr))) __xchg((unsigned long) (x), (ptr), sizeof(*(ptr)));})
- 
- /*
-  * Atomic compare and exchange.  Compare OLD with MEM, if identical,
 -- 
-2.29.2
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
