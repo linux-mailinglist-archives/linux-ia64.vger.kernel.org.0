@@ -2,31 +2,31 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 557162F0392
-	for <lists+linux-ia64@lfdr.de>; Sat,  9 Jan 2021 21:47:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D876D2F1F50
+	for <lists+linux-ia64@lfdr.de>; Mon, 11 Jan 2021 20:30:41 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726062AbhAIUr2 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Sat, 9 Jan 2021 15:47:28 -0500
-Received: from mail.univ-alger.dz ([193.194.83.97]:59002 "EHLO
+        id S2391265AbhAKT3G convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Mon, 11 Jan 2021 14:29:06 -0500
+Received: from mail.univ-alger.dz ([193.194.83.97]:37288 "EHLO
         mail.univ-alger.dz" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1726006AbhAIUr2 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 9 Jan 2021 15:47:28 -0500
+        with ESMTP id S2390937AbhAKT3F (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 11 Jan 2021 14:29:05 -0500
 Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.univ-alger.dz (Postfix) with ESMTP id D3FDB50873BD;
-        Tue,  5 Jan 2021 17:56:36 +0100 (CET)
+        by mail.univ-alger.dz (Postfix) with ESMTP id B22B14D45D2B;
+        Mon, 11 Jan 2021 13:18:07 +0100 (CET)
 Received: from mail.univ-alger.dz ([127.0.0.1])
         by localhost (mail.univ-alger.dz [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 6BXWR0MGUMcC; Tue,  5 Jan 2021 17:56:36 +0100 (CET)
+        with ESMTP id uYTJokgK2drs; Mon, 11 Jan 2021 13:18:07 +0100 (CET)
 Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.univ-alger.dz (Postfix) with ESMTP id E913D5087414;
-        Tue,  5 Jan 2021 17:56:24 +0100 (CET)
+        by mail.univ-alger.dz (Postfix) with ESMTP id D19414D629CE;
+        Mon, 11 Jan 2021 13:08:17 +0100 (CET)
 X-Virus-Scanned: amavisd-new at mail.univ-alger.dz
 Received: from mail.univ-alger.dz ([127.0.0.1])
         by localhost (mail.univ-alger.dz [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id iwNCWfMVUx5X; Tue,  5 Jan 2021 17:56:24 +0100 (CET)
-Received: from [10.10.10.23] (unknown [193.148.18.54])
-        by mail.univ-alger.dz (Postfix) with ESMTPSA id 896ED508740B;
-        Tue,  5 Jan 2021 17:56:13 +0100 (CET)
+        with ESMTP id hrsudEcJqZ6j; Mon, 11 Jan 2021 13:08:17 +0100 (CET)
+Received: from MACBOOK341C.localdomain (unknown [209.216.92.203])
+        by mail.univ-alger.dz (Postfix) with ESMTPSA id D715C4D06EFF;
+        Mon, 11 Jan 2021 12:55:48 +0100 (CET)
 Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8BIT
@@ -34,9 +34,9 @@ Content-Description: Mail message body
 Subject: =?utf-8?q?Sie_haben_eine_Spende_von_=E2=82=AC_5=2E800=2E000=2C00=2E?=
 To:     Recipients <z.benamor@univ-alger.dz>
 From:   "Mrs. Mavis" <z.benamor@univ-alger.dz>
-Date:   Tue, 05 Jan 2021 08:56:02 -0800
+Date:   Mon, 11 Jan 2021 03:55:36 -0800
 Reply-To: wanczykm61@gmail.com
-Message-Id: <20210105165613.896ED508740B@mail.univ-alger.dz>
+Message-Id: <20210111115548.D715C4D06EFF@mail.univ-alger.dz>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
