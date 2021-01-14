@@ -2,36 +2,36 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0CD02F6155
-	for <lists+linux-ia64@lfdr.de>; Thu, 14 Jan 2021 13:58:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E24102F6167
+	for <lists+linux-ia64@lfdr.de>; Thu, 14 Jan 2021 14:02:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1726272AbhANM6W (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 14 Jan 2021 07:58:22 -0500
-Received: from mail.kernel.org ([198.145.29.99]:33230 "EHLO mail.kernel.org"
+        id S1726088AbhANM7h (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 14 Jan 2021 07:59:37 -0500
+Received: from mail.kernel.org ([198.145.29.99]:33560 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1726259AbhANM6V (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 14 Jan 2021 07:58:21 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1227623A05;
-        Thu, 14 Jan 2021 12:57:38 +0000 (UTC)
+        id S1726066AbhANM7h (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 14 Jan 2021 07:59:37 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8351923A33;
+        Thu, 14 Jan 2021 12:58:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1610629061;
-        bh=BUpI2I9YMH+a7xHPqtdhvLSJlin/ivqWxM8HyiZg4sg=;
+        s=k20201202; t=1610629136;
+        bh=MsbkcZB9miMJgu/jBC8joLgliDJgOGuSFm0lQV8ramk=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RqD9XxyWlekyv/gLyTaL9PcpnRwyBGF2MDWXMSpSA/9GoJ/TVUGCFDzeUNEVVLJMD
-         j/B+Q3ecGOk7Csd54uib6opA/iPDCHcYcPb8s+nOJZC4Zs4CMGwpvImj3PTog4i/NC
-         k0CkI828OisKLYIZOdSjj6tCzemN53F03SmzBYZakH91sUHL3NiI8o/baDFsYAnKS+
-         DcdWTEtyN+eaWXF0OOSStNFND8LLSp2SMSuNzh5E6yLs6+DyhrYdbKA9ar3kjBVZ7N
-         2dXOAq/Ei+4ubSoLkXBaiZM0jmdokv5DCpqlzDWOo6xvMt1IyywrSL8RAQRNqkqUj7
-         wExK0MJKh9d/A==
-Date:   Thu, 14 Jan 2021 14:57:34 +0200
+        b=sYS1U2PKUm9xKwc0145uEPYPxVwHiIYptIqKJhpkGCnVkFsYPsKs94Lo1SadbKimG
+         6cAqWO2P7NQ20F/IspYVTygOoTfy7SKy5qvVzXFNEeHVZXWG5ezB0Z14byQ1ysdm1S
+         qOGSJ3X++zXwG883nYb4SI6owJRaEgt/Rmbtw1CosONeJZc8mArRps/Jzmn9rnYjGS
+         PZpb00+fZgfYCJI9YBXWn1DDygEaP3/0mQoDxUvc6SDLkI3XcYlSSQykuV6Mp0eXRs
+         Ed7/8jqOUhPjvjMOd986R0qz8e3fFHhh0cZ/etIPGncH9HeQKKjXU2Tz/nuZCLn3+C
+         dBtnoJ3Lk4ePA==
+Date:   Thu, 14 Jan 2021 14:58:50 +0200
 From:   Mike Rapoport <rppt@kernel.org>
-To:     Tony Luck <tony.luck@intel.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Mike Rapoport <rppt@linux.ibm.com>, linux-ia64@vger.kernel.org,
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Guenter Roeck <linux@roeck-us.net>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
         linux-kernel@vger.kernel.org
 Subject: Re: [PATCH] ia64: fix build failure caused by memory model changes
-Message-ID: <20210114125734.GI1106298@kernel.org>
+Message-ID: <20210114125850.GJ1106298@kernel.org>
 References: <20201218163550.8838-1-rppt@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -41,9 +41,10 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Andrew,
+If there are no objections, I'll take it via the memblock tree.
 
-Would you like me to
+@Tony an ack would be appreciated.
+
 On Fri, Dec 18, 2020 at 06:35:50PM +0200, Mike Rapoport wrote:
 > From: Mike Rapoport <rppt@linux.ibm.com>
 > 
