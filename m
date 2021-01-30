@@ -2,115 +2,79 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DC49D30819C
-	for <lists+linux-ia64@lfdr.de>; Thu, 28 Jan 2021 23:59:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D0BCC3097CC
+	for <lists+linux-ia64@lfdr.de>; Sat, 30 Jan 2021 20:07:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231361AbhA1W6C (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 28 Jan 2021 17:58:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38930 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231174AbhA1W4u (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 28 Jan 2021 17:56:50 -0500
-Received: from mail-pl1-x62b.google.com (mail-pl1-x62b.google.com [IPv6:2607:f8b0:4864:20::62b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D88D1C061573
-        for <linux-ia64@vger.kernel.org>; Thu, 28 Jan 2021 14:56:09 -0800 (PST)
-Received: by mail-pl1-x62b.google.com with SMTP id u15so4207426plf.1
-        for <linux-ia64@vger.kernel.org>; Thu, 28 Jan 2021 14:56:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=qhEU96AaqUAX8iQlz7vbl9iacrXd702OB0pU92Jc1zo=;
-        b=CGAEcmjGdTek5oAg43ul70BCIQlzXsTkkWZBn3MxmtmZREhr7z4Z3X54+YNiX1JG6L
-         qlP0ZkUz1Mjh+pFB1YZd/nsTk1kDtm/fx33aaI0VSWiVoNcEMmkTUxD0MrBL7ra5rrGH
-         81U2ulRWJS0UuFbR1TmjMqhKVpJUBqjwOnc3mrjUf9S1jcYhXVG2m4Y/mJWVUxOROE1j
-         vJucDIAHjfSIdHWxkF3DW5XolUYxnS1cITR+vLbBENiRuQFBDr5A7+ScceHEZxtIjGMG
-         PAQkkLh8kMjZKIbS8d7PfvY467glAiurugHTeUKnmS3Edcmx7TtRAXEujiZqj6NXyUCp
-         igJA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=qhEU96AaqUAX8iQlz7vbl9iacrXd702OB0pU92Jc1zo=;
-        b=olCDaXbNovRJBeEOyW5dPlEYyhhwPBQKBeNPGYqi3hj4zZYUWaHu44/x5zePaW09uo
-         An8ZnCcSHnG0QQbrPh203RCW80/Q9iwTPsCU3clEauDUgG1IJpmeCvCvGwBParZnFHve
-         MpMM9YIB5JBEFWc6gsNJdkFrUNSYxPB3yU0xDuwnibZ2uZmNNcEFlDnYA1BRRe4UEOcl
-         FUiFb/pEjyLn+oxYvAF2IvDCG4QrQclGImSIS4buRe7+AZsJMFv7D/Z2SuNAtsqiqIAN
-         XZZEwEr1Cwryrg3Tv3nvj61yEgAVAi9p/S5TCfpjjJc0cKpsGGhyOFdYxxR7Hxn2dIT5
-         XTjA==
-X-Gm-Message-State: AOAM5301wOI8O7Jce15hEXfTJe2XKhgEXHDBf/rrSiZoh4raz2+yccOO
-        We9Kxb5m4tTEpu7pbI67yJ3SXVgEyxHnXw==
-X-Google-Smtp-Source: ABdhPJx7RVUn7Ad6VmPrPxQeCy5R701bnUusq1UEH0huJWoJJEYADfcT6kNWoKajMtOGBEt0/Ln1bw==
-X-Received: by 2002:a17:90a:4504:: with SMTP id u4mr1598046pjg.218.1611874569378;
-        Thu, 28 Jan 2021 14:56:09 -0800 (PST)
-Received: from [192.168.4.41] (cpe-72-132-29-68.dc.res.rr.com. [72.132.29.68])
-        by smtp.gmail.com with ESMTPSA id h1sm6427243pgj.59.2021.01.28.14.56.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 28 Jan 2021 14:56:08 -0800 (PST)
-Subject: Re: [PATCH] ia64: add support for TIF_NOTIFY_SIGNAL
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     linux-ia64@vger.kernel.org, Mike Rapoport <rppt@linux.ibm.com>
-References: <d3a2aa1e-0fae-1d3f-519f-d32adc608c38@kernel.dk>
- <71d32a91-c429-7405-f4a6-58c74eb898bf@physik.fu-berlin.de>
- <477eb7cf-cbf8-540e-c355-41b7e5ed558f@kernel.dk>
- <4c01b344-b5bf-df4f-24f3-325de354ce50@physik.fu-berlin.de>
- <30e8ec23-476a-89f6-3ec0-3724bfcff3b4@kernel.dk>
- <82f1e3d1-c16b-8974-2781-31214d229a11@physik.fu-berlin.de>
-From:   Jens Axboe <axboe@kernel.dk>
-Message-ID: <e9788776-d309-3936-aa11-78906d90c3c8@kernel.dk>
-Date:   Thu, 28 Jan 2021 15:56:07 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        id S232213AbhA3TGw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 30 Jan 2021 14:06:52 -0500
+Received: from smtprelay0215.hostedemail.com ([216.40.44.215]:42524 "EHLO
+        smtprelay.hostedemail.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S232204AbhA3TGp (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Sat, 30 Jan 2021 14:06:45 -0500
+X-Greylist: delayed 637 seconds by postgrey-1.27 at vger.kernel.org; Sat, 30 Jan 2021 14:06:44 EST
+Received: from smtprelay.hostedemail.com (10.5.19.251.rfc1918.com [10.5.19.251])
+        by smtpgrave08.hostedemail.com (Postfix) with ESMTP id 9342618004A37
+        for <linux-ia64@vger.kernel.org>; Sat, 30 Jan 2021 18:56:09 +0000 (UTC)
+Received: from filter.hostedemail.com (clb03-v110.bra.tucows.net [216.40.38.60])
+        by smtprelay03.hostedemail.com (Postfix) with ESMTP id 44849837F24C;
+        Sat, 30 Jan 2021 18:55:26 +0000 (UTC)
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Spam-Summary: 2,0,0,,d41d8cd98f00b204,joe@perches.com,,RULES_HIT:41:355:379:599:800:960:973:988:989:1260:1261:1277:1311:1313:1314:1345:1359:1515:1516:1518:1534:1540:1593:1594:1711:1730:1747:1777:1792:2194:2199:2393:2559:2562:2828:3138:3139:3140:3141:3142:3352:3622:3868:4321:5007:7652:7875:10004:10400:10848:11232:11658:11914:12297:12555:12740:12895:12986:13069:13311:13357:13439:13894:14181:14659:14721:21080:21627:30054:30091,0,RBL:none,CacheIP:none,Bayesian:0.5,0.5,0.5,Netcheck:none,DomainCache:0,MSF:not bulk,SPF:,MSBL:0,DNSBL:none,Custom_rules:0:0:0,LFtime:1,LUA_SUMMARY:none
+X-HE-Tag: ball06_08104aa275b3
+X-Filterd-Recvd-Size: 1735
+Received: from [192.168.1.159] (unknown [47.151.137.21])
+        (Authenticated sender: joe@perches.com)
+        by omf10.hostedemail.com (Postfix) with ESMTPA;
+        Sat, 30 Jan 2021 18:55:25 +0000 (UTC)
+Message-ID: <bfac54e37f602bcdac73f6aee4e9fcd4fd651795.camel@perches.com>
+Subject: Re: [PATCH 03/29] ia64: Avoid comma separated statements
+From:   Joe Perches <joe@perches.com>
+To:     Jiri Kosina <trivial@kernel.org>, linux-kernel@vger.kernel.org
+Cc:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        linux-ia64@vger.kernel.org
+Date:   Sat, 30 Jan 2021 10:55:24 -0800
+In-Reply-To: <be37cf8fdcad19678cd164946252bc67713ddcdf.1598331148.git.joe@perches.com>
+References: <cover.1598331148.git.joe@perches.com>
+         <be37cf8fdcad19678cd164946252bc67713ddcdf.1598331148.git.joe@perches.com>
+Content-Type: text/plain; charset="ISO-8859-1"
+User-Agent: Evolution 3.38.1-1 
 MIME-Version: 1.0
-In-Reply-To: <82f1e3d1-c16b-8974-2781-31214d229a11@physik.fu-berlin.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 1/28/21 3:51 PM, John Paul Adrian Glaubitz wrote:
-> On 1/28/21 11:42 PM, Jens Axboe wrote:
->>> I just tried Linus' current tree (ge5ff2cb9cf67) and the problem still persists.
->>
->> Funky... Can you see if this helps?
->>
->> diff --git a/arch/ia64/kernel/signal.c b/arch/ia64/kernel/signal.c
->> index e67b22fc3c60..7de57ace4799 100644
->> --- a/arch/ia64/kernel/signal.c
->> +++ b/arch/ia64/kernel/signal.c
->> @@ -358,9 +358,6 @@ ia64_do_signal (struct sigscratch *scr, long in_syscall)
->>  			 */
->>  			restart = 0;
->>  
->> -		if (ksig.sig <= 0)
->> -			break;
->> -
->>  		if (unlikely(restart)) {
->>  			switch (errno) {
->>  			case ERESTART_RESTARTBLOCK:
->> @@ -381,6 +378,9 @@ ia64_do_signal (struct sigscratch *scr, long in_syscall)
->>  			}
->>  		}
->>  
->> +		if (ksig.sig <= 0)
->> +			break;
->> +
->>  		/*
->>  		 * Whee!  Actually deliver the signal.  If the delivery failed, we need to
->>  		 * continue to iterate in this loop so we can deliver the SIGSEGV...
+On Mon, 2020-08-24 at 21:56 -0700, Joe Perches wrote:
+> Use semicolons and braces.
+
+ping?
+
+
+> Signed-off-by: Joe Perches <joe@perches.com>
+> ---
+>  arch/ia64/kernel/smpboot.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 > 
-> This one doesn't help. Will try the other in a minute.
+> diff --git a/arch/ia64/kernel/smpboot.c b/arch/ia64/kernel/smpboot.c
+> index c29c600d7967..3311b9d21319 100644
+> --- a/arch/ia64/kernel/smpboot.c
+> +++ b/arch/ia64/kernel/smpboot.c
+> @@ -224,8 +224,11 @@ get_delta (long *rt, long *master)
+>  		go[SLAVE] = 0;
+>  		t1 = ia64_get_itc();
+>  
+> 
+> -		if (t1 - t0 < best_t1 - best_t0)
+> -			best_t0 = t0, best_t1 = t1, best_tm = tm;
+> +		if (t1 - t0 < best_t1 - best_t0) {
+> +			best_t0 = t0;
+> +			best_t1 = t1;
+> +			best_tm = tm;
+> +		}
+>  	}
+>  
+> 
+>  	*rt = best_t1 - best_t0;
 
-Also looks like you might need to add a:
-
-	ksig.sig = 0;
-
-right above get_signal(), just in case. For the 2nd patch, I mean. But thanks
-for testing, interested if the other one will do it...
-
--- 
-Jens Axboe
 
