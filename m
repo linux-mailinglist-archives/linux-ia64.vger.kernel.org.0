@@ -2,81 +2,68 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 096BD30B202
-	for <lists+linux-ia64@lfdr.de>; Mon,  1 Feb 2021 22:23:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CD4FC30DB42
+	for <lists+linux-ia64@lfdr.de>; Wed,  3 Feb 2021 14:30:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232201AbhBAVWa (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 1 Feb 2021 16:22:30 -0500
-Received: from ms.lwn.net ([45.79.88.28]:50674 "EHLO ms.lwn.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230094AbhBAVWa (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 1 Feb 2021 16:22:30 -0500
-X-Greylist: delayed 16994 seconds by postgrey-1.27 at vger.kernel.org; Mon, 01 Feb 2021 16:22:30 EST
-Received: from localhost (unknown [IPv6:2601:281:8300:104d::5f6])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ms.lwn.net (Postfix) with ESMTPSA id 66D3E384;
-        Mon,  1 Feb 2021 21:21:49 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ms.lwn.net 66D3E384
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=lwn.net; s=20201203;
-        t=1612214509; bh=zFCLGfAujq4fIR8VwOuNF0Vsve0622fqbiBDx88X0K8=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=EVyjPSnYscr9FSXgpl9ustjG4EMy7MWz4+J8hStXFNLzXhKJueffpwm0GmFJ0R08O
-         VWxOTmaUV/yJWR3OU2DBRkreM2AV3+SyK8ziZWdVktlQnzt2V9GCVM8uHP7eMz6Txw
-         FUBfXgnkipxQdRd7ME4Zl9iAFrCIyAV/pz+cUFIUSvfW1cZl8n8sgPhlXF6NSZdNB7
-         CMPMA2asNUTzEqEXNQUxWoHhf6pfATNUI91+vnfvwiGcuZWKMuisvie25d97xC+Waw
-         AXfmmkhLjd+79DgryDlwHfkfwI/5gz4ysyTF8btHQjLPaYmsN+qgIixBOisn0LYXyt
-         jY/NtCop4AXWA==
-From:   Jonathan Corbet <corbet@lwn.net>
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-        Fenghua Yu <fenghua.yu@intel.com>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Tony Luck <tony.luck@intel.com>, linux-ia64@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH] kbuild: remove PYTHON variable
-In-Reply-To: <CAK7LNAQQ=kqhx6REix7j+ZndABjuCBEwp=yiQp71Z0fBrQZxog@mail.gmail.com>
-References: <20210201010024.654526-1-masahiroy@kernel.org>
- <87r1lzvj3q.fsf@meer.lwn.net>
- <CAK7LNAQQ=kqhx6REix7j+ZndABjuCBEwp=yiQp71Z0fBrQZxog@mail.gmail.com>
-Date:   Mon, 01 Feb 2021 14:21:48 -0700
-Message-ID: <87czxjv5zn.fsf@meer.lwn.net>
+        id S231890AbhBCN2E (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 3 Feb 2021 08:28:04 -0500
+Received: from 198-20-226-115.unifiedlayer.com ([198.20.226.115]:51174 "EHLO
+        198-20-226-115.unifiedlayer.com" rhost-flags-OK-FAIL-OK-FAIL)
+        by vger.kernel.org with ESMTP id S231886AbhBCN2C (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 3 Feb 2021 08:28:02 -0500
+X-Greylist: delayed 21682 seconds by postgrey-1.27 at vger.kernel.org; Wed, 03 Feb 2021 08:27:03 EST
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=carnivalassure.com.bd; s=default; h=Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Sender:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=miRpAdBSO5eDo01VDX+EK9bqGCmqMjXHS3kO16T6iWw=; b=oR9DBi73zWrpNptVGG8joD1q3D
+        a2vFVnixMQAUcmehD6fgJOQ9JP9N27NiM2NuC8HmaSTuyc4tIbd8kMLlSjPNy8b19j5i4Yecn4k41
+        d2L53GGQ3KAYNm9cTjTcF00G/e0wgveF66KZo4CFoHY+VyQWZpnDvHs7YXjdM1k0LGC10SnlZJnOf
+        hyfuxn41TeLbFp37bqri+jK8o3wb0VHiGKRxBfijUx18MCanoqvAna1IaS7ccBxFfbvZdTXygBXlc
+        j3LFBSU0eQazmqTdBY+jvtCMEdlAV/WbBykAUBZA45AnMWlIO1A8LzPVfVBXCEwNqNeODasQNIR6+
+        B0GfR5SA==;
+Received: from [127.0.0.1] (port=46664 helo=dot.dotlines.com.sg)
+        by dot.dotlines.com.sg with esmtpa (Exim 4.93)
+        (envelope-from <noreply@carnivalassure.com.bd>)
+        id 1l7CVp-0005bM-9S; Wed, 03 Feb 2021 01:23:41 -0600
 MIME-Version: 1.0
-Content-Type: text/plain
+Date:   Wed, 03 Feb 2021 01:23:40 -0600
+From:   Francois Pinault <noreply@carnivalassure.com.bd>
+To:     undisclosed-recipients:;
+Subject: Hello/Hallo
+Organization: Donation
+Reply-To: francoispinault1936@outlook.com
+Mail-Reply-To: francoispinault1936@outlook.com
+Message-ID: <02cc13f2661d3cb7582fa6695be089c9@carnivalassure.com.bd>
+X-Sender: noreply@carnivalassure.com.bd
+User-Agent: Roundcube Webmail/1.3.15
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - dot.dotlines.com.sg
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - carnivalassure.com.bd
+X-Get-Message-Sender-Via: dot.dotlines.com.sg: authenticated_id: noreply@carnivalassure.com.bd
+X-Authenticated-Sender: dot.dotlines.com.sg: noreply@carnivalassure.com.bd
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Masahiro Yamada <masahiroy@kernel.org> writes:
 
-> On Tue, Feb 2, 2021 at 1:38 AM Jonathan Corbet <corbet@lwn.net> wrote:
->> So this will have the effect of making the docs build impossible for
->> folks who only have Python 2.
->
-> Is this a problem?  Python 2 is EOL.
->
-> Everybody who wants to use Python
-> must install Python 3.
 
-I honestly don't know, but people do keep things around for a
-surprisingly long time.
+-- 
+Hallo, ich bin Herr Francois Pinault, ich habe Ihnen gespendet. Sie 
+können mein Profil auf Wikipedia, Google oder Forbes überprüfen.
 
->>  As I said before, this is a step that we
->> knew was coming, we just hadn't decided on the exact timing - I guess
->> this decides for us :)
->>
->> That said, I'll copy linux-doc to see if anybody screams.  I assume this
->> is a 5.12 change?
->
-> No, I am planning to do this for 5.11
-> (a pull request this week if there is no objection).
+Für Ihren Spendenanspruch und weitere Informationen kontaktieren Sie 
+mich umgehend unter francoispinault1936@outlook.com
 
-I'm not going to truly object and try to block this, but I worry that
-it's soon and without warning.  It's not a change I would merge for
--rc7.  IMO this should be done in 5.12 with an appropriate note added to
-Documentation/process/changes.rst as well.
-
-Thanks,
-
-jon
+Mit freundlichen Grüßen,
+Herr Francois Pinault
