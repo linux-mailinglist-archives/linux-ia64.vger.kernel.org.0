@@ -2,68 +2,67 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5122A311DC4
-	for <lists+linux-ia64@lfdr.de>; Sat,  6 Feb 2021 15:38:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AB43311E94
+	for <lists+linux-ia64@lfdr.de>; Sat,  6 Feb 2021 17:08:22 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230178AbhBFOik (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 6 Feb 2021 09:38:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51710 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230111AbhBFOii (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 6 Feb 2021 09:38:38 -0500
-Received: from mail-oi1-x22b.google.com (mail-oi1-x22b.google.com [IPv6:2607:f8b0:4864:20::22b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 126EEC06178C
-        for <linux-ia64@vger.kernel.org>; Sat,  6 Feb 2021 06:37:58 -0800 (PST)
-Received: by mail-oi1-x22b.google.com with SMTP id l3so819421oii.2
-        for <linux-ia64@vger.kernel.org>; Sat, 06 Feb 2021 06:37:58 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=sY4fgq/DSyThalwU7QX+pWYKs/8sGH7ZznMUn5qQ1EY=;
-        b=gE7InIGC5NEhs+cHA00UhtyeGS4+BgCU0KgWBOvjbOwESFwsPXdtghZoWWfs72Miur
-         YAMB22ALjyyiqlBXHJEdUw7Q66+/YCwh5e+ECBFMG+cAx3ICjzmiJIf+bLazglpGU3Mn
-         v3BNoKOf685KGsQFPfhjmi3sQ+IKx7dKF8hymb7mrIN6M2sYP5e0w336sin5eMe1dz/N
-         YPdUGzpSZnCJHjUdjs3Qgx0WINL3RBSdnINAoGq7w9v2WuhscvCaSn1Qisrxqy6tYl+5
-         by0ZG4G2kk7P0eRubw2kXhGkeY19csq+gRbh6CiFRl7+AbHSL5Vb+p+tvY9VswHrW4gY
-         Ttuw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=sY4fgq/DSyThalwU7QX+pWYKs/8sGH7ZznMUn5qQ1EY=;
-        b=qM8o6ULVT44pBhMRfdLaAUa7QBxUwZv4cBOHPoNp5b7usJhmqyOAuLrr+iV0agXSp2
-         tfO3xfLdJWK/GfONeWKsZ+BT7iSEXWEY1qbRMu/BDgp4LxVFwFm/yJSZwv6YcLTfzIOq
-         334lP8JibRw68UNpP31KzSujsHYIgZMC8SigaLr/Vn6Nznj5dXPrOWYa722ONJWRw0tM
-         jHpdHuFiQdh9trYty9hr3OcA9ucUGwGngusr/xexPRpw/aA4fJmF+zFCivv8Rq1SfAOz
-         4wdb8VTlBGN7xQ6YlysukOSbT5G8MdtRNykkGChp2EVLHilR1s4F8uT4a+ivAc/57xTB
-         bjDQ==
-X-Gm-Message-State: AOAM530K28kX1Z6xZK6ct6Pe9LgDbFIt/nchLXDs44r5gZgx9kd84QrV
-        BHShytayKzE291xGT74E6yuXny3HPkuyjmI2VpI=
-X-Google-Smtp-Source: ABdhPJx7v62UIM/qviBKh7VAIs2f1X7Bgb/0RIb4n7l7ogzry0bTmc6WNbePuolKseaymgYF1MY17RTzSyg3vKilbto=
-X-Received: by 2002:aca:a844:: with SMTP id r65mr6005124oie.35.1612622277520;
- Sat, 06 Feb 2021 06:37:57 -0800 (PST)
+        id S229590AbhBFQIG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 6 Feb 2021 11:08:06 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:51947 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229539AbhBFQIF (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 6 Feb 2021 11:08:05 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1l8Q7G-001ebd-KX; Sat, 06 Feb 2021 17:07:22 +0100
+Received: from pd9f74830.dip0.t-ipconnect.de ([217.247.72.48] helo=[192.168.178.23])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1l8Q7G-002tp2-8y; Sat, 06 Feb 2021 17:07:22 +0100
+Subject: Re: [PATCH] ia64: Fix style guide breakage
+To:     Amy Parker <enbyamy@gmail.com>, schnelle@linux.ibm.com,
+        corbet@lwn.net, mchehab+huawei@kernel.org,
+        tsbogend@alpha.franken.de
+Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20210205220618.611388-1-enbyamy@gmail.com>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <a3215a2b-76d3-6285-8072-160a905de362@physik.fu-berlin.de>
+Date:   Sat, 6 Feb 2021 17:07:21 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.0
 MIME-Version: 1.0
-Received: by 2002:a9d:3e4c:0:0:0:0:0 with HTTP; Sat, 6 Feb 2021 06:37:57 -0800 (PST)
-Reply-To: lawyer.nba@gmail.com
-From:   Barrister Daven Bango <stephennbada@gmail.com>
-Date:   Sat, 6 Feb 2021 15:37:57 +0100
-Message-ID: <CAO_fDi_rusKZo381W3kz42d1kPfinxwWD6iD1UKm_PuF_sWk3g@mail.gmail.com>
-Subject: 
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <20210205220618.611388-1-enbyamy@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 217.247.72.48
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
---=20
-Korisnik fonda =C4=8Destitanja, Va=C5=A1a sredstva za naknadu od 850.000,00
-ameri=C4=8Dkih dolara odobrila je Me=C4=91unarodna monetarna organizacija (=
-MMF)
-u suradnji s (FBI) nakon mnogo istraga. =C4=8Cekamo da se obratimo za
-dodatne informacije
+Hi Amy!
 
-Advokat: Daven Bango
-Telefon: +22891667276
-(URED MMF-a LOME TOGO)
+On 2/5/21 11:06 PM, Amy Parker wrote:
+> Some statements do not have proper spacing between their C
+> keywords (commonly if and for) throughout files in the ia64 tree.
+> This patch corrects this to follow the kernel code style guide.
+> 
+> Signed-off-by: Amy Parker <enbyamy@gmail.com>
+
+I never noticed. Does the kernel coding style guideline actually require
+space after "for" and "if" and similar statements but not before function
+names?
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
