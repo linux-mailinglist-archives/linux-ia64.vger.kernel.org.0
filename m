@@ -2,88 +2,184 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 597FD311F0D
-	for <lists+linux-ia64@lfdr.de>; Sat,  6 Feb 2021 18:10:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EEBE33120F6
+	for <lists+linux-ia64@lfdr.de>; Sun,  7 Feb 2021 03:48:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229608AbhBFRKM (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 6 Feb 2021 12:10:12 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55882 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229506AbhBFRKL (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 6 Feb 2021 12:10:11 -0500
-Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 287E7C06174A;
-        Sat,  6 Feb 2021 09:09:31 -0800 (PST)
-Received: by mail-ot1-x32f.google.com with SMTP id s107so10126396otb.8;
-        Sat, 06 Feb 2021 09:09:31 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=PbFT243mI7AiARSf3wYUyklIqlMRugc2QUO9QFrosEs=;
-        b=IApJfL7FyU4Ku+vu2rUSqLaY+SZKakMtPlULBgjEI5m4e+9t9l0+qdCeIrDd3tui0s
-         1Y/XwZZrp8j+Y0cwR0nMnqcS1HW5NxyMjieraDb+N7iOqZh5fx8WnucpRjoTg96R/qxQ
-         062Wt++bSGoQLGyqE0oUF192IzVa9EFffGnJ6lspmfhU9DqAiME5D/E7fhnjYiF1IOnh
-         rsOuyB2sgPt8nSq9fUFI81YzjbcHv22nPLeSVzcjeIRnd3Xd0QP08/cOD5KKUa9FU0gY
-         feNHtkY+YHB/+wM1ACq/vQjeuAYY1BlojZUeW/FSMxlQU8XIEdi4w8F0kxRyGo80C13F
-         qW7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=PbFT243mI7AiARSf3wYUyklIqlMRugc2QUO9QFrosEs=;
-        b=rwJyhNWVxWLN6Ihfo+hrovtQFKUVUu9FBwDn4sGWW9WsU5N7GVV2lwh6eEHmRfvHDt
-         tMOOKbvsxUfzNM2CdJAhIbGxFM9TgHSks2cIO03zSYnGZuKT9amldYOXKaIzP12qWVzY
-         63jM9CgLjsu3w9blTkFfw963bPno/p2qNc7inviPgVjH+1TRGO5kH0QqlIjuE6GVbCjX
-         6O7ajdfTmHxGTwcaF6gR4dWB5EMtSap/a1O58fn1PUsvmEgrapmbQOpMTGslXPoAw4f5
-         sxI5R5u7+Iuys2QnMPxn75h1XazgU/jogK7JgWHYWTYuShE5oRt4koGgvq8Eq7yIW/Af
-         PsNA==
-X-Gm-Message-State: AOAM533b9cr9zLhSZGOWhzuWJImpV5ZJPPu3+OHPYyiJxVYTtCGpDnrT
-        jzd5DtLQ7nVgKAc8HpKwRkcYUS58hdxLy8Kfwx8=
-X-Google-Smtp-Source: ABdhPJzPVE47QMMSkvFDGpJ1bGbxoCCLV1g84yGYEOZirC9G2RShxELbX9nzGITyNIOaKVyvYl9Y40a4ezfMoVPleIM=
-X-Received: by 2002:a9d:51ca:: with SMTP id d10mr4225038oth.254.1612631370618;
- Sat, 06 Feb 2021 09:09:30 -0800 (PST)
+        id S229611AbhBGCsK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 6 Feb 2021 21:48:10 -0500
+Received: from conssluserg-04.nifty.com ([210.131.2.83]:36582 "EHLO
+        conssluserg-04.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229506AbhBGCsJ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 6 Feb 2021 21:48:09 -0500
+Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52]) (authenticated)
+        by conssluserg-04.nifty.com with ESMTP id 1172l0Up032711;
+        Sun, 7 Feb 2021 11:47:00 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 1172l0Up032711
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1612666021;
+        bh=ghNVF7RId+0rBDAA/rTFEzf4FBB/DzAejlaBZNUlMNQ=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=ZLOSshleSkDyLPWelX5UHaSTIMKfpGukLdHNfT9V05nCW0AVihLhLG+OI6wuYtgdN
+         +3Bcc5PQfAga66kR2xsPwQSYWEmFg56WWa+iFNydp7g5p6SMOKrs2a9h6PfJ3Pyf6z
+         UpCuM4/746ma77L9Aq25L5NS/Je2W9oY6P2+TJfulCMP1MgMdx2k0YEqh9xsc3JMBF
+         Fcsg0cO29e1XXxUkdrlIzDOVkgTrpR/wcsLgoaFG0U2GjRH7ep39Klrf0DHzREBVPS
+         fkXQcj25I2Xv8Y/dFF1gxCQSks4HGN42P4xxfk3XHEqs2LVhqPzWuT0HROAwWMJ9xJ
+         Ew8tSNu0LCHiw==
+X-Nifty-SrcIP: [209.85.216.52]
+Received: by mail-pj1-f52.google.com with SMTP id cl8so6341265pjb.0;
+        Sat, 06 Feb 2021 18:47:00 -0800 (PST)
+X-Gm-Message-State: AOAM533U+3b6EwUnvgdxPa4ClKBm6fTKto6h97JdAKKGqxRF2AL2AmCs
+        ElmtLZBXYrmoHW8AOwokqZCId1tZUSOmktYCL9U=
+X-Google-Smtp-Source: ABdhPJyI8oeeKjMMpgdj5S+fpS+hlAiCOqX7zqHl60Jp9ZhrcXH2ACe4Oi607ImgqQbyjdA+NWpFLkbuu90nHd3g0ww=
+X-Received: by 2002:a17:90a:5403:: with SMTP id z3mr11066020pjh.198.1612666019722;
+ Sat, 06 Feb 2021 18:46:59 -0800 (PST)
 MIME-Version: 1.0
-References: <20210205220618.611388-1-enbyamy@gmail.com> <a3215a2b-76d3-6285-8072-160a905de362@physik.fu-berlin.de>
-In-Reply-To: <a3215a2b-76d3-6285-8072-160a905de362@physik.fu-berlin.de>
-From:   Amy Parker <enbyamy@gmail.com>
-Date:   Sat, 6 Feb 2021 09:09:19 -0800
-Message-ID: <CAE1WUT5pXOH=wjzcXBZ4YiFoVv6Xyb1sT5mxdm=NR1A1MqKgjw@mail.gmail.com>
-Subject: Re: [PATCH] ia64: Fix style guide breakage
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     schnelle@linux.ibm.com, corbet@lwn.net, mchehab+huawei@kernel.org,
-        tsbogend@alpha.franken.de, linux-ia64@vger.kernel.org,
-        LKML <linux-kernel@vger.kernel.org>
+References: <20200829051524.706585-1-masahiroy@kernel.org> <20200829051524.706585-4-masahiroy@kernel.org>
+In-Reply-To: <20200829051524.706585-4-masahiroy@kernel.org>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Sun, 7 Feb 2021 11:46:22 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASj6f1FxZwyhRp_KoPX2UL=-49RPLwWK_Na64pwtBertA@mail.gmail.com>
+Message-ID: <CAK7LNASj6f1FxZwyhRp_KoPX2UL=-49RPLwWK_Na64pwtBertA@mail.gmail.com>
+Subject: Re: [PATCH 3/3] ia64: remove generated/nr-irqs.h generation to fix
+ build warning
+To:     Tony Luck <tony.luck@intel.com>, Fenghua Yu <fenghua.yu@intel.com>,
+        linux-ia64@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sat, Feb 6, 2021 at 8:07 AM John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> wrote:
+On Sat, Aug 29, 2020 at 2:15 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
 >
-> Hi Amy!
+> Randy reports the following warning when building ARCH=ia64 with
+> CONFIG_IA64_PALINFO=m:
 >
-> On 2/5/21 11:06 PM, Amy Parker wrote:
-> > Some statements do not have proper spacing between their C
-> > keywords (commonly if and for) throughout files in the ia64 tree.
-> > This patch corrects this to follow the kernel code style guide.
-> >
-> > Signed-off-by: Amy Parker <enbyamy@gmail.com>
+> ../scripts/Makefile.build:68: 'arch/ia64/kernel/palinfo.ko' will not be built even though obj-m is specified.
+> ../scripts/Makefile.build:69: You cannot use subdir-y/m to visit a module Makefile. Use obj-y/m instead.
 >
-> I never noticed. Does the kernel coding style guideline actually require
-> space after "for" and "if" and similar statements but not before function
-> names?
+> This message is actually false-positive, and you can get palinfo.ko
+> correctly built. It is emitted in the archprepare stage, where Kbuild
+> descends into arch/ia64/kernel to generate include/generated/nr-irqs.h
+> instead of any kind of kernel objects.
+>
+> arch/ia64/kernel/nr-irqs.c was introduced by commit 213060a4d699
+> ("[IA64] pvops: paravirtualize NR_IRQS") to pre-calculate:
+>
+>    NR_IRQS = max(IA64_NATIVE_NR_IRQS, XEN_NR_IRQS, FOO_NR_IRQS...)
+>
+> Since commit d52eefb47d4e ("ia64/xen: Remove Xen support for ia64"), this
+> union contains just one field, making NR_IRQS and IA64_NATIVE_NR_IRQS
+> always match.
+>
+> So, the following hard-coding now works:
+>
+>   #define NR_IRQS                IA64_NATIVE_NR_IRQS
+>
+> If you need to re-introduce NR_IRQS = max(...) gimmick in the future,
+> please try to implement it in asm-offsets.c instead of a separate file.
+> It will be possible because the header inclusion has been consolidated
+> to make asm-offsets.c independent of <asm/irqs.h>.
+>
+> Reported-by: Randy Dunlap <rdunlap@infradead.org>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 
-Yes it does, actually!
 
-> So use a space after these keywords:
-> if, switch, case, for, do, while
+This build issue is still remaining.
 
-> int system_is_up(void)
-> {
->         return system_state == SYSTEM_RUNNING;
-> }
+I will send this series in the next MW
+via my kbuild tree.
 
 
-   -Amy IP
+
+
+
+> ---
+>
+>  arch/ia64/Makefile          |  6 ------
+>  arch/ia64/include/asm/irq.h |  4 +++-
+>  arch/ia64/kernel/Makefile   |  5 -----
+>  arch/ia64/kernel/nr-irqs.c  | 22 ----------------------
+>  4 files changed, 3 insertions(+), 34 deletions(-)
+>  delete mode 100644 arch/ia64/kernel/nr-irqs.c
+>
+> diff --git a/arch/ia64/Makefile b/arch/ia64/Makefile
+> index 2876a7df1b0a..3d54d411fcc4 100644
+> --- a/arch/ia64/Makefile
+> +++ b/arch/ia64/Makefile
+> @@ -87,9 +87,3 @@ define archhelp
+>    echo '  install      - Install compressed kernel image'
+>    echo '* unwcheck     - Check vmlinux for invalid unwind info'
+>  endef
+> -
+> -archprepare: make_nr_irqs_h
+> -PHONY += make_nr_irqs_h
+> -
+> -make_nr_irqs_h:
+> -       $(Q)$(MAKE) $(build)=arch/ia64/kernel include/generated/nr-irqs.h
+> diff --git a/arch/ia64/include/asm/irq.h b/arch/ia64/include/asm/irq.h
+> index 5acf52e90872..0eccf33dfe8b 100644
+> --- a/arch/ia64/include/asm/irq.h
+> +++ b/arch/ia64/include/asm/irq.h
+> @@ -14,7 +14,9 @@
+>
+>  #include <linux/types.h>
+>  #include <linux/cpumask.h>
+> -#include <generated/nr-irqs.h>
+> +#include <asm/native/irq.h>
+> +
+> +#define NR_IRQS                IA64_NATIVE_NR_IRQS
+>
+>  static __inline__ int
+>  irq_canonicalize (int irq)
+> diff --git a/arch/ia64/kernel/Makefile b/arch/ia64/kernel/Makefile
+> index 1a8df6669eee..7c9354ee4b3e 100644
+> --- a/arch/ia64/kernel/Makefile
+> +++ b/arch/ia64/kernel/Makefile
+> @@ -48,8 +48,3 @@ CFLAGS_traps.o  += -mfixed-range=f2-f5,f16-f31
+>
+>  # The gate DSO image is built using a special linker script.
+>  include $(src)/Makefile.gate
+> -
+> -include/generated/nr-irqs.h: arch/$(SRCARCH)/kernel/nr-irqs.s FORCE
+> -       $(call filechk,offsets,__ASM_NR_IRQS_H__)
+> -
+> -targets += nr-irqs.s
+> diff --git a/arch/ia64/kernel/nr-irqs.c b/arch/ia64/kernel/nr-irqs.c
+> deleted file mode 100644
+> index f2633b22d3be..000000000000
+> --- a/arch/ia64/kernel/nr-irqs.c
+> +++ /dev/null
+> @@ -1,22 +0,0 @@
+> -// SPDX-License-Identifier: GPL-2.0
+> -/*
+> - * calculate
+> - * NR_IRQS = max(IA64_NATIVE_NR_IRQS, XEN_NR_IRQS, FOO_NR_IRQS...)
+> - * depending on config.
+> - * This must be calculated before processing asm-offset.c.
+> - */
+> -
+> -#define ASM_OFFSETS_C 1
+> -
+> -#include <linux/kbuild.h>
+> -#include <linux/threads.h>
+> -#include <asm/native/irq.h>
+> -
+> -void foo(void)
+> -{
+> -       union paravirt_nr_irqs_max {
+> -               char ia64_native_nr_irqs[IA64_NATIVE_NR_IRQS];
+> -       };
+> -
+> -       DEFINE(NR_IRQS, sizeof (union paravirt_nr_irqs_max));
+> -}
+> --
+> 2.25.1
+>
+
+
+-- 
+Best Regards
+Masahiro Yamada
