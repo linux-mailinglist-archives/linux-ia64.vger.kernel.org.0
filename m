@@ -2,54 +2,65 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 08850312880
-	for <lists+linux-ia64@lfdr.de>; Mon,  8 Feb 2021 01:05:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A6659312BB8
+	for <lists+linux-ia64@lfdr.de>; Mon,  8 Feb 2021 09:33:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229537AbhBHAFQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 7 Feb 2021 19:05:16 -0500
-Received: from mx2.suse.de ([195.135.220.15]:38508 "EHLO mx2.suse.de"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229522AbhBHAFP (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 7 Feb 2021 19:05:15 -0500
-X-Virus-Scanned: by amavisd-new at test-mx.suse.de
-Received: from relay2.suse.de (unknown [195.135.221.27])
-        by mx2.suse.de (Postfix) with ESMTP id 0996EAB98;
-        Mon,  8 Feb 2021 00:04:34 +0000 (UTC)
-Received: by ds.suse.cz (Postfix, from userid 10065)
-        id 76B90DA80F; Mon,  8 Feb 2021 01:02:41 +0100 (CET)
-Date:   Mon, 8 Feb 2021 01:02:41 +0100
-From:   David Sterba <dsterba@suse.cz>
-To:     Amy Parker <enbyamy@gmail.com>
-Cc:     schnelle@linux.ibm.com, corbet@lwn.net, mchehab+huawei@kernel.org,
-        tsbogend@alpha.franken.de, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ia64: Fix style guide breakage
-Message-ID: <20210208000241.GN1993@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-Mail-Followup-To: dsterba@suse.cz, Amy Parker <enbyamy@gmail.com>,
-        schnelle@linux.ibm.com, corbet@lwn.net, mchehab+huawei@kernel.org,
-        tsbogend@alpha.franken.de, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210205220618.611388-1-enbyamy@gmail.com>
+        id S230081AbhBHIaN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 8 Feb 2021 03:30:13 -0500
+Received: from smtp-18d.idc2.mandic.com.br ([177.70.124.135]:39111 "EHLO
+        smtp-18.idc2.mandic.com.br" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S229894AbhBHIaI (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 8 Feb 2021 03:30:08 -0500
+Received: by smtp-18.smtp.mandic.prv (Postfix, from userid 491)
+        id 5BC52607E9FB; Mon,  8 Feb 2021 05:29:22 -0300 (-03)
+Received: from smtp-18.idc2.mandic.com.br (ifsmtp2 [192.168.1.38])
+        by smtp-18.smtp.mandic.prv (Postfix) with ESMTPS id C1044607AAA4;
+        Mon,  8 Feb 2021 05:29:16 -0300 (-03)
+Received: from User (unknown [52.235.38.23])
+        by smtp-18.smtp.mandic.prv (Postfix) with ESMTPA id 78375465E268;
+        Mon,  8 Feb 2021 05:26:42 -0300 (-03)
+Reply-To: <ms.reem@yandex.com>
+From:   "Ms. Reem" <stefy@macrometrica.com.br>
+Subject: Re:reply
+Date:   Mon, 8 Feb 2021 08:29:15 -0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210205220618.611388-1-enbyamy@gmail.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+X-Mandic-Auth: DYB6x5JcyVot9snxiAasWC73cfc93V+pC3vUrorm87+eXbqAUeEHL0ZNPgpM50IYQeUbiYx0PkMIK2oavHcOOA==
+X-Mandic-Sender: stefy@macrometrica.com.br
+Message-Id: <20210208082916.C1044607AAA4@smtp-18.smtp.mandic.prv>
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Feb 05, 2021 at 02:06:18PM -0800, Amy Parker wrote:
-> Some statements do not have proper spacing between their C
-> keywords (commonly if and for) throughout files in the ia64 tree.
-> This patch corrects this to follow the kernel code style guide.
-> 
-> Signed-off-by: Amy Parker <enbyamy@gmail.com>
-> ---
->  arch/ia64/hp/common/sba_iommu.c  | 6 +++---
->  arch/ia64/kernel/machine_kexec.c | 2 +-
->  arch/ia64/kernel/palinfo.c       | 6 +++---
+Hello,
 
-ia64 got orphaned and not maintained in 96ec72a3425d1515b6, it's just
-not really worth the time to spend the time cleaning up the code base.
+My name is Ms. Reem Ebrahim Al-Hashimi, I am the "Minister of state
+and Petroleum" also "Minister of State for International Cooperation"
+in UAE. I write to you on behalf of my other "three (3) colleagues"
+who has approved me to solicit for your "partnership in claiming of
+{us$47=Million}" from a Financial Home in Cambodia on their behalf and
+for our "Mutual Benefits".
+
+The Fund {us$47=Million} is our share from the (over-invoiced) Oil/Gas
+deal with Cambodian/Vietnam Government within 2013/2014, however, we
+don't want our government to know about the fund. If this proposal
+interests you, let me know, by sending me an email and I will send to
+you detailed information on how this business would be successfully
+transacted. Be informed that nobody knows about the secret of this
+fund except us, and we know how to carry out the entire transaction.
+So I am compelled to ask, that you will stand on our behalf and
+receive this fund into any account that is solely controlled by you.
+
+We will compensate you with 15% of the total amount involved as
+gratification for being our partner in this transaction. Reply to:
+ms.reem@yandex.com
+
+Regards,
+Ms. Reem.
