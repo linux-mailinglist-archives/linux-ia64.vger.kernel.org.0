@@ -2,93 +2,67 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DA023207CF
-	for <lists+linux-ia64@lfdr.de>; Sun, 21 Feb 2021 01:27:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F04D0320955
+	for <lists+linux-ia64@lfdr.de>; Sun, 21 Feb 2021 10:22:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229838AbhBUA0u (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 20 Feb 2021 19:26:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53130 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229819AbhBUA0s (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 20 Feb 2021 19:26:48 -0500
-Received: from smtp.gentoo.org (dev.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55DA6C061574;
-        Sat, 20 Feb 2021 16:26:07 -0800 (PST)
-Received: by sf.home (Postfix, from userid 1000)
-        id 58FC65A2208E; Sun, 21 Feb 2021 00:25:59 +0000 (GMT)
-From:   Sergei Trofimovich <slyfox@gentoo.org>
-To:     Andrew Morton <akpm@linux-foundation.org>,
+        id S229838AbhBUJWn (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 21 Feb 2021 04:22:43 -0500
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:58579 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229831AbhBUJWn (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 21 Feb 2021 04:22:43 -0500
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1lDkwA-001YAM-JI; Sun, 21 Feb 2021 10:21:58 +0100
+Received: from x4dbf9e82.dyn.telefonica.de ([77.191.158.130] helo=[192.168.1.10])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1lDkwA-003jWk-CM; Sun, 21 Feb 2021 10:21:58 +0100
+Subject: Re: [PATCH] ia64: fix ptrace(PTRACE_SYSCALL_INFO_EXIT) sign
+To:     Sergei Trofimovich <slyfox@gentoo.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
         linux-kernel@vger.kernel.org
-Cc:     Sergei Trofimovich <slyfox@gentoo.org>, linux-ia64@vger.kernel.org,
-        "Dmitry V . Levin" <ldv@altlinux.org>
-Subject: [PATCH] ia64: fix ptrace(PTRACE_SYSCALL_INFO_EXIT) sign
-Date:   Sun, 21 Feb 2021 00:25:54 +0000
-Message-Id: <20210221002554.333076-2-slyfox@gentoo.org>
-X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210221002554.333076-1-slyfox@gentoo.org>
+Cc:     linux-ia64@vger.kernel.org, "Dmitry V . Levin" <ldv@altlinux.org>
 References: <20210221002554.333076-1-slyfox@gentoo.org>
+ <20210221002554.333076-2-slyfox@gentoo.org>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <66569d56-1af0-a6bb-8b54-9d1cded893cd@physik.fu-berlin.de>
+Date:   Sun, 21 Feb 2021 10:21:56 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.7.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210221002554.333076-2-slyfox@gentoo.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 77.191.158.130
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-In https://bugs.gentoo.org/769614 Dmitry noticed that
-`ptrace(PTRACE_GET_SYSCALL_INFO)` does not return error sign properly.
+Hi Sergei!
 
-The bug is in mismatch between get/set errors:
+On 2/21/21 1:25 AM, Sergei Trofimovich wrote:
+> In https://bugs.gentoo.org/769614 Dmitry noticed that
+> `ptrace(PTRACE_GET_SYSCALL_INFO)` does not return error sign properly.
+> (...)
 
-static inline long syscall_get_error(struct task_struct *task,
-                                     struct pt_regs *regs)
-{
-        return regs->r10 == -1 ? regs->r8:0;
-}
+Do these two patches unbreak gdb on ia64?
 
-static inline long syscall_get_return_value(struct task_struct *task,
-                                            struct pt_regs *regs)
-{
-        return regs->r8;
-}
+And have you, by any chance, managed to get the hpsa driver working again?
 
-static inline void syscall_set_return_value(struct task_struct *task,
-                                            struct pt_regs *regs,
-                                            int error, long val)
-{
-        if (error) {
-                /* error < 0, but ia64 uses > 0 return value */
-                regs->r8 = -error;
-                regs->r10 = -1;
-        } else {
-                regs->r8 = val;
-                regs->r10 = 0;
-        }
-}
+Adrian
 
-Tested on v5.10 on rx3600 machine (ia64 9040 CPU).
-
-CC: linux-ia64@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
-CC: Andrew Morton <akpm@linux-foundation.org>
-Reported-by: Dmitry V. Levin <ldv@altlinux.org>
-Bug: https://bugs.gentoo.org/769614
-Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
----
- arch/ia64/include/asm/syscall.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/ia64/include/asm/syscall.h b/arch/ia64/include/asm/syscall.h
-index 6c6f16e409a8..0d23c0049301 100644
---- a/arch/ia64/include/asm/syscall.h
-+++ b/arch/ia64/include/asm/syscall.h
-@@ -32,7 +32,7 @@ static inline void syscall_rollback(struct task_struct *task,
- static inline long syscall_get_error(struct task_struct *task,
- 				     struct pt_regs *regs)
- {
--	return regs->r10 == -1 ? regs->r8:0;
-+	return regs->r10 == -1 ? -regs->r8:0;
- }
- 
- static inline long syscall_get_return_value(struct task_struct *task,
 -- 
-2.30.1
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
