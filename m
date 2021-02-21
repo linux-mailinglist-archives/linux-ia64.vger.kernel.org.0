@@ -2,99 +2,101 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 39F41320A70
-	for <lists+linux-ia64@lfdr.de>; Sun, 21 Feb 2021 14:10:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E9DF320C04
+	for <lists+linux-ia64@lfdr.de>; Sun, 21 Feb 2021 18:16:57 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229884AbhBUNJr (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 21 Feb 2021 08:09:47 -0500
-Received: from smtp.gentoo.org ([140.211.166.183]:59902 "EHLO smtp.gentoo.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229844AbhBUNJq (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 21 Feb 2021 08:09:46 -0500
-X-Greylist: delayed 45781 seconds by postgrey-1.27 at vger.kernel.org; Sun, 21 Feb 2021 08:09:45 EST
-Date:   Sun, 21 Feb 2021 13:08:59 +0000
-From:   Sergei Trofimovich <slyfox@gentoo.org>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        "Dmitry V . Levin" <ldv@altlinux.org>
-Subject: Re: [PATCH] ia64: fix ptrace(PTRACE_SYSCALL_INFO_EXIT) sign
-Message-ID: <20210221130859.089ce1ed@sf>
-In-Reply-To: <66569d56-1af0-a6bb-8b54-9d1cded893cd@physik.fu-berlin.de>
-References: <20210221002554.333076-1-slyfox@gentoo.org>
-        <20210221002554.333076-2-slyfox@gentoo.org>
-        <66569d56-1af0-a6bb-8b54-9d1cded893cd@physik.fu-berlin.de>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S230117AbhBURQY (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 21 Feb 2021 12:16:24 -0500
+Received: from conssluserg-06.nifty.com ([210.131.2.91]:33446 "EHLO
+        conssluserg-06.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229970AbhBURQX (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 21 Feb 2021 12:16:23 -0500
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175]) (authenticated)
+        by conssluserg-06.nifty.com with ESMTP id 11LHFQMn029412;
+        Mon, 22 Feb 2021 02:15:26 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 11LHFQMn029412
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1613927726;
+        bh=+E+JRgKeitH5eFBx4Z/rh8FyWasix1MSTNAEXqizMQU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=fY8q6G98uh1+un5PrwsG4Zb3rSAd52PO9NSoxDJ8nwquEkzuJdR6rBF5sZrJUQbe9
+         KWCT8wBjnWUfz7vheSDo+fWEVgovNo9SHlNVuFyQQj0HmV7nB2ApBNZANPZVurwuRE
+         OPvztrgFoeH+fOxkb4nxTbw8JucqU5hHRx4mF3+AMVhL15XIswHkujGL0xSI8cL6QI
+         Ii+CzdqSBbptV3imDDdvgz94e1uZBko1b579roKG6OFciJ/jTRWVIx1O7HbRt/m0Tc
+         pLkXdi0thvqyabjecA6KbCP/kR2SvsJ0NPIVn7afYMW4aobGgVsdv/ZSnZtoPqwJ1E
+         OSXLJ0vAyyr9A==
+X-Nifty-SrcIP: [209.85.214.175]
+Received: by mail-pl1-f175.google.com with SMTP id u11so6119214plg.13;
+        Sun, 21 Feb 2021 09:15:26 -0800 (PST)
+X-Gm-Message-State: AOAM530f3OWgCXm+QZ167geaZY82/Uo9+39wdJo5pmm4HsKG5QmkcNNT
+        mL1vjaSkpRTYyM05el/V9QycQ4fsrEROqr66210=
+X-Google-Smtp-Source: ABdhPJxczjkYYwfFedULPavyehBQNlTo4yyE2oDz3aAz68ppY9EMF/VKLUDXMsDnW+fSNSL17VJtx2kpM0VX1zgRRK4=
+X-Received: by 2002:a17:90a:609:: with SMTP id j9mr19512007pjj.198.1613927724902;
+ Sun, 21 Feb 2021 09:15:24 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20210215004823.440102-1-masahiroy@kernel.org>
+In-Reply-To: <20210215004823.440102-1-masahiroy@kernel.org>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Mon, 22 Feb 2021 02:14:47 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATvCAyHSUQNTdSck3JM1MfHNFcanjn0i4835okWE9Km5w@mail.gmail.com>
+Message-ID: <CAK7LNATvCAyHSUQNTdSck3JM1MfHNFcanjn0i4835okWE9Km5w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] arch: syscalls: add missing FORCE and fix 'targets'
+ to make if_changed work
+To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
+Cc:     Geert Uytterhoeven <geert@linux-m68k.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Chris Zankel <chris@zankel.net>,
+        "David S. Miller" <davem@davemloft.net>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Helge Deller <deller@gmx.de>,
+        Ingo Molnar <mingo@redhat.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Simek <monstr@monstr.eu>,
+        Paul Mackerras <paulus@samba.org>,
+        Rich Felker <dalias@libc.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        sparclinux <sparclinux@vger.kernel.org>, X86 ML <x86@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sun, 21 Feb 2021 10:21:56 +0100
-John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> wrote:
+On Mon, Feb 15, 2021 at 9:50 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> The rules in these Makefiles cannot detect the command line change
+> because the prerequisite 'FORCE' is missing.
+>
+> Adding 'FORCE' will result in the headers being rebuilt every time
+> because the 'targets' additions are also wrong; the file paths in
+> 'targets' must be relative to the current Makefile.
+>
+> Fix all of them so the if_changed rules work correctly.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-> Hi Sergei!
-> 
-> On 2/21/21 1:25 AM, Sergei Trofimovich wrote:
-> > In https://bugs.gentoo.org/769614 Dmitry noticed that
-> > `ptrace(PTRACE_GET_SYSCALL_INFO)` does not return error sign properly.
-> > (...)  
-> 
-> Do these two patches unbreak gdb on ia64?
 
-gdb was somewhat working on ia64 for Gentoo. strace was the main
-impacted here.
+Both applied to linux-kbuild.
 
-But I did not try anything complicated recently. Anything specific that
-breaks for you?
-
-$ uname -r
-5.10.0
-(even without the patches above)
-
-$ cat c.c
-int main(){}
-$ gcc c.c -o a -ggdb3
-$ gdb --quiet ./a
-Reading symbols from ./a...
-(gdb) start
-Temporary breakpoint 1 at 0x7f2: file c.c, line 1.
-Starting program: /home/slyfox/a
-Failed to read a valid object file image from memory.
-
-Temporary breakpoint 1, main () at c.c:1
-1	int main(){}
-(gdb) disassemble
-Dump of assembler code for function main:
-   0x20000008000007f0 <+0>:	[MII]       mov r2=r12
-   0x20000008000007f1 <+1>:	            mov r14=r0;;
-=> 0x20000008000007f2 <+2>:	            mov r8=r14
-   0x2000000800000800 <+16>:	[MIB]       mov r12=r2
-   0x2000000800000801 <+17>:	            nop.i 0x0
-   0x2000000800000802 <+18>:	            br.ret.sptk.many b0;;
-End of assembler dump.
-(gdb) break *0x2000000800000800
-Breakpoint 2 at 0x2000000800000800: file c.c, line 1.
-(gdb) continue
-Continuing.
-
-Breakpoint 2, 0x2000000800000800 in main () at c.c:1
-1	int main(){}
-
-Looks ok for minor stuff.
-
-> And have you, by any chance, managed to get the hpsa driver working again?
-
-v5.10 seems to boot off hpsa just fine without extra patches:
-  14:01.0 RAID bus controller: Hewlett-Packard Company Smart Array P600
-	Subsystem: Hewlett-Packard Company 3 Gb/s SAS RAID
-	Kernel driver in use: hpsa
-
-v5.11 does not boot yet. Kernel does not see some files while boots after init is
-started  (but I'm not sure it's a block device problem). Bisecting now why.
 
 -- 
-
-  Sergei
+Best Regards
+Masahiro Yamada
