@@ -2,76 +2,68 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AF46A326387
-	for <lists+linux-ia64@lfdr.de>; Fri, 26 Feb 2021 14:49:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4854632638C
+	for <lists+linux-ia64@lfdr.de>; Fri, 26 Feb 2021 14:51:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229618AbhBZNsI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 26 Feb 2021 08:48:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42696 "EHLO
+        id S229550AbhBZNvm (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 26 Feb 2021 08:51:42 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229991AbhBZNsI (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 26 Feb 2021 08:48:08 -0500
-Received: from mail-wr1-x435.google.com (mail-wr1-x435.google.com [IPv6:2a00:1450:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D59BC06174A
-        for <linux-ia64@vger.kernel.org>; Fri, 26 Feb 2021 05:47:22 -0800 (PST)
-Received: by mail-wr1-x435.google.com with SMTP id f12so4838451wrx.8
-        for <linux-ia64@vger.kernel.org>; Fri, 26 Feb 2021 05:47:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chrisdown.name; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=vTw5pV8CppqaFWYeiTnc7rI0doZYk4bhQx1gn2PUM+c=;
-        b=rQwYdC4L1ZQNePU5zXmJj4yQMRJzUx75u9nGyOrtOTzEf4kcM0mqcJefmV6wmB46ig
-         UxyjFkKq76yoz7mM854sr4iiDzvbgXSWYQeaVk2kmsJA6h7PVkE2ScDqX7mhdZv3t6t6
-         HYgQKCePp2o2dBRyWr2il29WE3zXnkf8Dv3u8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=vTw5pV8CppqaFWYeiTnc7rI0doZYk4bhQx1gn2PUM+c=;
-        b=QnFoj0wQ/BEbhxJnxrkeEPYA+avNAmanpSIZGIuC5BvoQDgZVoL0k6kEJ4VsUqs2ca
-         TqBv6rhVhe7WaTNDaa7c6XbAXb2tiu90N99UeXpQV8R9NEhcZtVUbnLha7+UDI2bdeyU
-         qY5n4+hCvJmwrGYF7sZXK9FzK6RLpYcyy3mFmwy69D8lzufMIzLLOyyexWFj+D6O4M6n
-         sTsxYCuKfP72fh20bSQDjiV7RrkRVOWkJWilhX4rM8g7238Afp4AfX273NWsg16evvap
-         9Rq/GQsdxA6FqdHjYmwJuFnWPINg8WHnSufqEw21MKKn1prbrXxi/1qMwXu1M1rMTWfN
-         1JDw==
-X-Gm-Message-State: AOAM532TO2ejLGL5G9M4zJ/tRCPXuclUn/YAaqRlhmc6eVY0540zQFw0
-        M4dY2nC5kJvhIjheKKf0/mO5Lw==
-X-Google-Smtp-Source: ABdhPJyPIZy8UwWq69q/gkkLW4ZIRBWdSesqrIV6aqBwCubu5YLuWEdVDHMLcKWfhMLfOO/m6Jmv9g==
-X-Received: by 2002:adf:fe09:: with SMTP id n9mr3390807wrr.104.1614347240990;
-        Fri, 26 Feb 2021 05:47:20 -0800 (PST)
-Received: from localhost ([2620:10d:c093:400::4:87b5])
-        by smtp.gmail.com with ESMTPSA id c11sm12808490wrs.28.2021.02.26.05.47.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Feb 2021 05:47:20 -0800 (PST)
-Date:   Fri, 26 Feb 2021 13:47:20 +0000
-From:   Chris Down <chris@chrisdown.name>
-To:     Matthew Wilcox <willy@infradead.org>
+        with ESMTP id S229449AbhBZNvl (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 26 Feb 2021 08:51:41 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AA50C061574;
+        Fri, 26 Feb 2021 05:51:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=Xb9xtwpTL4lk5rD+hInHkQNlk5EbdNVRWlBW9PFOfl0=; b=T0Z0vG6F9aHvwy4kj3atsTdhqV
+        KFg6314YV9TaMGSUrji3QGOC0oKV0rHxoHD+545kEGbcaN+guF9qBd8kx0gVnJhCaFutVDZ+Lhnri
+        Aqng3m0F3mVoPrGJ17KuEtFIY2KMkkEgP1SsK9iSG3r8gwopy4hJEnv+6U0V3LA77AXOHd5sCyZ/x
+        FeAQPIZQdLveDh3tlFOTcC7B8JO3WcQ/60T/fMMDyYyTOLweF7nq1dsD2eN2cvNMj/ssreUON4Wlm
+        beJ7MO3qUakhfLgQ5jB0ZfT7+AjsTMEZPOco4AREGntD5Z5dArEqKx0TwwgoilP9FyPK+Sa+wlDun
+        E9lKYbPQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+        id 1lFdVy-00C5aQ-7k; Fri, 26 Feb 2021 13:50:43 +0000
+Date:   Fri, 26 Feb 2021 13:50:42 +0000
+From:   Matthew Wilcox <willy@infradead.org>
+To:     Chris Down <chris@chrisdown.name>
 Cc:     Andrew Morton <akpm@linux-foundation.org>, linux-mm@kvack.org,
         Tony Luck <tony.luck@intel.com>,
         Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
         linux-kernel@vger.kernel.org, kernel-team@fb.com
 Subject: Re: [PATCH] ia64: Depend on non-static printk for cmpxchg debug
-Message-ID: <YDj76FjQCL7YgQq+@chrisdown.name>
+Message-ID: <20210226135042.GD2723601@casper.infradead.org>
 References: <YCflN5zTvo5mxvKY@chrisdown.name>
  <YDjt/lI82VzZcCgq@chrisdown.name>
  <20210226130029.GC2723601@casper.infradead.org>
  <YDj0T7H4ZbuEAYwK@chrisdown.name>
+ <YDj76FjQCL7YgQq+@chrisdown.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <YDj0T7H4ZbuEAYwK@chrisdown.name>
-User-Agent: Mutt/2.0.5 (da5e3282) (2021-01-21)
+In-Reply-To: <YDj76FjQCL7YgQq+@chrisdown.name>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Chris Down writes:
->I must confess I have no idea of the history of why it was `extern 
->int` in the first place -- my fear was somehow we use cmpxchg.h from a 
->different context.  Do you have any idea? :-)
+On Fri, Feb 26, 2021 at 01:47:20PM +0000, Chris Down wrote:
+> Chris Down writes:
+> > I must confess I have no idea of the history of why it was `extern int`
+> > in the first place -- my fear was somehow we use cmpxchg.h from a
+> > different context.  Do you have any idea? :-)
+> 
+> Ok, found where it's introduced in the pre-git archives: "New file
+> asm-ia64/intrinsics.h." from David Mosberger <davidm@tiger.hpl.hp.com>, Dec
+> 9 2002. No indication why it's extern, but it's been there since the dawn of
+> ia64.
 
-Ok, found where it's introduced in the pre-git archives: "New file 
-asm-ia64/intrinsics.h." from David Mosberger <davidm@tiger.hpl.hp.com>, Dec 9 
-2002. No indication why it's extern, but it's been there since the dawn of 
-ia64.
+It's just a quirk of C.  'extern' is only meaningful when applied to
+variables.  In the context of functions,
+
+extern int printk(char *fmt);
+int printk(char *fmt);
+
+are completely equivalent.  Unless (as you've seen) there's then a
+static definition following the extern declaration.
