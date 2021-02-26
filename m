@@ -2,194 +2,117 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A26B332310C
-	for <lists+linux-ia64@lfdr.de>; Tue, 23 Feb 2021 19:54:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B8D7F3262E8
+	for <lists+linux-ia64@lfdr.de>; Fri, 26 Feb 2021 13:48:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233440AbhBWSyG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 23 Feb 2021 13:54:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57814 "EHLO
+        id S230153AbhBZMsl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 26 Feb 2021 07:48:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232920AbhBWSyF (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 23 Feb 2021 13:54:05 -0500
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD3B4C061574;
-        Tue, 23 Feb 2021 10:53:24 -0800 (PST)
-Received: by mail-wm1-x32a.google.com with SMTP id v21so3422431wml.4;
-        Tue, 23 Feb 2021 10:53:24 -0800 (PST)
+        with ESMTP id S230071AbhBZMsk (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 26 Feb 2021 07:48:40 -0500
+Received: from mail-wm1-x32f.google.com (mail-wm1-x32f.google.com [IPv6:2a00:1450:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 099C8C06174A
+        for <linux-ia64@vger.kernel.org>; Fri, 26 Feb 2021 04:48:00 -0800 (PST)
+Received: by mail-wm1-x32f.google.com with SMTP id i9so7031520wml.0
+        for <linux-ia64@vger.kernel.org>; Fri, 26 Feb 2021 04:47:59 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:subject:message-id:mime-version
-         :content-transfer-encoding;
-        bh=atJMKQy3hSiMI0Yxa1mhA6pipggyye5S52KzopwkXzA=;
-        b=nbk9rSu56uL+4ColLxMk7/Qmd/MMDraweEmAeS94JlX9WFxiekcjugy4e8iXfruzoG
-         /drkmvkz1VI9zt3pT38keWvXBCsDSD1129tyB/hdYA4La3sakCbPBtpUysGxCca9KvF0
-         1oiJlw3npLhWWDDVF9EmXazzv4U2Ti+lgcgA/9jaDeYy4GySnjuvdP4vOnL8aPJyAc9N
-         L/Eiw+cUTZsOkVNKsQQiocBQUcVaCNW9duc1Ir/yXujjNHaIY0MIHT6ITQWSFbxQKSLE
-         l7akm8vt69vEDcv+E70QWTf1p06Ianenzv98jFLrScUGIg+5q32GlGFqh0J8ooXvnVNJ
-         WF5A==
+        d=chrisdown.name; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to:user-agent;
+        bh=TMdyoGpsUz60QnR0spjaWP1dFPFBzwuCMWnm1un/xsQ=;
+        b=eEqgi9n7vxuk2yqcdRUd4PX6Qj+/MYB4oOjvk4RRX82nzyg6TmMSs+YV+2a00qFACG
+         2u262/C+xHk2s4RaVNji6NzJwU++QP7GPlxG4e7THZ45d0L1zZ9uzVmDr7BjZ2v1bt5b
+         fAbCnk9k/w/8RLdjCjtqO6UGTdJrCTS8fe/58=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:subject:message-id:mime-version
-         :content-transfer-encoding;
-        bh=atJMKQy3hSiMI0Yxa1mhA6pipggyye5S52KzopwkXzA=;
-        b=DHTRQYxZjB+o/3ZzybUFgICaXwS/GUPBkR5KToB82su0dXA9QFyiqRNe9f2+WiDjB8
-         LdSaFjRApqZLP0FD4Y0vEsu2xnSgtXdWoYwEJlD48+NwtsD5FT6lxhWz2mYK7g763vny
-         qQNGxZ45Srt8f8e20I7lfE7Z5NWR8qA6NO2VFBYDwS7q0cBt0yvMsV6/7ZmGaHi6MYDD
-         k6jbFUcjlPZTMl0ZnjQyvUdAw7wdakyyyndOeQ+oYO6ANOXM/gApjJXCAcFzAaDtsdXv
-         mdTt3i8M08IG8VBN7ewaHxAGbhmlkNao6mH65Wm6L6lXPA/figzfZITsKaQrlxEiKKhQ
-         s30g==
-X-Gm-Message-State: AOAM5305ZXQ3HyIk8TX5Mfo8H7cUMG7+cNVc2lco9T4r1cSzfiAUf/9G
-        nRI/89Pd+c+QJ/vqfn8XX2UgdKCY3GW//g==
-X-Google-Smtp-Source: ABdhPJzFHeyM8QJLcmwUfhj14ZslaMGjuKWnKGSgHhjtAMlA5+16j4VEK9+RcFIg0u76DDXOdWgpjg==
-X-Received: by 2002:a05:600c:4f91:: with SMTP id n17mr188058wmq.48.1614106403536;
-        Tue, 23 Feb 2021 10:53:23 -0800 (PST)
-Received: from sf (tunnel547699-pt.tunnel.tserv1.lon2.ipv6.he.net. [2001:470:1f1c:3e6::2])
-        by smtp.gmail.com with ESMTPSA id y62sm3788042wmy.9.2021.02.23.10.53.22
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to:user-agent;
+        bh=TMdyoGpsUz60QnR0spjaWP1dFPFBzwuCMWnm1un/xsQ=;
+        b=aX22VeeX8ZoIeSLel6fQDeL/NwRaTbJ5BeYwBHA1jDtcchOjzomVbG0RryYyF6Fxwp
+         pHpQeRCIkJFYtMkUH48SlkSTnP+pt3l30nQPH6qeijiTaR05EbNG5oW1K1pNfQZ4MBaY
+         QOV4V2f4PCPhjEtsyrfKX4iyk17d/pzgl3Bnfxa9dK+s8J9jvi3+ffITXZOaHMxN89a+
+         aNBpiicoNcQL2FZvcVqry7l5ro12th2mAMQVuSuvSBitWoe0Rw+Lvnkoh3gMPzu49ub4
+         0DQFRmmLusFXI0pL1qdmh99mVL9RURI6YMQZEV8BxeS7Jr9OwYVRUZ+1UTEb0ep7TNQR
+         QOxw==
+X-Gm-Message-State: AOAM530L6N2peud/wERRb0w0IERmGaJEGsfPqhku2z4vefv128F4dbFj
+        kQ6P0ihdDZk1UiLOGk2bbSAn+Q==
+X-Google-Smtp-Source: ABdhPJywxeh7Tv35PnGaJd8kuTd9tEkf3oMPkGi2cb3V+dxoFjbIk+aaDAy6hop6xlcSBR8AJakrQQ==
+X-Received: by 2002:a05:600c:3546:: with SMTP id i6mr2819459wmq.24.1614343678763;
+        Fri, 26 Feb 2021 04:47:58 -0800 (PST)
+Received: from localhost ([2620:10d:c093:400::4:87b5])
+        by smtp.gmail.com with ESMTPSA id y18sm12668754wrq.61.2021.02.26.04.47.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Feb 2021 10:53:23 -0800 (PST)
-Date:   Tue, 23 Feb 2021 18:53:21 +0000
-From:   Sergei Trofimovich <slyich@gmail.com>
-To:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: 5.?? regression: strace testsuite OOpses kernel on ia64
-Message-ID: <20210223185321.359e34bc@sf>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        Fri, 26 Feb 2021 04:47:58 -0800 (PST)
+Date:   Fri, 26 Feb 2021 12:47:58 +0000
+From:   Chris Down <chris@chrisdown.name>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-mm@kvack.org, Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kernel-team@fb.com
+Subject: Re: [PATCH] ia64: Depend on non-static printk for cmpxchg debug
+Message-ID: <YDjt/lI82VzZcCgq@chrisdown.name>
+References: <YCflN5zTvo5mxvKY@chrisdown.name>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <YCflN5zTvo5mxvKY@chrisdown.name>
+User-Agent: Mutt/2.0.5 (da5e3282) (2021-01-21)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-The crash seems to be related to sock_filter-v test from strace:
-    https://github.com/strace/strace/blob/master/tests/seccomp-filter-v.c
++ akpm, linux-mm
 
-Here is an OOps:
+Hey folks,
 
-[  818.089904] BUG: Bad page map in process sock_filter-v  pte:00000001 pmd:118580001
-[  818.089904] page:00000000e6a429c8 refcount:1 mapcount:-1 mapping:0000000000000000 index:0x0 pfn:0x0
-[  818.089904] flags: 0x1000(reserved)
-[  818.089904] raw: 0000000000001000 a000400000000008 a000400000000008 0000000000000000
-[  818.089904] raw: 0000000000000000 0000000000000000 00000001fffffffe
-[  818.089904] page dumped because: bad pte
-[  818.089904] addr:0000000000000000 vm_flags:04044011 anon_vma:0000000000000000 mapping:0000000000000000 index:0
-[  818.095483] file:(null) fault:0x0 mmap:0x0 readpage:0x0
-[  818.095483] CPU: 0 PID: 5990 Comm: sock_filter-v Not tainted 5.11.0-00003-gbfa5a4929c90 #57
-[  818.095483] Hardware name: hp server rx3600                   , BIOS 04.03                                                            04/08/2008
-[  818.095483]
-[  818.095483] Call Trace:
-[  818.095483]  [<a000000100014a70>] show_stack+0x90/0xc0
-[  818.095483]                                 sp=e000000118707bb0 bsp=e0000001187013c0
-[  818.095483]  [<a00000010100c2b0>] dump_stack+0x120/0x160
-[  818.095483]                                 sp=e000000118707d80 bsp=e000000118701348
-[  818.095483]  [<a0000001002e7b40>] print_bad_pte+0x300/0x3a0
-[  818.095483]                                 sp=e000000118707d80 bsp=e0000001187012e0
-[  818.099483]  [<a0000001002ec190>] unmap_page_range+0xa90/0x11a0
-[  818.099483]                                 sp=e000000118707d80 bsp=e000000118701140
-[  818.099483]  [<a0000001002ecba0>] unmap_vmas+0xc0/0x100
-[  818.099483]                                 sp=e000000118707da0 bsp=e000000118701108
-[  818.099483]  [<a000000100302db0>] exit_mmap+0x150/0x320
-[  818.099483]                                 sp=e000000118707da0 bsp=e0000001187010d8
-[  818.099483]  [<a00000010005dba0>] mmput+0x60/0x200
-[  818.099483]                                 sp=e000000118707e20 bsp=e0000001187010b0
-[  818.103482]  [<a00000010006e570>] do_exit+0x6f0/0x18a0
-[  818.103482]                                 sp=e000000118707e20 bsp=e000000118701038
-[  818.103482]  [<a000000100072070>] do_group_exit+0x90/0x2a0
-[  818.103482]                                 sp=e000000118707e30 bsp=e000000118700ff0
-[  818.103482]  [<a0000001000722a0>] sys_exit_group+0x20/0x40
-[  818.103482]                                 sp=e000000118707e30 bsp=e000000118700f98
-[  818.107482]  [<a00000010000c5f0>] ia64_trace_syscall+0xf0/0x130
-[  818.107482]                                 sp=e000000118707e30 bsp=e000000118700f98
-[  818.107482]  [<a000000000040720>] ia64_ivt+0xffffffff00040720/0x400
-[  818.107482]                                 sp=e000000118708000 bsp=e000000118700f98
-[  818.115482] Disabling lock debugging due to kernel taint
-[  818.115482] BUG: Bad rss-counter state mm:000000002eec6412 type:MM_FILEPAGES val:-1
-[  818.132256] Unable to handle kernel NULL pointer dereference (address 0000000000000068)
-[  818.133904] sock_filter-v-X[5999]: Oops 11012296146944 [1]
-[  818.133904] Modules linked in: acpi_ipmi ipmi_si usb_storage e1000 ipmi_devintf ipmi_msghandler rtc_efi
-[  818.133904]
-[  818.133904] CPU: 0 PID: 5999 Comm: sock_filter-v-X Tainted: G    B             5.11.0-00003-gbfa5a4929c90 #57
-[  818.133904] Hardware name: hp server rx3600                   , BIOS 04.03                                                            04/08/2008
-[  818.133904] psr : 0000121008026010 ifs : 8000000000000288 ip  : [<a0000001001eaa61>]    Tainted: G    B             (5.11.0-00003-gbfa5a4929c90)
-[  818.133904] ip is at bpf_prog_free+0x21/0xe0
-[  818.133904] unat: 0000000000000000 pfs : 0000000000000307 rsc : 0000000000000003
-[  818.133904] rnat: 0000000000000000 bsps: 0000000000000000 pr  : 00106a5a51665965
-[  818.133904] ldrs: 0000000000000000 ccv : 0000000012088904 fpsr: 0009804c8a70033f
-[  818.133904] csd : 0000000000000000 ssd : 0000000000000000
-[  818.133904] b0  : a000000100d54080 b6  : a000000100d53fe0 b7  : a00000010000cef0
-[  818.133904] f6  : 0ffefb0c50daa1b67f89a f7  : 0ffed8b3e4fdb08000000
-[  818.133904] f8  : 10017fbd1bc0000000000 f9  : 1000eb95f000000000000
-[  818.133904] f10 : 10008ade20716a6c83cc1 f11 : 1003e00000000000002b7
-[  818.133904] r1  : a00000010176b300 r2  : a000000200008004 r3  : 0000000000000000
-[  818.133904] r8  : 0000000000000008 r9  : e00000011873f800 r10 : e000000102c18600
-[  818.133904] r11 : e000000102c19600 r12 : e00000011873f7f0 r13 : e000000118738000
-[  818.133904] r14 : 0000000000000068 r15 : a000000200008028 r16 : e000000005606a70
-[  818.133904] r17 : e000000102c18600 r18 : e000000104370748 r19 : e000000102c18600
-[  818.133904] r20 : e000000102c18600 r21 : e000000005606a78 r22 : a00000010156bd28
-[  818.133904] r23 : a00000010147fdf4 r24 : 0000000000004000 r25 : e000000104370750
-[  818.133904] r26 : a0000001012f7088 r27 : a000000100d53fe0 r28 : 0000000000000001
-[  818.133904] r29 : e00000011873f800 r30 : e00000011873f810 r31 : e00000011873f808
-[  818.133904]
-[  818.133904] Call Trace:
-[  818.133904]  [<a000000100014a70>] show_stack+0x90/0xc0
-[  818.133904]                                 sp=e00000011873f420 bsp=e0000001187396d0
-[  818.133904]  [<a000000100015170>] show_regs+0x6d0/0xa40
-[  818.133904]                                 sp=e00000011873f5f0 bsp=e000000118739660
-[  818.133904]  [<a000000100026e90>] die+0x1b0/0x4a0
-[  818.133904]                                 sp=e00000011873f610 bsp=e000000118739620
-[  818.133904]  [<a000000100059220>] ia64_do_page_fault+0x820/0xb60
-[  818.133904]                                 sp=e00000011873f610 bsp=e000000118739580
-[  818.133904]  [<a00000010000c8e0>] ia64_leave_kernel+0x0/0x270
-[  818.133904]                                 sp=e00000011873f620 bsp=e000000118739580
-[  818.133904]  [<a0000001001eaa60>] bpf_prog_free+0x20/0xe0
-[  818.133904]                                 sp=e00000011873f7f0 bsp=e000000118739540
-[  818.133904]  [<a000000100d54080>] sk_filter_release_rcu+0xa0/0x120
-[  818.133904]                                 sp=e00000011873f7f0 bsp=e000000118739510
-[  818.133904]  [<a00000010016a7f0>] rcu_core+0x530/0xf20
-[  818.133904]                                 sp=e00000011873f7f0 bsp=e0000001187394a8
-[  818.133904]  [<a00000010016b200>] rcu_core_si+0x20/0x40
-[  818.133904]                                 sp=e00000011873f810 bsp=e000000118739490
-[  818.133904]  [<a0000001010279f0>] __do_softirq+0x230/0x640
-[  818.133904]                                 sp=e00000011873f810 bsp=e0000001187393a0
-[  818.133904]  [<a000000100074770>] irq_exit+0x170/0x200
-[  818.133904]                                 sp=e00000011873f810 bsp=e000000118739388
-[  818.133904]  [<a000000100013310>] ia64_handle_irq+0x1b0/0x360
-[  818.133904]                                 sp=e00000011873f810 bsp=e000000118739308
-[  818.133904]  [<a00000010000c8e0>] ia64_leave_kernel+0x0/0x270
-[  818.133904]                                 sp=e00000011873f820 bsp=e000000118739308
-[  818.133904]  [<a000000101027700>] flush_icache_range+0x80/0xa0
-[  818.133904]                                 sp=e00000011873f9f0 bsp=e0000001187392f8
-[  818.133904]  [<a0000001002f7ae0>] __access_remote_vm+0x1e0/0x320
-[  818.133904]                                 sp=e00000011873f9f0 bsp=e000000118739258
-[  818.133904]  [<a0000001002f7c80>] access_process_vm+0x60/0xa0
-[  818.133904]                                 sp=e00000011873fa00 bsp=e000000118739210
-[  818.133904]  [<a000000100018210>] ia64_sync_user_rbs+0x70/0xe0
-[  818.133904]                                 sp=e00000011873fa00 bsp=e0000001187391d0
-[  818.133904]  [<a000000100018b00>] do_sync_rbs+0xc0/0x100
-[  818.133904]                                 sp=e00000011873fa10 bsp=e000000118739198
-[  818.133904]  [<a00000010000cf30>] unw_init_running+0x70/0xa0
-[  818.133904]                                 sp=e00000011873fa10 bsp=e000000118739170
-[  818.133904]  [<a00000010001ae90>] ia64_ptrace_stop+0x130/0x160
-[  818.133904]                                 sp=e00000011873fdf0 bsp=e000000118739158
-[  818.133904]  [<a00000010008af60>] ptrace_stop+0xc0/0x880
-[  818.133904]                                 sp=e00000011873fdf0 bsp=e000000118739118
-[  818.133904]  [<a00000010008b820>] ptrace_do_notify+0x100/0x120
-[  818.133904]                                 sp=e00000011873fdf0 bsp=e0000001187390e8
-[  818.133904]  [<a00000010008b8d0>] ptrace_notify+0x90/0x260
-[  818.133904]                                 sp=e00000011873fe30 bsp=e0000001187390c8
-[  818.133904]  [<a00000010001e3d0>] syscall_trace_enter+0xf0/0x2c0
-[  818.133904]                                 sp=e00000011873fe30 bsp=e000000118739070
-[  818.133904]  [<a00000010000c540>] ia64_trace_syscall+0x40/0x130
-[  818.133904]                                 sp=e00000011873fe30 bsp=e000000118739020
-[  818.186114] Kernel panic - not syncing: Aiee, killing interrupt handler!
-[  818.186114] ---[ end Kernel panic - not syncing: Aiee, killing interrupt handler! ]---
+Chris Down writes:
+>With !CONFIG_PRINTK, printk() is static in the header, but ia64's
+>cmpxchg.h with CONFIG_IA64_DEBUG_CMPXCHG doesn't take this into account
+>before trying to use it as extern, resulting in a compiler error:
+>
+>    ./include/linux/printk.h:219:5: error: static declaration of 'printk' follows non-static declaration
+>    219 | int printk(const char *s, ...)
+>	|     ^~~~~~
+>    ./arch/ia64/include/uapi/asm/cmpxchg.h:142:14: note: previous declaration of 'printk' was here
+>    142 |   extern int printk(const char *fmt, ...);  \
+>	|              ^~~~~~
+>
+>Make CONFIG_IA64_DEBUG_CMPXCHG dependent on CONFIG_PRINTK to avoid this.
+>
+>Signed-off-by: Chris Down <chris@chrisdown.name>
+>Reported-by: kernel test robot <lkp@intel.com>
+>Cc: Tony Luck <tony.luck@intel.com>
+>Cc: Fenghua Yu <fenghua.yu@intel.com>
+>Cc: linux-ia64@vger.kernel.org
 
-I'm not sure how to interpret it. It looks like 'bpf_prog_free'
-frees the memory that is not there anymore, but previous crash
-hints at already broken page tables. Maybe VM is already corrupted
-by previous strace tests?
+I now see that last month ia64 was marked as orphaned, so I'm going to send 
+this over to Andrew/-mm.
 
-I wonder if I can enable a bit more kernel VM debugging to catch the corruption earlier.
+Andrew, any chance you can take this in your tree? It's causing spurious LKP 
+noise for some recent work on printk and would be great to have in -next.
 
--- 
+Thanks,
 
-  Sergei
+Chris
+
+>---
+> arch/ia64/Kconfig.debug | 2 +-
+> 1 file changed, 1 insertion(+), 1 deletion(-)
+>
+>diff --git a/arch/ia64/Kconfig.debug b/arch/ia64/Kconfig.debug
+>index 40ca23bd228d..2ce008e2d164 100644
+>--- a/arch/ia64/Kconfig.debug
+>+++ b/arch/ia64/Kconfig.debug
+>@@ -39,7 +39,7 @@ config DISABLE_VHPT
+>
+> config IA64_DEBUG_CMPXCHG
+> 	bool "Turn on compare-and-exchange bug checking (slow!)"
+>-	depends on DEBUG_KERNEL
+>+	depends on DEBUG_KERNEL && PRINTK
+> 	help
+> 	  Selecting this option turns on bug checking for the IA-64
+> 	  compare-and-exchange instructions.  This is slow!  Itaniums
+>-- 
+>2.30.1
+>
