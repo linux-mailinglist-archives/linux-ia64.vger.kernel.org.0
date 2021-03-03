@@ -2,61 +2,74 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57E5A32BC87
-	for <lists+linux-ia64@lfdr.de>; Wed,  3 Mar 2021 23:04:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4487632BC93
+	for <lists+linux-ia64@lfdr.de>; Wed,  3 Mar 2021 23:06:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235245AbhCCOGS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 3 Mar 2021 09:06:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47204 "EHLO
+        id S239925AbhCCONw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 3 Mar 2021 09:13:52 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234050AbhCBX4L (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 2 Mar 2021 18:56:11 -0500
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83094C0611BC;
-        Tue,  2 Mar 2021 15:40:35 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id j2so8820275wrx.9;
-        Tue, 02 Mar 2021 15:40:35 -0800 (PST)
+        with ESMTP id S237600AbhCCAZB (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 2 Mar 2021 19:25:01 -0500
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F14CC061221;
+        Tue,  2 Mar 2021 16:22:41 -0800 (PST)
+Received: by mail-wr1-x431.google.com with SMTP id u16so3742556wrt.1;
+        Tue, 02 Mar 2021 16:22:41 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20161025;
         h=date:from:to:cc:subject:message-id:in-reply-to:references
          :mime-version:content-transfer-encoding;
-        bh=wU9np/B17g0hNZmy/Vroj0jnabzNoYbqEuJBn3uOdp0=;
-        b=dWOWMX5aUSCmikpv4jmURB+ixRNSIv+Ruhe0w6BiKpkGo2hF12Jns8VMi+PecWrTKH
-         KSO13mX2ekuj1CFpHJwCyz3vCItzZWK5GaBkTgbGqNP7alexXl2cjnI7JKR+a+GFvmyP
-         7Agb1uGfY4BQgE1/dz+6SeGDwClB6ivCIodpzRuhdRIgAINMRluOle41s0stTPdHIqWo
-         DITVfTF9uBwADOKoA3Rdh7oF7w9huhO8Y9/TXcB3qtp+AlBLwsQsBI9AO4WD8mOyrlbE
-         MHCDV7UElVYyZiL4zMpZ0KJPkAaprcrfXNkzODIXi8Z48LlZNN+FyRMUY3tc9p24Gchn
-         hlzA==
+        bh=FSX72t9mSiVVDShOFhuPdJIwlyXLwCJpyaMqc/D0w1g=;
+        b=e9sMs7OGKVI0kgnPShsxFR/Re/t4foivHNL+5tD3WjkzztjMnmrJr8qcrwDKzfendx
+         Kf4vJqHo82I1LwHS6nZH75NK+GdSgMmK6a/HhgwB6SPddp/0ICgkrbKbiliTau/LcPSq
+         x1oZrvi2v2Q7fmnGpXhabu4PRqeyo8UfEq+4TARJuGTpB2RuZDm6URulJpks/x1YGlvR
+         jINUKVXZTvRo0A0Epl2d1FzGnMqgc+pzeGxc6zgECdshLrkmcYPmDgaPUFJVWSDsN5cp
+         AmI1wpi+xGZfmqKa+lR1etx5F89rGIFAv3lwPMEEsiS9s7+GM36LYLVaN2KFQ/ulzbnD
+         +xtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=wU9np/B17g0hNZmy/Vroj0jnabzNoYbqEuJBn3uOdp0=;
-        b=I2U0FqMBiKxjYYO5m6sOzelP4y7F4UyBUsXTUERBpksXVCcZWV4edmM2wnfkcfN7rx
-         WFYlHHURqR0i2Xw1nk75+iRIdS9ChktAPNAppv9VBfZ6+8rP6iQ00e2Rqxl+tDAg8mVn
-         uEdEZqlHCcm21Vw/tBs70FQGKcvhHZ130x98ZOU4+ds0KgZ/TkdslzXLdpjZD8CyBIKE
-         jBbBN48fZ4SS407HmJtI/e/ymcls5zdnhSTP2OCSgo0GjyMcEpq19HJT1U6a+St76tv+
-         SHrI4WgbHNnxmKlV6O0p9p9z85OJoAICBfko1v/4JtqQtsidH339p0XZ0OA8t/J7l2v+
-         KIdw==
-X-Gm-Message-State: AOAM532j3UfoHPdaAtxlvicDqKZnOET4C8gb0ke/Gp10YIsAOAq6XxNk
-        5aOIcDhW/ze2E/apPif9ecTn+PFfHVWoaJZ+
-X-Google-Smtp-Source: ABdhPJwQBbSuTwmfw9yI7mii+7ZHMW5JGbKQkmgQRNkqqxg7ZFhAA37Ivyy4VG5bJnI/A1ODf++iKw==
-X-Received: by 2002:a5d:6cd2:: with SMTP id c18mr23533074wrc.330.1614728434318;
-        Tue, 02 Mar 2021 15:40:34 -0800 (PST)
+        bh=FSX72t9mSiVVDShOFhuPdJIwlyXLwCJpyaMqc/D0w1g=;
+        b=uFy5e3z4hHvml4Jb9QS3cs80l9P+N+mhuvexKfEbjasK4d5/tTJ72yQ1o0m81YVdQ1
+         iwoSWtEwCsnT9xCm+rBfZSLRsb8G0aBFtwS96CoIT1c8IULcOe03JgWKfQB2jcXJJbRg
+         Lm5H8Fc8tQlZhUmvoMpnhq6JJ318TAf0CY9LvbKe73GSaz84eZgPlmB6DBbSaGP13XRa
+         5JMlDJydQtj+mzxcu/X8gO8sir3V/o9IfxSWR4mRmv2WphwT+z5qLnQd79yEJZL/BdXz
+         rMMoI8QsORJviVmoGVas9DZWKgHHEntbKwXWHbaXHic8IVkkN8dBFX3EsUn/GFOrFcqo
+         ACIw==
+X-Gm-Message-State: AOAM530jjZj7qcnOxAA4iWxFUnnQVfKnsj9OH7AEaJr2B6wjXWG65PZ+
+        pjAVKOWXVYaxoUKepLEInBE=
+X-Google-Smtp-Source: ABdhPJwpEzIbfcQLh67sRjZhl/TzteAqI5j8QdU7YpOP9fz20sZB/1SyFhMvejfi8wkm7dQAtPpD7Q==
+X-Received: by 2002:adf:f148:: with SMTP id y8mr23964390wro.107.1614730960262;
+        Tue, 02 Mar 2021 16:22:40 -0800 (PST)
 Received: from sf (tunnel547699-pt.tunnel.tserv1.lon2.ipv6.he.net. [2001:470:1f1c:3e6::2])
-        by smtp.gmail.com with ESMTPSA id z25sm4972693wmi.23.2021.03.02.15.40.33
+        by smtp.gmail.com with ESMTPSA id o10sm28655767wrx.5.2021.03.02.16.22.37
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 02 Mar 2021 15:40:33 -0800 (PST)
-Date:   Tue, 2 Mar 2021 23:40:31 +0000
+        Tue, 02 Mar 2021 16:22:39 -0800 (PST)
+Date:   Wed, 3 Mar 2021 00:22:36 +0000
 From:   Sergei Trofimovich <slyich@gmail.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, Oleg Nesterov <oleg@redhat.com>,
-        linux-ia64@vger.kernel.org, "Dmitry V . Levin" <ldv@altlinux.org>
-Subject: Re: [PATCH] ia64: fix ia64_syscall_get_set_arguments() for
- break-based syscalls
-Message-ID: <20210302234024.73bf0c14@sf>
-In-Reply-To: <20210221002554.333076-1-slyfox@gentoo.org>
-References: <20210221002554.333076-1-slyfox@gentoo.org>
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Don Brace <don.brace@microchip.com>
+Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Joe Szczypek <jszczype@redhat.com>,
+        Scott Benesh <scott.benesh@microchip.com>,
+        Scott Teel <scott.teel@microchip.com>,
+        Tomas Henzl <thenzl@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [bisected] 5.12-rc1 hpsa regression: "scsi: hpsa: Correct dev cmds
+ outstanding for retried cmds" breaks hpsa P600
+Message-ID: <20210303002236.2f4ec01f@sf>
+In-Reply-To: <25dfced0-88b2-b5b3-f1b6-8b8a9931bf90@physik.fu-berlin.de>
+References: <20210222230519.73f3e239@sf>
+        <cc658b61-530e-90bf-3858-36cc60468a24@kernel.dk>
+        <8decdd2e-a380-9951-3ebb-2bc3e48aa1c3@physik.fu-berlin.de>
+        <20210223083507.43b5a6dd@sf>
+        <51cbf584-07ef-1e62-7a3b-81494a04faa6@physik.fu-berlin.de>
+        <9441757f-d4bc-a5b5-5fb0-967c9aaca693@physik.fu-berlin.de>
+        <20210223192743.0198d4a9@sf>
+        <20210302222630.5056f243@sf>
+        <25dfced0-88b2-b5b3-f1b6-8b8a9931bf90@physik.fu-berlin.de>
 X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -65,99 +78,81 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sun, 21 Feb 2021 00:25:53 +0000
-Sergei Trofimovich <slyfox@gentoo.org> wrote:
+On Tue, 2 Mar 2021 23:31:32 +0100
+John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> wrote:
 
-> In https://bugs.gentoo.org/769614 Dmitry noticed that
-> `ptrace(PTRACE_GET_SYSCALL_INFO)` does not work for syscalls called
-> via glibc's syscall() wrapper.
+> Hi Sergei!
 > 
-> ia64 has two ways to call syscalls from userspace: via `break` and via
-> `eps` instructions.
+> On 3/2/21 11:26 PM, Sergei Trofimovich wrote:
+> > Gave v5.12-rc1 a try today and got a similar boot failure around
+> > hpsa queue initialization, but my failure is later:
+> >     https://dev.gentoo.org/~slyfox/configs/guppy-dmesg-5.12-rc1
+> > Maybe I get different error because I flipped on most debugging
+> > kernel options :)
+> > 
+> > Looks like 'ERROR: Invalid distance value range' while being
+> > very scary are harmless. It's just a new spammy way for kernel
+> > to report lack of NUMA config on the machine (no SRAT and SLIT
+> > ACPI tables).
+> > 
+> > At least I get hpsa detected on PCI bus. But I guess it's discovered
+> > configuration is very wrong as I get unaligned accesses:
+> >     [   19.811570] kernel unaligned access to 0xe000000105dd8295, ip=0xa000000100b874d1
+> > 
+> > Bisecting now.  
 > 
-> The difference is in stack layout:
-> 
-> 1. `eps` creates simple stack frame: no locals, in{0..7} == out{0..8}
-> 2. `break` uses userspace stack frame: may be locals (glibc provides
->    one), in{0..7} == out{0..8}.
-> 
-> Both work fine in syscall handling cde itself.
-> 
-> But `ptrace(PTRACE_GET_SYSCALL_INFO)` uses unwind mechanism to
-> re-extract syscall arguments but it does not account for locals.
-> 
-> The change always skips locals registers. It should not change `eps`
-> path as kernel's handler already enforces locals=0 and fixes `break`.
-> 
-> Tested on v5.10 on rx3600 machine (ia64 9040 CPU).
-> 
-> CC: Oleg Nesterov <oleg@redhat.com>
-> CC: linux-ia64@vger.kernel.org
-> CC: linux-kernel@vger.kernel.org
-> CC: Andrew Morton <akpm@linux-foundation.org>
-> Reported-by: Dmitry V. Levin <ldv@altlinux.org>
-> Bug: https://bugs.gentoo.org/769614
-> Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
-> ---
->  arch/ia64/kernel/ptrace.c | 24 ++++++++++++++++++------
->  1 file changed, 18 insertions(+), 6 deletions(-)
-> 
-> diff --git a/arch/ia64/kernel/ptrace.c b/arch/ia64/kernel/ptrace.c
-> index c3490ee2daa5..e14f5653393a 100644
-> --- a/arch/ia64/kernel/ptrace.c
-> +++ b/arch/ia64/kernel/ptrace.c
-> @@ -2013,27 +2013,39 @@ static void syscall_get_set_args_cb(struct unw_frame_info *info, void *data)
->  {
->  	struct syscall_get_set_args *args = data;
->  	struct pt_regs *pt = args->regs;
-> -	unsigned long *krbs, cfm, ndirty;
-> +	unsigned long *krbs, cfm, ndirty, nlocals, nouts;
->  	int i, count;
->  
->  	if (unw_unwind_to_user(info) < 0)
->  		return;
->  
-> +	/*
-> +	 * We get here via a few paths:
-> +	 * - break instruction: cfm is shared with caller.
-> +	 *   syscall args are in out= regs, locals are non-empty.
-> +	 * - epsinstruction: cfm is set by br.call
-> +	 *   locals don't exist.
-> +	 *
-> +	 * For both cases argguments are reachable in cfm.sof - cfm.sol.
-> +	 * CFM: [ ... | sor: 17..14 | sol : 13..7 | sof : 6..0 ]
-> +	 */
->  	cfm = pt->cr_ifs;
-> +	nlocals = (cfm >> 7) & 0x7f; /* aka sol */
-> +	nouts = (cfm & 0x7f) - nlocals; /* aka sof - sol */
->  	krbs = (unsigned long *)info->task + IA64_RBS_OFFSET/8;
->  	ndirty = ia64_rse_num_regs(krbs, krbs + (pt->loadrs >> 19));
->  
->  	count = 0;
->  	if (in_syscall(pt))
-> -		count = min_t(int, args->n, cfm & 0x7f);
-> +		count = min_t(int, args->n, nouts);
->  
-> +	/* Iterate over outs. */
->  	for (i = 0; i < count; i++) {
-> +		int j = ndirty + nlocals + i + args->i;
->  		if (args->rw)
-> -			*ia64_rse_skip_regs(krbs, ndirty + i + args->i) =
-> -				args->args[i];
-> +			*ia64_rse_skip_regs(krbs, j) = args->args[i];
->  		else
-> -			args->args[i] = *ia64_rse_skip_regs(krbs,
-> -				ndirty + i + args->i);
-> +			args->args[i] = *ia64_rse_skip_regs(krbs, j);
->  	}
->  
->  	if (!args->rw) {
-> -- 
-> 2.30.1
-> 
+> Sounds good. I guess we should get Jens' fix for the signal regression
+> merged as well as your two fixes for strace.
 
-Andrew, would it be fine to pass it through misc tree?
-Or should it go through Oleg as it's about ptrace?
+"bisected" (cheated halfway through) and verified that reverting
+f749d8b7a9896bc6e5ffe104cc64345037e0b152 makes rx3600 boot again.
+
+CCing authors who might be able to help us here.
+
+commit f749d8b7a9896bc6e5ffe104cc64345037e0b152
+Author: Don Brace <don.brace@microchip.com>
+Date:   Mon Feb 15 16:26:57 2021 -0600
+
+    scsi: hpsa: Correct dev cmds outstanding for retried cmds
+
+    Prevent incrementing device->commands_outstanding for ioaccel command
+    retries that are driver initiated.  If the command goes through the retry
+    path, the device->commands_outstanding counter has already accounted for
+    the number of commands outstanding to the device.  Only commands going
+    through function hpsa_cmd_resolve_events decrement this counter.
+
+     - ioaccel commands go to either HBA disks or to logical volumes comprised
+       of SSDs.
+
+    The extra increment is causing device resets to hang.
+
+     - Resets wait for all device outstanding commands to complete before
+       returning.
+
+    Replace unused field abort_pending with retry_pending. This is a
+    maintenance driver so these changes have the least impact/risk.
+
+    Link: https://lore.kernel.org/r/161342801747.29388.13045495968308188518.stgit@brunhilda
+    Tested-by: Joe Szczypek <jszczype@redhat.com>
+    Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
+    Reviewed-by: Scott Teel <scott.teel@microchip.com>
+    Reviewed-by: Tomas Henzl <thenzl@redhat.com>
+    Signed-off-by: Don Brace <don.brace@microchip.com>
+    Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+
+Don, do you happen to know why this patch caused some controller init failure
+for device
+    14:01.0 RAID bus controller: Hewlett-Packard Company Smart Array P600
+?
+
+Boot failure: https://dev.gentoo.org/~slyfox/configs/guppy-dmesg-5.12-rc1
+Boot success: https://dev.gentoo.org/~slyfox/configs/guppy-dmesg-5.12-rc1-good
+
+The difference between the two boots is 
+f749d8b7a9896bc6e5ffe104cc64345037e0b152 reverted on top of 5.12-rc1
+in -good case.
+
+Looks like hpsa controller fails to initialize in bad case (could be a race?).
 
 -- 
 
