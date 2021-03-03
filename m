@@ -2,192 +2,89 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 31A7332BC99
-	for <lists+linux-ia64@lfdr.de>; Wed,  3 Mar 2021 23:06:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F1EBC32C84E
+	for <lists+linux-ia64@lfdr.de>; Thu,  4 Mar 2021 02:14:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359392AbhCCOS6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 3 Mar 2021 09:18:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37810 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1843060AbhCCKZJ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 3 Mar 2021 05:25:09 -0500
-Received: from mail-wm1-x32b.google.com (mail-wm1-x32b.google.com [IPv6:2a00:1450:4864:20::32b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1AA81C0610CE;
-        Wed,  3 Mar 2021 00:55:44 -0800 (PST)
-Received: by mail-wm1-x32b.google.com with SMTP id i9so4480787wml.0;
-        Wed, 03 Mar 2021 00:55:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=zdJ5hx+mYbfNreiVWKd99KRYazRIfUe4brAtRfe/xF4=;
-        b=K+6wg9BUznm5a/+9b9QJ7i9CChtLVD4n5KpT38ZA7QuZ71i/zpE6c5PwKFC5vlJVh6
-         DhhowwzJ76bXSS0tQp4FXcUh1skR513TO5ktNOi0c03sUdRBG73n1d5THMiMZDsmN339
-         wRqGWi4Qi7zNv+UkUWrn5CskAi6Jl9sFYGf3Ygjt7vc9S4QLLZD+0NIPewtfRslu3qdJ
-         j74C1vM98bGMvHT1RfoU5NMfcNVz/NNzY4vZ8Rr5r9IQ/Yo6sOLTs60QygBWVb19pc1S
-         j7KcwVVdncAxdiPLaegbiS4FUQjOedYDq3IzUNFcUw7udfrRHkOQxBeJgtHp53hdwE4c
-         xGxQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=zdJ5hx+mYbfNreiVWKd99KRYazRIfUe4brAtRfe/xF4=;
-        b=HtumlKycCgRUz413V+rEfk7u1Nu0iW/jLB9dok6x4ET+cpihUOAVdzYggzQMUailXs
-         3JW3Hwy6R0WJu3CCxJbUlGeqTju95Ej7VpCGvN/LntodZjqYNF78wnS7yoWy7ca3E/ge
-         G2qzcImkwwKQRsWVvYRLnxkwvf0Mi8wdtOvQ1Uqi4j2rpVrqCM+iFfnTBjM26sYlwM8/
-         LxHigQamagS1iBpw8PQYEZfqAR8JRLgQs621I+RSpefyKE/LffHn0TCVAHRj69DmwT2O
-         LEPy4dXJesdBUmtw5ObalvP34mIPhGfXW7jQGQrWx1Sbl6OidbH7oNNgXXh8wC0Dlg2V
-         0EbQ==
-X-Gm-Message-State: AOAM533B3u0z1iL2p70QrPgGBRrqqkdb5pCwybEXAWcSESqJQySRkxwC
-        jUf6GC/CVYHe7YHJgsXzUortyFWhiGXWlxSs
-X-Google-Smtp-Source: ABdhPJzJvBnty9HzqVrRuMbMGPJYYS2k+vddEpLtCemcM5SBQTqtepuxSPjcO7s0q2vFbZGw/WguyA==
-X-Received: by 2002:a1c:8041:: with SMTP id b62mr8441707wmd.0.1614761742701;
-        Wed, 03 Mar 2021 00:55:42 -0800 (PST)
-Received: from sf (tunnel547699-pt.tunnel.tserv1.lon2.ipv6.he.net. [2001:470:1f1c:3e6::2])
-        by smtp.gmail.com with ESMTPSA id n6sm11688949wrt.1.2021.03.03.00.55.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Mar 2021 00:55:42 -0800 (PST)
-Date:   Wed, 3 Mar 2021 08:55:33 +0000
-From:   Sergei Trofimovich <slyich@gmail.com>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Don Brace <don.brace@microchip.com>, storagedev@microchip.com,
-        linux-scsi@vger.kernel.org
-Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Joe Szczypek <jszczype@redhat.com>,
-        Scott Benesh <scott.benesh@microchip.com>,
-        Scott Teel <scott.teel@microchip.com>,
-        Tomas Henzl <thenzl@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: Re: [bisected] 5.12-rc1 hpsa regression: "scsi: hpsa: Correct dev
- cmds outstanding for retried cmds" breaks hpsa P600
-Message-ID: <20210303085533.505b1590@sf>
-In-Reply-To: <20210303002236.2f4ec01f@sf>
-References: <20210222230519.73f3e239@sf>
-        <cc658b61-530e-90bf-3858-36cc60468a24@kernel.dk>
-        <8decdd2e-a380-9951-3ebb-2bc3e48aa1c3@physik.fu-berlin.de>
-        <20210223083507.43b5a6dd@sf>
-        <51cbf584-07ef-1e62-7a3b-81494a04faa6@physik.fu-berlin.de>
-        <9441757f-d4bc-a5b5-5fb0-967c9aaca693@physik.fu-berlin.de>
-        <20210223192743.0198d4a9@sf>
-        <20210302222630.5056f243@sf>
-        <25dfced0-88b2-b5b3-f1b6-8b8a9931bf90@physik.fu-berlin.de>
-        <20210303002236.2f4ec01f@sf>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+        id S234140AbhCDAsz (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 3 Mar 2021 19:48:55 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:49672 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S1445309AbhCCObz (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 3 Mar 2021 09:31:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1614781828;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=AF/cO6VaBJofp/QUMtJYV0k7TaZxcJvBGeU6hF/UnYw=;
+        b=fwHLWU/lM2QmjVzVUEAHV+hyLi2aLwVL7ZqC3XwpeuBlr5ACxAe3f5GtjRda/xhF1AJwbb
+        QMLtI9rUSlwbR/uWTmeP2fhszZh2JrS5glHtc7GaA87fIe69YMyZ1GvF8/UTiZ+uT8JJdT
+        +Fx+B35aOEiHarVNqBZgW/6Zfi+0btM=
+Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
+ [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-9-OgE7VCHMOe2QcvRlX4M40w-1; Wed, 03 Mar 2021 09:30:24 -0500
+X-MC-Unique: OgE7VCHMOe2QcvRlX4M40w-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.phx2.redhat.com [10.5.11.15])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 8DF5580196E;
+        Wed,  3 Mar 2021 14:30:22 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.194.81])
+        by smtp.corp.redhat.com (Postfix) with SMTP id A76A063633;
+        Wed,  3 Mar 2021 14:30:20 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+        oleg@redhat.com; Wed,  3 Mar 2021 15:30:22 +0100 (CET)
+Date:   Wed, 3 Mar 2021 15:30:19 +0100
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     Sergei Trofimovich <slyfox@gentoo.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        "Dmitry V . Levin" <ldv@altlinux.org>
+Subject: Re: [PATCH] ia64: fix ptrace(PTRACE_SYSCALL_INFO_EXIT) sign
+Message-ID: <20210303143018.GB28955@redhat.com>
+References: <20210221002554.333076-1-slyfox@gentoo.org>
+ <20210221002554.333076-2-slyfox@gentoo.org>
+ <20210302233925.081075e0@sf>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210302233925.081075e0@sf>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.79 on 10.5.11.15
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, 3 Mar 2021 00:22:36 +0000
-Sergei Trofimovich <slyich@gmail.com> wrote:
+On 03/02, Sergei Trofimovich wrote:
+>
+> > --- a/arch/ia64/include/asm/syscall.h
+> > +++ b/arch/ia64/include/asm/syscall.h
+> > @@ -32,7 +32,7 @@ static inline void syscall_rollback(struct task_struct *task,
+> >  static inline long syscall_get_error(struct task_struct *task,
+> >  				     struct pt_regs *regs)
+> >  {
+> > -	return regs->r10 == -1 ? regs->r8:0;
+> > +	return regs->r10 == -1 ? -regs->r8:0;
+> >  }
+> >
+> >  static inline long syscall_get_return_value(struct task_struct *task,
+> > --
+> > 2.30.1
+> >
+>
+> Andrew, would it be fine to pass it through misc tree?
+> Or should it go through Oleg as it's mostly about ptrace?
 
-> On Tue, 2 Mar 2021 23:31:32 +0100
-> John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> wrote:
-> 
-> > Hi Sergei!
-> > 
-> > On 3/2/21 11:26 PM, Sergei Trofimovich wrote:  
-> > > Gave v5.12-rc1 a try today and got a similar boot failure around
-> > > hpsa queue initialization, but my failure is later:
-> > >     https://dev.gentoo.org/~slyfox/configs/guppy-dmesg-5.12-rc1
-> > > Maybe I get different error because I flipped on most debugging
-> > > kernel options :)
-> > > 
-> > > Looks like 'ERROR: Invalid distance value range' while being
-> > > very scary are harmless. It's just a new spammy way for kernel
-> > > to report lack of NUMA config on the machine (no SRAT and SLIT
-> > > ACPI tables).
-> > > 
-> > > At least I get hpsa detected on PCI bus. But I guess it's discovered
-> > > configuration is very wrong as I get unaligned accesses:
-> > >     [   19.811570] kernel unaligned access to 0xe000000105dd8295, ip=0xa000000100b874d1
-> > > 
-> > > Bisecting now.    
-> > 
-> > Sounds good. I guess we should get Jens' fix for the signal regression
-> > merged as well as your two fixes for strace.  
-> 
-> "bisected" (cheated halfway through) and verified that reverting
-> f749d8b7a9896bc6e5ffe104cc64345037e0b152 makes rx3600 boot again.
-> 
-> CCing authors who might be able to help us here.
-> 
-> commit f749d8b7a9896bc6e5ffe104cc64345037e0b152
-> Author: Don Brace <don.brace@microchip.com>
-> Date:   Mon Feb 15 16:26:57 2021 -0600
-> 
->     scsi: hpsa: Correct dev cmds outstanding for retried cmds
-> 
->     Prevent incrementing device->commands_outstanding for ioaccel command
->     retries that are driver initiated.  If the command goes through the retry
->     path, the device->commands_outstanding counter has already accounted for
->     the number of commands outstanding to the device.  Only commands going
->     through function hpsa_cmd_resolve_events decrement this counter.
-> 
->      - ioaccel commands go to either HBA disks or to logical volumes comprised
->        of SSDs.
-> 
->     The extra increment is causing device resets to hang.
-> 
->      - Resets wait for all device outstanding commands to complete before
->        returning.
-> 
->     Replace unused field abort_pending with retry_pending. This is a
->     maintenance driver so these changes have the least impact/risk.
-> 
->     Link: https://lore.kernel.org/r/161342801747.29388.13045495968308188518.stgit@brunhilda
->     Tested-by: Joe Szczypek <jszczype@redhat.com>
->     Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
->     Reviewed-by: Scott Teel <scott.teel@microchip.com>
->     Reviewed-by: Tomas Henzl <thenzl@redhat.com>
->     Signed-off-by: Don Brace <don.brace@microchip.com>
->     Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-> 
-> Don, do you happen to know why this patch caused some controller init failure
-> for device
->     14:01.0 RAID bus controller: Hewlett-Packard Company Smart Array P600
-> ?
-> 
-> Boot failure: https://dev.gentoo.org/~slyfox/configs/guppy-dmesg-5.12-rc1
-> Boot success: https://dev.gentoo.org/~slyfox/configs/guppy-dmesg-5.12-rc1-good
-> 
-> The difference between the two boots is 
-> f749d8b7a9896bc6e5ffe104cc64345037e0b152 reverted on top of 5.12-rc1
-> in -good case.
-> 
-> Looks like hpsa controller fails to initialize in bad case (could be a race?).
+We usually route ptrace fixes via mm tree.
 
-Also CCing hpsa maintainer mailing lists.
+But this fix and another patch from you "ia64: fix ia64_syscall_get_set_arguments()
+for break-based syscalls" look very much ia64 specific. I don't think it's actually
+about ptrace, and I didn't even try to review these patches because I do not
+understand this low level ia64 code.
 
-Looking more into the suspect commit
-    https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=f749d8b7a9896bc6e5ffe104cc64345037e0b152
-it roughly does the:
+Can it be routed via ia64 tree? Add Tony and Fenghua...
 
-@@ -448,7 +448,7 @@ struct CommandList {
- 	 */
- 	struct hpsa_scsi_dev_t *phys_disk;
- 
--	int abort_pending;
-+	bool retry_pending;
- 	struct hpsa_scsi_dev_t *device;
- 	atomic_t refcount; /* Must be last to avoid memset in hpsa_cmd_init() */
- } __aligned(COMMANDLIST_ALIGNMENT);
-...
-@@ -1151,7 +1151,10 @@ static void __enqueue_cmd_and_start_io(struct ctlr_info *h,
- {
-        dial_down_lockup_detection_during_fw_flash(h, c);
-        atomic_inc(&h->commands_outstanding);
--       if (c->device)
-+       /*
-+        * Check to see if the command is being retried.
-+        */
-+       if (c->device && !c->retry_pending)
-                atomic_inc(&c->device->commands_outstanding);
+Oleg.
 
-But I don't immediately see anything wrong with it.
-
--- 
-
-  Sergei
