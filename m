@@ -2,124 +2,94 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 448723322B4
-	for <lists+linux-ia64@lfdr.de>; Tue,  9 Mar 2021 11:13:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A85AE332A07
+	for <lists+linux-ia64@lfdr.de>; Tue,  9 Mar 2021 16:17:15 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229851AbhCIKNR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 9 Mar 2021 05:13:17 -0500
-Received: from mx0a-001b2d01.pphosted.com ([148.163.156.1]:55162 "EHLO
-        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229714AbhCIKMv (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 9 Mar 2021 05:12:51 -0500
-Received: from pps.filterd (m0098410.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 129A3Tn8126439;
-        Tue, 9 Mar 2021 05:12:33 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=VLXXREKt32lTGhx5VSlCqI/r3ad7QYovQBLESPlSg1g=;
- b=JHoTDLey4dg5DpogyA3aPdDBsgtJ9oQbVxU0yNqHH6AxCs0k/hLqbURN9Pp05W9dCjIV
- oJ3IQOmpnHGG/+L0cyuvbVIVjqYPp4JhtXdlNoJNniwZtAR1tkcz/SbR3hpJUPhzVNjt
- Tvi/cR7xZXoRqWMR9g5Fri5UwreL+QHDXQyvSXCCG4F7b7xcBaUtc9pok+hBvRJumV8O
- O67FUpPgItTWV5Q3smsqawuz2HxZNmYtl9TT3HRmU7KZDIm97OxDHREAp3hOYIQ/zlYQ
- RScq9gC3nQkMxAe2cugXHyC9dedDDRUmoojbo3F3j6rNOgbx4OYe0uxkJEJD5yj1Hj3m AQ== 
-Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
-        by mx0a-001b2d01.pphosted.com with ESMTP id 3762wqy07d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 09 Mar 2021 05:12:33 -0500
-Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
-        by ppma04ams.nl.ibm.com (8.16.0.42/8.16.0.42) with SMTP id 1299rlpi009357;
-        Tue, 9 Mar 2021 10:12:31 GMT
-Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
-        by ppma04ams.nl.ibm.com with ESMTP id 3741c8jmw2-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 09 Mar 2021 10:12:31 +0000
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (b06wcsmtp001.portsmouth.uk.ibm.com [9.149.105.160])
-        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 129ACSuw48300516
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 9 Mar 2021 10:12:28 GMT
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id BADF8A405F;
-        Tue,  9 Mar 2021 10:12:28 +0000 (GMT)
-Received: from b06wcsmtp001.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 2A6C8A4065;
-        Tue,  9 Mar 2021 10:12:28 +0000 (GMT)
-Received: from osiris (unknown [9.171.41.99])
-        by b06wcsmtp001.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Tue,  9 Mar 2021 10:12:28 +0000 (GMT)
-Date:   Tue, 9 Mar 2021 11:12:26 +0100
-From:   Heiko Carstens <hca@linux.ibm.com>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-mm@kvack.org, x86@kernel.org, linux-ia64@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/6] mm: some config cleanups
-Message-ID: <YEdKCvxlFQa4noI8@osiris>
-References: <1615278790-18053-1-git-send-email-anshuman.khandual@arm.com>
+        id S231320AbhCIPQo (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 9 Mar 2021 10:16:44 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40590 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231889AbhCIPQN (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 9 Mar 2021 10:16:13 -0500
+Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C792C061760
+        for <linux-ia64@vger.kernel.org>; Tue,  9 Mar 2021 07:16:12 -0800 (PST)
+Received: by mail-vk1-xa44.google.com with SMTP id 7so3064850vke.5
+        for <linux-ia64@vger.kernel.org>; Tue, 09 Mar 2021 07:16:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=7Vrbe4gpVhb7cfcmpNanXi5E+OCzidx3VGMrGNR2bC4=;
+        b=E2fpQqAMoWIiCoZvWXO4YQYWxV5KOHk3w5ejvxjAEQe3fz7BPjX4/GCdxxoxQOtTZe
+         CAV9RQespH9l6GIJ2w5fxuZvhLctaxbr3MrCz3X5+yilmFtWDPtPvQ7UWJxLls2HIqdz
+         TNGSur7K6eSaQrYlmteUoVMcZq1ALDjSrnF1unUsAjN8wsj7KZPXhUzjN8yW/HvMEOHb
+         t7Dh0XzwpA/DivaFeCPOWYiO7axz5/l/WMIoxVolfFSOH099i+8Esocb6ig7P6LIenxy
+         fZqYmCWdNoqyFG6qWV5f8cow9Syf81WHJCk+pTrHXgQdSFwtb4ka10k8dSrvbYeJxSUn
+         btMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=7Vrbe4gpVhb7cfcmpNanXi5E+OCzidx3VGMrGNR2bC4=;
+        b=rAOhOcEMYMUgWb7L2OMVzgxRADiYHyyTlJSQo9DcETTd1UrGziJO5SmC1cjap+9uip
+         gfnTjyTu1+ZDaoMwzKjRnzGR5GHxlPDuqbDmfKLDbgQZfDGJP9g4qCTjYAoa/G/2vYBZ
+         HZUI7BJAKWPc9wYKmAlgsG7pUIRvcVCMWWqxmR7w6TSIg0YFk/K/J8Ty6H2CzOwF2sl2
+         xQYtgPeJRwkht5y7KsjzjVVSz+tE7EEKBq9v0nt4S80FhmmhsbMIp0M1AMvxy+G0vUFX
+         eJi2FD+cs4Du/bsTQoD4lBSoIz2w3VjOrj4R28BZHJPhwEpdkzAokRZBYHL5HnPOQn/+
+         ZkSg==
+X-Gm-Message-State: AOAM531+Wrr/ovvHeRKraGhWpPE3GVQlGkDiVW2At6Eni0cYPbvl7Lzw
+        nF6YlXvief1Kkz6mtHO3BU/zyUYeDY2fyaXQsRQ=
+X-Google-Smtp-Source: ABdhPJwZmuF+U1z+M84NgoIYe++DQxrt1/yhH3D3pD5RwUFA4HmsUtm1I7PWprLq+nGjWbihgBRFsG12VJE8sxqDq5I=
+X-Received: by 2002:a1f:3646:: with SMTP id d67mr16068221vka.12.1615302971514;
+ Tue, 09 Mar 2021 07:16:11 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1615278790-18053-1-git-send-email-anshuman.khandual@arm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.369,18.0.761
- definitions=2021-03-09_09:2021-03-08,2021-03-09 signatures=0
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 lowpriorityscore=0
- impostorscore=0 bulkscore=0 adultscore=0 spamscore=0 malwarescore=0
- priorityscore=1501 suspectscore=0 phishscore=0 clxscore=1011
- mlxlogscore=465 mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2009150000 definitions=main-2103090048
+Received: by 2002:ab0:2e8f:0:0:0:0:0 with HTTP; Tue, 9 Mar 2021 07:16:10 -0800 (PST)
+Reply-To: ezbtg22@gmail.com
+From:   "Mrs.E.Glenn" <mrganuserge654@gmail.com>
+Date:   Tue, 9 Mar 2021 07:16:10 -0800
+Message-ID: <CAH16wSNPH+jQFRGJP+fCVDz9CK40N9ewAj_curpjM+ohLU31Ng@mail.gmail.com>
+Subject: From Mrs.E.Glenn
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Mar 09, 2021 at 02:03:04PM +0530, Anshuman Khandual wrote:
-> This series contains config cleanup patches which reduces code duplication
-> across platforms and also improves maintainability. There is no functional
-> change intended with this series. This has been boot tested on arm64 but
-> only build tested on some other platforms.
-> 
-> This applies on 5.12-rc2
-> 
-> Cc: x86@kernel.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> 
-> Anshuman Khandual (6):
->   mm: Generalize ARCH_HAS_CACHE_LINE_SIZE
->   mm: Generalize SYS_SUPPORTS_HUGETLBFS (rename as ARCH_SUPPORTS_HUGETLBFS)
->   mm: Generalize ARCH_ENABLE_MEMORY_[HOTPLUG|HOTREMOVE]
->   mm: Drop redundant ARCH_ENABLE_[HUGEPAGE|THP]_MIGRATION
->   mm: Drop redundant ARCH_ENABLE_SPLIT_PMD_PTLOCK
->   mm: Drop redundant HAVE_ARCH_TRANSPARENT_HUGEPAGE
-> 
->  arch/arc/Kconfig                       |  9 ++------
->  arch/arm/Kconfig                       | 10 ++-------
->  arch/arm64/Kconfig                     | 30 ++++++--------------------
->  arch/ia64/Kconfig                      |  8 ++-----
->  arch/mips/Kconfig                      |  6 +-----
->  arch/parisc/Kconfig                    |  5 +----
->  arch/powerpc/Kconfig                   | 11 ++--------
->  arch/powerpc/platforms/Kconfig.cputype | 16 +++++---------
->  arch/riscv/Kconfig                     |  5 +----
->  arch/s390/Kconfig                      | 12 +++--------
->  arch/sh/Kconfig                        |  7 +++---
->  arch/sh/mm/Kconfig                     |  8 -------
->  arch/x86/Kconfig                       | 29 ++++++-------------------
->  fs/Kconfig                             |  5 ++++-
->  mm/Kconfig                             |  9 ++++++++
->  15 files changed, 48 insertions(+), 122 deletions(-)
+-- 
+Dear Beloved,
 
-for the s390 bits:
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
+I am Mrs Elizabet Glenn from Israel. I am a missionary but right now
+in a hospital bed in Israel. I am 59 years and childless; my husband
+is dead. I was diagnosed with terminal cancer. And my doctor just
+predicted that I have but very limited time to live due to damages in
+my system and as a result of that I decided to dispose my 10.5 million
+US dollars to a God-fearing one for the continuation of charitable
+work. This is why I located you.
+
+My guess about you may not be accurate because I came across your
+contact at the humanitarian calendar event of the year but I believe
+in God who divinely directed me to you for this solemn proposal of
+charitable work.
+
+Therefore I wholeheartedly wish to bequeath my fortune to you as a
+God-fearing person for the continuation of charitable work anywhere
+around the world.
+
+I shall be going in for a surgery operations soonest and desire this
+money to be transferred to you as I do not wish to leave this money in
+the bank because bankers might misuse it for their own interest after
+my death.
+
+As soon as I receive your quick reply assuring me that you will
+utilize the money as I instructed you for the benefit of the less
+privilege, I shall give you more details and also instruct my bank to
+release the money to you for the charity project. I hope you receive
+this mail in good health.
+
+Please contact me on this E-mail (ezbtg22@gmail.com) because I don t
+know what will be my situation in next minute,
+
+I am waiting for your reply.
+
+Yours sincerely,
+Mrs Elizabet Glenn.
