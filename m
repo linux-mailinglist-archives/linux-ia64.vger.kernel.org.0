@@ -2,94 +2,108 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A85AE332A07
-	for <lists+linux-ia64@lfdr.de>; Tue,  9 Mar 2021 16:17:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D1BEE3334CF
+	for <lists+linux-ia64@lfdr.de>; Wed, 10 Mar 2021 06:21:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231320AbhCIPQo (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 9 Mar 2021 10:16:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40590 "EHLO
+        id S229734AbhCJFUy (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 10 Mar 2021 00:20:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231889AbhCIPQN (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 9 Mar 2021 10:16:13 -0500
-Received: from mail-vk1-xa44.google.com (mail-vk1-xa44.google.com [IPv6:2607:f8b0:4864:20::a44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C792C061760
-        for <linux-ia64@vger.kernel.org>; Tue,  9 Mar 2021 07:16:12 -0800 (PST)
-Received: by mail-vk1-xa44.google.com with SMTP id 7so3064850vke.5
-        for <linux-ia64@vger.kernel.org>; Tue, 09 Mar 2021 07:16:12 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=7Vrbe4gpVhb7cfcmpNanXi5E+OCzidx3VGMrGNR2bC4=;
-        b=E2fpQqAMoWIiCoZvWXO4YQYWxV5KOHk3w5ejvxjAEQe3fz7BPjX4/GCdxxoxQOtTZe
-         CAV9RQespH9l6GIJ2w5fxuZvhLctaxbr3MrCz3X5+yilmFtWDPtPvQ7UWJxLls2HIqdz
-         TNGSur7K6eSaQrYlmteUoVMcZq1ALDjSrnF1unUsAjN8wsj7KZPXhUzjN8yW/HvMEOHb
-         t7Dh0XzwpA/DivaFeCPOWYiO7axz5/l/WMIoxVolfFSOH099i+8Esocb6ig7P6LIenxy
-         fZqYmCWdNoqyFG6qWV5f8cow9Syf81WHJCk+pTrHXgQdSFwtb4ka10k8dSrvbYeJxSUn
-         btMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=7Vrbe4gpVhb7cfcmpNanXi5E+OCzidx3VGMrGNR2bC4=;
-        b=rAOhOcEMYMUgWb7L2OMVzgxRADiYHyyTlJSQo9DcETTd1UrGziJO5SmC1cjap+9uip
-         gfnTjyTu1+ZDaoMwzKjRnzGR5GHxlPDuqbDmfKLDbgQZfDGJP9g4qCTjYAoa/G/2vYBZ
-         HZUI7BJAKWPc9wYKmAlgsG7pUIRvcVCMWWqxmR7w6TSIg0YFk/K/J8Ty6H2CzOwF2sl2
-         xQYtgPeJRwkht5y7KsjzjVVSz+tE7EEKBq9v0nt4S80FhmmhsbMIp0M1AMvxy+G0vUFX
-         eJi2FD+cs4Du/bsTQoD4lBSoIz2w3VjOrj4R28BZHJPhwEpdkzAokRZBYHL5HnPOQn/+
-         ZkSg==
-X-Gm-Message-State: AOAM531+Wrr/ovvHeRKraGhWpPE3GVQlGkDiVW2At6Eni0cYPbvl7Lzw
-        nF6YlXvief1Kkz6mtHO3BU/zyUYeDY2fyaXQsRQ=
-X-Google-Smtp-Source: ABdhPJwZmuF+U1z+M84NgoIYe++DQxrt1/yhH3D3pD5RwUFA4HmsUtm1I7PWprLq+nGjWbihgBRFsG12VJE8sxqDq5I=
-X-Received: by 2002:a1f:3646:: with SMTP id d67mr16068221vka.12.1615302971514;
- Tue, 09 Mar 2021 07:16:11 -0800 (PST)
+        with ESMTP id S229570AbhCJFUh (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 10 Mar 2021 00:20:37 -0500
+Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51753C06174A;
+        Tue,  9 Mar 2021 21:20:37 -0800 (PST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4DwL4j4Sq1z9sVt;
+        Wed, 10 Mar 2021 16:20:21 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
+        s=201909; t=1615353635;
+        bh=hRcUlrx6WVs6H6bysWKFjU5tqR/J0nyX9yzAP97GJsQ=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=J7tJEgWYlgdvVYjfzFG1g90s1EOtAnSSXBRLQ734Q2HRbgzt8b5qMsfcT75CaJw/5
+         k2iXGDhutq9tOyXtkr9ZdT6+Kw3xBnr49WyYm1ThfwbSXS49oSisxLyUici9Us3TE5
+         HtEU/wSHCFC/s0gViktBCnLKaTQ6q/J6g7vI7Yf82084Vpw7jSTqhvDbOhMgyxxI9w
+         06Bw6yZRBta9uSCCaIQ2c7wKj4hZxuCWKQRB2mMVm8bhHalhKoBF9ueKaVIbelzwFf
+         39/YMJZ9zGzrte7RuLUNxyCLzwS8ZoBCqvCyhYy1dJsJ4rr7rf2eQnVXaCuVc8iu5b
+         xcUsluM3pIA9g==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
+Cc:     Anshuman Khandual <anshuman.khandual@arm.com>, x86@kernel.org,
+        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>
+Subject: Re: [PATCH 2/6] mm: Generalize SYS_SUPPORTS_HUGETLBFS (rename as
+ ARCH_SUPPORTS_HUGETLBFS)
+In-Reply-To: <1615185706-24342-3-git-send-email-anshuman.khandual@arm.com>
+References: <1615185706-24342-1-git-send-email-anshuman.khandual@arm.com>
+ <1615185706-24342-3-git-send-email-anshuman.khandual@arm.com>
+Date:   Wed, 10 Mar 2021 16:20:19 +1100
+Message-ID: <874khjr3e4.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Received: by 2002:ab0:2e8f:0:0:0:0:0 with HTTP; Tue, 9 Mar 2021 07:16:10 -0800 (PST)
-Reply-To: ezbtg22@gmail.com
-From:   "Mrs.E.Glenn" <mrganuserge654@gmail.com>
-Date:   Tue, 9 Mar 2021 07:16:10 -0800
-Message-ID: <CAH16wSNPH+jQFRGJP+fCVDz9CK40N9ewAj_curpjM+ohLU31Ng@mail.gmail.com>
-Subject: From Mrs.E.Glenn
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
--- 
-Dear Beloved,
+Anshuman Khandual <anshuman.khandual@arm.com> writes:
+> SYS_SUPPORTS_HUGETLBFS config has duplicate definitions on platforms that
+> subscribe it. Instead, just make it a generic option which can be selected
+> on applicable platforms. Also rename it as ARCH_SUPPORTS_HUGETLBFS instead.
+> This reduces code duplication and makes it cleaner.
+>
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Albert Ou <aou@eecs.berkeley.edu>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linux-parisc@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: linux-fsdevel@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+> ---
+>  arch/arm/Kconfig                       | 5 +----
+>  arch/arm64/Kconfig                     | 4 +---
+>  arch/mips/Kconfig                      | 6 +-----
+>  arch/parisc/Kconfig                    | 5 +----
+>  arch/powerpc/Kconfig                   | 3 ---
+>  arch/powerpc/platforms/Kconfig.cputype | 6 +++---
 
-I am Mrs Elizabet Glenn from Israel. I am a missionary but right now
-in a hospital bed in Israel. I am 59 years and childless; my husband
-is dead. I was diagnosed with terminal cancer. And my doctor just
-predicted that I have but very limited time to live due to damages in
-my system and as a result of that I decided to dispose my 10.5 million
-US dollars to a God-fearing one for the continuation of charitable
-work. This is why I located you.
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
 
-My guess about you may not be accurate because I came across your
-contact at the humanitarian calendar event of the year but I believe
-in God who divinely directed me to you for this solemn proposal of
-charitable work.
-
-Therefore I wholeheartedly wish to bequeath my fortune to you as a
-God-fearing person for the continuation of charitable work anywhere
-around the world.
-
-I shall be going in for a surgery operations soonest and desire this
-money to be transferred to you as I do not wish to leave this money in
-the bank because bankers might misuse it for their own interest after
-my death.
-
-As soon as I receive your quick reply assuring me that you will
-utilize the money as I instructed you for the benefit of the less
-privilege, I shall give you more details and also instruct my bank to
-release the money to you for the charity project. I hope you receive
-this mail in good health.
-
-Please contact me on this E-mail (ezbtg22@gmail.com) because I don t
-know what will be my situation in next minute,
-
-I am waiting for your reply.
-
-Yours sincerely,
-Mrs Elizabet Glenn.
+cheers
