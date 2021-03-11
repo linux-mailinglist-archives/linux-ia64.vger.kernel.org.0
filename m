@@ -2,108 +2,95 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D1BEE3334CF
-	for <lists+linux-ia64@lfdr.de>; Wed, 10 Mar 2021 06:21:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E7B74336BE7
+	for <lists+linux-ia64@lfdr.de>; Thu, 11 Mar 2021 07:14:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229734AbhCJFUy (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 10 Mar 2021 00:20:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53604 "EHLO
+        id S229910AbhCKGNd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 11 Mar 2021 01:13:33 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229570AbhCJFUh (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 10 Mar 2021 00:20:37 -0500
-Received: from ozlabs.org (bilbo.ozlabs.org [IPv6:2401:3900:2:1::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51753C06174A;
-        Tue,  9 Mar 2021 21:20:37 -0800 (PST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4DwL4j4Sq1z9sVt;
-        Wed, 10 Mar 2021 16:20:21 +1100 (AEDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ellerman.id.au;
-        s=201909; t=1615353635;
-        bh=hRcUlrx6WVs6H6bysWKFjU5tqR/J0nyX9yzAP97GJsQ=;
-        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-        b=J7tJEgWYlgdvVYjfzFG1g90s1EOtAnSSXBRLQ734Q2HRbgzt8b5qMsfcT75CaJw/5
-         k2iXGDhutq9tOyXtkr9ZdT6+Kw3xBnr49WyYm1ThfwbSXS49oSisxLyUici9Us3TE5
-         HtEU/wSHCFC/s0gViktBCnLKaTQ6q/J6g7vI7Yf82084Vpw7jSTqhvDbOhMgyxxI9w
-         06Bw6yZRBta9uSCCaIQ2c7wKj4hZxuCWKQRB2mMVm8bhHalhKoBF9ueKaVIbelzwFf
-         39/YMJZ9zGzrte7RuLUNxyCLzwS8ZoBCqvCyhYy1dJsJ4rr7rf2eQnVXaCuVc8iu5b
-         xcUsluM3pIA9g==
-From:   Michael Ellerman <mpe@ellerman.id.au>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>, linux-mm@kvack.org
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>, x86@kernel.org,
-        linux-ia64@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH 2/6] mm: Generalize SYS_SUPPORTS_HUGETLBFS (rename as
- ARCH_SUPPORTS_HUGETLBFS)
-In-Reply-To: <1615185706-24342-3-git-send-email-anshuman.khandual@arm.com>
-References: <1615185706-24342-1-git-send-email-anshuman.khandual@arm.com>
- <1615185706-24342-3-git-send-email-anshuman.khandual@arm.com>
-Date:   Wed, 10 Mar 2021 16:20:19 +1100
-Message-ID: <874khjr3e4.fsf@mpe.ellerman.id.au>
+        with ESMTP id S229639AbhCKGNR (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 11 Mar 2021 01:13:17 -0500
+Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28124C061574;
+        Wed, 10 Mar 2021 22:13:17 -0800 (PST)
+Received: by mail-qv1-xf2d.google.com with SMTP id x27so2087595qvd.2;
+        Wed, 10 Mar 2021 22:13:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wt46hiMXeu6lVx64exPB+h7EP/J6sSYqbbQi4Xj8zyA=;
+        b=TdHZLkuZCvAABU+E4VpoMDdb/snIhqSpqxEwMq0UOboPza+2CFrlDIJqFVM1nJ9QIH
+         8GS4QDYh14s6Hr1PEx287huz9YybqrdaVjO0T5C85+7pvYTNGqTKMCcTsfd++ftz0CAf
+         8ocVToClC2S/HspxSpmjgzPVS/x5zC2O8Nli8oaJ21qWaUDJMxyeykISPsuA6iQCu77I
+         pFe74pHOWm2SBn1pw6F/pl5YuekJYmDAbQS05vgOUZtHPLWwUB60BSobNQinixmjY7/k
+         JCead4Fj/EiYa/Er6d2qa8G8BemKGUEaNuY7RrDmSCuJrg7LFa4HpSoRrUprJx0BDauF
+         J8Tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=wt46hiMXeu6lVx64exPB+h7EP/J6sSYqbbQi4Xj8zyA=;
+        b=Z4RZbFHFg+F3KBCwGNnRXJSa64druROq+MMc2msnAvXHxVqjqjOi0UnUlj8M+ahZy2
+         GwrGI8dC6pnEKEoZm7D9yYaarR3/eMAyT++bOSIsAFruHutAl3xB/jjVX/k7WHUJip4U
+         ZW9+iZiyDZmdjTAeVBxJTVwkUJlYEhw4YMUwxrcDK3CnnmYTaWgJVBcwrbX4f0cPufsG
+         2UfLIJ5+o2e+EJCxzbSsi5wlKXFhxXwTF/0DpDKKodRGQOpC2Y6lB90L0+qif6b5RgN9
+         cAj6KKitZRuuqB04Q2nIcVlCpgYcN8IdsT74NMnLccHdyAs2vJC+T73vOqvEQq9RQ+OA
+         qnTQ==
+X-Gm-Message-State: AOAM532SieQMoXdB2iUr0axtPFuwK6CJVZnZOJ2zVB3YdJCVcGBvLgh/
+        VGciuUSvmfCA+kh8vaUjN6o=
+X-Google-Smtp-Source: ABdhPJz+uLcKBc8GXwQMSQriHiGRMJxjHmFT5X8gIisJspYhoVOhYfN9DXeZ1xXpYWg5s49fLJq1Vg==
+X-Received: by 2002:a0c:908d:: with SMTP id p13mr6372954qvp.11.1615443196466;
+        Wed, 10 Mar 2021 22:13:16 -0800 (PST)
+Received: from localhost.localdomain ([156.146.55.115])
+        by smtp.gmail.com with ESMTPSA id k28sm1306979qki.101.2021.03.10.22.13.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Mar 2021 22:13:15 -0800 (PST)
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     unixbhaskar@gmail.com, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     rdunlap@infradead.org
+Subject: [PATCH] ia64: kernel: Few typos fixed in the file fsys.S
+Date:   Thu, 11 Mar 2021 11:40:58 +0530
+Message-Id: <20210311061058.29492-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Anshuman Khandual <anshuman.khandual@arm.com> writes:
-> SYS_SUPPORTS_HUGETLBFS config has duplicate definitions on platforms that
-> subscribe it. Instead, just make it a generic option which can be selected
-> on applicable platforms. Also rename it as ARCH_SUPPORTS_HUGETLBFS instead.
-> This reduces code duplication and makes it cleaner.
->
-> Cc: Russell King <linux@armlinux.org.uk>
-> Cc: Catalin Marinas <catalin.marinas@arm.com>
-> Cc: Will Deacon <will@kernel.org>
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-> Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>
-> Cc: Helge Deller <deller@gmx.de>
-> Cc: Michael Ellerman <mpe@ellerman.id.au>
-> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-> Cc: Paul Mackerras <paulus@samba.org>
-> Cc: Paul Walmsley <paul.walmsley@sifive.com>
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Albert Ou <aou@eecs.berkeley.edu>
-> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-> Cc: Rich Felker <dalias@libc.org>
-> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> ---
->  arch/arm/Kconfig                       | 5 +----
->  arch/arm64/Kconfig                     | 4 +---
->  arch/mips/Kconfig                      | 6 +-----
->  arch/parisc/Kconfig                    | 5 +----
->  arch/powerpc/Kconfig                   | 3 ---
->  arch/powerpc/platforms/Kconfig.cputype | 6 +++---
 
-Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Mundane spelling fixes.
 
-cheers
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+ arch/ia64/kernel/fsys.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/ia64/kernel/fsys.S b/arch/ia64/kernel/fsys.S
+index 0750a716adc7..2094f3249019 100644
+--- a/arch/ia64/kernel/fsys.S
++++ b/arch/ia64/kernel/fsys.S
+@@ -172,7 +172,7 @@ ENTRY(fsys_gettimeofday)
+ 	// r25 = itc_lastcycle value
+ 	// r26 = address clocksource cycle_last
+ 	// r27 = (not used)
+-	// r28 = sequence number at the beginning of critcal section
++	// r28 = sequence number at the beginning of critical section
+ 	// r29 = address of itc_jitter
+ 	// r30 = time processing flags / memory address
+ 	// r31 = pointer to result
+@@ -432,7 +432,7 @@ GLOBAL_ENTRY(fsys_bubble_down)
+ 	 *	- r29: psr
+ 	 *
+ 	 * We used to clear some PSR bits here but that requires slow
+-	 * serialization.  Fortuntely, that isn't really necessary.
++	 * serialization.  Fortunately, that isn't really necessary.
+ 	 * The rationale is as follows: we used to clear bits
+ 	 * ~PSR_PRESERVED_BITS in PSR.L.  Since
+ 	 * PSR_PRESERVED_BITS==PSR.{UP,MFL,MFH,PK,DT,PP,SP,RT,IC}, we
+--
+2.26.2
+
