@@ -2,78 +2,114 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4508B336C46
-	for <lists+linux-ia64@lfdr.de>; Thu, 11 Mar 2021 07:31:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5264D3399A8
+	for <lists+linux-ia64@lfdr.de>; Fri, 12 Mar 2021 23:28:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229831AbhCKGaj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 11 Mar 2021 01:30:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41198 "EHLO
+        id S235542AbhCLW1u (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 12 Mar 2021 17:27:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229731AbhCKGaJ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 11 Mar 2021 01:30:09 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1234::107])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2601C061574;
-        Wed, 10 Mar 2021 22:30:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:
-        Reply-To:Cc:Content-ID:Content-Description;
-        bh=2O7VL2SJAKG2ihtffhPIE+KQYlSKoT0QMG1L+VYOBfs=; b=02jVzY9viHtS2bzzeXWFMWh3L7
-        T7RobOQuytyuSwZgbe3AwhrlJKaJv6sVZDS7Hxj6E94oz/fG1qXgshMVl/Xfp2ffGOF46zeJfuLiw
-        o8bpzwgsJStDSZ/2YS/VpSozn6JZYI7QU/ksBhtDXtFKSntNmIw6gr259uTDEP+YbYyvhxf+y9zC5
-        G5qq5uy39zMhTbf8lqtpURc/08oiaAOx1a3SbKHVBf3ifhmB2dBt8BY/jkLrdxz+gtSAQ4qUW4oTl
-        +TxxIM0ITikjb2GOKCn5OZP4VbwnXbgjjTv5nZFNQ4yJzE2eqxumdq/sk9VseGUOeAD7T814cAt6Z
-        xvsfMFfg==;
-Received: from [2601:1c0:6280:3f0::3ba4]
-        by merlin.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1lKEpi-000tfM-9k; Thu, 11 Mar 2021 06:30:06 +0000
-Subject: Re: [PATCH] ia64: kernel: Few typos fixed in the file fsys.S
-To:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210311061058.29492-1-unixbhaskar@gmail.com>
- <e26a1461-0d05-d79c-7688-de45d285e068@infradead.org>
- <YEm3ubX2Jqu49MwF@Gentoo>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <27e24dea-44de-32fc-9e32-f358aa4207e3@infradead.org>
-Date:   Wed, 10 Mar 2021 22:30:03 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.7.0
+        with ESMTP id S235560AbhCLW1i (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 12 Mar 2021 17:27:38 -0500
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 054A4C061574;
+        Fri, 12 Mar 2021 14:27:38 -0800 (PST)
+Received: by sf.home (Postfix, from userid 1000)
+        id 9FDD95A22061; Fri, 12 Mar 2021 22:27:32 +0000 (GMT)
+From:   Sergei Trofimovich <slyfox@gentoo.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Sergei Trofimovich <slyfox@gentoo.org>, linux-ia64@vger.kernel.org,
+        storagedev@microchip.com, linux-scsi@vger.kernel.org,
+        Joe Szczypek <jszczype@redhat.com>,
+        Scott Benesh <scott.benesh@microchip.com>,
+        Scott Teel <scott.teel@microchip.com>,
+        Tomas Henzl <thenzl@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Don Brace <don.brace@microchip.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Subject: [PATCH] hpsa: fix boot on ia64 (atomic_t alignment)
+Date:   Fri, 12 Mar 2021 22:27:18 +0000
+Message-Id: <20210312222718.4117508-1-slyfox@gentoo.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <5532f9ab-7555-d51b-f4d5-f9b72a61f248@redhat.com>
+References: <5532f9ab-7555-d51b-f4d5-f9b72a61f248@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <YEm3ubX2Jqu49MwF@Gentoo>
-Content-Type: text/plain; charset=windows-1252
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 3/10/21 10:24 PM, Bhaskar Chowdhury wrote:
-> On 22:15 Wed 10 Mar 2021, Randy Dunlap wrote:
->> On 3/10/21 10:10 PM, Bhaskar Chowdhury wrote:
->>>
->>> Mundane spelling fixes.
->>>
->>> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
->>
->> Acked-by: Randy Dunlap <rdunlap@infradead.org>
->>
->> but no maintainer Cc:ed to pick it up...
->>
-> I have seen "maintainer less" files and you have pointed out that too in the
-> past...what do I do Randy??? Should run "git blame" to find out ,who touch the file and
-> include those mail??? I don't think that would be good idea.
-> 
-> Bemused!! Throw some light.
+The failure initially observed as boot failure on rx3600 ia64 machine
+with RAID bus controller: Hewlett-Packard Company Smart Array P600:
 
-Well, we know that ia64 is orphaned, so you need to find someone
-to merge the patch. Andrew Morton is usually a good bet. :)
+    kernel unaligned access to 0xe000000105dd8b95, ip=0xa000000100b87551
+    kernel unaligned access to 0xe000000105dd8e95, ip=0xa000000100b87551
+    hpsa 0000:14:01.0: Controller reports max supported commands of 0 Using 16 instead. Ensure that firmware is up to date.
+    swapper/0[1]: error during unaligned kernel access
 
-or use 'git log' <filename> to see who has been merging patches
-to that file.
+Here unaligned access comes from 'struct CommandList' that happens
+to be packed. The change f749d8b7a ("scsi: hpsa: Correct dev cmds
+outstanding for retried cmds") introduced unexpected padding and
+un-aligned atomic_t from natural alignment to something else.
 
->>> ---
->>>  arch/ia64/kernel/fsys.S | 4 ++--
->>>  1 file changed, 2 insertions(+), 2 deletions(-)
+This change does not remove packing annotation from struct but only
+restores alignment of atomic variable.
 
+The change is tested on the same rx3600 machine.
+
+CC: linux-ia64@vger.kernel.org
+CC: storagedev@microchip.com
+CC: linux-scsi@vger.kernel.org
+CC: Joe Szczypek <jszczype@redhat.com>
+CC: Scott Benesh <scott.benesh@microchip.com>
+CC: Scott Teel <scott.teel@microchip.com>
+CC: Tomas Henzl <thenzl@redhat.com>
+CC: "Martin K. Petersen" <martin.petersen@oracle.com>
+CC: Don Brace <don.brace@microchip.com>
+Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Suggested-by: Don Brace <don.brace@microchip.com>
+Fixes: f749d8b7a "scsi: hpsa: Correct dev cmds outstanding for retried cmds"
+Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
+---
+ drivers/scsi/hpsa_cmd.h | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/scsi/hpsa_cmd.h b/drivers/scsi/hpsa_cmd.h
+index d126bb877250..617bdae9a7de 100644
+--- a/drivers/scsi/hpsa_cmd.h
++++ b/drivers/scsi/hpsa_cmd.h
+@@ -20,6 +20,9 @@
+ #ifndef HPSA_CMD_H
+ #define HPSA_CMD_H
+ 
++#include <linux/build_bug.h> /* static_assert */
++#include <linux/stddef.h> /* offsetof */
++
+ /* general boundary defintions */
+ #define SENSEINFOBYTES          32 /* may vary between hbas */
+ #define SG_ENTRIES_IN_CMD	32 /* Max SG entries excluding chain blocks */
+@@ -448,11 +451,20 @@ struct CommandList {
+ 	 */
+ 	struct hpsa_scsi_dev_t *phys_disk;
+ 
+-	bool retry_pending;
++	int retry_pending;
+ 	struct hpsa_scsi_dev_t *device;
+ 	atomic_t refcount; /* Must be last to avoid memset in hpsa_cmd_init() */
+ } __aligned(COMMANDLIST_ALIGNMENT);
+ 
++/*
++ * Make sure our embedded atomic variable is aligned. Otherwise we break atomic
++ * operations on architectures that don't support unaligned atomics like IA64.
++ *
++ * Ideally this header should be cleaned up to only mark individual structs as
++ * packed.
++ */
++static_assert(offsetof(struct CommandList, refcount) % __alignof__(atomic_t) == 0);
++
+ /* Max S/G elements in I/O accelerator command */
+ #define IOACCEL1_MAXSGENTRIES           24
+ #define IOACCEL2_MAXSGENTRIES		28
 -- 
-~Randy
+2.30.2
 
