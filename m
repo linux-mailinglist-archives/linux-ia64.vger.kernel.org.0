@@ -2,114 +2,88 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5264D3399A8
-	for <lists+linux-ia64@lfdr.de>; Fri, 12 Mar 2021 23:28:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FA78339BD8
+	for <lists+linux-ia64@lfdr.de>; Sat, 13 Mar 2021 05:58:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235542AbhCLW1u (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 12 Mar 2021 17:27:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49720 "EHLO
+        id S231906AbhCME6K (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 12 Mar 2021 23:58:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235560AbhCLW1i (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 12 Mar 2021 17:27:38 -0500
-Received: from smtp.gentoo.org (woodpecker.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 054A4C061574;
-        Fri, 12 Mar 2021 14:27:38 -0800 (PST)
-Received: by sf.home (Postfix, from userid 1000)
-        id 9FDD95A22061; Fri, 12 Mar 2021 22:27:32 +0000 (GMT)
-From:   Sergei Trofimovich <slyfox@gentoo.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Sergei Trofimovich <slyfox@gentoo.org>, linux-ia64@vger.kernel.org,
-        storagedev@microchip.com, linux-scsi@vger.kernel.org,
-        Joe Szczypek <jszczype@redhat.com>,
-        Scott Benesh <scott.benesh@microchip.com>,
-        Scott Teel <scott.teel@microchip.com>,
-        Tomas Henzl <thenzl@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Don Brace <don.brace@microchip.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Subject: [PATCH] hpsa: fix boot on ia64 (atomic_t alignment)
-Date:   Fri, 12 Mar 2021 22:27:18 +0000
-Message-Id: <20210312222718.4117508-1-slyfox@gentoo.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <5532f9ab-7555-d51b-f4d5-f9b72a61f248@redhat.com>
-References: <5532f9ab-7555-d51b-f4d5-f9b72a61f248@redhat.com>
+        with ESMTP id S231392AbhCME5o (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 12 Mar 2021 23:57:44 -0500
+Received: from mail-qt1-x82d.google.com (mail-qt1-x82d.google.com [IPv6:2607:f8b0:4864:20::82d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E88B0C061574;
+        Fri, 12 Mar 2021 20:57:43 -0800 (PST)
+Received: by mail-qt1-x82d.google.com with SMTP id a11so5551961qto.2;
+        Fri, 12 Mar 2021 20:57:43 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=uI2/eysKRFjk3MAZeB/SnxwZYgG/IqotKv0H8VR1i0Y=;
+        b=tg6943atXpiFG7TmMLifV5mM9/NmeO1mVNcDN0+SPPIXFKCZ8ygXUUZAkF/dW9gzgX
+         WYtHSccaPxeC0wIJn9XBAdOR1ai6c7yoWVKJN/Fl1bJGGtbRuzZWkr0tRWW6QcEXxSRZ
+         Md3FzYTc4/Qq5vdGHLXBl3CmTgEIyaiQHi/aU34qXpWZR8fFJ0Jw9+URdo9gupUjhqL7
+         YNAb5D5yHDgL/IGLSJPluYFH2nVdZAPr2VVF8UniAk6OLjj7MeRs7zshgV0s9Xu/dArm
+         bOrtRYjQ//BMQ2u0XpybYoJDsmtDdQCpXd0YAgqMZNfuallimrzZC/jMW+1zNzjQoSi6
+         hjGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=uI2/eysKRFjk3MAZeB/SnxwZYgG/IqotKv0H8VR1i0Y=;
+        b=Rsx2+1mP/zsmuN5ij+x9qPfm3WigFQjaM7ZtvRSTXuJvcvA/9r9oCaZJca4fluXQiO
+         jmb4lCogBmCHRoOms19V2sY1fwe365jdT+HjT9jhF3sZk2S1xVxTf0OwVkWFA3LaOJ67
+         cCp2d2CB2MmU7pR09YfYxhgX/Hq2FxnLpI7O+544eL2sjzey2UrIMRAc/qiHFHwe7RH1
+         r41ma5sWTbXytT9NI8uS2Vo6ORse7Ss2MQNRwlhPHSgxEwBOYONjB+RoM1fFKy65IyMW
+         eP3+fvDxiM53HEJUof+vyCq43xh1iMclMKfnzAhFBZSoT9taCPzjmWOpk2SqHGuOtvHu
+         FeKA==
+X-Gm-Message-State: AOAM5323T9eMnzmTEVyPaB5ismv/HjmifechHn1fQUpIsBkvu71UxqaI
+        dj4o8659G2m3Y73Q3s5cPUg=
+X-Google-Smtp-Source: ABdhPJzBmqPGlVD24zZFlPcE2vcoZvnAef/fpbo+qvCUDIIeE47l2qOr5GnXyvdcX2kZdOX+M8iUng==
+X-Received: by 2002:aed:2983:: with SMTP id o3mr12925616qtd.149.1615611463228;
+        Fri, 12 Mar 2021 20:57:43 -0800 (PST)
+Received: from localhost.localdomain ([37.19.198.104])
+        by smtp.gmail.com with ESMTPSA id w197sm5905974qkb.89.2021.03.12.20.57.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 12 Mar 2021 20:57:42 -0800 (PST)
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     rppt@kernel.org, akpm@linux-foundation.org, unixbhaskar@gmail.com,
+        deller@gmx.de, shorne@gmail.com, anshuman.khandual@arm.com,
+        jrtc27@jrtc27.com, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     rdunlap@infradead.org
+Subject: [PATCH] ia64: include: asm: Minor typo fixes in the file pgtable.h
+Date:   Sat, 13 Mar 2021 10:25:19 +0530
+Message-Id: <20210313045519.9310-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.26.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-The failure initially observed as boot failure on rx3600 ia64 machine
-with RAID bus controller: Hewlett-Packard Company Smart Array P600:
 
-    kernel unaligned access to 0xe000000105dd8b95, ip=0xa000000100b87551
-    kernel unaligned access to 0xe000000105dd8e95, ip=0xa000000100b87551
-    hpsa 0000:14:01.0: Controller reports max supported commands of 0 Using 16 instead. Ensure that firmware is up to date.
-    swapper/0[1]: error during unaligned kernel access
+s/migraton/migration/
 
-Here unaligned access comes from 'struct CommandList' that happens
-to be packed. The change f749d8b7a ("scsi: hpsa: Correct dev cmds
-outstanding for retried cmds") introduced unexpected padding and
-un-aligned atomic_t from natural alignment to something else.
-
-This change does not remove packing annotation from struct but only
-restores alignment of atomic variable.
-
-The change is tested on the same rx3600 machine.
-
-CC: linux-ia64@vger.kernel.org
-CC: storagedev@microchip.com
-CC: linux-scsi@vger.kernel.org
-CC: Joe Szczypek <jszczype@redhat.com>
-CC: Scott Benesh <scott.benesh@microchip.com>
-CC: Scott Teel <scott.teel@microchip.com>
-CC: Tomas Henzl <thenzl@redhat.com>
-CC: "Martin K. Petersen" <martin.petersen@oracle.com>
-CC: Don Brace <don.brace@microchip.com>
-Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Suggested-by: Don Brace <don.brace@microchip.com>
-Fixes: f749d8b7a "scsi: hpsa: Correct dev cmds outstanding for retried cmds"
-Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 ---
- drivers/scsi/hpsa_cmd.h | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ arch/ia64/include/asm/pgtable.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/hpsa_cmd.h b/drivers/scsi/hpsa_cmd.h
-index d126bb877250..617bdae9a7de 100644
---- a/drivers/scsi/hpsa_cmd.h
-+++ b/drivers/scsi/hpsa_cmd.h
-@@ -20,6 +20,9 @@
- #ifndef HPSA_CMD_H
- #define HPSA_CMD_H
- 
-+#include <linux/build_bug.h> /* static_assert */
-+#include <linux/stddef.h> /* offsetof */
-+
- /* general boundary defintions */
- #define SENSEINFOBYTES          32 /* may vary between hbas */
- #define SG_ENTRIES_IN_CMD	32 /* Max SG entries excluding chain blocks */
-@@ -448,11 +451,20 @@ struct CommandList {
+diff --git a/arch/ia64/include/asm/pgtable.h b/arch/ia64/include/asm/pgtable.h
+index 9b4efe89e62d..00a76ed7e018 100644
+--- a/arch/ia64/include/asm/pgtable.h
++++ b/arch/ia64/include/asm/pgtable.h
+@@ -328,7 +328,7 @@ extern void __ia64_sync_icache_dcache(pte_t pteval);
+ static inline void set_pte(pte_t *ptep, pte_t pteval)
+ {
+ 	/* page is present && page is user  && page is executable
+-	 * && (page swapin or new page or page migraton
++	 * && (page swapin or new page or page migration
+ 	 *	|| copy_on_write with page copying.)
  	 */
- 	struct hpsa_scsi_dev_t *phys_disk;
- 
--	bool retry_pending;
-+	int retry_pending;
- 	struct hpsa_scsi_dev_t *device;
- 	atomic_t refcount; /* Must be last to avoid memset in hpsa_cmd_init() */
- } __aligned(COMMANDLIST_ALIGNMENT);
- 
-+/*
-+ * Make sure our embedded atomic variable is aligned. Otherwise we break atomic
-+ * operations on architectures that don't support unaligned atomics like IA64.
-+ *
-+ * Ideally this header should be cleaned up to only mark individual structs as
-+ * packed.
-+ */
-+static_assert(offsetof(struct CommandList, refcount) % __alignof__(atomic_t) == 0);
-+
- /* Max S/G elements in I/O accelerator command */
- #define IOACCEL1_MAXSGENTRIES           24
- #define IOACCEL2_MAXSGENTRIES		28
--- 
-2.30.2
+ 	if (pte_present_exec_user(pteval) &&
+--
+2.26.2
 
