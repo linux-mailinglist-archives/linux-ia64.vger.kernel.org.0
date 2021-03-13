@@ -2,81 +2,129 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EAD2C339BDC
-	for <lists+linux-ia64@lfdr.de>; Sat, 13 Mar 2021 06:00:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80078339DA0
+	for <lists+linux-ia64@lfdr.de>; Sat, 13 Mar 2021 11:44:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232702AbhCME74 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 12 Mar 2021 23:59:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48756 "EHLO
+        id S233720AbhCMKnl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 13 Mar 2021 05:43:41 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231392AbhCME7n (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 12 Mar 2021 23:59:43 -0500
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1234::107])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 99C78C061574;
-        Fri, 12 Mar 2021 20:59:43 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:
-        Reply-To:Cc:Content-ID:Content-Description;
-        bh=vYdsOoPiENgm1KSFxe3mEMrAb7vGMVrT+CqhsCQ6zM8=; b=SAVR/XDs4hBX7L2s2Dg8zmauRX
-        0O6n4vCA/zf4x+h2oAkS3cWmj8osYOWtHDk+ZgOvpLv1Kqx29AIgnSUieCtdCQqBK54Q8StYC/xb1
-        kTQ2G0daWcwtajg9d/uqrxY8ohUPg8RRT8nC99mR+Cl/Xr8bdwdbZ/O4/HAg2/HDLfD9WfZ0m35gd
-        GPyhlCVtLJOuvt7v8K7I2vkjkQTg5HHNhzpfNmYnfeR4/jyLw/oltGbu8LXzUCg4WMEjbE9KXKZQ0
-        vGbnjuKsxijolyj5GwX8LfSi9pxEZn038Xl/oO8MoihayRkljOv6ag2tkQYQleHa55m6SSUJSbe4L
-        9kkJRM7A==;
-Received: from [2601:1c0:6280:3f0::9757]
-        by merlin.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1lKwNI-0017U6-AF; Sat, 13 Mar 2021 04:59:40 +0000
-Subject: Re: [PATCH] ia64: include: asm: Minor typo fixes in the file
- pgtable.h
-To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>, rppt@kernel.org,
-        akpm@linux-foundation.org, deller@gmx.de, shorne@gmail.com,
-        anshuman.khandual@arm.com, jrtc27@jrtc27.com,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210313045519.9310-1-unixbhaskar@gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <8804bf7a-6fb9-6eff-2461-f1a31e444ac7@infradead.org>
-Date:   Fri, 12 Mar 2021 20:59:37 -0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        with ESMTP id S233155AbhCMKnR (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 13 Mar 2021 05:43:17 -0500
+Received: from smtp.gentoo.org (mail.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71FB6C061574;
+        Sat, 13 Mar 2021 02:43:17 -0800 (PST)
+Received: by sf.home (Postfix, from userid 1000)
+        id A91465A22061; Sat, 13 Mar 2021 10:43:13 +0000 (GMT)
+From:   Sergei Trofimovich <slyfox@gentoo.org>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org
+Cc:     Sergei Trofimovich <slyfox@gentoo.org>, linux-ia64@vger.kernel.org
+Subject: [PATCH] ia64: fix format strings for err_inject
+Date:   Sat, 13 Mar 2021 10:43:12 +0000
+Message-Id: <20210313104312.1548232-1-slyfox@gentoo.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-In-Reply-To: <20210313045519.9310-1-unixbhaskar@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 3/12/21 8:55 PM, Bhaskar Chowdhury wrote:
-> 
-> s/migraton/migration/
-> 
-> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+Fix warning with %lx / u64 mismatch:
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
+  arch/ia64/kernel/err_inject.c: In function 'show_resources':
+  arch/ia64/kernel/err_inject.c:62:22: warning:
+    format '%lx' expects argument of type 'long unsigned int',
+    but argument 3 has type 'u64' {aka 'long long unsigned int'}
+     62 |  return sprintf(buf, "%lx\n", name[cpu]);   \
+        |                      ^~~~~~~
 
+CC: linux-ia64@vger.kernel.org
+Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
+---
+ arch/ia64/kernel/err_inject.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-> ---
->  arch/ia64/include/asm/pgtable.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/ia64/include/asm/pgtable.h b/arch/ia64/include/asm/pgtable.h
-> index 9b4efe89e62d..00a76ed7e018 100644
-> --- a/arch/ia64/include/asm/pgtable.h
-> +++ b/arch/ia64/include/asm/pgtable.h
-> @@ -328,7 +328,7 @@ extern void __ia64_sync_icache_dcache(pte_t pteval);
->  static inline void set_pte(pte_t *ptep, pte_t pteval)
->  {
->  	/* page is present && page is user  && page is executable
-> -	 * && (page swapin or new page or page migraton
-> +	 * && (page swapin or new page or page migration
->  	 *	|| copy_on_write with page copying.)
->  	 */
->  	if (pte_present_exec_user(pteval) &&
-> --
-
-
+diff --git a/arch/ia64/kernel/err_inject.c b/arch/ia64/kernel/err_inject.c
+index 8b5b8e6bc9d9..3d48f8766d78 100644
+--- a/arch/ia64/kernel/err_inject.c
++++ b/arch/ia64/kernel/err_inject.c
+@@ -59,7 +59,7 @@ show_##name(struct device *dev, struct device_attribute *attr,	\
+ 		char *buf)						\
+ {									\
+ 	u32 cpu=dev->id;						\
+-	return sprintf(buf, "%lx\n", name[cpu]);			\
++	return sprintf(buf, "%llx\n", name[cpu]);			\
+ }
+ 
+ #define store(name)							\
+@@ -86,9 +86,9 @@ store_call_start(struct device *dev, struct device_attribute *attr,
+ 
+ #ifdef ERR_INJ_DEBUG
+ 	printk(KERN_DEBUG "pal_mc_err_inject for cpu%d:\n", cpu);
+-	printk(KERN_DEBUG "err_type_info=%lx,\n", err_type_info[cpu]);
+-	printk(KERN_DEBUG "err_struct_info=%lx,\n", err_struct_info[cpu]);
+-	printk(KERN_DEBUG "err_data_buffer=%lx, %lx, %lx.\n",
++	printk(KERN_DEBUG "err_type_info=%llx,\n", err_type_info[cpu]);
++	printk(KERN_DEBUG "err_struct_info=%llx,\n", err_struct_info[cpu]);
++	printk(KERN_DEBUG "err_data_buffer=%llx, %llx, %llx.\n",
+ 			  err_data_buffer[cpu].data1,
+ 			  err_data_buffer[cpu].data2,
+ 			  err_data_buffer[cpu].data3);
+@@ -117,8 +117,8 @@ store_call_start(struct device *dev, struct device_attribute *attr,
+ 
+ #ifdef ERR_INJ_DEBUG
+ 	printk(KERN_DEBUG "Returns: status=%d,\n", (int)status[cpu]);
+-	printk(KERN_DEBUG "capabilities=%lx,\n", capabilities[cpu]);
+-	printk(KERN_DEBUG "resources=%lx\n", resources[cpu]);
++	printk(KERN_DEBUG "capabilities=%llx,\n", capabilities[cpu]);
++	printk(KERN_DEBUG "resources=%llx\n", resources[cpu]);
+ #endif
+ 	return size;
+ }
+@@ -131,7 +131,7 @@ show_virtual_to_phys(struct device *dev, struct device_attribute *attr,
+ 			char *buf)
+ {
+ 	unsigned int cpu=dev->id;
+-	return sprintf(buf, "%lx\n", phys_addr[cpu]);
++	return sprintf(buf, "%llx\n", phys_addr[cpu]);
+ }
+ 
+ static ssize_t
+@@ -145,7 +145,7 @@ store_virtual_to_phys(struct device *dev, struct device_attribute *attr,
+ 	ret = get_user_pages_fast(virt_addr, 1, FOLL_WRITE, NULL);
+ 	if (ret<=0) {
+ #ifdef ERR_INJ_DEBUG
+-		printk("Virtual address %lx is not existing.\n",virt_addr);
++		printk("Virtual address %llx is not existing.\n", virt_addr);
+ #endif
+ 		return -EINVAL;
+ 	}
+@@ -163,7 +163,7 @@ show_err_data_buffer(struct device *dev,
+ {
+ 	unsigned int cpu=dev->id;
+ 
+-	return sprintf(buf, "%lx, %lx, %lx\n",
++	return sprintf(buf, "%llx, %llx, %llx\n",
+ 			err_data_buffer[cpu].data1,
+ 			err_data_buffer[cpu].data2,
+ 			err_data_buffer[cpu].data3);
+@@ -178,13 +178,13 @@ store_err_data_buffer(struct device *dev,
+ 	int ret;
+ 
+ #ifdef ERR_INJ_DEBUG
+-	printk("write err_data_buffer=[%lx,%lx,%lx] on cpu%d\n",
++	printk("write err_data_buffer=[%llx,%llx,%llx] on cpu%d\n",
+ 		 err_data_buffer[cpu].data1,
+ 		 err_data_buffer[cpu].data2,
+ 		 err_data_buffer[cpu].data3,
+ 		 cpu);
+ #endif
+-	ret=sscanf(buf, "%lx, %lx, %lx",
++	ret = sscanf(buf, "%llx, %llx, %llx",
+ 			&err_data_buffer[cpu].data1,
+ 			&err_data_buffer[cpu].data2,
+ 			&err_data_buffer[cpu].data3);
 -- 
-~Randy
+2.30.2
 
