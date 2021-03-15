@@ -2,27 +2,27 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 80078339DA0
-	for <lists+linux-ia64@lfdr.de>; Sat, 13 Mar 2021 11:44:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 17FE433ADE5
+	for <lists+linux-ia64@lfdr.de>; Mon, 15 Mar 2021 09:52:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233720AbhCMKnl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 13 Mar 2021 05:43:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37846 "EHLO
+        id S229536AbhCOIv0 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 15 Mar 2021 04:51:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233155AbhCMKnR (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 13 Mar 2021 05:43:17 -0500
-Received: from smtp.gentoo.org (mail.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71FB6C061574;
-        Sat, 13 Mar 2021 02:43:17 -0800 (PST)
+        with ESMTP id S229510AbhCOIu7 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 15 Mar 2021 04:50:59 -0400
+Received: from smtp.gentoo.org (dev.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78DB5C061574;
+        Mon, 15 Mar 2021 01:50:59 -0700 (PDT)
 Received: by sf.home (Postfix, from userid 1000)
-        id A91465A22061; Sat, 13 Mar 2021 10:43:13 +0000 (GMT)
+        id 53E365A22061; Mon, 15 Mar 2021 08:50:51 +0000 (GMT)
 From:   Sergei Trofimovich <slyfox@gentoo.org>
 To:     Andrew Morton <akpm@linux-foundation.org>,
         linux-kernel@vger.kernel.org
 Cc:     Sergei Trofimovich <slyfox@gentoo.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH] ia64: fix format strings for err_inject
-Date:   Sat, 13 Mar 2021 10:43:12 +0000
-Message-Id: <20210313104312.1548232-1-slyfox@gentoo.org>
+Subject: [PATCH] ia64: mca: allocate early mca with GFP_ATOMIC
+Date:   Mon, 15 Mar 2021 08:50:45 +0000
+Message-Id: <20210315085045.204414-1-slyfox@gentoo.org>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
@@ -30,101 +30,53 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Fix warning with %lx / u64 mismatch:
+The sleep warning happens at early boot right at
+secondary CPU activation bootup:
 
-  arch/ia64/kernel/err_inject.c: In function 'show_resources':
-  arch/ia64/kernel/err_inject.c:62:22: warning:
-    format '%lx' expects argument of type 'long unsigned int',
-    but argument 3 has type 'u64' {aka 'long long unsigned int'}
-     62 |  return sprintf(buf, "%lx\n", name[cpu]);   \
-        |                      ^~~~~~~
+    smp: Bringing up secondary CPUs ...
+    BUG: sleeping function called from invalid context at mm/page_alloc.c:4942
+    in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+    CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.12.0-rc2-00007-g79e228d0b611-dirty #99
 
+    Call Trace:
+     [<a000000100014d10>] show_stack+0x90/0xc0
+     [<a000000101111d90>] dump_stack+0x150/0x1c0
+     [<a0000001000cbec0>] ___might_sleep+0x1c0/0x2a0
+     [<a0000001000cc040>] __might_sleep+0xa0/0x160
+     [<a000000100399960>] __alloc_pages_nodemask+0x1a0/0x600
+     [<a0000001003b71b0>] alloc_page_interleave+0x30/0x1c0
+     [<a0000001003b9b60>] alloc_pages_current+0x2c0/0x340
+     [<a00000010038c270>] __get_free_pages+0x30/0xa0
+     [<a000000100044730>] ia64_mca_cpu_init+0x2d0/0x3a0
+     [<a000000100023430>] cpu_init+0x8b0/0x1440
+     [<a000000100054680>] start_secondary+0x60/0x700
+     [<a00000010111e1d0>] start_ap+0x750/0x780
+    Fixed BSP b0 value from CPU 1
+
+As I understand interrupts are not enabled yet and system has a lot
+of memory. There is little chance to sleep and switch to GFP_ATOMIC
+should be a no-op.
+
+CC: Andrew Morton <akpm@linux-foundation.org>
 CC: linux-ia64@vger.kernel.org
 Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
 ---
- arch/ia64/kernel/err_inject.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ arch/ia64/kernel/mca.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/ia64/kernel/err_inject.c b/arch/ia64/kernel/err_inject.c
-index 8b5b8e6bc9d9..3d48f8766d78 100644
---- a/arch/ia64/kernel/err_inject.c
-+++ b/arch/ia64/kernel/err_inject.c
-@@ -59,7 +59,7 @@ show_##name(struct device *dev, struct device_attribute *attr,	\
- 		char *buf)						\
- {									\
- 	u32 cpu=dev->id;						\
--	return sprintf(buf, "%lx\n", name[cpu]);			\
-+	return sprintf(buf, "%llx\n", name[cpu]);			\
- }
- 
- #define store(name)							\
-@@ -86,9 +86,9 @@ store_call_start(struct device *dev, struct device_attribute *attr,
- 
- #ifdef ERR_INJ_DEBUG
- 	printk(KERN_DEBUG "pal_mc_err_inject for cpu%d:\n", cpu);
--	printk(KERN_DEBUG "err_type_info=%lx,\n", err_type_info[cpu]);
--	printk(KERN_DEBUG "err_struct_info=%lx,\n", err_struct_info[cpu]);
--	printk(KERN_DEBUG "err_data_buffer=%lx, %lx, %lx.\n",
-+	printk(KERN_DEBUG "err_type_info=%llx,\n", err_type_info[cpu]);
-+	printk(KERN_DEBUG "err_struct_info=%llx,\n", err_struct_info[cpu]);
-+	printk(KERN_DEBUG "err_data_buffer=%llx, %llx, %llx.\n",
- 			  err_data_buffer[cpu].data1,
- 			  err_data_buffer[cpu].data2,
- 			  err_data_buffer[cpu].data3);
-@@ -117,8 +117,8 @@ store_call_start(struct device *dev, struct device_attribute *attr,
- 
- #ifdef ERR_INJ_DEBUG
- 	printk(KERN_DEBUG "Returns: status=%d,\n", (int)status[cpu]);
--	printk(KERN_DEBUG "capabilities=%lx,\n", capabilities[cpu]);
--	printk(KERN_DEBUG "resources=%lx\n", resources[cpu]);
-+	printk(KERN_DEBUG "capabilities=%llx,\n", capabilities[cpu]);
-+	printk(KERN_DEBUG "resources=%llx\n", resources[cpu]);
- #endif
- 	return size;
- }
-@@ -131,7 +131,7 @@ show_virtual_to_phys(struct device *dev, struct device_attribute *attr,
- 			char *buf)
- {
- 	unsigned int cpu=dev->id;
--	return sprintf(buf, "%lx\n", phys_addr[cpu]);
-+	return sprintf(buf, "%llx\n", phys_addr[cpu]);
- }
- 
- static ssize_t
-@@ -145,7 +145,7 @@ store_virtual_to_phys(struct device *dev, struct device_attribute *attr,
- 	ret = get_user_pages_fast(virt_addr, 1, FOLL_WRITE, NULL);
- 	if (ret<=0) {
- #ifdef ERR_INJ_DEBUG
--		printk("Virtual address %lx is not existing.\n",virt_addr);
-+		printk("Virtual address %llx is not existing.\n", virt_addr);
- #endif
- 		return -EINVAL;
- 	}
-@@ -163,7 +163,7 @@ show_err_data_buffer(struct device *dev,
- {
- 	unsigned int cpu=dev->id;
- 
--	return sprintf(buf, "%lx, %lx, %lx\n",
-+	return sprintf(buf, "%llx, %llx, %llx\n",
- 			err_data_buffer[cpu].data1,
- 			err_data_buffer[cpu].data2,
- 			err_data_buffer[cpu].data3);
-@@ -178,13 +178,13 @@ store_err_data_buffer(struct device *dev,
- 	int ret;
- 
- #ifdef ERR_INJ_DEBUG
--	printk("write err_data_buffer=[%lx,%lx,%lx] on cpu%d\n",
-+	printk("write err_data_buffer=[%llx,%llx,%llx] on cpu%d\n",
- 		 err_data_buffer[cpu].data1,
- 		 err_data_buffer[cpu].data2,
- 		 err_data_buffer[cpu].data3,
- 		 cpu);
- #endif
--	ret=sscanf(buf, "%lx, %lx, %lx",
-+	ret = sscanf(buf, "%llx, %llx, %llx",
- 			&err_data_buffer[cpu].data1,
- 			&err_data_buffer[cpu].data2,
- 			&err_data_buffer[cpu].data3);
+diff --git a/arch/ia64/kernel/mca.c b/arch/ia64/kernel/mca.c
+index d4cae2fc69ca..adf6521525f4 100644
+--- a/arch/ia64/kernel/mca.c
++++ b/arch/ia64/kernel/mca.c
+@@ -1824,7 +1824,7 @@ ia64_mca_cpu_init(void *cpu_data)
+ 			data = mca_bootmem();
+ 			first_time = 0;
+ 		} else
+-			data = (void *)__get_free_pages(GFP_KERNEL,
++			data = (void *)__get_free_pages(GFP_ATOMIC,
+ 							get_order(sz));
+ 		if (!data)
+ 			panic("Could not allocate MCA memory for cpu %d\n",
 -- 
 2.30.2
 
