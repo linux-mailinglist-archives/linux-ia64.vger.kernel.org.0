@@ -2,108 +2,131 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D603A33DC90
-	for <lists+linux-ia64@lfdr.de>; Tue, 16 Mar 2021 19:29:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A97CB33E041
+	for <lists+linux-ia64@lfdr.de>; Tue, 16 Mar 2021 22:17:31 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236939AbhCPS3K (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 16 Mar 2021 14:29:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:33724 "EHLO mail.kernel.org"
+        id S232909AbhCPVQz (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 16 Mar 2021 17:16:55 -0400
+Received: from mga03.intel.com ([134.134.136.65]:64637 "EHLO mga03.intel.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236941AbhCPS2k (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 16 Mar 2021 14:28:40 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 93A7965144;
-        Tue, 16 Mar 2021 18:28:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1615919319;
-        bh=o5TDeYcIZfv3w4lnvrTEouEqZDlTghi/yYioRz16sfs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=YDMonfeho2P2kYrP1Eouqage1A0JdVUoHkwxBzlILGtvAfJnUe2bImP8a6dwiV3+r
-         qPUBCgpD1rPL1gHhwqpXdBrKWh0yH9WJvAMWpGwv06HgZQQSaZ6F3x36BNWvV3doZJ
-         0KL3Sl5/s0PuvZro2WswQXfgXjRBJtG0JsJaGD7ySV/cCJ41/TSqI3hwAYg/5SqTWN
-         nga/E/y0OHnVKuP9nFJ6+0XGlBIau8fw4fi4qOO17BgEGqYaHK/PNSDG2ZJUc8pt+f
-         hn+vhm5e8suCzAkC5uAEbqKsF2oyiOKyp9izJAzLDY6agFrCxwGZv4mY0XsiGfnetr
-         b+9t50q48YT5A==
-Received: by mail-ot1-f49.google.com with SMTP id t23-20020a0568301e37b02901b65ab30024so7373297otr.4;
-        Tue, 16 Mar 2021 11:28:39 -0700 (PDT)
-X-Gm-Message-State: AOAM533GuKr8BHO38lZ2todszRmeC/E/OpdI6v4sjDOFYRppBB8IyE+W
-        QAPdNDYKRPQPchzvu/rT1jk3UsECA9tTm2ClirE=
-X-Google-Smtp-Source: ABdhPJynsQBaQFgKvT0WbhJ3BjrEydngPdSBWCACEfjcFzWuldKaclgxe6MaGLPLuzRp2PL/b2TMxUBPvs0LYZwI1T0=
-X-Received: by 2002:a9d:6341:: with SMTP id y1mr116073otk.210.1615919318766;
- Tue, 16 Mar 2021 11:28:38 -0700 (PDT)
+        id S230146AbhCPVQl (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 16 Mar 2021 17:16:41 -0400
+IronPort-SDR: HErttJKRLYpRviYgutJcAI3XEW8pdZLdOcInu5VkurWJjIESC8uugSgF93406s9wIt0UgdW3en
+ +d5HIbbDQpkw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9925"; a="189384816"
+X-IronPort-AV: E=Sophos;i="5.81,254,1610438400"; 
+   d="scan'208";a="189384816"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2021 14:16:36 -0700
+IronPort-SDR: kYzwUtCZYUqEOoEQHmu+gRoNCbFbQkLf55S1ZP+HniJETq66O3bvvnVX5rBICU1XLXYGfFFXYJ
+ J/+P228oqpbg==
+X-IronPort-AV: E=Sophos;i="5.81,254,1610438400"; 
+   d="scan'208";a="449852773"
+Received: from kcarrier-mobl.amr.corp.intel.com (HELO [10.209.124.168]) ([10.209.124.168])
+  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Mar 2021 14:16:35 -0700
+Subject: Re: [PATCH] mm: Move mem_init_print_info() into mm_init()
+To:     Kefeng Wang <wangkefeng.wang@huawei.com>,
+        linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Guo Ren <guoren@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org
+References: <20210316142637.92193-1-wangkefeng.wang@huawei.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+ z5cecg==
+Message-ID: <009553ee-8d7b-0b60-8457-f8ac66e27fb4@intel.com>
+Date:   Tue, 16 Mar 2021 14:16:35 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <5532f9ab-7555-d51b-f4d5-f9b72a61f248@redhat.com>
- <20210312222718.4117508-1-slyfox@gentoo.org> <SN6PR11MB2848561E3D85A8F55EB86977E16B9@SN6PR11MB2848.namprd11.prod.outlook.com>
-In-Reply-To: <SN6PR11MB2848561E3D85A8F55EB86977E16B9@SN6PR11MB2848.namprd11.prod.outlook.com>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Tue, 16 Mar 2021 19:28:22 +0100
-X-Gmail-Original-Message-ID: <CAK8P3a3JYmhbN3TXB2cWGfXGKgsUa9Hg=ZvWckTaL_31OMgbtQ@mail.gmail.com>
-Message-ID: <CAK8P3a3JYmhbN3TXB2cWGfXGKgsUa9Hg=ZvWckTaL_31OMgbtQ@mail.gmail.com>
-Subject: Re: [PATCH] hpsa: fix boot on ia64 (atomic_t alignment)
-To:     Don.Brace@microchip.com
-Cc:     Sergei Trofimovich <slyfox@gentoo.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org, storagedev@microchip.com,
-        linux-scsi <linux-scsi@vger.kernel.org>, jszczype@redhat.com,
-        Scott.Benesh@microchip.com, Scott.Teel@microchip.com,
-        thenzl@redhat.com,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210316142637.92193-1-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Mar 16, 2021 at 6:12 PM <Don.Brace@microchip.com> wrote:
+On 3/16/21 7:26 AM, Kefeng Wang wrote:
+> diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
+> index 5430c81eefc9..aa8387aab9c1 100644
+> --- a/arch/x86/mm/init_64.c
+> +++ b/arch/x86/mm/init_64.c
+> @@ -1350,8 +1350,6 @@ void __init mem_init(void)
+>  		kclist_add(&kcore_vsyscall, (void *)VSYSCALL_ADDR, PAGE_SIZE, KCORE_USER);
+>  
+>  	preallocate_vmalloc_pages();
+> -
+> -	mem_init_print_info(NULL);
+>  }
 
->  drivers/scsi/hpsa_cmd.h | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/scsi/hpsa_cmd.h b/drivers/scsi/hpsa_cmd.h index d126bb877250..617bdae9a7de 100644
-> --- a/drivers/scsi/hpsa_cmd.h
-> +++ b/drivers/scsi/hpsa_cmd.h
-> @@ -20,6 +20,9 @@
->  #ifndef HPSA_CMD_H
->  #define HPSA_CMD_H
->
-> +#include <linux/build_bug.h> /* static_assert */ #include
-> +<linux/stddef.h> /* offsetof */
-> +
->  /* general boundary defintions */
->  #define SENSEINFOBYTES          32 /* may vary between hbas */
->  #define SG_ENTRIES_IN_CMD      32 /* Max SG entries excluding chain blocks */
-> @@ -448,11 +451,20 @@ struct CommandList {
->          */
->         struct hpsa_scsi_dev_t *phys_disk;
->
-> -       bool retry_pending;
-> +       int retry_pending;
->         struct hpsa_scsi_dev_t *device;
->         atomic_t refcount; /* Must be last to avoid memset in hpsa_cmd_init() */  } __aligned(COMMANDLIST_ALIGNMENT);
->
-> +/*
-> + * Make sure our embedded atomic variable is aligned. Otherwise we
-> +break atomic
-> + * operations on architectures that don't support unaligned atomics like IA64.
-> + *
-> + * Ideally this header should be cleaned up to only mark individual
-> +structs as
-> + * packed.
-> + */
-> +static_assert(offsetof(struct CommandList, refcount) %
-> +__alignof__(atomic_t) == 0);
-> +
+Ignoring any issues with the printk...
 
-Actually that still feels wrong: the annotation of the struct is to pack
-every member, which causes the access to be done in byte units
-on architectures that do not have hardware unaligned load/store
-instructions, at least for things like atomic_read() that does not
-go through a cmpxchg() or ll/sc cycle.
+Looks harmless enough on x86.  The 32-bit code has some cruft in
+mem_init() after mem_init_print_info(), so this patch will change the
+location of the mem_init_print_info(), but I think it's actually for the
+better, since it will be pushed later in boot.  As long as the x86
+pieces stay the same:
 
-This change may fix itanium, but it's still not correct. Other
-architectures would have already been broken before the recent
-change, but that's not a reason against fixing them now.
-
-I'd recommend marking the entire structure as having default
-alignment, by adding the appropriate pragmas before and after it.
-
-         Arnd
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
