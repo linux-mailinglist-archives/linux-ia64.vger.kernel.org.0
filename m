@@ -2,80 +2,140 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 56D9A33E8C8
-	for <lists+linux-ia64@lfdr.de>; Wed, 17 Mar 2021 06:10:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6297233E93D
+	for <lists+linux-ia64@lfdr.de>; Wed, 17 Mar 2021 06:49:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229688AbhCQFKV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 17 Mar 2021 01:10:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45804 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229613AbhCQFJ7 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 17 Mar 2021 01:09:59 -0400
-Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1234::107])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A97A0C06174A;
-        Tue, 16 Mar 2021 22:09:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
-        In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:
-        Reply-To:Cc:Content-ID:Content-Description;
-        bh=m8QVdcQPSVPQdZIbGrnzI9bE2kW8lDZNxbGvXWKwhjI=; b=fNdmK/oca0pT9+hz1gN/sVAugw
-        xz1+yOCwkzAZdkEuhHfazwit7b/o5ADyHSj/yfv41z3r/eSJFEeJKAnfHCa9Gt39sbThsT5CX+xls
-        PMm80Ys8LqbPorBr3vV8UyinT1N7IUgx61GgqojjQDDMEWsXgd7gRBi4Ss6ww1AoA+r9mQmWgG39C
-        mXsxkE1x0K2k51qCAdhlt+PnK0mDLLKZzbRwCAzbFj1Rq+TD6m6+sa+jjSE5+zpqVYyIrsl9q8BOU
-        a/WSHx/A8IcfOQSDupwC3nQLuIEWqTqlqd04ANy9stF0ksIaTDEBGipffNbholINqQPMkuOEwB6Bd
-        Tp9hRXAg==;
-Received: from [2601:1c0:6280:3f0::9757]
-        by merlin.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1lMORQ-001bS9-5o; Wed, 17 Mar 2021 05:09:56 +0000
-Subject: Re: [PATCH] ia64: hp: common: A typo fix in the file sba_iommu.c
-To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>, mpe@ellerman.id.au,
-        huawei@kernel.org, schnelle@linux.ibm.com, nicoleotsuka@gmail.com,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20210317031420.3136958-1-unixbhaskar@gmail.com>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <41387595-f4d0-40a5-93ff-6f8cc7797dc5@infradead.org>
-Date:   Tue, 16 Mar 2021 22:09:53 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.0
+        id S229949AbhCQFss (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 17 Mar 2021 01:48:48 -0400
+Received: from pegase1.c-s.fr ([93.17.236.30]:28234 "EHLO pegase1.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229953AbhCQFsf (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 17 Mar 2021 01:48:35 -0400
+Received: from localhost (mailhub1-int [192.168.12.234])
+        by localhost (Postfix) with ESMTP id 4F0fMz3RQ5z9vBLs;
+        Wed, 17 Mar 2021 06:48:31 +0100 (CET)
+X-Virus-Scanned: Debian amavisd-new at c-s.fr
+Received: from pegase1.c-s.fr ([192.168.12.234])
+        by localhost (pegase1.c-s.fr [192.168.12.234]) (amavisd-new, port 10024)
+        with ESMTP id 5HAfcpzaS9zh; Wed, 17 Mar 2021 06:48:31 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase1.c-s.fr (Postfix) with ESMTP id 4F0fMz2JZBz9vBLr;
+        Wed, 17 Mar 2021 06:48:31 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 434728B7F7;
+        Wed, 17 Mar 2021 06:48:31 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id G8uQhGY3jGja; Wed, 17 Mar 2021 06:48:30 +0100 (CET)
+Received: from [192.168.4.90] (unknown [192.168.4.90])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 82F468B768;
+        Wed, 17 Mar 2021 06:48:18 +0100 (CET)
+Subject: Re: [PATCH v2] mm: Move mem_init_print_info() into mm_init()
+To:     Kefeng Wang <wangkefeng.wang@huawei.com>,
+        linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     linux-ia64@vger.kernel.org, linux-sh@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, linux-mm@kvack.org,
+        Guo Ren <guoren@kernel.org>, sparclinux@vger.kernel.org,
+        linux-riscv@lists.infradead.org, Jonas Bonn <jonas@southpole.se>,
+        linux-s390@vger.kernel.org,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-hexagon@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>,
+        Russell King <linux@armlinux.org.uk>,
+        linux-csky@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
+        linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        Heiko Carstens <hca@linux.ibm.com>,
+        linux-um@lists.infradead.org, linux-m68k@lists.linux-m68k.org,
+        openrisc@lists.librecores.org,
+        linux-arm-kernel@lists.infradead.org,
+        Richard Henderson <rth@twiddle.net>,
+        linux-parisc@vger.kernel.org, linux-mips@vger.kernel.org,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        linux-alpha@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        "David S. Miller" <davem@davemloft.net>
+References: <4d488195-7281-9238-b30d-9f89a6100fb9@csgroup.eu>
+ <20210317015210.33641-1-wangkefeng.wang@huawei.com>
+From:   Christophe Leroy <christophe.leroy@csgroup.eu>
+Message-ID: <3f6959d6-1f37-8baf-a12e-3fbda6a17c7d@csgroup.eu>
+Date:   Wed, 17 Mar 2021 06:48:15 +0100
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <20210317031420.3136958-1-unixbhaskar@gmail.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+In-Reply-To: <20210317015210.33641-1-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: fr
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 3/16/21 8:14 PM, Bhaskar Chowdhury wrote:
-> 
-> 
-> s/minium/minimum/
-> 
-> 
-> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
 
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
 
+Le 17/03/2021 à 02:52, Kefeng Wang a écrit :
+> mem_init_print_info() is called in mem_init() on each architecture,
+> and pass NULL argument, so using void argument and move it into mm_init().
+> 
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
 > ---
->  arch/ia64/hp/common/sba_iommu.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> v2:
+> - Cleanup 'str' line suggested by Christophe and ACK
 > 
-> diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
-> index 9148ddbf02e5..3dcb8c35faad 100644
-> --- a/arch/ia64/hp/common/sba_iommu.c
-> +++ b/arch/ia64/hp/common/sba_iommu.c
-> @@ -828,7 +828,7 @@ mark_clean (void *addr, size_t size)
->   * corresponding IO TLB entry. The PCOM (Purge Command Register)
->   * is to purge stale entries in the IO TLB when unmapping entries.
->   *
-> - * The PCOM register supports purging of multiple pages, with a minium
-> + * The PCOM register supports purging of multiple pages, with a minimum
->   * of 1 page and a maximum of 2GB. Hardware requires the address be
->   * aligned to the size of the range being purged. The size of the range
->   * must be a power of 2. The "Cool perf optimization" in the
-> --
+>   arch/alpha/mm/init.c             |  1 -
+>   arch/arc/mm/init.c               |  1 -
+>   arch/arm/mm/init.c               |  2 --
+>   arch/arm64/mm/init.c             |  2 --
+>   arch/csky/mm/init.c              |  1 -
+>   arch/h8300/mm/init.c             |  2 --
+>   arch/hexagon/mm/init.c           |  1 -
+>   arch/ia64/mm/init.c              |  1 -
+>   arch/m68k/mm/init.c              |  1 -
+>   arch/microblaze/mm/init.c        |  1 -
+>   arch/mips/loongson64/numa.c      |  1 -
+>   arch/mips/mm/init.c              |  1 -
+>   arch/mips/sgi-ip27/ip27-memory.c |  1 -
+>   arch/nds32/mm/init.c             |  1 -
+>   arch/nios2/mm/init.c             |  1 -
+>   arch/openrisc/mm/init.c          |  2 --
+>   arch/parisc/mm/init.c            |  2 --
+>   arch/powerpc/mm/mem.c            |  1 -
+>   arch/riscv/mm/init.c             |  1 -
+>   arch/s390/mm/init.c              |  2 --
+>   arch/sh/mm/init.c                |  1 -
+>   arch/sparc/mm/init_32.c          |  2 --
+>   arch/sparc/mm/init_64.c          |  1 -
+>   arch/um/kernel/mem.c             |  1 -
+>   arch/x86/mm/init_32.c            |  2 --
+>   arch/x86/mm/init_64.c            |  2 --
+>   arch/xtensa/mm/init.c            |  1 -
+>   include/linux/mm.h               |  2 +-
+>   init/main.c                      |  1 +
+>   mm/page_alloc.c                  | 10 +++++-----
+>   30 files changed, 7 insertions(+), 42 deletions(-)
+> 
 
+> diff --git a/include/linux/mm.h b/include/linux/mm.h
+> index 89314651dd62..c2e0b3495c5a 100644
+> --- a/include/linux/mm.h
+> +++ b/include/linux/mm.h
+> @@ -2373,7 +2373,7 @@ extern unsigned long free_reserved_area(void *start, void *end,
+>   					int poison, const char *s);
+>   
+>   extern void adjust_managed_page_count(struct page *page, long count);
+> -extern void mem_init_print_info(const char *str);
+> +extern void mem_init_print_info(void);
 
--- 
-~Randy
+Sorry I didn't see that in previous patch.
 
+'extern' keyword is pointless for function prototypes and is deprecated, you should remove it.
+
+That said,
+
+Reviewed-by: Christophe Leroy <christophe.leroy@c-s.fr> # focussed on powerpc
+
+>   
+>   extern void reserve_bootmem_region(phys_addr_t start, phys_addr_t end);
+>   
