@@ -2,89 +2,80 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B62C33E78C
-	for <lists+linux-ia64@lfdr.de>; Wed, 17 Mar 2021 04:16:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 56D9A33E8C8
+	for <lists+linux-ia64@lfdr.de>; Wed, 17 Mar 2021 06:10:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229510AbhCQDPm (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 16 Mar 2021 23:15:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49364 "EHLO
+        id S229688AbhCQFKV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 17 Mar 2021 01:10:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229618AbhCQDPO (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 16 Mar 2021 23:15:14 -0400
-Received: from mail-qk1-x72c.google.com (mail-qk1-x72c.google.com [IPv6:2607:f8b0:4864:20::72c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5E82C06174A;
-        Tue, 16 Mar 2021 20:15:04 -0700 (PDT)
-Received: by mail-qk1-x72c.google.com with SMTP id b130so37541651qkc.10;
-        Tue, 16 Mar 2021 20:15:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=5tCsYycXFkNFDZJyu+i0pU21odI0Rq9q/SDWK96iIm4=;
-        b=N6L/S8i/tVNsoQg4qZRcBxdRE98/MuD/d3IUyMIPvlad+dPI6utKtgQ9Se1rNTY2OH
-         EWmSjpKGrshyHrzdGIUH+VbTcN/Iz3qNkp20tV/RYKkBZgP8oSRsxWzRgcLiddvdU4Tn
-         fZyxvFfkv3GBLNkC8wAwxVN/4k7zIt4hCF0Ib6H/0oMaYBm/8miZ1lzcvP3BU4kKmFbn
-         D0hKh1krRS8Pa2faTTYQTOVesQa7mrLIEh1XM8RtE9cNFVXq8OHnYpT5ReZvLdACXQr/
-         lsAT4fGf8q7uUHME8ZYtiXjyNbDQbXLqJ1yilleSLX/+WckIdYaWNQBXKcJ/gYl+f1xK
-         5lEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=5tCsYycXFkNFDZJyu+i0pU21odI0Rq9q/SDWK96iIm4=;
-        b=GrJOtJ012yIvfkaBmfOdIGaBOAqAAckTpCjqcwYbNsXU8ZJBzjPr3GOJL6gDGcZJ81
-         G9htGaCTzhHljems0dT5cX1QHYyaH6MqEOuHRLjzA8NXeeCKIe2EJlKUS7+kwKEfUDgn
-         e8e/pts837zY1FUp11gkng3O7znF7hT66q5G4Qr/XE+AEACwXeWUluvWfz6ZTfXEcrpN
-         TCev7Svnvz8MHtS/DAx2awAij1FhNQiBs5LnOC60dCt36MSfrAC7J5TqJzWQbWQ6lu4G
-         3yJCSGAr3mzbnPPyG7C2cd9ZOkPSy6TE8SVdjs56vNLlzSAWl2GcRVDFP/PYBJrZpvOD
-         JDcQ==
-X-Gm-Message-State: AOAM532z3i1Ma5c8Jvf7pS/3qjteeAolOvoHekH0wSdEH5GA7AYV8z1R
-        DQv3Mw1Ie8t7uAnuvzhOEaw=
-X-Google-Smtp-Source: ABdhPJwg7K/wWWKF2tiK2VXKOLxIix4kFOd+GxbIEK5rFildmUOffPH5dhTNDxbLAFKWvc6EjE0TBA==
-X-Received: by 2002:a05:620a:13ac:: with SMTP id m12mr2486413qki.458.1615950904159;
-        Tue, 16 Mar 2021 20:15:04 -0700 (PDT)
-Received: from localhost.localdomain ([37.19.198.5])
-        by smtp.gmail.com with ESMTPSA id z11sm17201538qkg.52.2021.03.16.20.14.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Mar 2021 20:15:03 -0700 (PDT)
-From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To:     unixbhaskar@gmail.com, mpe@ellerman.id.au, huawei@kernel.org,
-        schnelle@linux.ibm.com, nicoleotsuka@gmail.com,
+        with ESMTP id S229613AbhCQFJ7 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 17 Mar 2021 01:09:59 -0400
+Received: from merlin.infradead.org (merlin.infradead.org [IPv6:2001:8b0:10b:1234::107])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A97A0C06174A;
+        Tue, 16 Mar 2021 22:09:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=merlin.20170209; h=Content-Transfer-Encoding:Content-Type:
+        In-Reply-To:MIME-Version:Date:Message-ID:From:References:To:Subject:Sender:
+        Reply-To:Cc:Content-ID:Content-Description;
+        bh=m8QVdcQPSVPQdZIbGrnzI9bE2kW8lDZNxbGvXWKwhjI=; b=fNdmK/oca0pT9+hz1gN/sVAugw
+        xz1+yOCwkzAZdkEuhHfazwit7b/o5ADyHSj/yfv41z3r/eSJFEeJKAnfHCa9Gt39sbThsT5CX+xls
+        PMm80Ys8LqbPorBr3vV8UyinT1N7IUgx61GgqojjQDDMEWsXgd7gRBi4Ss6ww1AoA+r9mQmWgG39C
+        mXsxkE1x0K2k51qCAdhlt+PnK0mDLLKZzbRwCAzbFj1Rq+TD6m6+sa+jjSE5+zpqVYyIrsl9q8BOU
+        a/WSHx/A8IcfOQSDupwC3nQLuIEWqTqlqd04ANy9stF0ksIaTDEBGipffNbholINqQPMkuOEwB6Bd
+        Tp9hRXAg==;
+Received: from [2601:1c0:6280:3f0::9757]
+        by merlin.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
+        id 1lMORQ-001bS9-5o; Wed, 17 Mar 2021 05:09:56 +0000
+Subject: Re: [PATCH] ia64: hp: common: A typo fix in the file sba_iommu.c
+To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>, mpe@ellerman.id.au,
+        huawei@kernel.org, schnelle@linux.ibm.com, nicoleotsuka@gmail.com,
         linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc:     rdunlap@infradead.org
-Subject: [PATCH] ia64: hp: common: A typo fix in the file sba_iommu.c
-Date:   Wed, 17 Mar 2021 08:44:20 +0530
-Message-Id: <20210317031420.3136958-1-unixbhaskar@gmail.com>
-X-Mailer: git-send-email 2.30.2
+References: <20210317031420.3136958-1-unixbhaskar@gmail.com>
+From:   Randy Dunlap <rdunlap@infradead.org>
+Message-ID: <41387595-f4d0-40a5-93ff-6f8cc7797dc5@infradead.org>
+Date:   Tue, 16 Mar 2021 22:09:53 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210317031420.3136958-1-unixbhaskar@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+On 3/16/21 8:14 PM, Bhaskar Chowdhury wrote:
+> 
+> 
+> s/minium/minimum/
+> 
+> 
+> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+
+> ---
+>  arch/ia64/hp/common/sba_iommu.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
+> index 9148ddbf02e5..3dcb8c35faad 100644
+> --- a/arch/ia64/hp/common/sba_iommu.c
+> +++ b/arch/ia64/hp/common/sba_iommu.c
+> @@ -828,7 +828,7 @@ mark_clean (void *addr, size_t size)
+>   * corresponding IO TLB entry. The PCOM (Purge Command Register)
+>   * is to purge stale entries in the IO TLB when unmapping entries.
+>   *
+> - * The PCOM register supports purging of multiple pages, with a minium
+> + * The PCOM register supports purging of multiple pages, with a minimum
+>   * of 1 page and a maximum of 2GB. Hardware requires the address be
+>   * aligned to the size of the range being purged. The size of the range
+>   * must be a power of 2. The "Cool perf optimization" in the
+> --
 
 
-s/minium/minimum/
-
-
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
----
- arch/ia64/hp/common/sba_iommu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
-index 9148ddbf02e5..3dcb8c35faad 100644
---- a/arch/ia64/hp/common/sba_iommu.c
-+++ b/arch/ia64/hp/common/sba_iommu.c
-@@ -828,7 +828,7 @@ mark_clean (void *addr, size_t size)
-  * corresponding IO TLB entry. The PCOM (Purge Command Register)
-  * is to purge stale entries in the IO TLB when unmapping entries.
-  *
-- * The PCOM register supports purging of multiple pages, with a minium
-+ * The PCOM register supports purging of multiple pages, with a minimum
-  * of 1 page and a maximum of 2GB. Hardware requires the address be
-  * aligned to the size of the range being purged. The size of the range
-  * must be a power of 2. The "Cool perf optimization" in the
---
-2.30.2
+-- 
+~Randy
 
