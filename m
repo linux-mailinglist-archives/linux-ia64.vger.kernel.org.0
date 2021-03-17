@@ -2,101 +2,95 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CBBC033F10B
-	for <lists+linux-ia64@lfdr.de>; Wed, 17 Mar 2021 14:20:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 496BE33F227
+	for <lists+linux-ia64@lfdr.de>; Wed, 17 Mar 2021 15:04:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230516AbhCQNUC convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Wed, 17 Mar 2021 09:20:02 -0400
-Received: from eu-smtp-delivery-151.mimecast.com ([185.58.86.151]:45436 "EHLO
-        eu-smtp-delivery-151.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231136AbhCQNTj (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 17 Mar 2021 09:19:39 -0400
-Received: from AcuMS.aculab.com (156.67.243.126 [156.67.243.126]) (Using
- TLS) by relay.mimecast.com with ESMTP id
- uk-mta-55-3sGq2adXMGirCyN93jbuVw-1; Wed, 17 Mar 2021 13:19:24 +0000
-X-MC-Unique: 3sGq2adXMGirCyN93jbuVw-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.2; Wed, 17 Mar 2021 13:19:23 +0000
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.012; Wed, 17 Mar 2021 13:19:23 +0000
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     "'Martin K. Petersen'" <martin.petersen@oracle.com>,
-        Arnd Bergmann <arnd@kernel.org>
-CC:     "Don.Brace@microchip.com" <Don.Brace@microchip.com>,
-        Sergei Trofimovich <slyfox@gentoo.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "storagedev@microchip.com" <storagedev@microchip.com>,
-        linux-scsi <linux-scsi@vger.kernel.org>,
-        "jszczype@redhat.com" <jszczype@redhat.com>,
-        "Scott.Benesh@microchip.com" <Scott.Benesh@microchip.com>,
-        "Scott.Teel@microchip.com" <Scott.Teel@microchip.com>,
-        "thenzl@redhat.com" <thenzl@redhat.com>,
-        "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>
-Subject: RE: [PATCH] hpsa: fix boot on ia64 (atomic_t alignment)
-Thread-Topic: [PATCH] hpsa: fix boot on ia64 (atomic_t alignment)
-Thread-Index: AQHXGtT0rSNa450uZ0SMu8nCYRzH7aqIKWKQ
-Date:   Wed, 17 Mar 2021 13:19:23 +0000
-Message-ID: <4b2a64d91c4c478f881d9713cac5001b@AcuMS.aculab.com>
-References: <5532f9ab-7555-d51b-f4d5-f9b72a61f248@redhat.com>
-        <20210312222718.4117508-1-slyfox@gentoo.org>
-        <SN6PR11MB2848561E3D85A8F55EB86977E16B9@SN6PR11MB2848.namprd11.prod.outlook.com>
-        <CAK8P3a3JYmhbN3TXB2cWGfXGKgsUa9Hg=ZvWckTaL_31OMgbtQ@mail.gmail.com>
- <yq1zgz21rkz.fsf@ca-mkp.ca.oracle.com>
-In-Reply-To: <yq1zgz21rkz.fsf@ca-mkp.ca.oracle.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        id S231278AbhCQOED (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 17 Mar 2021 10:04:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49460 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231750AbhCQODe (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 17 Mar 2021 10:03:34 -0400
+Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5743BC06174A;
+        Wed, 17 Mar 2021 07:03:34 -0700 (PDT)
+Received: by mail-yb1-xb35.google.com with SMTP id h82so40555446ybc.13;
+        Wed, 17 Mar 2021 07:03:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=6OaFjyFWgg4m3b9LuLpqb/rP6tn5J4G93CnXJEjgfLQ=;
+        b=i2DpCpQM7JeSSiS/pjMxgtMmRWaqyEUnqOkpir3k6hjfU9Oor7nDorySG4w47CoCGd
+         HaiLgTyqU0kC8zA/M2kZQM1sH1E1LbWud/WbA8om7HWvSV+BUakqiOwPUeTLcoqCLPGf
+         JedwFXQpUMM2xc1N014Ahaw2YTMoAf2cj3FsgDsCKv3ZOzvpAcW8c+eMj3EENF375f8x
+         11rayPkdrSyY5YcS7+D3f2mNmy0iI8qzZ8PRIa+NRFehp669D1SyF0qYVVKeD+gzVYK8
+         LIsktzMZcnA20N+P0QIhTw/wSHTpN81axxWdN3YKq6VrI5qwWqPf0cj92aOsspj4iCYa
+         aQLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=6OaFjyFWgg4m3b9LuLpqb/rP6tn5J4G93CnXJEjgfLQ=;
+        b=bEUxvKmIPKCyxJ/STwqn0nT8JeKSy63asIyOyju2QZvTR+yvanfV/cFC9wNYb3hz0V
+         t/b+nT7Ag8aJ/pAjonS87XhLsRUaeihZt+QkC9CSQ0f+vg8oLMEF0ZkOtGqRgov63kqr
+         2OamdQbpY0cB+Fyux7SIb8iJg1AKVHfz6UVz0dB0iqLBpVL+eRP00fgHZEycmW1Pf4/z
+         3+Y16vvjfux3pRzjxFHlBsphjI3k572SXs52haRBXruQ1T/FbMtGYgDXXr/Io5hWifOo
+         Uk6wZYkPiDJnssYbxrGThiHGIksmZwDpMIVplGAZVCTTmGYZsojlkNlTio8NVCUd/RFf
+         MY3g==
+X-Gm-Message-State: AOAM531HNTbVWb29pXxB62HSRRm7MvH3l56ACL8LHNBOrIAFh963uPdb
+        soVcscHLQEjJqILnH9lyHOFq6c/gT9HjilUki5i/1OJ6iZHnmg==
+X-Google-Smtp-Source: ABdhPJxYwg2QBX1owqFPtrq2F/9pLRU/hzhKTzIOR3dpydN55snYMjquLkj00WQN+8aJP9sdN02xLmqhMTlZQxWC8Dc=
+X-Received: by 2002:a25:dad4:: with SMTP id n203mr4746316ybf.233.1615989813490;
+ Wed, 17 Mar 2021 07:03:33 -0700 (PDT)
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
+References: <4d488195-7281-9238-b30d-9f89a6100fb9@csgroup.eu> <20210317015210.33641-1-wangkefeng.wang@huawei.com>
+In-Reply-To: <20210317015210.33641-1-wangkefeng.wang@huawei.com>
+From:   Anatoly Pugachev <matorola@gmail.com>
+Date:   Wed, 17 Mar 2021 17:03:22 +0300
+Message-ID: <CADxRZqwFokuZrhA6GFr=whM3s7BqZpzo8yq=TW6YEr=eeEUH0A@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: Move mem_init_print_info() into mm_init()
+To:     Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc:     Linux Kernel list <linux-kernel@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Guo Ren <guoren@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        Sparc kernel list <sparclinux@vger.kernel.org>,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Martin K. Petersen 
-> Sent: 17 March 2021 02:26
-> 
-> Arnd,
-> 
-> > Actually that still feels wrong: the annotation of the struct is to
-> > pack every member, which causes the access to be done in byte units on
-> > architectures that do not have hardware unaligned load/store
-> > instructions, at least for things like atomic_read() that does not go
-> > through a cmpxchg() or ll/sc cycle.
-> 
-> > This change may fix itanium, but it's still not correct. Other
-> > architectures would have already been broken before the recent change,
-> > but that's not a reason against fixing them now.
-> 
-> I agree. I understand why there are restrictions on fields consumed by
-> the hardware. But for fields internal to the driver the packing doesn't
-> make sense to me.
+On Wed, Mar 17, 2021 at 4:51 AM Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
+>
+> mem_init_print_info() is called in mem_init() on each architecture,
+> and pass NULL argument, so using void argument and move it into mm_init().
+>
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+> v2:
+> - Cleanup 'str' line suggested by Christophe and ACK
 
-Jeepers -- that global #pragma pack(1) is bollocks.
-
-I think there are a couple of __u64 that are 32bit aligned.
-Just marking those field __packed __aligned(4) should have
-the desired effect.
-Or use a typedef for '__u64 with 32bit alignment'.
-(There probably ought to be one in types.h)
-
-Then add compile-time asserts that any non-trivial structures
-the hardware accesses are the right size.
-
-	David
-
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
-
+applied patch (5.12.0-rc3-00020-g1df27313f50a-dirty) over linus.git
+and tested boot on a sparc64 virtual machine (ldom) - boots.
