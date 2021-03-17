@@ -2,90 +2,121 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 20D6533F78F
-	for <lists+linux-ia64@lfdr.de>; Wed, 17 Mar 2021 18:54:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 80BEE33F861
+	for <lists+linux-ia64@lfdr.de>; Wed, 17 Mar 2021 19:49:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232537AbhCQRxg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 17 Mar 2021 13:53:36 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:40109 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231458AbhCQRxH (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 17 Mar 2021 13:53:07 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1lMaLx-002sEs-H7; Wed, 17 Mar 2021 18:53:05 +0100
-Received: from p5b13a966.dip0.t-ipconnect.de ([91.19.169.102] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1lMaLx-003ykL-Ac; Wed, 17 Mar 2021 18:53:05 +0100
-Subject: Re: 5.11 regression: "ia64: add support for TIF_NOTIFY_SIGNAL" breaks
- ia64 boot
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Sergei Trofimovich <slyich@gmail.com>
-Cc:     Jens Axboe <axboe@kernel.dk>, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20210222230519.73f3e239@sf>
- <cc658b61-530e-90bf-3858-36cc60468a24@kernel.dk>
- <8decdd2e-a380-9951-3ebb-2bc3e48aa1c3@physik.fu-berlin.de>
- <20210223083507.43b5a6dd@sf>
- <51cbf584-07ef-1e62-7a3b-81494a04faa6@physik.fu-berlin.de>
- <9441757f-d4bc-a5b5-5fb0-967c9aaca693@physik.fu-berlin.de>
- <20210223192743.0198d4a9@sf>
- <8d54dd1d-a035-8dff-64dc-7175aba6033f@physik.fu-berlin.de>
-Message-ID: <c2098299-68c6-78da-da43-c848ee4eb7b0@physik.fu-berlin.de>
-Date:   Wed, 17 Mar 2021 18:53:04 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        id S233024AbhCQSsx (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 17 Mar 2021 14:48:53 -0400
+Received: from mga12.intel.com ([192.55.52.136]:6341 "EHLO mga12.intel.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S232763AbhCQSsw (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 17 Mar 2021 14:48:52 -0400
+IronPort-SDR: xNKo2kc4IFy7g2qRdxvHUTmS+4btssPCRPgshMRusElLB+SVSZ+BCkd3bbRRcpsxTx3WxzfY2q
+ qx8AchzaHdkw==
+X-IronPort-AV: E=McAfee;i="6000,8403,9926"; a="168803219"
+X-IronPort-AV: E=Sophos;i="5.81,257,1610438400"; 
+   d="scan'208";a="168803219"
+Received: from fmsmga005.fm.intel.com ([10.253.24.32])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2021 11:48:51 -0700
+IronPort-SDR: p/cSR5ulZFFd9H+i41M6HIHkogJZKBFJt/D8W5rmiysz+I/eOXhnwpKvJG3+3BPjs//QdUlzyH
+ OHhL8ciCbw6g==
+X-IronPort-AV: E=Sophos;i="5.81,257,1610438400"; 
+   d="scan'208";a="605831558"
+Received: from mtpearso-mobl4.amr.corp.intel.com (HELO [10.213.190.14]) ([10.213.190.14])
+  by fmsmga005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Mar 2021 11:48:50 -0700
+Subject: Re: [PATCH v2] mm: Move mem_init_print_info() into mm_init()
+To:     Kefeng Wang <wangkefeng.wang@huawei.com>,
+        linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Guo Ren <guoren@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-xtensa@linux-xtensa.org, linux-mm@kvack.org
+References: <4d488195-7281-9238-b30d-9f89a6100fb9@csgroup.eu>
+ <20210317015210.33641-1-wangkefeng.wang@huawei.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
+ oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
+ 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
+ ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
+ VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
+ iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
+ c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
+ pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
+ ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
+ QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzShEYXZpZCBDaHJp
+ c3RvcGhlciBIYW5zZW4gPGRhdmVAc3I3MS5uZXQ+wsF7BBMBAgAlAhsDBgsJCAcDAgYVCAIJ
+ CgsEFgIDAQIeAQIXgAUCTo3k0QIZAQAKCRBoNZUwcMmSsMO2D/421Xg8pimb9mPzM5N7khT0
+ 2MCnaGssU1T59YPE25kYdx2HntwdO0JA27Wn9xx5zYijOe6B21ufrvsyv42auCO85+oFJWfE
+ K2R/IpLle09GDx5tcEmMAHX6KSxpHmGuJmUPibHVbfep2aCh9lKaDqQR07gXXWK5/yU1Dx0r
+ VVFRaHTasp9fZ9AmY4K9/BSA3VkQ8v3OrxNty3OdsrmTTzO91YszpdbjjEFZK53zXy6tUD2d
+ e1i0kBBS6NLAAsqEtneplz88T/v7MpLmpY30N9gQU3QyRC50jJ7LU9RazMjUQY1WohVsR56d
+ ORqFxS8ChhyJs7BI34vQusYHDTp6PnZHUppb9WIzjeWlC7Jc8lSBDlEWodmqQQgp5+6AfhTD
+ kDv1a+W5+ncq+Uo63WHRiCPuyt4di4/0zo28RVcjtzlGBZtmz2EIC3vUfmoZbO/Gn6EKbYAn
+ rzz3iU/JWV8DwQ+sZSGu0HmvYMt6t5SmqWQo/hyHtA7uF5Wxtu1lCgolSQw4t49ZuOyOnQi5
+ f8R3nE7lpVCSF1TT+h8kMvFPv3VG7KunyjHr3sEptYxQs4VRxqeirSuyBv1TyxT+LdTm6j4a
+ mulOWf+YtFRAgIYyyN5YOepDEBv4LUM8Tz98lZiNMlFyRMNrsLV6Pv6SxhrMxbT6TNVS5D+6
+ UorTLotDZKp5+M7BTQRUY85qARAAsgMW71BIXRgxjYNCYQ3Xs8k3TfAvQRbHccky50h99TUY
+ sqdULbsb3KhmY29raw1bgmyM0a4DGS1YKN7qazCDsdQlxIJp9t2YYdBKXVRzPCCsfWe1dK/q
+ 66UVhRPP8EGZ4CmFYuPTxqGY+dGRInxCeap/xzbKdvmPm01Iw3YFjAE4PQ4hTMr/H76KoDbD
+ cq62U50oKC83ca/PRRh2QqEqACvIH4BR7jueAZSPEDnzwxvVgzyeuhwqHY05QRK/wsKuhq7s
+ UuYtmN92Fasbxbw2tbVLZfoidklikvZAmotg0dwcFTjSRGEg0Gr3p/xBzJWNavFZZ95Rj7Et
+ db0lCt0HDSY5q4GMR+SrFbH+jzUY/ZqfGdZCBqo0cdPPp58krVgtIGR+ja2Mkva6ah94/oQN
+ lnCOw3udS+Eb/aRcM6detZr7XOngvxsWolBrhwTQFT9D2NH6ryAuvKd6yyAFt3/e7r+HHtkU
+ kOy27D7IpjngqP+b4EumELI/NxPgIqT69PQmo9IZaI/oRaKorYnDaZrMXViqDrFdD37XELwQ
+ gmLoSm2VfbOYY7fap/AhPOgOYOSqg3/Nxcapv71yoBzRRxOc4FxmZ65mn+q3rEM27yRztBW9
+ AnCKIc66T2i92HqXCw6AgoBJRjBkI3QnEkPgohQkZdAb8o9WGVKpfmZKbYBo4pEAEQEAAcLB
+ XwQYAQIACQUCVGPOagIbDAAKCRBoNZUwcMmSsJeCEACCh7P/aaOLKWQxcnw47p4phIVR6pVL
+ e4IEdR7Jf7ZL00s3vKSNT+nRqdl1ugJx9Ymsp8kXKMk9GSfmZpuMQB9c6io1qZc6nW/3TtvK
+ pNGz7KPPtaDzvKA4S5tfrWPnDr7n15AU5vsIZvgMjU42gkbemkjJwP0B1RkifIK60yQqAAlT
+ YZ14P0dIPdIPIlfEPiAWcg5BtLQU4Wg3cNQdpWrCJ1E3m/RIlXy/2Y3YOVVohfSy+4kvvYU3
+ lXUdPb04UPw4VWwjcVZPg7cgR7Izion61bGHqVqURgSALt2yvHl7cr68NYoFkzbNsGsye9ft
+ M9ozM23JSgMkRylPSXTeh5JIK9pz2+etco3AfLCKtaRVysjvpysukmWMTrx8QnI5Nn5MOlJj
+ 1Ov4/50JY9pXzgIDVSrgy6LYSMc4vKZ3QfCY7ipLRORyalFDF3j5AGCMRENJjHPD6O7bl3Xo
+ 4DzMID+8eucbXxKiNEbs21IqBZbbKdY1GkcEGTE7AnkA3Y6YB7I/j9mQ3hCgm5muJuhM/2Fr
+ OPsw5tV/LmQ5GXH0JQ/TZXWygyRFyyI2FqNTx4WHqUn3yFj8rwTAU1tluRUYyeLy0ayUlKBH
+ ybj0N71vWO936MqP6haFERzuPAIpxj2ezwu0xb1GjTk4ynna6h5GjnKgdfOWoRtoWndMZxbA
+ z5cecg==
+Message-ID: <2a7d6e39-b293-7422-87b0-741f1ab0c22c@intel.com>
+Date:   Wed, 17 Mar 2021 11:48:50 -0700
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-In-Reply-To: <8d54dd1d-a035-8dff-64dc-7175aba6033f@physik.fu-berlin.de>
-Content-Type: text/plain; charset=windows-1252
+In-Reply-To: <20210317015210.33641-1-wangkefeng.wang@huawei.com>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.169.102
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi!
-
-On 3/17/21 6:42 PM, John Paul Adrian Glaubitz wrote:
->> Here are dmesg and config from my machine with successfull boot:
->>     https://dev.gentoo.org/~slyfox/configs/guppy-dmesg-5.11
->>     https://dev.gentoo.org/~slyfox/configs/guppy-config-5.11
+On 3/16/21 6:52 PM, Kefeng Wang wrote:
+> mem_init_print_info() is called in mem_init() on each architecture,
+> and pass NULL argument, so using void argument and move it into mm_init().
 > 
-> Just gave it a try using this kernel configuration. It's never loading the hpsa
-> module for me which I find really strange. The module isn't even showing up in
-> the kernel message buffer.
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 
-Never mind. I just forgot to create an initrd this time, user error :-).
+It's not a big deal but you might want to say something like:
 
-Works again.
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com> # x86 bits
 
->>> [    0.036000] ERROR: Invalid distance value range                                                            
->>> [    0.036000]                                                                                                
->>> [    0.036000]   00 00 00 00 00 00
->>
->> I don't see this string in the 5.11 kernel source. But
->>    https://lore.kernel.org/lkml/161356785681.20312.13022545187499987936.tip-bot2@tip-bot2/T/
->> hints it's might be something very new and you are in the
->> middle of 5.12-rc1?
-> 
-> I'm seeing this using your exact kernel configuration.
-
-This issue is still there, however. Do you see this as well?
-
-Adrian
-
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+Just to make it clear that I didn't look at the alpha bits at all. :)
