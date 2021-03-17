@@ -2,488 +2,167 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A91A033E66F
-	for <lists+linux-ia64@lfdr.de>; Wed, 17 Mar 2021 02:51:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 686E833E6F9
+	for <lists+linux-ia64@lfdr.de>; Wed, 17 Mar 2021 03:26:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229613AbhCQBus (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 16 Mar 2021 21:50:48 -0400
-Received: from szxga07-in.huawei.com ([45.249.212.35]:14355 "EHLO
-        szxga07-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229490AbhCQBuQ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 16 Mar 2021 21:50:16 -0400
-Received: from DGGEMS414-HUB.china.huawei.com (unknown [172.30.72.58])
-        by szxga07-in.huawei.com (SkyGuard) with ESMTP id 4F0Y2q0RTVz8yR6;
-        Wed, 17 Mar 2021 09:48:19 +0800 (CST)
-Received: from localhost.localdomain.localdomain (10.175.113.25) by
- DGGEMS414-HUB.china.huawei.com (10.3.19.214) with Microsoft SMTP Server id
- 14.3.498.0; Wed, 17 Mar 2021 09:50:03 +0800
-From:   Kefeng Wang <wangkefeng.wang@huawei.com>
-To:     <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-CC:     Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Guo Ren <guoren@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "Peter Zijlstra" <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, <linux-alpha@vger.kernel.org>,
-        <linux-snps-arc@lists.infradead.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-csky@vger.kernel.org>, <linux-hexagon@vger.kernel.org>,
-        <linux-ia64@vger.kernel.org>, <linux-m68k@lists.linux-m68k.org>,
-        <linux-mips@vger.kernel.org>, <openrisc@lists.librecores.org>,
-        <linux-parisc@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <linux-riscv@lists.infradead.org>, <linux-s390@vger.kernel.org>,
-        <linux-sh@vger.kernel.org>, <sparclinux@vger.kernel.org>,
-        <linux-um@lists.infradead.org>, <linux-xtensa@linux-xtensa.org>,
-        <linux-mm@kvack.org>, Kefeng Wang <wangkefeng.wang@huawei.com>
-Subject: [PATCH v2] mm: Move mem_init_print_info() into mm_init()
-Date:   Wed, 17 Mar 2021 09:52:10 +0800
-Message-ID: <20210317015210.33641-1-wangkefeng.wang@huawei.com>
-X-Mailer: git-send-email 2.26.2
-In-Reply-To: <4d488195-7281-9238-b30d-9f89a6100fb9@csgroup.eu>
-References: <4d488195-7281-9238-b30d-9f89a6100fb9@csgroup.eu>
+        id S230480AbhCQC0C (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 16 Mar 2021 22:26:02 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:52832 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231484AbhCQCZr (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 16 Mar 2021 22:25:47 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12H2NIsB014079;
+        Wed, 17 Mar 2021 02:25:35 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=to : cc : subject :
+ from : message-id : references : date : in-reply-to : content-type :
+ mime-version; s=corp-2020-01-29;
+ bh=4wkneazeRjRq4wlcAOI/O7ad8+OlmRPxS2mDgBuYF9U=;
+ b=Q1WsTXNRRFpwrspID1P95IVZd6TeLDFAMzyiVxVReai0WCdgCArJApWRNJHEPf2G1z+Z
+ y4szHcsl3YL2gD8Bm7X5dtHiD7Yzzl0O9ksb/xfDY1hplyof+rHgU0RiWj9Or8m5Uvni
+ rQilZTIb3y4z7FBLy9AvPVVLFHbEryqfpepYJ7nwLoWDi1oamkFXn2nWLO995ObLUDwy
+ ye965tCeadGkXLXwCgHOWDou88kGZZ7zUfqOZc1TIbwxVQrf7JpKoTyvHefbu3ozISeg
+ 4Rc+oqRr7wyV0sk0EK2isL23vo+egduvSAZCG5y9EFajRtiBc5nVfY0xjpDXseFvtoFJ sA== 
+Received: from aserp3020.oracle.com (aserp3020.oracle.com [141.146.126.70])
+        by aserp2130.oracle.com with ESMTP id 378jwbjnua-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 17 Mar 2021 02:25:35 +0000
+Received: from pps.filterd (aserp3020.oracle.com [127.0.0.1])
+        by aserp3020.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 12H2Jkdj078305;
+        Wed, 17 Mar 2021 02:25:35 GMT
+Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2101.outbound.protection.outlook.com [104.47.58.101])
+        by aserp3020.oracle.com with ESMTP id 3797a20jr9-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Wed, 17 Mar 2021 02:25:35 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LXM8pE4V3Tg4J0DPboLTrsZzNjUqokmnVNA++HMXFCt8LJmbFwnvqUkKW30Q56Jek7m+D1aytDp5Zw3lKJzjg/60GVG1y/sn5Om0+eAA0IcLRk0tRGe2qmjnuQXeoKAJOHwP4HzgfycmMBDI6c3YP2kO3ppNJsSs6kQshy7GfSMocXge660Qa0iH5uokNAImBJ/I200go1/pgid6Xh9kckN3EmcvsOU11LGiJEbtcStej7NPs0yA43B8Dpu9bI1JztxQVFuueasqMrHddzZiH0I0nPV16/uakddlOtvgqFurZ4CJAfnD/kB3IbugbqahfqCvp5HFU8ncUroizWxncg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4wkneazeRjRq4wlcAOI/O7ad8+OlmRPxS2mDgBuYF9U=;
+ b=cpvkPV3C8PFgCRsOgUWvQXgT5UYh3ij4nGE6GK7pDlXfwCoTaYr7e6DYDhjRRgm6MmAw6AIl9g0iiPg4h72tKa66+ioxKNlrLqICL1hCa40HDMwyEqL5XIaTN8+XiH2TWzuPkeZ3D+EH+MorJQZzpcloWYpuyRnHD1YkVW88pQQ41mISb1xdx2rJqQ4wruyEW9F5MT00ezrfPATVVmHS7AEsXu07S8u9y1S05v/HuXWKHqmYlNwrHp7rlDLLKLGeqcF+ESvEWqJY4/0siLnbW9Myq92Rfsf/RlXxOnCJoBs+z7hiPU7IobXmbT1kr8jehRp8THRoXtTElG+S/7so3Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=4wkneazeRjRq4wlcAOI/O7ad8+OlmRPxS2mDgBuYF9U=;
+ b=JzF73pUNo85H1OIx9J/sVkHpsWUOQoKoJNdjMc+klBQO+90eeLYJW/GXZH9P3rTf5AlhVKSkBfJzMRhgc+z1UyE45JZ89bfCUidEYGPA9E4/DR59Kg8gYl4/uEvshWeKDL3l2vGmKBIODZN899lA0Ku2985M9wC8zTHJ5LkNpsU=
+Authentication-Results: kernel.org; dkim=none (message not signed)
+ header.d=none;kernel.org; dmarc=none action=none header.from=oracle.com;
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by PH0PR10MB4725.namprd10.prod.outlook.com (2603:10b6:510:3e::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.18; Wed, 17 Mar
+ 2021 02:25:32 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::dc39:c9fa:7365:8c8e]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::dc39:c9fa:7365:8c8e%5]) with mapi id 15.20.3933.032; Wed, 17 Mar 2021
+ 02:25:32 +0000
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Don.Brace@microchip.com, Sergei Trofimovich <slyfox@gentoo.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, storagedev@microchip.com,
+        linux-scsi <linux-scsi@vger.kernel.org>, jszczype@redhat.com,
+        Scott.Benesh@microchip.com, Scott.Teel@microchip.com,
+        thenzl@redhat.com,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Subject: Re: [PATCH] hpsa: fix boot on ia64 (atomic_t alignment)
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+Organization: Oracle Corporation
+Message-ID: <yq1zgz21rkz.fsf@ca-mkp.ca.oracle.com>
+References: <5532f9ab-7555-d51b-f4d5-f9b72a61f248@redhat.com>
+        <20210312222718.4117508-1-slyfox@gentoo.org>
+        <SN6PR11MB2848561E3D85A8F55EB86977E16B9@SN6PR11MB2848.namprd11.prod.outlook.com>
+        <CAK8P3a3JYmhbN3TXB2cWGfXGKgsUa9Hg=ZvWckTaL_31OMgbtQ@mail.gmail.com>
+Date:   Tue, 16 Mar 2021 22:25:30 -0400
+In-Reply-To: <CAK8P3a3JYmhbN3TXB2cWGfXGKgsUa9Hg=ZvWckTaL_31OMgbtQ@mail.gmail.com>
+        (Arnd Bergmann's message of "Tue, 16 Mar 2021 19:28:22 +0100")
+Content-Type: text/plain
+X-Originating-IP: [138.3.200.58]
+X-ClientProxiedBy: BY5PR04CA0001.namprd04.prod.outlook.com
+ (2603:10b6:a03:1d0::11) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.113.25]
-X-CFilter-Loop: Reflected
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from ca-mkp.ca.oracle.com (138.3.200.58) by BY5PR04CA0001.namprd04.prod.outlook.com (2603:10b6:a03:1d0::11) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3955.18 via Frontend Transport; Wed, 17 Mar 2021 02:25:32 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: d0004bc5-985a-4086-8f68-08d8e8ebf0a3
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4725:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <PH0PR10MB472553000EF697CBDF03722B8E6A9@PH0PR10MB4725.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:9508;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: pp6Sl5tsiSXY9pZaEWsVyuXF2ZiWaK/XgAynWjrp2YquVvVIa4xEQfkN1qfeEnU9s5rWxIwWTIVOyT/XI77hsOK/VFl079IsFXSpm1o40Bst7R1tRHftnZm2cwmszV4l4D+K2se2q80aq44xWeYIbRvuXWACSGazjTCv5Efc69pEIAlmNcBVxXFYIMLpXehUnvk3mrF5j7fTjEz0wTnovNRchKpmRJG6+IdI9cwjCvwRrMGQ8GUG4PLI0i+G0d2BO2U29FiiKFAa75BoE7QihgRG12wyBBCZSMRyfRdJ+k4any0TLvQJ8X6eK2QvzvEKplXxLH6C4CZ+fltzukTMJaJiEmK+dYXn87lXUebD72rH1MGjchi3H3ttpaLW8AR1dQ+QwTXrHZpHdK9h7qWpWEF7KjXCbJ4cIkWbO19yoR4MS8+akyCULY5j/NRogrPf+OqdxbgxDVJRKO9b+DmSCyZ9mOrNezfalESYWHvMJspNW1jWwwoOFH4rDORUKTfW/MEM2me+03ZUDKOdeqOw4Q+SuBR/wAery6a3DuGUcFhaKrU2Fcr/k8zel6Rlmwrb
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(396003)(136003)(376002)(366004)(346002)(39860400002)(66476007)(66946007)(36916002)(66556008)(83380400001)(8936002)(4744005)(6916009)(5660300002)(7696005)(4326008)(55016002)(52116002)(7416002)(86362001)(956004)(26005)(316002)(8676002)(186003)(16526019)(478600001)(54906003)(2906002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?us-ascii?Q?rey8vu2GdFuP/V4MgfT1V4PuRW5BHLoz0AD/QOQid07eTZYV8nE7a7cRbx9U?=
+ =?us-ascii?Q?YrkL+SlxEwSgyR/S7iwU1QN5+mNqYLti9pmZv8DYDGgn8dwsnBC1AmMLc0Zx?=
+ =?us-ascii?Q?VBgCK88bSH/qVA8oUQ9E/xr8WEK37VCCQ7y0pZwEHHfwCiiDJ2SsObWloLDq?=
+ =?us-ascii?Q?LQ1Vqd146SdWQfzlqo2a4Ca1Y/L/YPrVUUYEj/qlJKutlIfna7508w//qFn6?=
+ =?us-ascii?Q?fwM+Wa+W7VWVAttKz+pP9v6QgIi1mXewcDsd7kJYuCIuLuEfX08UEZjGzElc?=
+ =?us-ascii?Q?FmkNsBKGXG7CWS2GIzm9mzTk2euCC38bu2D/gOt0DYe9h3ZM+FKQIv/Hg5Sg?=
+ =?us-ascii?Q?ynruUthwHHpOeRoNZubjSuVSjFbIFjTvViz/GSlCFtdAC9UESQ+B5/DQAiAj?=
+ =?us-ascii?Q?oGRQQQLHJps7qDJGGA5I3+qMQ7VsG9ysE6/egBnKoU85fW5E+cy3v/hfVkK9?=
+ =?us-ascii?Q?Vq/BnWaXvfKGoJ6V1ofeT6/YXxbLwTOSru7j35s8b77q4lOr+/RgtnV7l0Qg?=
+ =?us-ascii?Q?5WwEIlwR8UDV2DW9lHJnVrNwD3yCBeAUw7/nASX5OVflKl73drpvRx80t/H6?=
+ =?us-ascii?Q?4oU2A8rcUp5IkChoDkXOjuOtRSWn4NdlONzptdZshU9i5/lbCI1a1sDk7HY/?=
+ =?us-ascii?Q?GwX60cRxtDY5BdhBVF4Sk8cFf84FWtujztDCRPyKZ6+b68V9GvwO3pf1Burm?=
+ =?us-ascii?Q?+RJddTlKQq6sTqgeEZILUc9x/17tYooGDY6G6jerP07u5rGi1hVPtp3y69b2?=
+ =?us-ascii?Q?JuoVcPaBPxNVR7ZfGukLbfWrV3wkAheHMLV4sVihn9Sjn45p8OQ+7cmSRFP4?=
+ =?us-ascii?Q?h+tJ+p5ePtiC8Gj4Xo0w37loucTUako1U8LAFJCkmNl7KyjZgRDgVUWKsDdg?=
+ =?us-ascii?Q?MPxziM6daIpBmvW4hciAjxaEcOB6G6ToQPY+vzYup4DXEkvo6uwBzmypwcGG?=
+ =?us-ascii?Q?aUkNsta6t1IPyyJ6XR37YLG1DOEIpkwsOKmj6mRTsu7SAxvOaSrpn4QnIRXq?=
+ =?us-ascii?Q?WXw8tGb+eqaTyplZRp8hqrbq3czH+YWvOdpEtGZfzrPbfigpJY6ULXNFs/CY?=
+ =?us-ascii?Q?XXULa7zUCrstSzL/ac9ABeMVjWd9J0ahGEvjiyzbhT8mEsLBggT8YMQcN2sr?=
+ =?us-ascii?Q?HubiD9hyA8pFK2SV0P2ZyAVkEfmpTZl2/bxV3A5wsXfjaTy5uTKReQWE5o+z?=
+ =?us-ascii?Q?wdCxGm5xUnnKWpF4MPz1wJY2fmZtx0xAF3+qTR4ZLpPq2623/faeA+we0rIq?=
+ =?us-ascii?Q?83w6ymQI+R+6570bANHDrdQPc0HL5cUCnQUPZPbl6l+NtlXUSGzdwz1AAhbq?=
+ =?us-ascii?Q?3Y+S6BM2vGdpBrTqQFavf08L?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d0004bc5-985a-4086-8f68-08d8e8ebf0a3
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Mar 2021 02:25:32.6000
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: Id1HQ8OmXAGVeEBxJv6EWph8kpIuaAoI4+xR1F+uomg6MEih7Cy4XUIMdcrWQ7X7zCjei/MUFswMvUhnIqjV6OAmbdu3R5jFCCOSK4lHsNk=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4725
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9925 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 adultscore=0 spamscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103170017
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9925 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 mlxlogscore=999
+ spamscore=0 mlxscore=0 bulkscore=0 suspectscore=0 priorityscore=1501
+ lowpriorityscore=0 clxscore=1011 adultscore=0 phishscore=0 impostorscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2009150000
+ definitions=main-2103170017
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-mem_init_print_info() is called in mem_init() on each architecture,
-and pass NULL argument, so using void argument and move it into mm_init().
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
----
-v2:
-- Cleanup 'str' line suggested by Christophe and ACK
+Arnd,
 
- arch/alpha/mm/init.c             |  1 -
- arch/arc/mm/init.c               |  1 -
- arch/arm/mm/init.c               |  2 --
- arch/arm64/mm/init.c             |  2 --
- arch/csky/mm/init.c              |  1 -
- arch/h8300/mm/init.c             |  2 --
- arch/hexagon/mm/init.c           |  1 -
- arch/ia64/mm/init.c              |  1 -
- arch/m68k/mm/init.c              |  1 -
- arch/microblaze/mm/init.c        |  1 -
- arch/mips/loongson64/numa.c      |  1 -
- arch/mips/mm/init.c              |  1 -
- arch/mips/sgi-ip27/ip27-memory.c |  1 -
- arch/nds32/mm/init.c             |  1 -
- arch/nios2/mm/init.c             |  1 -
- arch/openrisc/mm/init.c          |  2 --
- arch/parisc/mm/init.c            |  2 --
- arch/powerpc/mm/mem.c            |  1 -
- arch/riscv/mm/init.c             |  1 -
- arch/s390/mm/init.c              |  2 --
- arch/sh/mm/init.c                |  1 -
- arch/sparc/mm/init_32.c          |  2 --
- arch/sparc/mm/init_64.c          |  1 -
- arch/um/kernel/mem.c             |  1 -
- arch/x86/mm/init_32.c            |  2 --
- arch/x86/mm/init_64.c            |  2 --
- arch/xtensa/mm/init.c            |  1 -
- include/linux/mm.h               |  2 +-
- init/main.c                      |  1 +
- mm/page_alloc.c                  | 10 +++++-----
- 30 files changed, 7 insertions(+), 42 deletions(-)
+> Actually that still feels wrong: the annotation of the struct is to
+> pack every member, which causes the access to be done in byte units on
+> architectures that do not have hardware unaligned load/store
+> instructions, at least for things like atomic_read() that does not go
+> through a cmpxchg() or ll/sc cycle.
 
-diff --git a/arch/alpha/mm/init.c b/arch/alpha/mm/init.c
-index 3c42b3147fd6..a97650a618f1 100644
---- a/arch/alpha/mm/init.c
-+++ b/arch/alpha/mm/init.c
-@@ -282,5 +282,4 @@ mem_init(void)
- 	set_max_mapnr(max_low_pfn);
- 	high_memory = (void *) __va(max_low_pfn * PAGE_SIZE);
- 	memblock_free_all();
--	mem_init_print_info(NULL);
- }
-diff --git a/arch/arc/mm/init.c b/arch/arc/mm/init.c
-index ce07e697916c..33832e36bdb7 100644
---- a/arch/arc/mm/init.c
-+++ b/arch/arc/mm/init.c
-@@ -194,7 +194,6 @@ void __init mem_init(void)
- {
- 	memblock_free_all();
- 	highmem_init();
--	mem_init_print_info(NULL);
- }
- 
- #ifdef CONFIG_HIGHMEM
-diff --git a/arch/arm/mm/init.c b/arch/arm/mm/init.c
-index 828a2561b229..7022b7b5c400 100644
---- a/arch/arm/mm/init.c
-+++ b/arch/arm/mm/init.c
-@@ -316,8 +316,6 @@ void __init mem_init(void)
- 
- 	free_highpages();
- 
--	mem_init_print_info(NULL);
--
- 	/*
- 	 * Check boundaries twice: Some fundamental inconsistencies can
- 	 * be detected at build time already.
-diff --git a/arch/arm64/mm/init.c b/arch/arm64/mm/init.c
-index 3685e12aba9b..e8f29a0bb2f1 100644
---- a/arch/arm64/mm/init.c
-+++ b/arch/arm64/mm/init.c
-@@ -491,8 +491,6 @@ void __init mem_init(void)
- 	/* this will put all unused low memory onto the freelists */
- 	memblock_free_all();
- 
--	mem_init_print_info(NULL);
--
- 	/*
- 	 * Check boundaries twice: Some fundamental inconsistencies can be
- 	 * detected at build time already.
-diff --git a/arch/csky/mm/init.c b/arch/csky/mm/init.c
-index 894050a8ce09..bf2004aa811a 100644
---- a/arch/csky/mm/init.c
-+++ b/arch/csky/mm/init.c
-@@ -107,7 +107,6 @@ void __init mem_init(void)
- 			free_highmem_page(page);
- 	}
- #endif
--	mem_init_print_info(NULL);
- }
- 
- void free_initmem(void)
-diff --git a/arch/h8300/mm/init.c b/arch/h8300/mm/init.c
-index 1f3b345d68b9..f7bf4693e3b2 100644
---- a/arch/h8300/mm/init.c
-+++ b/arch/h8300/mm/init.c
-@@ -98,6 +98,4 @@ void __init mem_init(void)
- 
- 	/* this will put all low memory onto the freelists */
- 	memblock_free_all();
--
--	mem_init_print_info(NULL);
- }
-diff --git a/arch/hexagon/mm/init.c b/arch/hexagon/mm/init.c
-index f2e6c868e477..f01e91e10d95 100644
---- a/arch/hexagon/mm/init.c
-+++ b/arch/hexagon/mm/init.c
-@@ -55,7 +55,6 @@ void __init mem_init(void)
- {
- 	/*  No idea where this is actually declared.  Seems to evade LXR.  */
- 	memblock_free_all();
--	mem_init_print_info(NULL);
- 
- 	/*
- 	 *  To-Do:  someone somewhere should wipe out the bootmem map
-diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-index 16d0d7d22657..83280e2df807 100644
---- a/arch/ia64/mm/init.c
-+++ b/arch/ia64/mm/init.c
-@@ -659,7 +659,6 @@ mem_init (void)
- 	set_max_mapnr(max_low_pfn);
- 	high_memory = __va(max_low_pfn * PAGE_SIZE);
- 	memblock_free_all();
--	mem_init_print_info(NULL);
- 
- 	/*
- 	 * For fsyscall entrpoints with no light-weight handler, use the ordinary
-diff --git a/arch/m68k/mm/init.c b/arch/m68k/mm/init.c
-index 14c1e541451c..1759ab875d47 100644
---- a/arch/m68k/mm/init.c
-+++ b/arch/m68k/mm/init.c
-@@ -153,5 +153,4 @@ void __init mem_init(void)
- 	/* this will put all memory onto the freelists */
- 	memblock_free_all();
- 	init_pointer_tables();
--	mem_init_print_info(NULL);
- }
-diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
-index 05cf1fb3f5ff..ab55c70380a5 100644
---- a/arch/microblaze/mm/init.c
-+++ b/arch/microblaze/mm/init.c
-@@ -131,7 +131,6 @@ void __init mem_init(void)
- 	highmem_setup();
- #endif
- 
--	mem_init_print_info(NULL);
- 	mem_init_done = 1;
- }
- 
-diff --git a/arch/mips/loongson64/numa.c b/arch/mips/loongson64/numa.c
-index 8315c871c435..fa9b4a487a47 100644
---- a/arch/mips/loongson64/numa.c
-+++ b/arch/mips/loongson64/numa.c
-@@ -178,7 +178,6 @@ void __init mem_init(void)
- 	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
- 	memblock_free_all();
- 	setup_zero_pages();	/* This comes from node 0 */
--	mem_init_print_info(NULL);
- }
- 
- /* All PCI device belongs to logical Node-0 */
-diff --git a/arch/mips/mm/init.c b/arch/mips/mm/init.c
-index 5cb73bf74a8b..c36358758969 100644
---- a/arch/mips/mm/init.c
-+++ b/arch/mips/mm/init.c
-@@ -467,7 +467,6 @@ void __init mem_init(void)
- 	memblock_free_all();
- 	setup_zero_pages();	/* Setup zeroed pages.  */
- 	mem_init_free_highmem();
--	mem_init_print_info(NULL);
- 
- #ifdef CONFIG_64BIT
- 	if ((unsigned long) &_text > (unsigned long) CKSEG0)
-diff --git a/arch/mips/sgi-ip27/ip27-memory.c b/arch/mips/sgi-ip27/ip27-memory.c
-index 87bb6945ec25..6173684b5aaa 100644
---- a/arch/mips/sgi-ip27/ip27-memory.c
-+++ b/arch/mips/sgi-ip27/ip27-memory.c
-@@ -420,5 +420,4 @@ void __init mem_init(void)
- 	high_memory = (void *) __va(get_num_physpages() << PAGE_SHIFT);
- 	memblock_free_all();
- 	setup_zero_pages();	/* This comes from node 0 */
--	mem_init_print_info(NULL);
- }
-diff --git a/arch/nds32/mm/init.c b/arch/nds32/mm/init.c
-index fa86f7b2f416..f63f839738c4 100644
---- a/arch/nds32/mm/init.c
-+++ b/arch/nds32/mm/init.c
-@@ -191,7 +191,6 @@ void __init mem_init(void)
- 
- 	/* this will put all low memory onto the freelists */
- 	memblock_free_all();
--	mem_init_print_info(NULL);
- 
- 	pr_info("virtual kernel memory layout:\n"
- 		"    fixmap  : 0x%08lx - 0x%08lx   (%4ld kB)\n"
-diff --git a/arch/nios2/mm/init.c b/arch/nios2/mm/init.c
-index 61862dbb0e32..613fcaa5988a 100644
---- a/arch/nios2/mm/init.c
-+++ b/arch/nios2/mm/init.c
-@@ -71,7 +71,6 @@ void __init mem_init(void)
- 
- 	/* this will put all memory onto the freelists */
- 	memblock_free_all();
--	mem_init_print_info(NULL);
- }
- 
- void __init mmu_init(void)
-diff --git a/arch/openrisc/mm/init.c b/arch/openrisc/mm/init.c
-index bf9b2310fc93..d5641198b90c 100644
---- a/arch/openrisc/mm/init.c
-+++ b/arch/openrisc/mm/init.c
-@@ -211,8 +211,6 @@ void __init mem_init(void)
- 	/* this will put all low memory onto the freelists */
- 	memblock_free_all();
- 
--	mem_init_print_info(NULL);
--
- 	printk("mem_init_done ...........................................\n");
- 	mem_init_done = 1;
- 	return;
-diff --git a/arch/parisc/mm/init.c b/arch/parisc/mm/init.c
-index 9ca4e4ff6895..591a4e939415 100644
---- a/arch/parisc/mm/init.c
-+++ b/arch/parisc/mm/init.c
-@@ -573,8 +573,6 @@ void __init mem_init(void)
- #endif
- 		parisc_vmalloc_start = SET_MAP_OFFSET(MAP_START);
- 
--	mem_init_print_info(NULL);
--
- #if 0
- 	/*
- 	 * Do not expose the virtual kernel memory layout to userspace.
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 4e8ce6d85232..7e11c4cb08b8 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -312,7 +312,6 @@ void __init mem_init(void)
- 		(mfspr(SPRN_TLB1CFG) & TLBnCFG_N_ENTRY) - 1;
- #endif
- 
--	mem_init_print_info(NULL);
- #ifdef CONFIG_PPC32
- 	pr_info("Kernel virtual memory layout:\n");
- #ifdef CONFIG_KASAN
-diff --git a/arch/riscv/mm/init.c b/arch/riscv/mm/init.c
-index 7f5036fbee8c..3c5ee3b7d811 100644
---- a/arch/riscv/mm/init.c
-+++ b/arch/riscv/mm/init.c
-@@ -102,7 +102,6 @@ void __init mem_init(void)
- 	high_memory = (void *)(__va(PFN_PHYS(max_low_pfn)));
- 	memblock_free_all();
- 
--	mem_init_print_info(NULL);
- 	print_vm_layout();
- }
- 
-diff --git a/arch/s390/mm/init.c b/arch/s390/mm/init.c
-index 0e76b2127dc6..8ac710de1ab1 100644
---- a/arch/s390/mm/init.c
-+++ b/arch/s390/mm/init.c
-@@ -209,8 +209,6 @@ void __init mem_init(void)
- 	setup_zero_pages();	/* Setup zeroed pages. */
- 
- 	cmma_init_nodat();
--
--	mem_init_print_info(NULL);
- }
- 
- void free_initmem(void)
-diff --git a/arch/sh/mm/init.c b/arch/sh/mm/init.c
-index 0db6919af8d3..168d7d4dd735 100644
---- a/arch/sh/mm/init.c
-+++ b/arch/sh/mm/init.c
-@@ -359,7 +359,6 @@ void __init mem_init(void)
- 
- 	vsyscall_init();
- 
--	mem_init_print_info(NULL);
- 	pr_info("virtual kernel memory layout:\n"
- 		"    fixmap  : 0x%08lx - 0x%08lx   (%4ld kB)\n"
- 		"    vmalloc : 0x%08lx - 0x%08lx   (%4ld MB)\n"
-diff --git a/arch/sparc/mm/init_32.c b/arch/sparc/mm/init_32.c
-index 6139c5700ccc..1e9f577f084d 100644
---- a/arch/sparc/mm/init_32.c
-+++ b/arch/sparc/mm/init_32.c
-@@ -292,8 +292,6 @@ void __init mem_init(void)
- 
- 		map_high_region(start_pfn, end_pfn);
- 	}
--
--	mem_init_print_info(NULL);
- }
- 
- void sparc_flush_page_to_ram(struct page *page)
-diff --git a/arch/sparc/mm/init_64.c b/arch/sparc/mm/init_64.c
-index 182bb7bdaa0a..e454f179cf5d 100644
---- a/arch/sparc/mm/init_64.c
-+++ b/arch/sparc/mm/init_64.c
-@@ -2520,7 +2520,6 @@ void __init mem_init(void)
- 	}
- 	mark_page_reserved(mem_map_zero);
- 
--	mem_init_print_info(NULL);
- 
- 	if (tlb_type == cheetah || tlb_type == cheetah_plus)
- 		cheetah_ecache_flush_init();
-diff --git a/arch/um/kernel/mem.c b/arch/um/kernel/mem.c
-index 9242dc91d751..9019ff5905b1 100644
---- a/arch/um/kernel/mem.c
-+++ b/arch/um/kernel/mem.c
-@@ -54,7 +54,6 @@ void __init mem_init(void)
- 	memblock_free_all();
- 	max_low_pfn = totalram_pages();
- 	max_pfn = max_low_pfn;
--	mem_init_print_info(NULL);
- 	kmalloc_ok = 1;
- }
- 
-diff --git a/arch/x86/mm/init_32.c b/arch/x86/mm/init_32.c
-index da31c2635ee4..21ffb03f6c72 100644
---- a/arch/x86/mm/init_32.c
-+++ b/arch/x86/mm/init_32.c
-@@ -755,8 +755,6 @@ void __init mem_init(void)
- 	after_bootmem = 1;
- 	x86_init.hyper.init_after_bootmem();
- 
--	mem_init_print_info(NULL);
--
- 	/*
- 	 * Check boundaries twice: Some fundamental inconsistencies can
- 	 * be detected at build time already.
-diff --git a/arch/x86/mm/init_64.c b/arch/x86/mm/init_64.c
-index 5430c81eefc9..aa8387aab9c1 100644
---- a/arch/x86/mm/init_64.c
-+++ b/arch/x86/mm/init_64.c
-@@ -1350,8 +1350,6 @@ void __init mem_init(void)
- 		kclist_add(&kcore_vsyscall, (void *)VSYSCALL_ADDR, PAGE_SIZE, KCORE_USER);
- 
- 	preallocate_vmalloc_pages();
--
--	mem_init_print_info(NULL);
- }
- 
- #ifdef CONFIG_DEFERRED_STRUCT_PAGE_INIT
-diff --git a/arch/xtensa/mm/init.c b/arch/xtensa/mm/init.c
-index 2daeba9e454e..6a32b2cf2718 100644
---- a/arch/xtensa/mm/init.c
-+++ b/arch/xtensa/mm/init.c
-@@ -119,7 +119,6 @@ void __init mem_init(void)
- 
- 	memblock_free_all();
- 
--	mem_init_print_info(NULL);
- 	pr_info("virtual kernel memory layout:\n"
- #ifdef CONFIG_KASAN
- 		"    kasan   : 0x%08lx - 0x%08lx  (%5lu MB)\n"
-diff --git a/include/linux/mm.h b/include/linux/mm.h
-index 89314651dd62..c2e0b3495c5a 100644
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2373,7 +2373,7 @@ extern unsigned long free_reserved_area(void *start, void *end,
- 					int poison, const char *s);
- 
- extern void adjust_managed_page_count(struct page *page, long count);
--extern void mem_init_print_info(const char *str);
-+extern void mem_init_print_info(void);
- 
- extern void reserve_bootmem_region(phys_addr_t start, phys_addr_t end);
- 
-diff --git a/init/main.c b/init/main.c
-index 53b278845b88..5581af5b4cb7 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -830,6 +830,7 @@ static void __init mm_init(void)
- 	report_meminit();
- 	stack_depot_init();
- 	mem_init();
-+	mem_init_print_info();
- 	/* page_owner must be initialized after buddy is ready */
- 	page_ext_init_flatmem_late();
- 	kmem_cache_init();
-diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-index 55d938297ce6..b5fe5962837c 100644
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -7728,7 +7728,7 @@ unsigned long free_reserved_area(void *start, void *end, int poison, const char
- 	return pages;
- }
- 
--void __init mem_init_print_info(const char *str)
-+void __init mem_init_print_info(void)
- {
- 	unsigned long physpages, codesize, datasize, rosize, bss_size;
- 	unsigned long init_code_size, init_data_size;
-@@ -7767,17 +7767,17 @@ void __init mem_init_print_info(const char *str)
- #ifdef	CONFIG_HIGHMEM
- 		", %luK highmem"
- #endif
--		"%s%s)\n",
-+		")\n",
- 		nr_free_pages() << (PAGE_SHIFT - 10),
- 		physpages << (PAGE_SHIFT - 10),
- 		codesize >> 10, datasize >> 10, rosize >> 10,
- 		(init_data_size + init_code_size) >> 10, bss_size >> 10,
- 		(physpages - totalram_pages() - totalcma_pages) << (PAGE_SHIFT - 10),
--		totalcma_pages << (PAGE_SHIFT - 10),
-+		totalcma_pages << (PAGE_SHIFT - 10)
- #ifdef	CONFIG_HIGHMEM
--		totalhigh_pages() << (PAGE_SHIFT - 10),
-+		, totalhigh_pages() << (PAGE_SHIFT - 10)
- #endif
--		str ? ", " : "", str ? str : "");
-+		);
- }
- 
- /**
+> This change may fix itanium, but it's still not correct. Other
+> architectures would have already been broken before the recent change,
+> but that's not a reason against fixing them now.
+
+I agree. I understand why there are restrictions on fields consumed by
+the hardware. But for fields internal to the driver the packing doesn't
+make sense to me.
+
 -- 
-2.26.2
-
+Martin K. Petersen	Oracle Linux Engineering
