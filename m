@@ -2,95 +2,87 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 496BE33F227
-	for <lists+linux-ia64@lfdr.de>; Wed, 17 Mar 2021 15:04:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8557733F6D0
+	for <lists+linux-ia64@lfdr.de>; Wed, 17 Mar 2021 18:29:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231278AbhCQOED (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 17 Mar 2021 10:04:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49460 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231750AbhCQODe (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 17 Mar 2021 10:03:34 -0400
-Received: from mail-yb1-xb35.google.com (mail-yb1-xb35.google.com [IPv6:2607:f8b0:4864:20::b35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5743BC06174A;
-        Wed, 17 Mar 2021 07:03:34 -0700 (PDT)
-Received: by mail-yb1-xb35.google.com with SMTP id h82so40555446ybc.13;
-        Wed, 17 Mar 2021 07:03:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6OaFjyFWgg4m3b9LuLpqb/rP6tn5J4G93CnXJEjgfLQ=;
-        b=i2DpCpQM7JeSSiS/pjMxgtMmRWaqyEUnqOkpir3k6hjfU9Oor7nDorySG4w47CoCGd
-         HaiLgTyqU0kC8zA/M2kZQM1sH1E1LbWud/WbA8om7HWvSV+BUakqiOwPUeTLcoqCLPGf
-         JedwFXQpUMM2xc1N014Ahaw2YTMoAf2cj3FsgDsCKv3ZOzvpAcW8c+eMj3EENF375f8x
-         11rayPkdrSyY5YcS7+D3f2mNmy0iI8qzZ8PRIa+NRFehp669D1SyF0qYVVKeD+gzVYK8
-         LIsktzMZcnA20N+P0QIhTw/wSHTpN81axxWdN3YKq6VrI5qwWqPf0cj92aOsspj4iCYa
-         aQLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6OaFjyFWgg4m3b9LuLpqb/rP6tn5J4G93CnXJEjgfLQ=;
-        b=bEUxvKmIPKCyxJ/STwqn0nT8JeKSy63asIyOyju2QZvTR+yvanfV/cFC9wNYb3hz0V
-         t/b+nT7Ag8aJ/pAjonS87XhLsRUaeihZt+QkC9CSQ0f+vg8oLMEF0ZkOtGqRgov63kqr
-         2OamdQbpY0cB+Fyux7SIb8iJg1AKVHfz6UVz0dB0iqLBpVL+eRP00fgHZEycmW1Pf4/z
-         3+Y16vvjfux3pRzjxFHlBsphjI3k572SXs52haRBXruQ1T/FbMtGYgDXXr/Io5hWifOo
-         Uk6wZYkPiDJnssYbxrGThiHGIksmZwDpMIVplGAZVCTTmGYZsojlkNlTio8NVCUd/RFf
-         MY3g==
-X-Gm-Message-State: AOAM531HNTbVWb29pXxB62HSRRm7MvH3l56ACL8LHNBOrIAFh963uPdb
-        soVcscHLQEjJqILnH9lyHOFq6c/gT9HjilUki5i/1OJ6iZHnmg==
-X-Google-Smtp-Source: ABdhPJxYwg2QBX1owqFPtrq2F/9pLRU/hzhKTzIOR3dpydN55snYMjquLkj00WQN+8aJP9sdN02xLmqhMTlZQxWC8Dc=
-X-Received: by 2002:a25:dad4:: with SMTP id n203mr4746316ybf.233.1615989813490;
- Wed, 17 Mar 2021 07:03:33 -0700 (PDT)
+        id S231557AbhCQR2t (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 17 Mar 2021 13:28:49 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:44407 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S231184AbhCQR2n (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 17 Mar 2021 13:28:43 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1lMZyC-002jNS-LK; Wed, 17 Mar 2021 18:28:32 +0100
+Received: from p5b13a966.dip0.t-ipconnect.de ([91.19.169.102] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1lMZyC-003vpV-EX; Wed, 17 Mar 2021 18:28:32 +0100
+Subject: Re: [PATCH] hpsa: fix boot on ia64 (atomic_t alignment)
+To:     Sergei Trofimovich <slyfox@gentoo.org>,
+        linux-kernel@vger.kernel.org
+Cc:     linux-ia64@vger.kernel.org, storagedev@microchip.com,
+        linux-scsi@vger.kernel.org, Joe Szczypek <jszczype@redhat.com>,
+        Scott Benesh <scott.benesh@microchip.com>,
+        Scott Teel <scott.teel@microchip.com>,
+        Tomas Henzl <thenzl@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Don Brace <don.brace@microchip.com>
+References: <5532f9ab-7555-d51b-f4d5-f9b72a61f248@redhat.com>
+ <20210312222718.4117508-1-slyfox@gentoo.org>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <23674602-0f14-0b71-3192-aa0184a34d6e@physik.fu-berlin.de>
+Date:   Wed, 17 Mar 2021 18:28:31 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-References: <4d488195-7281-9238-b30d-9f89a6100fb9@csgroup.eu> <20210317015210.33641-1-wangkefeng.wang@huawei.com>
-In-Reply-To: <20210317015210.33641-1-wangkefeng.wang@huawei.com>
-From:   Anatoly Pugachev <matorola@gmail.com>
-Date:   Wed, 17 Mar 2021 17:03:22 +0300
-Message-ID: <CADxRZqwFokuZrhA6GFr=whM3s7BqZpzo8yq=TW6YEr=eeEUH0A@mail.gmail.com>
-Subject: Re: [PATCH v2] mm: Move mem_init_print_info() into mm_init()
-To:     Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc:     Linux Kernel list <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Guo Ren <guoren@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        Sparc kernel list <sparclinux@vger.kernel.org>,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <20210312222718.4117508-1-slyfox@gentoo.org>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.169.102
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Mar 17, 2021 at 4:51 AM Kefeng Wang <wangkefeng.wang@huawei.com> wrote:
->
-> mem_init_print_info() is called in mem_init() on each architecture,
-> and pass NULL argument, so using void argument and move it into mm_init().
->
-> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
-> v2:
-> - Cleanup 'str' line suggested by Christophe and ACK
+Hi Sergei!
 
-applied patch (5.12.0-rc3-00020-g1df27313f50a-dirty) over linus.git
-and tested boot on a sparc64 virtual machine (ldom) - boots.
+On 3/12/21 11:27 PM, Sergei Trofimovich wrote:
+> The failure initially observed as boot failure on rx3600 ia64 machine
+> with RAID bus controller: Hewlett-Packard Company Smart Array P600:
+> 
+>     kernel unaligned access to 0xe000000105dd8b95, ip=0xa000000100b87551
+>     kernel unaligned access to 0xe000000105dd8e95, ip=0xa000000100b87551
+>     hpsa 0000:14:01.0: Controller reports max supported commands of 0 Using 16 instead. Ensure that firmware is up to date.
+>     swapper/0[1]: error during unaligned kernel access
+> 
+> Here unaligned access comes from 'struct CommandList' that happens
+> to be packed. The change f749d8b7a ("scsi: hpsa: Correct dev cmds
+> outstanding for retried cmds") introduced unexpected padding and
+> un-aligned atomic_t from natural alignment to something else.
+> 
+> This change does not remove packing annotation from struct but only
+> restores alignment of atomic variable.
+> 
+> The change is tested on the same rx3600 machine.
+
+I just gave it a try on my RX2660 and for me, the hpsa driver won't load even
+with your patch.
+
+Can you share your kernel configuration so I can give it a try?
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
