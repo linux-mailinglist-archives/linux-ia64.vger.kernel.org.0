@@ -2,140 +2,113 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CF3E342013
-	for <lists+linux-ia64@lfdr.de>; Fri, 19 Mar 2021 15:48:15 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2735134203E
+	for <lists+linux-ia64@lfdr.de>; Fri, 19 Mar 2021 15:55:45 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230047AbhCSOrm (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 19 Mar 2021 10:47:42 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:47011 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S230268AbhCSOrZ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 19 Mar 2021 10:47:25 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1lNGP9-0008h7-Bz; Fri, 19 Mar 2021 15:47:11 +0100
-Received: from suse-laptop.physik.fu-berlin.de ([160.45.32.140])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1lNGP8-0014sH-7N; Fri, 19 Mar 2021 15:47:11 +0100
-Subject: Re: [PATCH] ia64: Ensure proper NUMA distance and possible map
- initialization
-To:     Valentin Schneider <valentin.schneider@arm.com>,
-        linux-kernel@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        debian-ia64 <debian-ia64@lists.debian.org>
-Cc:     "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Sergei Trofimovich <slyfox@gentoo.org>,
-        Anatoly Pugachev <matorola@gmail.com>
-References: <20210318130617.896309-1-valentin.schneider@arm.com>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <3c421868-d6a8-1da2-f876-49b6374270dc@physik.fu-berlin.de>
-Date:   Fri, 19 Mar 2021 15:47:09 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        id S230448AbhCSOzO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 19 Mar 2021 10:55:14 -0400
+Received: from mail-ua1-f54.google.com ([209.85.222.54]:43532 "EHLO
+        mail-ua1-f54.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230378AbhCSOym (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 19 Mar 2021 10:54:42 -0400
+Received: by mail-ua1-f54.google.com with SMTP id c13so3103297uao.10;
+        Fri, 19 Mar 2021 07:54:41 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=t7iwM5Al+GjmpcCXrO+/PoTF1eT3fOyyCJF+hEmDRuY=;
+        b=m8K/vL4OYcPQNn1dHIlpSuz7xVfJ3sA6vuXpFu1YodJjgA9VanpL8m2yABAGlfv3gZ
+         w/bfN+o2HWE3pAH1COnRxNMiRLAlUqs4Dhl881LsPziftGAqBsCQprCqHtErzG/jDJB2
+         i2Jaqw/y0f+wNjfP5mAlEHhnDTQa4+Tu2+06o7JnsZbD4TgBJvsSu4sDFubV+5VScaRH
+         V+iAFgK/lZ6WqKuq57ZjJtCi8d5TI0xGm3LKGy3b2mAroFf1BlANqVOM/GlH7Nm25s6h
+         r+qFbR8FvarbFWiFrZhsdWPRZdYf1+RLiPk0quOa5OacozonYu6FlkAKJD1O09Rbr264
+         ithg==
+X-Gm-Message-State: AOAM530hzg1CSJJoB9I/M1IOQHDwFSdyfmh+bYHqNMiYY4wgVVMVYJTa
+        H2rhz+oKYFAF1BXf32zz5xuLZH8App7ez5b8ueKNUXPT
+X-Google-Smtp-Source: ABdhPJws2Ktj9BbIiCJ2GEgAVHw5Jy7feW23SDXRGODsXxsWn+4cet7pHOPZfquztis6cg4P7dw2c+QmSRw/42z1U4s=
+X-Received: by 2002:a9f:35a1:: with SMTP id t30mr5801449uad.106.1616165680697;
+ Fri, 19 Mar 2021 07:54:40 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20210318130617.896309-1-valentin.schneider@arm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 160.45.32.140
+References: <20210319143452.25948-1-david@redhat.com> <20210319143452.25948-3-david@redhat.com>
+In-Reply-To: <20210319143452.25948-3-david@redhat.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Fri, 19 Mar 2021 15:54:29 +0100
+Message-ID: <CAMuHMdVP433iVhyaweDd8G6p3ZCgSDq6M_ACko_BTgm+5m0qnA@mail.gmail.com>
+Subject: Re: [PATCH RFC 2/3] mm: remove xlate_dev_kmem_ptr()
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux MM <linux-mm@kvack.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Brian Cain <bcain@codeaurora.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Mikulas Patocka <mpatocka@redhat.com>,
+        Luc Van Oostenryck <luc.vanoostenryck@gmail.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Palmer Dabbelt <palmerdabbelt@google.com>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Greentime Hu <green.hu@gmail.com>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Pierre Morel <pmorel@linux.ibm.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
+        alpha <linux-alpha@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Valentin!
+On Fri, Mar 19, 2021 at 3:36 PM David Hildenbrand <david@redhat.com> wrote:
+> Since /dev/kmem has been removed, let's remove the xlate_dev_kmem_ptr()
+> leftovers.
 
-On 3/18/21 2:06 PM, Valentin Schneider wrote:
-> John Paul reported a warning about bogus NUMA distance values spurred by
-> commit:
-> 
->   620a6dc40754 ("sched/topology: Make sched_init_numa() use a set for the deduplicating sort")
-> 
-> In this case, the afflicted machine comes up with a reported 256 possible
-> nodes, all of which are 0 distance away from one another. This was
-> previously silently ignored, but is now caught by the aforementioned
-> commit.
-> 
-> The culprit is ia64's node_possible_map which remains unchanged from its
-> initialization value of NODE_MASK_ALL. In John's case, the machine doesn't
-> have any SRAT nor SLIT table, but AIUI the possible map remains untouched
-> regardless of what ACPI tables end up being parsed. Thus, !online &&
-> possible nodes remain with a bogus distance of 0 (distances \in [0, 9] are
-> "reserved and have no meaning" as per the ACPI spec).
-> 
-> Follow x86 / drivers/base/arch_numa's example and set the possible map to
-> the parsed map, which in this case seems to be the online map.
-> 
-> Link: http://lore.kernel.org/r/255d6b5d-194e-eb0e-ecdd-97477a534441@physik.fu-berlin.de
-> Fixes: 620a6dc40754 ("sched/topology: Make sched_init_numa() use a set for the deduplicating sort")
-> Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-> ---
-> This might need an earlier Fixes: tag, but all of this is quite old and
-> dusty (the git blame rabbit hole leads me to ~2008/2007)
-> 
-> Alternatively, can we deprecate ia64 already?
-> ---
->  arch/ia64/kernel/acpi.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/ia64/kernel/acpi.c b/arch/ia64/kernel/acpi.c
-> index a5636524af76..e2af6b172200 100644
-> --- a/arch/ia64/kernel/acpi.c
-> +++ b/arch/ia64/kernel/acpi.c
-> @@ -446,7 +446,8 @@ void __init acpi_numa_fixup(void)
->  	if (srat_num_cpus == 0) {
->  		node_set_online(0);
->  		node_cpuid[0].phys_id = hard_smp_processor_id();
-> -		return;
-> +		slit_distance(0, 0) = LOCAL_DISTANCE;
-> +		goto out;
->  	}
->  
->  	/*
-> @@ -489,7 +490,7 @@ void __init acpi_numa_fixup(void)
->  			for (j = 0; j < MAX_NUMNODES; j++)
->  				slit_distance(i, j) = i == j ?
->  					LOCAL_DISTANCE : REMOTE_DISTANCE;
-> -		return;
-> +		goto out;
->  	}
->  
->  	memset(numa_slit, -1, sizeof(numa_slit));
-> @@ -514,6 +515,8 @@ void __init acpi_numa_fixup(void)
->  		printk("\n");
->  	}
->  #endif
-> +out:
-> +	node_possible_map = node_online_map;
->  }
->  #endif				/* CONFIG_ACPI_NUMA */
->  
-> 
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+>  arch/m68k/include/asm/io_mm.h   |  5 -----
 
-Could you send this patch through Andrew Morton's tree? The ia64 port currently
-has no maintainer, so we have to use an alternative tree.
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-@Sergei: Could you test/ack this patch as well?
+Gr{oetje,eeting}s,
 
-Thanks,
-Adrian
+                        Geert
 
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
