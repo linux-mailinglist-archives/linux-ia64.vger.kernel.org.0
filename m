@@ -2,72 +2,129 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D9E93424C6
-	for <lists+linux-ia64@lfdr.de>; Fri, 19 Mar 2021 19:36:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 742A33425E1
+	for <lists+linux-ia64@lfdr.de>; Fri, 19 Mar 2021 20:12:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230456AbhCSSgN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 19 Mar 2021 14:36:13 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58406 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230453AbhCSSfy (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 19 Mar 2021 14:35:54 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id D2EE661980;
-        Fri, 19 Mar 2021 18:35:51 +0000 (UTC)
-Date:   Fri, 19 Mar 2021 18:35:49 +0000
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-Cc:     linux-mm@kvack.org, x86@kernel.org, linux-ia64@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/6] mm: some config cleanups
-Message-ID: <20210319183548.GH6832@arm.com>
-References: <1615278790-18053-1-git-send-email-anshuman.khandual@arm.com>
+        id S231296AbhCSTMC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 19 Mar 2021 15:12:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59952 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229956AbhCSTLQ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 19 Mar 2021 15:11:16 -0400
+Received: from smtp.gentoo.org (mail.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA56BC06174A;
+        Fri, 19 Mar 2021 12:11:10 -0700 (PDT)
+Date:   Fri, 19 Mar 2021 19:10:59 +0000
+From:   Sergei Trofimovich <slyfox@gentoo.org>
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     Valentin Schneider <valentin.schneider@arm.com>,
+        linux-kernel@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        debian-ia64 <debian-ia64@lists.debian.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Anatoly Pugachev <matorola@gmail.com>
+Subject: Re: [PATCH] ia64: Ensure proper NUMA distance and possible map
+ initialization
+Message-ID: <20210319191059.2a776cb8@sf>
+In-Reply-To: <3c421868-d6a8-1da2-f876-49b6374270dc@physik.fu-berlin.de>
+References: <20210318130617.896309-1-valentin.schneider@arm.com>
+        <3c421868-d6a8-1da2-f876-49b6374270dc@physik.fu-berlin.de>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1615278790-18053-1-git-send-email-anshuman.khandual@arm.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Mar 09, 2021 at 02:03:04PM +0530, Anshuman Khandual wrote:
-> This series contains config cleanup patches which reduces code duplication
-> across platforms and also improves maintainability. There is no functional
-> change intended with this series. This has been boot tested on arm64 but
-> only build tested on some other platforms.
-> 
-> This applies on 5.12-rc2
-> 
-> Cc: x86@kernel.org
-> Cc: linux-ia64@vger.kernel.org
-> Cc: linux-s390@vger.kernel.org
-> Cc: linux-snps-arc@lists.infradead.org
-> Cc: linux-arm-kernel@lists.infradead.org
-> Cc: linux-mips@vger.kernel.org
-> Cc: linux-parisc@vger.kernel.org
-> Cc: linuxppc-dev@lists.ozlabs.org
-> Cc: linux-riscv@lists.infradead.org
-> Cc: linux-sh@vger.kernel.org
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Cc: linux-kernel@vger.kernel.org
-> 
-> Anshuman Khandual (6):
->   mm: Generalize ARCH_HAS_CACHE_LINE_SIZE
->   mm: Generalize SYS_SUPPORTS_HUGETLBFS (rename as ARCH_SUPPORTS_HUGETLBFS)
->   mm: Generalize ARCH_ENABLE_MEMORY_[HOTPLUG|HOTREMOVE]
->   mm: Drop redundant ARCH_ENABLE_[HUGEPAGE|THP]_MIGRATION
->   mm: Drop redundant ARCH_ENABLE_SPLIT_PMD_PTLOCK
->   mm: Drop redundant HAVE_ARCH_TRANSPARENT_HUGEPAGE
-> 
->  arch/arc/Kconfig                       |  9 ++------
->  arch/arm/Kconfig                       | 10 ++-------
->  arch/arm64/Kconfig                     | 30 ++++++--------------------
+On Fri, 19 Mar 2021 15:47:09 +0100
+John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> wrote:
 
-For arm64:
+> Hi Valentin!
+> 
+> On 3/18/21 2:06 PM, Valentin Schneider wrote:
+> > John Paul reported a warning about bogus NUMA distance values spurred by
+> > commit:
+> > 
+> >   620a6dc40754 ("sched/topology: Make sched_init_numa() use a set for the deduplicating sort")
+> > 
+> > In this case, the afflicted machine comes up with a reported 256 possible
+> > nodes, all of which are 0 distance away from one another. This was
+> > previously silently ignored, but is now caught by the aforementioned
+> > commit.
+> > 
+> > The culprit is ia64's node_possible_map which remains unchanged from its
+> > initialization value of NODE_MASK_ALL. In John's case, the machine doesn't
+> > have any SRAT nor SLIT table, but AIUI the possible map remains untouched
+> > regardless of what ACPI tables end up being parsed. Thus, !online &&
+> > possible nodes remain with a bogus distance of 0 (distances \in [0, 9] are
+> > "reserved and have no meaning" as per the ACPI spec).
+> > 
+> > Follow x86 / drivers/base/arch_numa's example and set the possible map to
+> > the parsed map, which in this case seems to be the online map.
+> > 
+> > Link: http://lore.kernel.org/r/255d6b5d-194e-eb0e-ecdd-97477a534441@physik.fu-berlin.de
+> > Fixes: 620a6dc40754 ("sched/topology: Make sched_init_numa() use a set for the deduplicating sort")
+> > Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> > Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
+> > ---
+> > This might need an earlier Fixes: tag, but all of this is quite old and
+> > dusty (the git blame rabbit hole leads me to ~2008/2007)
+> > 
+> > Alternatively, can we deprecate ia64 already?
+> > ---
+> >  arch/ia64/kernel/acpi.c | 7 +++++--
+> >  1 file changed, 5 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/arch/ia64/kernel/acpi.c b/arch/ia64/kernel/acpi.c
+> > index a5636524af76..e2af6b172200 100644
+> > --- a/arch/ia64/kernel/acpi.c
+> > +++ b/arch/ia64/kernel/acpi.c
+> > @@ -446,7 +446,8 @@ void __init acpi_numa_fixup(void)
+> >  	if (srat_num_cpus == 0) {
+> >  		node_set_online(0);
+> >  		node_cpuid[0].phys_id = hard_smp_processor_id();
+> > -		return;
+> > +		slit_distance(0, 0) = LOCAL_DISTANCE;
+> > +		goto out;
+> >  	}
+> >  
+> >  	/*
+> > @@ -489,7 +490,7 @@ void __init acpi_numa_fixup(void)
+> >  			for (j = 0; j < MAX_NUMNODES; j++)
+> >  				slit_distance(i, j) = i == j ?
+> >  					LOCAL_DISTANCE : REMOTE_DISTANCE;
+> > -		return;
+> > +		goto out;
+> >  	}
+> >  
+> >  	memset(numa_slit, -1, sizeof(numa_slit));
+> > @@ -514,6 +515,8 @@ void __init acpi_numa_fixup(void)
+> >  		printk("\n");
+> >  	}
+> >  #endif
+> > +out:
+> > +	node_possible_map = node_online_map;
+> >  }
+> >  #endif				/* CONFIG_ACPI_NUMA */
+> >  
+> >   
+> 
+> Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> 
+> Could you send this patch through Andrew Morton's tree? The ia64 port currently
+> has no maintainer, so we have to use an alternative tree.
+> 
+> @Sergei: Could you test/ack this patch as well?
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Booted successfully without problems on rx3600.
+
+Tested-by: Sergei Trofimovich <slyfox@gentoo.org>
+
+
+-- 
+
+  Sergei
