@@ -2,104 +2,105 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7776F342EFE
-	for <lists+linux-ia64@lfdr.de>; Sat, 20 Mar 2021 19:27:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB61D342F17
+	for <lists+linux-ia64@lfdr.de>; Sat, 20 Mar 2021 20:02:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229826AbhCTS0k (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 20 Mar 2021 14:26:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47504 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229769AbhCTS0S (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 20 Mar 2021 14:26:18 -0400
-Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09EAEC061574;
-        Sat, 20 Mar 2021 11:26:18 -0700 (PDT)
-Received: by mail-qt1-x832.google.com with SMTP id s2so9409386qtx.10;
-        Sat, 20 Mar 2021 11:26:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bFrAwojYFFSLnG6A9rSMfG6/9uir3qb9v3jvruMRe+s=;
-        b=Tn7L4lEHwwhAbsp3YyE/iQeKhDtYhQU5XCfiD9zr+Iu6M6V1vugx9IprEnEAhJtztI
-         oFtdJA6rpbQvGob/+TOC7GJs//Cz76Lyu53eVpjN10zmq8cnvaRbsjlbuYHPoYFbxBea
-         HbjXz1Rch19GyVS9OIL0JyahA/FtJWiAawgz/Wb1Yk2oRfywnAxhmF+BMnWDGQbw4xE+
-         sgWbRbV/Mrl+cQDMLVtUX1i37Pm4smpxGooilWk8B4jw3GgbBXvEBD3e5KM/tHiRO81l
-         f4omsqOoltInhOSy68kWpwtV+Je6U0BkG5valUXDWnMxu7MhkXIZGjnlLa+S4inewIAf
-         dTHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=bFrAwojYFFSLnG6A9rSMfG6/9uir3qb9v3jvruMRe+s=;
-        b=QCqsCckqikzKaih78sZ3yenoh5sRLgmymNFsHyvw/ciDHKWreqjInjGGu9aAbBqfce
-         /yM9CvnYWVXJJxPUKMUMMOXC41QtFfNtnnbxcRQanLdFAZA8jRI8hreb2BSJa7adiScf
-         7Ggaq0joF1w4ypMGZesEkmvgsMY0BJLtdUzUKsl3SdMF5795woK/2uPAjYV8a/YAgnwJ
-         9JEGcFBDrEH8B8dho70zh4BzK6cCKxw3Fa47TrGbcVE+/p2ETzJmvpIIrXsfMIhH080r
-         CFwrFcwkNLnEAQJeTYjNnWn3ngSnuDSgvRPf1+B1MC4CbW7Wii3SnrU0pgLl+IUImqMf
-         BTsA==
-X-Gm-Message-State: AOAM530pJXQdv4hG1BCte7S8V+q/H1v+3i0wTGgYQ+o8yCDOJf3ihxZY
-        sgazD8gnGmsKlpructzUDu0=
-X-Google-Smtp-Source: ABdhPJwXR91CqLfqLL0bWNmFEJzrpM0nv6oCrVTPcIR/9mrJPYDWxYU5aC+ajx0sdYn5w9OMi8LdPw==
-X-Received: by 2002:ac8:109a:: with SMTP id a26mr3802327qtj.156.1616264777021;
-        Sat, 20 Mar 2021 11:26:17 -0700 (PDT)
-Received: from localhost.localdomain ([138.199.13.205])
-        by smtp.gmail.com with ESMTPSA id b21sm7072710qkl.14.2021.03.20.11.26.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 20 Mar 2021 11:26:16 -0700 (PDT)
-From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
-To:     unixbhaskar@gmail.com, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org
+        id S229817AbhCTTBS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 20 Mar 2021 15:01:18 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:48335 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229618AbhCTTBM (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Sat, 20 Mar 2021 15:01:12 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1lNgqU-001gPD-7c; Sat, 20 Mar 2021 20:01:10 +0100
+Received: from p5b13afd4.dip0.t-ipconnect.de ([91.19.175.212] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1lNgqU-0003fI-1B; Sat, 20 Mar 2021 20:01:10 +0100
+Subject: Re: [PATCH] IA64: Trivial spelling fixes
+To:     Bhaskar Chowdhury <unixbhaskar@gmail.com>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
 Cc:     rdunlap@infradead.org
-Subject: [PATCH] IA64: Trivial spelling fixes
-Date:   Sat, 20 Mar 2021 23:53:47 +0530
-Message-Id: <20210320182347.21440-1-unixbhaskar@gmail.com>
-X-Mailer: git-send-email 2.26.2
+References: <20210320182347.21440-1-unixbhaskar@gmail.com>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <a3f98ec2-46e4-c7be-5e73-96c768a35bef@physik.fu-berlin.de>
+Date:   Sat, 20 Mar 2021 20:01:09 +0100
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+In-Reply-To: <20210320182347.21440-1-unixbhaskar@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.175.212
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+Hi Bhaskar!
 
-s/seralize/serialize/ .....three different places
+On 3/20/21 7:23 PM, Bhaskar Chowdhury wrote:
+> 
+> s/seralize/serialize/ .....three different places
+> 
+> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+> ---
+>  arch/ia64/kernel/pal.S | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/ia64/kernel/pal.S b/arch/ia64/kernel/pal.S
+> index d3e22c018b68..06d01a070aae 100644
+> --- a/arch/ia64/kernel/pal.S
+> +++ b/arch/ia64/kernel/pal.S
+> @@ -86,7 +86,7 @@ GLOBAL_ENTRY(ia64_pal_call_static)
+>  	mov ar.pfs = loc1
+>  	mov rp = loc0
+>  	;;
+> -	srlz.d				// seralize restoration of psr.l
+> +	srlz.d				// serialize restoration of psr.l
+>  	br.ret.sptk.many b0
+>  END(ia64_pal_call_static)
+>  EXPORT_SYMBOL(ia64_pal_call_static)
+> @@ -194,7 +194,7 @@ GLOBAL_ENTRY(ia64_pal_call_phys_static)
+>  	mov rp = loc0
+>  	;;
+>  	mov ar.rsc=loc4			// restore RSE configuration
+> -	srlz.d				// seralize restoration of psr.l
+> +	srlz.d				// serialize restoration of psr.l
+>  	br.ret.sptk.many b0
+>  END(ia64_pal_call_phys_static)
+>  EXPORT_SYMBOL(ia64_pal_call_phys_static)
+> @@ -252,7 +252,7 @@ GLOBAL_ENTRY(ia64_pal_call_phys_stacked)
+>  	mov rp = loc0
+>  	;;
+>  	mov ar.rsc=loc4			// restore RSE configuration
+> -	srlz.d				// seralize restoration of psr.l
+> +	srlz.d				// serialize restoration of psr.l
+>  	br.ret.sptk.many b0
+>  END(ia64_pal_call_phys_stacked)
+>  EXPORT_SYMBOL(ia64_pal_call_phys_stacked)
+> --
+> 2.26.2
 
-Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
----
- arch/ia64/kernel/pal.S | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Thanks for fixing this. Btw, we usually use all-lowercase letters for architecture
+names in the Linux kernel, so it should probably be "ia64: Trivial spelling fixes".
 
-diff --git a/arch/ia64/kernel/pal.S b/arch/ia64/kernel/pal.S
-index d3e22c018b68..06d01a070aae 100644
---- a/arch/ia64/kernel/pal.S
-+++ b/arch/ia64/kernel/pal.S
-@@ -86,7 +86,7 @@ GLOBAL_ENTRY(ia64_pal_call_static)
- 	mov ar.pfs = loc1
- 	mov rp = loc0
- 	;;
--	srlz.d				// seralize restoration of psr.l
-+	srlz.d				// serialize restoration of psr.l
- 	br.ret.sptk.many b0
- END(ia64_pal_call_static)
- EXPORT_SYMBOL(ia64_pal_call_static)
-@@ -194,7 +194,7 @@ GLOBAL_ENTRY(ia64_pal_call_phys_static)
- 	mov rp = loc0
- 	;;
- 	mov ar.rsc=loc4			// restore RSE configuration
--	srlz.d				// seralize restoration of psr.l
-+	srlz.d				// serialize restoration of psr.l
- 	br.ret.sptk.many b0
- END(ia64_pal_call_phys_static)
- EXPORT_SYMBOL(ia64_pal_call_phys_static)
-@@ -252,7 +252,7 @@ GLOBAL_ENTRY(ia64_pal_call_phys_stacked)
- 	mov rp = loc0
- 	;;
- 	mov ar.rsc=loc4			// restore RSE configuration
--	srlz.d				// seralize restoration of psr.l
-+	srlz.d				// serialize restoration of psr.l
- 	br.ret.sptk.many b0
- END(ia64_pal_call_phys_stacked)
- EXPORT_SYMBOL(ia64_pal_call_phys_stacked)
---
-2.26.2
+And the easiest way to get those fixes into the kernel would be through Andrew Morton's
+tree.
+
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
 
