@@ -2,129 +2,97 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 742A33425E1
-	for <lists+linux-ia64@lfdr.de>; Fri, 19 Mar 2021 20:12:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B9F7F342992
+	for <lists+linux-ia64@lfdr.de>; Sat, 20 Mar 2021 02:05:27 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231296AbhCSTMC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 19 Mar 2021 15:12:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59952 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229956AbhCSTLQ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 19 Mar 2021 15:11:16 -0400
-Received: from smtp.gentoo.org (mail.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA56BC06174A;
-        Fri, 19 Mar 2021 12:11:10 -0700 (PDT)
-Date:   Fri, 19 Mar 2021 19:10:59 +0000
-From:   Sergei Trofimovich <slyfox@gentoo.org>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
-        linux-kernel@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        debian-ia64 <debian-ia64@lists.debian.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Anatoly Pugachev <matorola@gmail.com>
-Subject: Re: [PATCH] ia64: Ensure proper NUMA distance and possible map
- initialization
-Message-ID: <20210319191059.2a776cb8@sf>
-In-Reply-To: <3c421868-d6a8-1da2-f876-49b6374270dc@physik.fu-berlin.de>
-References: <20210318130617.896309-1-valentin.schneider@arm.com>
-        <3c421868-d6a8-1da2-f876-49b6374270dc@physik.fu-berlin.de>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-MIME-Version: 1.0
+        id S229512AbhCTBEw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 19 Mar 2021 21:04:52 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56128 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229447AbhCTBEe (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 19 Mar 2021 21:04:34 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7051C6194B;
+        Sat, 20 Mar 2021 01:04:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1616202274;
+        bh=7DSr2YWlRb/3DPRrevc7NPTF1eK14cvWuynOrfdjdd4=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=NFEfmIGVCcgE9Gw7EjECIfxuY28HareUFZ6B8DSEv1ke5mK5HTlhNkrxBbiRAt/T0
+         h/SMWX+pcRoL3tH+HTbuVt9gTj2uFMtbzzPdPdFcaF4p48aoTYCyVWnz3Z9szmzdOs
+         P5eBUTY3Gw9zKh2DUEv7pGSprAMY+SjTwNz+XoEE1Q/H7Ib7DuYIDL6t6dn0Y1AEEZ
+         zSr3AvJOaiJ/FJYeGdjWVw4cMOaivslzTnQRRxwJfsYWY8T+Ha47iFuD6eyASS9DbZ
+         cqI54CaFYFEwRdcdEwXS6yIN2BSGic8uF/Xv1mX/iZG+pjh4cl42FFXU/IHH7KJAr5
+         G2S2qYx6s8r9A==
+Date:   Sat, 20 Mar 2021 10:04:28 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
+        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
+        ast@kernel.org, tglx@linutronix.de, kernel-team@fb.com, yhs@fb.com,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        linux-ia64@vger.kernel.org
+Subject: Re: [PATCH -tip v3 07/11] ia64: Add instruction_pointer_set() API
+Message-Id: <20210320100428.7cd2acb7d5c084ce293249d9@kernel.org>
+In-Reply-To: <161615658087.306069.12036720803234007510.stgit@devnote2>
+References: <161615650355.306069.17260992641363840330.stgit@devnote2>
+        <161615658087.306069.12036720803234007510.stgit@devnote2>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, 19 Mar 2021 15:47:09 +0100
-John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> wrote:
+On Fri, 19 Mar 2021 21:23:01 +0900
+Masami Hiramatsu <mhiramat@kernel.org> wrote:
 
-> Hi Valentin!
+> Add instruction_pointer_set() API for ia64.
 > 
-> On 3/18/21 2:06 PM, Valentin Schneider wrote:
-> > John Paul reported a warning about bogus NUMA distance values spurred by
-> > commit:
-> > 
-> >   620a6dc40754 ("sched/topology: Make sched_init_numa() use a set for the deduplicating sort")
-> > 
-> > In this case, the afflicted machine comes up with a reported 256 possible
-> > nodes, all of which are 0 distance away from one another. This was
-> > previously silently ignored, but is now caught by the aforementioned
-> > commit.
-> > 
-> > The culprit is ia64's node_possible_map which remains unchanged from its
-> > initialization value of NODE_MASK_ALL. In John's case, the machine doesn't
-> > have any SRAT nor SLIT table, but AIUI the possible map remains untouched
-> > regardless of what ACPI tables end up being parsed. Thus, !online &&
-> > possible nodes remain with a bogus distance of 0 (distances \in [0, 9] are
-> > "reserved and have no meaning" as per the ACPI spec).
-> > 
-> > Follow x86 / drivers/base/arch_numa's example and set the possible map to
-> > the parsed map, which in this case seems to be the online map.
-> > 
-> > Link: http://lore.kernel.org/r/255d6b5d-194e-eb0e-ecdd-97477a534441@physik.fu-berlin.de
-> > Fixes: 620a6dc40754 ("sched/topology: Make sched_init_numa() use a set for the deduplicating sort")
-> > Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> > Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
-> > ---
-> > This might need an earlier Fixes: tag, but all of this is quite old and
-> > dusty (the git blame rabbit hole leads me to ~2008/2007)
-> > 
-> > Alternatively, can we deprecate ia64 already?
-> > ---
-> >  arch/ia64/kernel/acpi.c | 7 +++++--
-> >  1 file changed, 5 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/ia64/kernel/acpi.c b/arch/ia64/kernel/acpi.c
-> > index a5636524af76..e2af6b172200 100644
-> > --- a/arch/ia64/kernel/acpi.c
-> > +++ b/arch/ia64/kernel/acpi.c
-> > @@ -446,7 +446,8 @@ void __init acpi_numa_fixup(void)
-> >  	if (srat_num_cpus == 0) {
-> >  		node_set_online(0);
-> >  		node_cpuid[0].phys_id = hard_smp_processor_id();
-> > -		return;
-> > +		slit_distance(0, 0) = LOCAL_DISTANCE;
-> > +		goto out;
-> >  	}
-> >  
-> >  	/*
-> > @@ -489,7 +490,7 @@ void __init acpi_numa_fixup(void)
-> >  			for (j = 0; j < MAX_NUMNODES; j++)
-> >  				slit_distance(i, j) = i == j ?
-> >  					LOCAL_DISTANCE : REMOTE_DISTANCE;
-> > -		return;
-> > +		goto out;
-> >  	}
-> >  
-> >  	memset(numa_slit, -1, sizeof(numa_slit));
-> > @@ -514,6 +515,8 @@ void __init acpi_numa_fixup(void)
-> >  		printk("\n");
-> >  	}
-> >  #endif
-> > +out:
-> > +	node_possible_map = node_online_map;
-> >  }
-> >  #endif				/* CONFIG_ACPI_NUMA */
-> >  
-> >   
+> Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+> ---
+>  arch/ia64/include/asm/ptrace.h |    8 +++++++-
+>  1 file changed, 7 insertions(+), 1 deletion(-)
 > 
-> Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> 
-> Could you send this patch through Andrew Morton's tree? The ia64 port currently
-> has no maintainer, so we have to use an alternative tree.
-> 
-> @Sergei: Could you test/ack this patch as well?
+> diff --git a/arch/ia64/include/asm/ptrace.h b/arch/ia64/include/asm/ptrace.h
+> index b3aa46090101..e382f1a6bff3 100644
+> --- a/arch/ia64/include/asm/ptrace.h
+> +++ b/arch/ia64/include/asm/ptrace.h
+> @@ -45,6 +45,7 @@
+>  #include <asm/current.h>
+>  #include <asm/page.h>
+>  
+> +# define ia64_psr(regs)			((struct ia64_psr *) &(regs)->cr_ipsr)
+>  /*
+>   * We use the ia64_psr(regs)->ri to determine which of the three
+>   * instructions in bundle (16 bytes) took the sample. Generate
+> @@ -71,6 +72,12 @@ static inline long regs_return_value(struct pt_regs *regs)
+>  		return -regs->r8;
+>  }
+>  
+> +static inline void instruction_pointer_set(struct pt_regs *regs, unsigned long val)
+> +{
+> +	ia64_psr(regs)->ri = (val & 0xf);
+> +	regs->cr_iip = (val & ~0xfULL);
+> +}
 
-Booted successfully without problems on rx3600.
+Oops, this caused a build error. Thanks for the kernel test bot.
 
-Tested-by: Sergei Trofimovich <slyfox@gentoo.org>
+It seems that all code which accessing to the "struct ia64_psr" in asm/ptrace.h
+has to be a macro, because "struct ia64_psr" is defined in the asm/processor.h
+which includes asm/ptrace.h (for pt_regs?).
+If the code is defined as an inline function, the "struct ia64_psr" is evaluated
+at that point, and caused build error.
 
+arch/ia64/include/asm/ptrace.h:77:16: error: dereferencing pointer to incomplete type 'struct ia64_psr'
+
+But macro code evaluation is postponed until it is used...
+
+Let me update it.
+
+Thank you,
 
 -- 
-
-  Sergei
+Masami Hiramatsu <mhiramat@kernel.org>
