@@ -2,154 +2,162 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D92E342F1F
-	for <lists+linux-ia64@lfdr.de>; Sat, 20 Mar 2021 20:03:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EF1C0342F27
+	for <lists+linux-ia64@lfdr.de>; Sat, 20 Mar 2021 20:11:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229904AbhCTTDF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 20 Mar 2021 15:03:05 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:59909 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229920AbhCTTCo (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Sat, 20 Mar 2021 15:02:44 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1lNgrs-001gkp-5q; Sat, 20 Mar 2021 20:02:36 +0100
-Received: from p5b13afd4.dip0.t-ipconnect.de ([91.19.175.212] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1lNgrr-0003ld-V5; Sat, 20 Mar 2021 20:02:36 +0100
-Subject: Re: [PATCH] ia64: Ensure proper NUMA distance and possible map
- initialization
-To:     Sergei Trofimovich <slyfox@gentoo.org>
-Cc:     Valentin Schneider <valentin.schneider@arm.com>,
-        linux-kernel@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        debian-ia64 <debian-ia64@lists.debian.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Ingo Molnar <mingo@kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Anatoly Pugachev <matorola@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <20210318130617.896309-1-valentin.schneider@arm.com>
- <3c421868-d6a8-1da2-f876-49b6374270dc@physik.fu-berlin.de>
- <20210319191059.2a776cb8@sf>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <2bcb5146-4142-05c5-1b44-18a69118ee19@physik.fu-berlin.de>
-Date:   Sat, 20 Mar 2021 20:02:35 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        id S229826AbhCTTKw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 20 Mar 2021 15:10:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56914 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229787AbhCTTKd (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 20 Mar 2021 15:10:33 -0400
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26A33C061574;
+        Sat, 20 Mar 2021 12:10:32 -0700 (PDT)
+Received: by mail-qk1-x733.google.com with SMTP id g15so6527918qkl.4;
+        Sat, 20 Mar 2021 12:10:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:mail-followup-to:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=zxHX5iepoJkIKKyubBf5s7b/JqWY7QvHxCEPDphI65Q=;
+        b=NH9NuhLOFyYodm+7Rzt4196MvKrJz7tiOjwUQB7qQrTTxFspMwPFxlkzooyhIZu7Fu
+         JjIL8X4ArQTolGcR6K2KzpomSZaDnxjL6da7XsEc/I0FyuTMK6wxsEnIQa/q/BloDMJu
+         LbJ+TfhG17x0WuWmo5hcS+ds1bgyhiQOZ8ta2TEkQYlde+tgmTLM+X6U5utJ9JsUQG3b
+         HI6PhNjzF45omx+vLvDw8OlQwvG9TX5mReUO3LrNlXGVhOepAoIH7aWR2oGA+4Xh5ljo
+         AJI7A49BtpRkn18vP3lWcOeYilQAGju42v6QfbF7SR7fE0G9tqqn9yg481qivaBCnZ6I
+         kmyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id
+         :mail-followup-to:references:mime-version:content-disposition
+         :in-reply-to;
+        bh=zxHX5iepoJkIKKyubBf5s7b/JqWY7QvHxCEPDphI65Q=;
+        b=lKmiykEUWOKZSGJBvQiNFZd+5MCY2wJsTYwpaBmYzNOI8yFTulV6714IeXRPl6shri
+         wAiSKNd5dVwuZflHtCGSLUo3j0M+YoUfHpkO5ltKb2iylmQisnd/XQKBgmVxLImoxgTr
+         KMMK/wDcghYcM3EY1CA83MwjqWLeWMhWA/tVXwH+3MDcHMwFqKMdt1iMLBzVMftpm2iI
+         RiSrVPiyk+BXBRs4mAcVXhOTyehfW1DpYvovY6PYqQ74pV5daGVHG2Y+nedSuSsl7ddH
+         70qz0VAzlO+IqX8unuU5gnXyk6OM+CmAxbgc9cgFobIhe4qgASd7Mg/GPmZvQslKztmV
+         L9pw==
+X-Gm-Message-State: AOAM532h6Ss0a8bVJFgZvldTAIfU2B2N3wye5HC/z3K2uImPPN2ttwgn
+        ZjRDa4wHfjaY0s68V1dpxAgUlTI138P2Nqxz
+X-Google-Smtp-Source: ABdhPJwNfKUGRfVnD0FYqvkoxESxOv1cTGhSFd3ygLzwYmLC0i+rtBK4n+Dhl8kh8YYPQNAz9zXkCA==
+X-Received: by 2002:ae9:f719:: with SMTP id s25mr4206383qkg.42.1616267431325;
+        Sat, 20 Mar 2021 12:10:31 -0700 (PDT)
+Received: from Gentoo ([138.199.13.205])
+        by smtp.gmail.com with ESMTPSA id k186sm1122394qkc.106.2021.03.20.12.10.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 Mar 2021 12:10:29 -0700 (PDT)
+Date:   Sun, 21 Mar 2021 00:40:17 +0530
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        rdunlap@infradead.org
+Subject: Re: [PATCH] IA64: Trivial spelling fixes
+Message-ID: <YFZImRuNCpQvX5Fi@Gentoo>
+Mail-Followup-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        rdunlap@infradead.org
+References: <20210320182347.21440-1-unixbhaskar@gmail.com>
+ <a3f98ec2-46e4-c7be-5e73-96c768a35bef@physik.fu-berlin.de>
 MIME-Version: 1.0
-In-Reply-To: <20210319191059.2a776cb8@sf>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.175.212
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="Kbt0JQJWvjyW9NQi"
+Content-Disposition: inline
+In-Reply-To: <a3f98ec2-46e4-c7be-5e73-96c768a35bef@physik.fu-berlin.de>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 3/19/21 8:10 PM, Sergei Trofimovich wrote:
-> On Fri, 19 Mar 2021 15:47:09 +0100
-> John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> wrote:
-> 
->> Hi Valentin!
+
+--Kbt0JQJWvjyW9NQi
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+
+On 20:01 Sat 20 Mar 2021, John Paul Adrian Glaubitz wrote:
+>Hi Bhaskar!
+>
+>On 3/20/21 7:23 PM, Bhaskar Chowdhury wrote:
 >>
->> On 3/18/21 2:06 PM, Valentin Schneider wrote:
->>> John Paul reported a warning about bogus NUMA distance values spurred by
->>> commit:
->>>
->>>   620a6dc40754 ("sched/topology: Make sched_init_numa() use a set for the deduplicating sort")
->>>
->>> In this case, the afflicted machine comes up with a reported 256 possible
->>> nodes, all of which are 0 distance away from one another. This was
->>> previously silently ignored, but is now caught by the aforementioned
->>> commit.
->>>
->>> The culprit is ia64's node_possible_map which remains unchanged from its
->>> initialization value of NODE_MASK_ALL. In John's case, the machine doesn't
->>> have any SRAT nor SLIT table, but AIUI the possible map remains untouched
->>> regardless of what ACPI tables end up being parsed. Thus, !online &&
->>> possible nodes remain with a bogus distance of 0 (distances \in [0, 9] are
->>> "reserved and have no meaning" as per the ACPI spec).
->>>
->>> Follow x86 / drivers/base/arch_numa's example and set the possible map to
->>> the parsed map, which in this case seems to be the online map.
->>>
->>> Link: http://lore.kernel.org/r/255d6b5d-194e-eb0e-ecdd-97477a534441@physik.fu-berlin.de
->>> Fixes: 620a6dc40754 ("sched/topology: Make sched_init_numa() use a set for the deduplicating sort")
->>> Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
->>> Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
->>> ---
->>> This might need an earlier Fixes: tag, but all of this is quite old and
->>> dusty (the git blame rabbit hole leads me to ~2008/2007)
->>>
->>> Alternatively, can we deprecate ia64 already?
->>> ---
->>>  arch/ia64/kernel/acpi.c | 7 +++++--
->>>  1 file changed, 5 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/arch/ia64/kernel/acpi.c b/arch/ia64/kernel/acpi.c
->>> index a5636524af76..e2af6b172200 100644
->>> --- a/arch/ia64/kernel/acpi.c
->>> +++ b/arch/ia64/kernel/acpi.c
->>> @@ -446,7 +446,8 @@ void __init acpi_numa_fixup(void)
->>>  	if (srat_num_cpus == 0) {
->>>  		node_set_online(0);
->>>  		node_cpuid[0].phys_id = hard_smp_processor_id();
->>> -		return;
->>> +		slit_distance(0, 0) = LOCAL_DISTANCE;
->>> +		goto out;
->>>  	}
->>>  
->>>  	/*
->>> @@ -489,7 +490,7 @@ void __init acpi_numa_fixup(void)
->>>  			for (j = 0; j < MAX_NUMNODES; j++)
->>>  				slit_distance(i, j) = i == j ?
->>>  					LOCAL_DISTANCE : REMOTE_DISTANCE;
->>> -		return;
->>> +		goto out;
->>>  	}
->>>  
->>>  	memset(numa_slit, -1, sizeof(numa_slit));
->>> @@ -514,6 +515,8 @@ void __init acpi_numa_fixup(void)
->>>  		printk("\n");
->>>  	}
->>>  #endif
->>> +out:
->>> +	node_possible_map = node_online_map;
->>>  }
->>>  #endif				/* CONFIG_ACPI_NUMA */
->>>  
->>>   
+>> s/seralize/serialize/ .....three different places
 >>
->> Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+>> Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+>> ---
+>>  arch/ia64/kernel/pal.S | 6 +++---
+>>  1 file changed, 3 insertions(+), 3 deletions(-)
 >>
->> Could you send this patch through Andrew Morton's tree? The ia64 port currently
->> has no maintainer, so we have to use an alternative tree.
->>
->> @Sergei: Could you test/ack this patch as well?
-> 
-> Booted successfully without problems on rx3600.
-> 
-> Tested-by: Sergei Trofimovich <slyfox@gentoo.org>
+>> diff --git a/arch/ia64/kernel/pal.S b/arch/ia64/kernel/pal.S
+>> index d3e22c018b68..06d01a070aae 100644
+>> --- a/arch/ia64/kernel/pal.S
+>> +++ b/arch/ia64/kernel/pal.S
+>> @@ -86,7 +86,7 @@ GLOBAL_ENTRY(ia64_pal_call_static)
+>>  	mov ar.pfs = loc1
+>>  	mov rp = loc0
+>>  	;;
+>> -	srlz.d				// seralize restoration of psr.l
+>> +	srlz.d				// serialize restoration of psr.l
+>>  	br.ret.sptk.many b0
+>>  END(ia64_pal_call_static)
+>>  EXPORT_SYMBOL(ia64_pal_call_static)
+>> @@ -194,7 +194,7 @@ GLOBAL_ENTRY(ia64_pal_call_phys_static)
+>>  	mov rp = loc0
+>>  	;;
+>>  	mov ar.rsc=loc4			// restore RSE configuration
+>> -	srlz.d				// seralize restoration of psr.l
+>> +	srlz.d				// serialize restoration of psr.l
+>>  	br.ret.sptk.many b0
+>>  END(ia64_pal_call_phys_static)
+>>  EXPORT_SYMBOL(ia64_pal_call_phys_static)
+>> @@ -252,7 +252,7 @@ GLOBAL_ENTRY(ia64_pal_call_phys_stacked)
+>>  	mov rp = loc0
+>>  	;;
+>>  	mov ar.rsc=loc4			// restore RSE configuration
+>> -	srlz.d				// seralize restoration of psr.l
+>> +	srlz.d				// serialize restoration of psr.l
+>>  	br.ret.sptk.many b0
+>>  END(ia64_pal_call_phys_stacked)
+>>  EXPORT_SYMBOL(ia64_pal_call_phys_stacked)
+>> --
+>> 2.26.2
+>
+>Thanks for fixing this. Btw, we usually use all-lowercase letters for architecture
+>names in the Linux kernel, so it should probably be "ia64: Trivial spelling fixes".
+>
+>And the easiest way to get those fixes into the kernel would be through Andrew Morton's
+>tree.
+>
 
-Great, thanks!
+I did send it to Andrew to pick up . And I took a cue from the earlier commit
+messages for the architecture ...like this :
 
-@Andrew: Could you pick up this patch through your tree?
+4d5a31977cc6 [IA64] reformat pal.S to fit in 80 columns, fix typos
+c12fb1885787 [IA64] remove unused PAL_CALL_IC_OFF
+acb15c85de57 [IA64] Do not assume output registers be reservered.
 
-Adrian
+....so followed the conventions :)
 
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+>Adrian
+>
+>--
+> .''`.  John Paul Adrian Glaubitz
+>: :' :  Debian Developer - glaubitz@debian.org
+>`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+>  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+>
 
+--Kbt0JQJWvjyW9NQi
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCAAdFiEEnwF+nWawchZUPOuwsjqdtxFLKRUFAmBWSJYACgkQsjqdtxFL
+KRUSagf/cRC9OjWH/SmSnMozXlsUnjuxbSJPNrKuEr1oUicUlL95jN3Rjzc8re8k
+0ev7t5rVEmHt29uzBtB74dHgYtWoenfMG2sphL8/jox66NJv1WHcasoI48xSInWB
+QqldjN+uSCuVMh/KU9ATpg8D/Ow1VTShJJ/2ZPDMTODoue3OcjvRxa6zGIHiFFXB
+TceWnd35fkh6v5xty+qLPAZl/YobKjhatSAD9HofDFQ8yG5TSqsrXWIlyrOscDT3
+fzkzsH3/phVXWQ9gB2NE5LLOYBL58COFO4To7oORZVZz4iT5+o3JDPKRHDVooqyE
+bwrQSP2cN2/9r5s/EXJII/6nTd+TDA==
+=lRBH
+-----END PGP SIGNATURE-----
+
+--Kbt0JQJWvjyW9NQi--
