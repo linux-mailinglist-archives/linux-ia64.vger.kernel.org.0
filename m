@@ -2,28 +2,28 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B9F7F342992
-	for <lists+linux-ia64@lfdr.de>; Sat, 20 Mar 2021 02:05:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 57AA2342CB8
+	for <lists+linux-ia64@lfdr.de>; Sat, 20 Mar 2021 13:16:58 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229512AbhCTBEw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 19 Mar 2021 21:04:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:56128 "EHLO mail.kernel.org"
+        id S229708AbhCTMQY (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 20 Mar 2021 08:16:24 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37036 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229447AbhCTBEe (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 19 Mar 2021 21:04:34 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7051C6194B;
-        Sat, 20 Mar 2021 01:04:30 +0000 (UTC)
+        id S229607AbhCTMQX (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sat, 20 Mar 2021 08:16:23 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 59F4D61967;
+        Sat, 20 Mar 2021 12:16:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616202274;
-        bh=7DSr2YWlRb/3DPRrevc7NPTF1eK14cvWuynOrfdjdd4=;
+        s=k20201202; t=1616242583;
+        bh=L6kTH0jPnKRJ0H6xWkNVyPWe1UOUc18Ymagil4Ig+YU=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NFEfmIGVCcgE9Gw7EjECIfxuY28HareUFZ6B8DSEv1ke5mK5HTlhNkrxBbiRAt/T0
-         h/SMWX+pcRoL3tH+HTbuVt9gTj2uFMtbzzPdPdFcaF4p48aoTYCyVWnz3Z9szmzdOs
-         P5eBUTY3Gw9zKh2DUEv7pGSprAMY+SjTwNz+XoEE1Q/H7Ib7DuYIDL6t6dn0Y1AEEZ
-         zSr3AvJOaiJ/FJYeGdjWVw4cMOaivslzTnQRRxwJfsYWY8T+Ha47iFuD6eyASS9DbZ
-         cqI54CaFYFEwRdcdEwXS6yIN2BSGic8uF/Xv1mX/iZG+pjh4cl42FFXU/IHH7KJAr5
-         G2S2qYx6s8r9A==
-Date:   Sat, 20 Mar 2021 10:04:28 +0900
+        b=f4h9j8C3aQFdXsU1QceNHEE7rfxMBcj3EBvTJrm7UtrFwAzmIQpJm98cKrsgrnkzU
+         bf4aI+QQMsMaJvzlv2b5Inzjil1j8A8kFXijRBa0vF5gaPWKbqhVLFNpMo5lmzKKWr
+         nJJ/ItwVCkSK+RlH00aDKMdcpXjdGudh/q0/TK/cG69PT/lGnVbCS1+XjQFdl1l+t9
+         lJ/fC4rq65sAyneWRiu6adkgT9pyhgF+zpKXAzySDMi6ErDVAs/YvkbBz6zepKv/V0
+         ssT+K5KWx+Dqlu2FKJFmTsS3m5/LAoxbKGIzncELs4YJl+H/GhR9fyx9y2FZt7RoOF
+         yk18YMeYaElUw==
+Date:   Sat, 20 Mar 2021 21:16:16 +0900
 From:   Masami Hiramatsu <mhiramat@kernel.org>
 To:     Masami Hiramatsu <mhiramat@kernel.org>
 Cc:     Steven Rostedt <rostedt@goodmis.org>,
@@ -33,11 +33,12 @@ Cc:     Steven Rostedt <rostedt@goodmis.org>,
         ast@kernel.org, tglx@linutronix.de, kernel-team@fb.com, yhs@fb.com,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         linux-ia64@vger.kernel.org
-Subject: Re: [PATCH -tip v3 07/11] ia64: Add instruction_pointer_set() API
-Message-Id: <20210320100428.7cd2acb7d5c084ce293249d9@kernel.org>
-In-Reply-To: <161615658087.306069.12036720803234007510.stgit@devnote2>
+Subject: Re: [PATCH -tip v3 05/11] x86/kprobes: Add UNWIND_HINT_FUNC on
+ kretprobe_trampoline code
+Message-Id: <20210320211616.a976fc66d0c51e13d3121e2f@kernel.org>
+In-Reply-To: <161615655969.306069.4545805781593088526.stgit@devnote2>
 References: <161615650355.306069.17260992641363840330.stgit@devnote2>
-        <161615658087.306069.12036720803234007510.stgit@devnote2>
+        <161615655969.306069.4545805781593088526.stgit@devnote2>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -46,53 +47,84 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, 19 Mar 2021 21:23:01 +0900
+On Fri, 19 Mar 2021 21:22:39 +0900
 Masami Hiramatsu <mhiramat@kernel.org> wrote:
 
-> Add instruction_pointer_set() API for ia64.
+> From: Josh Poimboeuf <jpoimboe@redhat.com>
 > 
-> Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-> ---
->  arch/ia64/include/asm/ptrace.h |    8 +++++++-
->  1 file changed, 7 insertions(+), 1 deletion(-)
+> Add UNWIND_HINT_FUNC on kretporbe_trampoline code so that ORC
+> information is generated on the kretprobe_trampoline correctly.
 > 
-> diff --git a/arch/ia64/include/asm/ptrace.h b/arch/ia64/include/asm/ptrace.h
-> index b3aa46090101..e382f1a6bff3 100644
-> --- a/arch/ia64/include/asm/ptrace.h
-> +++ b/arch/ia64/include/asm/ptrace.h
-> @@ -45,6 +45,7 @@
->  #include <asm/current.h>
->  #include <asm/page.h>
->  
-> +# define ia64_psr(regs)			((struct ia64_psr *) &(regs)->cr_ipsr)
->  /*
->   * We use the ia64_psr(regs)->ri to determine which of the three
->   * instructions in bundle (16 bytes) took the sample. Generate
-> @@ -71,6 +72,12 @@ static inline long regs_return_value(struct pt_regs *regs)
->  		return -regs->r8;
->  }
->  
-> +static inline void instruction_pointer_set(struct pt_regs *regs, unsigned long val)
-> +{
-> +	ia64_psr(regs)->ri = (val & 0xf);
-> +	regs->cr_iip = (val & ~0xfULL);
-> +}
 
-Oops, this caused a build error. Thanks for the kernel test bot.
+Test bot also found a new warning for this.
 
-It seems that all code which accessing to the "struct ia64_psr" in asm/ptrace.h
-has to be a macro, because "struct ia64_psr" is defined in the asm/processor.h
-which includes asm/ptrace.h (for pt_regs?).
-If the code is defined as an inline function, the "struct ia64_psr" is evaluated
-at that point, and caused build error.
+> >> arch/x86/kernel/kprobes/core.o: warning: objtool: kretprobe_trampoline()+0x25: call without frame pointer save/setup
 
-arch/ia64/include/asm/ptrace.h:77:16: error: dereferencing pointer to incomplete type 'struct ia64_psr'
+With CONFIG_FRAME_POINTER=y.
 
-But macro code evaluation is postponed until it is used...
+Of course this can be fixed with additional "push %bp; mov %sp, %bp" before calling
+trampoline_handler. But actually we know that this function has a bit special
+stack frame too. 
 
-Let me update it.
+Can I recover STACK_FRAME_NON_STANDARD(kretprobe_trampoline) when CONFIG_FRAME_POINTER=y ?
 
 Thank you,
+
+
+> Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+> ---
+>  [MH] Add patch description.
+> ---
+>  arch/x86/include/asm/unwind_hints.h |    5 +++++
+>  arch/x86/kernel/kprobes/core.c      |    3 ++-
+>  2 files changed, 7 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/x86/include/asm/unwind_hints.h b/arch/x86/include/asm/unwind_hints.h
+> index 8e574c0afef8..8b33674288ea 100644
+> --- a/arch/x86/include/asm/unwind_hints.h
+> +++ b/arch/x86/include/asm/unwind_hints.h
+> @@ -52,6 +52,11 @@
+>  	UNWIND_HINT sp_reg=ORC_REG_SP sp_offset=8 type=UNWIND_HINT_TYPE_FUNC
+>  .endm
+>  
+> +#else
+> +
+> +#define UNWIND_HINT_FUNC \
+> +	UNWIND_HINT(ORC_REG_SP, 8, UNWIND_HINT_TYPE_FUNC, 0)
+> +
+>  #endif /* __ASSEMBLY__ */
+>  
+>  #endif /* _ASM_X86_UNWIND_HINTS_H */
+> diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
+> index 427d648fffcd..b31058a152b6 100644
+> --- a/arch/x86/kernel/kprobes/core.c
+> +++ b/arch/x86/kernel/kprobes/core.c
+> @@ -772,6 +772,7 @@ asm(
+>  	/* We don't bother saving the ss register */
+>  #ifdef CONFIG_X86_64
+>  	"	pushq %rsp\n"
+> +	UNWIND_HINT_FUNC
+>  	"	pushfq\n"
+>  	SAVE_REGS_STRING
+>  	"	movq %rsp, %rdi\n"
+> @@ -782,6 +783,7 @@ asm(
+>  	"	popfq\n"
+>  #else
+>  	"	pushl %esp\n"
+> +	UNWIND_HINT_FUNC
+>  	"	pushfl\n"
+>  	SAVE_REGS_STRING
+>  	"	movl %esp, %eax\n"
+> @@ -795,7 +797,6 @@ asm(
+>  	".size kretprobe_trampoline, .-kretprobe_trampoline\n"
+>  );
+>  NOKPROBE_SYMBOL(kretprobe_trampoline);
+> -STACK_FRAME_NON_STANDARD(kretprobe_trampoline);
+>  
+>  
+>  /*
+> 
+
 
 -- 
 Masami Hiramatsu <mhiramat@kernel.org>
