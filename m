@@ -2,109 +2,104 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 74E2B342CF7
-	for <lists+linux-ia64@lfdr.de>; Sat, 20 Mar 2021 14:06:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7776F342EFE
+	for <lists+linux-ia64@lfdr.de>; Sat, 20 Mar 2021 19:27:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229661AbhCTNGA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 20 Mar 2021 09:06:00 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40638 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229583AbhCTNFs (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sat, 20 Mar 2021 09:05:48 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3FCE561961;
-        Sat, 20 Mar 2021 13:05:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616245548;
-        bh=QXdaST1hot6+jYq0oDK7muVDY+aF5hPeweOnMuFWDCs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NydJpk1snnUb6dtJ3ZHVlpmHmHA2q14dEvUBuB0jJFMpTdDmqu/qwgRRbY0n6v2Gy
-         Ix/wCW4nQ4qR9WeEborqVTAbWBQgbMSyqOF3qnwwGhryXy5SmB9jrJz0f8WFY2GiH/
-         klxCX3q38Y4Q0gl7kitV6r+mQXBbX9Li9FIWO5x8FfmzCi6yHF4BFsLTs6ku6yg/Kv
-         2+4ED1VkoHQecF2OHyU27+JmTIFl7IKPT3Bsjfudo11Mfb+Iwg8q+jORyMC+URCKmZ
-         7Ta2AeQELSGacKdCasQzz5ethCyiqe6B8z+AIoOdFU+GXEhksadHdGdSRrItVXMO92
-         3PN+YfIR3UVow==
-Date:   Sat, 20 Mar 2021 22:05:43 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Masami Hiramatsu <mhiramat@kernel.org>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
-        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
-        ast@kernel.org, tglx@linutronix.de, kernel-team@fb.com, yhs@fb.com,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        linux-ia64@vger.kernel.org
-Subject: Re: [PATCH -tip v3 05/11] x86/kprobes: Add UNWIND_HINT_FUNC on
- kretprobe_trampoline code
-Message-Id: <20210320220543.e1558ce3a351554c6be3ea26@kernel.org>
-In-Reply-To: <20210320211616.a976fc66d0c51e13d3121e2f@kernel.org>
-References: <161615650355.306069.17260992641363840330.stgit@devnote2>
-        <161615655969.306069.4545805781593088526.stgit@devnote2>
-        <20210320211616.a976fc66d0c51e13d3121e2f@kernel.org>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S229826AbhCTS0k (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 20 Mar 2021 14:26:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47504 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229769AbhCTS0S (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 20 Mar 2021 14:26:18 -0400
+Received: from mail-qt1-x832.google.com (mail-qt1-x832.google.com [IPv6:2607:f8b0:4864:20::832])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09EAEC061574;
+        Sat, 20 Mar 2021 11:26:18 -0700 (PDT)
+Received: by mail-qt1-x832.google.com with SMTP id s2so9409386qtx.10;
+        Sat, 20 Mar 2021 11:26:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bFrAwojYFFSLnG6A9rSMfG6/9uir3qb9v3jvruMRe+s=;
+        b=Tn7L4lEHwwhAbsp3YyE/iQeKhDtYhQU5XCfiD9zr+Iu6M6V1vugx9IprEnEAhJtztI
+         oFtdJA6rpbQvGob/+TOC7GJs//Cz76Lyu53eVpjN10zmq8cnvaRbsjlbuYHPoYFbxBea
+         HbjXz1Rch19GyVS9OIL0JyahA/FtJWiAawgz/Wb1Yk2oRfywnAxhmF+BMnWDGQbw4xE+
+         sgWbRbV/Mrl+cQDMLVtUX1i37Pm4smpxGooilWk8B4jw3GgbBXvEBD3e5KM/tHiRO81l
+         f4omsqOoltInhOSy68kWpwtV+Je6U0BkG5valUXDWnMxu7MhkXIZGjnlLa+S4inewIAf
+         dTHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=bFrAwojYFFSLnG6A9rSMfG6/9uir3qb9v3jvruMRe+s=;
+        b=QCqsCckqikzKaih78sZ3yenoh5sRLgmymNFsHyvw/ciDHKWreqjInjGGu9aAbBqfce
+         /yM9CvnYWVXJJxPUKMUMMOXC41QtFfNtnnbxcRQanLdFAZA8jRI8hreb2BSJa7adiScf
+         7Ggaq0joF1w4ypMGZesEkmvgsMY0BJLtdUzUKsl3SdMF5795woK/2uPAjYV8a/YAgnwJ
+         9JEGcFBDrEH8B8dho70zh4BzK6cCKxw3Fa47TrGbcVE+/p2ETzJmvpIIrXsfMIhH080r
+         CFwrFcwkNLnEAQJeTYjNnWn3ngSnuDSgvRPf1+B1MC4CbW7Wii3SnrU0pgLl+IUImqMf
+         BTsA==
+X-Gm-Message-State: AOAM530pJXQdv4hG1BCte7S8V+q/H1v+3i0wTGgYQ+o8yCDOJf3ihxZY
+        sgazD8gnGmsKlpructzUDu0=
+X-Google-Smtp-Source: ABdhPJwXR91CqLfqLL0bWNmFEJzrpM0nv6oCrVTPcIR/9mrJPYDWxYU5aC+ajx0sdYn5w9OMi8LdPw==
+X-Received: by 2002:ac8:109a:: with SMTP id a26mr3802327qtj.156.1616264777021;
+        Sat, 20 Mar 2021 11:26:17 -0700 (PDT)
+Received: from localhost.localdomain ([138.199.13.205])
+        by smtp.gmail.com with ESMTPSA id b21sm7072710qkl.14.2021.03.20.11.26.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 20 Mar 2021 11:26:16 -0700 (PDT)
+From:   Bhaskar Chowdhury <unixbhaskar@gmail.com>
+To:     unixbhaskar@gmail.com, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     rdunlap@infradead.org
+Subject: [PATCH] IA64: Trivial spelling fixes
+Date:   Sat, 20 Mar 2021 23:53:47 +0530
+Message-Id: <20210320182347.21440-1-unixbhaskar@gmail.com>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sat, 20 Mar 2021 21:16:16 +0900
-Masami Hiramatsu <mhiramat@kernel.org> wrote:
 
-> On Fri, 19 Mar 2021 21:22:39 +0900
-> Masami Hiramatsu <mhiramat@kernel.org> wrote:
-> 
-> > From: Josh Poimboeuf <jpoimboe@redhat.com>
-> > 
-> > Add UNWIND_HINT_FUNC on kretporbe_trampoline code so that ORC
-> > information is generated on the kretprobe_trampoline correctly.
-> > 
-> 
-> Test bot also found a new warning for this.
-> 
-> > >> arch/x86/kernel/kprobes/core.o: warning: objtool: kretprobe_trampoline()+0x25: call without frame pointer save/setup
-> 
-> With CONFIG_FRAME_POINTER=y.
-> 
-> Of course this can be fixed with additional "push %bp; mov %sp, %bp" before calling
-> trampoline_handler. But actually we know that this function has a bit special
-> stack frame too. 
-> 
-> Can I recover STACK_FRAME_NON_STANDARD(kretprobe_trampoline) when CONFIG_FRAME_POINTER=y ?
+s/seralize/serialize/ .....three different places
 
-So something like this. Does it work?
+Signed-off-by: Bhaskar Chowdhury <unixbhaskar@gmail.com>
+---
+ arch/ia64/kernel/pal.S | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
-index b31058a152b6..651f337dc880 100644
---- a/arch/x86/kernel/kprobes/core.c
-+++ b/arch/x86/kernel/kprobes/core.c
-@@ -760,6 +760,10 @@ int kprobe_int3_handler(struct pt_regs *regs)
- }
- NOKPROBE_SYMBOL(kprobe_int3_handler);
- 
-+#ifdef CONFIG_FRAME_POINTER
-+#undef UNWIND_HINT_FUNC
-+#define UNWIND_HINT_FUNC
-+#endif
- /*
-  * When a retprobed function returns, this code saves registers and
-  * calls trampoline_handler() runs, which calls the kretprobe's handler.
-@@ -797,7 +801,14 @@ asm(
- 	".size kretprobe_trampoline, .-kretprobe_trampoline\n"
- );
- NOKPROBE_SYMBOL(kretprobe_trampoline);
--
-+#ifdef CONFIG_FRAME_POINTER
-+/*
-+ * kretprobe_trampoline skips updating frame pointer. The frame pointer
-+ * saved in trampoline_handler points to the real caller function's
-+ * frame pointer.
-+ */
-+STACK_FRAME_NON_STANDARD(kretprobe_trampoline);
-+#endif
- 
- /*
-  * Called from kretprobe_trampoline
+diff --git a/arch/ia64/kernel/pal.S b/arch/ia64/kernel/pal.S
+index d3e22c018b68..06d01a070aae 100644
+--- a/arch/ia64/kernel/pal.S
++++ b/arch/ia64/kernel/pal.S
+@@ -86,7 +86,7 @@ GLOBAL_ENTRY(ia64_pal_call_static)
+ 	mov ar.pfs = loc1
+ 	mov rp = loc0
+ 	;;
+-	srlz.d				// seralize restoration of psr.l
++	srlz.d				// serialize restoration of psr.l
+ 	br.ret.sptk.many b0
+ END(ia64_pal_call_static)
+ EXPORT_SYMBOL(ia64_pal_call_static)
+@@ -194,7 +194,7 @@ GLOBAL_ENTRY(ia64_pal_call_phys_static)
+ 	mov rp = loc0
+ 	;;
+ 	mov ar.rsc=loc4			// restore RSE configuration
+-	srlz.d				// seralize restoration of psr.l
++	srlz.d				// serialize restoration of psr.l
+ 	br.ret.sptk.many b0
+ END(ia64_pal_call_phys_static)
+ EXPORT_SYMBOL(ia64_pal_call_phys_static)
+@@ -252,7 +252,7 @@ GLOBAL_ENTRY(ia64_pal_call_phys_stacked)
+ 	mov rp = loc0
+ 	;;
+ 	mov ar.rsc=loc4			// restore RSE configuration
+-	srlz.d				// seralize restoration of psr.l
++	srlz.d				// serialize restoration of psr.l
+ 	br.ret.sptk.many b0
+ END(ia64_pal_call_phys_stacked)
+ EXPORT_SYMBOL(ia64_pal_call_phys_stacked)
+--
+2.26.2
 
--- 
-Masami Hiramatsu <mhiramat@kernel.org>
