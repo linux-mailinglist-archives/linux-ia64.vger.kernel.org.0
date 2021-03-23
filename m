@@ -2,95 +2,105 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF884345396
-	for <lists+linux-ia64@lfdr.de>; Tue, 23 Mar 2021 01:05:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DEAB3459D3
+	for <lists+linux-ia64@lfdr.de>; Tue, 23 Mar 2021 09:36:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230511AbhCWAFJ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 22 Mar 2021 20:05:09 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59114 "EHLO mail.kernel.org"
+        id S229693AbhCWIfl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 23 Mar 2021 04:35:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60596 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231193AbhCWAEf (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 22 Mar 2021 20:04:35 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 68F11619A3;
-        Tue, 23 Mar 2021 00:04:31 +0000 (UTC)
+        id S229897AbhCWIf0 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 23 Mar 2021 04:35:26 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id AA4A2619B1;
+        Tue, 23 Mar 2021 08:35:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616457873;
-        bh=OHo+vflUXrll9v/rTKEgd/KJdrtb/YspGpJNGL7VLQE=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=NBgaXuGQo7HTAuPy5mjlDYjF33dYGEWYE+IGtP41/3SJJL1o+OlCzwquSv08024K2
-         Uj568H3nV42Rm/zpaGxRWk7qrwUNzl/wFr7x6hAio2NAv3pQt2SiNGI7OVPYclBiXP
-         hwCszuVvEupNYZAGMCYIIg3p940tSU0BkGXfzK/X5Tf7pFprFiDZX25GatbgHEnYzx
-         U2f4OG3z/XUqWVhayFE1ahAAbagNETfbdcXdWQrK/UwKKi9quQO1KfSKMrsO1uxE7z
-         MMXtMG4/yDjV4bYHW1V+OIN7TTfWUnG5NU8FPZrGk8ZlmtoLnR7yirYgQoSummOBLP
-         gQfZNwEr9RcNQ==
-Date:   Tue, 23 Mar 2021 09:04:29 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Masami Hiramatsu <mhiramat@kernel.org>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
-        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
-        ast@kernel.org, tglx@linutronix.de, kernel-team@fb.com, yhs@fb.com,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        linux-ia64@vger.kernel.org,
-        Abhishek Sagar <sagar.abhishek@gmail.com>
-Subject: Re: [PATCH -tip v4 08/12] arm: kprobes: Make a space for
- regs->ARM_pc at kretprobe_trampoline
-Message-Id: <20210323090429.da18461654ef9907581dab95@kernel.org>
-In-Reply-To: <161639527851.895304.14313883616251450754.stgit@devnote2>
-References: <161639518354.895304.15627519393073806809.stgit@devnote2>
-        <161639527851.895304.14313883616251450754.stgit@devnote2>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        s=k20201202; t=1616488525;
+        bh=DcC/OPoatnEa6xKGovTO3O2/NR4DqnqQmACycnTfAa8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=IHR/vOrMdK3JwAQY2UQGTjIrjpCJM3A8l52ytzNurHs+tWCZeKeeVhxcxPvLbXSRo
+         cASiYNnfW0534g8kFQ1N8BgKajSBrEXKO7bqIe8SVGBCCUmYJoTFJUF2U0DZ6K/Bq/
+         4Cr3+KlN2UBF3jDB9px900hPIbGE8fDgVy7U0xhXlFleUtdxJVD+5vFtCkmGJtgljh
+         1dHUOGRfxXgGSEBN3BINHAAfyPqL58jKblPgneIge1gxiKl58PRqRYp7hppoSGdiob
+         TY1ggDh5Dj/993ZACAe0JKkMSpe6mFHsG0LK18KcOGp33mCfN66/wIxRrKl4CEVXlZ
+         YiuZ8vCuu0idg==
+Received: by mail-oi1-f179.google.com with SMTP id i81so14705425oif.6;
+        Tue, 23 Mar 2021 01:35:25 -0700 (PDT)
+X-Gm-Message-State: AOAM53045bpYmPL7dGMI47XxR0icWOqNaPbKXPSYQVeYcEQmC+E6sqg8
+        rUA7+CUb3Pa0KcowMKg3TJ4oubIHERLtGApt92k=
+X-Google-Smtp-Source: ABdhPJxDVRqu9ToH4dXXW+I7e4DfRQbinakQ0Le879vAYmwwTshy2SPkicOQe/XlAM6KUIvzgLAeZhQ0h+YMTG9FTXQ=
+X-Received: by 2002:aca:478d:: with SMTP id u135mr2492067oia.174.1616488525135;
+ Tue, 23 Mar 2021 01:35:25 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210322221441.3555003-1-slyfox@gentoo.org>
+In-Reply-To: <20210322221441.3555003-1-slyfox@gentoo.org>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 23 Mar 2021 09:35:13 +0100
+X-Gmail-Original-Message-ID: <CAMj1kXF5ufbDPLhBboYav0bU3C1tnn1ZrDesPGGnni=+1N8hjw@mail.gmail.com>
+Message-ID: <CAMj1kXF5ufbDPLhBboYav0bU3C1tnn1ZrDesPGGnni=+1N8hjw@mail.gmail.com>
+Subject: Re: [PATCH] ia64: fix EFI_DEBUG build
+To:     Sergei Trofimovich <slyfox@gentoo.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>, linux-ia64@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, 22 Mar 2021 15:41:18 +0900
-Masami Hiramatsu <mhiramat@kernel.org> wrote:
+On Mon, 22 Mar 2021 at 23:16, Sergei Trofimovich <slyfox@gentoo.org> wrote:
+>
+> When enabled local debugging via `#define EFI_DEBUG 1` noticed
+> build failure:
+>
+>     ia64/kernel/efi.c:564:8: error: 'i' undeclared (first use in this function)
+>       564 |   for (i = 0, p = efi_map_start; p < efi_map_end;
+>           |        ^
+>
+> CC: Ard Biesheuvel <ardb@kernel.org>
+> CC: linux-efi@vger.kernel.org
+> CC: linux-ia64@vger.kernel.org
+> Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
 
-> Change kretprobe_trampoline to make a space for regs->ARM_pc so that
-> kretprobe_trampoline_handler can call instruction_pointer_set()
-> safely.
+What are the other changes for?
 
-BTW, if kretprobe_trampoline is replaced with the assembly code,
-I think it should fill all the regs as much as possible, because
-originally it is written by a software break.
-Thus the regs->sp should point the stack address at the entry of 
-kretprobe_trampoline, and also regs->lr and regs->pc will be
-kretprobe_trampoline, so that user handler can access caller stack.
-
-
-Thanks, 
-
-> 
-> Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
 > ---
->  arch/arm/probes/kprobes/core.c |    2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/arch/arm/probes/kprobes/core.c b/arch/arm/probes/kprobes/core.c
-> index 1782b41df095..5f3c2b42787f 100644
-> --- a/arch/arm/probes/kprobes/core.c
-> +++ b/arch/arm/probes/kprobes/core.c
-> @@ -397,11 +397,13 @@ int __kprobes kprobe_exceptions_notify(struct notifier_block *self,
->  void __naked __kprobes kretprobe_trampoline(void)
->  {
->  	__asm__ __volatile__ (
-> +		"sub	sp, sp, #16		\n\t"
->  		"stmdb	sp!, {r0 - r11}		\n\t"
->  		"mov	r0, sp			\n\t"
->  		"bl	trampoline_handler	\n\t"
->  		"mov	lr, r0			\n\t"
->  		"ldmia	sp!, {r0 - r11}		\n\t"
-> +		"add	sp, sp, #16		\n\t"
->  #ifdef CONFIG_THUMB2_KERNEL
->  		"bx	lr			\n\t"
->  #else
-> 
-
-
--- 
-Masami Hiramatsu <mhiramat@kernel.org>
+>  arch/ia64/kernel/efi.c | 11 ++++++-----
+>  1 file changed, 6 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/ia64/kernel/efi.c b/arch/ia64/kernel/efi.c
+> index c5fe21de46a8..31149e41f9be 100644
+> --- a/arch/ia64/kernel/efi.c
+> +++ b/arch/ia64/kernel/efi.c
+> @@ -415,10 +415,10 @@ efi_get_pal_addr (void)
+>                 mask  = ~((1 << IA64_GRANULE_SHIFT) - 1);
+>
+>                 printk(KERN_INFO "CPU %d: mapping PAL code "
+> -                       "[0x%lx-0x%lx) into [0x%lx-0x%lx)\n",
+> -                       smp_processor_id(), md->phys_addr,
+> -                       md->phys_addr + efi_md_size(md),
+> -                       vaddr & mask, (vaddr & mask) + IA64_GRANULE_SIZE);
+> +                       "[0x%llx-0x%llx) into [0x%llx-0x%llx)\n",
+> +                       smp_processor_id(), md->phys_addr,
+> +                       md->phys_addr + efi_md_size(md),
+> +                       vaddr & mask, (vaddr & mask) + IA64_GRANULE_SIZE);
+>  #endif
+>                 return __va(md->phys_addr);
+>         }
+> @@ -560,6 +560,7 @@ efi_init (void)
+>         {
+>                 efi_memory_desc_t *md;
+>                 void *p;
+> +               unsigned int i;
+>
+>                 for (i = 0, p = efi_map_start; p < efi_map_end;
+>                      ++i, p += efi_desc_size)
+> @@ -586,7 +587,7 @@ efi_init (void)
+>                         }
+>
+>                         printk("mem%02d: %s "
+> -                              "range=[0x%016lx-0x%016lx) (%4lu%s)\n",
+> +                              "range=[0x%016llx-0x%016llx) (%4lu%s)\n",
+>                                i, efi_md_typeattr_format(buf, sizeof(buf), md),
+>                                md->phys_addr,
+>                                md->phys_addr + efi_md_size(md), size, unit);
+> --
+> 2.31.0
+>
