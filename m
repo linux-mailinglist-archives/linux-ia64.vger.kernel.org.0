@@ -2,95 +2,100 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 13D013466AA
-	for <lists+linux-ia64@lfdr.de>; Tue, 23 Mar 2021 18:48:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 08D5634670E
+	for <lists+linux-ia64@lfdr.de>; Tue, 23 Mar 2021 18:58:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230486AbhCWRsA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 23 Mar 2021 13:48:00 -0400
-Received: from smtp.gentoo.org ([140.211.166.183]:42620 "EHLO smtp.gentoo.org"
+        id S231494AbhCWR6R (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 23 Mar 2021 13:58:17 -0400
+Received: from smtp.gentoo.org ([140.211.166.183]:44196 "EHLO smtp.gentoo.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230374AbhCWRrp (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 23 Mar 2021 13:47:45 -0400
-Date:   Tue, 23 Mar 2021 17:47:24 +0000
+        id S231613AbhCWR6J (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 23 Mar 2021 13:58:09 -0400
+X-Greylist: delayed 70997 seconds by postgrey-1.27 at vger.kernel.org; Tue, 23 Mar 2021 13:58:09 EDT
+Received: by sf.home (Postfix, from userid 1000)
+        id 160D75A22061; Tue, 23 Mar 2021 17:58:01 +0000 (GMT)
+Date:   Tue, 23 Mar 2021 17:58:01 +0000
 From:   Sergei Trofimovich <slyfox@gentoo.org>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
-Subject: Re: [PATCH] ia64: mca: allocate early mca with GFP_ATOMIC
-Message-ID: <20210323174724.78b61c02@sf>
-In-Reply-To: <f351183c-7d70-359f-eed7-4d1722cf41c5@physik.fu-berlin.de>
-References: <20210315085045.204414-1-slyfox@gentoo.org>
-        <f351183c-7d70-359f-eed7-4d1722cf41c5@physik.fu-berlin.de>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-efi <linux-efi@vger.kernel.org>, linux-ia64@vger.kernel.org,
+        Sergei Trofimovich <slyfox@gentoo.org>
+Subject: Re: [PATCH] ia64: fix EFI_DEBUG build
+Message-ID: <YFosKXrTwfqBRLjf@sf>
+References: <20210322221441.3555003-1-slyfox@gentoo.org>
+ <CAMj1kXF5ufbDPLhBboYav0bU3C1tnn1ZrDesPGGnni=+1N8hjw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAMj1kXF5ufbDPLhBboYav0bU3C1tnn1ZrDesPGGnni=+1N8hjw@mail.gmail.com>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, 23 Mar 2021 16:15:06 +0100
-John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> wrote:
-
-> Hi Andrew!
-> 
-> On 3/15/21 9:50 AM, Sergei Trofimovich wrote:
-> > The sleep warning happens at early boot right at
-> > secondary CPU activation bootup:
-> > 
-> >     smp: Bringing up secondary CPUs ...
-> >     BUG: sleeping function called from invalid context at mm/page_alloc.c:4942
-> >     in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
-> >     CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.12.0-rc2-00007-g79e228d0b611-dirty #99
-> > 
-> >     Call Trace:
-> >      [<a000000100014d10>] show_stack+0x90/0xc0
-> >      [<a000000101111d90>] dump_stack+0x150/0x1c0
-> >      [<a0000001000cbec0>] ___might_sleep+0x1c0/0x2a0
-> >      [<a0000001000cc040>] __might_sleep+0xa0/0x160
-> >      [<a000000100399960>] __alloc_pages_nodemask+0x1a0/0x600
-> >      [<a0000001003b71b0>] alloc_page_interleave+0x30/0x1c0
-> >      [<a0000001003b9b60>] alloc_pages_current+0x2c0/0x340
-> >      [<a00000010038c270>] __get_free_pages+0x30/0xa0
-> >      [<a000000100044730>] ia64_mca_cpu_init+0x2d0/0x3a0
-> >      [<a000000100023430>] cpu_init+0x8b0/0x1440
-> >      [<a000000100054680>] start_secondary+0x60/0x700
-> >      [<a00000010111e1d0>] start_ap+0x750/0x780
-> >     Fixed BSP b0 value from CPU 1
-> > 
-> > As I understand interrupts are not enabled yet and system has a lot
-> > of memory. There is little chance to sleep and switch to GFP_ATOMIC
-> > should be a no-op.
-> > 
-> > CC: Andrew Morton <akpm@linux-foundation.org>
+On Tue, Mar 23, 2021 at 09:35:13AM +0100, Ard Biesheuvel wrote:
+> On Mon, 22 Mar 2021 at 23:16, Sergei Trofimovich <slyfox@gentoo.org> wrote:
+> >
+> > When enabled local debugging via `#define EFI_DEBUG 1` noticed
+> > build failure:
+> >
+> >     ia64/kernel/efi.c:564:8: error: 'i' undeclared (first use in this function)
+> >       564 |   for (i = 0, p = efi_map_start; p < efi_map_end;
+> >           |        ^
+> >
+> > CC: Ard Biesheuvel <ardb@kernel.org>
+> > CC: linux-efi@vger.kernel.org
 > > CC: linux-ia64@vger.kernel.org
 > > Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
-> > ---
-> >  arch/ia64/kernel/mca.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/arch/ia64/kernel/mca.c b/arch/ia64/kernel/mca.c
-> > index d4cae2fc69ca..adf6521525f4 100644
-> > --- a/arch/ia64/kernel/mca.c
-> > +++ b/arch/ia64/kernel/mca.c
-> > @@ -1824,7 +1824,7 @@ ia64_mca_cpu_init(void *cpu_data)
-> >  			data = mca_bootmem();
-> >  			first_time = 0;
-> >  		} else
-> > -			data = (void *)__get_free_pages(GFP_KERNEL,
-> > +			data = (void *)__get_free_pages(GFP_ATOMIC,
-> >  							get_order(sz));
-> >  		if (!data)
-> >  			panic("Could not allocate MCA memory for cpu %d\n",
-> >   
 > 
-> Has this one been picked up for your tree already?
+> What are the other changes for?
 
-Should be there: https://www.ozlabs.org/~akpm/mmotm/series
+The rest are fixes for format string mismatch in %lx / unsigned long long.
+Should I resend with updated comment or split it to another commit?
 
-> #NEXT_PATCHES_START mainline-later (next week, approximately)
-> ia64-mca-allocate-early-mca-with-gfp_atomic.patch
+They all are hiding under EFI_DEBUG and are not visible by default.
 
+> > ---
+> >  arch/ia64/kernel/efi.c | 11 ++++++-----
+> >  1 file changed, 6 insertions(+), 5 deletions(-)
+> >
+> > diff --git a/arch/ia64/kernel/efi.c b/arch/ia64/kernel/efi.c
+> > index c5fe21de46a8..31149e41f9be 100644
+> > --- a/arch/ia64/kernel/efi.c
+> > +++ b/arch/ia64/kernel/efi.c
+> > @@ -415,10 +415,10 @@ efi_get_pal_addr (void)
+> >                 mask  = ~((1 << IA64_GRANULE_SHIFT) - 1);
+> >
+> >                 printk(KERN_INFO "CPU %d: mapping PAL code "
+> > -                       "[0x%lx-0x%lx) into [0x%lx-0x%lx)\n",
+> > -                       smp_processor_id(), md->phys_addr,
+> > -                       md->phys_addr + efi_md_size(md),
+> > -                       vaddr & mask, (vaddr & mask) + IA64_GRANULE_SIZE);
+> > +                       "[0x%llx-0x%llx) into [0x%llx-0x%llx)\n",
+> > +                       smp_processor_id(), md->phys_addr,
+> > +                       md->phys_addr + efi_md_size(md),
+> > +                       vaddr & mask, (vaddr & mask) + IA64_GRANULE_SIZE);
+> >  #endif
+> >                 return __va(md->phys_addr);
+> >         }
+> > @@ -560,6 +560,7 @@ efi_init (void)
+> >         {
+> >                 efi_memory_desc_t *md;
+> >                 void *p;
+> > +               unsigned int i;
+> >
+> >                 for (i = 0, p = efi_map_start; p < efi_map_end;
+> >                      ++i, p += efi_desc_size)
+> > @@ -586,7 +587,7 @@ efi_init (void)
+> >                         }
+> >
+> >                         printk("mem%02d: %s "
+> > -                              "range=[0x%016lx-0x%016lx) (%4lu%s)\n",
+> > +                              "range=[0x%016llx-0x%016llx) (%4lu%s)\n",
+> >                                i, efi_md_typeattr_format(buf, sizeof(buf), md),
+> >                                md->phys_addr,
+> >                                md->phys_addr + efi_md_size(md), size, unit);
+> > --
+> > 2.31.0
+> >
 
 -- 
 
