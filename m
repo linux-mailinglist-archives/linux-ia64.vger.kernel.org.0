@@ -2,135 +2,119 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6272734720D
-	for <lists+linux-ia64@lfdr.de>; Wed, 24 Mar 2021 08:09:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 244733475D3
+	for <lists+linux-ia64@lfdr.de>; Wed, 24 Mar 2021 11:21:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230336AbhCXHIw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 24 Mar 2021 03:08:52 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:55513 "EHLO
+        id S231396AbhCXKVS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 24 Mar 2021 06:21:18 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:58189 "EHLO
         outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235714AbhCXHI3 (ORCPT
+        by vger.kernel.org with ESMTP id S230452AbhCXKUr (ORCPT
         <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 24 Mar 2021 03:08:29 -0400
+        Wed, 24 Mar 2021 06:20:47 -0400
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.94)
           with esmtps (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1lOxcp-000TyT-2y; Wed, 24 Mar 2021 08:08:19 +0100
-Received: from p57bd9564.dip0.t-ipconnect.de ([87.189.149.100] helo=[192.168.178.139])
+          id 1lP0d4-001nkY-29; Wed, 24 Mar 2021 11:20:46 +0100
+Received: from suse-laptop.physik.fu-berlin.de ([160.45.32.140])
           by inpost2.zedat.fu-berlin.de (Exim 4.94)
           with esmtpsa (TLS1.2)
           tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1lOxco-002Ehe-Rv; Wed, 24 Mar 2021 08:08:19 +0100
-Subject: Re: [PATCH] hpsa: fix boot on ia64 (atomic_t alignment)
-To:     Sergei Trofimovich <slyfox@gentoo.org>,
-        linux-kernel@vger.kernel.org
-Cc:     linux-ia64@vger.kernel.org, storagedev@microchip.com,
-        linux-scsi@vger.kernel.org, Joe Szczypek <jszczype@redhat.com>,
-        Scott Benesh <scott.benesh@microchip.com>,
-        Scott Teel <scott.teel@microchip.com>,
-        Tomas Henzl <thenzl@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Don Brace <don.brace@microchip.com>
-References: <5532f9ab-7555-d51b-f4d5-f9b72a61f248@redhat.com>
- <20210312222718.4117508-1-slyfox@gentoo.org>
+          id 1lP0d3-002kEf-SP; Wed, 24 Mar 2021 11:20:46 +0100
+Subject: Re: [PATCH] ia64: mca: allocate early mca with GFP_ATOMIC
+To:     Sergei Trofimovich <slyfox@gentoo.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
+References: <20210315085045.204414-1-slyfox@gentoo.org>
+ <f351183c-7d70-359f-eed7-4d1722cf41c5@physik.fu-berlin.de>
+ <20210323174724.78b61c02@sf>
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <f533ad03-9dcf-fa28-e76a-63fef33d523c@physik.fu-berlin.de>
-Date:   Wed, 24 Mar 2021 08:08:17 +0100
+Message-ID: <4f7ccc08-7355-63a0-7239-16a5fb29207f@physik.fu-berlin.de>
+Date:   Wed, 24 Mar 2021 11:20:45 +0100
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.8.1
 MIME-Version: 1.0
-In-Reply-To: <20210312222718.4117508-1-slyfox@gentoo.org>
+In-Reply-To: <20210323174724.78b61c02@sf>
 Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.149.100
+X-Originating-IP: 160.45.32.140
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hello!
+Hi Sergei!
 
-On 3/12/21 11:27 PM, Sergei Trofimovich wrote:
-> The failure initially observed as boot failure on rx3600 ia64 machine
-> with RAID bus controller: Hewlett-Packard Company Smart Array P600:
+On 3/23/21 6:47 PM, Sergei Trofimovich wrote:
+> On Tue, 23 Mar 2021 16:15:06 +0100
+> John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> wrote:
 > 
->     kernel unaligned access to 0xe000000105dd8b95, ip=0xa000000100b87551
->     kernel unaligned access to 0xe000000105dd8e95, ip=0xa000000100b87551
->     hpsa 0000:14:01.0: Controller reports max supported commands of 0 Using 16 instead. Ensure that firmware is up to date.
->     swapper/0[1]: error during unaligned kernel access
+>> Hi Andrew!
+>>
+>> On 3/15/21 9:50 AM, Sergei Trofimovich wrote:
+>>> The sleep warning happens at early boot right at
+>>> secondary CPU activation bootup:
+>>>
+>>>     smp: Bringing up secondary CPUs ...
+>>>     BUG: sleeping function called from invalid context at mm/page_alloc.c:4942
+>>>     in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+>>>     CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.12.0-rc2-00007-g79e228d0b611-dirty #99
+>>>
+>>>     Call Trace:
+>>>      [<a000000100014d10>] show_stack+0x90/0xc0
+>>>      [<a000000101111d90>] dump_stack+0x150/0x1c0
+>>>      [<a0000001000cbec0>] ___might_sleep+0x1c0/0x2a0
+>>>      [<a0000001000cc040>] __might_sleep+0xa0/0x160
+>>>      [<a000000100399960>] __alloc_pages_nodemask+0x1a0/0x600
+>>>      [<a0000001003b71b0>] alloc_page_interleave+0x30/0x1c0
+>>>      [<a0000001003b9b60>] alloc_pages_current+0x2c0/0x340
+>>>      [<a00000010038c270>] __get_free_pages+0x30/0xa0
+>>>      [<a000000100044730>] ia64_mca_cpu_init+0x2d0/0x3a0
+>>>      [<a000000100023430>] cpu_init+0x8b0/0x1440
+>>>      [<a000000100054680>] start_secondary+0x60/0x700
+>>>      [<a00000010111e1d0>] start_ap+0x750/0x780
+>>>     Fixed BSP b0 value from CPU 1
+>>>
+>>> As I understand interrupts are not enabled yet and system has a lot
+>>> of memory. There is little chance to sleep and switch to GFP_ATOMIC
+>>> should be a no-op.
+>>>
+>>> CC: Andrew Morton <akpm@linux-foundation.org>
+>>> CC: linux-ia64@vger.kernel.org
+>>> Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
+>>> ---
+>>>  arch/ia64/kernel/mca.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/arch/ia64/kernel/mca.c b/arch/ia64/kernel/mca.c
+>>> index d4cae2fc69ca..adf6521525f4 100644
+>>> --- a/arch/ia64/kernel/mca.c
+>>> +++ b/arch/ia64/kernel/mca.c
+>>> @@ -1824,7 +1824,7 @@ ia64_mca_cpu_init(void *cpu_data)
+>>>  			data = mca_bootmem();
+>>>  			first_time = 0;
+>>>  		} else
+>>> -			data = (void *)__get_free_pages(GFP_KERNEL,
+>>> +			data = (void *)__get_free_pages(GFP_ATOMIC,
+>>>  							get_order(sz));
+>>>  		if (!data)
+>>>  			panic("Could not allocate MCA memory for cpu %d\n",
+>>>   
+>>
+>> Has this one been picked up for your tree already?
 > 
-> Here unaligned access comes from 'struct CommandList' that happens
-> to be packed. The change f749d8b7a ("scsi: hpsa: Correct dev cmds
-> outstanding for retried cmds") introduced unexpected padding and
-> un-aligned atomic_t from natural alignment to something else.
+> Should be there: https://www.ozlabs.org/~akpm/mmotm/series
 > 
-> This change does not remove packing annotation from struct but only
-> restores alignment of atomic variable.
-> 
-> The change is tested on the same rx3600 machine.
-> 
-> CC: linux-ia64@vger.kernel.org
-> CC: storagedev@microchip.com
-> CC: linux-scsi@vger.kernel.org
-> CC: Joe Szczypek <jszczype@redhat.com>
-> CC: Scott Benesh <scott.benesh@microchip.com>
-> CC: Scott Teel <scott.teel@microchip.com>
-> CC: Tomas Henzl <thenzl@redhat.com>
-> CC: "Martin K. Petersen" <martin.petersen@oracle.com>
-> CC: Don Brace <don.brace@microchip.com>
-> Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> Suggested-by: Don Brace <don.brace@microchip.com>
-> Fixes: f749d8b7a "scsi: hpsa: Correct dev cmds outstanding for retried cmds"
-> Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
-> ---
->  drivers/scsi/hpsa_cmd.h | 14 +++++++++++++-
->  1 file changed, 13 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/scsi/hpsa_cmd.h b/drivers/scsi/hpsa_cmd.h
-> index d126bb877250..617bdae9a7de 100644
-> --- a/drivers/scsi/hpsa_cmd.h
-> +++ b/drivers/scsi/hpsa_cmd.h
-> @@ -20,6 +20,9 @@
->  #ifndef HPSA_CMD_H
->  #define HPSA_CMD_H
->  
-> +#include <linux/build_bug.h> /* static_assert */
-> +#include <linux/stddef.h> /* offsetof */
-> +
->  /* general boundary defintions */
->  #define SENSEINFOBYTES          32 /* may vary between hbas */
->  #define SG_ENTRIES_IN_CMD	32 /* Max SG entries excluding chain blocks */
-> @@ -448,11 +451,20 @@ struct CommandList {
->  	 */
->  	struct hpsa_scsi_dev_t *phys_disk;
->  
-> -	bool retry_pending;
-> +	int retry_pending;
->  	struct hpsa_scsi_dev_t *device;
->  	atomic_t refcount; /* Must be last to avoid memset in hpsa_cmd_init() */
->  } __aligned(COMMANDLIST_ALIGNMENT);
->  
-> +/*
-> + * Make sure our embedded atomic variable is aligned. Otherwise we break atomic
-> + * operations on architectures that don't support unaligned atomics like IA64.
-> + *
-> + * Ideally this header should be cleaned up to only mark individual structs as
-> + * packed.
-> + */
-> +static_assert(offsetof(struct CommandList, refcount) % __alignof__(atomic_t) == 0);
-> +
->  /* Max S/G elements in I/O accelerator command */
->  #define IOACCEL1_MAXSGENTRIES           24
->  #define IOACCEL2_MAXSGENTRIES		28
+>> #NEXT_PATCHES_START mainline-later (next week, approximately)
+>> ia64-mca-allocate-early-mca-with-gfp_atomic.patch
 
-I'm seeing this issue as well and without the patch, the kernel won't boot on multiple
-ia64 servers. Is there anything that speaks against fixing this?
+Great, thanks. We're still missing Valentin's patch for the NUMA enumeration issue
+though. Should Valentin send the patch again with Andrew CC'ed?
 
-Thanks,
 Adrian
 
 -- 
