@@ -2,91 +2,89 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 129513484F4
-	for <lists+linux-ia64@lfdr.de>; Wed, 24 Mar 2021 23:58:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BE47D348581
+	for <lists+linux-ia64@lfdr.de>; Thu, 25 Mar 2021 00:48:32 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238506AbhCXW5i (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 24 Mar 2021 18:57:38 -0400
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:43671 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238461AbhCXW5Q (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 24 Mar 2021 18:57:16 -0400
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1lPCR7-002cPH-4V; Wed, 24 Mar 2021 23:57:13 +0100
-Received: from p57bd9564.dip0.t-ipconnect.de ([87.189.149.100] helo=[192.168.178.139])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1lPCR6-000rLx-Tb; Wed, 24 Mar 2021 23:57:13 +0100
-Subject: Re: [PATCH] ia64: mca: allocate early mca with GFP_ATOMIC
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Sergei Trofimovich <slyfox@gentoo.org>,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
-References: <20210315085045.204414-1-slyfox@gentoo.org>
- <f351183c-7d70-359f-eed7-4d1722cf41c5@physik.fu-berlin.de>
- <20210323174724.78b61c02@sf>
- <4f7ccc08-7355-63a0-7239-16a5fb29207f@physik.fu-berlin.de>
- <20210324153934.963ac2cb8f44a4e529016612@linux-foundation.org>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Message-ID: <7c2b9840-b1ba-1e5d-1909-5482e8c04ca1@physik.fu-berlin.de>
-Date:   Wed, 24 Mar 2021 23:57:11 +0100
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
-MIME-Version: 1.0
-In-Reply-To: <20210324153934.963ac2cb8f44a4e529016612@linux-foundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+        id S232385AbhCXXr7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 24 Mar 2021 19:47:59 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37824 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S234936AbhCXXrr (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 24 Mar 2021 19:47:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 1F74761A1B;
+        Wed, 24 Mar 2021 23:47:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1616629666;
+        bh=v59vByxGJgHUIeCgl6iQF3cvCpnYou0eQu+z4+VM78o=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=G3A+zkz7210ziOxm83lOvNFO21FhzdWgPtySMCeO5Znex2w/S9GHonLO68eUSzrQW
+         uXVpt5KN14vzJKKFXz3GfLEdwJvwiewrLLitdmzMoVQQ2KaDxu6v1pk+3a0NMrk7ez
+         s9dKbiCW+ymshljVk9mb8fK9EwlPsrxfZWtA+ZheNOzdWK1k8hEdPImL4yqLnU9xYH
+         W08x9sjlXtVgRcuTiCYTrBwStFF2Hn/KrauXRx05NjClqEK/ERWGKbeY27LIS6yUbU
+         5SbQsVfUedJhfbGxtwEZZwTiLaFfjHecbPw4CUBo7xs0Reb6/WG97W1p+TuG9xDXUz
+         NApD42hpZMSww==
+Date:   Thu, 25 Mar 2021 08:47:41 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Josh Poimboeuf <jpoimboe@redhat.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
+        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
+        ast@kernel.org, tglx@linutronix.de, kernel-team@fb.com, yhs@fb.com,
+        linux-ia64@vger.kernel.org,
+        Abhishek Sagar <sagar.abhishek@gmail.com>
+Subject: Re: [PATCH -tip v4 10/12] x86/kprobes: Push a fake return address
+ at kretprobe_trampoline
+Message-Id: <20210325084741.74bdb2b1d2ed00fe68840cea@kernel.org>
+In-Reply-To: <20210324160143.wd43zribpeop2czn@treble>
+References: <161639518354.895304.15627519393073806809.stgit@devnote2>
+        <161639530062.895304.16962383429668412873.stgit@devnote2>
+        <20210323223007.GG4746@worktop.programming.kicks-ass.net>
+        <20210324104058.7c06aaeb0408e24db6ba46f8@kernel.org>
+        <20210324160143.wd43zribpeop2czn@treble>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.149.100
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Andrew!
+On Wed, 24 Mar 2021 11:01:43 -0500
+Josh Poimboeuf <jpoimboe@redhat.com> wrote:
 
-On 3/24/21 11:39 PM, Andrew Morton wrote:
-> On Wed, 24 Mar 2021 11:20:45 +0100 John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> wrote:
+> On Wed, Mar 24, 2021 at 10:40:58AM +0900, Masami Hiramatsu wrote:
+> > On Tue, 23 Mar 2021 23:30:07 +0100
+> > Peter Zijlstra <peterz@infradead.org> wrote:
+> > 
+> > > On Mon, Mar 22, 2021 at 03:41:40PM +0900, Masami Hiramatsu wrote:
+> > > >  	".global kretprobe_trampoline\n"
+> > > >  	".type kretprobe_trampoline, @function\n"
+> > > >  	"kretprobe_trampoline:\n"
+> > > >  #ifdef CONFIG_X86_64
+> > > 
+> > > So what happens if we get an NMI here? That is, after the RET but before
+> > > the push? Then our IP points into the trampoline but we've not done that
+> > > push yet.
+> > 
+> > Not only NMI, but also interrupts can happen. There is no cli/sti here.
+> > 
+> > Anyway, thanks for pointing!
+> > I think in UNWIND_HINT_TYPE_REGS and UNWIND_HINT_TYPE_REGS_PARTIAL cases
+> > ORC unwinder also has to check the state->ip and if it is kretprobe_trampoline,
+> > it should be recovered.
+> > What about this?
 > 
->>>> #NEXT_PATCHES_START mainline-later (next week, approximately)
->>>> ia64-mca-allocate-early-mca-with-gfp_atomic.patch
->>
->> Great, thanks. We're still missing Valentin's patch for the NUMA enumeration issue
->> though. Should Valentin send the patch again with Andrew CC'ed?
-> 
-> I subscribed to linux-ia64 today, so I can go in there to find things. 
+> I think the REGS and REGS_PARTIAL cases can also be affected by function
+> graph tracing.  So should they use the generic unwind_recover_ret_addr()
+> instead of unwind_recover_kretprobe()?
 
-Good to know, thanks.
+Yes, but I'm not sure this parameter can be applied.
+For example, it passed "state->sp - sizeof(unsigned long)" as where the
+return address stored address. Is that same on ftrace graph too?
 
-> But if there's anything presently outstanding, please do resend.
-> 
-> I presently have
-> 
-> module-remove-duplicate-include-in-arch-ia64-kernel-heads.patch
-> ia64-kernel-few-typos-fixed-in-the-file-fsyss.patch
-> ia64-include-asm-minor-typo-fixes-in-the-file-pgtableh.patch
-> ia64-ensure-proper-numa-distance-and-possible-map-initialization.patch
-> ia64-drop-unused-ia64_fw_emu-ifdef.patch
-
-I send two patches today which fix two ia64-related build issues in tools,
-not sure whether you should pick those as well or I should just wait for
-the maintainers that get_maintainers.pl report to answer.
-
-> https://marc.info/?l=linux-netdev&m=161652285123466&w=2
-> https://marc.info/?l=linux-netdev&m=161652400124112&w=2
-
-Thanks,
-Adrian
+Thank you,
 
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+Masami Hiramatsu <mhiramat@kernel.org>
