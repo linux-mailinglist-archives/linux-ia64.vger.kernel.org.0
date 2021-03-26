@@ -2,105 +2,60 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D1DD34A753
-	for <lists+linux-ia64@lfdr.de>; Fri, 26 Mar 2021 13:31:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 454F434A97A
+	for <lists+linux-ia64@lfdr.de>; Fri, 26 Mar 2021 15:20:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230280AbhCZMbK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 26 Mar 2021 08:31:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53726 "EHLO mail.kernel.org"
+        id S230203AbhCZOUS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 26 Mar 2021 10:20:18 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46260 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230300AbhCZMas (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 26 Mar 2021 08:30:48 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id C468561949;
-        Fri, 26 Mar 2021 12:30:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616761848;
-        bh=CQnx3jNZ9PtYKmb+4+Wr6KaZMg1oCyI1sHneUUD/zYw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OVAw5ApnAfP15lcOutRZM+MlmxjZ/tOdlSR2Yfq2xxG9Q2Iy6zdCXTHiaMZ+/hcfF
-         gFRIS/eAOQOBleCkvfbnWv/uKMvBWOrZPOabmrOhEYusC41JYIkjl8CytXALGg+rdN
-         lk052/ELO7LWIx41f5Jc6k6cgz0KxSPG1GM0oi/Rv6vfy+36AZ9jdbiUq+vnknTzO3
-         kNpKdG3T/tvFrvtdSipI8+rO09Gyza5aGDydNIA1S6qxRGMbcKwmq4ar3LYi4HOYEP
-         sILTtjy8P0pZwdoc0mMWONOTUKPHvUQHbDN/8x+sz5/JmYSCEtsTLg5YH/7l9WuCbd
-         WjmuNTpP6IMpQ==
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>
-Cc:     X86 ML <x86@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+        id S230174AbhCZOUN (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 26 Mar 2021 10:20:13 -0400
+Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mail.kernel.org (Postfix) with ESMTPSA id 58E8860190;
+        Fri, 26 Mar 2021 14:20:11 +0000 (UTC)
+Date:   Fri, 26 Mar 2021 10:20:09 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
         Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
         bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
         ast@kernel.org, tglx@linutronix.de, kernel-team@fb.com, yhs@fb.com,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         linux-ia64@vger.kernel.org,
         Abhishek Sagar <sagar.abhishek@gmail.com>
-Subject: [PATCH -tip v5 12/12] tracing: Show kretprobe unknown indicator only for kretprobe_trampoline
-Date:   Fri, 26 Mar 2021 21:30:42 +0900
-Message-Id: <161676184261.330141.6575911414561853358.stgit@devnote2>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <161676170650.330141.6214727134265514123.stgit@devnote2>
-References: <161676170650.330141.6214727134265514123.stgit@devnote2>
-User-Agent: StGit/0.19
+Subject: Re: [PATCH -tip v4 10/12] x86/kprobes: Push a fake return address
+ at kretprobe_trampoline
+Message-ID: <20210326102009.265f359c@gandalf.local.home>
+In-Reply-To: <20210326210349.22f6d34b229dd3a139a53686@kernel.org>
+References: <161639518354.895304.15627519393073806809.stgit@devnote2>
+        <161639530062.895304.16962383429668412873.stgit@devnote2>
+        <20210323223007.GG4746@worktop.programming.kicks-ass.net>
+        <20210324104058.7c06aaeb0408e24db6ba46f8@kernel.org>
+        <20210326030503.7fa72da34e25ad35cf5ed3de@kernel.org>
+        <20210326210349.22f6d34b229dd3a139a53686@kernel.org>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-ftrace shows "[unknown/kretprobe'd]" indicator all addresses in the
-kretprobe_trampoline, but the modified address by kretprobe should
-be only kretprobe_trampoline+0.
+On Fri, 26 Mar 2021 21:03:49 +0900
+Masami Hiramatsu <mhiramat@kernel.org> wrote:
 
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Acked-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
----
- kernel/trace/trace_output.c |   17 ++++-------------
- 1 file changed, 4 insertions(+), 13 deletions(-)
+> I confirmed this is not related to this series, but occurs when I build kernels with different
+> configs without cleanup.
+> 
+> Once I build kernel with CONFIG_UNWIND_GUESS=y (for testing), and after that,
+> I build kernel again with CONFIG_UNWIND_ORC=y (but without make clean), this
+> happened. In this case, I guess ORC data might be corrupted?
+> When I cleanup and rebuild, the stacktrace seems correct.
 
-diff --git a/kernel/trace/trace_output.c b/kernel/trace/trace_output.c
-index 61255bad7e01..e12437388686 100644
---- a/kernel/trace/trace_output.c
-+++ b/kernel/trace/trace_output.c
-@@ -8,6 +8,7 @@
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/ftrace.h>
-+#include <linux/kprobes.h>
- #include <linux/sched/clock.h>
- #include <linux/sched/mm.h>
- 
-@@ -346,22 +347,12 @@ int trace_output_call(struct trace_iterator *iter, char *name, char *fmt, ...)
- }
- EXPORT_SYMBOL_GPL(trace_output_call);
- 
--#ifdef CONFIG_KRETPROBES
--static inline const char *kretprobed(const char *name)
-+static inline const char *kretprobed(const char *name, unsigned long addr)
- {
--	static const char tramp_name[] = "kretprobe_trampoline";
--	int size = sizeof(tramp_name);
--
--	if (strncmp(tramp_name, name, size) == 0)
-+	if (is_kretprobe_trampoline(addr))
- 		return "[unknown/kretprobe'd]";
- 	return name;
- }
--#else
--static inline const char *kretprobed(const char *name)
--{
--	return name;
--}
--#endif /* CONFIG_KRETPROBES */
- 
- void
- trace_seq_print_sym(struct trace_seq *s, unsigned long address, bool offset)
-@@ -374,7 +365,7 @@ trace_seq_print_sym(struct trace_seq *s, unsigned long address, bool offset)
- 		sprint_symbol(str, address);
- 	else
- 		kallsyms_lookup(address, NULL, NULL, NULL, str);
--	name = kretprobed(str);
-+	name = kretprobed(str, address);
- 
- 	if (name && strlen(name)) {
- 		trace_seq_puts(s, name);
+Hmm, that should be fixed. Seems like we are missing a dependency somewhere.
 
+-- Steve
