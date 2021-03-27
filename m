@@ -2,138 +2,75 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DF42734B326
-	for <lists+linux-ia64@lfdr.de>; Sat, 27 Mar 2021 00:50:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A46034B614
+	for <lists+linux-ia64@lfdr.de>; Sat, 27 Mar 2021 11:24:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230445AbhCZXth (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 26 Mar 2021 19:49:37 -0400
-Received: from mail.kernel.org ([198.145.29.99]:52168 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230343AbhCZXt1 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 26 Mar 2021 19:49:27 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 1749A619E4;
-        Fri, 26 Mar 2021 23:49:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1616802567;
-        bh=hEIUPf9Cy1KrnmqTliwoUoilooZlC/3f7DU61g9/wHc=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=CUXQg7D2cIQq4P6tH0ChrbEfcWlgWGUwtTK6L2O/UggTirNTptYK+9n2akspxUzct
-         WoCg5BXDPgK0zXSir0BywBCiEG/fkA6dAxrFI2zWqDv0jwAvj/7ClSCGXI7hAmHCV5
-         gUEPXOy8eEpC0KwCcPZMncuhf6P1/8bL/8nyb78xm0v3l9KnE8CVqE4VW7pYmfo3tC
-         qQcNQVR5FdckcjOczFDfXiDwT9+aUtMlXH0mj/Xxx3Fg7k/qiaJ4XEj3xvNJxoi5l7
-         AOmScukUeTIH5eSXlMO+CgaDe8MWHmWbud/fyEOHln+2WIZf9dW2Q2SO0uQIXlzaQR
-         HAAis91KCWuIA==
-Date:   Sat, 27 Mar 2021 08:49:21 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Masami Hiramatsu <mhiramat@kernel.org>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
-        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
-        ast@kernel.org, tglx@linutronix.de, kernel-team@fb.com, yhs@fb.com,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        linux-ia64@vger.kernel.org,
-        Abhishek Sagar <sagar.abhishek@gmail.com>
-Subject: Re: [PATCH -tip v5 00/12] kprobes: Fix stacktrace with kretprobes
- on x86
-Message-Id: <20210327084921.89473486c5b73dda94fcb172@kernel.org>
-In-Reply-To: <161676170650.330141.6214727134265514123.stgit@devnote2>
-References: <161676170650.330141.6214727134265514123.stgit@devnote2>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
+        id S230322AbhC0KYk (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 27 Mar 2021 06:24:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53444 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229875AbhC0KYj (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 27 Mar 2021 06:24:39 -0400
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5BB7C0613B1;
+        Sat, 27 Mar 2021 03:24:39 -0700 (PDT)
+Date:   Sat, 27 Mar 2021 10:24:33 +0000
+From:   Sergei Trofimovich <slyfox@gentoo.org>
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        storagedev@microchip.com, linux-scsi@vger.kernel.org,
+        Joe Szczypek <jszczype@redhat.com>,
+        Scott Benesh <scott.benesh@microchip.com>,
+        Scott Teel <scott.teel@microchip.com>,
+        Tomas Henzl <thenzl@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Don Brace <don.brace@microchip.com>
+Subject: Re: [PATCH] hpsa: fix boot on ia64 (atomic_t alignment)
+Message-ID: <20210327102433.179ce571@sf>
+In-Reply-To: <23674602-0f14-0b71-3192-aa0184a34d6e@physik.fu-berlin.de>
+References: <5532f9ab-7555-d51b-f4d5-f9b72a61f248@redhat.com>
+        <20210312222718.4117508-1-slyfox@gentoo.org>
+        <23674602-0f14-0b71-3192-aa0184a34d6e@physik.fu-berlin.de>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, 26 Mar 2021 21:28:26 +0900
-Masami Hiramatsu <mhiramat@kernel.org> wrote:
+On Wed, 17 Mar 2021 18:28:31 +0100
+John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de> wrote:
 
-> Hello,
+> Hi Sergei!
 > 
-> Here is the 5th version of the series to fix the stacktrace with kretprobe
-> on x86. After merging this, I'll fix other architectures.
+> On 3/12/21 11:27 PM, Sergei Trofimovich wrote:
+> > The failure initially observed as boot failure on rx3600 ia64 machine
+> > with RAID bus controller: Hewlett-Packard Company Smart Array P600:
+> > 
+> >     kernel unaligned access to 0xe000000105dd8b95, ip=0xa000000100b87551
+> >     kernel unaligned access to 0xe000000105dd8e95, ip=0xa000000100b87551
+> >     hpsa 0000:14:01.0: Controller reports max supported commands of 0 Using 16 instead. Ensure that firmware is up to date.
+> >     swapper/0[1]: error during unaligned kernel access
+> > 
+> > Here unaligned access comes from 'struct CommandList' that happens
+> > to be packed. The change f749d8b7a ("scsi: hpsa: Correct dev cmds
+> > outstanding for retried cmds") introduced unexpected padding and
+> > un-aligned atomic_t from natural alignment to something else.
+> > 
+> > This change does not remove packing annotation from struct but only
+> > restores alignment of atomic variable.
+> > 
+> > The change is tested on the same rx3600 machine.  
 > 
-> The previous version is;
+> I just gave it a try on my RX2660 and for me, the hpsa driver won't load even
+> with your patch.
 > 
-> https://lore.kernel.org/bpf/161639518354.895304.15627519393073806809.stgit@devnote2/
-> 
-> This version fixes a build error from a typo in [1/12] and the
-> case of interrupt happens on kretprobe_trampoline+0 in [11/12].
-> 
-> With this series, unwinder can unwind stack correctly from ftrace as below;
-> 
->   # cd /sys/kernel/debug/tracing
->   # echo > trace
->   # echo r vfs_read >> kprobe_events
->   # echo r full_proxy_read >> kprobe_events
->   # echo traceoff:1 > events/kprobes/r_vfs_read_0/trigger
->   # echo stacktrace:1 > events/kprobes/r_full_proxy_read_0/trigger
->   # echo 1 > events/kprobes/enable
->   # echo 1 > options/sym-offset
->   # cat /sys/kernel/debug/kprobes/list
-> ffffffff8133b740  r  full_proxy_read+0x0    [FTRACE]
-> ffffffff812560b0  r  vfs_read+0x0    [FTRACE]
->   # echo 0 > events/kprobes/enable
->   # cat trace
-> # tracer: nop
-> #
-> # entries-in-buffer/entries-written: 3/3   #P:8
-> #
-> #                                _-----=> irqs-off
-> #                               / _----=> need-resched
-> #                              | / _---=> hardirq/softirq
-> #                              || / _--=> preempt-depth
-> #                              ||| /     delay
-> #           TASK-PID     CPU#  ||||   TIMESTAMP  FUNCTION
-> #              | |         |   ||||      |         |
->            <...>-135     [005] ...1     9.422114: r_full_proxy_read_0: (vfs_read+0xab/0x1a0 <- full_proxy_read)
->            <...>-135     [005] ...1     9.422158: <stack trace>
->  => kretprobe_trace_func+0x209/0x2f0
->  => kretprobe_dispatcher+0x4a/0x70
->  => __kretprobe_trampoline_handler+0xca/0x150
->  => trampoline_handler+0x44/0x70
->  => kretprobe_trampoline+0x2a/0x50
->  => vfs_read+0xab/0x1a0
->  => ksys_read+0x5f/0xe0
->  => do_syscall_64+0x33/0x40
->  => entry_SYSCALL_64_after_hwframe+0x44/0xae
->  => 0
-> 
-> This shows the double return probes (vfs_read and full_proxy_read) on the stack
-> correctly unwinded. (vfs_read was called from ksys_read+0x5f and full_proxy_read
-> was called from vfs_read+0xab)
+> Can you share your kernel configuration so I can give it a try?
 
-BTW, this is only for the kretprobe on x86. ORC unwinder (without pt_regs)
-still stopped when the kprobe is optimized.
-
-
-# entries-in-buffer/entries-written: 4/4   #P:8
-#
-#                                _-----=> irqs-off
-#                               / _----=> need-resched
-#                              | / _---=> hardirq/softirq
-#                              || / _--=> preempt-depth
-#                              ||| /     delay
-#           TASK-PID     CPU#  ||||   TIMESTAMP  FUNCTION
-#              | |         |   ||||      |         |
-             cat-138     [005] ...1     9.501630: p_full_proxy_read_5: (full_proxy_read+0x5/0x80)
-             cat-138     [005] ...1     9.501675: <stack trace>
- => kprobe_trace_func+0x1d0/0x2c0
- => kprobe_dispatcher+0x39/0x60
- => opt_pre_handler+0x4f/0x80
- => optimized_callback+0xc3/0xf0
- => 0xffffffffa0006032
- => 0
-
-This requires another fix. I think the unwinder can refer the ORC info
-(as a bias from the original function) from optprobe_template_func if
-it finds the frame address is in the optprobe trampoline buffer.
-Note that this is a bit different from the kretprobe_trampoline, because
-optprobe trampoline code is cloned for each probed address.
-
-Thank you,
+Sure! Here is a config from a few days ago:
+    https://dev.gentoo.org/~slyfox/configs/guppy-config-5.12.0-rc4-00016-g427684abc9fd-dirty
 
 -- 
-Masami Hiramatsu <mhiramat@kernel.org>
+
+  Sergei
