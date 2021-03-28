@@ -2,62 +2,72 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D24BA34BDFF
-	for <lists+linux-ia64@lfdr.de>; Sun, 28 Mar 2021 20:08:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AFEE34BEDE
+	for <lists+linux-ia64@lfdr.de>; Sun, 28 Mar 2021 22:25:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231499AbhC1SHc (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 28 Mar 2021 14:07:32 -0400
-Received: from mail.hanoi.gov.vn ([113.160.32.33]:31610 "EHLO
-        mx01.hanoi.gov.vn" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229647AbhC1SHR (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 28 Mar 2021 14:07:17 -0400
-X-Greylist: delayed 474 seconds by postgrey-1.27 at vger.kernel.org; Sun, 28 Mar 2021 14:07:01 EDT
-Received: from mx01.hanoi.gov.vn (localhost [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 30259EC3D8;
-        Mon, 29 Mar 2021 00:57:51 +0700 (+07)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=hanoi.gov.vn;
-        s=default; t=1616954272;
-        bh=FuW10Z6fSdeNlf/0u/BQ1jcwkjYBw0uHUPQgn0LGo7I=; h=Date:From:To;
-        b=R9blPfqJCHUsZAyZxsyyryS61fl4krmBjYKWM6eGGwB8ZdbTBVPL1mmKOmZXMqNlA
-         7CEqA0MXgUAy+X4oK/wthh4vC9Xoov1Ce8tjf/qJvnL7KGsGNVg9ic0krGeHrdNzGM
-         5cIEKsz0emmHL/izbEfCtadst3HYllOJWdonlm5o=
-X-IMSS-DKIM-Authentication-Result: mx01.hanoi.gov.vn; sigcount=0
-Received: from mx01.hanoi.gov.vn (localhost [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 50FCBEC3DD;
-        Mon, 29 Mar 2021 00:57:49 +0700 (+07)
-Received: from mail.hanoi.gov.vn (mail.hanoi.gov.vn [10.1.1.25])
-        by mx01.hanoi.gov.vn (Postfix) with ESMTPS;
-        Mon, 29 Mar 2021 00:57:49 +0700 (+07)
-Received: from mail.hanoi.gov.vn (localhost [127.0.0.1])
-        by mail.hanoi.gov.vn (Postfix) with ESMTPS id 02AFC7F41B42;
-        Mon, 29 Mar 2021 00:57:44 +0700 (+07)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.hanoi.gov.vn (Postfix) with ESMTP id 08FE47F41B5D;
-        Mon, 29 Mar 2021 00:57:41 +0700 (+07)
-Received: from mail.hanoi.gov.vn ([127.0.0.1])
-        by localhost (mail.hanoi.gov.vn [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 1D3oZsOAVsx3; Mon, 29 Mar 2021 00:57:36 +0700 (+07)
-Received: from mail.hanoi.gov.vn (mail.hanoi.gov.vn [10.1.1.25])
-        by mail.hanoi.gov.vn (Postfix) with ESMTP id 478CE7F41B59;
-        Mon, 29 Mar 2021 00:57:33 +0700 (+07)
-Date:   Mon, 29 Mar 2021 00:57:33 +0700 (ICT)
-From:   Mackenzie Scott <ttptqd_thanhoai@hanoi.gov.vn>
-Reply-To: Mackenzie Scott <propack@propck.net>
-Message-ID: <354204758.25920932.1616954253215.JavaMail.zimbra@hanoi.gov.vn>
-Subject: Congratulations ($ 100,800,000.00)
+        id S230187AbhC1UZC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 28 Mar 2021 16:25:02 -0400
+Received: from smtp.gentoo.org ([140.211.166.183]:36330 "EHLO smtp.gentoo.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231366AbhC1UYy (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 28 Mar 2021 16:24:54 -0400
+Received: by sf.home (Postfix, from userid 1000)
+        id 8C4745A22061; Sun, 28 Mar 2021 21:24:46 +0100 (BST)
+From:   Sergei Trofimovich <slyfox@gentoo.org>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        inux-ia64@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org,
+        Sergei Trofimovich <slyfox@gentoo.org>,
+        linux-ia64@vger.kernel.org
+Subject: [PATCH v2] ia64: simplify code flow around swiotlb init
+Date:   Sun, 28 Mar 2021 21:24:39 +0100
+Message-Id: <20210328202439.403601-1-slyfox@gentoo.org>
+X-Mailer: git-send-email 2.31.1
+In-Reply-To: <d0f37f22-1d2a-50f5-886b-5e4b9892b921@physik.fu-berlin.de>
+References: <d0f37f22-1d2a-50f5-886b-5e4b9892b921@physik.fu-berlin.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [185.107.80.217]
-X-Mailer: Zimbra 8.8.15_GA_3894 (zclient/8.8.15_GA_3894)
-Thread-Index: ao/APhyKX+JH1nE2Rn/kAmnh2LEgkw==
-Thread-Topic: Congratulations ($ 100,800,000.00)
-To:     undisclosed-recipients:;
-X-TM-AS-GCONF: 00
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+Before the change CONFIG_INTEL_IOMMU && !CONFIG_SWIOTLB && !CONFIG_FLATMEM
+could skip `set_max_mapnr(max_low_pfn);` if iommu is not present on system.
 
+CC: Andrew Morton <akpm@linux-foundation.org>
+CC: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+CC: linux-ia64@vger.kernel.org
+Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
+---
+Change since v1: fixed a typo in commit mesage.
 
-Hello,i&#39;m Mackenzie Scott,Ex-wife of Amazon founder i&#39;m donating $4 billion to charities,individuals,universities across the Globe from my divorce funds,i&#39;m donating part of it to provide immediate support to people suffering economically during the COVID-19 pandemic,i have a donation worth $100,800,000.00 Dollars for you,you can contact me for more information if you&#39;re interested.
+ arch/ia64/mm/init.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
+index 16d0d7d22657..a63585db94fe 100644
+--- a/arch/ia64/mm/init.c
++++ b/arch/ia64/mm/init.c
+@@ -644,13 +644,16 @@ mem_init (void)
+ 	 * _before_ any drivers that may need the PCI DMA interface are
+ 	 * initialized or bootmem has been freed.
+ 	 */
++	do {
+ #ifdef CONFIG_INTEL_IOMMU
+-	detect_intel_iommu();
+-	if (!iommu_detected)
++		detect_intel_iommu();
++		if (iommu_detected)
++			break;
+ #endif
+ #ifdef CONFIG_SWIOTLB
+ 		swiotlb_init(1);
+ #endif
++	} while (0);
+ 
+ #ifdef CONFIG_FLATMEM
+ 	BUG_ON(!mem_map);
+-- 
+2.31.1
+
