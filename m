@@ -2,95 +2,70 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 63DDD34BF3F
-	for <lists+linux-ia64@lfdr.de>; Sun, 28 Mar 2021 23:23:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EACB34BF80
+	for <lists+linux-ia64@lfdr.de>; Sun, 28 Mar 2021 23:56:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231228AbhC1VXD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 28 Mar 2021 17:23:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48692 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229655AbhC1VW6 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 28 Mar 2021 17:22:58 -0400
-Received: from smtp.gentoo.org (woodpecker.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCA6C061756;
-        Sun, 28 Mar 2021 14:22:58 -0700 (PDT)
+        id S229655AbhC1V4U (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 28 Mar 2021 17:56:20 -0400
+Received: from smtp.gentoo.org ([140.211.166.183]:57430 "EHLO smtp.gentoo.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229656AbhC1Vzz (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 28 Mar 2021 17:55:55 -0400
 Received: by sf.home (Postfix, from userid 1000)
-        id BD73D5A22061; Sun, 28 Mar 2021 22:22:52 +0100 (BST)
+        id ECE5D5A22061; Sun, 28 Mar 2021 22:55:50 +0100 (BST)
 From:   Sergei Trofimovich <slyfox@gentoo.org>
-To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
-        linux-ia64@vger.kernel.org
+To:     Andrew Morton <akpm@linux-foundation.org>
 Cc:     linux-kernel@vger.kernel.org,
-        Sergei Trofimovich <slyfox@gentoo.org>
-Subject: [PATCH v2] ia64: fix EFI_DEBUG build
-Date:   Sun, 28 Mar 2021 22:22:46 +0100
-Message-Id: <20210328212246.685601-1-slyfox@gentoo.org>
+        Sergei Trofimovich <slyfox@gentoo.org>,
+        linux-ia64@vger.kernel.org
+Subject: [PATCH] ia64: mca: always make IA64_MCA_DEBUG an expression
+Date:   Sun, 28 Mar 2021 22:55:49 +0100
+Message-Id: <20210328215549.830420-1-slyfox@gentoo.org>
 X-Mailer: git-send-email 2.31.1
-In-Reply-To: <CAMj1kXEmuVWR=TAmzXHnvKxbtSn1-Zkhr-0rOWV0BB1OGyx_TQ@mail.gmail.com>
-References: <CAMj1kXEmuVWR=TAmzXHnvKxbtSn1-Zkhr-0rOWV0BB1OGyx_TQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-When enabled local debugging via `#define EFI_DEBUG 1` noticed
-build failure:
-    arch/ia64/kernel/efi.c:564:8: error: 'i' undeclared (first use in this function)
+At least ia64_mca_log_sal_error_record() expects some statement:
 
-While at it fixed benign string format mismatches visible only
-when EFI_DEBUG is enabled:
+    static void ia64_mca_log_sal_error_record(int sal_info_type)
+    {
+        ...
+        if (irq_safe)
+            IA64_MCA_DEBUG("CPU %d: SAL log contains %s error record\n",
+                smp_processor_id(),
+                sal_info_type < ARRAY_SIZE(rec_name) ? rec_name[sal_info_type] : "UNKNOWN");
+        ...
+    }
 
-    arch/ia64/kernel/efi.c:589:11:
-        warning: format '%lx' expects argument of type 'long unsigned int',
-        but argument 5 has type 'u64' {aka 'long long unsigned int'} [-Wformat=]
+Instead of fixing all callers the change expicitly makes IA64_MCA_DEBUG
+a non-empty expression.
 
-Fixes: 14fb42090943559 ("efi: Merge EFI system table revision and vendor checks")
-CC: Ard Biesheuvel <ardb@kernel.org>
-CC: linux-efi@vger.kernel.org
+CC: Andrew Morton <akpm@linux-foundation.org>
 CC: linux-ia64@vger.kernel.org
 Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
 ---
-Change since v1: mention explicitly format string change
+ arch/ia64/kernel/mca.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
- arch/ia64/kernel/efi.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
-
-diff --git a/arch/ia64/kernel/efi.c b/arch/ia64/kernel/efi.c
-index c5fe21de46a8..31149e41f9be 100644
---- a/arch/ia64/kernel/efi.c
-+++ b/arch/ia64/kernel/efi.c
-@@ -415,10 +415,10 @@ efi_get_pal_addr (void)
- 		mask  = ~((1 << IA64_GRANULE_SHIFT) - 1);
+diff --git a/arch/ia64/kernel/mca.c b/arch/ia64/kernel/mca.c
+index 79e76712198c..16088c645e2b 100644
+--- a/arch/ia64/kernel/mca.c
++++ b/arch/ia64/kernel/mca.c
+@@ -109,9 +109,9 @@
+ #include "irq.h"
  
- 		printk(KERN_INFO "CPU %d: mapping PAL code "
--                       "[0x%lx-0x%lx) into [0x%lx-0x%lx)\n",
--                       smp_processor_id(), md->phys_addr,
--                       md->phys_addr + efi_md_size(md),
--                       vaddr & mask, (vaddr & mask) + IA64_GRANULE_SIZE);
-+			"[0x%llx-0x%llx) into [0x%llx-0x%llx)\n",
-+			smp_processor_id(), md->phys_addr,
-+			md->phys_addr + efi_md_size(md),
-+			vaddr & mask, (vaddr & mask) + IA64_GRANULE_SIZE);
+ #if defined(IA64_MCA_DEBUG_INFO)
+-# define IA64_MCA_DEBUG(fmt...)	printk(fmt)
++# define IA64_MCA_DEBUG(fmt...) printk(fmt)
+ #else
+-# define IA64_MCA_DEBUG(fmt...)
++# define IA64_MCA_DEBUG(fmt...) do {} while (0)
  #endif
- 		return __va(md->phys_addr);
- 	}
-@@ -560,6 +560,7 @@ efi_init (void)
- 	{
- 		efi_memory_desc_t *md;
- 		void *p;
-+		unsigned int i;
  
- 		for (i = 0, p = efi_map_start; p < efi_map_end;
- 		     ++i, p += efi_desc_size)
-@@ -586,7 +587,7 @@ efi_init (void)
- 			}
- 
- 			printk("mem%02d: %s "
--			       "range=[0x%016lx-0x%016lx) (%4lu%s)\n",
-+			       "range=[0x%016llx-0x%016llx) (%4lu%s)\n",
- 			       i, efi_md_typeattr_format(buf, sizeof(buf), md),
- 			       md->phys_addr,
- 			       md->phys_addr + efi_md_size(md), size, unit);
+ #define NOTIFY_INIT(event, regs, arg, spin)				\
 -- 
 2.31.1
 
