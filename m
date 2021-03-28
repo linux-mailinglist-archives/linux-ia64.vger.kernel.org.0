@@ -2,72 +2,95 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3AFEE34BEDE
-	for <lists+linux-ia64@lfdr.de>; Sun, 28 Mar 2021 22:25:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63DDD34BF3F
+	for <lists+linux-ia64@lfdr.de>; Sun, 28 Mar 2021 23:23:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230187AbhC1UZC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 28 Mar 2021 16:25:02 -0400
-Received: from smtp.gentoo.org ([140.211.166.183]:36330 "EHLO smtp.gentoo.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231366AbhC1UYy (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 28 Mar 2021 16:24:54 -0400
+        id S231228AbhC1VXD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 28 Mar 2021 17:23:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48692 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229655AbhC1VW6 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 28 Mar 2021 17:22:58 -0400
+Received: from smtp.gentoo.org (woodpecker.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CCA6C061756;
+        Sun, 28 Mar 2021 14:22:58 -0700 (PDT)
 Received: by sf.home (Postfix, from userid 1000)
-        id 8C4745A22061; Sun, 28 Mar 2021 21:24:46 +0100 (BST)
+        id BD73D5A22061; Sun, 28 Mar 2021 22:22:52 +0100 (BST)
 From:   Sergei Trofimovich <slyfox@gentoo.org>
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        inux-ia64@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org,
-        Sergei Trofimovich <slyfox@gentoo.org>,
+To:     Ard Biesheuvel <ardb@kernel.org>, linux-efi@vger.kernel.org,
         linux-ia64@vger.kernel.org
-Subject: [PATCH v2] ia64: simplify code flow around swiotlb init
-Date:   Sun, 28 Mar 2021 21:24:39 +0100
-Message-Id: <20210328202439.403601-1-slyfox@gentoo.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Sergei Trofimovich <slyfox@gentoo.org>
+Subject: [PATCH v2] ia64: fix EFI_DEBUG build
+Date:   Sun, 28 Mar 2021 22:22:46 +0100
+Message-Id: <20210328212246.685601-1-slyfox@gentoo.org>
 X-Mailer: git-send-email 2.31.1
-In-Reply-To: <d0f37f22-1d2a-50f5-886b-5e4b9892b921@physik.fu-berlin.de>
-References: <d0f37f22-1d2a-50f5-886b-5e4b9892b921@physik.fu-berlin.de>
+In-Reply-To: <CAMj1kXEmuVWR=TAmzXHnvKxbtSn1-Zkhr-0rOWV0BB1OGyx_TQ@mail.gmail.com>
+References: <CAMj1kXEmuVWR=TAmzXHnvKxbtSn1-Zkhr-0rOWV0BB1OGyx_TQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Before the change CONFIG_INTEL_IOMMU && !CONFIG_SWIOTLB && !CONFIG_FLATMEM
-could skip `set_max_mapnr(max_low_pfn);` if iommu is not present on system.
+When enabled local debugging via `#define EFI_DEBUG 1` noticed
+build failure:
+    arch/ia64/kernel/efi.c:564:8: error: 'i' undeclared (first use in this function)
 
-CC: Andrew Morton <akpm@linux-foundation.org>
-CC: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+While at it fixed benign string format mismatches visible only
+when EFI_DEBUG is enabled:
+
+    arch/ia64/kernel/efi.c:589:11:
+        warning: format '%lx' expects argument of type 'long unsigned int',
+        but argument 5 has type 'u64' {aka 'long long unsigned int'} [-Wformat=]
+
+Fixes: 14fb42090943559 ("efi: Merge EFI system table revision and vendor checks")
+CC: Ard Biesheuvel <ardb@kernel.org>
+CC: linux-efi@vger.kernel.org
 CC: linux-ia64@vger.kernel.org
 Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
 ---
-Change since v1: fixed a typo in commit mesage.
+Change since v1: mention explicitly format string change
 
- arch/ia64/mm/init.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/ia64/kernel/efi.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-index 16d0d7d22657..a63585db94fe 100644
---- a/arch/ia64/mm/init.c
-+++ b/arch/ia64/mm/init.c
-@@ -644,13 +644,16 @@ mem_init (void)
- 	 * _before_ any drivers that may need the PCI DMA interface are
- 	 * initialized or bootmem has been freed.
- 	 */
-+	do {
- #ifdef CONFIG_INTEL_IOMMU
--	detect_intel_iommu();
--	if (!iommu_detected)
-+		detect_intel_iommu();
-+		if (iommu_detected)
-+			break;
- #endif
- #ifdef CONFIG_SWIOTLB
- 		swiotlb_init(1);
- #endif
-+	} while (0);
+diff --git a/arch/ia64/kernel/efi.c b/arch/ia64/kernel/efi.c
+index c5fe21de46a8..31149e41f9be 100644
+--- a/arch/ia64/kernel/efi.c
++++ b/arch/ia64/kernel/efi.c
+@@ -415,10 +415,10 @@ efi_get_pal_addr (void)
+ 		mask  = ~((1 << IA64_GRANULE_SHIFT) - 1);
  
- #ifdef CONFIG_FLATMEM
- 	BUG_ON(!mem_map);
+ 		printk(KERN_INFO "CPU %d: mapping PAL code "
+-                       "[0x%lx-0x%lx) into [0x%lx-0x%lx)\n",
+-                       smp_processor_id(), md->phys_addr,
+-                       md->phys_addr + efi_md_size(md),
+-                       vaddr & mask, (vaddr & mask) + IA64_GRANULE_SIZE);
++			"[0x%llx-0x%llx) into [0x%llx-0x%llx)\n",
++			smp_processor_id(), md->phys_addr,
++			md->phys_addr + efi_md_size(md),
++			vaddr & mask, (vaddr & mask) + IA64_GRANULE_SIZE);
+ #endif
+ 		return __va(md->phys_addr);
+ 	}
+@@ -560,6 +560,7 @@ efi_init (void)
+ 	{
+ 		efi_memory_desc_t *md;
+ 		void *p;
++		unsigned int i;
+ 
+ 		for (i = 0, p = efi_map_start; p < efi_map_end;
+ 		     ++i, p += efi_desc_size)
+@@ -586,7 +587,7 @@ efi_init (void)
+ 			}
+ 
+ 			printk("mem%02d: %s "
+-			       "range=[0x%016lx-0x%016lx) (%4lu%s)\n",
++			       "range=[0x%016llx-0x%016llx) (%4lu%s)\n",
+ 			       i, efi_md_typeattr_format(buf, sizeof(buf), md),
+ 			       md->phys_addr,
+ 			       md->phys_addr + efi_md_size(md), size, unit);
 -- 
 2.31.1
 
