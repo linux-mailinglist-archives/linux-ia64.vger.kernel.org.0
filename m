@@ -2,39 +2,39 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F83934DB73
-	for <lists+linux-ia64@lfdr.de>; Tue, 30 Mar 2021 00:29:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD1F734DB8F
+	for <lists+linux-ia64@lfdr.de>; Tue, 30 Mar 2021 00:29:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232913AbhC2W2W (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 29 Mar 2021 18:28:22 -0400
-Received: from mail.kernel.org ([198.145.29.99]:47358 "EHLO mail.kernel.org"
+        id S233080AbhC2W25 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 29 Mar 2021 18:28:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48600 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232208AbhC2W0L (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 29 Mar 2021 18:26:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 7551A619D4;
-        Mon, 29 Mar 2021 22:23:57 +0000 (UTC)
+        id S232326AbhC2W0v (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 29 Mar 2021 18:26:51 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 02A4361996;
+        Mon, 29 Mar 2021 22:24:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617056638;
-        bh=p5IMhS6iNwYgxSF+HRu5eU3N7rcVMrPMevXa/VEFjv4=;
+        s=k20201202; t=1617056651;
+        bh=Szf/lZJJe1WfUiqE6l4YqfQU9zy8PxbAm7jY7ubMnGU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WdETyx6EqN3wqpUrIXgu2r0H2pxnCVtsyKhIH9MVdm6+hYxEie0wLCpFIUupSd4U5
-         dVxFn6kGyJGCiIFb7vXCw50+N3t2loAGWaA3ue5CWa9VPflD4Cqy54yjcHbos61svL
-         zrrKhJXCmMcsrrJXbT8A7ClEyCx3HtBT81LJSfZxEvsWlYrcxxxVmiX09uy3K5kBWC
-         Devr7gJbHjvDouRvcEUMpzT9lWss7z1uzyUpkCXkl85Xzm+zH2+WC5Wy8tnZvvp4sn
-         JjpeHd6SxZi3EAAEComd9sGjn0SJwWK0EAa+zS25gocWEq/z/VmLB8m03d19cscH25
-         SQquDPFZXPyTA==
+        b=sxo5jlaZkEXEme0ZlsnMXBmLoJlAEznGsxnra5L2NDk+/ZZipVm0gFStlIPzdS6W+
+         2F3gmGXJR8PLuokbWRcbuUvhjwsp7e3O0HR4s9h/a6tr8dfPNAV6Tp/9Rnh4OuG2Ip
+         6T8j2mQWK+9YeiJIzDk5HJy8VWG2o4QKdhM9HmeFTMkhQ01IY12jXyujqwFAbUSVkc
+         U/pmGzsEmzN+2klV78g20aig8qawxVpPBdMIZB9U/TROc3HczefpOvhTJoKe+0h5pN
+         49OiEqqemcT+QVlXXMn+zG3xHDc49CS1r8ILXg4eI1EVvV542VRc4jMEcux83xKoJO
+         KeN/pbGnu51fA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Sergei Trofimovich <slyfox@gentoo.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 10/12] ia64: mca: allocate early mca with GFP_ATOMIC
-Date:   Mon, 29 Mar 2021 18:23:43 -0400
-Message-Id: <20210329222345.2383777-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 08/10] ia64: mca: allocate early mca with GFP_ATOMIC
+Date:   Mon, 29 Mar 2021 18:23:59 -0400
+Message-Id: <20210329222401.2383930-8-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.1
-In-Reply-To: <20210329222345.2383777-1-sashal@kernel.org>
-References: <20210329222345.2383777-1-sashal@kernel.org>
+In-Reply-To: <20210329222401.2383930-1-sashal@kernel.org>
+References: <20210329222401.2383930-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -84,10 +84,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/ia64/kernel/mca.c b/arch/ia64/kernel/mca.c
-index 555b11180156..16a7dae5f770 100644
+index 9509cc73b9c6..64ae9cde8bdb 100644
 --- a/arch/ia64/kernel/mca.c
 +++ b/arch/ia64/kernel/mca.c
-@@ -1860,7 +1860,7 @@ ia64_mca_cpu_init(void *cpu_data)
+@@ -1858,7 +1858,7 @@ ia64_mca_cpu_init(void *cpu_data)
  			data = mca_bootmem();
  			first_time = 0;
  		} else
