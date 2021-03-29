@@ -2,77 +2,100 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 24C7734D249
-	for <lists+linux-ia64@lfdr.de>; Mon, 29 Mar 2021 16:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D87034DA8C
+	for <lists+linux-ia64@lfdr.de>; Tue, 30 Mar 2021 00:25:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230331AbhC2OXH (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 29 Mar 2021 10:23:07 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38122 "EHLO mail.kernel.org"
+        id S232132AbhC2WWz (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 29 Mar 2021 18:22:55 -0400
+Received: from mail.kernel.org ([198.145.29.99]:46472 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230258AbhC2OWu (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 29 Mar 2021 10:22:50 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 3C06461959;
-        Mon, 29 Mar 2021 14:22:50 +0000 (UTC)
+        id S231983AbhC2WWQ (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 29 Mar 2021 18:22:16 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B05C26198F;
+        Mon, 29 Mar 2021 22:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1617027770;
-        bh=eP9MIKqjehCXRNlGSxV0irL0Log68aEfdh7EXXA/ijs=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=GxEbgamBHWRR3iHoGd7xzPc0PPf6QZsq+5ogtKes9szV2/AzXOvBXNkYtq0pyPQLg
-         OgMquuzLXpqrQLHljzYKCEoGOBLKOt0ONJICgAMfsJtRtNb5oA9RwIBzEuZoFOvp0+
-         4bduiifH8USZh/+Sz3eWHqSTwem73l6zHt1ktaBfIUD55HjI4BDEpSJ9/QbUQytDem
-         wX/XXdfGKLOwXkrPX5MeilYW1+zZoAtCYhFJFaS3Cq2/MGlhOqlGJoWnz2KnOEqYSU
-         iFjtihAtZ1f/S/1SbbThLZ8XGcI2SqGOsev3smPakSmW6AUqk6gXdRemQcUwilAWzJ
-         fGrsa2gnLfA7A==
-Received: by mail-oi1-f178.google.com with SMTP id i3so13217229oik.7;
-        Mon, 29 Mar 2021 07:22:50 -0700 (PDT)
-X-Gm-Message-State: AOAM531rDybl6NBkMkBddw3kBX98M87bSDCxhc/YIJBReeoXw8W1D6Pt
-        eUmxH1JliA6+84h6AYy3Q64CiO1ZdZACQ5RJMx8=
-X-Google-Smtp-Source: ABdhPJx+qC+SimgkOgyf/WqXhg9c0OWfR23sYGynpODVXOAwvmswzSV3YyeW+6fvfCftwlo4MoN16qc8Mc0ivHyzAEQ=
-X-Received: by 2002:a05:6808:3d9:: with SMTP id o25mr18928093oie.4.1617027769604;
- Mon, 29 Mar 2021 07:22:49 -0700 (PDT)
+        s=k20201202; t=1617056535;
+        bh=otCnYAVy5rvziJ2RuCfSL33ZKgfB8/7CKnzmF2ATfRY=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Tlu2ZkTom6Dc8R6AUQDL1x27PqfVydOfn/36xQibeTvuxmsSxDxOK3QpHjDkW5z32
+         ILm0YM3xgmPLjYDYUecERjfTpSjoI6Lev1NG5+k7tEDHgZiYoLVhcrQ1zxbUjoguif
+         /3POSgxczKJ2UgRSiFMuwYs37Ld+lW3Zq+zO+5R2DXNXviRgUc8u/tlnL9c2wkk+qJ
+         /Nnk/iVfqJ727TwqE8tGyG2Cgc669gLhwgcGOUIkxe/fmRxVIAzcyroIZx8bFIEg9p
+         XVRQi2/HGs1VVPHDLyM5+w8+TiS5q+AwgW/3kS+m2P0KmbX/tmXUCrRJpyNdSK7L5R
+         ihk6TVb8Wtd7Q==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Sergei Trofimovich <slyfox@gentoo.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.11 33/38] ia64: mca: allocate early mca with GFP_ATOMIC
+Date:   Mon, 29 Mar 2021 18:21:28 -0400
+Message-Id: <20210329222133.2382393-33-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.1
+In-Reply-To: <20210329222133.2382393-1-sashal@kernel.org>
+References: <20210329222133.2382393-1-sashal@kernel.org>
 MIME-Version: 1.0
-References: <5532f9ab-7555-d51b-f4d5-f9b72a61f248@redhat.com>
- <20210312222718.4117508-1-slyfox@gentoo.org> <SN6PR11MB2848C136F6CB4EA66D42FFAEE1639@SN6PR11MB2848.namprd11.prod.outlook.com>
- <ea49071d-d1e1-97b7-6468-501be0b9b195@physik.fu-berlin.de>
-In-Reply-To: <ea49071d-d1e1-97b7-6468-501be0b9b195@physik.fu-berlin.de>
-From:   Arnd Bergmann <arnd@kernel.org>
-Date:   Mon, 29 Mar 2021 16:22:35 +0200
-X-Gmail-Original-Message-ID: <CAK8P3a15jo_qup0W4itY2Fkm=SZ-NuQjmUTpDBPigSCvrF_+Yg@mail.gmail.com>
-Message-ID: <CAK8P3a15jo_qup0W4itY2Fkm=SZ-NuQjmUTpDBPigSCvrF_+Yg@mail.gmail.com>
-Subject: Re: [PATCH] hpsa: fix boot on ia64 (atomic_t alignment)
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Don.Brace@microchip.com, Sergei Trofimovich <slyfox@gentoo.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-ia64@vger.kernel.org, storagedev@microchip.com,
-        linux-scsi <linux-scsi@vger.kernel.org>, jszczype@redhat.com,
-        Scott.Benesh@microchip.com, Scott.Teel@microchip.com,
-        thenzl@redhat.com,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Content-Type: text/plain; charset="UTF-8"
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Mar 29, 2021 at 1:28 PM John Paul Adrian Glaubitz
-<glaubitz@physik.fu-berlin.de> wrote:
-> On 3/24/21 7:37 PM, Don.Brace@microchip.com wrote:
-> >
-> > Acked-by: Don Brace <don.brace@microchip.com>
-> >
-> > Thanks for your patch and extra effort.
->
-> Apologies for being so persistent, but has this patch been queued anywhere?
->
-> This should be included for 5.12 if possible as it unbreaks the kernel on alot
-> of Itanium servers (and potentially other machines with the HPSA controller).
->
-> If no one wants to pick the patch up, it could go through Andrew Morton's tree (-mm).
->
+From: Sergei Trofimovich <slyfox@gentoo.org>
 
-I think Martin is still waiting for a fixed version of the patch, as
-the proposed patch from
-March 12 only solves the immediate symptom, but not the underlying problem
-of the CommandList structure being marked as unaligned. If it gets fixed, the
-new version should work on all architectures.
+[ Upstream commit f2a419cf495f95cac49ea289318b833477e1a0e2 ]
 
-         Arnd
+The sleep warning happens at early boot right at secondary CPU
+activation bootup:
+
+    smp: Bringing up secondary CPUs ...
+    BUG: sleeping function called from invalid context at mm/page_alloc.c:4942
+    in_atomic(): 0, irqs_disabled(): 1, non_block: 0, pid: 0, name: swapper/1
+    CPU: 1 PID: 0 Comm: swapper/1 Not tainted 5.12.0-rc2-00007-g79e228d0b611-dirty #99
+    ..
+    Call Trace:
+      show_stack+0x90/0xc0
+      dump_stack+0x150/0x1c0
+      ___might_sleep+0x1c0/0x2a0
+      __might_sleep+0xa0/0x160
+      __alloc_pages_nodemask+0x1a0/0x600
+      alloc_page_interleave+0x30/0x1c0
+      alloc_pages_current+0x2c0/0x340
+      __get_free_pages+0x30/0xa0
+      ia64_mca_cpu_init+0x2d0/0x3a0
+      cpu_init+0x8b0/0x1440
+      start_secondary+0x60/0x700
+      start_ap+0x750/0x780
+    Fixed BSP b0 value from CPU 1
+
+As I understand interrupts are not enabled yet and system has a lot of
+memory.  There is little chance to sleep and switch to GFP_ATOMIC should
+be a no-op.
+
+Link: https://lkml.kernel.org/r/20210315085045.204414-1-slyfox@gentoo.org
+Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/ia64/kernel/mca.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/ia64/kernel/mca.c b/arch/ia64/kernel/mca.c
+index 2703f7795672..bd0a51dc345a 100644
+--- a/arch/ia64/kernel/mca.c
++++ b/arch/ia64/kernel/mca.c
+@@ -1822,7 +1822,7 @@ ia64_mca_cpu_init(void *cpu_data)
+ 			data = mca_bootmem();
+ 			first_time = 0;
+ 		} else
+-			data = (void *)__get_free_pages(GFP_KERNEL,
++			data = (void *)__get_free_pages(GFP_ATOMIC,
+ 							get_order(sz));
+ 		if (!data)
+ 			panic("Could not allocate MCA memory for cpu %d\n",
+-- 
+2.30.1
+
