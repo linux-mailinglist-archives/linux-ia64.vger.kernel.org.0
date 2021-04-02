@@ -2,279 +2,176 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EF224350F3E
-	for <lists+linux-ia64@lfdr.de>; Thu,  1 Apr 2021 08:44:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CAA193525DC
+	for <lists+linux-ia64@lfdr.de>; Fri,  2 Apr 2021 05:55:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233345AbhDAGoH (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 1 Apr 2021 02:44:07 -0400
-Received: from foss.arm.com ([217.140.110.172]:59966 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233195AbhDAGnu (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 1 Apr 2021 02:43:50 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id AE312D6E;
-        Wed, 31 Mar 2021 23:43:49 -0700 (PDT)
-Received: from p8cg001049571a15.arm.com (unknown [10.163.70.228])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 183EF3F719;
-        Wed, 31 Mar 2021 23:43:42 -0700 (PDT)
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-To:     linux-mm@kvack.org, akpm@linux-foundation.org
-Cc:     linux-kernel@vger.kernel.org,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org
-Subject: [PATCH V2 3/6] mm: Generalize ARCH_ENABLE_MEMORY_[HOTPLUG|HOTREMOVE]
-Date:   Thu,  1 Apr 2021 12:14:05 +0530
-Message-Id: <1617259448-22529-4-git-send-email-anshuman.khandual@arm.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1617259448-22529-1-git-send-email-anshuman.khandual@arm.com>
-References: <1617259448-22529-1-git-send-email-anshuman.khandual@arm.com>
+        id S234405AbhDBDzb (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 1 Apr 2021 23:55:31 -0400
+Received: from aserp2130.oracle.com ([141.146.126.79]:44988 "EHLO
+        aserp2130.oracle.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S234197AbhDBDza (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 1 Apr 2021 23:55:30 -0400
+Received: from pps.filterd (aserp2130.oracle.com [127.0.0.1])
+        by aserp2130.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1323p8YI144802;
+        Fri, 2 Apr 2021 03:54:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
+ subject : date : message-id : in-reply-to : references : content-type :
+ content-transfer-encoding : mime-version; s=corp-2020-01-29;
+ bh=irvCYtYwVouF3Pj4Y5c4ohC+K+gi91LvkZJbOcEeQII=;
+ b=BDbqXwLzFJhDyeqTlWcnhZul5ECgiXUczw76cKL3+ex+otkoe2gm7/xJay0MXXvbm+0q
+ ZGNB9Oj4wOH4bfdx7HaUznxdBIRCTJ6kh21b1P2/ZBGYBZ/rWqneiSG/oAni+jQFcXz1
+ BqGsNP/gqmyC23pQbzOo6fdLajV69Qzx+Ps2gW9LY3mYAPAcRcmQwkdr0wH8yaLaaCO3
+ /jVAQjFCWm/88fg4Nc0+CdQYbu6zW5gHNfIvtJdLtJXmKgMgvuoSBMBUeUIykkdf1R8I
+ 30nTn1BFEpq0VGgL4rh3fvZGZW/OkdMmmmFe/23CnDOhRTLBt3DWfmMpcgw20fdR6vEa cQ== 
+Received: from aserp3030.oracle.com (aserp3030.oracle.com [141.146.126.71])
+        by aserp2130.oracle.com with ESMTP id 37n33dumsn-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 02 Apr 2021 03:54:55 +0000
+Received: from pps.filterd (aserp3030.oracle.com [127.0.0.1])
+        by aserp3030.oracle.com (8.16.0.42/8.16.0.42) with SMTP id 1323njnZ111728;
+        Fri, 2 Apr 2021 03:54:54 GMT
+Received: from nam10-bn7-obe.outbound.protection.outlook.com (mail-bn7nam10lp2104.outbound.protection.outlook.com [104.47.70.104])
+        by aserp3030.oracle.com with ESMTP id 37n2at2ng8-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Fri, 02 Apr 2021 03:54:54 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=fvaDrbA7W89YlxTSTDBmjCMiS1zbsz+4DegNGT+QxA5Mrz/FQigvfFSZNW+N9LajWNMO4Wka9yZS/HjyfFns2LST9zkbU0M4eyerKTVeZ65srljwjMI+OQKoNUDFT01VIwZZ+L9nSGsndxjAZei7M79NMxPM2iNFW9jBv22Ve11rhwP8Kc8vYDK5PmkPLUXvaKXX0LrkLYtdI+1SVieUyE6Iz0BynZblZ2vL0HvqbmZsRxgGuAhJVerH4nmqipdyZEeoePZMi8CexfQ0l9kFo6SGMDSqUHfLKjAHpvWz22dkSs8FHfasVuQBgIQ9uXK1nkbdjMT+w5vB1QZqNc06Mg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=irvCYtYwVouF3Pj4Y5c4ohC+K+gi91LvkZJbOcEeQII=;
+ b=SAYUio1+07ZUJ9UoSHm1+327t23qS7lBa3Fj7bbJ9t7soJnz/Lpyzn3oApdW3Ly4to3+F2z1Hwk+lOh9tsx860ckTWUH6twAAD2ZDCMXAlkNAgVQzovpXOj1NWJ3t+BhqDNSl8p1wlNIL1BpRfs9XLjbudSwaktHOyaCfQugz234CA9RU5SPYmRv4kZqDZuYx0cH7jNfBMAfyXZsuz1mZLZwx38F9loG1Qn527rJD4HE/qS0xzPhdh09ZLQl64ewTRIZ8fNAgQv2TJ/GGTUxbHie/r95Lg9R3iYgK5SYOosEGkUFSU6Qw53xDpPMiaPXn9WNkBlxagxsgEC1olWfQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=irvCYtYwVouF3Pj4Y5c4ohC+K+gi91LvkZJbOcEeQII=;
+ b=H99PgnMzI2A/JgxsCMIcVypJ4Y4or2m8fq9fP7fST1awfV4c9cqpZlU6cYGRRN0fYpkaslwgq70AVh7S6N/3sfpKxVY7CvYhwfkPALhRiWeKSsXygF1bGxFFYHjyz1d7NzBNas6wpOeirqj5oSK29i6wurqncxaWWAR2KnJNcxg=
+Authentication-Results: microchip.com; dkim=none (message not signed)
+ header.d=none;microchip.com; dmarc=none action=none header.from=oracle.com;
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com (2603:10b6:510:3d::12)
+ by PH0PR10MB4680.namprd10.prod.outlook.com (2603:10b6:510:3e::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3999.28; Fri, 2 Apr
+ 2021 03:54:53 +0000
+Received: from PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::dc39:c9fa:7365:8c8e]) by PH0PR10MB4759.namprd10.prod.outlook.com
+ ([fe80::dc39:c9fa:7365:8c8e%5]) with mapi id 15.20.3999.029; Fri, 2 Apr 2021
+ 03:54:53 +0000
+From:   "Martin K. Petersen" <martin.petersen@oracle.com>
+To:     Scott Teel <scott.teel@microchip.com>, jszczype@redhat.com,
+        storagedev@microchip.com, Don Brace <don.brace@microchip.com>,
+        Sergei Trofimovich <slyfox@gentoo.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Scott Benesh <scott.benesh@microchip.com>, thenzl@redhat.com,
+        linux-ia64@vger.kernel.org, linux-scsi <linux-scsi@vger.kernel.org>
+Cc:     "Martin K . Petersen" <martin.petersen@oracle.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] hpsa: use __packed on individual structs, not header-wide
+Date:   Thu,  1 Apr 2021 23:54:48 -0400
+Message-Id: <161733538518.31379.13275738935787597303.b4-ty@oracle.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210330071958.3788214-1-slyfox@gentoo.org>
+References: <yq1wntpgxxr.fsf@ca-mkp.ca.oracle.com> <20210330071958.3788214-1-slyfox@gentoo.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [138.3.201.9]
+X-ClientProxiedBy: BY5PR20CA0001.namprd20.prod.outlook.com
+ (2603:10b6:a03:1f4::14) To PH0PR10MB4759.namprd10.prod.outlook.com
+ (2603:10b6:510:3d::12)
+MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+Received: from ca-mkp.mkp.ca.oracle.com (138.3.201.9) by BY5PR20CA0001.namprd20.prod.outlook.com (2603:10b6:a03:1f4::14) with Microsoft SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.3999.28 via Frontend Transport; Fri, 2 Apr 2021 03:54:51 +0000
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: 080c6795-2191-42ee-a492-08d8f58b1245
+X-MS-TrafficTypeDiagnostic: PH0PR10MB4680:
+X-MS-Exchange-Transport-Forked: True
+X-Microsoft-Antispam-PRVS: <PH0PR10MB4680FFA9DBD52B5134E093E28E7A9@PH0PR10MB4680.namprd10.prod.outlook.com>
+X-MS-Oob-TLC-OOBClassifiers: OLM:1091;
+X-MS-Exchange-SenderADCheck: 1
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: sqPZOn1YJl5WrIXUQFLqFKbsuHpiqqyYsOe9XXe8H21dpvvU60OGpwkAHpRuF8AhnXOCB4z4aYJ6XStaNFYSVkp8Wo/htNFI9u+789VbG6MpB8Biavn4afDja3EbrvcF4obHdUQWpiLH76SgQ7NsaW7NF/MZCCqtrse3Lzz4IR/Blj3gnp0PknbZq/hTM4VWY1W0mtE0HusdyRmew/Fk/7CP39tCdnvVtWPWK1QAXPA1JOqxB5g/a8XOdBWRjKeyZx/n11vPVBoAPJ10UV78zJUT/00QeIb8lxer1BOehqkL0JwJJOH5by/hXe6ncx765d8FhDOxN5Y6ItZ9cELhe3QdZ664w3ICw1U9WG7E+9/yq2RhmVm1gBEjYI6ZqzMhNn7+bWIM9XKDhIIYBp+v+0mLYbFshcOLsOrTsnoe8H4QDHD0QZ/hg5n1kBZoSNPlldWxwA0jLcYU3vx3LpYwxmr7ctFqsM9pRyGd7IY6iKOekt2v1ThZwJaU1+cPaTEY+2oxW1yV8rRcJa/QnkMVnTTf7EodpEk9VAIC2XEQ3zXOCAdhPCIwo9EUQ/0cRxoBjN2PvxquYGBrys0jHASp9gjwzkShy7zMCPNOMvvvvMukmWU8lnSidV9A1s+elRBo9XBvRyxLDvQZPy0jmu0l7i6AeSWe8x8pxHqyr9PQLw8o/avxKre8NvWUg1e2aPoUSd/ILgc1JjmG61GgbG6dy5vMcFHyquIadKbbr3xirKtUc8vnFZ6PjxgpKV2512DY
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH0PR10MB4759.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(376002)(136003)(346002)(396003)(39860400002)(366004)(26005)(2906002)(2616005)(38100700001)(956004)(921005)(16526019)(186003)(8676002)(36756003)(66476007)(66556008)(66946007)(86362001)(52116002)(7696005)(4744005)(103116003)(7416002)(6666004)(966005)(478600001)(4326008)(5660300002)(6486002)(8936002)(316002)(110136005);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData: =?utf-8?B?ZFNwRklrT1JyV1IvVUxLbkoxdE1ORnRIYUVpWnBNY1YyanRTY1U5MUd3MlVF?=
+ =?utf-8?B?QkNvYlNKME5CREszRUlVRGxxNERxS3puTFZjSWdvUG50SmU4M2pCR2tFTWpI?=
+ =?utf-8?B?MjBsYjZGQWFVclczRTFCdnBpMllvMFExN2FYZW11TDdBVFlqRllCOXk3ZGJr?=
+ =?utf-8?B?Y0lScUVkOE5hdlk5a21oNmhnL0lXd1F1QVZ1ZVFKTXJOUkFiUm5ObEg2ZS9O?=
+ =?utf-8?B?KzdpU3BacU8rUjY5azEzYmd3OFZ5ek9vUlZ6SnZFVmF3SVNtOVNrV1E2RHdt?=
+ =?utf-8?B?dUNSZHd2dHZ6NGRUOFozSXJDd2dCTERnWVB4NzZDRTB4V1orR2JZVEVJWnRz?=
+ =?utf-8?B?YzBKMDhqZ2UxazAyUkpRRW5ZUmkyc01YK3IwZ0dnTVQ2K20wb3dCWFJ4K1RU?=
+ =?utf-8?B?c0dHU2JxVk5WOTE1ODNpSVpaSEpKUTQ5bjA3Y29FWDBJcUtVUWlVM2poV1dI?=
+ =?utf-8?B?ZytMcDhmZmRNTDF4N1dRTGxldzdXcTJZTmtuY1FYL1lTZFpEQ1BicThuOFlz?=
+ =?utf-8?B?TDl6bmd2UFVRbjcyemVEVVgvbW90dlI5dDFoU1dtVjkyeGJIaGFLUEM3S3hu?=
+ =?utf-8?B?SkNVeUxHb0ttTlEzZjVjQTZYVUlYUTI4dlV2SDV4WExGZEFzTC8vSjFFNmVJ?=
+ =?utf-8?B?MFBhNFBTckh2L21rNkFnMnhEWUhjOXhIZFpZYTZwYnh5cmw4QklONlljK2s4?=
+ =?utf-8?B?M2g4ZmpaSWgyMDNKclU5ZWhNaDVmTjkya3NaSUFSMTdrZUpRekpxeTRzRVE5?=
+ =?utf-8?B?ZXhNNWZJMVBTSzdkNDNHdEJReTBNVjhsRnN4azJHdGFVUVhhUjRqTUNBNHpI?=
+ =?utf-8?B?S0hqVlkzejdDMkJNQ3JOVnl2RHUvTXBlRUFHZkU4OUI3Tm93ZVJCbXlBS3kw?=
+ =?utf-8?B?bFlIWDFKMHVhclRwNWRGWHg1b1VPVWZDMFI1bFNqNWJsNFpvQmxlcWVhVzRi?=
+ =?utf-8?B?UlErZm95L0lXcmVLM1l5UTN4dlNPYWFYM1c5OHlQcG0rMzZKMDhvVXRpTThM?=
+ =?utf-8?B?RVNhSElZTERwOUU3engvTm5hVkQ2aGk5T1hWT1RkeEYvQmNtSU45SjBoWnp4?=
+ =?utf-8?B?TDdCTmhwZkNUUGFKVzFid2NRa3BtWjVLbERPTElsdVpXSi9JQ2EvNmVTS3kz?=
+ =?utf-8?B?ZjJFakxkOU9zeVBwKzRjdkVuRzJMYmdjMW9YT3E4UG5BeUNOQ1M0ZjFtc3k3?=
+ =?utf-8?B?c0ZOMkEzeGo5cGpvVU4vRDR4RC9vWmhUSUlPOSt6ck13UHliM0Ewcm5hVVkx?=
+ =?utf-8?B?RHJqZEM2Ri9hYkN2NCtETW5RMU80OEk2ZHlSYW0rMlVRd29SRzRGWUZ1N3Vq?=
+ =?utf-8?B?bURybkVvYXZOWXBVcHhkOThidFZmdzNTWVh0dWppSXRucXlBQW9kZ2tEMW9P?=
+ =?utf-8?B?WkxnRHRNbU4vdUlCN2tSZTNpNjBCK2lkbXJzN3pENENicmsrNmxLaEcyejBj?=
+ =?utf-8?B?eVlIY0VUQ1hwVW9kdjRWb3FBMkYwb2VHd2NPUWJQSkdUQVpDbzdwRmRtWTBz?=
+ =?utf-8?B?Y1BGSDc2d3VrZVErUjk0aXR5RE1KOUpYbHJGNXhIZFpmdnZzOFFLMnhXRUdS?=
+ =?utf-8?B?ZDZNLzM4Vjh0S2IrWlAwMSs1aFp5Nkx4NjAvTUdxOEZBNkpXYjdHMVhDb0tB?=
+ =?utf-8?B?bUVvVmRyUW1QaVI0SnQ0MjhmU0V4bitSUCs1NVg0dm16WXhWbnhVZlRlU0VK?=
+ =?utf-8?B?aFhFQkdDMk1ZNHlUK29waVJJZHk0MUZaSWw2RGg0Q3NCNkNiOGtRcXBlSmsx?=
+ =?utf-8?Q?V2vUwh51y193AnkkWO3Ies1PnZ2wMFpOWc2x/QA?=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 080c6795-2191-42ee-a492-08d8f58b1245
+X-MS-Exchange-CrossTenant-AuthSource: PH0PR10MB4759.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Apr 2021 03:54:53.0291
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hdFvFyszydFqxr9bi+Yj7hI4FOH9LEzoq9LR14gr3XGsUijxNSlcUktH6347LPLkCKxDvxLKpHpbyG/nyzqiMCs6kiFj3jTA454D/E3Pjnc=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4680
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9941 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=903 spamscore=0
+ suspectscore=0 bulkscore=0 mlxscore=0 adultscore=0 malwarescore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2103310000 definitions=main-2104020026
+X-Proofpoint-GUID: wHPQTr31_v_RgD0NZXSoQqFGXcXDRZyW
+X-Proofpoint-ORIG-GUID: wHPQTr31_v_RgD0NZXSoQqFGXcXDRZyW
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=9941 signatures=668683
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999 mlxscore=0
+ lowpriorityscore=0 suspectscore=0 priorityscore=1501 phishscore=0
+ clxscore=1015 impostorscore=0 malwarescore=0 bulkscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2103310000
+ definitions=main-2104020026
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-ARCH_ENABLE_MEMORY_[HOTPLUG|HOTREMOVE] configs have duplicate definitions
-on platforms that subscribe them. Instead, just make them generic options
-which can be selected on applicable platforms.
+On Tue, 30 Mar 2021 08:19:56 +0100, Sergei Trofimovich wrote:
 
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@de.ibm.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: x86@kernel.org
-Cc: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: linux-mm@kvack.org
-Cc: linux-kernel@vger.kernel.org
-Acked-by: Catalin Marinas <catalin.marinas@arm.com> (arm64)
-Acked-by: Heiko Carstens <hca@linux.ibm.com> (s390)
-Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
----
- arch/arm64/Kconfig   |  8 ++------
- arch/ia64/Kconfig    |  8 ++------
- arch/powerpc/Kconfig |  8 ++------
- arch/s390/Kconfig    |  8 ++------
- arch/sh/Kconfig      |  2 ++
- arch/sh/mm/Kconfig   |  8 --------
- arch/x86/Kconfig     | 10 ++--------
- mm/Kconfig           |  6 ++++++
- 8 files changed, 18 insertions(+), 40 deletions(-)
+> Some of the structs contain `atomic_t` values and are not intended to be
+> sent to IO controller as is.
+> 
+> The change adds __packed to every struct and union in the file.
+> Follow-up commits will fix `atomic_t` problems.
+> 
+> The commit is a no-op at least on ia64:
+>     $ diff -u <(objdump -d -r old.o) <(objdump -d -r new.o)
 
-diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-index c86b28ef6ac0..48355c5519c3 100644
---- a/arch/arm64/Kconfig
-+++ b/arch/arm64/Kconfig
-@@ -11,6 +11,8 @@ config ARM64
- 	select ACPI_PPTT if ACPI
- 	select ARCH_HAS_DEBUG_WX
- 	select ARCH_BINFMT_ELF_STATE
-+	select ARCH_ENABLE_MEMORY_HOTPLUG
-+	select ARCH_ENABLE_MEMORY_HOTREMOVE
- 	select ARCH_HAS_CACHE_LINE_SIZE
- 	select ARCH_HAS_DEBUG_VIRTUAL
- 	select ARCH_HAS_DEBUG_VM_PGTABLE
-@@ -305,12 +307,6 @@ config ZONE_DMA32
- 	bool "Support DMA32 zone" if EXPERT
- 	default y
- 
--config ARCH_ENABLE_MEMORY_HOTPLUG
--	def_bool y
--
--config ARCH_ENABLE_MEMORY_HOTREMOVE
--	def_bool y
--
- config SMP
- 	def_bool y
- 
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 2ad7a8d29fcc..96ce53ad5c9d 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -13,6 +13,8 @@ config IA64
- 	select ARCH_MIGHT_HAVE_PC_SERIO
- 	select ACPI
- 	select ACPI_NUMA if NUMA
-+	select ARCH_ENABLE_MEMORY_HOTPLUG
-+	select ARCH_ENABLE_MEMORY_HOTREMOVE
- 	select ARCH_SUPPORTS_ACPI
- 	select ACPI_SYSTEM_POWER_STATES_SUPPORT if ACPI
- 	select ARCH_MIGHT_HAVE_ACPI_PDC if ACPI
-@@ -250,12 +252,6 @@ config HOTPLUG_CPU
- 	  can be controlled through /sys/devices/system/cpu/cpu#.
- 	  Say N if you want to disable CPU hotplug.
- 
--config ARCH_ENABLE_MEMORY_HOTPLUG
--	def_bool y
--
--config ARCH_ENABLE_MEMORY_HOTREMOVE
--	def_bool y
--
- config SCHED_SMT
- 	bool "SMT scheduler support"
- 	depends on SMP
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index a74c211e55b1..02a05a24659d 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -118,6 +118,8 @@ config PPC
- 	# Please keep this list sorted alphabetically.
- 	#
- 	select ARCH_32BIT_OFF_T if PPC32
-+	select ARCH_ENABLE_MEMORY_HOTPLUG
-+	select ARCH_ENABLE_MEMORY_HOTREMOVE
- 	select ARCH_HAS_DEBUG_VIRTUAL
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
- 	select ARCH_HAS_ELF_RANDOMIZE
-@@ -515,12 +517,6 @@ config ARCH_CPU_PROBE_RELEASE
- 	def_bool y
- 	depends on HOTPLUG_CPU
- 
--config ARCH_ENABLE_MEMORY_HOTPLUG
--	def_bool y
--
--config ARCH_ENABLE_MEMORY_HOTREMOVE
--	def_bool y
--
- config PPC64_SUPPORTS_MEMORY_FAILURE
- 	bool "Add support for memory hwpoison"
- 	depends on PPC_BOOK3S_64
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index c1ff874e6c2e..f8b356550daa 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -60,6 +60,8 @@ config S390
- 	imply IMA_SECURE_AND_OR_TRUSTED_BOOT
- 	select ARCH_32BIT_USTAT_F_TINODE
- 	select ARCH_BINFMT_ELF_STATE
-+	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM
-+	select ARCH_ENABLE_MEMORY_HOTREMOVE
- 	select ARCH_HAS_DEBUG_VM_PGTABLE
- 	select ARCH_HAS_DEBUG_WX
- 	select ARCH_HAS_DEVMEM_IS_ALLOWED
-@@ -626,12 +628,6 @@ config ARCH_SPARSEMEM_ENABLE
- config ARCH_SPARSEMEM_DEFAULT
- 	def_bool y
- 
--config ARCH_ENABLE_MEMORY_HOTPLUG
--	def_bool y if SPARSEMEM
--
--config ARCH_ENABLE_MEMORY_HOTREMOVE
--	def_bool y
--
- config ARCH_ENABLE_SPLIT_PMD_PTLOCK
- 	def_bool y
- 
-diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
-index a54b0c5de37b..68129537e350 100644
---- a/arch/sh/Kconfig
-+++ b/arch/sh/Kconfig
-@@ -2,6 +2,8 @@
- config SUPERH
- 	def_bool y
- 	select ARCH_32BIT_OFF_T
-+	select ARCH_ENABLE_MEMORY_HOTPLUG if SPARSEMEM && MMU
-+	select ARCH_ENABLE_MEMORY_HOTREMOVE if SPARSEMEM && MMU
- 	select ARCH_HAVE_CUSTOM_GPIO_H
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG if (GUSA_RB || CPU_SH4A)
- 	select ARCH_HAS_BINFMT_FLAT if !MMU
-diff --git a/arch/sh/mm/Kconfig b/arch/sh/mm/Kconfig
-index 77aa2f802d8d..d551a9cac41e 100644
---- a/arch/sh/mm/Kconfig
-+++ b/arch/sh/mm/Kconfig
-@@ -136,14 +136,6 @@ config ARCH_SPARSEMEM_DEFAULT
- config ARCH_SELECT_MEMORY_MODEL
- 	def_bool y
- 
--config ARCH_ENABLE_MEMORY_HOTPLUG
--	def_bool y
--	depends on SPARSEMEM && MMU
--
--config ARCH_ENABLE_MEMORY_HOTREMOVE
--	def_bool y
--	depends on SPARSEMEM && MMU
--
- config ARCH_MEMORY_PROBE
- 	def_bool y
- 	depends on MEMORY_HOTPLUG
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 51d171abb57a..503d8b2e8676 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -60,6 +60,8 @@ config X86
- 	select ACPI_SYSTEM_POWER_STATES_SUPPORT	if ACPI
- 	select ARCH_32BIT_OFF_T			if X86_32
- 	select ARCH_CLOCKSOURCE_INIT
-+	select ARCH_ENABLE_MEMORY_HOTPLUG if X86_64 || (X86_32 && HIGHMEM)
-+	select ARCH_ENABLE_MEMORY_HOTREMOVE if MEMORY_HOTPLUG
- 	select ARCH_HAS_ACPI_TABLE_UPGRADE	if ACPI
- 	select ARCH_HAS_CACHE_LINE_SIZE
- 	select ARCH_HAS_DEBUG_VIRTUAL
-@@ -2423,14 +2425,6 @@ config ARCH_HAS_ADD_PAGES
- 	def_bool y
- 	depends on X86_64 && ARCH_ENABLE_MEMORY_HOTPLUG
- 
--config ARCH_ENABLE_MEMORY_HOTPLUG
--	def_bool y
--	depends on X86_64 || (X86_32 && HIGHMEM)
--
--config ARCH_ENABLE_MEMORY_HOTREMOVE
--	def_bool y
--	depends on MEMORY_HOTPLUG
--
- config USE_PERCPU_NUMA_NODE_ID
- 	def_bool y
- 	depends on NUMA
-diff --git a/mm/Kconfig b/mm/Kconfig
-index 1c9a37fc651a..9b58fa08847d 100644
---- a/mm/Kconfig
-+++ b/mm/Kconfig
-@@ -149,6 +149,9 @@ config MEMORY_ISOLATION
- config HAVE_BOOTMEM_INFO_NODE
- 	def_bool n
- 
-+config ARCH_ENABLE_MEMORY_HOTPLUG
-+	bool
-+
- # eventually, we can have this option just 'select SPARSEMEM'
- config MEMORY_HOTPLUG
- 	bool "Allow for memory hot-add"
-@@ -177,6 +180,9 @@ config MEMORY_HOTPLUG_DEFAULT_ONLINE
- 	  Say N here if you want the default policy to keep all hot-plugged
- 	  memory blocks in 'offline' state.
- 
-+config ARCH_ENABLE_MEMORY_HOTREMOVE
-+	bool
-+
- config MEMORY_HOTREMOVE
- 	bool "Allow for memory hot remove"
- 	select HAVE_BOOTMEM_INFO_NODE if (X86_64 || PPC64)
+Applied to 5.12/scsi-fixes, thanks!
+
+[1/3] hpsa: use __packed on individual structs, not header-wide
+      https://git.kernel.org/mkp/scsi/c/5482a9a1a8fd
+[2/3] hpsa: fix boot on ia64 (atomic_t alignment)
+      https://git.kernel.org/mkp/scsi/c/02ec144292bc
+[3/3] hpsa: add an assert to prevent from __packed reintroduction
+      https://git.kernel.org/mkp/scsi/c/e01a00ff62ad
+
 -- 
-2.20.1
-
+Martin K. Petersen	Oracle Linux Engineering
