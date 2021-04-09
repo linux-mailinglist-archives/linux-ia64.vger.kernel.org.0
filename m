@@ -2,41 +2,68 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B16F3573D6
-	for <lists+linux-ia64@lfdr.de>; Wed,  7 Apr 2021 20:02:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6798D3592AA
+	for <lists+linux-ia64@lfdr.de>; Fri,  9 Apr 2021 05:10:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238816AbhDGSDD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 7 Apr 2021 14:03:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38906 "EHLO
+        id S233332AbhDIDKp (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 8 Apr 2021 23:10:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232163AbhDGSDD (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 7 Apr 2021 14:03:03 -0400
-Received: from smtp.gentoo.org (smtp.gentoo.org [IPv6:2001:470:ea4a:1:5054:ff:fec7:86e4])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B032FC06175F;
-        Wed,  7 Apr 2021 11:02:53 -0700 (PDT)
-Date:   Wed, 7 Apr 2021 19:02:47 +0100
-From:   Sergei Trofimovich <slyfox@gentoo.org>
+        with ESMTP id S233363AbhDIDKi (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 8 Apr 2021 23:10:38 -0400
+Received: from mail-pg1-x533.google.com (mail-pg1-x533.google.com [IPv6:2607:f8b0:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B27BC061764
+        for <linux-ia64@vger.kernel.org>; Thu,  8 Apr 2021 20:10:26 -0700 (PDT)
+Received: by mail-pg1-x533.google.com with SMTP id b17so2818439pgh.7
+        for <linux-ia64@vger.kernel.org>; Thu, 08 Apr 2021 20:10:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=W/gxTebIuNNAwMjKB3+BU0hgs4+ZjFg2VBpLALBCaj4=;
+        b=Lzp69HuDVcwoZM6gIfhTiGdsMicJC5qgLDxqnuVipvtmYxXh+0Is2AmRZgANnMl/Gw
+         HE7lQupmx/xnuVlFIF8ZGi0sqfToAn8KfKhO6UweZZx6t9fk/pVvwsshMG7qOa0if7Wz
+         /9FS4jYO2YeURqpZohFOIE76pETAllyl++qH4=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=W/gxTebIuNNAwMjKB3+BU0hgs4+ZjFg2VBpLALBCaj4=;
+        b=VIavCNfBYZYdjCjr2uApgCAJ0RK+sEEhLAseQDW+7KEGVIlWVArWOCy8lnHYpnQ91z
+         ukf80tsp7uUVePjTmP8DJ6YLAevgQ9XSvG0eEALowoKnHGt4z5qTaVNZWvZB6wPjqEW0
+         OcqAXVYq9CkqmEVqlTQFxEQifvuhm6qQkeUQXiDg9WEKvtzmoPvcINblPbKuR5uFsvja
+         OFht4IbbsH84qjeCba4JnCLkhJO2VNz8JopJlWOCT7Ub/RfyIphEu1+x8HsnEzBPw4dv
+         oIQselAUm5C7Fk82AaVv5Ks7kZWdfEPbGWZ45saLwtSrKgvnzhAXW/1EQJFSLwci+CE+
+         i2Iw==
+X-Gm-Message-State: AOAM532IekZyC6MBvFfnl0pHAgi6UXKYJbSYI63MOumm2TPnhLgzt3y/
+        IOszmP7D9E5hhtSTPvqk3JNaDg==
+X-Google-Smtp-Source: ABdhPJySgoPy+PEzklKXAxMILqgt3WPSJ2/LtblYYFapCX8p5to4reN2SIEv4hYSU5Egyjj/6jovQw==
+X-Received: by 2002:a05:6a00:1484:b029:214:23e5:a4f3 with SMTP id v4-20020a056a001484b029021423e5a4f3mr10550239pfu.26.1617937826180;
+        Thu, 08 Apr 2021 20:10:26 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id c14sm676048pfj.46.2021.04.08.20.10.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 08 Apr 2021 20:10:25 -0700 (PDT)
+Date:   Thu, 8 Apr 2021 20:10:24 -0700
+From:   Kees Cook <keescook@chromium.org>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Masahiro Yamada <masahiroy@kernel.org>,
         Michal Marek <michal.lkml@markovi.net>,
         linux-kbuild@vger.kernel.org, linux-arch@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
 Subject: Re: [PATCH 11/20] kbuild: ia64: use common install script
-Message-ID: <20210407190247.64a4ac46@sf>
-In-Reply-To: <20210407053419.449796-12-gregkh@linuxfoundation.org>
+Message-ID: <202104082010.6976DE0B@keescook>
 References: <20210407053419.449796-1-gregkh@linuxfoundation.org>
-        <20210407053419.449796-12-gregkh@linuxfoundation.org>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+ <20210407053419.449796-12-gregkh@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210407053419.449796-12-gregkh@linuxfoundation.org>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed,  7 Apr 2021 07:34:10 +0200
-Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-
+On Wed, Apr 07, 2021 at 07:34:10AM +0200, Greg Kroah-Hartman wrote:
 > The common scripts/install.sh script will now work for ia64, all that
 > is needed is to add the compressed image type to it.  So add that file
 > type check and the ability to call /usr/sbin/elilo after copying the
@@ -45,112 +72,7 @@ Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 > Cc: linux-ia64@vger.kernel.org
 > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-Reviewed-by: Sergei Trofimovich <slyfox@gentoo.org>
-
-> ---
->  arch/ia64/Makefile   |  2 +-
->  arch/ia64/install.sh | 40 ----------------------------------------
->  scripts/install.sh   |  8 +++++++-
->  3 files changed, 8 insertions(+), 42 deletions(-)
->  delete mode 100644 arch/ia64/install.sh
-> 
-> diff --git a/arch/ia64/Makefile b/arch/ia64/Makefile
-> index 467b7e7f967c..19e20e99f487 100644
-> --- a/arch/ia64/Makefile
-> +++ b/arch/ia64/Makefile
-> @@ -77,7 +77,7 @@ archheaders:
->  CLEAN_FILES += vmlinux.gz
->  
->  install: vmlinux.gz
-> -	sh $(srctree)/arch/ia64/install.sh $(KERNELRELEASE) $< System.map "$(INSTALL_PATH)"
-> +	sh $(srctree)/scripts/install.sh $(KERNELRELEASE) $< System.map "$(INSTALL_PATH)"
->  
->  define archhelp
->    echo '* compressed	- Build compressed kernel image'
-> diff --git a/arch/ia64/install.sh b/arch/ia64/install.sh
-> deleted file mode 100644
-> index 0e932f5dcd1a..000000000000
-> --- a/arch/ia64/install.sh
-> +++ /dev/null
-> @@ -1,40 +0,0 @@
-> -#!/bin/sh
-> -#
-> -# arch/ia64/install.sh
-> -#
-> -# This file is subject to the terms and conditions of the GNU General Public
-> -# License.  See the file "COPYING" in the main directory of this archive
-> -# for more details.
-> -#
-> -# Copyright (C) 1995 by Linus Torvalds
-> -#
-> -# Adapted from code in arch/i386/boot/Makefile by H. Peter Anvin
-> -#
-> -# "make install" script for ia64 architecture
-> -#
-> -# Arguments:
-> -#   $1 - kernel version
-> -#   $2 - kernel image file
-> -#   $3 - kernel map file
-> -#   $4 - default install path (blank if root directory)
-> -#
-> -
-> -# User may have a custom install script
-> -
-> -if [ -x ~/bin/${INSTALLKERNEL} ]; then exec ~/bin/${INSTALLKERNEL} "$@"; fi
-> -if [ -x /sbin/${INSTALLKERNEL} ]; then exec /sbin/${INSTALLKERNEL} "$@"; fi
-> -
-> -# Default install - same as make zlilo
-> -
-> -if [ -f $4/vmlinuz ]; then
-> -	mv $4/vmlinuz $4/vmlinuz.old
-> -fi
-> -
-> -if [ -f $4/System.map ]; then
-> -	mv $4/System.map $4/System.old
-> -fi
-> -
-> -cat $2 > $4/vmlinuz
-> -cp $3 $4/System.map
-> -
-> -test -x /usr/sbin/elilo && /usr/sbin/elilo
-> diff --git a/scripts/install.sh b/scripts/install.sh
-> index 73067b535ea0..b6ca2a0f0983 100644
-> --- a/scripts/install.sh
-> +++ b/scripts/install.sh
-> @@ -52,6 +52,7 @@ if [ -x /sbin/"${INSTALLKERNEL}" ]; then exec /sbin/"${INSTALLKERNEL}" "$@"; fi
->  base=$(basename "$2")
->  if [ "$base" = "bzImage" ] ||
->     [ "$base" = "Image.gz" ] ||
-> +   [ "$base" = "vmlinux.gz" ] ||
->     [ "$base" = "zImage" ] ; then
->  	# Compressed install
->  	echo "Installing compressed kernel"
-> @@ -65,7 +66,7 @@ fi
->  # Some architectures name their files based on version number, and
->  # others do not.  Call out the ones that do not to make it obvious.
->  case "${ARCH}" in
-> -	x86)
-> +	ia64 | x86)
->  		version=""
->  		;;
->  	*)
-> @@ -86,6 +87,11 @@ case "${ARCH}" in
->  			echo "You have to install it yourself"
->  		fi
->  		;;
-> +	ia64)
-> +		if [ -x /usr/sbin/elilo ]; then
-> +			/usr/sbin/elilo
-> +		fi
-> +		;;
->  	x86)
->  		if [ -x /sbin/lilo ]; then
->  			/sbin/lilo
-> -- 
-> 2.31.1
-> 
-
+Reviewed-by: Kees Cook <keescook@chromium.org>
 
 -- 
-
-  Sergei
+Kees Cook
