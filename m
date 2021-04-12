@@ -2,171 +2,112 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DA18435B590
-	for <lists+linux-ia64@lfdr.de>; Sun, 11 Apr 2021 16:05:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2821435BBA7
+	for <lists+linux-ia64@lfdr.de>; Mon, 12 Apr 2021 10:06:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235430AbhDKOF3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 11 Apr 2021 10:05:29 -0400
-Received: from condef-09.nifty.com ([202.248.20.74]:61505 "EHLO
-        condef-09.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231405AbhDKOF3 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 11 Apr 2021 10:05:29 -0400
-X-Greylist: delayed 644 seconds by postgrey-1.27 at vger.kernel.org; Sun, 11 Apr 2021 10:05:29 EDT
-Received: from conssluserg-04.nifty.com ([10.126.8.83])by condef-09.nifty.com with ESMTP id 13BDpeJL011496
-        for <linux-ia64@vger.kernel.org>; Sun, 11 Apr 2021 22:51:40 +0900
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id 13BDpEVu015022;
-        Sun, 11 Apr 2021 22:51:14 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 13BDpEVu015022
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1618149075;
-        bh=AUMd6BK5O6LL/TwQF5XqGPOwC70Q/DJa4qD42hFee0Y=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=qz917CWBdWZURqfpP9e3AffZwEhwkjzM7rm9f5h9zSKKdJd0p5X9+XmX/+wgnNDTv
-         NaMfHgTv9xMWtSEAoNNzVY02tlh2W2IY5uKa9OpKv/1MeXhnd5oyKyQtLa36XJiU7X
-         qbEdmoq8YJG8uFO/qIfZdKXCtHbF9iafQUSi+lFpYPS1v7fCzwlE11Xwsx3UrcrQ3h
-         d19A5mak6QzYNtB4cTlpmVMXO4TXdY45/wMA1bN1eyB4+cgq10qP0lDB09N7VWS8qx
-         1lDMKoQ/3qIRNpjxu61eLz7MluqPexS3qcBn3Bh3Juo5+Lki1xepWZidkGlcETTkIF
-         KsFCkJgCaNVAg==
-X-Nifty-SrcIP: [209.85.215.182]
-Received: by mail-pg1-f182.google.com with SMTP id p12so7327027pgj.10;
-        Sun, 11 Apr 2021 06:51:14 -0700 (PDT)
-X-Gm-Message-State: AOAM531R5nMxOz/JwFqhKMNGD5JlkbyA/4QpyweotzDEvHfa6NJsZ4zp
-        CgsQpzJk1/5SWUjoTbmmBRlOjQ430d6s6ndImlo=
-X-Google-Smtp-Source: ABdhPJy6YZYs05u7FT217tpuMhc9eGbZLPcyXC7I04yXNnzGB9xD6pqf1gIUL2Z1iGTGmY9mgtGDhcfU846pC+ku4ME=
-X-Received: by 2002:a05:6a00:2303:b029:249:b91e:72f0 with SMTP id
- h3-20020a056a002303b0290249b91e72f0mr5952650pfh.80.1618149073951; Sun, 11 Apr
- 2021 06:51:13 -0700 (PDT)
+        id S237144AbhDLIF6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 12 Apr 2021 04:05:58 -0400
+Received: from foss.arm.com ([217.140.110.172]:40376 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237171AbhDLIF4 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 12 Apr 2021 04:05:56 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0D0231B;
+        Mon, 12 Apr 2021 01:05:38 -0700 (PDT)
+Received: from [10.163.72.17] (unknown [10.163.72.17])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 340B23F73B;
+        Mon, 12 Apr 2021 01:05:36 -0700 (PDT)
+Subject: Re: [PATCH V2] mm/page_alloc: Ensure that HUGETLB_PAGE_ORDER is less
+ than MAX_ORDER
+To:     linux-mm@kvack.org, akpm@linux-foundation.org
+Cc:     David Hildenbrand <david@redhat.com>, linux-kernel@vger.kernel.org,
+        "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+References: <1618199302-29335-1-git-send-email-anshuman.khandual@arm.com>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <09284b9a-cfe1-fc49-e1f6-3cf0c1b74c76@arm.com>
+Date:   Mon, 12 Apr 2021 13:36:10 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-References: <20210301141937.342604-1-masahiroy@kernel.org>
-In-Reply-To: <20210301141937.342604-1-masahiroy@kernel.org>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Sun, 11 Apr 2021 22:50:35 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARzOvCr4-+r-MMZ_zdaSR3JUVU=wmuKj4HQPwQDej=vHg@mail.gmail.com>
-Message-ID: <CAK7LNARzOvCr4-+r-MMZ_zdaSR3JUVU=wmuKj4HQPwQDej=vHg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] ia64: syscalls: switch to generic syscalltbl.sh
-To:     linux-ia64@vger.kernel.org
-Cc:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Christian Brauner <christian.brauner@ubuntu.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Mike Rapoport <rppt@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+In-Reply-To: <1618199302-29335-1-git-send-email-anshuman.khandual@arm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Mar 1, 2021 at 11:20 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> Many architectures duplicate similar shell scripts.
->
-> This commit converts ia64 to use scripts/syscalltbl.sh.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
++ linuxppc-dev@lists.ozlabs.org
++ linux-ia64@vger.kernel.org
+
+On 4/12/21 9:18 AM, Anshuman Khandual wrote:
+> pageblock_order must always be less than MAX_ORDER, otherwise it might lead
+> to an warning during boot. A similar problem got fixed on arm64 platform
+> with the commit 79cc2ed5a716 ("arm64/mm: Drop THP conditionality from
+> FORCE_MAX_ZONEORDER"). Assert the above condition before HUGETLB_PAGE_ORDER
+> gets assigned as pageblock_order. This will help detect the problem earlier
+> on platforms where HUGETLB_PAGE_SIZE_VARIABLE is enabled.
+> 
+> Cc: David Hildenbrand <david@redhat.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: linux-mm@kvack.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
+> Changes in V2:
+> 
+> - Changed WARN_ON() to BUILD_BUG_ON() per David
+> 
+> Changes in V1:
+> 
+> https://patchwork.kernel.org/project/linux-mm/patch/1617947717-2424-1-git-send-email-anshuman.khandual@arm.com/
+> 
+>  mm/page_alloc.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+> 
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index cfc72873961d..19283bff4bec 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -6875,10 +6875,17 @@ void __init set_pageblock_order(void)
+>  	if (pageblock_order)
+>  		return;
+>  
+> -	if (HPAGE_SHIFT > PAGE_SHIFT)
+> +	if (HPAGE_SHIFT > PAGE_SHIFT) {
+> +		/*
+> +		 * pageblock_order must always be less than
+> +		 * MAX_ORDER. So does HUGETLB_PAGE_ORDER if
+> +		 * that is being assigned here.
+> +		 */
+> +		BUILD_BUG_ON(HUGETLB_PAGE_ORDER >= MAX_ORDER);
 
-Applied to linux-kbuild.
+Unfortunately the build test fails on both the platforms (powerpc and ia64)
+which subscribe HUGETLB_PAGE_SIZE_VARIABLE and where this check would make
+sense. I some how overlooked the cross compile build failure that actually
+detected this problem.
 
+But wondering why this assert is not holding true ? and how these platforms
+do not see the warning during boot (or do they ?) at mm/vmscan.c:1092 like
+arm64 did.
 
+static int __fragmentation_index(unsigned int order, struct contig_page_info *info)
+{
+        unsigned long requested = 1UL << order;
 
->
->  arch/ia64/kernel/entry.S                |  3 +--
->  arch/ia64/kernel/syscalls/Makefile      |  8 ++-----
->  arch/ia64/kernel/syscalls/syscalltbl.sh | 32 -------------------------
->  3 files changed, 3 insertions(+), 40 deletions(-)
->  delete mode 100644 arch/ia64/kernel/syscalls/syscalltbl.sh
->
-> diff --git a/arch/ia64/kernel/entry.S b/arch/ia64/kernel/entry.S
-> index e98e3dafffd8..5eba3fb2e311 100644
-> --- a/arch/ia64/kernel/entry.S
-> +++ b/arch/ia64/kernel/entry.S
-> @@ -1420,10 +1420,9 @@ END(ftrace_stub)
->
->  #endif /* CONFIG_FUNCTION_TRACER */
->
-> -#define __SYSCALL(nr, entry, nargs) data8 entry
-> +#define __SYSCALL(nr, entry) data8 entry
->         .rodata
->         .align 8
->         .globl sys_call_table
->  sys_call_table:
->  #include <asm/syscall_table.h>
-> -#undef __SYSCALL
-> diff --git a/arch/ia64/kernel/syscalls/Makefile b/arch/ia64/kernel/syscalls/Makefile
-> index bf4bda0f63eb..2d2e420749b0 100644
-> --- a/arch/ia64/kernel/syscalls/Makefile
-> +++ b/arch/ia64/kernel/syscalls/Makefile
-> @@ -7,7 +7,7 @@ _dummy := $(shell [ -d '$(uapi)' ] || mkdir -p '$(uapi)')       \
->
->  syscall := $(src)/syscall.tbl
->  syshdr := $(srctree)/$(src)/syscallhdr.sh
-> -systbl := $(srctree)/$(src)/syscalltbl.sh
-> +systbl := $(srctree)/scripts/syscalltbl.sh
->
->  quiet_cmd_syshdr = SYSHDR  $@
->        cmd_syshdr = $(CONFIG_SHELL) '$(syshdr)' '$<' '$@'       \
-> @@ -16,16 +16,12 @@ quiet_cmd_syshdr = SYSHDR  $@
->                    '$(syshdr_offset_$(basetarget))'
->
->  quiet_cmd_systbl = SYSTBL  $@
-> -      cmd_systbl = $(CONFIG_SHELL) '$(systbl)' '$<' '$@'       \
-> -                  '$(systbl_abis_$(basetarget))'               \
-> -                  '$(systbl_abi_$(basetarget))'                \
-> -                  '$(systbl_offset_$(basetarget))'
-> +      cmd_systbl = $(CONFIG_SHELL) $(systbl) $< $@
->
->  syshdr_offset_unistd_64 := __NR_Linux
->  $(uapi)/unistd_64.h: $(syscall) $(syshdr) FORCE
->         $(call if_changed,syshdr)
->
-> -systbl_offset_syscall_table := 1024
->  $(kapi)/syscall_table.h: $(syscall) $(systbl) FORCE
->         $(call if_changed,systbl)
->
-> diff --git a/arch/ia64/kernel/syscalls/syscalltbl.sh b/arch/ia64/kernel/syscalls/syscalltbl.sh
-> deleted file mode 100644
-> index 85d78d9309ad..000000000000
-> --- a/arch/ia64/kernel/syscalls/syscalltbl.sh
-> +++ /dev/null
-> @@ -1,32 +0,0 @@
-> -#!/bin/sh
-> -# SPDX-License-Identifier: GPL-2.0
-> -
-> -in="$1"
-> -out="$2"
-> -my_abis=`echo "($3)" | tr ',' '|'`
-> -my_abi="$4"
-> -offset="$5"
-> -
-> -emit() {
-> -       t_nxt="$1"
-> -       t_nr="$2"
-> -       t_entry="$3"
-> -
-> -       while [ $t_nxt -lt $t_nr ]; do
-> -               printf "__SYSCALL(%s, sys_ni_syscall, )\n" "${t_nxt}"
-> -               t_nxt=$((t_nxt+1))
-> -       done
-> -       printf "__SYSCALL(%s, %s, )\n" "${t_nxt}" "${t_entry}"
-> -}
-> -
-> -grep -E "^[0-9A-Fa-fXx]+[[:space:]]+${my_abis}" "$in" | sort -n | (
-> -       nxt=0
-> -       if [ -z "$offset" ]; then
-> -               offset=0
-> -       fi
-> -
-> -       while read nr abi name entry ; do
-> -               emit $((nxt+offset)) $((nr+offset)) $entry
-> -               nxt=$((nr+1))
-> -       done
-> -) > "$out"
-> --
-> 2.27.0
->
+        if (WARN_ON_ONCE(order >= MAX_ORDER))
+                return 0;
+....
 
+Can pageblock_order really exceed MAX_ORDER - 1 ?
 
--- 
-Best Regards
-Masahiro Yamada
+>  		order = HUGETLB_PAGE_ORDER;
+> -	else
+> +	} else {
+>  		order = MAX_ORDER - 1;
+> +	}
+>  
+>  	/*
+>  	 * Assume the largest contiguous order of interest is a huge page.
+> 
