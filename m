@@ -2,27 +2,27 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id CC20B364B8F
-	for <lists+linux-ia64@lfdr.de>; Mon, 19 Apr 2021 22:46:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4619F364BCD
+	for <lists+linux-ia64@lfdr.de>; Mon, 19 Apr 2021 22:46:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242662AbhDSUpK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 19 Apr 2021 16:45:10 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54408 "EHLO mail.kernel.org"
+        id S242730AbhDSUqb (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 19 Apr 2021 16:46:31 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55116 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242494AbhDSUop (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 19 Apr 2021 16:44:45 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id B6471613BC;
-        Mon, 19 Apr 2021 20:44:13 +0000 (UTC)
+        id S242575AbhDSUpW (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 19 Apr 2021 16:45:22 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id EF728613DC;
+        Mon, 19 Apr 2021 20:44:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618865054;
-        bh=IyKqONnImUAeSz7aWX3Pqd1vd62ZQLva34AJ5eh4Hx4=;
+        s=k20201202; t=1618865088;
+        bh=LrzwD02RnLgoVuAueIQ5a9G1U6hrNPFklKerrb/eNV4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YuytxyVW/olFi4hNH6mcHqkstqwQA+gK8s3fUHPQRTTc+LJX6b83s44AHCaJOpqPa
-         qu9iuEh+TvEI07xP2j5OUFzTYopXIAlmyvCQXWpAASkmO/fi3P45vIfJ0C+Vsc7+bw
-         oe0FDlWPuruA9dH5jLzeJA1atFhruTJsYYKhO9m9p6Yv7tk/GWjCWOLyeoiaF4SfFb
-         rglZxT8PMapIFTOJA8zeyF/9rtcIJoPLFVFO/Cgd4Q4VlshHZSpeLZXecjLLVjBza0
-         jQLvhceaNfLl1v6w1d5+9lqY6wrf8m6+UnNcGo7jgIkz//cRRf8JGYu6c2894VcAsc
-         dYDXlU2kZj1tQ==
+        b=T0fC3TejDQrLVXfPqa1HZI/pRu1Y35zz6LZ0rosheM4xnKmDZIICcKpyyz9I3PPCu
+         tjD7KlWqXq+Qyvki+wG3vpZHASI7rOY9WHgu6ZOCYYmNC4MIfO8ngZhMcMesYE4Kbb
+         xwlmTwQNDsbIhwr4f5MVeYjY2G281ksiTIDmXbvjZmfBJPbAYM2fK8B6izIVargjy+
+         9d2m+RLZi5sECIb3Vc5Dud6cPZLS+Ujj+rvKyD/HblOM6RiiExsVyPPIGm7pUf26Og
+         DQfe+h4Q1JIEakhi7tApe5xh7Rq6g/zlYMxh4IGLlA7Kd9w9hubSTyb/Fu6Kq2JEST
+         EhKfYKzVVqhtw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Randy Dunlap <rdunlap@infradead.org>,
@@ -30,12 +30,12 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.11 20/23] ia64: fix discontig.c section mismatches
-Date:   Mon, 19 Apr 2021 16:43:39 -0400
-Message-Id: <20210419204343.6134-20-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 5.10 18/21] ia64: fix discontig.c section mismatches
+Date:   Mon, 19 Apr 2021 16:44:16 -0400
+Message-Id: <20210419204420.6375-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210419204343.6134-1-sashal@kernel.org>
-References: <20210419204343.6134-1-sashal@kernel.org>
+In-Reply-To: <20210419204420.6375-1-sashal@kernel.org>
+References: <20210419204420.6375-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -79,7 +79,7 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/ia64/mm/discontig.c b/arch/ia64/mm/discontig.c
-index c7311131156e..ba3edb8a04b1 100644
+index dbe829fc5298..4d0813419013 100644
 --- a/arch/ia64/mm/discontig.c
 +++ b/arch/ia64/mm/discontig.c
 @@ -94,7 +94,7 @@ static int __init build_node_maps(unsigned long start, unsigned long len,
