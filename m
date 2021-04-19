@@ -2,27 +2,27 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FF3A364C27
-	for <lists+linux-ia64@lfdr.de>; Mon, 19 Apr 2021 22:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B943B364C58
+	for <lists+linux-ia64@lfdr.de>; Mon, 19 Apr 2021 22:50:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243154AbhDSUs7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 19 Apr 2021 16:48:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54402 "EHLO mail.kernel.org"
+        id S241392AbhDSUud (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 19 Apr 2021 16:50:33 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55094 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242976AbhDSUq6 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 19 Apr 2021 16:46:58 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E0570613EF;
-        Mon, 19 Apr 2021 20:45:31 +0000 (UTC)
+        id S243112AbhDSUs3 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 19 Apr 2021 16:48:29 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 0FCE6613FB;
+        Mon, 19 Apr 2021 20:45:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618865132;
-        bh=VGIKi137E+ddYJLUTS0lnAKLre8DBq1QVLFL+p5vb4k=;
+        s=k20201202; t=1618865151;
+        bh=lnysf96Opzj0ZpAgpynl12FghCRqEvkaUKfn4+Gt+9s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W70RCVGjZQEtRKlOiaD89hhE9ODqr6ynHwpOKWnivyOtykaBVBGIgSQqrG4c4FcC3
-         ohEYhdEIcGsm37vY7uUFcn0eizlE6Z6dBMGzi5OeJWHSutvmrwjijyD+vkWtH0qi0W
-         Kbxy7p/1UBwFkDXAo/SnQRVI3GH4cXWrAswNmdf6PzL2KOauXfa1zZe5JpZs0boal0
-         7xEOlmEAbLZaXwy+QmTIkNCRuN4j6oUOpP88kR+MfWS9RraibgWGHS37xHgg9Iwzvc
-         YJ/hymNcjQz/stsyCoo0UGTkIiluyTJFBSRVle4/2sz8SFgOrZo1XXo7cZTg9+AhBc
-         TYVWslJ4uc0+w==
+        b=bMDMgkDzo1IpZL1gGmdVJ+iDfYyfoIZgBoLQkhjZBfQr3Egxc/Ym2bNv7mFYo34dC
+         G7tFO23KS8f9F11m3+9U5G67t/cIHkXzA/iqKithI5yGAgT45XfrGdkQSvO5Ner/hM
+         r1hzH4C2/x0+x0pipBLbsEOUVA+vpsL8vWQJDdmiMuHnku9q0SfpTn/nuLyD/50DJv
+         KVcALw4qvDsfbf4DLOmpiTpsiRl+i/7wohzejcBclTT88dAZU1ocZhqBKHuzR0YjQp
+         vFoG96PNKqR5SHzEIkY8T/nbC58hR1QiQdTfWjlcdGA12iYtUiBJ/CcQGnMFixqP6q
+         k17JPhvzCtjng==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Randy Dunlap <rdunlap@infradead.org>,
@@ -30,12 +30,12 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 10/12] ia64: fix discontig.c section mismatches
-Date:   Mon, 19 Apr 2021 16:45:15 -0400
-Message-Id: <20210419204517.6770-10-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 09/11] ia64: fix discontig.c section mismatches
+Date:   Mon, 19 Apr 2021 16:45:34 -0400
+Message-Id: <20210419204536.6924-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210419204517.6770-1-sashal@kernel.org>
-References: <20210419204517.6770-1-sashal@kernel.org>
+In-Reply-To: <20210419204536.6924-1-sashal@kernel.org>
+References: <20210419204536.6924-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -79,10 +79,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/ia64/mm/discontig.c b/arch/ia64/mm/discontig.c
-index 1928d5719e41..db3104c9fac5 100644
+index 9b2d994cddf6..99b59a7ec187 100644
 --- a/arch/ia64/mm/discontig.c
 +++ b/arch/ia64/mm/discontig.c
-@@ -96,7 +96,7 @@ static int __init build_node_maps(unsigned long start, unsigned long len,
+@@ -100,7 +100,7 @@ static int __init build_node_maps(unsigned long start, unsigned long len,
   * acpi_boot_init() (which builds the node_to_cpu_mask array) hasn't been
   * called yet.  Note that node 0 will also count all non-existent cpus.
   */
@@ -91,7 +91,7 @@ index 1928d5719e41..db3104c9fac5 100644
  {
  	int cpu, n = 0;
  
-@@ -111,7 +111,7 @@ static int __meminit early_nr_cpus_node(int node)
+@@ -115,7 +115,7 @@ static int __meminit early_nr_cpus_node(int node)
   * compute_pernodesize - compute size of pernode data
   * @node: the node id.
   */
@@ -100,7 +100,7 @@ index 1928d5719e41..db3104c9fac5 100644
  {
  	unsigned long pernodesize = 0, cpus;
  
-@@ -371,7 +371,7 @@ static void __init reserve_pernode_space(void)
+@@ -412,7 +412,7 @@ static void __init reserve_pernode_space(void)
  	}
  }
  
