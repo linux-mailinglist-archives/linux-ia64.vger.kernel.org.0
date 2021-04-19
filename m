@@ -2,27 +2,27 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D780364C75
-	for <lists+linux-ia64@lfdr.de>; Mon, 19 Apr 2021 22:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4368C364C91
+	for <lists+linux-ia64@lfdr.de>; Mon, 19 Apr 2021 22:55:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243370AbhDSUu7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 19 Apr 2021 16:50:59 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54402 "EHLO mail.kernel.org"
+        id S242924AbhDSUw3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 19 Apr 2021 16:52:29 -0400
+Received: from mail.kernel.org ([198.145.29.99]:55020 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242759AbhDSUs7 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 19 Apr 2021 16:48:59 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 57677613E3;
-        Mon, 19 Apr 2021 20:46:05 +0000 (UTC)
+        id S243038AbhDSUuT (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 19 Apr 2021 16:50:19 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id BA18B61402;
+        Mon, 19 Apr 2021 20:46:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618865166;
+        s=k20201202; t=1618865178;
         bh=07caHPhzZxVAkO5mCF9RtGW81v4eRFptXroX2W2y9/4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IVhvy5N0oXyr6K/pyaJ0ORk5GgXunmj1p+52Zz3XKly3fsDQSYLu9U+2Mgnqp0Poz
-         trQCSke7qzK05pcDxjUsCYv0WUiGbo8stE9C2CtmL14S4I7Boi+KbMWcRlc/n/fJp0
-         GH28zEJU7rVWq7+xkK/dKs9Y7I+BoZfmbw/6FInFT8YYPOEASNfRnfX0Um/vm2bNt8
-         cPhuvnASDyHlghFaH4fi16IBSo7lKCFovar4bxsf1KFJRFRaxwXZv0kch31zgNDsev
-         ydaVAgYyOtLqEu5om+qyp05MgRq/xoqgSaZQIMklT9Owm4ppmlPwjLtfV4D9Beu4cl
-         ihTgvbosmBJeA==
+        b=CBYPsCb/aKJ3hoo0j6Dpo+CpBLMl1Pj4Bl2u67XCcDtMRRHaByO30t97Az0nhAe2w
+         5LXUMCOM1YrwMP7++nuKlKeK+WBUmU6lRuJXklGNq3AKdkFK0POFykAogkFMF7aBMs
+         6jl/bWOx0fPVD1aH+hx+/wXfp0T4vrbr04t5l+miaHSy33/5dbfXJ4kEvA2nzWMLoK
+         eeCWpir30OkY50ZlUDstFJZp3y83ELwOrCMHyfjVgQ0b8iqgmAbo1eZwhxvMBcn9Cp
+         4yvEg36DzcUtdXWmxohpmqLDYgRGC8qxTiyOzAyUB7giqdIX9u23uHFdinlGmKOxGG
+         vQDIS57w3fDDg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Randy Dunlap <rdunlap@infradead.org>,
@@ -30,12 +30,12 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.9 7/8] ia64: fix discontig.c section mismatches
-Date:   Mon, 19 Apr 2021 16:45:53 -0400
-Message-Id: <20210419204554.7071-7-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 6/7] ia64: fix discontig.c section mismatches
+Date:   Mon, 19 Apr 2021 16:46:07 -0400
+Message-Id: <20210419204608.7191-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210419204554.7071-1-sashal@kernel.org>
-References: <20210419204554.7071-1-sashal@kernel.org>
+In-Reply-To: <20210419204608.7191-1-sashal@kernel.org>
+References: <20210419204608.7191-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
