@@ -2,118 +2,113 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C884B363FDF
-	for <lists+linux-ia64@lfdr.de>; Mon, 19 Apr 2021 12:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CC20B364B8F
+	for <lists+linux-ia64@lfdr.de>; Mon, 19 Apr 2021 22:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238071AbhDSKsd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 19 Apr 2021 06:48:33 -0400
-Received: from vmi485042.contaboserver.net ([161.97.139.209]:37626 "EHLO
-        gentwo.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238403AbhDSKsd (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 19 Apr 2021 06:48:33 -0400
-Received: by gentwo.de (Postfix, from userid 1001)
-        id D7AF7B00128; Mon, 19 Apr 2021 12:48:01 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by gentwo.de (Postfix) with ESMTP id D4F82B00049;
-        Mon, 19 Apr 2021 12:48:01 +0200 (CEST)
-Date:   Mon, 19 Apr 2021 12:48:01 +0200 (CEST)
-From:   Christoph Lameter <cl@gentwo.de>
-To:     Anshuman Khandual <anshuman.khandual@arm.com>
-cc:     David Hildenbrand <david@redhat.com>, linux-mm@kvack.org,
-        akpm@linux-foundation.org, linux-kernel@vger.kernel.org,
-        "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Michal Hocko <mhocko@kernel.org>,
-        Mel Gorman <mgorman@techsingularity.net>
-Subject: Re: [PATCH V2] mm/page_alloc: Ensure that HUGETLB_PAGE_ORDER is less
- than MAX_ORDER
-In-Reply-To: <ce4f9838-da4b-1423-4123-23c0941a2198@arm.com>
-Message-ID: <alpine.DEB.2.22.394.2104191236500.777076@gentwo.de>
-References: <1618199302-29335-1-git-send-email-anshuman.khandual@arm.com> <09284b9a-cfe1-fc49-e1f6-3cf0c1b74c76@arm.com> <162877dd-e6ba-d465-d301-2956bb034429@redhat.com> <ce4f9838-da4b-1423-4123-23c0941a2198@arm.com>
-User-Agent: Alpine 2.22 (DEB 394 2020-01-19)
+        id S242662AbhDSUpK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 19 Apr 2021 16:45:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:54408 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S242494AbhDSUop (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 19 Apr 2021 16:44:45 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B6471613BC;
+        Mon, 19 Apr 2021 20:44:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1618865054;
+        bh=IyKqONnImUAeSz7aWX3Pqd1vd62ZQLva34AJ5eh4Hx4=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=YuytxyVW/olFi4hNH6mcHqkstqwQA+gK8s3fUHPQRTTc+LJX6b83s44AHCaJOpqPa
+         qu9iuEh+TvEI07xP2j5OUFzTYopXIAlmyvCQXWpAASkmO/fi3P45vIfJ0C+Vsc7+bw
+         oe0FDlWPuruA9dH5jLzeJA1atFhruTJsYYKhO9m9p6Yv7tk/GWjCWOLyeoiaF4SfFb
+         rglZxT8PMapIFTOJA8zeyF/9rtcIJoPLFVFO/Cgd4Q4VlshHZSpeLZXecjLLVjBza0
+         jQLvhceaNfLl1v6w1d5+9lqY6wrf8m6+UnNcGo7jgIkz//cRRf8JGYu6c2894VcAsc
+         dYDXlU2kZj1tQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.11 20/23] ia64: fix discontig.c section mismatches
+Date:   Mon, 19 Apr 2021 16:43:39 -0400
+Message-Id: <20210419204343.6134-20-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210419204343.6134-1-sashal@kernel.org>
+References: <20210419204343.6134-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="8323328-1783256993-1618829281=:777076"
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-  This message is in MIME format.  The first part should be readable text,
-  while the remaining parts are likely unreadable without MIME-aware tools.
+From: Randy Dunlap <rdunlap@infradead.org>
 
---8323328-1783256993-1618829281=:777076
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8BIT
+[ Upstream commit e2af9da4f867a1a54f1252bf3abc1a5c63951778 ]
 
-On Mon, 19 Apr 2021, Anshuman Khandual wrote:
+Fix IA64 discontig.c Section mismatch warnings.
 
-> >> Unfortunately the build test fails on both the platforms (powerpc and ia64)
-> >> which subscribe HUGETLB_PAGE_SIZE_VARIABLE and where this check would make
-> >> sense. I some how overlooked the cross compile build failure that actually
-> >> detected this problem.
-> >>
-> >> But wondering why this assert is not holding true ? and how these platforms
-> >> do not see the warning during boot (or do they ?) at mm/vmscan.c:1092 like
-> >> arm64 did.
-> >>
-> >> static int __fragmentation_index(unsigned int order, struct contig_page_info *info)
-> >> {
-> >>          unsigned long requested = 1UL << order;
-> >>
-> >>          if (WARN_ON_ONCE(order >= MAX_ORDER))
-> >>                  return 0;
-> >> ....
-> >>
-> >> Can pageblock_order really exceed MAX_ORDER - 1 ?
+When CONFIG_SPARSEMEM=y and CONFIG_MEMORY_HOTPLUG=y, the functions
+computer_pernodesize() and scatter_node_data() should not be marked as
+__meminit because they are needed after init, on any memory hotplug
+event.  Also, early_nr_cpus_node() is called by compute_pernodesize(),
+so early_nr_cpus_node() cannot be __meminit either.
 
-You can have larger blocks but you would need to allocate multiple
-contigous max order blocks or do it at boot time before the buddy
-allocator is active.
+  WARNING: modpost: vmlinux.o(.text.unlikely+0x1612): Section mismatch in reference from the function arch_alloc_nodedata() to the function .meminit.text:compute_pernodesize()
+  The function arch_alloc_nodedata() references the function __meminit compute_pernodesize().
+  This is often because arch_alloc_nodedata lacks a __meminit annotation or the annotation of compute_pernodesize is wrong.
 
-What IA64 did was to do this at boot time thereby avoiding the buddy
-lists. And it had a separate virtual address range and page table for the
-huge pages.
+  WARNING: modpost: vmlinux.o(.text.unlikely+0x1692): Section mismatch in reference from the function arch_refresh_nodedata() to the function .meminit.text:scatter_node_data()
+  The function arch_refresh_nodedata() references the function __meminit scatter_node_data().
+  This is often because arch_refresh_nodedata lacks a __meminit annotation or the annotation of scatter_node_data is wrong.
 
-Looks like the current code does these allocations via CMA which should
-also bypass the buddy allocator.
+  WARNING: modpost: vmlinux.o(.text.unlikely+0x1502): Section mismatch in reference from the function compute_pernodesize() to the function .meminit.text:early_nr_cpus_node()
+  The function compute_pernodesize() references the function __meminit early_nr_cpus_node().
+  This is often because compute_pernodesize lacks a __meminit annotation or the annotation of early_nr_cpus_node is wrong.
 
+Link: https://lkml.kernel.org/r/20210411001201.3069-1-rdunlap@infradead.org
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/ia64/mm/discontig.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-> >     }
-> >
-> >
-> > But it's kind of weird, isn't it? Let's assume we have MAX_ORDER - 1 correspond to 4 MiB and pageblock_order correspond to 8 MiB.
-> >
-> > Sure, we'd be grouping pages in 8 MiB chunks, however, we cannot even
-> > allocate 8 MiB chunks via the buddy. So only alloc_contig_range()
-> > could really grab them (IOW: gigantic pages).
->
-> Right.
+diff --git a/arch/ia64/mm/discontig.c b/arch/ia64/mm/discontig.c
+index c7311131156e..ba3edb8a04b1 100644
+--- a/arch/ia64/mm/discontig.c
++++ b/arch/ia64/mm/discontig.c
+@@ -94,7 +94,7 @@ static int __init build_node_maps(unsigned long start, unsigned long len,
+  * acpi_boot_init() (which builds the node_to_cpu_mask array) hasn't been
+  * called yet.  Note that node 0 will also count all non-existent cpus.
+  */
+-static int __meminit early_nr_cpus_node(int node)
++static int early_nr_cpus_node(int node)
+ {
+ 	int cpu, n = 0;
+ 
+@@ -109,7 +109,7 @@ static int __meminit early_nr_cpus_node(int node)
+  * compute_pernodesize - compute size of pernode data
+  * @node: the node id.
+  */
+-static unsigned long __meminit compute_pernodesize(int node)
++static unsigned long compute_pernodesize(int node)
+ {
+ 	unsigned long pernodesize = 0, cpus;
+ 
+@@ -366,7 +366,7 @@ static void __init reserve_pernode_space(void)
+ 	}
+ }
+ 
+-static void __meminit scatter_node_data(void)
++static void scatter_node_data(void)
+ {
+ 	pg_data_t **dst;
+ 	int node;
+-- 
+2.30.2
 
-But then you can avoid the buddy allocator.
-
-> > Further, we have code like deferred_free_range(), where we end up
-> > calling __free_pages_core()->...->__free_one_page() with
-> > pageblock_order. Wouldn't we end up setting the buddy order to
-> > something > MAX_ORDER -1 on that path?
->
-> Agreed.
-
-We would need to return the supersized block to the huge page pool and not
-to the buddy allocator. There is a special callback in the compound page
-sos that you can call an alternate free function that is not the buddy
-allocator.
-
->
-> >
-> > Having pageblock_order > MAX_ORDER feels wrong and looks shaky.
-> >
-> Agreed, definitely does not look right. Lets see what other folks
-> might have to say on this.
->
-> + Christoph Lameter <cl@linux.com>
->
-
-It was done for a long time successfully and is running in numerous
-configurations.
-
---8323328-1783256993-1618829281=:777076--
