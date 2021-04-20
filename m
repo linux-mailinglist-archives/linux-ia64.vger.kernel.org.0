@@ -2,113 +2,192 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4368C364C91
-	for <lists+linux-ia64@lfdr.de>; Mon, 19 Apr 2021 22:55:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FB1C3654BB
+	for <lists+linux-ia64@lfdr.de>; Tue, 20 Apr 2021 11:03:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242924AbhDSUw3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 19 Apr 2021 16:52:29 -0400
-Received: from mail.kernel.org ([198.145.29.99]:55020 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243038AbhDSUuT (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 19 Apr 2021 16:50:19 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BA18B61402;
-        Mon, 19 Apr 2021 20:46:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1618865178;
-        bh=07caHPhzZxVAkO5mCF9RtGW81v4eRFptXroX2W2y9/4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CBYPsCb/aKJ3hoo0j6Dpo+CpBLMl1Pj4Bl2u67XCcDtMRRHaByO30t97Az0nhAe2w
-         5LXUMCOM1YrwMP7++nuKlKeK+WBUmU6lRuJXklGNq3AKdkFK0POFykAogkFMF7aBMs
-         6jl/bWOx0fPVD1aH+hx+/wXfp0T4vrbr04t5l+miaHSy33/5dbfXJ4kEvA2nzWMLoK
-         eeCWpir30OkY50ZlUDstFJZp3y83ELwOrCMHyfjVgQ0b8iqgmAbo1eZwhxvMBcn9Cp
-         4yvEg36DzcUtdXWmxohpmqLDYgRGC8qxTiyOzAyUB7giqdIX9u23uHFdinlGmKOxGG
-         vQDIS57w3fDDg==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.4 6/7] ia64: fix discontig.c section mismatches
-Date:   Mon, 19 Apr 2021 16:46:07 -0400
-Message-Id: <20210419204608.7191-6-sashal@kernel.org>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210419204608.7191-1-sashal@kernel.org>
-References: <20210419204608.7191-1-sashal@kernel.org>
+        id S231240AbhDTJET (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 20 Apr 2021 05:04:19 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:55745 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230395AbhDTJET (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 20 Apr 2021 05:04:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1618909428;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=zOmqfkZfJ81cGODs96B5RU3aGjEyMHtTRJDCqNpS4YI=;
+        b=FN0Ja/cvm7Bl/F4MSgWPK/+OOr3vGCYjjGJ1+pQLsoN93f2H8R+EVcVMMXmLYxthwxA52W
+        Zbvk0nmxpsLS8Y9zf2KKt7IgWvRaxqEGIQBwwyTho+xU9x8TwwQNgkkup8nRYouKE3cdcp
+        nbKG5/5Nf2VFyc6XfLEWCkEEMJKUkpg=
+Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
+ [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-478-Jfw2bBapPBuSukP5UYCKKQ-1; Tue, 20 Apr 2021 05:03:46 -0400
+X-MC-Unique: Jfw2bBapPBuSukP5UYCKKQ-1
+Received: by mail-ej1-f72.google.com with SMTP id ne22-20020a1709077b96b02903803a047edeso3207203ejc.3
+        for <linux-ia64@vger.kernel.org>; Tue, 20 Apr 2021 02:03:46 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:references:from:organization:subject
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=zOmqfkZfJ81cGODs96B5RU3aGjEyMHtTRJDCqNpS4YI=;
+        b=HHGT1v5ppCD7O3b0XdXYZvjWWKNft/GeksUUh+do+ejDJ+UgTZWPYuMw2lLrLySPC3
+         jOmUm+bJTUoPFOvwfCEC3hl2UCfM8txuaLcJGQQARtwt9Ba/hkXwl5f2xm5vMo69UXRO
+         +4aphNpYXXZT422Yo8nZJFyRyXRiKFw5gLht/FR4qpmIki6ih9+yRAEiD2ZOhZw+hgh3
+         zW+3h63AsT/7SM3bJFxulHOENmusY4AE4kyCpkQm54eb/3oEUi9WO8SAYwr0/Eb7nqAc
+         WwgaWV7fnFjFncdgwpJYJm77/sia9yL7IAwEwgBxbMnzfftg45slUCndL08vcyHwtsbt
+         xAyA==
+X-Gm-Message-State: AOAM533df9tYmVkK4mCgC46t4b4Ihd8iFcz4Zf0/i/fSbujH7cOI3oh0
+        fcMHsyZ0mN+IxuDUAcaGtjMveTb+Ud5fAdz131KZ+6G0qPjOA61HDs7qkE18cJxaLB/NCmsa7lQ
+        xqCgUQ8l/RtumwIw5hrsqBQ==
+X-Received: by 2002:aa7:cd6e:: with SMTP id ca14mr14442996edb.111.1618909425290;
+        Tue, 20 Apr 2021 02:03:45 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJxZ3pRylkvogdCY5d+NpiLzbIuTxXYQR0frVwMnQm2/ZbN0JlGpq74b49bjg7gPVq+dRBi8IA==
+X-Received: by 2002:aa7:cd6e:: with SMTP id ca14mr14442958edb.111.1618909425009;
+        Tue, 20 Apr 2021 02:03:45 -0700 (PDT)
+Received: from [192.168.3.132] (p4ff2390a.dip0.t-ipconnect.de. [79.242.57.10])
+        by smtp.gmail.com with ESMTPSA id gu14sm10625639ejb.114.2021.04.20.02.03.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 20 Apr 2021 02:03:44 -0700 (PDT)
+To:     Christoph Lameter <cl@gentwo.de>,
+        Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     linux-mm@kvack.org, akpm@linux-foundation.org,
+        linux-kernel@vger.kernel.org,
+        "linuxppc-dev @ lists . ozlabs . org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Michal Hocko <mhocko@kernel.org>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>
+References: <1618199302-29335-1-git-send-email-anshuman.khandual@arm.com>
+ <09284b9a-cfe1-fc49-e1f6-3cf0c1b74c76@arm.com>
+ <162877dd-e6ba-d465-d301-2956bb034429@redhat.com>
+ <ce4f9838-da4b-1423-4123-23c0941a2198@arm.com>
+ <alpine.DEB.2.22.394.2104191236500.777076@gentwo.de>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH V2] mm/page_alloc: Ensure that HUGETLB_PAGE_ORDER is less
+ than MAX_ORDER
+Message-ID: <01bdeedc-f77d-ebd0-9d42-62f09b0a2d1a@redhat.com>
+Date:   Tue, 20 Apr 2021 11:03:43 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
+In-Reply-To: <alpine.DEB.2.22.394.2104191236500.777076@gentwo.de>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+Hi Christoph,
 
-[ Upstream commit e2af9da4f867a1a54f1252bf3abc1a5c63951778 ]
+thanks for your insight.
 
-Fix IA64 discontig.c Section mismatch warnings.
+> You can have larger blocks but you would need to allocate multiple
+> contigous max order blocks or do it at boot time before the buddy
+> allocator is active.
+> 
+> What IA64 did was to do this at boot time thereby avoiding the buddy
+> lists. And it had a separate virtual address range and page table for the
+> huge pages.
+> 
+> Looks like the current code does these allocations via CMA which should
+> also bypass the buddy allocator.
 
-When CONFIG_SPARSEMEM=y and CONFIG_MEMORY_HOTPLUG=y, the functions
-computer_pernodesize() and scatter_node_data() should not be marked as
-__meminit because they are needed after init, on any memory hotplug
-event.  Also, early_nr_cpus_node() is called by compute_pernodesize(),
-so early_nr_cpus_node() cannot be __meminit either.
+Using CMA doesn't really care about the pageblock size when it comes to 
+fragmentation avoidance a.k.a. somewhat reliable allocation of memory 
+chunks with an order > MAX_ORDER - 1.
 
-  WARNING: modpost: vmlinux.o(.text.unlikely+0x1612): Section mismatch in reference from the function arch_alloc_nodedata() to the function .meminit.text:compute_pernodesize()
-  The function arch_alloc_nodedata() references the function __meminit compute_pernodesize().
-  This is often because arch_alloc_nodedata lacks a __meminit annotation or the annotation of compute_pernodesize is wrong.
+IOW, when using CMA for hugetlb, we don't need pageblock_order > 
+MAX_ORDER - 1.
 
-  WARNING: modpost: vmlinux.o(.text.unlikely+0x1692): Section mismatch in reference from the function arch_refresh_nodedata() to the function .meminit.text:scatter_node_data()
-  The function arch_refresh_nodedata() references the function __meminit scatter_node_data().
-  This is often because arch_refresh_nodedata lacks a __meminit annotation or the annotation of scatter_node_data is wrong.
+> 
+> 
+>>>      }
+>>>
+>>>
+>>> But it's kind of weird, isn't it? Let's assume we have MAX_ORDER - 1 correspond to 4 MiB and pageblock_order correspond to 8 MiB.
+>>>
+>>> Sure, we'd be grouping pages in 8 MiB chunks, however, we cannot even
+>>> allocate 8 MiB chunks via the buddy. So only alloc_contig_range()
+>>> could really grab them (IOW: gigantic pages).
+>>
+>> Right.
+> 
+> But then you can avoid the buddy allocator.
+> 
+>>> Further, we have code like deferred_free_range(), where we end up
+>>> calling __free_pages_core()->...->__free_one_page() with
+>>> pageblock_order. Wouldn't we end up setting the buddy order to
+>>> something > MAX_ORDER -1 on that path?
+>>
+>> Agreed.
+> 
+> We would need to return the supersized block to the huge page pool and not
+> to the buddy allocator. There is a special callback in the compound page
+> sos that you can call an alternate free function that is not the buddy
+> allocator.
 
-  WARNING: modpost: vmlinux.o(.text.unlikely+0x1502): Section mismatch in reference from the function compute_pernodesize() to the function .meminit.text:early_nr_cpus_node()
-  The function compute_pernodesize() references the function __meminit early_nr_cpus_node().
-  This is often because compute_pernodesize lacks a __meminit annotation or the annotation of early_nr_cpus_node is wrong.
+Sorry, but that doesn't make any sense. We are talking about bringup 
+code, where we transition from memblock to the buddy and fill the free 
+page lists. Looking at the code, deferred initialization of the memmap 
+is broken on these setups -- so I deferred memmap init is never enabled.
 
-Link: https://lkml.kernel.org/r/20210411001201.3069-1-rdunlap@infradead.org
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/ia64/mm/discontig.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+> 
+>>
+>>>
+>>> Having pageblock_order > MAX_ORDER feels wrong and looks shaky.
+>>>
+>> Agreed, definitely does not look right. Lets see what other folks
+>> might have to say on this.
+>>
+>> + Christoph Lameter <cl@linux.com>
+>>
+> 
+> It was done for a long time successfully and is running in numerous
+> configurations.
 
-diff --git a/arch/ia64/mm/discontig.c b/arch/ia64/mm/discontig.c
-index 878626805369..3b0c892953ab 100644
---- a/arch/ia64/mm/discontig.c
-+++ b/arch/ia64/mm/discontig.c
-@@ -99,7 +99,7 @@ static int __init build_node_maps(unsigned long start, unsigned long len,
-  * acpi_boot_init() (which builds the node_to_cpu_mask array) hasn't been
-  * called yet.  Note that node 0 will also count all non-existent cpus.
-  */
--static int __meminit early_nr_cpus_node(int node)
-+static int early_nr_cpus_node(int node)
- {
- 	int cpu, n = 0;
- 
-@@ -114,7 +114,7 @@ static int __meminit early_nr_cpus_node(int node)
-  * compute_pernodesize - compute size of pernode data
-  * @node: the node id.
-  */
--static unsigned long __meminit compute_pernodesize(int node)
-+static unsigned long compute_pernodesize(int node)
- {
- 	unsigned long pernodesize = 0, cpus;
- 
-@@ -411,7 +411,7 @@ static void __init reserve_pernode_space(void)
- 	}
- }
- 
--static void __meminit scatter_node_data(void)
-+static void scatter_node_data(void)
- {
- 	pg_data_t **dst;
- 	int node;
+Enforcing pageblock_order < MAX_ORDER would mean that runtime allocation 
+of gigantic (here:huge) pages (HUGETLB_PAGE_ORDER >= MAX_ORDER) via 
+alloc_contig_pages() becomes less reliable. To compensate, relevant 
+archs could switch to "hugetlb_cma=", to improve the reliability of 
+runtime allocation.
+
+I wonder which configurations we are talking about:
+
+a) ia64
+
+At least I couldn't care less; it's a dead architecture -- not
+sure how much people care about "more reliable runtime
+allocation of gigantic (here: huge) pages". Also, not sure about which 
+exact configurations.
+
+b) ppc64
+
+We have variable hpage size only with CONFIG_PPC_BOOK3S_64. We 
+initialize the hugepage either to 1M, 2M or 16M. 16M seems to be the 
+primary choice.
+
+ppc64 has CONFIG_FORCE_MAX_ZONEORDER
+
+default "9" if PPC64 && PPC_64K_PAGES
+-> 16M effective buddy maximum size
+default "13" if PPC64 && !PPC_64K_PAGES
+-> 16M effective buddy maximum size
+
+So I fail to see in which scenario we even could end up with 
+pageblock_order < MAX_ORDER. I did not check ppc32.
+
 -- 
-2.30.2
+Thanks,
+
+David / dhildenb
 
