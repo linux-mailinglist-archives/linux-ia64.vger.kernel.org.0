@@ -2,39 +2,39 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BEAD3746B5
+	by mail.lfdr.de (Postfix) with ESMTP id 955243746B6
 	for <lists+linux-ia64@lfdr.de>; Wed,  5 May 2021 19:52:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234092AbhEERWy (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 5 May 2021 13:22:54 -0400
-Received: from mail.kernel.org ([198.145.29.99]:46196 "EHLO mail.kernel.org"
+        id S234539AbhEERW4 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 5 May 2021 13:22:56 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49728 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237377AbhEERAD (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 5 May 2021 13:00:03 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id E2CBD619B6;
-        Wed,  5 May 2021 16:40:02 +0000 (UTC)
+        id S237903AbhEERBj (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 5 May 2021 13:01:39 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 218EC61A2D;
+        Wed,  5 May 2021 16:40:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620232803;
+        s=k20201202; t=1620232851;
         bh=Y70RnH11d1XJD+3iLneAnjF4aLY0S1a2wNl5ugiGzqw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r75wBvk0ZKOWbsuGfGbQWTkTbalzZZx6ixpjyvLPuHgf1Zy9vYb8iNZt26HnQZQlL
-         hem1bCuPda3Xxa/FtxxZJO2f418y+6xg5MTexErNj8xSH6ptUG1y4slZ6ykHH3WaQN
-         RAZ+DkdY4V0J0PLnup59RbPvDlYR22YMGpw28ncwEytw0+enYIePyaMkX6pkmQZRG7
-         YSEzmYoL5ztTfM2zr5K3oAsYGLJF/od4iufF5marZGJJfAupvH86ZoYnC25bOKKlci
-         KqzW+zL3oAnn7UoMkeiHEu5KTsW9xd/ij7AQzchhfi0KmRaFzK593ka4iJhe9CR6J1
-         2AxxiP7wVX0Kw==
+        b=I2Gtsju8Xm8P1ZokxZW8ac24T1wQDBuVRX162EK1svEhwW4OsytuPzVhNvHDZ1lwS
+         Vl16FVkIYfHfj0Sz3habvDWHFrAd5Y7WqaK/33Qb15Ki+DRSkCnQxCVLLndAXobrBv
+         i2N42iD+YOvf2dmxqOgFiZERy5/nVaJqkuYGvlQk6VV1xuAgAMbaqEGOqDmrZhmdi0
+         SfRfvyavTMgsFbFRjs4deck0z/0kFtKSfkwTVIznbknRmmmHTZcVNQo3LFzJk5YwUS
+         khN7TKxJi/FZcjrDborHOrA8bx2HVz17Y3Lzk19nPePa+vtqFnvCoV2ubpVCQnl+gv
+         JL4raCUQGFIkA==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Sergei Trofimovich <slyfox@gentoo.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.4 46/46] ia64: module: fix symbolizer crash on fdescr
-Date:   Wed,  5 May 2021 12:38:56 -0400
-Message-Id: <20210505163856.3463279-46-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.19 32/32] ia64: module: fix symbolizer crash on fdescr
+Date:   Wed,  5 May 2021 12:40:04 -0400
+Message-Id: <20210505164004.3463707-32-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210505163856.3463279-1-sashal@kernel.org>
-References: <20210505163856.3463279-1-sashal@kernel.org>
+In-Reply-To: <20210505164004.3463707-1-sashal@kernel.org>
+References: <20210505164004.3463707-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
