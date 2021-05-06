@@ -2,159 +2,151 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 955243746B6
-	for <lists+linux-ia64@lfdr.de>; Wed,  5 May 2021 19:52:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADF3F3756E0
+	for <lists+linux-ia64@lfdr.de>; Thu,  6 May 2021 17:27:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234539AbhEERW4 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 5 May 2021 13:22:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:49728 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237903AbhEERBj (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 5 May 2021 13:01:39 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 218EC61A2D;
-        Wed,  5 May 2021 16:40:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1620232851;
-        bh=Y70RnH11d1XJD+3iLneAnjF4aLY0S1a2wNl5ugiGzqw=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I2Gtsju8Xm8P1ZokxZW8ac24T1wQDBuVRX162EK1svEhwW4OsytuPzVhNvHDZ1lwS
-         Vl16FVkIYfHfj0Sz3habvDWHFrAd5Y7WqaK/33Qb15Ki+DRSkCnQxCVLLndAXobrBv
-         i2N42iD+YOvf2dmxqOgFiZERy5/nVaJqkuYGvlQk6VV1xuAgAMbaqEGOqDmrZhmdi0
-         SfRfvyavTMgsFbFRjs4deck0z/0kFtKSfkwTVIznbknRmmmHTZcVNQo3LFzJk5YwUS
-         khN7TKxJi/FZcjrDborHOrA8bx2HVz17Y3Lzk19nPePa+vtqFnvCoV2ubpVCQnl+gv
-         JL4raCUQGFIkA==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Sergei Trofimovich <slyfox@gentoo.org>,
+        id S235519AbhEFP17 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 6 May 2021 11:27:59 -0400
+Received: from new4-smtp.messagingengine.com ([66.111.4.230]:33385 "EHLO
+        new4-smtp.messagingengine.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S235495AbhEFP1u (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 6 May 2021 11:27:50 -0400
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 42165580B72;
+        Thu,  6 May 2021 11:26:50 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Thu, 06 May 2021 11:26:50 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sent.com; h=from
+        :to:cc:subject:date:message-id:reply-to:mime-version
+        :content-transfer-encoding; s=fm3; bh=idfxFi2niIlXphs1rSRpisMaNe
+        RwPzwfRsm8hAUYBvQ=; b=hdYJWH8eNG6Nd+MRc3r283kN9IufmtoATaqfCU96YH
+        ZKyLzDOs9mGhZSlD83jeL7H3DOqnFDCXn/VXD229UiHg68Vz+1cHYe64OVsP7fXV
+        7i456IoTE2D8mIiUzaHreIvLE4WMfptERGMoBchm/EYEioelxClLvi0cEjk2Z8se
+        Arvfi8vRUcvLA33pxjnXxQmlCVsyXNryd5LfhOBp+3pZvqI36t6IK+pdROusiIec
+        gXu5SgWTBHSw0qxydioj5F1Ec3AtLzDDc5vIue2gJTGi+JN2UwBs88PaeFZ6CQwn
+        7QhhXtghvdNckXVzjjQVUrQkB4SzeptEzI7DHQV/sbdw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:content-transfer-encoding:date:from
+        :message-id:mime-version:reply-to:subject:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; bh=idfxFi
+        2niIlXphs1rSRpisMaNeRwPzwfRsm8hAUYBvQ=; b=qf4gh/OodsbTyJHDo4/xMy
+        XWnV10CwU190E3R4EbQH9v7/GANI/SHKBnKoNo+YtkMbM4Vnc0BA5STeVvOx5JAk
+        QbOEJpYSN6+uvVxGfYHFJ7L3SvqPtmevmMEDxN1/w8HICPWdYg8gr/6WF1OWeC4H
+        x2aX6/hzkjEnSGvUlD4WKg8F33YuV3SGpHhpJSiE/1iJqiNVsfPZAdb84Jetu6qY
+        XNunEtvZhRhT1qIed+Qn+KrN2qp8++eFknjSTrCea322qDnqF8r0r698iXZ52kMQ
+        De9S9QiodAWedpRqKM1DYX+rI3FeGwLbUo0bV5DgW4WFjPJIr4TakXPY/JZ5BjHg
+        ==
+X-ME-Sender: <xms:uAqUYGrwd9gPeAKsoo4Q35DN0k21ih8YX-F7vzB6dcZOwBTsluMPHA>
+    <xme:uAqUYEq1vsKttdYmZns8vQbuUYqZk39i0XwlelX-r-VtyfJ3I2ACSUXUGpHbFA3EP
+    wWe297Cea3xOilLwg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeduledrvdegtddgkeelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvufffkfforhgggfestdhqredtredttdenucfhrhhomhepkghiucgjrghn
+    uceoiihirdihrghnsehsvghnthdrtghomheqnecuggftrfgrthhtvghrnhepleetvddtvd
+    dttdetffdvkeehffdtjefhkedtheffjeehvdejueektedukedufeffnecukfhppeefhedr
+    udeigedrvdegiedrfeegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomhepiihirdihrghnsehsvghnthdrtghomh
+X-ME-Proxy: <xmx:uAqUYLMErIUfUFgMn1Vg0Q8SCoKDDurhsnrKYRq-xtYdzqauGYzLgw>
+    <xmx:uAqUYF4-Xkq7P3NYOoeHTxUKG1hdAQ7AhkWafRv4kOcorhVsc6ei9w>
+    <xmx:uAqUYF7GFJU0sPIbPhr2222mLMhPSovf0-OhxdVibP6BnVZGPfaFkg>
+    <xmx:ugqUYJrOGyYPTPEPpXL4CcsRluA-FRybwYHrtZtKjxQVPTg6ZHctJQ>
+Received: from Threadripper.local (ec2-35-164-246-34.us-west-2.compute.amazonaws.com [35.164.246.34])
+        by mail.messagingengine.com (Postfix) with ESMTPA;
+        Thu,  6 May 2021 11:26:44 -0400 (EDT)
+From:   Zi Yan <zi.yan@sent.com>
+To:     David Hildenbrand <david@redhat.com>,
+        Oscar Salvador <osalvador@suse.de>
+Cc:     Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        Andy Lutomirski <luto@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.19 32/32] ia64: module: fix symbolizer crash on fdescr
-Date:   Wed,  5 May 2021 12:40:04 -0400
-Message-Id: <20210505164004.3463707-32-sashal@kernel.org>
+        Mike Rapoport <rppt@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Michal Hocko <mhocko@suse.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org,
+        Zi Yan <ziy@nvidia.com>
+Subject: [RFC PATCH 0/7] Memory hotplug/hotremove at subsection size
+Date:   Thu,  6 May 2021 11:26:16 -0400
+Message-Id: <20210506152623.178731-1-zi.yan@sent.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210505164004.3463707-1-sashal@kernel.org>
-References: <20210505164004.3463707-1-sashal@kernel.org>
+Reply-To: Zi Yan <ziy@nvidia.com>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Sergei Trofimovich <slyfox@gentoo.org>
+From: Zi Yan <ziy@nvidia.com>
 
-[ Upstream commit 99e729bd40fb3272fa4b0140839d5e957b58588a ]
+Hi all,
 
-Noticed failure as a crash on ia64 when tried to symbolize all backtraces
-collected by page_owner=on:
+This patchset tries to remove the restriction on memory hotplug/hotremove
+granularity, which is always greater or equal to memory section size[1].
+With the patchset, kernel is able to online/offline memory at a size indepe=
+ndent
+of memory section size, as small as 2MB (the subsection size).
 
-    $ cat /sys/kernel/debug/page_owner
-    <oops>
+The motivation is to increase MAX_ORDER of the buddy allocator and pageblock
+size without increasing memory hotplug/hotremove granularity at the same ti=
+me,
+so that the kernel can allocator 1GB pages using buddy allocator and utiliz=
+es
+existing pageblock based anti-fragmentation, paving the road for 1GB THP
+support[2].
 
-    CPU: 1 PID: 2074 Comm: cat Not tainted 5.12.0-rc4 #226
-    Hardware name: hp server rx3600, BIOS 04.03 04/08/2008
-    ip is at dereference_module_function_descriptor+0x41/0x100
+The patchset utilizes the existing subsection support[3] and changes the
+section size alignment checks to subsection size alignment checks. There are
+also changes to pageblock code to support partial pageblocks, when pageblock
+size is increased along with MAX_ORDER. Increasing pageblock size can enable
+kernel to utilize existing anti-fragmentation mechanism for gigantic page
+allocations.
 
-Crash happens at dereference_module_function_descriptor() due to
-use-after-free when dereferencing ".opd" section header.
+The last patch increases SECTION_SIZE_BITS to demonstrate the use of memory
+hotplug/hotremove subsection, but is not intended to be merged as is. It is
+there in case one wants to try this out and will be removed during the final
+submission.
 
-All section headers are already freed after module is laoded successfully.
+Feel free to give suggestions and comments. I am looking forward to your
+feedback.
 
-To keep symbolizer working the change stores ".opd" address and size after
-module is relocated to a new place and before section headers are
-discarded.
+Thanks.
 
-To make similar errors less obscure module_finalize() now zeroes out all
-variables relevant to module loading only.
+Zi Yan (7):
+  mm: sparse: set/clear subsection bitmap when pages are
+    onlined/offlined.
+  mm: set pageblock_order to the max of HUGETLB_PAGE_ORDER and
+    MAX_ORDER-1
+  mm: memory_hotplug: decouple memory_block size with section size.
+  mm: pageblock: allow set/unset migratetype for partial pageblock
+  mm: memory_hotplug, sparse: enable memory hotplug/hotremove
+    subsections
+  arch: x86: no MAX_ORDER exceeds SECTION_SIZE check for 32bit vdso.
+  [not for merge] mm: increase SECTION_SIZE_BITS to 31
 
-Link: https://lkml.kernel.org/r/20210403074803.3309096-1-slyfox@gentoo.org
-Signed-off-by: Sergei Trofimovich <slyfox@gentoo.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/ia64/include/asm/module.h |  6 +++++-
- arch/ia64/kernel/module.c      | 29 +++++++++++++++++++++++++----
- 2 files changed, 30 insertions(+), 5 deletions(-)
+ arch/ia64/Kconfig                |   1 -
+ arch/powerpc/Kconfig             |   1 -
+ arch/x86/Kconfig                 |  15 +++
+ arch/x86/entry/vdso/Makefile     |   1 +
+ arch/x86/include/asm/sparsemem.h |   2 +-
+ drivers/base/memory.c            | 176 +++++++++++++++----------------
+ drivers/base/node.c              |   2 +-
+ include/linux/memory.h           |   8 +-
+ include/linux/mmzone.h           |   2 +
+ include/linux/page-isolation.h   |   8 +-
+ include/linux/pageblock-flags.h  |   9 --
+ mm/Kconfig                       |   7 --
+ mm/memory_hotplug.c              |  22 ++--
+ mm/page_alloc.c                  |  40 ++++---
+ mm/page_isolation.c              |  30 +++---
+ mm/sparse.c                      |  55 ++++++++--
+ 16 files changed, 219 insertions(+), 160 deletions(-)
 
-diff --git a/arch/ia64/include/asm/module.h b/arch/ia64/include/asm/module.h
-index f319144260ce..9fbf32e6e881 100644
---- a/arch/ia64/include/asm/module.h
-+++ b/arch/ia64/include/asm/module.h
-@@ -14,16 +14,20 @@
- struct elf64_shdr;			/* forward declration */
- 
- struct mod_arch_specific {
-+	/* Used only at module load time. */
- 	struct elf64_shdr *core_plt;	/* core PLT section */
- 	struct elf64_shdr *init_plt;	/* init PLT section */
- 	struct elf64_shdr *got;		/* global offset table */
- 	struct elf64_shdr *opd;		/* official procedure descriptors */
- 	struct elf64_shdr *unwind;	/* unwind-table section */
- 	unsigned long gp;		/* global-pointer for module */
-+	unsigned int next_got_entry;	/* index of next available got entry */
- 
-+	/* Used at module run and cleanup time. */
- 	void *core_unw_table;		/* core unwind-table cookie returned by unwinder */
- 	void *init_unw_table;		/* init unwind-table cookie returned by unwinder */
--	unsigned int next_got_entry;	/* index of next available got entry */
-+	void *opd_addr;			/* symbolize uses .opd to get to actual function */
-+	unsigned long opd_size;
- };
- 
- #define MODULE_PROC_FAMILY	"ia64"
-diff --git a/arch/ia64/kernel/module.c b/arch/ia64/kernel/module.c
-index 1a42ba885188..ee693c8cec49 100644
---- a/arch/ia64/kernel/module.c
-+++ b/arch/ia64/kernel/module.c
-@@ -905,9 +905,31 @@ register_unwind_table (struct module *mod)
- int
- module_finalize (const Elf_Ehdr *hdr, const Elf_Shdr *sechdrs, struct module *mod)
- {
-+	struct mod_arch_specific *mas = &mod->arch;
-+
- 	DEBUGP("%s: init: entry=%p\n", __func__, mod->init);
--	if (mod->arch.unwind)
-+	if (mas->unwind)
- 		register_unwind_table(mod);
-+
-+	/*
-+	 * ".opd" was already relocated to the final destination. Store
-+	 * it's address for use in symbolizer.
-+	 */
-+	mas->opd_addr = (void *)mas->opd->sh_addr;
-+	mas->opd_size = mas->opd->sh_size;
-+
-+	/*
-+	 * Module relocation was already done at this point. Section
-+	 * headers are about to be deleted. Wipe out load-time context.
-+	 */
-+	mas->core_plt = NULL;
-+	mas->init_plt = NULL;
-+	mas->got = NULL;
-+	mas->opd = NULL;
-+	mas->unwind = NULL;
-+	mas->gp = 0;
-+	mas->next_got_entry = 0;
-+
- 	return 0;
- }
- 
-@@ -926,10 +948,9 @@ module_arch_cleanup (struct module *mod)
- 
- void *dereference_module_function_descriptor(struct module *mod, void *ptr)
- {
--	Elf64_Shdr *opd = mod->arch.opd;
-+	struct mod_arch_specific *mas = &mod->arch;
- 
--	if (ptr < (void *)opd->sh_addr ||
--			ptr >= (void *)(opd->sh_addr + opd->sh_size))
-+	if (ptr < mas->opd_addr || ptr >= mas->opd_addr + mas->opd_size)
- 		return ptr;
- 
- 	return dereference_function_descriptor(ptr);
--- 
+--=20
 2.30.2
 
