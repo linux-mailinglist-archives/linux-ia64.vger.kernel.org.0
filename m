@@ -2,57 +2,34 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9774A375B87
-	for <lists+linux-ia64@lfdr.de>; Thu,  6 May 2021 21:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F15C375BD1
+	for <lists+linux-ia64@lfdr.de>; Thu,  6 May 2021 21:35:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235010AbhEFTPq (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 6 May 2021 15:15:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:60615 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S235000AbhEFTPq (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 6 May 2021 15:15:46 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1620328487;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=LxJCtrJc+hn1vhOwMRBMiLEsVjLTk4AmYnUbr3bQtaE=;
-        b=PLRvuvKSFI1DBA41oyQZfmh5KBtNY7jp9bfmvhGxSvQHtx0HkfmIdlhEHoaBBb18LF3AOM
-        6lYi62N3cIRS2MC9cNkAYTtSyTqaEZyJ7/MvGXFS7pLcnBjmicQBouSbd0WuWOO8CFt0Dm
-        U/iwtdnTNMQIyW096DYgRPjOV5+xK6M=
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com
- [209.85.218.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-464-jcH0C5b7PdeU3U3_735AwA-1; Thu, 06 May 2021 15:14:45 -0400
-X-MC-Unique: jcH0C5b7PdeU3U3_735AwA-1
-Received: by mail-ej1-f72.google.com with SMTP id v7-20020a1709061807b02903a3d1724659so2127504eje.8
-        for <linux-ia64@vger.kernel.org>; Thu, 06 May 2021 12:14:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:references:from:organization:subject
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=LxJCtrJc+hn1vhOwMRBMiLEsVjLTk4AmYnUbr3bQtaE=;
-        b=ozYc864suBiPi3D4dvnqWW2lotmuEhFThlfoRg5LZvlsGle4QuR3CsyC1o4apYAY/X
-         J5ljZ7JCHbrSQZjH/rG7I5jCiMB5uRgQkV7wYBAnpUsr4wiZeQvHRKrvEzyKxMy52V6j
-         3slz7M4LVsYCaSOrUvmYf35z1UAihNIRYMsKLArzLzXmgfTUIykTYgTx322j/QkmTsWs
-         NfuBbtM9OASZMUsNWcAaqcoQ4TEPWZ0sw9KDF57LlyOsT66omD9sEGnip32970QlqVyY
-         030Eez1jwqQAYNttnX7DQky/9l+1jsw3dsWU3TBgQVSyrEiGhQ3NZkp0PWGZlpmpLRpK
-         nVsw==
-X-Gm-Message-State: AOAM533Kx2vDjd9p8QnS8aMPn2O1sHWJVJEgtfmte35RIWWAddGNzOiD
-        FkmThCriCXn1amh3lpKoENmhWOZyrNxuW++96g4ubw0KcmHNAj0jq2Y1/VGGirJHqMmf3naeSu7
-        iq0ylmNezik78ujPOqRxcDg==
-X-Received: by 2002:aa7:d843:: with SMTP id f3mr7130704eds.270.1620328484581;
-        Thu, 06 May 2021 12:14:44 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyMDfCDANHagwyvMGFrV1L6sL7t6UDHQRxiwpmWElp0FfWEi44uao+v+GyT+Pf6/v6QHjNNZw==
-X-Received: by 2002:aa7:d843:: with SMTP id f3mr7130678eds.270.1620328484331;
-        Thu, 06 May 2021 12:14:44 -0700 (PDT)
-Received: from [192.168.3.132] (p5b0c64ae.dip0.t-ipconnect.de. [91.12.100.174])
-        by smtp.gmail.com with ESMTPSA id x7sm1924071ejc.116.2021.05.06.12.14.43
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 06 May 2021 12:14:44 -0700 (PDT)
-To:     Zi Yan <ziy@nvidia.com>
-Cc:     Oscar Salvador <osalvador@suse.de>,
+        id S235142AbhEFTgX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 6 May 2021 15:36:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59864 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235140AbhEFTgX (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 6 May 2021 15:36:23 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3981C061574;
+        Thu,  6 May 2021 12:35:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=+Gmd9WE9Bu2QYLvWpqKR/yYem0cFXFiMf/zwpkj95U8=; b=crQvOxVhfA0rYm1ruAKJBNw0xC
+        xsM1t+SsJ5U1dOvsLom1VliGQksmvwhkFYj4n7ocfHyofPKeGYBDJFe7TYnq2YqoCPZFOp9Hi5yST
+        4FH25flkLwf/Lwe/+RCpeR/nmAkbyaM0SvaT/6ZA3du1X0I7kf4FyjORRo8wpB+6q2guCZ8DJU5gv
+        abGYH78vgb/2DeTmQHYosKU2fazelARvJeX7jelqa1FilgXL4Ovy+pzWnv0m0qQ94W3S3HRu/HDqu
+        DvLeYnQ9jgK+5VudN9eKZp/TM9hNoGEyJpw9FhDDQ01zRQCnF9I0oCHm83eSPFGW7r3nw8/YpGdhl
+        9IBGKFNQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94 #2 (Red Hat Linux))
+        id 1lejha-0028sz-5z; Thu, 06 May 2021 19:30:34 +0000
+Date:   Thu, 6 May 2021 20:30:26 +0100
+From:   Matthew Wilcox <willy@infradead.org>
+To:     David Hildenbrand <david@redhat.com>
+Cc:     Zi Yan <ziy@nvidia.com>, Oscar Salvador <osalvador@suse.de>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
@@ -66,52 +43,51 @@ Cc:     Oscar Salvador <osalvador@suse.de>,
         Wei Yang <richard.weiyang@linux.alibaba.com>,
         linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
         linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org
+Subject: Re: [RFC PATCH 0/7] Memory hotplug/hotremove at subsection size
+Message-ID: <20210506193026.GE388843@casper.infradead.org>
 References: <20210506152623.178731-1-zi.yan@sent.com>
- <20210506152623.178731-2-zi.yan@sent.com>
- <06dfaf69-1173-462c-b85f-8715cb8d108c@redhat.com>
- <71EE13C0-9CF7-4F1F-9C17-64500A854BD8@nvidia.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [RFC PATCH 1/7] mm: sparse: set/clear subsection bitmap when
- pages are onlined/offlined.
-Message-ID: <146a1ec6-38b3-9724-b346-9bb6e7e24c72@redhat.com>
-Date:   Thu, 6 May 2021 21:14:42 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+ <fb60eabd-f8ef-2cb1-7338-7725efe3c286@redhat.com>
+ <9D7FD316-988E-4B11-AC1C-64FF790BA79E@nvidia.com>
+ <3a51f564-f3d1-c21f-93b5-1b91639523ec@redhat.com>
+ <16962E62-7D1E-4E06-B832-EC91F54CC359@nvidia.com>
+ <f3a2152c-685b-2141-3e33-b2bcab8b6010@redhat.com>
+ <3A6D54CF-76F4-4401-A434-84BEB813A65A@nvidia.com>
+ <0e850dcb-c69a-188b-7ab9-09e6644af3ab@redhat.com>
 MIME-Version: 1.0
-In-Reply-To: <71EE13C0-9CF7-4F1F-9C17-64500A854BD8@nvidia.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0e850dcb-c69a-188b-7ab9-09e6644af3ab@redhat.com>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
->> But glimpsing at patch #2, I'd rather stop right away digging deeper into this series :)
-> 
-> What is the issue of patch 2, which makes pageblock_order a variable all the time? BTW, patch 2 fixes a bug by exporting pageblock_order, since when HUGETLB_PAGE_SIZE_VARIABLE is set, virtio-mem will not see pageblock_order as a variable, which could happen for PPC_BOOK2S_64 with virtio-men enabled, right? Or is this an invalid combination?
+On Thu, May 06, 2021 at 09:10:52PM +0200, David Hildenbrand wrote:
+> I have to admit that I am not really a friend of that. I still think our
+> target goal should be to have gigantic THP *in addition to* ordinary THP.
+> Use gigantic THP where enabled and possible, and just use ordinary THP
+> everywhere else. Having one pageblock granularity is a real limitation IMHO
+> and requires us to hack the system to support it to some degree.
 
-virtio_mem is x86_64 only. aarch64 and s390x prototypes are available.
+You're thinking too small with only two THP sizes ;-)  I'm aiming to
+support arbitrary power-of-two memory allocations.  I think there's a
+fruitful discussion to be had about how that works for anonymous memory --
+with page cache, we have readahead to tell us when our predictions of use
+are actually fulfilled.  It doesn't tell us what percentage of the pages
+allocated were actually used, but it's a hint.  It's a big lift to go from
+2MB all the way to 1GB ... if you can look back to see that the previous
+1GB was basically fully populated, then maybe jump up from allocating
+2MB folios to allocating a 1GB folio, but wow, that's a big step.
 
-If I understood "Make pageblock_order a variable and
-set it to the max of HUGETLB_PAGE_ORDER, MAX_ORDER - 1" correctly, 
-you're setting the pageblock_order on x86_64 to 4M. That mean's you're 
-no longer grouping for THP but MAX_ORDER - 1, which is not what we want. 
-We want to optimize for THP.
+This goal really does mean that we want to allocate from the page
+allocator, and so we do want to grow MAX_ORDER.  I suppose we could
+do somethig ugly like
 
-Also, that would affect virtio-balloon with free page reporting (report 
-only 4 MiB chunks not 2 MiB chunks).
+	if (order <= MAX_ORDER)
+		alloc_page()
+	else
+		alloc_really_big_page()
 
-> 
->>
->> I think what would really help is drafting a design of how it all could look like and then first discussing the high-level design, investigating how it could play along with all existing users, existing workloads, and existing use cases. Proposing such changes without a clear picture in mind and a high-level overview might give you some unpleasant reactions from some of the developers around here ;)
-> 
-> Please see my other email for a high-level design. Also I sent the patchset as a RFC to gather information on users, workloads, use cases I did not know about and I learnt a lot from your replies. :) Feedback is always welcome, but I am not sure why it needs to make people unpleasant. ;)
+but that feels like unnecessary hardship to place on the user.
 
-Rather the replies might be unpleasant ;)
-
--- 
-Thanks,
-
-David / dhildenb
-
+I know that for the initial implementation, we're going to rely on hints
+from the user to use 1GB pages, but it'd be nice to not do that.
