@@ -2,93 +2,81 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D02E376A25
-	for <lists+linux-ia64@lfdr.de>; Fri,  7 May 2021 20:48:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3653376CA9
+	for <lists+linux-ia64@lfdr.de>; Sat,  8 May 2021 00:26:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229476AbhEGStj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 7 May 2021 14:49:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57402 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229470AbhEGSti (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 7 May 2021 14:49:38 -0400
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9414C061574;
-        Fri,  7 May 2021 11:48:38 -0700 (PDT)
+        id S229870AbhEGW1h (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 7 May 2021 18:27:37 -0400
+Received: from bosmailout01.eigbox.net ([66.96.190.1]:36027 "EHLO
+        bosmailout01.eigbox.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229470AbhEGW1h (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 7 May 2021 18:27:37 -0400
+X-Greylist: delayed 1929 seconds by postgrey-1.27 at vger.kernel.org; Fri, 07 May 2021 18:27:30 EDT
+Received: from bosmailscan09.eigbox.net ([10.20.15.9])
+        by bosmailout01.eigbox.net with esmtp (Exim)
+        id 1lf8QO-00068o-JJ; Fri, 07 May 2021 17:54:20 -0400
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=nlmrWt3RdCjxd40aRkl4OMBCYBjOlN6FJnUkKCOtyzg=; b=C30Z4AOZ9HjHYWUODHEmdtm1vz
-        HUNCxLCSeALzbf2821w5LxTsKsra21lnzVi2Q0HLc5wUGgrrTfUYKvgATfK6PFzsT+TQjeq65G+hn
-        hY3crME0FDfqNNCJVET0G0z7QOLr9dHs/R6CGHYl+mxwY2gmQO+3EkWKZb+yOY2yezyveWGSGNQid
-        aMEJjGQcYc3wY3qkPusNpsbxDPnIiIktPnj2u6HsjH++fNPldVUgifKYfuwYV14Alud/xhlWun3Un
-        OEz1o31+d80VtBWP7kIUD/O9RWxrKBC0q/lWj+UxvXRsokrRexzyife8TeTTw9BFWYPmgXNjkWyEt
-        2Wa8/yMw==;
-Received: from [2601:1c0:6280:3f0::7376] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94 #2 (Red Hat Linux))
-        id 1lf5Wf-0076tv-Qg; Fri, 07 May 2021 18:48:37 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Fenghua Yu <fenghua.yu@intel.com>, linux-ia64@vger.kernel.org
-Subject: [PATCH v2] ia64: headers: drop duplicated words
-Date:   Fri,  7 May 2021 11:48:37 -0700
-Message-Id: <20210507184837.10754-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.26.2
+        d=godsofu4.com; s=dkim; h=Sender:Content-Transfer-Encoding:Content-Type:
+        Message-ID:Reply-To:Subject:To:From:Date:MIME-Version:Cc:Content-ID:
+        Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+        :Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+        List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=aM9bUFGSTpfnep8zAVAJMnojqhcwpuHDFPgQnPqW4M4=; b=bjgKomV6NO5Eg5D3qsCBps1llx
+        tj4k2teSfIdfo/duBtOSoC/FW1+C1nXiYJbrvf2JDobx8fDCsgnxHFoPWOCb5eI+OJOIgvnnfKlpl
+        ZqidIuDnjEPTMao1vFwrg6M9FUKU/cz6TT5/KN4ccsk+aQli3Wgs3G1cQz5vdbC1Y2SXULFY8Mu2t
+        1PShwmiDRn71EPzgUHUVu0GG39z6uSTEuRgOXhiNl9ekuZ5QXUAEykoocvC5/DkORRmERAA91o1HY
+        Sl76pPWw9UBVGbuFbfdVPfVcFxJM5xZDrmgt6uCf9J+dn/n7LFOSOxBaL9svxxYdhOkJwdz4uh075
+        2gI+xJSw==;
+Received: from [10.115.3.32] (helo=bosimpout12)
+        by bosmailscan09.eigbox.net with esmtp (Exim)
+        id 1lf8QO-0003aD-AI; Fri, 07 May 2021 17:54:20 -0400
+Received: from boswebmail06.eigbox.net ([10.20.16.6])
+        by bosimpout12 with 
+        id 1xuH2500407qujN01xuLVi; Fri, 07 May 2021 17:54:20 -0400
+X-EN-SP-DIR: OUT
+X-EN-SP-SQ: 1
+Received: from [127.0.0.1] (helo=homestead)
+        by boswebmail06.eigbox.net with esmtp (Exim)
+        id 1lf8QL-0006fx-UG; Fri, 07 May 2021 17:54:17 -0400
+Received: from [197.239.81.229]
+ by emailmg.homestead.com
+ with HTTP (HTTP/1.1 POST); Fri, 07 May 2021 17:54:17 -0400
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Date:   Fri, 07 May 2021 21:54:17 +0000
+From:   Mrs Suzara Maling Wan <fast65@godsofu4.com>
+To:     undisclosed-recipients:;
+Subject: URGENT REPLY NEEDED
+Reply-To: suzara2017malingwan@gmail.com
+Mail-Reply-To: suzara2017malingwan@gmail.com
+Message-ID: <36acfe805efde59f3f399df1324ce6b9@godsofu4.com>
+X-Sender: fast65@godsofu4.com
+User-Agent: Roundcube Webmail/1.3.14
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-EN-AuthUser: fast65@godsofu4.com
+Sender:  Mrs Suzara Maling Wan <fast65@godsofu4.com>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Delete the repeated words "to" and "the".
 
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Fenghua Yu <fenghua.yu@intel.com>
-Cc: linux-ia64@vger.kernel.org
----
-v2: combine 3 patches; drop previous perfmon patches (files have been
-    removed); rebase & resend
 
- arch/ia64/include/asm/pal.h       |    2 +-
- arch/ia64/include/asm/spinlock.h  |    2 +-
- arch/ia64/include/asm/uv/uv_hub.h |    2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+My names are Mrs Suzara Maling Wan, I am a Nationality of the Republic
+of the Philippine presently base in West Africa B/F, dealing with
+exportation of Gold, I was diagnose of blood Causal decease, and my
+doctor have announce to me that I have few days to leave due to the
+condition of my sickness.
 
---- linux-next-20210507.orig/arch/ia64/include/asm/pal.h
-+++ linux-next-20210507/arch/ia64/include/asm/pal.h
-@@ -1086,7 +1086,7 @@ static inline long ia64_pal_freq_base(un
- 
- /*
-  * Get the ratios for processor frequency, bus frequency and interval timer to
-- * to base frequency of the platform
-+ * the base frequency of the platform
-  */
- static inline s64
- ia64_pal_freq_ratios (struct pal_freq_ratio *proc_ratio, struct pal_freq_ratio *bus_ratio,
---- linux-next-20210507.orig/arch/ia64/include/asm/spinlock.h
-+++ linux-next-20210507/arch/ia64/include/asm/spinlock.h
-@@ -26,7 +26,7 @@
-  * the queue, and the other indicating the current tail. The lock is acquired
-  * by atomically noting the tail and incrementing it by one (thus adding
-  * ourself to the queue and noting our position), then waiting until the head
-- * becomes equal to the the initial value of the tail.
-+ * becomes equal to the initial value of the tail.
-  * The pad bits in the middle are used to prevent the next_ticket number
-  * overflowing into the now_serving number.
-  *
---- linux-next-20210507.orig/arch/ia64/include/asm/uv/uv_hub.h
-+++ linux-next-20210507/arch/ia64/include/asm/uv/uv_hub.h
-@@ -257,7 +257,7 @@ static inline int uv_numa_blade_id(void)
- 	return 0;
- }
- 
--/* Convert a cpu number to the the UV blade number */
-+/* Convert a cpu number to the UV blade number */
- static inline int uv_cpu_to_blade_id(int cpu)
- {
- 	return 0;
+I have a desire to build an orphanage home in your country of which i
+cannot execute the project myself due to my present health condition,
+I am willing to hand over the project under your care for you to help
+me fulfill my dreams and desire of building an orphanage home in your
+country.
+
+Reply in you are will to help so that I can direct you to my bank for
+the urgent transfer of the fund/money require for the project to your
+account as I have already made the fund/money available.
+
+With kind regards
+Mrs Suzara Maling Wan
