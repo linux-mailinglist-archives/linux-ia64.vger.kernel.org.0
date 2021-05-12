@@ -2,436 +2,181 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48B7837B98E
-	for <lists+linux-ia64@lfdr.de>; Wed, 12 May 2021 11:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 348E537CE3B
+	for <lists+linux-ia64@lfdr.de>; Wed, 12 May 2021 19:18:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230104AbhELJsz (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 12 May 2021 05:48:55 -0400
-Received: from foss.arm.com ([217.140.110.172]:35612 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230184AbhELJsz (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 12 May 2021 05:48:55 -0400
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A3064D6E;
-        Wed, 12 May 2021 02:47:46 -0700 (PDT)
-Received: from e113632-lin.cambridge.arm.com (e113632-lin.cambridge.arm.com [10.1.194.46])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 742143F719;
-        Wed, 12 May 2021 02:47:43 -0700 (PDT)
-From:   Valentin Schneider <valentin.schneider@arm.com>
-To:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org
-Cc:     mingo@kernel.org, peterz@infradead.org, tglx@linutronix.de,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>, bristot@redhat.com,
-        yejune.deng@gmail.com
-Subject: [PATCH] sched: Initialize the idle task with preemption disabled
-Date:   Wed, 12 May 2021 10:46:36 +0100
-Message-Id: <20210512094636.2958515-1-valentin.schneider@arm.com>
-X-Mailer: git-send-email 2.25.1
+        id S238581AbhELRD7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 12 May 2021 13:03:59 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:43113 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S238880AbhELQPV (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 12 May 2021 12:15:21 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1620836052;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=+99igyVqmzNGHqQrMpM/kFdTQLOrOFCJjPehA1KV9HQ=;
+        b=USRNiR2PXNSP43SB8bZcOoIqb6JAXMhBBWWJTC/dijkTzJ7FR+ZbmSAn+TGSeif2QF33T1
+        znze8FZNHwBIECHnyuMBxa0ImQzuKIFpXRUHO+XIpOZNXMICDFR4kcSNNRM6sA62MZTtYp
+        aZXGDkI30EkWhrA0eM/3ycnOlhtMuA8=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-257-BexrkitZOmi9qwjccFZ8aQ-1; Wed, 12 May 2021 12:14:09 -0400
+X-MC-Unique: BexrkitZOmi9qwjccFZ8aQ-1
+Received: by mail-ed1-f72.google.com with SMTP id z12-20020aa7d40c0000b0290388179cc8bfso13045631edq.21
+        for <linux-ia64@vger.kernel.org>; Wed, 12 May 2021 09:14:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:references:from:organization:subject
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=+99igyVqmzNGHqQrMpM/kFdTQLOrOFCJjPehA1KV9HQ=;
+        b=Odv0CMMB4ltmZDWb+VDAvrpueI3jTmkunHE0MArak73AjfwYI0x5OTuMfMLgvoOihQ
+         8MPlrCJ39ZWW0Bie/v4zeaqbp6wg5tawefyTUo9QNGHo2hC8wlYgrwupWm0gsMhZ0JS7
+         D1BERCQkRNdOcJN+6DilxOl3BK9fXPkrpuCtbspieE9BVk9DjQuNWZQOHZBIQ66HTVvV
+         LSJg//Qj9DkATOhEZ/1xDixAqnce5oVKxv19FI6xIjSApRGXLJaOp6VF9JpzscMxpZbt
+         vgu1i3o6Msp7cVes3jkOfm/GPgU5pEkJZjSQCFaydPVUZilqGeSxuI74SDOu5BzrTQhy
+         wRZA==
+X-Gm-Message-State: AOAM533jJ5w3UqfLfjpVkEjhuX4HVrlGfZwn/XjO1X16a5I0IhbgUa/O
+        hzb9fpHFVzg08QP0dUYXA+qst07LOnx4OQxfsefZiDGvuPL9foLattstBSdWqFzNiEd98b4wd4t
+        rQmfqyJPTyaMuAePezkOTeA==
+X-Received: by 2002:a05:6402:310a:: with SMTP id dc10mr44324734edb.38.1620836048579;
+        Wed, 12 May 2021 09:14:08 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJz/05CH7MkXWBkCHuvNwNl+Ar0uhN69I4Cp7zGz9zWHbeo06zctJRw0Pe1wTe8pgHTDR3XEWg==
+X-Received: by 2002:a05:6402:310a:: with SMTP id dc10mr44324694edb.38.1620836048213;
+        Wed, 12 May 2021 09:14:08 -0700 (PDT)
+Received: from [192.168.3.132] (p5b0c65ab.dip0.t-ipconnect.de. [91.12.101.171])
+        by smtp.gmail.com with ESMTPSA id bn5sm83012ejb.97.2021.05.12.09.14.07
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 12 May 2021 09:14:07 -0700 (PDT)
+To:     Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@suse.com>
+Cc:     Oscar Salvador <osalvador@suse.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        Andy Lutomirski <luto@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org
+References: <20210506152623.178731-1-zi.yan@sent.com>
+ <fb60eabd-f8ef-2cb1-7338-7725efe3c286@redhat.com>
+ <YJUqrOacyqI+kiKW@dhcp22.suse.cz>
+ <792d73e2-5d63-74a5-5554-20351d5532ff@redhat.com>
+ <746780E5-0288-494D-8B19-538049F1B891@nvidia.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [RFC PATCH 0/7] Memory hotplug/hotremove at subsection size
+Message-ID: <e132fdd9-65af-1cad-8a6e-71844ebfe6a2@redhat.com>
+Date:   Wed, 12 May 2021 18:14:06 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.8.1
 MIME-Version: 1.0
+In-Reply-To: <746780E5-0288-494D-8B19-538049F1B891@nvidia.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-As pointed out by commit
+>>
+>> As stated somewhere here already, we'll have to look into making alloc_contig_range() (and main users CMA and virtio-mem) independent of MAX_ORDER and mainly rely on pageblock_order. The current handling in alloc_contig_range() is far from optimal as we have to isolate a whole MAX_ORDER - 1 page -- and on ZONE_NORMAL we'll fail easily if any part contains something unmovable although we don't even want to allocate that part. I actually have that on my list (to be able to fully support pageblock_order instead of MAX_ORDER -1 chunks in virtio-mem), however didn't have time to look into it.
+> 
+> So in your mind, for gigantic page allocation (> MAX_ORDER), alloc_contig_range()
+> should be used instead of buddy allocator while pageblock_order is kept at a small
+> granularity like 2MB. Is that the case? Isn’t it going to have high fail rate
+> when any of the pageblocks within a gigantic page range (like 1GB) becomes unmovable?
+> Are you thinking additional mechanism/policy to prevent such thing happening as
+> an additional step for gigantic page allocation? Like your ZONE_PREFER_MOVABLE idea?
+> 
 
-  de9b8f5dcbd9 ("sched: Fix crash trying to dequeue/enqueue the idle thread")
+I am not fully sure yet where the journey will go , I guess nobody 
+knows. Ultimately, having buddy support for >= current MAX_ORDER (IOW, 
+increasing MAX_ORDER) will most probably happen, so it would be worth 
+investigating what has to be done to get that running as a first step.
 
-init_idle() can and will be invoked more than once on the same idle
-task. At boot time, it is invoked for the boot CPU thread by
-sched_init(). Then smp_init() creates the threads for all the secondary
-CPUs and invokes init_idle() on them.
+Of course, we could temporarily think about wiring it up in the buddy like
 
-As the hotplug machinery brings the secondaries to life, it will issue
-calls to idle_thread_get(), which itself invokes init_idle() yet again.
-In this case it's invoked twice more per secondary: at _cpu_up(), and at
-bringup_cpu().
+if (order < MAX_ORDER)
+	__alloc_pages()...
+else
+	alloc_contig_pages()
 
-Given smp_init() already initializes the idle tasks for all *possible*
-CPUs, no further initialization should be required. Now, removing
-init_idle() from idle_thread_get() exposes some interesting expectations
-with regards to the idle task's preempt_count: the secondary startup always
-issues a preempt_disable(), requiring some reset of the preempt count to 0
-between hot-unplug and hotplug, which is currently served by
-idle_thread_get() -> idle_init().
+but it doesn't really improve the situation IMHO, just an API change.
 
-Given the idle task is supposed to have preemption disabled once and never
-see it re-enabled, it seems that what we actually want is to initialize its
-preempt_count to PREEMPT_DISABLED and leave it there. Do that, and remove
-init_idle() from idle_thread_get().
+So I think we should look into increasing MAX_ORDER, seeing what needs 
+to be done to have that part running while keeping the section size and 
+the pageblock order as is. I know that at least memory 
+onlining/offlining, cma, alloc_contig_range(), ... needs tweaking, 
+especially when we don't increase the section size (but also if we would 
+due to the way page isolation is currently handled). Having a MAX_ORDER 
+-1 page being partially in different nodes might be another thing to 
+look into (I heard that it can already happen right now, but I don't 
+remember the details).
 
-Secondary startups were patched via coccinelle:
+The next step after that would then be better fragmentation avoidance 
+for larger granularity like 1G THP.
 
-  @begone@
-  @@
+>>
+>> Further, page onlining / offlining code and early init code most probably also needs care if MAX_ORDER - 1 crosses sections. Memory holes we might suddenly have in MAX_ORDER - 1 pages might become a problem and will have to be handled. Not sure which other code has to be tweaked (compaction? page isolation?).
+> 
+> Can you elaborate it a little more? From what I understand, memory holes mean valid
+> PFNs are not contiguous before and after a hole, so pfn++ will not work, but
+> struct pages are still virtually contiguous assuming SPARSE_VMEMMAP, meaning page++
+> would still work. So when MAX_ORDER - 1 crosses sections, additional code would be
+> needed instead of simple pfn++. Is there anything I am missing?
 
-  -preempt_disable();
-  ...
-  cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
+I think there are two cases when talking about MAX_ORDER and memory holes:
 
-Signed-off-by: Valentin Schneider <valentin.schneider@arm.com>
----
- arch/alpha/kernel/smp.c          | 1 -
- arch/arc/kernel/smp.c            | 1 -
- arch/arm/kernel/smp.c            | 1 -
- arch/arm64/include/asm/preempt.h | 2 +-
- arch/arm64/kernel/smp.c          | 1 -
- arch/csky/kernel/smp.c           | 1 -
- arch/ia64/kernel/smpboot.c       | 1 -
- arch/mips/kernel/smp.c           | 1 -
- arch/openrisc/kernel/smp.c       | 2 --
- arch/parisc/kernel/smp.c         | 1 -
- arch/powerpc/kernel/smp.c        | 1 -
- arch/riscv/kernel/smpboot.c      | 1 -
- arch/s390/include/asm/preempt.h  | 4 ++--
- arch/s390/kernel/smp.c           | 1 -
- arch/sh/kernel/smp.c             | 2 --
- arch/sparc/kernel/smp_32.c       | 1 -
- arch/sparc/kernel/smp_64.c       | 3 ---
- arch/x86/include/asm/preempt.h   | 2 +-
- arch/x86/kernel/smpboot.c        | 1 -
- arch/xtensa/kernel/smp.c         | 1 -
- include/asm-generic/preempt.h    | 2 +-
- init/main.c                      | 6 +-----
- kernel/fork.c                    | 2 +-
- kernel/sched/core.c              | 2 +-
- kernel/smpboot.c                 | 1 -
- 25 files changed, 8 insertions(+), 34 deletions(-)
+1. Hole with a valid memmap: the memmap is initialize to PageReserved()
+    and the pages are not given to the buddy. pfn_valid() and
+    pfn_to_page() works as expected.
+2. Hole without a valid memmam: we have that CONFIG_HOLES_IN_ZONE thing
+    already, see include/linux/mmzone.h. pfn_valid_within() checks are
+    required. Doesn't win a beauty contest, but gets the job done in
+    existing setups that seem to care.
 
-diff --git a/arch/alpha/kernel/smp.c b/arch/alpha/kernel/smp.c
-index f4dd9f3f3001..4b2575f936d4 100644
---- a/arch/alpha/kernel/smp.c
-+++ b/arch/alpha/kernel/smp.c
-@@ -166,7 +166,6 @@ smp_callin(void)
- 	DBGS(("smp_callin: commencing CPU %d current %p active_mm %p\n",
- 	      cpuid, current, current->active_mm));
- 
--	preempt_disable();
- 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
- }
- 
-diff --git a/arch/arc/kernel/smp.c b/arch/arc/kernel/smp.c
-index 52906d314537..db0e104d6835 100644
---- a/arch/arc/kernel/smp.c
-+++ b/arch/arc/kernel/smp.c
-@@ -189,7 +189,6 @@ void start_kernel_secondary(void)
- 	pr_info("## CPU%u LIVE ##: Executing Code...\n", cpu);
- 
- 	local_irq_enable();
--	preempt_disable();
- 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
- }
- 
-diff --git a/arch/arm/kernel/smp.c b/arch/arm/kernel/smp.c
-index 74679240a9d8..c7bb168b0d97 100644
---- a/arch/arm/kernel/smp.c
-+++ b/arch/arm/kernel/smp.c
-@@ -432,7 +432,6 @@ asmlinkage void secondary_start_kernel(void)
- #endif
- 	pr_debug("CPU%u: Booted secondary processor\n", cpu);
- 
--	preempt_disable();
- 	trace_hardirqs_off();
- 
- 	/*
-diff --git a/arch/arm64/include/asm/preempt.h b/arch/arm64/include/asm/preempt.h
-index 80e946b2abee..e83f0982b99c 100644
---- a/arch/arm64/include/asm/preempt.h
-+++ b/arch/arm64/include/asm/preempt.h
-@@ -23,7 +23,7 @@ static inline void preempt_count_set(u64 pc)
- } while (0)
- 
- #define init_idle_preempt_count(p, cpu) do { \
--	task_thread_info(p)->preempt_count = PREEMPT_ENABLED; \
-+	task_thread_info(p)->preempt_count = PREEMPT_DISABLED; \
- } while (0)
- 
- static inline void set_preempt_need_resched(void)
-diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
-index 357590beaabb..48fd89256739 100644
---- a/arch/arm64/kernel/smp.c
-+++ b/arch/arm64/kernel/smp.c
-@@ -223,7 +223,6 @@ asmlinkage notrace void secondary_start_kernel(void)
- 		init_gic_priority_masking();
- 
- 	rcu_cpu_starting(cpu);
--	preempt_disable();
- 	trace_hardirqs_off();
- 
- 	/*
-diff --git a/arch/csky/kernel/smp.c b/arch/csky/kernel/smp.c
-index 0f9f5eef9338..e2993539af8e 100644
---- a/arch/csky/kernel/smp.c
-+++ b/arch/csky/kernel/smp.c
-@@ -281,7 +281,6 @@ void csky_start_secondary(void)
- 	pr_info("CPU%u Online: %s...\n", cpu, __func__);
- 
- 	local_irq_enable();
--	preempt_disable();
- 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
- }
- 
-diff --git a/arch/ia64/kernel/smpboot.c b/arch/ia64/kernel/smpboot.c
-index 49b488580939..d10f780c13b9 100644
---- a/arch/ia64/kernel/smpboot.c
-+++ b/arch/ia64/kernel/smpboot.c
-@@ -441,7 +441,6 @@ start_secondary (void *unused)
- #endif
- 	efi_map_pal_code();
- 	cpu_init();
--	preempt_disable();
- 	smp_callin();
- 
- 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
-diff --git a/arch/mips/kernel/smp.c b/arch/mips/kernel/smp.c
-index ef86fbad8546..d542fb7af3ba 100644
---- a/arch/mips/kernel/smp.c
-+++ b/arch/mips/kernel/smp.c
-@@ -348,7 +348,6 @@ asmlinkage void start_secondary(void)
- 	 */
- 
- 	calibrate_delay();
--	preempt_disable();
- 	cpu = smp_processor_id();
- 	cpu_data[cpu].udelay_val = loops_per_jiffy;
- 
-diff --git a/arch/openrisc/kernel/smp.c b/arch/openrisc/kernel/smp.c
-index 48e1092a64de..415e209732a3 100644
---- a/arch/openrisc/kernel/smp.c
-+++ b/arch/openrisc/kernel/smp.c
-@@ -145,8 +145,6 @@ asmlinkage __init void secondary_start_kernel(void)
- 	set_cpu_online(cpu, true);
- 
- 	local_irq_enable();
--
--	preempt_disable();
- 	/*
- 	 * OK, it's off to the idle thread for us
- 	 */
-diff --git a/arch/parisc/kernel/smp.c b/arch/parisc/kernel/smp.c
-index 10227f667c8a..1405b603b91b 100644
---- a/arch/parisc/kernel/smp.c
-+++ b/arch/parisc/kernel/smp.c
-@@ -302,7 +302,6 @@ void __init smp_callin(unsigned long pdce_proc)
- #endif
- 
- 	smp_cpu_init(slave_id);
--	preempt_disable();
- 
- 	flush_cache_all_local(); /* start with known state */
- 	flush_tlb_all_local(NULL);
-diff --git a/arch/powerpc/kernel/smp.c b/arch/powerpc/kernel/smp.c
-index 5a4d59a1070d..055ca3816eb7 100644
---- a/arch/powerpc/kernel/smp.c
-+++ b/arch/powerpc/kernel/smp.c
-@@ -1505,7 +1505,6 @@ void start_secondary(void *unused)
- 	smp_store_cpu_info(cpu);
- 	set_dec(tb_ticks_per_jiffy);
- 	rcu_cpu_starting(cpu);
--	preempt_disable();
- 	cpu_callin_map[cpu] = 1;
- 
- 	if (smp_ops->setup_cpu)
-diff --git a/arch/riscv/kernel/smpboot.c b/arch/riscv/kernel/smpboot.c
-index 5e276c25646f..1941a6ce86a1 100644
---- a/arch/riscv/kernel/smpboot.c
-+++ b/arch/riscv/kernel/smpboot.c
-@@ -176,7 +176,6 @@ asmlinkage __visible void smp_callin(void)
- 	 * Disable preemption before enabling interrupts, so we don't try to
- 	 * schedule a CPU that hasn't actually started yet.
- 	 */
--	preempt_disable();
- 	local_irq_enable();
- 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
- }
-diff --git a/arch/s390/include/asm/preempt.h b/arch/s390/include/asm/preempt.h
-index b49e0492842c..23ff51be7e29 100644
---- a/arch/s390/include/asm/preempt.h
-+++ b/arch/s390/include/asm/preempt.h
-@@ -32,7 +32,7 @@ static inline void preempt_count_set(int pc)
- #define init_task_preempt_count(p)	do { } while (0)
- 
- #define init_idle_preempt_count(p, cpu)	do { \
--	S390_lowcore.preempt_count = PREEMPT_ENABLED; \
-+	S390_lowcore.preempt_count = PREEMPT_DISABLED; \
- } while (0)
- 
- static inline void set_preempt_need_resched(void)
-@@ -91,7 +91,7 @@ static inline void preempt_count_set(int pc)
- #define init_task_preempt_count(p)	do { } while (0)
- 
- #define init_idle_preempt_count(p, cpu)	do { \
--	S390_lowcore.preempt_count = PREEMPT_ENABLED; \
-+	S390_lowcore.preempt_count = PREEMPT_DISABLED; \
- } while (0)
- 
- static inline void set_preempt_need_resched(void)
-diff --git a/arch/s390/kernel/smp.c b/arch/s390/kernel/smp.c
-index 58c8afa3da65..d60c7374d807 100644
---- a/arch/s390/kernel/smp.c
-+++ b/arch/s390/kernel/smp.c
-@@ -877,7 +877,6 @@ static void smp_init_secondary(void)
- 	restore_access_regs(S390_lowcore.access_regs_save_area);
- 	cpu_init();
- 	rcu_cpu_starting(cpu);
--	preempt_disable();
- 	init_cpu_timer();
- 	vtime_init();
- 	vdso_getcpu_init();
-diff --git a/arch/sh/kernel/smp.c b/arch/sh/kernel/smp.c
-index 372acdc9033e..65924d9ec245 100644
---- a/arch/sh/kernel/smp.c
-+++ b/arch/sh/kernel/smp.c
-@@ -186,8 +186,6 @@ asmlinkage void start_secondary(void)
- 
- 	per_cpu_trap_init();
- 
--	preempt_disable();
--
- 	notify_cpu_starting(cpu);
- 
- 	local_irq_enable();
-diff --git a/arch/sparc/kernel/smp_32.c b/arch/sparc/kernel/smp_32.c
-index 50c127ab46d5..22b148e5a5f8 100644
---- a/arch/sparc/kernel/smp_32.c
-+++ b/arch/sparc/kernel/smp_32.c
-@@ -348,7 +348,6 @@ static void sparc_start_secondary(void *arg)
- 	 */
- 	arch_cpu_pre_starting(arg);
- 
--	preempt_disable();
- 	cpu = smp_processor_id();
- 
- 	notify_cpu_starting(cpu);
-diff --git a/arch/sparc/kernel/smp_64.c b/arch/sparc/kernel/smp_64.c
-index e38d8bf454e8..ae5faa1d989d 100644
---- a/arch/sparc/kernel/smp_64.c
-+++ b/arch/sparc/kernel/smp_64.c
-@@ -138,9 +138,6 @@ void smp_callin(void)
- 
- 	set_cpu_online(cpuid, true);
- 
--	/* idle thread is expected to have preempt disabled */
--	preempt_disable();
--
- 	local_irq_enable();
- 
- 	cpu_startup_entry(CPUHP_AP_ONLINE_IDLE);
-diff --git a/arch/x86/include/asm/preempt.h b/arch/x86/include/asm/preempt.h
-index f8cb8af4de5c..fe5efbcba824 100644
---- a/arch/x86/include/asm/preempt.h
-+++ b/arch/x86/include/asm/preempt.h
-@@ -44,7 +44,7 @@ static __always_inline void preempt_count_set(int pc)
- #define init_task_preempt_count(p) do { } while (0)
- 
- #define init_idle_preempt_count(p, cpu) do { \
--	per_cpu(__preempt_count, (cpu)) = PREEMPT_ENABLED; \
-+	per_cpu(__preempt_count, (cpu)) = PREEMPT_DISABLED; \
- } while (0)
- 
- /*
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 16703c35a944..29713d0cf155 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -236,7 +236,6 @@ static void notrace start_secondary(void *unused)
- 	cpu_init();
- 	rcu_cpu_starting(raw_smp_processor_id());
- 	x86_cpuinit.early_percpu_clock_init();
--	preempt_disable();
- 	smp_callin();
- 
- 	enable_start_cpu0 = 0;
-diff --git a/arch/xtensa/kernel/smp.c b/arch/xtensa/kernel/smp.c
-index cd85a7a2722b..1254da07ead1 100644
---- a/arch/xtensa/kernel/smp.c
-+++ b/arch/xtensa/kernel/smp.c
-@@ -145,7 +145,6 @@ void secondary_start_kernel(void)
- 	cpumask_set_cpu(cpu, mm_cpumask(mm));
- 	enter_lazy_tlb(mm, current);
- 
--	preempt_disable();
- 	trace_hardirqs_off();
- 
- 	calibrate_delay();
-diff --git a/include/asm-generic/preempt.h b/include/asm-generic/preempt.h
-index d683f5e6d791..b4d43a4af5f7 100644
---- a/include/asm-generic/preempt.h
-+++ b/include/asm-generic/preempt.h
-@@ -29,7 +29,7 @@ static __always_inline void preempt_count_set(int pc)
- } while (0)
- 
- #define init_idle_preempt_count(p, cpu) do { \
--	task_thread_info(p)->preempt_count = PREEMPT_ENABLED; \
-+	task_thread_info(p)->preempt_count = PREEMPT_DISABLED; \
- } while (0)
- 
- static __always_inline void set_preempt_need_resched(void)
-diff --git a/init/main.c b/init/main.c
-index 53b278845b88..d8580323110e 100644
---- a/init/main.c
-+++ b/init/main.c
-@@ -918,11 +918,7 @@ asmlinkage __visible void __init __no_sanitize_address start_kernel(void)
- 	 * time - but meanwhile we still have a functioning scheduler.
- 	 */
- 	sched_init();
--	/*
--	 * Disable preemption - early bootup scheduling is extremely
--	 * fragile until we cpu_idle() for the first time.
--	 */
--	preempt_disable();
-+
- 	if (WARN(!irqs_disabled(),
- 		 "Interrupts were enabled *very* early, fixing it\n"))
- 		local_irq_disable();
-diff --git a/kernel/fork.c b/kernel/fork.c
-index a1a763019bfb..9de7bc40be1d 100644
---- a/kernel/fork.c
-+++ b/kernel/fork.c
-@@ -2406,7 +2406,7 @@ static inline void init_idle_pids(struct task_struct *idle)
- 	}
- }
- 
--struct task_struct *fork_idle(int cpu)
-+struct task_struct * __init fork_idle(int cpu)
- {
- 	struct task_struct *task;
- 	struct kernel_clone_args args = {
-diff --git a/kernel/sched/core.c b/kernel/sched/core.c
-index 4a0668acd876..43b903ae823b 100644
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -7433,7 +7433,7 @@ void show_state_filter(unsigned long state_filter)
-  * NOTE: this function does not set the idle thread's NEED_RESCHED
-  * flag, to make booting more robust.
-  */
--void init_idle(struct task_struct *idle, int cpu)
-+void __init init_idle(struct task_struct *idle, int cpu)
- {
- 	struct rq *rq = cpu_rq(cpu);
- 	unsigned long flags;
-diff --git a/kernel/smpboot.c b/kernel/smpboot.c
-index f25208e8df83..e4163042c4d6 100644
---- a/kernel/smpboot.c
-+++ b/kernel/smpboot.c
-@@ -33,7 +33,6 @@ struct task_struct *idle_thread_get(unsigned int cpu)
- 
- 	if (!tsk)
- 		return ERR_PTR(-ENOMEM);
--	init_idle(tsk, cpu);
- 	return tsk;
- }
- 
+"If it is possible to have holes within a MAX_ORDER_NR_PAGES, then we 
+need to check pfn validity within that MAX_ORDER_NR_PAGES block. 
+pfn_valid_within() should be used in this case; we optimise this away 
+when we have no holes within a MAX_ORDER_NR_PAGES block."
+
+CONFIG_HOLES_IN_ZONE is just a bad name for this.
+
+(increasing the section size implies that we waste more memory for the 
+memmap in holes. increasing MAX_ORDER means that we might have to deal 
+with holes within MAX_ORDER chunks)
+
+We don't have too many pfn_valid_within() checks. I wonder if we could 
+add something that is optimized for "holes are a power of two and 
+properly aligned", because pfn_valid_within() right not deals with holes 
+of any kind which makes it somewhat inefficient IIRC.
+
+> 
+> BTW, to test a system with memory holes, do you know is there an easy of adding
+> random memory holes to an x86_64 VM, which can help reveal potential missing pieces
+> in the code? Changing BIOS-e820 table might be one way, but I have no idea on
+> how to do it on QEMU.
+
+It might not be very easy that way. But I heard that some arm64 systems 
+have crazy memory layouts -- maybe there, it's easier to get something 
+nasty running? :)
+
+https://lkml.kernel.org/r/YJpEwF2cGjS5mKma@kernel.org
+
+I remember there was a way to define the e820 completely on kernel 
+cmdline, but I might be wrong ...
+
 -- 
-2.25.1
+Thanks,
+
+David / dhildenb
 
