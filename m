@@ -2,161 +2,368 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B4ECC37AEB1
-	for <lists+linux-ia64@lfdr.de>; Tue, 11 May 2021 20:50:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 826E737B77A
+	for <lists+linux-ia64@lfdr.de>; Wed, 12 May 2021 10:06:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232058AbhEKSvk (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 11 May 2021 14:51:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:33468 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S231997AbhEKSvi (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 11 May 2021 14:51:38 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1620759031;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=3sGuDkwY1rpAMVCQJVmhxPq9zjMod4hGpJJ6eXBTmJw=;
-        b=Bv5PZVVQhM6JyjXl7RPZT+7yH22bcz9zyDMGeiKyLXqEU1yxZtHxMG2QccX7sXc4rm/+GN
-        CvK22wfmwjAN82xrloqsJ9yHYkURD1p6lW0pRGx3Y+R9QxV1v+77bUv1DR9JOahLRW9SO0
-        5QkqZ3nVfGFV5iKDCWbWg64iLu1M4ys=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-280-wJc_w8FvMFOfP0IN4Jn3vw-1; Tue, 11 May 2021 14:50:26 -0400
-X-MC-Unique: wJc_w8FvMFOfP0IN4Jn3vw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.phx2.redhat.com [10.5.11.11])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 9BF5B8015DB;
-        Tue, 11 May 2021 18:50:24 +0000 (UTC)
-Received: from madcap2.tricolour.ca (unknown [10.3.128.45])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 525D42C14A;
-        Tue, 11 May 2021 18:50:13 +0000 (UTC)
-Date:   Tue, 11 May 2021 14:50:11 -0400
-From:   Richard Guy Briggs <rgb@redhat.com>
-To:     Paul Moore <paul@paul-moore.com>
-Cc:     Linux-Audit Mailing List <linux-audit@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-fsdevel@vger.kernel.org, Eric Paris <eparis@parisplace.org>,
-        Steve Grubb <sgrubb@redhat.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Eric Paris <eparis@redhat.com>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Arnd Bergmann <arnd@kernel.org>
-Subject: Re: [PATCH v3 1/3] audit: replace magic audit syscall class numbers
- with macros
-Message-ID: <20210511185011.GP3141668@madcap2.tricolour.ca>
-References: <cover.1619811762.git.rgb@redhat.com>
- <bda073f2a8b11000ef40cf8b965305409ee88f44.1619811762.git.rgb@redhat.com>
- <CAHC9VhShi4u26h5OsahveQDNxO_uZ+KgzGOYEp5W7w6foA-uKg@mail.gmail.com>
+        id S230247AbhELIIE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 12 May 2021 04:08:04 -0400
+Received: from condef-01.nifty.com ([202.248.20.66]:36595 "EHLO
+        condef-01.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230265AbhELIIC (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 12 May 2021 04:08:02 -0400
+Received: from conuserg-07.nifty.com ([10.126.8.70])by condef-01.nifty.com with ESMTP id 14C84U3t002321;
+        Wed, 12 May 2021 17:04:30 +0900
+Received: from grover.RMN.KIBA.LAB.jp (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
+        by conuserg-07.nifty.com with ESMTP id 14C7vbPs028192;
+        Wed, 12 May 2021 16:57:38 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-07.nifty.com 14C7vbPs028192
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1620806261;
+        bh=wIUNhcOB6btFOL0gSpr92RlYruAqiaKJ+SP4MHn4OAA=;
+        h=From:To:Cc:Subject:Date:From;
+        b=MEPfaL+dgaQHelu1aORa4dkshKUoXyML9ToegfF2X/+DDlDkT2NTxvVtRobsDkp3y
+         w6q0OMUPClkMLevvjlJySVaAGk9chQn5JmHYb+Sby+ocz18EmUyh5EfwgbghPbCUMs
+         BfqHu2GczlJunlpKBWtiGYnb5THa+fwMAHT17a+4GK1J+KWFOc18MvDzUYfMdu9apT
+         X6Smfz3LDGjObml+5VUPVmYQNjXkkTpqKOuY3LDfkxKy7PEEqqJdMx9ujR6UWsgJpM
+         n0Q+gHtNpnXSYPWFtp4AhWmiwdi6gcYpdR3mkS/pbX/h/3dXftILrjdVKvAqW4utJB
+         bGXpxDJOBDv8Q==
+X-Nifty-SrcIP: [133.32.232.101]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-kbuild@vger.kernel.org
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Borislav Petkov <bp@alien8.de>,
+        Brian Cain <bcain@codeaurora.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chris Zankel <chris@zankel.net>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Greentime Hu <green.hu@gmail.com>, Guo Ren <guoren@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
+        Ley Foon Tan <ley.foon.tan@intel.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Michal Simek <monstr@monstr.eu>,
+        Nick Hu <nickhu@andestech.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Rich Felker <dalias@libc.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Richard Weinberger <richard@nod.at>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Will Deacon <will@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linuxppc-dev@lists.ozlabs.org, openrisc@lists.librecores.org,
+        sparclinux@vger.kernel.org, uclinux-h8-devel@lists.sourceforge.jp,
+        x86@kernel.org
+Subject: [PATCH 1/5] kbuild: require all architectures to have arch/$(SRCARCH)/Kbuild
+Date:   Wed, 12 May 2021 16:57:25 +0900
+Message-Id: <20210512075729.60291-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.27.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHC9VhShi4u26h5OsahveQDNxO_uZ+KgzGOYEp5W7w6foA-uKg@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.11
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 2021-05-10 21:23, Paul Moore wrote:
-> On Fri, Apr 30, 2021 at 4:36 PM Richard Guy Briggs <rgb@redhat.com> wrote:
-> >
-> > Replace audit syscall class magic numbers with macros.
-> >
-> > This required putting the macros into new header file
-> > include/linux/auditscm.h since the syscall macros were included for both 64
-> > bit and 32 bit in any compat code, causing redefinition warnings.
-> 
-> The ifndef/define didn't protect against redeclaration?  Huh.  Maybe
-> I'm not thinking about this correctly, or the arch specific code is
-> doing something wonky ...
+arch/$(SRCARCH)/Kbuild is useful for Makefile cleanups because you can
+use the obj-y syntax.
 
-I had a chat with Arnd about it in IRC upstream and started digging
-deeper and it got quite messy.  As seen from the cover letter, audit.h
-pulled in a chain of things which weren't entirely unreasonable given it
-was compiling compat support in with native support by default.  I
-suppose I could have defined _ASM_X86_UNISTD_64_H to prevent it from
-being added, but that would be ugly on a generated file, have caused a
-failure elsewhere and would need to be done for each compat file.  I
-thought of defining CONFIG_X86_32 in arch/x86/ia32/audit.c but that
-would cause other problems.  This was the cleanest solution.  Otherwise
-I leave them as magic numbers like in V1.
+Add an empty file if it is missing in arch/$(SRCARCH)/.
 
-> Regardless, assuming that it is necessary, I would prefer if we called
-> it auditsc.h instead of auditscm.h; the latter makes me think of
-> sockets and not syscalls.
-> 
-> > Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
-> > ---
-> >  MAINTAINERS                        |  1 +
-> >  arch/alpha/kernel/audit.c          |  8 ++++----
-> >  arch/ia64/kernel/audit.c           |  8 ++++----
-> >  arch/parisc/kernel/audit.c         |  8 ++++----
-> >  arch/parisc/kernel/compat_audit.c  |  9 +++++----
-> >  arch/powerpc/kernel/audit.c        | 10 +++++-----
-> >  arch/powerpc/kernel/compat_audit.c | 11 ++++++-----
-> >  arch/s390/kernel/audit.c           | 10 +++++-----
-> >  arch/s390/kernel/compat_audit.c    | 11 ++++++-----
-> >  arch/sparc/kernel/audit.c          | 10 +++++-----
-> >  arch/sparc/kernel/compat_audit.c   | 11 ++++++-----
-> >  arch/x86/ia32/audit.c              | 11 ++++++-----
-> >  arch/x86/kernel/audit_64.c         |  8 ++++----
-> >  include/linux/audit.h              |  1 +
-> >  include/linux/auditscm.h           | 23 +++++++++++++++++++++++
-> >  kernel/auditsc.c                   | 12 ++++++------
-> >  lib/audit.c                        | 10 +++++-----
-> >  lib/compat_audit.c                 | 11 ++++++-----
-> >  18 files changed, 102 insertions(+), 71 deletions(-)
-> >  create mode 100644 include/linux/auditscm.h
-> 
-> ...
-> 
-> > diff --git a/include/linux/auditscm.h b/include/linux/auditscm.h
-> > new file mode 100644
-> > index 000000000000..1c4f0ead5931
-> > --- /dev/null
-> > +++ b/include/linux/auditscm.h
-> > @@ -0,0 +1,23 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> > +/* auditscm.h -- Auditing support syscall macros
-> > + *
-> > + * Copyright 2021 Red Hat Inc., Durham, North Carolina.
-> > + * All Rights Reserved.
-> > + *
-> > + * Author: Richard Guy Briggs <rgb@redhat.com>
-> > + */
-> > +#ifndef _LINUX_AUDITSCM_H_
-> > +#define _LINUX_AUDITSCM_H_
-> > +
-> > +enum auditsc_class_t {
-> > +       AUDITSC_NATIVE = 0,
-> > +       AUDITSC_COMPAT,
-> > +       AUDITSC_OPEN,
-> > +       AUDITSC_OPENAT,
-> > +       AUDITSC_SOCKETCALL,
-> > +       AUDITSC_EXECVE,
-> > +
-> > +       AUDITSC_NVALS /* count */
-> > +};
-> > +
-> > +#endif
-> 
-> -- 
-> paul moore
-> www.paul-moore.com
-> 
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
 
-- RGB
+ Makefile               | 2 +-
+ arch/alpha/Kbuild      | 1 +
+ arch/arc/Makefile      | 3 ---
+ arch/arm/Makefile      | 1 -
+ arch/arm64/Makefile    | 1 -
+ arch/csky/Kbuild       | 1 +
+ arch/h8300/Kbuild      | 1 +
+ arch/hexagon/Kbuild    | 1 +
+ arch/ia64/Kbuild       | 1 +
+ arch/microblaze/Kbuild | 1 +
+ arch/mips/Makefile     | 3 ---
+ arch/nds32/Kbuild      | 1 +
+ arch/nios2/Kbuild      | 1 +
+ arch/openrisc/Makefile | 1 -
+ arch/parisc/Kbuild     | 1 +
+ arch/powerpc/Makefile  | 3 ---
+ arch/riscv/Makefile    | 1 -
+ arch/s390/Makefile     | 3 ---
+ arch/sh/Kbuild         | 1 +
+ arch/sparc/Makefile    | 3 ---
+ arch/um/Kbuild         | 1 +
+ arch/x86/Makefile      | 3 ---
+ arch/xtensa/Kbuild     | 1 +
+ 23 files changed, 13 insertions(+), 23 deletions(-)
+ create mode 100644 arch/alpha/Kbuild
+ create mode 100644 arch/csky/Kbuild
+ create mode 100644 arch/h8300/Kbuild
+ create mode 100644 arch/hexagon/Kbuild
+ create mode 100644 arch/ia64/Kbuild
+ create mode 100644 arch/microblaze/Kbuild
+ create mode 100644 arch/nds32/Kbuild
+ create mode 100644 arch/nios2/Kbuild
+ create mode 100644 arch/parisc/Kbuild
+ create mode 100644 arch/sh/Kbuild
+ create mode 100644 arch/um/Kbuild
+ create mode 100644 arch/xtensa/Kbuild
 
---
-Richard Guy Briggs <rgb@redhat.com>
-Sr. S/W Engineer, Kernel Security, Base Operating Systems
-Remote, Ottawa, Red Hat Canada
-IRC: rgb, SunRaycer
-Voice: +1.647.777.2635, Internal: (81) 32635
+diff --git a/Makefile b/Makefile
+index 15b6476d0f89..7df040b1b023 100644
+--- a/Makefile
++++ b/Makefile
+@@ -658,7 +658,7 @@ endif
+ 
+ ifeq ($(KBUILD_EXTMOD),)
+ # Objects we will link into vmlinux / subdirs we need to visit
+-core-y		:= init/ usr/
++core-y		:= init/ usr/ arch/$(SRCARCH)/
+ drivers-y	:= drivers/ sound/
+ drivers-$(CONFIG_SAMPLES) += samples/
+ drivers-$(CONFIG_NET) += net/
+diff --git a/arch/alpha/Kbuild b/arch/alpha/Kbuild
+new file mode 100644
+index 000000000000..a4e40e534e6a
+--- /dev/null
++++ b/arch/alpha/Kbuild
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/arc/Makefile b/arch/arc/Makefile
+index 4392c9c189c4..3e6d4b84797f 100644
+--- a/arch/arc/Makefile
++++ b/arch/arc/Makefile
+@@ -85,9 +85,6 @@ KBUILD_LDFLAGS	+= $(ldflags-y)
+ 
+ head-y		:= arch/arc/kernel/head.o
+ 
+-# See arch/arc/Kbuild for content of core part of the kernel
+-core-y		+= arch/arc/
+-
+ # w/o this dtb won't embed into kernel binary
+ core-y		+= arch/arc/boot/dts/
+ 
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 415c3514573a..173da685a52e 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -252,7 +252,6 @@ endif
+ 
+ export	TEXT_OFFSET GZFLAGS MMUEXT
+ 
+-core-y				+= arch/arm/
+ # If we have a machine-specific directory, then include it in the build.
+ core-y				+= $(machdirs) $(platdirs)
+ 
+diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+index 7ef44478560d..b73c151f3a53 100644
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -149,7 +149,6 @@ KBUILD_CFLAGS += -DKASAN_SHADOW_SCALE_SHIFT=$(KASAN_SHADOW_SCALE_SHIFT)
+ KBUILD_CPPFLAGS += -DKASAN_SHADOW_SCALE_SHIFT=$(KASAN_SHADOW_SCALE_SHIFT)
+ KBUILD_AFLAGS += -DKASAN_SHADOW_SCALE_SHIFT=$(KASAN_SHADOW_SCALE_SHIFT)
+ 
+-core-y		+= arch/arm64/
+ libs-y		:= arch/arm64/lib/ $(libs-y)
+ libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
+ 
+diff --git a/arch/csky/Kbuild b/arch/csky/Kbuild
+new file mode 100644
+index 000000000000..a4e40e534e6a
+--- /dev/null
++++ b/arch/csky/Kbuild
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/h8300/Kbuild b/arch/h8300/Kbuild
+new file mode 100644
+index 000000000000..a4e40e534e6a
+--- /dev/null
++++ b/arch/h8300/Kbuild
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/hexagon/Kbuild b/arch/hexagon/Kbuild
+new file mode 100644
+index 000000000000..a4e40e534e6a
+--- /dev/null
++++ b/arch/hexagon/Kbuild
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/ia64/Kbuild b/arch/ia64/Kbuild
+new file mode 100644
+index 000000000000..a4e40e534e6a
+--- /dev/null
++++ b/arch/ia64/Kbuild
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/microblaze/Kbuild b/arch/microblaze/Kbuild
+new file mode 100644
+index 000000000000..a4e40e534e6a
+--- /dev/null
++++ b/arch/microblaze/Kbuild
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/mips/Makefile b/arch/mips/Makefile
+index 258234c35a09..4e942b7ef022 100644
+--- a/arch/mips/Makefile
++++ b/arch/mips/Makefile
+@@ -332,9 +332,6 @@ head-y := arch/mips/kernel/head.o
+ libs-y			+= arch/mips/lib/
+ libs-$(CONFIG_MIPS_FP_SUPPORT) += arch/mips/math-emu/
+ 
+-# See arch/mips/Kbuild for content of core part of the kernel
+-core-y += arch/mips/
+-
+ drivers-y			+= arch/mips/crypto/
+ 
+ # suspend and hibernation support
+diff --git a/arch/nds32/Kbuild b/arch/nds32/Kbuild
+new file mode 100644
+index 000000000000..a4e40e534e6a
+--- /dev/null
++++ b/arch/nds32/Kbuild
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/nios2/Kbuild b/arch/nios2/Kbuild
+new file mode 100644
+index 000000000000..a4e40e534e6a
+--- /dev/null
++++ b/arch/nios2/Kbuild
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/openrisc/Makefile b/arch/openrisc/Makefile
+index 410e7abfac69..c52de526e518 100644
+--- a/arch/openrisc/Makefile
++++ b/arch/openrisc/Makefile
+@@ -42,7 +42,6 @@ endif
+ 
+ head-y 		:= arch/openrisc/kernel/head.o
+ 
+-core-y		+= arch/openrisc/
+ libs-y		+= $(LIBGCC)
+ 
+ PHONY += vmlinux.bin
+diff --git a/arch/parisc/Kbuild b/arch/parisc/Kbuild
+new file mode 100644
+index 000000000000..a4e40e534e6a
+--- /dev/null
++++ b/arch/parisc/Kbuild
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index 3212d076ac6a..af669aa75b73 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -267,9 +267,6 @@ head-$(CONFIG_PPC_FPU)		+= arch/powerpc/kernel/fpu.o
+ head-$(CONFIG_ALTIVEC)		+= arch/powerpc/kernel/vector.o
+ head-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE)  += arch/powerpc/kernel/prom_init.o
+ 
+-# See arch/powerpc/Kbuild for content of core part of the kernel
+-core-y += arch/powerpc/
+-
+ # Default to zImage, override when needed
+ all: zImage
+ 
+diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
+index 3eb9590a0775..c5f359540862 100644
+--- a/arch/riscv/Makefile
++++ b/arch/riscv/Makefile
+@@ -90,7 +90,6 @@ endif
+ 
+ head-y := arch/riscv/kernel/head.o
+ 
+-core-y += arch/riscv/
+ core-$(CONFIG_RISCV_ERRATA_ALTERNATIVE) += arch/riscv/errata/
+ 
+ libs-y += arch/riscv/lib/
+diff --git a/arch/s390/Makefile b/arch/s390/Makefile
+index e443ed9947bd..37b61645694c 100644
+--- a/arch/s390/Makefile
++++ b/arch/s390/Makefile
+@@ -128,9 +128,6 @@ OBJCOPYFLAGS	:= -O binary
+ 
+ head-y		:= arch/s390/kernel/head64.o
+ 
+-# See arch/s390/Kbuild for content of core part of the kernel
+-core-y		+= arch/s390/
+-
+ libs-y		+= arch/s390/lib/
+ drivers-y	+= drivers/s390/
+ 
+diff --git a/arch/sh/Kbuild b/arch/sh/Kbuild
+new file mode 100644
+index 000000000000..a4e40e534e6a
+--- /dev/null
++++ b/arch/sh/Kbuild
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/sparc/Makefile b/arch/sparc/Makefile
+index bee99e65fe23..4e65245bc755 100644
+--- a/arch/sparc/Makefile
++++ b/arch/sparc/Makefile
+@@ -58,9 +58,6 @@ endif
+ 
+ head-y                 := arch/sparc/kernel/head_$(BITS).o
+ 
+-# See arch/sparc/Kbuild for the core part of the kernel
+-core-y                 += arch/sparc/
+-
+ libs-y                 += arch/sparc/prom/
+ libs-y                 += arch/sparc/lib/
+ 
+diff --git a/arch/um/Kbuild b/arch/um/Kbuild
+new file mode 100644
+index 000000000000..a4e40e534e6a
+--- /dev/null
++++ b/arch/um/Kbuild
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index c77c5d8a7b3e..4307bf48ec53 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -239,9 +239,6 @@ head-y += arch/x86/kernel/platform-quirks.o
+ 
+ libs-y  += arch/x86/lib/
+ 
+-# See arch/x86/Kbuild for content of core part of the kernel
+-core-y += arch/x86/
+-
+ # drivers-y are linked after core-y
+ drivers-$(CONFIG_MATH_EMULATION) += arch/x86/math-emu/
+ drivers-$(CONFIG_PCI)            += arch/x86/pci/
+diff --git a/arch/xtensa/Kbuild b/arch/xtensa/Kbuild
+new file mode 100644
+index 000000000000..a4e40e534e6a
+--- /dev/null
++++ b/arch/xtensa/Kbuild
+@@ -0,0 +1 @@
++# SPDX-License-Identifier: GPL-2.0-only
+-- 
+2.27.0
 
