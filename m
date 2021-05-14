@@ -2,181 +2,283 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 348E537CE3B
-	for <lists+linux-ia64@lfdr.de>; Wed, 12 May 2021 19:18:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A56D83806A5
+	for <lists+linux-ia64@lfdr.de>; Fri, 14 May 2021 12:02:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238581AbhELRD7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 12 May 2021 13:03:59 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:43113 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S238880AbhELQPV (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 12 May 2021 12:15:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1620836052;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=+99igyVqmzNGHqQrMpM/kFdTQLOrOFCJjPehA1KV9HQ=;
-        b=USRNiR2PXNSP43SB8bZcOoIqb6JAXMhBBWWJTC/dijkTzJ7FR+ZbmSAn+TGSeif2QF33T1
-        znze8FZNHwBIECHnyuMBxa0ImQzuKIFpXRUHO+XIpOZNXMICDFR4kcSNNRM6sA62MZTtYp
-        aZXGDkI30EkWhrA0eM/3ycnOlhtMuA8=
-Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
- [209.85.208.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-257-BexrkitZOmi9qwjccFZ8aQ-1; Wed, 12 May 2021 12:14:09 -0400
-X-MC-Unique: BexrkitZOmi9qwjccFZ8aQ-1
-Received: by mail-ed1-f72.google.com with SMTP id z12-20020aa7d40c0000b0290388179cc8bfso13045631edq.21
-        for <linux-ia64@vger.kernel.org>; Wed, 12 May 2021 09:14:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:references:from:organization:subject
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=+99igyVqmzNGHqQrMpM/kFdTQLOrOFCJjPehA1KV9HQ=;
-        b=Odv0CMMB4ltmZDWb+VDAvrpueI3jTmkunHE0MArak73AjfwYI0x5OTuMfMLgvoOihQ
-         8MPlrCJ39ZWW0Bie/v4zeaqbp6wg5tawefyTUo9QNGHo2hC8wlYgrwupWm0gsMhZ0JS7
-         D1BERCQkRNdOcJN+6DilxOl3BK9fXPkrpuCtbspieE9BVk9DjQuNWZQOHZBIQ66HTVvV
-         LSJg//Qj9DkATOhEZ/1xDixAqnce5oVKxv19FI6xIjSApRGXLJaOp6VF9JpzscMxpZbt
-         vgu1i3o6Msp7cVes3jkOfm/GPgU5pEkJZjSQCFaydPVUZilqGeSxuI74SDOu5BzrTQhy
-         wRZA==
-X-Gm-Message-State: AOAM533jJ5w3UqfLfjpVkEjhuX4HVrlGfZwn/XjO1X16a5I0IhbgUa/O
-        hzb9fpHFVzg08QP0dUYXA+qst07LOnx4OQxfsefZiDGvuPL9foLattstBSdWqFzNiEd98b4wd4t
-        rQmfqyJPTyaMuAePezkOTeA==
-X-Received: by 2002:a05:6402:310a:: with SMTP id dc10mr44324734edb.38.1620836048579;
-        Wed, 12 May 2021 09:14:08 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJz/05CH7MkXWBkCHuvNwNl+Ar0uhN69I4Cp7zGz9zWHbeo06zctJRw0Pe1wTe8pgHTDR3XEWg==
-X-Received: by 2002:a05:6402:310a:: with SMTP id dc10mr44324694edb.38.1620836048213;
-        Wed, 12 May 2021 09:14:08 -0700 (PDT)
-Received: from [192.168.3.132] (p5b0c65ab.dip0.t-ipconnect.de. [91.12.101.171])
-        by smtp.gmail.com with ESMTPSA id bn5sm83012ejb.97.2021.05.12.09.14.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 May 2021 09:14:07 -0700 (PDT)
-To:     Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@suse.com>
-Cc:     Oscar Salvador <osalvador@suse.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        Andy Lutomirski <luto@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org
-References: <20210506152623.178731-1-zi.yan@sent.com>
- <fb60eabd-f8ef-2cb1-7338-7725efe3c286@redhat.com>
- <YJUqrOacyqI+kiKW@dhcp22.suse.cz>
- <792d73e2-5d63-74a5-5554-20351d5532ff@redhat.com>
- <746780E5-0288-494D-8B19-538049F1B891@nvidia.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [RFC PATCH 0/7] Memory hotplug/hotremove at subsection size
-Message-ID: <e132fdd9-65af-1cad-8a6e-71844ebfe6a2@redhat.com>
-Date:   Wed, 12 May 2021 18:14:06 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.8.1
+        id S232671AbhENKD5 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 14 May 2021 06:03:57 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58900 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231312AbhENKDz (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 14 May 2021 06:03:55 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id DBB0B613BC;
+        Fri, 14 May 2021 10:02:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1620986564;
+        bh=pCXYqLZ28sSsmACkyB/zu1x4PG/CldD4oipWSFzWEJk=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=LFbGPOW+RkAAcg2nK4kZlPRkXeqPrjX/9SXsr9jAduQhPD/O9XpSs/HTvrbjiGQJ7
+         8zosPhKmCuvFpE1QQEP064kCk4vl0Ajf7AXy9DDAnhNBmcNo5idvR6NYGpUrBMEiND
+         slQGB84OuaxRZHGEnVMIBM2kqkrfvGzQk0uckAYSvkXpvBFeUJ1LDV2AJ766h5zcQJ
+         VXSa+cjBgaNWNdGYi3OHD57n5N6rd7D2ekhEaKZ08uOGZ8fpdQ7Ua4QCTKBEtrvpJ1
+         e6iQXy0Yt4ssy2B8TXD+9oZb4Z+SmkbgJi7UWxY3F6WIM180FXisawZKFBhxSSSoQ8
+         RtDOL3lQfwjXw==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     linux-arch@vger.kernel.org
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Michal Simek <monstr@monstr.eu>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-parisc@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org
+Subject: [PATCH v2 01/13] asm-generic: use asm-generic/unaligned.h for most architectures
+Date:   Fri, 14 May 2021 12:00:49 +0200
+Message-Id: <20210514100106.3404011-2-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
+In-Reply-To: <20210514100106.3404011-1-arnd@kernel.org>
+References: <20210514100106.3404011-1-arnd@kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <746780E5-0288-494D-8B19-538049F1B891@nvidia.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
->>
->> As stated somewhere here already, we'll have to look into making alloc_contig_range() (and main users CMA and virtio-mem) independent of MAX_ORDER and mainly rely on pageblock_order. The current handling in alloc_contig_range() is far from optimal as we have to isolate a whole MAX_ORDER - 1 page -- and on ZONE_NORMAL we'll fail easily if any part contains something unmovable although we don't even want to allocate that part. I actually have that on my list (to be able to fully support pageblock_order instead of MAX_ORDER -1 chunks in virtio-mem), however didn't have time to look into it.
-> 
-> So in your mind, for gigantic page allocation (> MAX_ORDER), alloc_contig_range()
-> should be used instead of buddy allocator while pageblock_order is kept at a small
-> granularity like 2MB. Is that the case? Isn’t it going to have high fail rate
-> when any of the pageblocks within a gigantic page range (like 1GB) becomes unmovable?
-> Are you thinking additional mechanism/policy to prevent such thing happening as
-> an additional step for gigantic page allocation? Like your ZONE_PREFER_MOVABLE idea?
-> 
+From: Arnd Bergmann <arnd@arndb.de>
 
-I am not fully sure yet where the journey will go , I guess nobody 
-knows. Ultimately, having buddy support for >= current MAX_ORDER (IOW, 
-increasing MAX_ORDER) will most probably happen, so it would be worth 
-investigating what has to be done to get that running as a first step.
+There are several architectures that just duplicate the contents
+of asm-generic/unaligned.h, so change those over to use the
+file directly, to make future modifications easier.
 
-Of course, we could temporarily think about wiring it up in the buddy like
+The exceptions are:
 
-if (order < MAX_ORDER)
-	__alloc_pages()...
-else
-	alloc_contig_pages()
+- arm32 sets HAVE_EFFICIENT_UNALIGNED_ACCESS, but wants the
+  unaligned-struct version
 
-but it doesn't really improve the situation IMHO, just an API change.
+- ppc64le disables HAVE_EFFICIENT_UNALIGNED_ACCESS but includes
+  the access-ok version
 
-So I think we should look into increasing MAX_ORDER, seeing what needs 
-to be done to have that part running while keeping the section size and 
-the pageblock order as is. I know that at least memory 
-onlining/offlining, cma, alloc_contig_range(), ... needs tweaking, 
-especially when we don't increase the section size (but also if we would 
-due to the way page isolation is currently handled). Having a MAX_ORDER 
--1 page being partially in different nodes might be another thing to 
-look into (I heard that it can already happen right now, but I don't 
-remember the details).
+- most m68k also uses the access-ok version without setting
+  HAVE_EFFICIENT_UNALIGNED_ACCESS.
 
-The next step after that would then be better fragmentation avoidance 
-for larger granularity like 1G THP.
+- sh4a has a custom inline asm version
 
->>
->> Further, page onlining / offlining code and early init code most probably also needs care if MAX_ORDER - 1 crosses sections. Memory holes we might suddenly have in MAX_ORDER - 1 pages might become a problem and will have to be handled. Not sure which other code has to be tweaked (compaction? page isolation?).
-> 
-> Can you elaborate it a little more? From what I understand, memory holes mean valid
-> PFNs are not contiguous before and after a hole, so pfn++ will not work, but
-> struct pages are still virtually contiguous assuming SPARSE_VMEMMAP, meaning page++
-> would still work. So when MAX_ORDER - 1 crosses sections, additional code would be
-> needed instead of simple pfn++. Is there anything I am missing?
+- openrisc is the only one using the memmove version that
+  generally leads to worse code.
 
-I think there are two cases when talking about MAX_ORDER and memory holes:
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
+---
+ arch/alpha/include/asm/unaligned.h      | 12 ----------
+ arch/ia64/include/asm/unaligned.h       | 12 ----------
+ arch/m68k/include/asm/unaligned.h       |  9 +-------
+ arch/microblaze/include/asm/unaligned.h | 27 -----------------------
+ arch/parisc/include/asm/unaligned.h     |  6 +----
+ arch/sparc/include/asm/unaligned.h      | 11 ----------
+ arch/x86/include/asm/unaligned.h        | 15 -------------
+ arch/xtensa/include/asm/unaligned.h     | 29 -------------------------
+ 8 files changed, 2 insertions(+), 119 deletions(-)
+ delete mode 100644 arch/alpha/include/asm/unaligned.h
+ delete mode 100644 arch/ia64/include/asm/unaligned.h
+ delete mode 100644 arch/microblaze/include/asm/unaligned.h
+ delete mode 100644 arch/sparc/include/asm/unaligned.h
+ delete mode 100644 arch/x86/include/asm/unaligned.h
+ delete mode 100644 arch/xtensa/include/asm/unaligned.h
 
-1. Hole with a valid memmap: the memmap is initialize to PageReserved()
-    and the pages are not given to the buddy. pfn_valid() and
-    pfn_to_page() works as expected.
-2. Hole without a valid memmam: we have that CONFIG_HOLES_IN_ZONE thing
-    already, see include/linux/mmzone.h. pfn_valid_within() checks are
-    required. Doesn't win a beauty contest, but gets the job done in
-    existing setups that seem to care.
-
-"If it is possible to have holes within a MAX_ORDER_NR_PAGES, then we 
-need to check pfn validity within that MAX_ORDER_NR_PAGES block. 
-pfn_valid_within() should be used in this case; we optimise this away 
-when we have no holes within a MAX_ORDER_NR_PAGES block."
-
-CONFIG_HOLES_IN_ZONE is just a bad name for this.
-
-(increasing the section size implies that we waste more memory for the 
-memmap in holes. increasing MAX_ORDER means that we might have to deal 
-with holes within MAX_ORDER chunks)
-
-We don't have too many pfn_valid_within() checks. I wonder if we could 
-add something that is optimized for "holes are a power of two and 
-properly aligned", because pfn_valid_within() right not deals with holes 
-of any kind which makes it somewhat inefficient IIRC.
-
-> 
-> BTW, to test a system with memory holes, do you know is there an easy of adding
-> random memory holes to an x86_64 VM, which can help reveal potential missing pieces
-> in the code? Changing BIOS-e820 table might be one way, but I have no idea on
-> how to do it on QEMU.
-
-It might not be very easy that way. But I heard that some arm64 systems 
-have crazy memory layouts -- maybe there, it's easier to get something 
-nasty running? :)
-
-https://lkml.kernel.org/r/YJpEwF2cGjS5mKma@kernel.org
-
-I remember there was a way to define the e820 completely on kernel 
-cmdline, but I might be wrong ...
-
+diff --git a/arch/alpha/include/asm/unaligned.h b/arch/alpha/include/asm/unaligned.h
+deleted file mode 100644
+index 863c807b66f8..000000000000
+--- a/arch/alpha/include/asm/unaligned.h
++++ /dev/null
+@@ -1,12 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _ASM_ALPHA_UNALIGNED_H
+-#define _ASM_ALPHA_UNALIGNED_H
+-
+-#include <linux/unaligned/le_struct.h>
+-#include <linux/unaligned/be_byteshift.h>
+-#include <linux/unaligned/generic.h>
+-
+-#define get_unaligned __get_unaligned_le
+-#define put_unaligned __put_unaligned_le
+-
+-#endif /* _ASM_ALPHA_UNALIGNED_H */
+diff --git a/arch/ia64/include/asm/unaligned.h b/arch/ia64/include/asm/unaligned.h
+deleted file mode 100644
+index 328942e3cbce..000000000000
+--- a/arch/ia64/include/asm/unaligned.h
++++ /dev/null
+@@ -1,12 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _ASM_IA64_UNALIGNED_H
+-#define _ASM_IA64_UNALIGNED_H
+-
+-#include <linux/unaligned/le_struct.h>
+-#include <linux/unaligned/be_byteshift.h>
+-#include <linux/unaligned/generic.h>
+-
+-#define get_unaligned	__get_unaligned_le
+-#define put_unaligned	__put_unaligned_le
+-
+-#endif /* _ASM_IA64_UNALIGNED_H */
+diff --git a/arch/m68k/include/asm/unaligned.h b/arch/m68k/include/asm/unaligned.h
+index 98c8930d3d35..84e437337344 100644
+--- a/arch/m68k/include/asm/unaligned.h
++++ b/arch/m68k/include/asm/unaligned.h
+@@ -2,15 +2,8 @@
+ #ifndef _ASM_M68K_UNALIGNED_H
+ #define _ASM_M68K_UNALIGNED_H
+ 
+-
+ #ifdef CONFIG_CPU_HAS_NO_UNALIGNED
+-#include <linux/unaligned/be_struct.h>
+-#include <linux/unaligned/le_byteshift.h>
+-#include <linux/unaligned/generic.h>
+-
+-#define get_unaligned	__get_unaligned_be
+-#define put_unaligned	__put_unaligned_be
+-
++#include <asm-generic/unaligned.h>
+ #else
+ /*
+  * The m68k can do unaligned accesses itself.
+diff --git a/arch/microblaze/include/asm/unaligned.h b/arch/microblaze/include/asm/unaligned.h
+deleted file mode 100644
+index 448299beab69..000000000000
+--- a/arch/microblaze/include/asm/unaligned.h
++++ /dev/null
+@@ -1,27 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-/*
+- * Copyright (C) 2008 Michal Simek <monstr@monstr.eu>
+- * Copyright (C) 2006 Atmark Techno, Inc.
+- */
+-
+-#ifndef _ASM_MICROBLAZE_UNALIGNED_H
+-#define _ASM_MICROBLAZE_UNALIGNED_H
+-
+-# ifdef __KERNEL__
+-
+-#  ifdef __MICROBLAZEEL__
+-#   include <linux/unaligned/le_struct.h>
+-#   include <linux/unaligned/be_byteshift.h>
+-#   define get_unaligned	__get_unaligned_le
+-#   define put_unaligned	__put_unaligned_le
+-#  else
+-#   include <linux/unaligned/be_struct.h>
+-#   include <linux/unaligned/le_byteshift.h>
+-#   define get_unaligned	__get_unaligned_be
+-#   define put_unaligned	__put_unaligned_be
+-#  endif
+-
+-# include <linux/unaligned/generic.h>
+-
+-# endif	/* __KERNEL__ */
+-#endif /* _ASM_MICROBLAZE_UNALIGNED_H */
+diff --git a/arch/parisc/include/asm/unaligned.h b/arch/parisc/include/asm/unaligned.h
+index e9029c7c2a69..3bda16773ba6 100644
+--- a/arch/parisc/include/asm/unaligned.h
++++ b/arch/parisc/include/asm/unaligned.h
+@@ -2,11 +2,7 @@
+ #ifndef _ASM_PARISC_UNALIGNED_H
+ #define _ASM_PARISC_UNALIGNED_H
+ 
+-#include <linux/unaligned/be_struct.h>
+-#include <linux/unaligned/le_byteshift.h>
+-#include <linux/unaligned/generic.h>
+-#define get_unaligned	__get_unaligned_be
+-#define put_unaligned	__put_unaligned_be
++#include <asm-generic/unaligned.h>
+ 
+ #ifdef __KERNEL__
+ struct pt_regs;
+diff --git a/arch/sparc/include/asm/unaligned.h b/arch/sparc/include/asm/unaligned.h
+deleted file mode 100644
+index 7971d89d2f54..000000000000
+--- a/arch/sparc/include/asm/unaligned.h
++++ /dev/null
+@@ -1,11 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _ASM_SPARC_UNALIGNED_H
+-#define _ASM_SPARC_UNALIGNED_H
+-
+-#include <linux/unaligned/be_struct.h>
+-#include <linux/unaligned/le_byteshift.h>
+-#include <linux/unaligned/generic.h>
+-#define get_unaligned	__get_unaligned_be
+-#define put_unaligned	__put_unaligned_be
+-
+-#endif /* _ASM_SPARC_UNALIGNED_H */
+diff --git a/arch/x86/include/asm/unaligned.h b/arch/x86/include/asm/unaligned.h
+deleted file mode 100644
+index 9c754a7447aa..000000000000
+--- a/arch/x86/include/asm/unaligned.h
++++ /dev/null
+@@ -1,15 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 */
+-#ifndef _ASM_X86_UNALIGNED_H
+-#define _ASM_X86_UNALIGNED_H
+-
+-/*
+- * The x86 can do unaligned accesses itself.
+- */
+-
+-#include <linux/unaligned/access_ok.h>
+-#include <linux/unaligned/generic.h>
+-
+-#define get_unaligned __get_unaligned_le
+-#define put_unaligned __put_unaligned_le
+-
+-#endif /* _ASM_X86_UNALIGNED_H */
+diff --git a/arch/xtensa/include/asm/unaligned.h b/arch/xtensa/include/asm/unaligned.h
+deleted file mode 100644
+index 8e7ed046bfed..000000000000
+--- a/arch/xtensa/include/asm/unaligned.h
++++ /dev/null
+@@ -1,29 +0,0 @@
+-/*
+- * Xtensa doesn't handle unaligned accesses efficiently.
+- *
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License.  See the file "COPYING" in the main directory of this archive
+- * for more details.
+- *
+- * Copyright (C) 2001 - 2005 Tensilica Inc.
+- */
+-#ifndef _ASM_XTENSA_UNALIGNED_H
+-#define _ASM_XTENSA_UNALIGNED_H
+-
+-#include <asm/byteorder.h>
+-
+-#ifdef __LITTLE_ENDIAN
+-# include <linux/unaligned/le_struct.h>
+-# include <linux/unaligned/be_byteshift.h>
+-# include <linux/unaligned/generic.h>
+-# define get_unaligned	__get_unaligned_le
+-# define put_unaligned	__put_unaligned_le
+-#else
+-# include <linux/unaligned/be_struct.h>
+-# include <linux/unaligned/le_byteshift.h>
+-# include <linux/unaligned/generic.h>
+-# define get_unaligned	__get_unaligned_be
+-# define put_unaligned	__put_unaligned_be
+-#endif
+-
+-#endif	/* _ASM_XTENSA_UNALIGNED_H */
 -- 
-Thanks,
-
-David / dhildenb
+2.29.2
 
