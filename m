@@ -2,63 +2,76 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CF7038AFC7
-	for <lists+linux-ia64@lfdr.de>; Thu, 20 May 2021 15:17:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D20E38C0AB
+	for <lists+linux-ia64@lfdr.de>; Fri, 21 May 2021 09:24:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238453AbhETNTL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 20 May 2021 09:19:11 -0400
-Received: from mga09.intel.com ([134.134.136.24]:10444 "EHLO mga09.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232048AbhETNTC (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 20 May 2021 09:19:02 -0400
-IronPort-SDR: zcO61oLzLD86ujbPINHW74+fpS8SfBoxECIN/Ory8xZ9B8yGrXaL/fb11ot+HJgsC8BDxpXmXl
- 2wg++kXalrFQ==
-X-IronPort-AV: E=McAfee;i="6200,9189,9989"; a="201265382"
-X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
-   d="scan'208";a="201265382"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2021 06:17:40 -0700
-IronPort-SDR: Dr5yN49R17UnKrq8jzwOgYsvFvsawFoiRo13RfZjtYtFdTpdsZt0NDnrDBica6Nu0AG7G1+sGS
- Od97rlZo/PZw==
-X-IronPort-AV: E=Sophos;i="5.82,313,1613462400"; 
-   d="scan'208";a="543523032"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by fmsmga001-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2021 06:17:39 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1ljiYS-00DUBL-Fp; Thu, 20 May 2021 16:17:36 +0300
-Date:   Thu, 20 May 2021 16:17:36 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+        id S232541AbhEUHZd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 21 May 2021 03:25:33 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:50333 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S232911AbhEUHZd (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 21 May 2021 03:25:33 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1ljzVw-000b5K-UL; Fri, 21 May 2021 09:24:08 +0200
+Received: from p5b13a0fe.dip0.t-ipconnect.de ([91.19.160.254] helo=[192.168.178.139])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1ljzVw-001igV-Nm; Fri, 21 May 2021 09:24:08 +0200
+Subject: Re: [PATCH v1 1/1] kernel.h: split out panic and oops helpers (ia64
+ fix)
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
         Andrew Morton <akpm@linux-foundation.org>,
         kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v1 1/1] kernel.h: split out panic and oops helpers (ia64
- fix)
-Message-ID: <YKZhcKqomWxH3eph@smile.fi.intel.com>
 References: <20210520130557.55277-1-andriy.shevchenko@linux.intel.com>
  <f2420178-53d7-a1e4-eea7-5e1773835411@physik.fu-berlin.de>
+ <YKZhcKqomWxH3eph@smile.fi.intel.com>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Message-ID: <41bbace7-1b09-8464-a082-e4152f07fdb4@physik.fu-berlin.de>
+Date:   Fri, 21 May 2021 09:24:08 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f2420178-53d7-a1e4-eea7-5e1773835411@physik.fu-berlin.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+In-Reply-To: <YKZhcKqomWxH3eph@smile.fi.intel.com>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.160.254
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, May 20, 2021 at 03:12:24PM +0200, John Paul Adrian Glaubitz wrote:
-> On 5/20/21 3:05 PM, Andy Shevchenko wrote:
-> > Note, this patch is untested. I have no ia64 compiler at hand.
+Hi Andy!
 
-> I can test it later today.
+On 5/20/21 3:17 PM, Andy Shevchenko wrote:
+> On Thu, May 20, 2021 at 03:12:24PM +0200, John Paul Adrian Glaubitz wrote:
+>> On 5/20/21 3:05 PM, Andy Shevchenko wrote:
+>>> Note, this patch is untested. I have no ia64 compiler at hand.
+> 
+>> I can test it later today.
+> 
+> Appreciate it, thanks!
+> 
+> This is against Linux Next (where Andrew's patches are sitting for a while).
 
-Appreciate it, thanks!
+I just pulled linux-next and was able to build a kernel for my RX-2600 without any
+problems. Since your patch is already in the tree, I assume it's correct.
 
-This is against Linux Next (where Andrew's patches are sitting for a while).
+Do you want me to test anything else? I can test-boot the kernel later, but I want
+to avoid that now since I don't want to turn on the noisy server while at home :-).
+
+Adrian
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
