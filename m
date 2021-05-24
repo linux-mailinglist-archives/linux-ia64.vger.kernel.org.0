@@ -2,75 +2,142 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DFAEF38C627
-	for <lists+linux-ia64@lfdr.de>; Fri, 21 May 2021 14:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E6EC38F607
+	for <lists+linux-ia64@lfdr.de>; Tue, 25 May 2021 01:04:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230272AbhEUMEB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 21 May 2021 08:04:01 -0400
-Received: from mga12.intel.com ([192.55.52.136]:33813 "EHLO mga12.intel.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229512AbhEUMEA (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 21 May 2021 08:04:00 -0400
-IronPort-SDR: X/buWrz5u4i3jCj29A2ch7GP900Z9J2JB6Nlwm6QSS84JuswF3CEB9JetDbz7Ryh4VBc2KMl8S
- LQoGBzURDG4Q==
-X-IronPort-AV: E=McAfee;i="6200,9189,9990"; a="181078792"
-X-IronPort-AV: E=Sophos;i="5.82,319,1613462400"; 
-   d="scan'208";a="181078792"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2021 05:02:15 -0700
-IronPort-SDR: KV+7S5Plh5E5Qs4JvsHLaF2a4JpNQYVNUTBaLNLl557BLxepRNe+zNWuORARXlRfrW6cbbgPIz
- LauFKMTKn2xA==
-X-IronPort-AV: E=Sophos;i="5.82,319,1613462400"; 
-   d="scan'208";a="474496344"
-Received: from smile.fi.intel.com (HELO smile) ([10.237.68.40])
-  by orsmga001-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2021 05:02:13 -0700
-Received: from andy by smile with local (Exim 4.94)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1lk3r1-00Dhc5-6S; Fri, 21 May 2021 15:02:11 +0300
-Date:   Fri, 21 May 2021 15:02:11 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        kernel test robot <lkp@intel.com>
-Subject: Re: [PATCH v1 1/1] kernel.h: split out panic and oops helpers (ia64
- fix)
-Message-ID: <YKehQyAn7rgXL9Bb@smile.fi.intel.com>
-References: <20210520130557.55277-1-andriy.shevchenko@linux.intel.com>
- <f2420178-53d7-a1e4-eea7-5e1773835411@physik.fu-berlin.de>
- <YKZhcKqomWxH3eph@smile.fi.intel.com>
- <41bbace7-1b09-8464-a082-e4152f07fdb4@physik.fu-berlin.de>
+        id S229598AbhEXXFt (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 24 May 2021 19:05:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36262 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229539AbhEXXFt (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 24 May 2021 19:05:49 -0400
+Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3878DC06138A
+        for <linux-ia64@vger.kernel.org>; Mon, 24 May 2021 16:04:20 -0700 (PDT)
+Received: by mail-ej1-x636.google.com with SMTP id c20so44304698ejm.3
+        for <linux-ia64@vger.kernel.org>; Mon, 24 May 2021 16:04:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=uHnwU/8zVxK9/bfw4gLk9ClQH8SbH6WwTZFdoRwbAtE=;
+        b=QQB024vhpmn4hq25e6Gkh0zhdrnh3KHdtxH6hg6RDKH7CnpR3mYJd6drz35kPPn+vq
+         h6264Me+UgyGvlpwu30FVPeTMz+AEc12Q0M+XUT2JohzSMatCOapVMLXEXEiejzFf7ti
+         ktfb2nZNhIlo275VOb2O2BOnbc3ySbclEou9yYwi6+PYR4gUlNFMkKIpexQj+R7biYK9
+         xXDP+mzIofYbIEFKZVe3ZXLMSxK2QP8MWFHo5cfoJS3ZJay5Rqyq5UdBp1+zLKULS08J
+         lwUq6hGqLZp80Ar+2xFbnq6NvtyQI7K0uQTTZPi/naCAAye6mC44N7eH6EQPj41saYzr
+         cNUA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=uHnwU/8zVxK9/bfw4gLk9ClQH8SbH6WwTZFdoRwbAtE=;
+        b=k0nJWim9IDgRoj24AY/cSDLclBaoAmh/Oo2YeHcu5zdnbHy3coggAoRP3cVGQDMLdE
+         zyrKAsrleeQQHvR5VB5vuc4nbmC8y/Qx+BD+1xBGyJDFa6phbRXfMD/3XVP0WMSgC/V6
+         eLuke3za06xDGv8fE7d6k/Kwjlm+rrHPNTb97Secxf1p080QFalzCjEZFBZebppSZHeh
+         NfTDcCy16E7zV4cp5IbF80T1HJsHAOk84X/Qhh6c9Ge9T9iIr/VoMwsvGl5duQQi/2Ub
+         AlskiO9uEGoTo6eT9Z9HtlswKVNiQKHEOBWbCIwnLgG3OCxa/M+biEwkgrjpukoOMkTc
+         sdpw==
+X-Gm-Message-State: AOAM5312De7vqPsbmQnz7n+c4zc21SMSayLUlltE52pKkNi+8YPCKlSa
+        Md7CHq+59Ub352I6pjKT+6KFFHtpGW6bePLNKEnV
+X-Google-Smtp-Source: ABdhPJzHdwSaxqdMgKRFDcoSWE+vBddUp/NzMoTBPda3nQNAVt0QAUQEdTUit8AXk9QB29Wy0DPtdDjKh5nmDnbZhoc=
+X-Received: by 2002:a17:907:10d8:: with SMTP id rv24mr25356059ejb.542.1621897458726;
+ Mon, 24 May 2021 16:04:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <41bbace7-1b09-8464-a082-e4152f07fdb4@physik.fu-berlin.de>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <cover.1621363275.git.rgb@redhat.com> <f5f1a4d8699613f8c02ce762807228c841c2e26f.1621363275.git.rgb@redhat.com>
+ <20210520075842.vnbwbw6yffkybk6z@wittgenstein>
+In-Reply-To: <20210520075842.vnbwbw6yffkybk6z@wittgenstein>
+From:   Paul Moore <paul@paul-moore.com>
+Date:   Mon, 24 May 2021 19:04:07 -0400
+Message-ID: <CAHC9VhTyAFou=_Xu7ZSZSY+19Yii=hQ1NW1LPisk49Ot9wg7rg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/3] audit: add support for the openat2 syscall
+To:     Christian Brauner <christian.brauner@ubuntu.com>
+Cc:     Richard Guy Briggs <rgb@redhat.com>,
+        Linux-Audit Mailing List <linux-audit@redhat.com>,
+        LKML <linux-kernel@vger.kernel.org>,
+        linux-fsdevel@vger.kernel.org, Eric Paris <eparis@parisplace.org>,
+        Steve Grubb <sgrubb@redhat.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Eric Paris <eparis@redhat.com>, x86@kernel.org,
+        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Arnd Bergmann <arnd@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, May 21, 2021 at 09:24:08AM +0200, John Paul Adrian Glaubitz wrote:
-> On 5/20/21 3:17 PM, Andy Shevchenko wrote:
-> > On Thu, May 20, 2021 at 03:12:24PM +0200, John Paul Adrian Glaubitz wrote:
-> >> On 5/20/21 3:05 PM, Andy Shevchenko wrote:
-> >>> Note, this patch is untested. I have no ia64 compiler at hand.
-> > 
-> >> I can test it later today.
-> > 
-> > Appreciate it, thanks!
-> > 
-> > This is against Linux Next (where Andrew's patches are sitting for a while).
-> 
-> I just pulled linux-next and was able to build a kernel for my RX-2600 without any
-> problems. Since your patch is already in the tree, I assume it's correct.
-> 
-> Do you want me to test anything else? I can test-boot the kernel later, but I want
-> to avoid that now since I don't want to turn on the noisy server while at home :-)
+On Thu, May 20, 2021 at 3:58 AM Christian Brauner
+<christian.brauner@ubuntu.com> wrote:
+> On Wed, May 19, 2021 at 04:00:21PM -0400, Richard Guy Briggs wrote:
+> > The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
+> > ("open: introduce openat2(2) syscall")
+> >
+> > Add the openat2(2) syscall to the audit syscall classifier.
+> >
+> > Link: https://github.com/linux-audit/audit-kernel/issues/67
+> > Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
+> > Link: https://lore.kernel.org/r/f5f1a4d8699613f8c02ce762807228c841c2e26f.1621363275.git.rgb@redhat.com
+> > ---
+> >  arch/alpha/kernel/audit.c           | 2 ++
+> >  arch/ia64/kernel/audit.c            | 2 ++
+> >  arch/parisc/kernel/audit.c          | 2 ++
+> >  arch/parisc/kernel/compat_audit.c   | 2 ++
+> >  arch/powerpc/kernel/audit.c         | 2 ++
+> >  arch/powerpc/kernel/compat_audit.c  | 2 ++
+> >  arch/s390/kernel/audit.c            | 2 ++
+> >  arch/s390/kernel/compat_audit.c     | 2 ++
+> >  arch/sparc/kernel/audit.c           | 2 ++
+> >  arch/sparc/kernel/compat_audit.c    | 2 ++
+> >  arch/x86/ia32/audit.c               | 2 ++
+> >  arch/x86/kernel/audit_64.c          | 2 ++
+> >  include/linux/auditsc_classmacros.h | 1 +
+> >  kernel/auditsc.c                    | 3 +++
+> >  lib/audit.c                         | 4 ++++
+> >  lib/compat_audit.c                  | 4 ++++
+> >  16 files changed, 36 insertions(+)
 
-Nothing is required anymore, thanks for your help with testing!
+...
+
+> > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
+> > index d775ea16505b..3f59ab209dfd 100644
+> > --- a/kernel/auditsc.c
+> > +++ b/kernel/auditsc.c
+> > @@ -76,6 +76,7 @@
+> >  #include <linux/fsnotify_backend.h>
+> >  #include <uapi/linux/limits.h>
+> >  #include <uapi/linux/netfilter/nf_tables.h>
+> > +#include <uapi/linux/openat2.h>
+> >
+> >  #include "audit.h"
+> >
+> > @@ -196,6 +197,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
+> >               return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
+> >       case AUDITSC_EXECVE:
+> >               return mask & AUDIT_PERM_EXEC;
+> > +     case AUDITSC_OPENAT2:
+> > +             return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
+>
+> That's a lot of dereferncing, casting and masking all at once. Maybe a
+> small static inline helper would be good for the sake of legibility? Sm
+> like:
+>
+> static inline u32 audit_openat2_acc(struct open_how *how, int mask)
+> {
+>         u32 flags = how->flags;
+>         return mask & ACC_MODE(flags);
+> }
+>
+> but not sure. Just seems more legible to me.
+> Otherwise.
+
+I'm on the fence about this.  I understand Christian's concern, but I
+have a bit of hatred towards single caller functions like this.  Since
+this function isn't really high-touch, and I don't expect that to
+change in the near future, let's leave the casting mess as-is.
 
 -- 
-With Best Regards,
-Andy Shevchenko
-
-
+paul moore
+www.paul-moore.com
