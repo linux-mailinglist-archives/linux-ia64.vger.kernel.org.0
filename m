@@ -2,142 +2,170 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E6EC38F607
-	for <lists+linux-ia64@lfdr.de>; Tue, 25 May 2021 01:04:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97A353911C0
+	for <lists+linux-ia64@lfdr.de>; Wed, 26 May 2021 10:02:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229598AbhEXXFt (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 24 May 2021 19:05:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36262 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229539AbhEXXFt (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 24 May 2021 19:05:49 -0400
-Received: from mail-ej1-x636.google.com (mail-ej1-x636.google.com [IPv6:2a00:1450:4864:20::636])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3878DC06138A
-        for <linux-ia64@vger.kernel.org>; Mon, 24 May 2021 16:04:20 -0700 (PDT)
-Received: by mail-ej1-x636.google.com with SMTP id c20so44304698ejm.3
-        for <linux-ia64@vger.kernel.org>; Mon, 24 May 2021 16:04:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=paul-moore-com.20150623.gappssmtp.com; s=20150623;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=uHnwU/8zVxK9/bfw4gLk9ClQH8SbH6WwTZFdoRwbAtE=;
-        b=QQB024vhpmn4hq25e6Gkh0zhdrnh3KHdtxH6hg6RDKH7CnpR3mYJd6drz35kPPn+vq
-         h6264Me+UgyGvlpwu30FVPeTMz+AEc12Q0M+XUT2JohzSMatCOapVMLXEXEiejzFf7ti
-         ktfb2nZNhIlo275VOb2O2BOnbc3ySbclEou9yYwi6+PYR4gUlNFMkKIpexQj+R7biYK9
-         xXDP+mzIofYbIEFKZVe3ZXLMSxK2QP8MWFHo5cfoJS3ZJay5Rqyq5UdBp1+zLKULS08J
-         lwUq6hGqLZp80Ar+2xFbnq6NvtyQI7K0uQTTZPi/naCAAye6mC44N7eH6EQPj41saYzr
-         cNUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=uHnwU/8zVxK9/bfw4gLk9ClQH8SbH6WwTZFdoRwbAtE=;
-        b=k0nJWim9IDgRoj24AY/cSDLclBaoAmh/Oo2YeHcu5zdnbHy3coggAoRP3cVGQDMLdE
-         zyrKAsrleeQQHvR5VB5vuc4nbmC8y/Qx+BD+1xBGyJDFa6phbRXfMD/3XVP0WMSgC/V6
-         eLuke3za06xDGv8fE7d6k/Kwjlm+rrHPNTb97Secxf1p080QFalzCjEZFBZebppSZHeh
-         NfTDcCy16E7zV4cp5IbF80T1HJsHAOk84X/Qhh6c9Ge9T9iIr/VoMwsvGl5duQQi/2Ub
-         AlskiO9uEGoTo6eT9Z9HtlswKVNiQKHEOBWbCIwnLgG3OCxa/M+biEwkgrjpukoOMkTc
-         sdpw==
-X-Gm-Message-State: AOAM5312De7vqPsbmQnz7n+c4zc21SMSayLUlltE52pKkNi+8YPCKlSa
-        Md7CHq+59Ub352I6pjKT+6KFFHtpGW6bePLNKEnV
-X-Google-Smtp-Source: ABdhPJzHdwSaxqdMgKRFDcoSWE+vBddUp/NzMoTBPda3nQNAVt0QAUQEdTUit8AXk9QB29Wy0DPtdDjKh5nmDnbZhoc=
-X-Received: by 2002:a17:907:10d8:: with SMTP id rv24mr25356059ejb.542.1621897458726;
- Mon, 24 May 2021 16:04:18 -0700 (PDT)
+        id S232587AbhEZIDx (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 26 May 2021 04:03:53 -0400
+Received: from mail.kernel.org ([198.145.29.99]:38864 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233036AbhEZIDp (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 26 May 2021 04:03:45 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id B5FDA613B4;
+        Wed, 26 May 2021 08:02:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1622016134;
+        bh=OJUEFpT95qUpquON+1GAgzQUd46838l2MqCkeVGbcRc=;
+        h=From:To:Cc:Subject:Date:From;
+        b=W9ANxDr4FEFGxA8n7GLQkDTG2L9Yh3x6MdqwWRl3PF1gX8IQYMoiyUcyhMN6RwK3E
+         +c71MZqXlzg0umLAv+Vis3yo/DQQ/laQJ1IxHY9qqYDLMjIDxNfs9K/yvuCxDiTD2L
+         aLgcG5xPclbo7NqLavt56F54KPZwB1lZJxo35H7zOFyjGhPI/tMTq8d/neUMhJaKxj
+         98O3s/JkGTRsoTcrMGiNL10rPMuIrKFQBAUTdt5+LBeRs64AnXq43CFIF/MYW7Xb4/
+         8uOnUePJtP7ZALzrcIxMwZfhBo2VDbNJfApjfYZv/l6fOtK/5ddzUupcW/3j8nL1kE
+         ZqJKvKQFo3lMQ==
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@kernel.org>
+Cc:     X86 ML <x86@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
+        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
+        ast@kernel.org, tglx@linutronix.de, kernel-team@fb.com, yhs@fb.com,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        linux-ia64@vger.kernel.org,
+        Abhishek Sagar <sagar.abhishek@gmail.com>,
+        Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Subject: [PATCH -tip v6 00/13] kprobes: Fix stacktrace with kretprobes on x86
+Date:   Wed, 26 May 2021 17:02:09 +0900
+Message-Id: <162201612941.278331.5293566981784464165.stgit@devnote2>
+X-Mailer: git-send-email 2.25.1
+User-Agent: StGit/0.19
 MIME-Version: 1.0
-References: <cover.1621363275.git.rgb@redhat.com> <f5f1a4d8699613f8c02ce762807228c841c2e26f.1621363275.git.rgb@redhat.com>
- <20210520075842.vnbwbw6yffkybk6z@wittgenstein>
-In-Reply-To: <20210520075842.vnbwbw6yffkybk6z@wittgenstein>
-From:   Paul Moore <paul@paul-moore.com>
-Date:   Mon, 24 May 2021 19:04:07 -0400
-Message-ID: <CAHC9VhTyAFou=_Xu7ZSZSY+19Yii=hQ1NW1LPisk49Ot9wg7rg@mail.gmail.com>
-Subject: Re: [PATCH v4 2/3] audit: add support for the openat2 syscall
-To:     Christian Brauner <christian.brauner@ubuntu.com>
-Cc:     Richard Guy Briggs <rgb@redhat.com>,
-        Linux-Audit Mailing List <linux-audit@redhat.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        linux-fsdevel@vger.kernel.org, Eric Paris <eparis@parisplace.org>,
-        Steve Grubb <sgrubb@redhat.com>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Eric Paris <eparis@redhat.com>, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Arnd Bergmann <arnd@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, May 20, 2021 at 3:58 AM Christian Brauner
-<christian.brauner@ubuntu.com> wrote:
-> On Wed, May 19, 2021 at 04:00:21PM -0400, Richard Guy Briggs wrote:
-> > The openat2(2) syscall was added in kernel v5.6 with commit fddb5d430ad9
-> > ("open: introduce openat2(2) syscall")
-> >
-> > Add the openat2(2) syscall to the audit syscall classifier.
-> >
-> > Link: https://github.com/linux-audit/audit-kernel/issues/67
-> > Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
-> > Link: https://lore.kernel.org/r/f5f1a4d8699613f8c02ce762807228c841c2e26f.1621363275.git.rgb@redhat.com
-> > ---
-> >  arch/alpha/kernel/audit.c           | 2 ++
-> >  arch/ia64/kernel/audit.c            | 2 ++
-> >  arch/parisc/kernel/audit.c          | 2 ++
-> >  arch/parisc/kernel/compat_audit.c   | 2 ++
-> >  arch/powerpc/kernel/audit.c         | 2 ++
-> >  arch/powerpc/kernel/compat_audit.c  | 2 ++
-> >  arch/s390/kernel/audit.c            | 2 ++
-> >  arch/s390/kernel/compat_audit.c     | 2 ++
-> >  arch/sparc/kernel/audit.c           | 2 ++
-> >  arch/sparc/kernel/compat_audit.c    | 2 ++
-> >  arch/x86/ia32/audit.c               | 2 ++
-> >  arch/x86/kernel/audit_64.c          | 2 ++
-> >  include/linux/auditsc_classmacros.h | 1 +
-> >  kernel/auditsc.c                    | 3 +++
-> >  lib/audit.c                         | 4 ++++
-> >  lib/compat_audit.c                  | 4 ++++
-> >  16 files changed, 36 insertions(+)
+Hello,
 
-...
+Here is the 6th version of the series to fix the stacktrace with kretprobe
+on x86.
 
-> > diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-> > index d775ea16505b..3f59ab209dfd 100644
-> > --- a/kernel/auditsc.c
-> > +++ b/kernel/auditsc.c
-> > @@ -76,6 +76,7 @@
-> >  #include <linux/fsnotify_backend.h>
-> >  #include <uapi/linux/limits.h>
-> >  #include <uapi/linux/netfilter/nf_tables.h>
-> > +#include <uapi/linux/openat2.h>
-> >
-> >  #include "audit.h"
-> >
-> > @@ -196,6 +197,8 @@ static int audit_match_perm(struct audit_context *ctx, int mask)
-> >               return ((mask & AUDIT_PERM_WRITE) && ctx->argv[0] == SYS_BIND);
-> >       case AUDITSC_EXECVE:
-> >               return mask & AUDIT_PERM_EXEC;
-> > +     case AUDITSC_OPENAT2:
-> > +             return mask & ACC_MODE((u32)((struct open_how *)ctx->argv[2])->flags);
->
-> That's a lot of dereferncing, casting and masking all at once. Maybe a
-> small static inline helper would be good for the sake of legibility? Sm
-> like:
->
-> static inline u32 audit_openat2_acc(struct open_how *how, int mask)
-> {
->         u32 flags = how->flags;
->         return mask & ACC_MODE(flags);
-> }
->
-> but not sure. Just seems more legible to me.
-> Otherwise.
+The previous version is;
 
-I'm on the fence about this.  I understand Christian's concern, but I
-have a bit of hatred towards single caller functions like this.  Since
-this function isn't really high-touch, and I don't expect that to
-change in the near future, let's leave the casting mess as-is.
+ https://lore.kernel.org/bpf/161676170650.330141.6214727134265514123.stgit@devnote2/ 
 
--- 
-paul moore
-www.paul-moore.com
+This version is rebased on the latest tip tree and add some patches for
+improving stacktrace[13/13].
+
+Changes from v5:
+[02/13]:
+  - Use dereference_symbol_descriptor() instead of dereference_function_descriptor()
+[04/13]:
+  - Replace BUG_ON() with WARN_ON_ONCE() in __kretprobe_trampoline_handler().
+[13/13]:
+  - Add a new patch to fix return address in earlier stage.
+
+
+With this series, unwinder can unwind stack correctly from ftrace as below;
+
+  # cd /sys/kernel/debug/tracing
+  # echo > trace
+  # echo 1 > options/sym-offset
+  # echo r vfs_read >> kprobe_events
+  # echo r full_proxy_read >> kprobe_events
+  # echo traceoff:1 > events/kprobes/r_vfs_read_0/trigger
+  # echo stacktrace:1 > events/kprobes/r_full_proxy_read_0/trigger
+  # echo 1 > events/kprobes/enable
+  # cat /sys/kernel/debug/kprobes/list
+ffffffff8133b740  r  full_proxy_read+0x0    [FTRACE]
+ffffffff812560b0  r  vfs_read+0x0    [FTRACE]
+  # echo 0 > events/kprobes/enable
+  # cat trace
+# tracer: nop
+#
+# entries-in-buffer/entries-written: 3/3   #P:8
+#
+#                                _-----=> irqs-off
+#                               / _----=> need-resched
+#                              | / _---=> hardirq/softirq
+#                              || / _--=> preempt-depth
+#                              ||| /     delay
+#           TASK-PID     CPU#  ||||   TIMESTAMP  FUNCTION
+#              | |         |   ||||      |         |
+           <...>-134     [007] ...1    16.185877: r_full_proxy_read_0: (vfs_read+0x98/0x180 <- full_proxy_read)
+           <...>-134     [007] ...1    16.185901: <stack trace>
+ => kretprobe_trace_func+0x209/0x300
+ => kretprobe_dispatcher+0x4a/0x70
+ => __kretprobe_trampoline_handler+0xd4/0x170
+ => trampoline_handler+0x43/0x60
+ => kretprobe_trampoline+0x2a/0x50
+ => vfs_read+0x98/0x180
+ => ksys_read+0x5f/0xe0
+ => do_syscall_64+0x37/0x90
+ => entry_SYSCALL_64_after_hwframe+0x44/0xae
+           <...>-134     [007] ...1    16.185902: r_vfs_read_0: (ksys_read+0x5f/0xe0 <- vfs_read)
+
+This shows the double return probes (vfs_read and full_proxy_read) on the stack
+correctly unwinded. (vfs_read will return to ksys_read+0x5f and full_proxy_read
+will return to vfs_read+0x98)
+
+This actually changes the kretprobe behavisor a bit, now the instraction pointer in
+the pt_regs passed to kretprobe user handler is correctly set the real return
+address. So user handlers can get it via instruction_pointer() API.
+
+You can also get this series from 
+ git://git.kernel.org/pub/scm/linux/kernel/git/mhiramat/linux.git kprobes/kretprobe-stackfix-v6
+
+
+Thank you,
+
+---
+
+Josh Poimboeuf (1):
+      x86/kprobes: Add UNWIND_HINT_FUNC on kretprobe_trampoline code
+
+Masami Hiramatsu (12):
+      ia64: kprobes: Fix to pass correct trampoline address to the handler
+      kprobes: treewide: Replace arch_deref_entry_point() with dereference_symbol_descriptor()
+      kprobes: treewide: Remove trampoline_address from kretprobe_trampoline_handler()
+      kprobes: Add kretprobe_find_ret_addr() for searching return address
+      ARC: Add instruction_pointer_set() API
+      ia64: Add instruction_pointer_set() API
+      arm: kprobes: Make a space for regs->ARM_pc at kretprobe_trampoline
+      kprobes: Setup instruction pointer in __kretprobe_trampoline_handler
+      x86/kprobes: Push a fake return address at kretprobe_trampoline
+      x86/unwind: Recover kretprobe trampoline entry
+      tracing: Show kretprobe unknown indicator only for kretprobe_trampoline
+      x86/kprobes: Fixup return address in generic trampoline handler
+
+
+ arch/arc/include/asm/ptrace.h       |    5 ++
+ arch/arc/kernel/kprobes.c           |    2 -
+ arch/arm/probes/kprobes/core.c      |    5 +-
+ arch/arm64/kernel/probes/kprobes.c  |    3 -
+ arch/csky/kernel/probes/kprobes.c   |    2 -
+ arch/ia64/include/asm/ptrace.h      |    5 ++
+ arch/ia64/kernel/kprobes.c          |   15 ++---
+ arch/mips/kernel/kprobes.c          |    3 -
+ arch/parisc/kernel/kprobes.c        |    4 +
+ arch/powerpc/kernel/kprobes.c       |   13 ----
+ arch/riscv/kernel/probes/kprobes.c  |    2 -
+ arch/s390/kernel/kprobes.c          |    2 -
+ arch/sh/kernel/kprobes.c            |    2 -
+ arch/sparc/kernel/kprobes.c         |    2 -
+ arch/x86/include/asm/kprobes.h      |    1 
+ arch/x86/include/asm/unwind.h       |   23 +++++++
+ arch/x86/include/asm/unwind_hints.h |    5 ++
+ arch/x86/kernel/kprobes/core.c      |   53 +++++++++++++++--
+ arch/x86/kernel/unwind_frame.c      |    4 +
+ arch/x86/kernel/unwind_guess.c      |    3 -
+ arch/x86/kernel/unwind_orc.c        |   19 +++++-
+ include/linux/kprobes.h             |   41 +++++++++++--
+ kernel/kprobes.c                    |  108 +++++++++++++++++++++++++----------
+ kernel/trace/trace_output.c         |   17 +-----
+ lib/error-inject.c                  |    3 +
+ 25 files changed, 237 insertions(+), 105 deletions(-)
+
+--
+Masami Hiramatsu (Linaro) <mhiramat@kernel.org>
