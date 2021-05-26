@@ -2,397 +2,203 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BFBD391A6E
-	for <lists+linux-ia64@lfdr.de>; Wed, 26 May 2021 16:38:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10829391E45
+	for <lists+linux-ia64@lfdr.de>; Wed, 26 May 2021 19:40:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234654AbhEZOjj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 26 May 2021 10:39:39 -0400
-Received: from condef-09.nifty.com ([202.248.20.74]:32364 "EHLO
-        condef-09.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234432AbhEZOjj (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 26 May 2021 10:39:39 -0400
-Received: from conssluserg-04.nifty.com ([10.126.8.83])by condef-09.nifty.com with ESMTP id 14QEXHP3027035;
-        Wed, 26 May 2021 23:33:17 +0900
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181]) (authenticated)
-        by conssluserg-04.nifty.com with ESMTP id 14QEX0hZ030416;
-        Wed, 26 May 2021 23:33:01 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-04.nifty.com 14QEX0hZ030416
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1622039581;
-        bh=K2JBpUyGmknhlRJpT71wl4Baxz8GsbPi2HBWhe0fUJY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=cnmXS+DqWdAPC0p8MNIg0X+ZuRBIktoOUUR+EQB4vPPRCGwGVlLjEGNDw3EmAqZlv
-         xlyoU4qIgALC1L++WZgyjKMXDzp+GxzDeYEL0F6IhJRd7Rpw2XWDIFJ8o7cQRW8BJc
-         58bmB0Jh48QslQPtKIaufL8A/fujJ7UQngW2AlQLs93Fom+msv11CPKYfc9S8R6atG
-         3OOPiA7jJYoMBhNmRyZsxR2MDGv0EVvIwT7A7e7yI9l8/pHrO3j3QQFOzjOgPaV2AN
-         D3pbKwvq9+nlzItRdCDnwVjN2eBR7ykeJ5nQmYRfOW40+I524Aqu+Vsx77vDiJBmu1
-         zIUzibiWGcAvw==
-X-Nifty-SrcIP: [209.85.214.181]
-Received: by mail-pl1-f181.google.com with SMTP id d20so700064pls.13;
-        Wed, 26 May 2021 07:33:00 -0700 (PDT)
-X-Gm-Message-State: AOAM530GOUOKnQj3QL/c4ZQ46GiqErhr0ztzPNR1/JAnM+d4jhe3s5UJ
-        GuU5kapvCyfdDuHaoVR2HnibyZ/eo5oliR92Jac=
-X-Google-Smtp-Source: ABdhPJw/7i4Yr5Lur94Y0RHgLFU9NY7pValTqlXUvZTdqsgLwd6wmbbeeFmUfP1tSYkLq/bZEryNx1br7CSMU1EHLow=
-X-Received: by 2002:a17:902:541:b029:f0:3187:409b with SMTP id
- 59-20020a1709020541b02900f03187409bmr36247746plf.47.1622039579510; Wed, 26
- May 2021 07:32:59 -0700 (PDT)
+        id S232430AbhEZRlm (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 26 May 2021 13:41:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48848 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229500AbhEZRll (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 26 May 2021 13:41:41 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23F97C061574;
+        Wed, 26 May 2021 10:40:09 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id g38so3169247ybi.12;
+        Wed, 26 May 2021 10:40:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=DJ9ACjlxnCUJLajZkvUg3JRAmdPpDh57UE8Z7+zKl2E=;
+        b=q14fR1x7ZC6FG7q+YFW4P6RUspWpjhXIvmW9USnA/SUNqRH1AUzv0WSzhYqRTohAz2
+         7irBwyQJFjA/i8GFWP8rx/cQwO6X5VHW3uQ4nvaXVtNHbSDiQY5SB2oDQ895viceF7P3
+         Fz1wQd6cmUcIc9W/QWS79G+z47BFExxBBKSlMv8thl79VEZJ/MRhnLZB+D+cqHCTzjXH
+         H39PDvxNpLrpYYaQaTRryNMAiAoc+3SfPpYsM28btzVdYJn0vba13w1/RTDgu2ulV1EH
+         ojkaLc4nwVpuiFi5aJtzofc1iU9DKu/HasrzoYs9EjIKw+VK/NIbWd+/+9Ucn47ddRyE
+         fhng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=DJ9ACjlxnCUJLajZkvUg3JRAmdPpDh57UE8Z7+zKl2E=;
+        b=FWOC+7OIHve66YafO5DfIYPIN51ARKXW7BYGEZki2NDluiE8WrsfNBtfp1yQGGKq/G
+         mQTsE0jdoX1Tta9DX9XoajBlTIEM7vEdRSPxqBxar5ZzhUo2jOGqy9a9rvzrXVcLvZsS
+         kbi45shpQ7XDfzsDGLbMS9csvslQopCh81GoGrcEkga6GI5qRHHcSgCG3XCu3oecjn+3
+         VYUgE6Pem/+KP8gIFSlPJTXmkMBRjaX+iuEDEIscIvPolihK1ed2LdI/mTz3nyVyqOzm
+         p//2QgGFEcyoffjyo6SoIEYhKISQIKszVQigUPTKoacHhaOuJVKyuSIQY2M3Vh7uVxXz
+         Rl4Q==
+X-Gm-Message-State: AOAM5328VR3l35GLvnogt39RPsbqC1k7INBVtLhb926gk57uQ62+nPQn
+        mXPmHb8w1vJT1wKmsPokF2Ya+Q4qvM3U7UwyzVBahQVG
+X-Google-Smtp-Source: ABdhPJyHiz6p+6b1Nq2tExGkbdorYbnD1UY697xYQETPqevt15o2HZJjdTPsN4ZBFpMJFOsWxQsAmgFDAigeVojp2nQ=
+X-Received: by 2002:a5b:286:: with SMTP id x6mr54464936ybl.347.1622050808310;
+ Wed, 26 May 2021 10:40:08 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210512075729.60291-1-masahiroy@kernel.org>
-In-Reply-To: <20210512075729.60291-1-masahiroy@kernel.org>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Wed, 26 May 2021 23:32:22 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAS7cEj9h=Hi0O-AoFjJPg2mxp0zbi8boXj4O9aYt_yg6Q@mail.gmail.com>
-Message-ID: <CAK7LNAS7cEj9h=Hi0O-AoFjJPg2mxp0zbi8boXj4O9aYt_yg6Q@mail.gmail.com>
-Subject: Re: [PATCH 1/5] kbuild: require all architectures to have arch/$(SRCARCH)/Kbuild
-To:     Linux Kbuild mailing list <linux-kbuild@vger.kernel.org>
-Cc:     Albert Ou <aou@eecs.berkeley.edu>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Borislav Petkov <bp@alien8.de>,
-        Brian Cain <bcain@codeaurora.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Zankel <chris@zankel.net>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Greentime Hu <green.hu@gmail.com>, Guo Ren <guoren@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Helge Deller <deller@gmx.de>, Ingo Molnar <mingo@redhat.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Jeff Dike <jdike@addtoit.com>, Jonas Bonn <jonas@southpole.se>,
-        Ley Foon Tan <ley.foon.tan@intel.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Michal Simek <monstr@monstr.eu>,
-        Nick Hu <nickhu@andestech.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Rich Felker <dalias@libc.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Richard Weinberger <richard@nod.at>,
-        Russell King <linux@armlinux.org.uk>,
-        Stafford Horne <shorne@gmail.com>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+References: <162201612941.278331.5293566981784464165.stgit@devnote2>
+In-Reply-To: <162201612941.278331.5293566981784464165.stgit@devnote2>
+From:   Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date:   Wed, 26 May 2021 10:39:57 -0700
+Message-ID: <CAEf4BzbTKwnuutnJG6ALYX_YgLPg0Tzm+BNRGYLfh62oZPNGpg@mail.gmail.com>
+Subject: Re: [PATCH -tip v6 00/13] kprobes: Fix stacktrace with kretprobes on x86
+To:     Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
+        Daniel Xu <dxu@dxuuu.xyz>,
+        open list <linux-kernel@vger.kernel.org>,
+        bpf <bpf@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Thomas Gleixner <tglx@linutronix.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-alpha@vger.kernel.org,
-        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        Kernel Team <kernel-team@fb.com>, Yonghong Song <yhs@fb.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
         linux-ia64@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        "open list:SIFIVE DRIVERS" <linux-riscv@lists.infradead.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        arcml <linux-snps-arc@lists.infradead.org>,
-        linux-um@lists.infradead.org,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        openrisc@lists.librecores.org,
-        sparclinux <sparclinux@vger.kernel.org>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>, X86 ML <x86@kernel.org>
+        Abhishek Sagar <sagar.abhishek@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, May 12, 2021 at 5:00 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+On Wed, May 26, 2021 at 1:02 AM Masami Hiramatsu <mhiramat@kernel.org> wrote:
 >
-> arch/$(SRCARCH)/Kbuild is useful for Makefile cleanups because you can
-> use the obj-y syntax.
+> Hello,
 >
-> Add an empty file if it is missing in arch/$(SRCARCH)/.
+> Here is the 6th version of the series to fix the stacktrace with kretprobe
+> on x86.
 >
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> The previous version is;
+>
+>  https://lore.kernel.org/bpf/161676170650.330141.6214727134265514123.stgit@devnote2/
+>
+> This version is rebased on the latest tip tree and add some patches for
+> improving stacktrace[13/13].
+>
+> Changes from v5:
+> [02/13]:
+>   - Use dereference_symbol_descriptor() instead of dereference_function_descriptor()
+> [04/13]:
+>   - Replace BUG_ON() with WARN_ON_ONCE() in __kretprobe_trampoline_handler().
+> [13/13]:
+>   - Add a new patch to fix return address in earlier stage.
+>
+>
+> With this series, unwinder can unwind stack correctly from ftrace as below;
+>
+>   # cd /sys/kernel/debug/tracing
+>   # echo > trace
+>   # echo 1 > options/sym-offset
+>   # echo r vfs_read >> kprobe_events
+>   # echo r full_proxy_read >> kprobe_events
+>   # echo traceoff:1 > events/kprobes/r_vfs_read_0/trigger
+>   # echo stacktrace:1 > events/kprobes/r_full_proxy_read_0/trigger
+>   # echo 1 > events/kprobes/enable
+>   # cat /sys/kernel/debug/kprobes/list
+> ffffffff8133b740  r  full_proxy_read+0x0    [FTRACE]
+> ffffffff812560b0  r  vfs_read+0x0    [FTRACE]
+>   # echo 0 > events/kprobes/enable
+>   # cat trace
+> # tracer: nop
+> #
+> # entries-in-buffer/entries-written: 3/3   #P:8
+> #
+> #                                _-----=> irqs-off
+> #                               / _----=> need-resched
+> #                              | / _---=> hardirq/softirq
+> #                              || / _--=> preempt-depth
+> #                              ||| /     delay
+> #           TASK-PID     CPU#  ||||   TIMESTAMP  FUNCTION
+> #              | |         |   ||||      |         |
+>            <...>-134     [007] ...1    16.185877: r_full_proxy_read_0: (vfs_read+0x98/0x180 <- full_proxy_read)
+>            <...>-134     [007] ...1    16.185901: <stack trace>
+>  => kretprobe_trace_func+0x209/0x300
+>  => kretprobe_dispatcher+0x4a/0x70
+>  => __kretprobe_trampoline_handler+0xd4/0x170
+>  => trampoline_handler+0x43/0x60
+>  => kretprobe_trampoline+0x2a/0x50
+>  => vfs_read+0x98/0x180
+>  => ksys_read+0x5f/0xe0
+>  => do_syscall_64+0x37/0x90
+>  => entry_SYSCALL_64_after_hwframe+0x44/0xae
+>            <...>-134     [007] ...1    16.185902: r_vfs_read_0: (ksys_read+0x5f/0xe0 <- vfs_read)
+>
+> This shows the double return probes (vfs_read and full_proxy_read) on the stack
+> correctly unwinded. (vfs_read will return to ksys_read+0x5f and full_proxy_read
+> will return to vfs_read+0x98)
+>
+> This actually changes the kretprobe behavisor a bit, now the instraction pointer in
+> the pt_regs passed to kretprobe user handler is correctly set the real return
+> address. So user handlers can get it via instruction_pointer() API.
+>
+> You can also get this series from
+>  git://git.kernel.org/pub/scm/linux/kernel/git/mhiramat/linux.git kprobes/kretprobe-stackfix-v6
+>
+>
+> Thank you,
+>
 > ---
+>
+
+Thanks for following up on this! I've applied this patch set on top of
+bpf-next and tested with my local BPF-based tool that uses stack
+traces in kretprobes heavily. It all works now and I'm getting
+meaningful and correctly looking stacktraces. Thanks a lot!
+
+Tested-by: Andrii Nakryik <andrii@kernel.org>
 
 
-Applied to linux-kbuild.
-
+> Josh Poimboeuf (1):
+>       x86/kprobes: Add UNWIND_HINT_FUNC on kretprobe_trampoline code
 >
->  Makefile               | 2 +-
->  arch/alpha/Kbuild      | 1 +
->  arch/arc/Makefile      | 3 ---
->  arch/arm/Makefile      | 1 -
->  arch/arm64/Makefile    | 1 -
->  arch/csky/Kbuild       | 1 +
->  arch/h8300/Kbuild      | 1 +
->  arch/hexagon/Kbuild    | 1 +
->  arch/ia64/Kbuild       | 1 +
->  arch/microblaze/Kbuild | 1 +
->  arch/mips/Makefile     | 3 ---
->  arch/nds32/Kbuild      | 1 +
->  arch/nios2/Kbuild      | 1 +
->  arch/openrisc/Makefile | 1 -
->  arch/parisc/Kbuild     | 1 +
->  arch/powerpc/Makefile  | 3 ---
->  arch/riscv/Makefile    | 1 -
->  arch/s390/Makefile     | 3 ---
->  arch/sh/Kbuild         | 1 +
->  arch/sparc/Makefile    | 3 ---
->  arch/um/Kbuild         | 1 +
->  arch/x86/Makefile      | 3 ---
->  arch/xtensa/Kbuild     | 1 +
->  23 files changed, 13 insertions(+), 23 deletions(-)
->  create mode 100644 arch/alpha/Kbuild
->  create mode 100644 arch/csky/Kbuild
->  create mode 100644 arch/h8300/Kbuild
->  create mode 100644 arch/hexagon/Kbuild
->  create mode 100644 arch/ia64/Kbuild
->  create mode 100644 arch/microblaze/Kbuild
->  create mode 100644 arch/nds32/Kbuild
->  create mode 100644 arch/nios2/Kbuild
->  create mode 100644 arch/parisc/Kbuild
->  create mode 100644 arch/sh/Kbuild
->  create mode 100644 arch/um/Kbuild
->  create mode 100644 arch/xtensa/Kbuild
+> Masami Hiramatsu (12):
+>       ia64: kprobes: Fix to pass correct trampoline address to the handler
+>       kprobes: treewide: Replace arch_deref_entry_point() with dereference_symbol_descriptor()
+>       kprobes: treewide: Remove trampoline_address from kretprobe_trampoline_handler()
+>       kprobes: Add kretprobe_find_ret_addr() for searching return address
+>       ARC: Add instruction_pointer_set() API
+>       ia64: Add instruction_pointer_set() API
+>       arm: kprobes: Make a space for regs->ARM_pc at kretprobe_trampoline
+>       kprobes: Setup instruction pointer in __kretprobe_trampoline_handler
+>       x86/kprobes: Push a fake return address at kretprobe_trampoline
+>       x86/unwind: Recover kretprobe trampoline entry
+>       tracing: Show kretprobe unknown indicator only for kretprobe_trampoline
+>       x86/kprobes: Fixup return address in generic trampoline handler
 >
-> diff --git a/Makefile b/Makefile
-> index 15b6476d0f89..7df040b1b023 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -658,7 +658,7 @@ endif
 >
->  ifeq ($(KBUILD_EXTMOD),)
->  # Objects we will link into vmlinux / subdirs we need to visit
-> -core-y         := init/ usr/
-> +core-y         := init/ usr/ arch/$(SRCARCH)/
->  drivers-y      := drivers/ sound/
->  drivers-$(CONFIG_SAMPLES) += samples/
->  drivers-$(CONFIG_NET) += net/
-> diff --git a/arch/alpha/Kbuild b/arch/alpha/Kbuild
-> new file mode 100644
-> index 000000000000..a4e40e534e6a
-> --- /dev/null
-> +++ b/arch/alpha/Kbuild
-> @@ -0,0 +1 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> diff --git a/arch/arc/Makefile b/arch/arc/Makefile
-> index 4392c9c189c4..3e6d4b84797f 100644
-> --- a/arch/arc/Makefile
-> +++ b/arch/arc/Makefile
-> @@ -85,9 +85,6 @@ KBUILD_LDFLAGS        += $(ldflags-y)
+>  arch/arc/include/asm/ptrace.h       |    5 ++
+>  arch/arc/kernel/kprobes.c           |    2 -
+>  arch/arm/probes/kprobes/core.c      |    5 +-
+>  arch/arm64/kernel/probes/kprobes.c  |    3 -
+>  arch/csky/kernel/probes/kprobes.c   |    2 -
+>  arch/ia64/include/asm/ptrace.h      |    5 ++
+>  arch/ia64/kernel/kprobes.c          |   15 ++---
+>  arch/mips/kernel/kprobes.c          |    3 -
+>  arch/parisc/kernel/kprobes.c        |    4 +
+>  arch/powerpc/kernel/kprobes.c       |   13 ----
+>  arch/riscv/kernel/probes/kprobes.c  |    2 -
+>  arch/s390/kernel/kprobes.c          |    2 -
+>  arch/sh/kernel/kprobes.c            |    2 -
+>  arch/sparc/kernel/kprobes.c         |    2 -
+>  arch/x86/include/asm/kprobes.h      |    1
+>  arch/x86/include/asm/unwind.h       |   23 +++++++
+>  arch/x86/include/asm/unwind_hints.h |    5 ++
+>  arch/x86/kernel/kprobes/core.c      |   53 +++++++++++++++--
+>  arch/x86/kernel/unwind_frame.c      |    4 +
+>  arch/x86/kernel/unwind_guess.c      |    3 -
+>  arch/x86/kernel/unwind_orc.c        |   19 +++++-
+>  include/linux/kprobes.h             |   41 +++++++++++--
+>  kernel/kprobes.c                    |  108 +++++++++++++++++++++++++----------
+>  kernel/trace/trace_output.c         |   17 +-----
+>  lib/error-inject.c                  |    3 +
+>  25 files changed, 237 insertions(+), 105 deletions(-)
 >
->  head-y         := arch/arc/kernel/head.o
->
-> -# See arch/arc/Kbuild for content of core part of the kernel
-> -core-y         += arch/arc/
-> -
->  # w/o this dtb won't embed into kernel binary
->  core-y         += arch/arc/boot/dts/
->
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index 415c3514573a..173da685a52e 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -252,7 +252,6 @@ endif
->
->  export TEXT_OFFSET GZFLAGS MMUEXT
->
-> -core-y                         += arch/arm/
->  # If we have a machine-specific directory, then include it in the build.
->  core-y                         += $(machdirs) $(platdirs)
->
-> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-> index 7ef44478560d..b73c151f3a53 100644
-> --- a/arch/arm64/Makefile
-> +++ b/arch/arm64/Makefile
-> @@ -149,7 +149,6 @@ KBUILD_CFLAGS += -DKASAN_SHADOW_SCALE_SHIFT=$(KASAN_SHADOW_SCALE_SHIFT)
->  KBUILD_CPPFLAGS += -DKASAN_SHADOW_SCALE_SHIFT=$(KASAN_SHADOW_SCALE_SHIFT)
->  KBUILD_AFLAGS += -DKASAN_SHADOW_SCALE_SHIFT=$(KASAN_SHADOW_SCALE_SHIFT)
->
-> -core-y         += arch/arm64/
->  libs-y         := arch/arm64/lib/ $(libs-y)
->  libs-$(CONFIG_EFI_STUB) += $(objtree)/drivers/firmware/efi/libstub/lib.a
->
-> diff --git a/arch/csky/Kbuild b/arch/csky/Kbuild
-> new file mode 100644
-> index 000000000000..a4e40e534e6a
-> --- /dev/null
-> +++ b/arch/csky/Kbuild
-> @@ -0,0 +1 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> diff --git a/arch/h8300/Kbuild b/arch/h8300/Kbuild
-> new file mode 100644
-> index 000000000000..a4e40e534e6a
-> --- /dev/null
-> +++ b/arch/h8300/Kbuild
-> @@ -0,0 +1 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> diff --git a/arch/hexagon/Kbuild b/arch/hexagon/Kbuild
-> new file mode 100644
-> index 000000000000..a4e40e534e6a
-> --- /dev/null
-> +++ b/arch/hexagon/Kbuild
-> @@ -0,0 +1 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> diff --git a/arch/ia64/Kbuild b/arch/ia64/Kbuild
-> new file mode 100644
-> index 000000000000..a4e40e534e6a
-> --- /dev/null
-> +++ b/arch/ia64/Kbuild
-> @@ -0,0 +1 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> diff --git a/arch/microblaze/Kbuild b/arch/microblaze/Kbuild
-> new file mode 100644
-> index 000000000000..a4e40e534e6a
-> --- /dev/null
-> +++ b/arch/microblaze/Kbuild
-> @@ -0,0 +1 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-> index 258234c35a09..4e942b7ef022 100644
-> --- a/arch/mips/Makefile
-> +++ b/arch/mips/Makefile
-> @@ -332,9 +332,6 @@ head-y := arch/mips/kernel/head.o
->  libs-y                 += arch/mips/lib/
->  libs-$(CONFIG_MIPS_FP_SUPPORT) += arch/mips/math-emu/
->
-> -# See arch/mips/Kbuild for content of core part of the kernel
-> -core-y += arch/mips/
-> -
->  drivers-y                      += arch/mips/crypto/
->
->  # suspend and hibernation support
-> diff --git a/arch/nds32/Kbuild b/arch/nds32/Kbuild
-> new file mode 100644
-> index 000000000000..a4e40e534e6a
-> --- /dev/null
-> +++ b/arch/nds32/Kbuild
-> @@ -0,0 +1 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> diff --git a/arch/nios2/Kbuild b/arch/nios2/Kbuild
-> new file mode 100644
-> index 000000000000..a4e40e534e6a
-> --- /dev/null
-> +++ b/arch/nios2/Kbuild
-> @@ -0,0 +1 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> diff --git a/arch/openrisc/Makefile b/arch/openrisc/Makefile
-> index 410e7abfac69..c52de526e518 100644
-> --- a/arch/openrisc/Makefile
-> +++ b/arch/openrisc/Makefile
-> @@ -42,7 +42,6 @@ endif
->
->  head-y                 := arch/openrisc/kernel/head.o
->
-> -core-y         += arch/openrisc/
->  libs-y         += $(LIBGCC)
->
->  PHONY += vmlinux.bin
-> diff --git a/arch/parisc/Kbuild b/arch/parisc/Kbuild
-> new file mode 100644
-> index 000000000000..a4e40e534e6a
-> --- /dev/null
-> +++ b/arch/parisc/Kbuild
-> @@ -0,0 +1 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-> index 3212d076ac6a..af669aa75b73 100644
-> --- a/arch/powerpc/Makefile
-> +++ b/arch/powerpc/Makefile
-> @@ -267,9 +267,6 @@ head-$(CONFIG_PPC_FPU)              += arch/powerpc/kernel/fpu.o
->  head-$(CONFIG_ALTIVEC)         += arch/powerpc/kernel/vector.o
->  head-$(CONFIG_PPC_OF_BOOT_TRAMPOLINE)  += arch/powerpc/kernel/prom_init.o
->
-> -# See arch/powerpc/Kbuild for content of core part of the kernel
-> -core-y += arch/powerpc/
-> -
->  # Default to zImage, override when needed
->  all: zImage
->
-> diff --git a/arch/riscv/Makefile b/arch/riscv/Makefile
-> index 3eb9590a0775..c5f359540862 100644
-> --- a/arch/riscv/Makefile
-> +++ b/arch/riscv/Makefile
-> @@ -90,7 +90,6 @@ endif
->
->  head-y := arch/riscv/kernel/head.o
->
-> -core-y += arch/riscv/
->  core-$(CONFIG_RISCV_ERRATA_ALTERNATIVE) += arch/riscv/errata/
->
->  libs-y += arch/riscv/lib/
-> diff --git a/arch/s390/Makefile b/arch/s390/Makefile
-> index e443ed9947bd..37b61645694c 100644
-> --- a/arch/s390/Makefile
-> +++ b/arch/s390/Makefile
-> @@ -128,9 +128,6 @@ OBJCOPYFLAGS        := -O binary
->
->  head-y         := arch/s390/kernel/head64.o
->
-> -# See arch/s390/Kbuild for content of core part of the kernel
-> -core-y         += arch/s390/
-> -
->  libs-y         += arch/s390/lib/
->  drivers-y      += drivers/s390/
->
-> diff --git a/arch/sh/Kbuild b/arch/sh/Kbuild
-> new file mode 100644
-> index 000000000000..a4e40e534e6a
-> --- /dev/null
-> +++ b/arch/sh/Kbuild
-> @@ -0,0 +1 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> diff --git a/arch/sparc/Makefile b/arch/sparc/Makefile
-> index bee99e65fe23..4e65245bc755 100644
-> --- a/arch/sparc/Makefile
-> +++ b/arch/sparc/Makefile
-> @@ -58,9 +58,6 @@ endif
->
->  head-y                 := arch/sparc/kernel/head_$(BITS).o
->
-> -# See arch/sparc/Kbuild for the core part of the kernel
-> -core-y                 += arch/sparc/
-> -
->  libs-y                 += arch/sparc/prom/
->  libs-y                 += arch/sparc/lib/
->
-> diff --git a/arch/um/Kbuild b/arch/um/Kbuild
-> new file mode 100644
-> index 000000000000..a4e40e534e6a
-> --- /dev/null
-> +++ b/arch/um/Kbuild
-> @@ -0,0 +1 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
-> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
-> index c77c5d8a7b3e..4307bf48ec53 100644
-> --- a/arch/x86/Makefile
-> +++ b/arch/x86/Makefile
-> @@ -239,9 +239,6 @@ head-y += arch/x86/kernel/platform-quirks.o
->
->  libs-y  += arch/x86/lib/
->
-> -# See arch/x86/Kbuild for content of core part of the kernel
-> -core-y += arch/x86/
-> -
->  # drivers-y are linked after core-y
->  drivers-$(CONFIG_MATH_EMULATION) += arch/x86/math-emu/
->  drivers-$(CONFIG_PCI)            += arch/x86/pci/
-> diff --git a/arch/xtensa/Kbuild b/arch/xtensa/Kbuild
-> new file mode 100644
-> index 000000000000..a4e40e534e6a
-> --- /dev/null
-> +++ b/arch/xtensa/Kbuild
-> @@ -0,0 +1 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
 > --
-> 2.27.0
->
-
-
--- 
-Best Regards
-Masahiro Yamada
+> Masami Hiramatsu (Linaro) <mhiramat@kernel.org>
