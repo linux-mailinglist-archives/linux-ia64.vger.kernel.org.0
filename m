@@ -2,419 +2,196 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 65CDA393202
-	for <lists+linux-ia64@lfdr.de>; Thu, 27 May 2021 17:13:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF821393432
+	for <lists+linux-ia64@lfdr.de>; Thu, 27 May 2021 18:41:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236951AbhE0POt (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 27 May 2021 11:14:49 -0400
-Received: from mail.kernel.org ([198.145.29.99]:43396 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S236912AbhE0POs (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 27 May 2021 11:14:48 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8B3AE613BA;
-        Thu, 27 May 2021 15:13:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1622128395;
-        bh=v4Y5CgfBMzp5T0CX+Epz9rKs73Qi5rHOJJTJ8WdHbRY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TpgEYLQa6fww76pD+EXqPpG4tWw4RVeiOxm1IKDenxYeudi6q9QrsMPBj8vWQKGHF
-         V7/AI4UcdJsv4V6xu6Hb60ZhUJrk6fiYerMLikOSbIqSBxzhi3g7f2UU+7FR9Gqt9V
-         C3Ne5JKZLMQDRYjaw8c8GWIEPtvXypd/75O7SfurJguzt92R4evulYOP3jYxwMk/E8
-         HZLWeWb5dUdXXuTLVqxBjcStrY3S9YlmYJhjfnYYjB+C/OSSHD9RmNC0VDFJpsIM6w
-         Pnmu3HDTg3AIUWWdpgI7DQ0ETS3eDvwT+YkmrmCWtuEnOu7h1QNKbK4vk/AJe8ndtI
-         rvDl0qboF0+VQ==
-Date:   Thu, 27 May 2021 18:13:03 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-mm@kvack.org,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Russell King <linux@armlinux.org.uk>
-Subject: Re: [PATCH] mm: generalize ZONE_[DMA|DMA32]
-Message-ID: <YK+2/79IZ0M9wtCm@kernel.org>
-References: <20210527143047.123611-1-wangkefeng.wang@huawei.com>
+        id S234278AbhE0QnC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 27 May 2021 12:43:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51112 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233038AbhE0QnC (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 27 May 2021 12:43:02 -0400
+Received: from mail-yb1-xb2d.google.com (mail-yb1-xb2d.google.com [IPv6:2607:f8b0:4864:20::b2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F18A6C061574;
+        Thu, 27 May 2021 09:41:27 -0700 (PDT)
+Received: by mail-yb1-xb2d.google.com with SMTP id y2so1499764ybq.13;
+        Thu, 27 May 2021 09:41:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=+l4a65SFfahsGPe4r1E9ADTfkqEZTK+KAtWlOZb/3NU=;
+        b=q7xCi4kx6BzY3h/W5ZHyfao57L0zxJqJzX2A/T/IELSwM8dqEY95sW//0R+hzz9Jit
+         SLZuHBQEqvwH6HMtNmb3uNV22TBJJq+e7KkDkgas42uuNU84n8FDocJZhmSjDeBY+O0U
+         bAs71ccpZ7S0nReVn6zNR95pQ2Pdx3qLNb0hHFrAkJHtsiaiYloMBU4YmV9pWSyUHym/
+         UvjDehY78Fe8JaJkDnz7FplaMZ6JuOlhHD+3OmvJ9TG3FCQQHqdjOKQkY4aTu4qW0LXe
+         958z4ikn7zJSe2cYWqOe6klqxHJYlwmMVIR4VSJMQlKQPzmCduhQ5QXk6nDIQtUeQfse
+         wU8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=+l4a65SFfahsGPe4r1E9ADTfkqEZTK+KAtWlOZb/3NU=;
+        b=uHo2vx1Mz03/iVjZr0Pf6BSyPgrVeVRMocHEbko6FBoXE1YoTEldkDVbWytcDKfdCH
+         nXtqmhwnUdn/OIImLBrbtwOPVf9ZnSl+tXKQAKaRszD9hFC6oOQ5piej3fr+ZfFZuAs8
+         bQ/e+YRzBezmEk2uTUM+4I+lnG/PefSULA/ZrPIWjTSmYH1Ip+qC8cz+y1k8f3xHo7TU
+         hPag5OpKjPeyDt9pJG4xx2nMvlLlogSJmH+7WpYHZijoF+uVT22LsWqvTbE4lOpo1XOO
+         HEwqQhE9lU5zlukNkHjudKa8kXyc8Kq9fBNK+W0biYEHPCQotSoJMH0VaC99/DDZhozi
+         sITg==
+X-Gm-Message-State: AOAM532njzyG4ssYtdh9dJsEqnyL0WmfxkT+UKacu+Q5eMYK5we5IGc3
+        jKz0Lx7KFt7PAJATUt+pf9uCodQ5svAdjgkw4nc=
+X-Google-Smtp-Source: ABdhPJw4r3p90tt/mwxh1t6xLrMX5Hq4iefF/RfM7bl+2bAHNjliN/2WZVATvcik5GjUtq1ZgFfSXSBoL/CVyRqZm30=
+X-Received: by 2002:a25:7246:: with SMTP id n67mr6172067ybc.510.1622133687136;
+ Thu, 27 May 2021 09:41:27 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210527143047.123611-1-wangkefeng.wang@huawei.com>
+References: <162209754288.436794.3904335049560916855.stgit@devnote2>
+In-Reply-To: <162209754288.436794.3904335049560916855.stgit@devnote2>
+From:   Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date:   Thu, 27 May 2021 09:41:16 -0700
+Message-ID: <CAEf4BzYEUTquwjL2Ea+cjU4ipYVtoA2kdg74+u_hzHUKr39iKQ@mail.gmail.com>
+Subject: Re: [PATCH -tip v7 00/13] kprobes: Fix stacktrace with kretprobes on x86
+To:     Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
+        Daniel Xu <dxu@dxuuu.xyz>,
+        open list <linux-kernel@vger.kernel.org>,
+        bpf <bpf@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Kernel Team <kernel-team@fb.com>, Yonghong Song <yhs@fb.com>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        linux-ia64@vger.kernel.org,
+        Abhishek Sagar <sagar.abhishek@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, May 27, 2021 at 10:30:47PM +0800, Kefeng Wang wrote:
-> ZONE_[DMA|DMA32] configs have duplicate definitions on platforms
-> that subscribe them. Instead, just make them generic options which
-> can be selected on applicable platforms.
-> 
-> Also only x86/arm64 architectures could enable both ZONE_DMA and
-> ZONE_DMA32 if EXPERT, add ARCH_HAS_ZONE_DMA_SET to make dma zone
-> configurable and visible on the two architectures.
-> 
-> Cc: Andrew Morton <akpm@linux-foundation.org> 
-> Cc: Catalin Marinas <catalin.marinas@arm.com> 
-> Cc: Will Deacon <will@kernel.org> 
-> Cc: Geert Uytterhoeven <geert@linux-m68k.org> 
-> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de> 
-> Cc: "David S. Miller" <davem@davemloft.net> 
-> Cc: Ingo Molnar <mingo@redhat.com> 
-> Cc: Borislav Petkov <bp@alien8.de> 
-> Cc: Palmer Dabbelt <palmer@dabbelt.com>
-> Cc: Richard Henderson <rth@twiddle.net> 
-> Cc: Russell King <linux@armlinux.org.uk>
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+On Wed, May 26, 2021 at 11:39 PM Masami Hiramatsu <mhiramat@kernel.org> wrote:
+>
+> Hello,
+>
+> Here is the 7th version of the series to fix the stacktrace with kretprobe on x86.
+>
+> The previous version is;
+>
+>  https://lore.kernel.org/bpf/162201612941.278331.5293566981784464165.stgit@devnote2/
+>
+> This version is adding Tested-by from Andrii and do minor cleanups to solve some
+> warnings from kernel test bots.
+>
+> Changes from v6:
+> For x86 and generic patch:
+>   - Add Andrii's Tested-by. (Andrii, I think you have tested only x86, is it OK?)
 
-Acked-by: Mike Rapoport <rppt@linux.ibm.com>
+right, only tested x86-64
 
+> [11/13]:
+>   - Remove superfluous #include <linux/kprobes.h>.
+> [13/13]:
+>   - Add a prototype for arch_kretprobe_fixup_return().
+>
+>
+> With this series, unwinder can unwind stack correctly from ftrace as below;
+>
+>   # cd /sys/kernel/debug/tracing
+>   # echo > trace
+>   # echo 1 > options/sym-offset
+>   # echo r vfs_read >> kprobe_events
+>   # echo r full_proxy_read >> kprobe_events
+>   # echo traceoff:1 > events/kprobes/r_vfs_read_0/trigger
+>   # echo stacktrace:1 > events/kprobes/r_full_proxy_read_0/trigger
+>   # echo 1 > events/kprobes/enable
+>   # cat /sys/kernel/debug/kprobes/list
+> ffffffff8133b740  r  full_proxy_read+0x0    [FTRACE]
+> ffffffff812560b0  r  vfs_read+0x0    [FTRACE]
+>   # echo 0 > events/kprobes/enable
+>   # cat trace
+> # tracer: nop
+> #
+> # entries-in-buffer/entries-written: 3/3   #P:8
+> #
+> #                                _-----=> irqs-off
+> #                               / _----=> need-resched
+> #                              | / _---=> hardirq/softirq
+> #                              || / _--=> preempt-depth
+> #                              ||| /     delay
+> #           TASK-PID     CPU#  ||||   TIMESTAMP  FUNCTION
+> #              | |         |   ||||      |         |
+>            <...>-134     [007] ...1    16.185877: r_full_proxy_read_0: (vfs_read+0x98/0x180 <- full_proxy_read)
+>            <...>-134     [007] ...1    16.185901: <stack trace>
+>  => kretprobe_trace_func+0x209/0x300
+>  => kretprobe_dispatcher+0x4a/0x70
+>  => __kretprobe_trampoline_handler+0xd4/0x170
+>  => trampoline_handler+0x43/0x60
+>  => kretprobe_trampoline+0x2a/0x50
+>  => vfs_read+0x98/0x180
+>  => ksys_read+0x5f/0xe0
+>  => do_syscall_64+0x37/0x90
+>  => entry_SYSCALL_64_after_hwframe+0x44/0xae
+>            <...>-134     [007] ...1    16.185902: r_vfs_read_0: (ksys_read+0x5f/0xe0 <- vfs_read)
+>
+> This shows the double return probes (vfs_read and full_proxy_read) on the stack
+> correctly unwinded. (vfs_read will return to ksys_read+0x5f and full_proxy_read
+> will return to vfs_read+0x98)
+>
+> This actually changes the kretprobe behavisor a bit, now the instraction pointer in
+> the pt_regs passed to kretprobe user handler is correctly set the real return
+> address. So user handlers can get it via instruction_pointer() API.
+>
+> You can also get this series from
+>  git://git.kernel.org/pub/scm/linux/kernel/git/mhiramat/linux.git kprobes/kretprobe-stackfix-v7
+>
+>
+> Thank you,
+>
 > ---
->  arch/alpha/Kconfig                     |  5 +----
->  arch/arm/Kconfig                       |  3 ---
->  arch/arm64/Kconfig                     |  9 +--------
->  arch/ia64/Kconfig                      |  4 +---
->  arch/m68k/Kconfig                      |  5 +----
->  arch/microblaze/Kconfig                |  4 +---
->  arch/mips/Kconfig                      |  7 -------
->  arch/powerpc/Kconfig                   |  4 ----
->  arch/powerpc/platforms/Kconfig.cputype |  1 +
->  arch/riscv/Kconfig                     |  5 +----
->  arch/s390/Kconfig                      |  4 +---
->  arch/sparc/Kconfig                     |  5 +----
->  arch/x86/Kconfig                       | 15 ++-------------
->  mm/Kconfig                             | 11 +++++++++++
->  14 files changed, 22 insertions(+), 60 deletions(-)
-> 
-> diff --git a/arch/alpha/Kconfig b/arch/alpha/Kconfig
-> index 5998106faa60..6a69a14c4825 100644
-> --- a/arch/alpha/Kconfig
-> +++ b/arch/alpha/Kconfig
-> @@ -40,6 +40,7 @@ config ALPHA
->  	select MMU_GATHER_NO_RANGE
->  	select SET_FS
->  	select SPARSEMEM_EXTREME if SPARSEMEM
-> +	select ZONE_DMA
->  	help
->  	  The Alpha is a 64-bit general-purpose processor designed and
->  	  marketed by the Digital Equipment Corporation of blessed memory,
-> @@ -65,10 +66,6 @@ config GENERIC_CALIBRATE_DELAY
->  	bool
->  	default y
->  
-> -config ZONE_DMA
-> -	bool
-> -	default y
-> -
->  config GENERIC_ISA_DMA
->  	bool
->  	default y
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 24804f11302d..000c3f80b58e 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -218,9 +218,6 @@ config GENERIC_CALIBRATE_DELAY
->  config ARCH_MAY_HAVE_PC_FDC
->  	bool
->  
-> -config ZONE_DMA
-> -	bool
-> -
->  config ARCH_SUPPORTS_UPROBES
->  	def_bool y
->  
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index 9f1d8566bbf9..42794474f37f 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -42,6 +42,7 @@ config ARM64
->  	select ARCH_HAS_SYSCALL_WRAPPER
->  	select ARCH_HAS_TEARDOWN_DMA_OPS if IOMMU_SUPPORT
->  	select ARCH_HAS_TICK_BROADCAST if GENERIC_CLOCKEVENTS_BROADCAST
-> +	select ARCH_HAS_ZONE_DMA_SET if EXPERT
->  	select ARCH_HAVE_ELF_PROT
->  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
->  	select ARCH_INLINE_READ_LOCK if !PREEMPTION
-> @@ -307,14 +308,6 @@ config GENERIC_CSUM
->  config GENERIC_CALIBRATE_DELAY
->  	def_bool y
->  
-> -config ZONE_DMA
-> -	bool "Support DMA zone" if EXPERT
-> -	default y
-> -
-> -config ZONE_DMA32
-> -	bool "Support DMA32 zone" if EXPERT
-> -	default y
-> -
->  config ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
->  	def_bool y
->  
-> diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-> index 279252e3e0f7..fd8503a0088a 100644
-> --- a/arch/ia64/Kconfig
-> +++ b/arch/ia64/Kconfig
-> @@ -60,6 +60,7 @@ config IA64
->  	select NUMA if !FLATMEM
->  	select PCI_MSI_ARCH_FALLBACKS if PCI_MSI
->  	select SET_FS
-> +	select ZONE_DMA32
->  	default y
->  	help
->  	  The Itanium Processor Family is Intel's 64-bit successor to
-> @@ -72,9 +73,6 @@ config 64BIT
->  	select ATA_NONSTANDARD if ATA
->  	default y
->  
-> -config ZONE_DMA32
-> -	def_bool y
-> -
->  config MMU
->  	bool
->  	default y
-> diff --git a/arch/m68k/Kconfig b/arch/m68k/Kconfig
-> index 372e4e69c43a..05a729c6ad7f 100644
-> --- a/arch/m68k/Kconfig
-> +++ b/arch/m68k/Kconfig
-> @@ -34,6 +34,7 @@ config M68K
->  	select SET_FS
->  	select UACCESS_MEMCPY if !MMU
->  	select VIRT_TO_BUS
-> +	select ZONE_DMA
->  
->  config CPU_BIG_ENDIAN
->  	def_bool y
-> @@ -62,10 +63,6 @@ config TIME_LOW_RES
->  config NO_IOPORT_MAP
->  	def_bool y
->  
-> -config ZONE_DMA
-> -	bool
-> -	default y
-> -
->  config HZ
->  	int
->  	default 1000 if CLEOPATRA
-> diff --git a/arch/microblaze/Kconfig b/arch/microblaze/Kconfig
-> index 0660f47012bc..14a67a42fcae 100644
-> --- a/arch/microblaze/Kconfig
-> +++ b/arch/microblaze/Kconfig
-> @@ -43,6 +43,7 @@ config MICROBLAZE
->  	select MMU_GATHER_NO_RANGE
->  	select SPARSE_IRQ
->  	select SET_FS
-> +	select ZONE_DMA
->  
->  # Endianness selection
->  choice
-> @@ -60,9 +61,6 @@ config CPU_LITTLE_ENDIAN
->  
->  endchoice
->  
-> -config ZONE_DMA
-> -	def_bool y
-> -
->  config ARCH_HAS_ILOG2_U32
->  	def_bool n
->  
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index ed51970c08e7..430d5324f1af 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -3277,13 +3277,6 @@ config I8253
->  	select CLKSRC_I8253
->  	select CLKEVT_I8253
->  	select MIPS_EXTERNAL_TIMER
-> -
-> -config ZONE_DMA
-> -	bool
-> -
-> -config ZONE_DMA32
-> -	bool
-> -
->  endmenu
->  
->  config TRAD_SIGNALS
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 088dd2afcfe4..0f78bb383a12 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -403,10 +403,6 @@ config PPC_ADV_DEBUG_DAC_RANGE
->  config PPC_DAWR
->  	bool
->  
-> -config ZONE_DMA
-> -	bool
-> -	default y if PPC_BOOK3E_64
-> -
->  config PGTABLE_LEVELS
->  	int
->  	default 2 if !PPC64
-> diff --git a/arch/powerpc/platforms/Kconfig.cputype b/arch/powerpc/platforms/Kconfig.cputype
-> index f998e655b570..7d271de8fcbd 100644
-> --- a/arch/powerpc/platforms/Kconfig.cputype
-> +++ b/arch/powerpc/platforms/Kconfig.cputype
-> @@ -111,6 +111,7 @@ config PPC_BOOK3E_64
->  	select PPC_FPU # Make it a choice ?
->  	select PPC_SMP_MUXED_IPI
->  	select PPC_DOORBELL
-> +	select ZONE_DMA
->  
->  endchoice
->  
-> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-> index a8ad8eb76120..d29643dee126 100644
-> --- a/arch/riscv/Kconfig
-> +++ b/arch/riscv/Kconfig
-> @@ -103,6 +103,7 @@ config RISCV
->  	select SYSCTL_EXCEPTION_TRACE
->  	select THREAD_INFO_IN_TASK
->  	select UACCESS_MEMCPY if !MMU
-> +	select ZONE_DMA32 if 64BIT
->  
->  config ARCH_MMAP_RND_BITS_MIN
->  	default 18 if 64BIT
-> @@ -132,10 +133,6 @@ config MMU
->  	  Select if you want MMU-based virtualised addressing space
->  	  support by paged memory management. If unsure, say 'Y'.
->  
-> -config ZONE_DMA32
-> -	bool
-> -	default y if 64BIT
-> -
->  config VA_BITS
->  	int
->  	default 32 if 32BIT
-> diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-> index b4c7c34069f8..daab9d56957a 100644
-> --- a/arch/s390/Kconfig
-> +++ b/arch/s390/Kconfig
-> @@ -2,9 +2,6 @@
->  config MMU
->  	def_bool y
->  
-> -config ZONE_DMA
-> -	def_bool y
-> -
->  config CPU_BIG_ENDIAN
->  	def_bool y
->  
-> @@ -210,6 +207,7 @@ config S390
->  	select THREAD_INFO_IN_TASK
->  	select TTY
->  	select VIRT_CPU_ACCOUNTING
-> +	select ZONE_DMA
->  	# Note: keep the above list sorted alphabetically
->  
->  config SCHED_OMIT_FRAME_POINTER
-> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
-> index 164a5254c91c..39679664cc9a 100644
-> --- a/arch/sparc/Kconfig
-> +++ b/arch/sparc/Kconfig
-> @@ -59,6 +59,7 @@ config SPARC32
->  	select CLZ_TAB
->  	select HAVE_UID16
->  	select OLD_SIGACTION
-> +	select ZONE_DMA
->  
->  config SPARC64
->  	def_bool 64BIT
-> @@ -141,10 +142,6 @@ config HIGHMEM
->  	default y if SPARC32
->  	select KMAP_LOCAL
->  
-> -config ZONE_DMA
-> -	bool
-> -	default y if SPARC32
-> -
->  config GENERIC_ISA_DMA
->  	bool
->  	default y if SPARC32
-> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-> index 0045e1b44190..11cf8a0d6800 100644
-> --- a/arch/x86/Kconfig
-> +++ b/arch/x86/Kconfig
-> @@ -33,6 +33,7 @@ config X86_64
->  	select NEED_DMA_MAP_STATE
->  	select SWIOTLB
->  	select ARCH_HAS_ELFCORE_COMPAT
-> +	select ZONE_DMA32
->  
->  config FORCE_DYNAMIC_FTRACE
->  	def_bool y
-> @@ -93,6 +94,7 @@ config X86
->  	select ARCH_HAS_SYSCALL_WRAPPER
->  	select ARCH_HAS_UBSAN_SANITIZE_ALL
->  	select ARCH_HAS_DEBUG_WX
-> +	select ARCH_HAS_ZONE_DMA_SET if EXPERT
->  	select ARCH_HAVE_NMI_SAFE_CMPXCHG
->  	select ARCH_MIGHT_HAVE_ACPI_PDC		if ACPI
->  	select ARCH_MIGHT_HAVE_PC_PARPORT
-> @@ -343,9 +345,6 @@ config ARCH_SUSPEND_POSSIBLE
->  config ARCH_WANT_GENERAL_HUGETLB
->  	def_bool y
->  
-> -config ZONE_DMA32
-> -	def_bool y if X86_64
-> -
->  config AUDIT_ARCH
->  	def_bool y if X86_64
->  
-> @@ -393,16 +392,6 @@ config CC_HAS_SANE_STACKPROTECTOR
->  
->  menu "Processor type and features"
->  
-> -config ZONE_DMA
-> -	bool "DMA memory allocation support" if EXPERT
-> -	default y
-> -	help
-> -	  DMA memory allocation support allows devices with less than 32-bit
-> -	  addressing to allocate within the first 16MB of address space.
-> -	  Disable if no such devices will be used.
-> -
-> -	  If unsure, say Y.
-> -
->  config SMP
->  	bool "Symmetric multi-processing support"
->  	help
-> diff --git a/mm/Kconfig b/mm/Kconfig
-> index 02d44e3420f5..68b0cbdc7968 100644
-> --- a/mm/Kconfig
-> +++ b/mm/Kconfig
-> @@ -789,6 +789,17 @@ config ARCH_HAS_CACHE_LINE_SIZE
->  config ARCH_HAS_PTE_DEVMAP
->  	bool
->  
-> +config ARCH_HAS_ZONE_DMA_SET
-> +	bool
-> +
-> +config ZONE_DMA
-> +	bool "Support DMA zone" if ARCH_HAS_ZONE_DMA_SET
-> +	default y if ARM64
-> +
-> +config ZONE_DMA32
-> +	bool "Support DMA32 zone" if ARCH_HAS_ZONE_DMA_SET
-> +	default y if ARM64
-> +
->  config ZONE_DEVICE
->  	bool "Device memory (pmem, HMM, etc...) hotplug support"
->  	depends on MEMORY_HOTPLUG
-> -- 
-> 2.26.2
-> 
-> 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
-
--- 
-Sincerely yours,
-Mike.
+>
+> Josh Poimboeuf (1):
+>       x86/kprobes: Add UNWIND_HINT_FUNC on kretprobe_trampoline code
+>
+> Masami Hiramatsu (12):
+>       ia64: kprobes: Fix to pass correct trampoline address to the handler
+>       kprobes: treewide: Replace arch_deref_entry_point() with dereference_symbol_descriptor()
+>       kprobes: treewide: Remove trampoline_address from kretprobe_trampoline_handler()
+>       kprobes: Add kretprobe_find_ret_addr() for searching return address
+>       ARC: Add instruction_pointer_set() API
+>       ia64: Add instruction_pointer_set() API
+>       arm: kprobes: Make a space for regs->ARM_pc at kretprobe_trampoline
+>       kprobes: Setup instruction pointer in __kretprobe_trampoline_handler
+>       x86/kprobes: Push a fake return address at kretprobe_trampoline
+>       x86/unwind: Recover kretprobe trampoline entry
+>       tracing: Show kretprobe unknown indicator only for kretprobe_trampoline
+>       x86/kprobes: Fixup return address in generic trampoline handler
+>
+>
+>  arch/arc/include/asm/ptrace.h       |    5 ++
+>  arch/arc/kernel/kprobes.c           |    2 -
+>  arch/arm/probes/kprobes/core.c      |    5 +-
+>  arch/arm64/kernel/probes/kprobes.c  |    3 -
+>  arch/csky/kernel/probes/kprobes.c   |    2 -
+>  arch/ia64/include/asm/ptrace.h      |    5 ++
+>  arch/ia64/kernel/kprobes.c          |   15 ++---
+>  arch/mips/kernel/kprobes.c          |    3 -
+>  arch/parisc/kernel/kprobes.c        |    4 +
+>  arch/powerpc/kernel/kprobes.c       |   13 ----
+>  arch/riscv/kernel/probes/kprobes.c  |    2 -
+>  arch/s390/kernel/kprobes.c          |    2 -
+>  arch/sh/kernel/kprobes.c            |    2 -
+>  arch/sparc/kernel/kprobes.c         |    2 -
+>  arch/x86/include/asm/kprobes.h      |    1
+>  arch/x86/include/asm/unwind.h       |   23 +++++++
+>  arch/x86/include/asm/unwind_hints.h |    5 ++
+>  arch/x86/kernel/kprobes/core.c      |   53 +++++++++++++++--
+>  arch/x86/kernel/unwind_frame.c      |    3 -
+>  arch/x86/kernel/unwind_guess.c      |    3 -
+>  arch/x86/kernel/unwind_orc.c        |   18 +++++-
+>  include/linux/kprobes.h             |   44 ++++++++++++--
+>  kernel/kprobes.c                    |  108 +++++++++++++++++++++++++----------
+>  kernel/trace/trace_output.c         |   17 +-----
+>  lib/error-inject.c                  |    3 +
+>  25 files changed, 238 insertions(+), 105 deletions(-)
+>
+> --
+> Masami Hiramatsu (Linaro) <mhiramat@kernel.org>
