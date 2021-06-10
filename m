@@ -2,107 +2,208 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 259323A17E0
-	for <lists+linux-ia64@lfdr.de>; Wed,  9 Jun 2021 16:51:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1296E3A22E7
+	for <lists+linux-ia64@lfdr.de>; Thu, 10 Jun 2021 05:41:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238261AbhFIOw4 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 9 Jun 2021 10:52:56 -0400
-Received: from mail.kernel.org ([198.145.29.99]:59320 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238257AbhFIOw4 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 9 Jun 2021 10:52:56 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2163C6128A;
-        Wed,  9 Jun 2021 14:50:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623250261;
-        bh=svcXYr1x4uog0gl91R41ozY2Q0KNDzZmG4YRGTMMy2A=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=YkHX/JVfHqUvpWvWXkgg3rdrkk7agHtEIKqaX0vfSpX504lTGaDjO7Qz7iARqzkGp
-         DWsHVY+tAbRsBUSVBkbhVjgZvGY6y/wRIXGMo+CgzooB/zqPomfgnsHX9y3mgTbMXc
-         xGiW+RangNEk+pKIT8UX8w6paGaFQZLDQ+McKqTpjqFKueMHIVGMXJpalfW0Fph76r
-         Lcm2WPwzewVnde/Vu5ujWTdQssxwNbFghUliAxp8Ku3YbSQHaHnLbkGz+awfGrnWGJ
-         yu4qANQoP9p9s4/vzkSPeJiYpDnHVlRdjW4xbBVW2tivL4go8M8laNS3QaNsdGKKc0
-         R1JEjjJpSG45g==
-Date:   Wed, 9 Jun 2021 17:50:50 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Arnd Bergmann <arnd@arndb.de>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Matt Turner <mattst88@gmail.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Vineet Gupta <vgupta@synopsys.com>, kexec@lists.infradead.org,
-        alpha <linux-alpha@vger.kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
+        id S229937AbhFJDmz (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 9 Jun 2021 23:42:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43804 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229770AbhFJDmz (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 9 Jun 2021 23:42:55 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3A34C061574;
+        Wed,  9 Jun 2021 20:40:59 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id v12so235711plo.10;
+        Wed, 09 Jun 2021 20:40:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=date:from:to:cc:subject:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=5Xlibc6hX8kwCcZz0XQ+FE2nBQRDGeD6dPLbec7873k=;
+        b=DVTYq6Mr1yqRlhqT7rDJJzuzmOmfvg9GpbBgcFCCMoS2myqdZzw4QprxJa3JuRM0bT
+         fszOnj6rUU7V7rYDu0HGjJcJy1yQAUdizhaEoGkPQzR15ji4aDgk+aXSrhcsi7gqhe+G
+         FbdtEAWpmeblMOYMUvr2S21hfhKKrlglWsQBqonLnxMmqrsmn/d6e7SiWMqOV3qNwCVt
+         MjkE0KZvqwHcPR1gFvf6SGbPoar3A3hQy1/dss8bOCmgU9bYYqUwRNPllieVX49CDrRs
+         OGKsrv8nYSQYOj9EWI/IpaiVHNGbMB2096LrKggIDabS0tZogPRN014RCOf5EOHysaLH
+         EbNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=5Xlibc6hX8kwCcZz0XQ+FE2nBQRDGeD6dPLbec7873k=;
+        b=JikrwUeFQzNm4P/ORdLegpXDihJxiRbU7lFcL/JXZw0t9Uw1RFrQzZ4j5cDLZfgTZH
+         nuxqqnWv1cevyo2jX+rWaHcvNqlQu/Kou6gr+7bcbz7ed2NFt79r7eSEgqf5u3h7KI8s
+         t9rGBDzrHBis16KRKdBi86nyzkEf8fJHHV2xcCntj79VTLqovqC3xO5f/8+tuqLc/mQR
+         Kt1H2aENUlM8nzFF+nOHs97rKHg7pO8JQaWk8fqdDL2oAZpl5ymyWMLjkZvy76EhJ7Qy
+         mWJ7X1qetwjfV0otX/pQjPgK6yEi5HxibxNSXq+sFv4nR3Ejnq1H/syGe5pCnmRBEMM5
+         czOQ==
+X-Gm-Message-State: AOAM530kLORc+RJkQvMiaUzMadOHcK1A69lY1vKuAYyi2gtZyv6TwjLs
+        aD0b4WqYDRfn2gVxmPc6sYClOQlWuFLroQ==
+X-Google-Smtp-Source: ABdhPJxgl9h4/OPyjw92jNQqYTa2w/KubhZ0K6geEeXfvOoqlm7ziFyRkXCKamikxNJH3oslXBnMlQ==
+X-Received: by 2002:a17:90b:881:: with SMTP id bj1mr1103306pjb.119.1623296459278;
+        Wed, 09 Jun 2021 20:40:59 -0700 (PDT)
+Received: from devnote2 (122x208x150x49.ap122.ftth.ucom.ne.jp. [122.208.150.49])
+        by smtp.gmail.com with ESMTPSA id t14sm1059136pgm.9.2021.06.09.20.40.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 09 Jun 2021 20:40:58 -0700 (PDT)
+Date:   Thu, 10 Jun 2021 12:40:52 +0900
+From:   Masami Hiramatsu <masami.hiramatsu@gmail.com>
+To:     Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
+        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
+        ast@kernel.org, tglx@linutronix.de, kernel-team@fb.com, yhs@fb.com,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
         linux-ia64@vger.kernel.org,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        "open list:SYNOPSYS ARC ARCHITECTURE" 
-        <linux-snps-arc@lists.infradead.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        sparclinux <sparclinux@vger.kernel.org>
-Subject: Re: [PATCH v2 0/9] Remove DISCINTIGMEM memory model
-Message-ID: <YMDVSu00xXGmdCtC@kernel.org>
-References: <20210604064916.26580-1-rppt@kernel.org>
- <CAK8P3a2tZDJDqgr9-1vJrnbDhd_36eKq8LMEznDkU7rvuAnAag@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a2tZDJDqgr9-1vJrnbDhd_36eKq8LMEznDkU7rvuAnAag@mail.gmail.com>
+        Abhishek Sagar <sagar.abhishek@gmail.com>,
+        Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Subject: Re: [PATCH -tip v7 00/13] kprobes: Fix stacktrace with kretprobes
+ on x86
+Message-Id: <20210610124052.486df6a3bcc5337919e21e83@gmail.com>
+In-Reply-To: <162209754288.436794.3904335049560916855.stgit@devnote2>
+References: <162209754288.436794.3904335049560916855.stgit@devnote2>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Arnd,
+Hi Josh,
 
-On Wed, Jun 09, 2021 at 01:30:39PM +0200, Arnd Bergmann wrote:
-> On Fri, Jun 4, 2021 at 8:49 AM Mike Rapoport <rppt@kernel.org> wrote:
-> >
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> >
-> > Hi,
-> >
-> > SPARSEMEM memory model was supposed to entirely replace DISCONTIGMEM a
-> > (long) while ago. The last architectures that used DISCONTIGMEM were
-> > updated to use other memory models in v5.11 and it is about the time to
-> > entirely remove DISCONTIGMEM from the kernel.
-> >
-> > This set removes DISCONTIGMEM from alpha, arc and m68k, simplifies memory
-> > model selection in mm/Kconfig and replaces usage of redundant
-> > CONFIG_NEED_MULTIPLE_NODES and CONFIG_FLAT_NODE_MEM_MAP with CONFIG_NUMA
-> > and CONFIG_FLATMEM respectively.
-> >
-> > I've also removed NUMA support on alpha that was BROKEN for more than 15
-> > years.
-> >
-> > There were also minor updates all over arch/ to remove mentions of
-> > DISCONTIGMEM in comments and #ifdefs.
+Would you have any comment on this series?
+
+Thank you,
+
+On Thu, 27 May 2021 15:39:03 +0900
+Masami Hiramatsu <mhiramat@kernel.org> wrote:
+
+> Hello,
 > 
-> Hi Mike and Andrew,
+> Here is the 7th version of the series to fix the stacktrace with kretprobe on x86.
 > 
-> It looks like everyone is happy with this version so far. How should we merge it
-> for linux-next? I'm happy to take it through the asm-generic tree, but linux-mm
-> would fit at least as well. In case we go for linux-mm, feel free to add
+> The previous version is;
+> 
+>  https://lore.kernel.org/bpf/162201612941.278331.5293566981784464165.stgit@devnote2/
+> 
+> This version is adding Tested-by from Andrii and do minor cleanups to solve some
+> warnings from kernel test bots.
+> 
+> Changes from v6:
+> For x86 and generic patch:
+>   - Add Andrii's Tested-by. (Andrii, I think you have tested only x86, is it OK?)
+> [11/13]:
+>   - Remove superfluous #include <linux/kprobes.h>.
+> [13/13]:
+>   - Add a prototype for arch_kretprobe_fixup_return().
+> 
+> 
+> With this series, unwinder can unwind stack correctly from ftrace as below;
+> 
+>   # cd /sys/kernel/debug/tracing
+>   # echo > trace
+>   # echo 1 > options/sym-offset
+>   # echo r vfs_read >> kprobe_events
+>   # echo r full_proxy_read >> kprobe_events
+>   # echo traceoff:1 > events/kprobes/r_vfs_read_0/trigger
+>   # echo stacktrace:1 > events/kprobes/r_full_proxy_read_0/trigger
+>   # echo 1 > events/kprobes/enable
+>   # cat /sys/kernel/debug/kprobes/list
+> ffffffff8133b740  r  full_proxy_read+0x0    [FTRACE]
+> ffffffff812560b0  r  vfs_read+0x0    [FTRACE]
+>   # echo 0 > events/kprobes/enable
+>   # cat trace
+> # tracer: nop
+> #
+> # entries-in-buffer/entries-written: 3/3   #P:8
+> #
+> #                                _-----=> irqs-off
+> #                               / _----=> need-resched
+> #                              | / _---=> hardirq/softirq
+> #                              || / _--=> preempt-depth
+> #                              ||| /     delay
+> #           TASK-PID     CPU#  ||||   TIMESTAMP  FUNCTION
+> #              | |         |   ||||      |         |
+>            <...>-134     [007] ...1    16.185877: r_full_proxy_read_0: (vfs_read+0x98/0x180 <- full_proxy_read)
+>            <...>-134     [007] ...1    16.185901: <stack trace>
+>  => kretprobe_trace_func+0x209/0x300
+>  => kretprobe_dispatcher+0x4a/0x70
+>  => __kretprobe_trampoline_handler+0xd4/0x170
+>  => trampoline_handler+0x43/0x60
+>  => kretprobe_trampoline+0x2a/0x50
+>  => vfs_read+0x98/0x180
+>  => ksys_read+0x5f/0xe0
+>  => do_syscall_64+0x37/0x90
+>  => entry_SYSCALL_64_after_hwframe+0x44/0xae
+>            <...>-134     [007] ...1    16.185902: r_vfs_read_0: (ksys_read+0x5f/0xe0 <- vfs_read)
+> 
+> This shows the double return probes (vfs_read and full_proxy_read) on the stack
+> correctly unwinded. (vfs_read will return to ksys_read+0x5f and full_proxy_read
+> will return to vfs_read+0x98)
+> 
+> This actually changes the kretprobe behavisor a bit, now the instraction pointer in
+> the pt_regs passed to kretprobe user handler is correctly set the real return
+> address. So user handlers can get it via instruction_pointer() API.
+> 
+> You can also get this series from 
+>  git://git.kernel.org/pub/scm/linux/kernel/git/mhiramat/linux.git kprobes/kretprobe-stackfix-v7
+> 
+> 
+> Thank you,
+> 
+> ---
+> 
+> Josh Poimboeuf (1):
+>       x86/kprobes: Add UNWIND_HINT_FUNC on kretprobe_trampoline code
+> 
+> Masami Hiramatsu (12):
+>       ia64: kprobes: Fix to pass correct trampoline address to the handler
+>       kprobes: treewide: Replace arch_deref_entry_point() with dereference_symbol_descriptor()
+>       kprobes: treewide: Remove trampoline_address from kretprobe_trampoline_handler()
+>       kprobes: Add kretprobe_find_ret_addr() for searching return address
+>       ARC: Add instruction_pointer_set() API
+>       ia64: Add instruction_pointer_set() API
+>       arm: kprobes: Make a space for regs->ARM_pc at kretprobe_trampoline
+>       kprobes: Setup instruction pointer in __kretprobe_trampoline_handler
+>       x86/kprobes: Push a fake return address at kretprobe_trampoline
+>       x86/unwind: Recover kretprobe trampoline entry
+>       tracing: Show kretprobe unknown indicator only for kretprobe_trampoline
+>       x86/kprobes: Fixup return address in generic trampoline handler
+> 
+> 
+>  arch/arc/include/asm/ptrace.h       |    5 ++
+>  arch/arc/kernel/kprobes.c           |    2 -
+>  arch/arm/probes/kprobes/core.c      |    5 +-
+>  arch/arm64/kernel/probes/kprobes.c  |    3 -
+>  arch/csky/kernel/probes/kprobes.c   |    2 -
+>  arch/ia64/include/asm/ptrace.h      |    5 ++
+>  arch/ia64/kernel/kprobes.c          |   15 ++---
+>  arch/mips/kernel/kprobes.c          |    3 -
+>  arch/parisc/kernel/kprobes.c        |    4 +
+>  arch/powerpc/kernel/kprobes.c       |   13 ----
+>  arch/riscv/kernel/probes/kprobes.c  |    2 -
+>  arch/s390/kernel/kprobes.c          |    2 -
+>  arch/sh/kernel/kprobes.c            |    2 -
+>  arch/sparc/kernel/kprobes.c         |    2 -
+>  arch/x86/include/asm/kprobes.h      |    1 
+>  arch/x86/include/asm/unwind.h       |   23 +++++++
+>  arch/x86/include/asm/unwind_hints.h |    5 ++
+>  arch/x86/kernel/kprobes/core.c      |   53 +++++++++++++++--
+>  arch/x86/kernel/unwind_frame.c      |    3 -
+>  arch/x86/kernel/unwind_guess.c      |    3 -
+>  arch/x86/kernel/unwind_orc.c        |   18 +++++-
+>  include/linux/kprobes.h             |   44 ++++++++++++--
+>  kernel/kprobes.c                    |  108 +++++++++++++++++++++++++----------
+>  kernel/trace/trace_output.c         |   17 +-----
+>  lib/error-inject.c                  |    3 +
+>  25 files changed, 238 insertions(+), 105 deletions(-)
+> 
+> --
+> Masami Hiramatsu (Linaro) <mhiramat@kernel.org>
 
-Andrew already took to mmotm.
- 
-> Acked-by: Arnd Bergmann <arnd@arndb.de>
-
-Thanks!
-
-> for the whole series.
 
 -- 
-Sincerely yours,
-Mike.
+Masami Hiramatsu
