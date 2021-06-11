@@ -2,208 +2,263 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1296E3A22E7
-	for <lists+linux-ia64@lfdr.de>; Thu, 10 Jun 2021 05:41:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 351B03A4A87
+	for <lists+linux-ia64@lfdr.de>; Fri, 11 Jun 2021 23:09:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbhFJDmz (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 9 Jun 2021 23:42:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43804 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229770AbhFJDmz (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 9 Jun 2021 23:42:55 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3A34C061574;
-        Wed,  9 Jun 2021 20:40:59 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id v12so235711plo.10;
-        Wed, 09 Jun 2021 20:40:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=date:from:to:cc:subject:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=5Xlibc6hX8kwCcZz0XQ+FE2nBQRDGeD6dPLbec7873k=;
-        b=DVTYq6Mr1yqRlhqT7rDJJzuzmOmfvg9GpbBgcFCCMoS2myqdZzw4QprxJa3JuRM0bT
-         fszOnj6rUU7V7rYDu0HGjJcJy1yQAUdizhaEoGkPQzR15ji4aDgk+aXSrhcsi7gqhe+G
-         FbdtEAWpmeblMOYMUvr2S21hfhKKrlglWsQBqonLnxMmqrsmn/d6e7SiWMqOV3qNwCVt
-         MjkE0KZvqwHcPR1gFvf6SGbPoar3A3hQy1/dss8bOCmgU9bYYqUwRNPllieVX49CDrRs
-         OGKsrv8nYSQYOj9EWI/IpaiVHNGbMB2096LrKggIDabS0tZogPRN014RCOf5EOHysaLH
-         EbNg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=5Xlibc6hX8kwCcZz0XQ+FE2nBQRDGeD6dPLbec7873k=;
-        b=JikrwUeFQzNm4P/ORdLegpXDihJxiRbU7lFcL/JXZw0t9Uw1RFrQzZ4j5cDLZfgTZH
-         nuxqqnWv1cevyo2jX+rWaHcvNqlQu/Kou6gr+7bcbz7ed2NFt79r7eSEgqf5u3h7KI8s
-         t9rGBDzrHBis16KRKdBi86nyzkEf8fJHHV2xcCntj79VTLqovqC3xO5f/8+tuqLc/mQR
-         Kt1H2aENUlM8nzFF+nOHs97rKHg7pO8JQaWk8fqdDL2oAZpl5ymyWMLjkZvy76EhJ7Qy
-         mWJ7X1qetwjfV0otX/pQjPgK6yEi5HxibxNSXq+sFv4nR3Ejnq1H/syGe5pCnmRBEMM5
-         czOQ==
-X-Gm-Message-State: AOAM530kLORc+RJkQvMiaUzMadOHcK1A69lY1vKuAYyi2gtZyv6TwjLs
-        aD0b4WqYDRfn2gVxmPc6sYClOQlWuFLroQ==
-X-Google-Smtp-Source: ABdhPJxgl9h4/OPyjw92jNQqYTa2w/KubhZ0K6geEeXfvOoqlm7ziFyRkXCKamikxNJH3oslXBnMlQ==
-X-Received: by 2002:a17:90b:881:: with SMTP id bj1mr1103306pjb.119.1623296459278;
-        Wed, 09 Jun 2021 20:40:59 -0700 (PDT)
-Received: from devnote2 (122x208x150x49.ap122.ftth.ucom.ne.jp. [122.208.150.49])
-        by smtp.gmail.com with ESMTPSA id t14sm1059136pgm.9.2021.06.09.20.40.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 09 Jun 2021 20:40:58 -0700 (PDT)
-Date:   Thu, 10 Jun 2021 12:40:52 +0900
-From:   Masami Hiramatsu <masami.hiramatsu@gmail.com>
-To:     Masami Hiramatsu <mhiramat@kernel.org>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
-        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
-        ast@kernel.org, tglx@linutronix.de, kernel-team@fb.com, yhs@fb.com,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        linux-ia64@vger.kernel.org,
-        Abhishek Sagar <sagar.abhishek@gmail.com>,
-        Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Subject: Re: [PATCH -tip v7 00/13] kprobes: Fix stacktrace with kretprobes
- on x86
-Message-Id: <20210610124052.486df6a3bcc5337919e21e83@gmail.com>
-In-Reply-To: <162209754288.436794.3904335049560916855.stgit@devnote2>
-References: <162209754288.436794.3904335049560916855.stgit@devnote2>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S230334AbhFKVLh (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 11 Jun 2021 17:11:37 -0400
+Received: from sender4-of-o51.zoho.com ([136.143.188.51]:21107 "EHLO
+        sender4-of-o51.zoho.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230239AbhFKVLg (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 11 Jun 2021 17:11:36 -0400
+X-Greylist: delayed 908 seconds by postgrey-1.27 at vger.kernel.org; Fri, 11 Jun 2021 17:11:36 EDT
+ARC-Seal: i=1; a=rsa-sha256; t=1623444841; cv=none; 
+        d=zohomail.com; s=zohoarc; 
+        b=ce8iv3uhoTvb6Q4mp8yAk9ByyP/ztKIi+7b/No/F5R6a8XX6yJLnV1YBkzoUycc7oJWju88UBVC3K0dYBDgPLkQtt0DqzEImhEj/R5z+8wdFbqcETjVaY1Shy9z1laYIr40k6r0T2XaSSC8qDpPn1DMwqrGJiCbn6XQyLCJBeLk=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+        t=1623444841; h=Content-Type:Cc:Date:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:To; 
+        bh=AoiLwcmX3pbOV819C0Lo7M/WNWjoO/Lazqk1NS5j5f4=; 
+        b=igDgmnMQYOE7OMpajT0d6+VpAk0is3qy1yDPiJ6VaI0g32XYdTLBW4vA2wzLDN0Fr5buSCoBFXJjIDMefERXTBCLx5jD9staWgrZl3S5UIB585+PiTcqJ+66g0aEakFC3AyMhBFBY43YTO9Kxx5kTUKFCto0CGA49vG6REfmPSI=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+        dkim=pass  header.i=brennan.io;
+        spf=pass  smtp.mailfrom=stephen@brennan.io;
+        dmarc=pass header.from=<stephen@brennan.io>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1623444841;
+        s=selector01; d=brennan.io; i=stephen@brennan.io;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:MIME-Version:Content-Type;
+        bh=AoiLwcmX3pbOV819C0Lo7M/WNWjoO/Lazqk1NS5j5f4=;
+        b=VUodxOwwNi8y2ZV9XwmfH/FLB5Dutdvekx3lJ+cc3zMogLBOrgoxpvh0Fn5PgteO
+        DV4rTlIi8PRtIixHgmUQjDjasTJjwPojeggLpOcOcHRdHq3s5PanSnlFopFMJy1H+Ge
+        RNuP8guFfEoTAR0L3QQgAj8N+d01mwEstQBT16Qc=
+Received: from localhost (148.87.23.10 [148.87.23.10]) by mx.zohomail.com
+        with SMTPS id 1623444832045346.08477193904275; Fri, 11 Jun 2021 13:53:52 -0700 (PDT)
+From:   Stephen Brennan <stephen@brennan.io>
+To:     Mike Rapoport <rppt@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Matt Turner <mattst88@gmail.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Richard Henderson <rth@twiddle.net>,
+        Vineet Gupta <vgupta@synopsys.com>, kexec@lists.infradead.org,
+        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
+Subject: Re: [PATCH v3 5/9] mm: remove CONFIG_DISCONTIGMEM
+In-Reply-To: <20210608091316.3622-6-rppt@kernel.org>
+References: <20210608091316.3622-1-rppt@kernel.org>
+ <20210608091316.3622-6-rppt@kernel.org>
+Date:   Fri, 11 Jun 2021 13:53:48 -0700
+Message-ID: <87r1h886n7.fsf@stepbren-lnx.us.oracle.com>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-ZohoMailClient: External
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Josh,
-
-Would you have any comment on this series?
-
-Thank you,
-
-On Thu, 27 May 2021 15:39:03 +0900
-Masami Hiramatsu <mhiramat@kernel.org> wrote:
-
-> Hello,
-> 
-> Here is the 7th version of the series to fix the stacktrace with kretprobe on x86.
-> 
-> The previous version is;
-> 
->  https://lore.kernel.org/bpf/162201612941.278331.5293566981784464165.stgit@devnote2/
-> 
-> This version is adding Tested-by from Andrii and do minor cleanups to solve some
-> warnings from kernel test bots.
-> 
-> Changes from v6:
-> For x86 and generic patch:
->   - Add Andrii's Tested-by. (Andrii, I think you have tested only x86, is it OK?)
-> [11/13]:
->   - Remove superfluous #include <linux/kprobes.h>.
-> [13/13]:
->   - Add a prototype for arch_kretprobe_fixup_return().
-> 
-> 
-> With this series, unwinder can unwind stack correctly from ftrace as below;
-> 
->   # cd /sys/kernel/debug/tracing
->   # echo > trace
->   # echo 1 > options/sym-offset
->   # echo r vfs_read >> kprobe_events
->   # echo r full_proxy_read >> kprobe_events
->   # echo traceoff:1 > events/kprobes/r_vfs_read_0/trigger
->   # echo stacktrace:1 > events/kprobes/r_full_proxy_read_0/trigger
->   # echo 1 > events/kprobes/enable
->   # cat /sys/kernel/debug/kprobes/list
-> ffffffff8133b740  r  full_proxy_read+0x0    [FTRACE]
-> ffffffff812560b0  r  vfs_read+0x0    [FTRACE]
->   # echo 0 > events/kprobes/enable
->   # cat trace
-> # tracer: nop
-> #
-> # entries-in-buffer/entries-written: 3/3   #P:8
-> #
-> #                                _-----=> irqs-off
-> #                               / _----=> need-resched
-> #                              | / _---=> hardirq/softirq
-> #                              || / _--=> preempt-depth
-> #                              ||| /     delay
-> #           TASK-PID     CPU#  ||||   TIMESTAMP  FUNCTION
-> #              | |         |   ||||      |         |
->            <...>-134     [007] ...1    16.185877: r_full_proxy_read_0: (vfs_read+0x98/0x180 <- full_proxy_read)
->            <...>-134     [007] ...1    16.185901: <stack trace>
->  => kretprobe_trace_func+0x209/0x300
->  => kretprobe_dispatcher+0x4a/0x70
->  => __kretprobe_trampoline_handler+0xd4/0x170
->  => trampoline_handler+0x43/0x60
->  => kretprobe_trampoline+0x2a/0x50
->  => vfs_read+0x98/0x180
->  => ksys_read+0x5f/0xe0
->  => do_syscall_64+0x37/0x90
->  => entry_SYSCALL_64_after_hwframe+0x44/0xae
->            <...>-134     [007] ...1    16.185902: r_vfs_read_0: (ksys_read+0x5f/0xe0 <- vfs_read)
-> 
-> This shows the double return probes (vfs_read and full_proxy_read) on the stack
-> correctly unwinded. (vfs_read will return to ksys_read+0x5f and full_proxy_read
-> will return to vfs_read+0x98)
-> 
-> This actually changes the kretprobe behavisor a bit, now the instraction pointer in
-> the pt_regs passed to kretprobe user handler is correctly set the real return
-> address. So user handlers can get it via instruction_pointer() API.
-> 
-> You can also get this series from 
->  git://git.kernel.org/pub/scm/linux/kernel/git/mhiramat/linux.git kprobes/kretprobe-stackfix-v7
-> 
-> 
-> Thank you,
-> 
+Mike Rapoport <rppt@kernel.org> writes:
+> From: Mike Rapoport <rppt@linux.ibm.com>
+>
+> There are no architectures that support DISCONTIGMEM left.
+>
+> Remove the configuration option and the dead code it was guarding in the
+> generic memory management code.
+>
+> Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
 > ---
-> 
-> Josh Poimboeuf (1):
->       x86/kprobes: Add UNWIND_HINT_FUNC on kretprobe_trampoline code
-> 
-> Masami Hiramatsu (12):
->       ia64: kprobes: Fix to pass correct trampoline address to the handler
->       kprobes: treewide: Replace arch_deref_entry_point() with dereference_symbol_descriptor()
->       kprobes: treewide: Remove trampoline_address from kretprobe_trampoline_handler()
->       kprobes: Add kretprobe_find_ret_addr() for searching return address
->       ARC: Add instruction_pointer_set() API
->       ia64: Add instruction_pointer_set() API
->       arm: kprobes: Make a space for regs->ARM_pc at kretprobe_trampoline
->       kprobes: Setup instruction pointer in __kretprobe_trampoline_handler
->       x86/kprobes: Push a fake return address at kretprobe_trampoline
->       x86/unwind: Recover kretprobe trampoline entry
->       tracing: Show kretprobe unknown indicator only for kretprobe_trampoline
->       x86/kprobes: Fixup return address in generic trampoline handler
-> 
-> 
->  arch/arc/include/asm/ptrace.h       |    5 ++
->  arch/arc/kernel/kprobes.c           |    2 -
->  arch/arm/probes/kprobes/core.c      |    5 +-
->  arch/arm64/kernel/probes/kprobes.c  |    3 -
->  arch/csky/kernel/probes/kprobes.c   |    2 -
->  arch/ia64/include/asm/ptrace.h      |    5 ++
->  arch/ia64/kernel/kprobes.c          |   15 ++---
->  arch/mips/kernel/kprobes.c          |    3 -
->  arch/parisc/kernel/kprobes.c        |    4 +
->  arch/powerpc/kernel/kprobes.c       |   13 ----
->  arch/riscv/kernel/probes/kprobes.c  |    2 -
->  arch/s390/kernel/kprobes.c          |    2 -
->  arch/sh/kernel/kprobes.c            |    2 -
->  arch/sparc/kernel/kprobes.c         |    2 -
->  arch/x86/include/asm/kprobes.h      |    1 
->  arch/x86/include/asm/unwind.h       |   23 +++++++
->  arch/x86/include/asm/unwind_hints.h |    5 ++
->  arch/x86/kernel/kprobes/core.c      |   53 +++++++++++++++--
->  arch/x86/kernel/unwind_frame.c      |    3 -
->  arch/x86/kernel/unwind_guess.c      |    3 -
->  arch/x86/kernel/unwind_orc.c        |   18 +++++-
->  include/linux/kprobes.h             |   44 ++++++++++++--
->  kernel/kprobes.c                    |  108 +++++++++++++++++++++++++----------
->  kernel/trace/trace_output.c         |   17 +-----
->  lib/error-inject.c                  |    3 +
->  25 files changed, 238 insertions(+), 105 deletions(-)
-> 
-> --
-> Masami Hiramatsu (Linaro) <mhiramat@kernel.org>
+>  include/asm-generic/memory_model.h | 37 ++++--------------------------
+>  include/linux/mmzone.h             |  8 ++++---
+>  mm/Kconfig                         | 25 +++-----------------
+>  mm/page_alloc.c                    | 13 -----------
+>  4 files changed, 12 insertions(+), 71 deletions(-)
+>
+> diff --git a/include/asm-generic/memory_model.h b/include/asm-generic/memory_model.h
+> index 7637fb46ba4f..a2c8ed60233a 100644
+> --- a/include/asm-generic/memory_model.h
+> +++ b/include/asm-generic/memory_model.h
+> @@ -6,47 +6,18 @@
+>  
+>  #ifndef __ASSEMBLY__
+>  
+> +/*
+> + * supports 3 memory models.
+> + */
 
+This comment could either be updated to reflect 2 memory models, or
+removed entirely.
 
--- 
-Masami Hiramatsu
+Thanks,
+Stephen
+
+>  #if defined(CONFIG_FLATMEM)
+>  
+>  #ifndef ARCH_PFN_OFFSET
+>  #define ARCH_PFN_OFFSET		(0UL)
+>  #endif
+>  
+> -#elif defined(CONFIG_DISCONTIGMEM)
+> -
+> -#ifndef arch_pfn_to_nid
+> -#define arch_pfn_to_nid(pfn)	pfn_to_nid(pfn)
+> -#endif
+> -
+> -#ifndef arch_local_page_offset
+> -#define arch_local_page_offset(pfn, nid)	\
+> -	((pfn) - NODE_DATA(nid)->node_start_pfn)
+> -#endif
+> -
+> -#endif /* CONFIG_DISCONTIGMEM */
+> -
+> -/*
+> - * supports 3 memory models.
+> - */
+> -#if defined(CONFIG_FLATMEM)
+> -
+>  #define __pfn_to_page(pfn)	(mem_map + ((pfn) - ARCH_PFN_OFFSET))
+>  #define __page_to_pfn(page)	((unsigned long)((page) - mem_map) + \
+>  				 ARCH_PFN_OFFSET)
+> -#elif defined(CONFIG_DISCONTIGMEM)
+> -
+> -#define __pfn_to_page(pfn)			\
+> -({	unsigned long __pfn = (pfn);		\
+> -	unsigned long __nid = arch_pfn_to_nid(__pfn);  \
+> -	NODE_DATA(__nid)->node_mem_map + arch_local_page_offset(__pfn, __nid);\
+> -})
+> -
+> -#define __page_to_pfn(pg)						\
+> -({	const struct page *__pg = (pg);					\
+> -	struct pglist_data *__pgdat = NODE_DATA(page_to_nid(__pg));	\
+> -	(unsigned long)(__pg - __pgdat->node_mem_map) +			\
+> -	 __pgdat->node_start_pfn;					\
+> -})
+>  
+>  #elif defined(CONFIG_SPARSEMEM_VMEMMAP)
+>  
+> @@ -70,7 +41,7 @@
+>  	struct mem_section *__sec = __pfn_to_section(__pfn);	\
+>  	__section_mem_map_addr(__sec) + __pfn;		\
+>  })
+> -#endif /* CONFIG_FLATMEM/DISCONTIGMEM/SPARSEMEM */
+> +#endif /* CONFIG_FLATMEM/SPARSEMEM */
+>  
+>  /*
+>   * Convert a physical address to a Page Frame Number and back
+> diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
+> index 0d53eba1c383..700032e99419 100644
+> --- a/include/linux/mmzone.h
+> +++ b/include/linux/mmzone.h
+> @@ -738,10 +738,12 @@ struct zonelist {
+>  	struct zoneref _zonerefs[MAX_ZONES_PER_ZONELIST + 1];
+>  };
+>  
+> -#ifndef CONFIG_DISCONTIGMEM
+> -/* The array of struct pages - for discontigmem use pgdat->lmem_map */
+> +/*
+> + * The array of struct pages for flatmem.
+> + * It must be declared for SPARSEMEM as well because there are configurations
+> + * that rely on that.
+> + */
+>  extern struct page *mem_map;
+> -#endif
+>  
+>  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+>  struct deferred_split {
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 02d44e3420f5..218b96ccc84a 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -19,7 +19,7 @@ choice
+>  
+>  config FLATMEM_MANUAL
+>  	bool "Flat Memory"
+> -	depends on !(ARCH_DISCONTIGMEM_ENABLE || ARCH_SPARSEMEM_ENABLE) || ARCH_FLATMEM_ENABLE
+> +	depends on !ARCH_SPARSEMEM_ENABLE || ARCH_FLATMEM_ENABLE
+>  	help
+>  	  This option is best suited for non-NUMA systems with
+>  	  flat address space. The FLATMEM is the most efficient
+> @@ -32,21 +32,6 @@ config FLATMEM_MANUAL
+>  
+>  	  If unsure, choose this option (Flat Memory) over any other.
+>  
+> -config DISCONTIGMEM_MANUAL
+> -	bool "Discontiguous Memory"
+> -	depends on ARCH_DISCONTIGMEM_ENABLE
+> -	help
+> -	  This option provides enhanced support for discontiguous
+> -	  memory systems, over FLATMEM.  These systems have holes
+> -	  in their physical address spaces, and this option provides
+> -	  more efficient handling of these holes.
+> -
+> -	  Although "Discontiguous Memory" is still used by several
+> -	  architectures, it is considered deprecated in favor of
+> -	  "Sparse Memory".
+> -
+> -	  If unsure, choose "Sparse Memory" over this option.
+> -
+>  config SPARSEMEM_MANUAL
+>  	bool "Sparse Memory"
+>  	depends on ARCH_SPARSEMEM_ENABLE
+> @@ -62,17 +47,13 @@ config SPARSEMEM_MANUAL
+>  
+>  endchoice
+>  
+> -config DISCONTIGMEM
+> -	def_bool y
+> -	depends on (!SELECT_MEMORY_MODEL && ARCH_DISCONTIGMEM_ENABLE) || DISCONTIGMEM_MANUAL
+> -
+>  config SPARSEMEM
+>  	def_bool y
+>  	depends on (!SELECT_MEMORY_MODEL && ARCH_SPARSEMEM_ENABLE) || SPARSEMEM_MANUAL
+>  
+>  config FLATMEM
+>  	def_bool y
+> -	depends on (!DISCONTIGMEM && !SPARSEMEM) || FLATMEM_MANUAL
+> +	depends on !SPARSEMEM || FLATMEM_MANUAL
+>  
+>  config FLAT_NODE_MEM_MAP
+>  	def_bool y
+> @@ -85,7 +66,7 @@ config FLAT_NODE_MEM_MAP
+>  #
+>  config NEED_MULTIPLE_NODES
+>  	def_bool y
+> -	depends on DISCONTIGMEM || NUMA
+> +	depends on NUMA
+>  
+>  #
+>  # SPARSEMEM_EXTREME (which is the default) does some bootmem
+> diff --git a/mm/page_alloc.c b/mm/page_alloc.c
+> index aaa1655cf682..6fc22482eaa8 100644
+> --- a/mm/page_alloc.c
+> +++ b/mm/page_alloc.c
+> @@ -331,20 +331,7 @@ compound_page_dtor * const compound_page_dtors[NR_COMPOUND_DTORS] = {
+>  
+>  int min_free_kbytes = 1024;
+>  int user_min_free_kbytes = -1;
+> -#ifdef CONFIG_DISCONTIGMEM
+> -/*
+> - * DiscontigMem defines memory ranges as separate pg_data_t even if the ranges
+> - * are not on separate NUMA nodes. Functionally this works but with
+> - * watermark_boost_factor, it can reclaim prematurely as the ranges can be
+> - * quite small. By default, do not boost watermarks on discontigmem as in
+> - * many cases very high-order allocations like THP are likely to be
+> - * unsupported and the premature reclaim offsets the advantage of long-term
+> - * fragmentation avoidance.
+> - */
+> -int watermark_boost_factor __read_mostly;
+> -#else
+>  int watermark_boost_factor __read_mostly = 15000;
+> -#endif
+>  int watermark_scale_factor = 10;
+>  
+>  static unsigned long nr_kernel_pages __initdata;
+> -- 
+> 2.28.0
