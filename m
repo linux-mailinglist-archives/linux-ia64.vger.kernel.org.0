@@ -2,269 +2,197 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C8363A4D00
-	for <lists+linux-ia64@lfdr.de>; Sat, 12 Jun 2021 07:43:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EB2E83A6543
+	for <lists+linux-ia64@lfdr.de>; Mon, 14 Jun 2021 13:35:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230361AbhFLFpo (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 12 Jun 2021 01:45:44 -0400
-Received: from mail.kernel.org ([198.145.29.99]:38704 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229446AbhFLFpn (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sat, 12 Jun 2021 01:45:43 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 5410B61019;
-        Sat, 12 Jun 2021 05:43:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1623476624;
-        bh=jXSf9kPU6/p3Pl02zFLTjgmsn62vO+wR89LkyYwqjYE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jQzBYFAXgxUH9zPpsPc2S9koB6TyWpzCJ1FcyoOFUPs7glHYtJWXiwaYLZbOYr1MD
-         e8dUX72/dMktQcP+MfbQLugr1DigtCWPruv02QxyYGEBDlYcEvhTSF63D1F76zo+eL
-         vOmDN5XDSPdJfrU5UpdF1koBNLPwdNgaB2Yne6m3YDq4mBcFE1Twi6f4e9jRCCYQMf
-         fXFfPo4RoZ3j+NJMVPgoFRy/0IXayxTFHiwh1+yLk0mxoQNt6KiYCSMshhiOPS7yS1
-         6HDTiCLiwW9bME21jEq92F8Esv4cZpDqtMIPSa1vd/42SwMmpCSE4nvcQy4brkpojX
-         7a11xyl6jl4EA==
-Date:   Sat, 12 Jun 2021 08:43:33 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Stephen Brennan <stephen@brennan.io>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Matt Turner <mattst88@gmail.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Richard Henderson <rth@twiddle.net>,
-        Vineet Gupta <vgupta@synopsys.com>, kexec@lists.infradead.org,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-doc@vger.kernel.org,
+        id S235913AbhFNLgd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 14 Jun 2021 07:36:33 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:30666 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S236667AbhFNLec (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 14 Jun 2021 07:34:32 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1623670349;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=auek9aYzqwxqvPN9zk1SNV1DLZg48GOMnwlLjvRnYkQ=;
+        b=XBULiev4S1TTFStDKUPWRpxmOvTZUreX3f4wK70Lgnem4fJEhWYz8qpnCvKqkeBjxFKHnQ
+        Ljha/br5SZtcOVn5uuS2/GNKgJLcKl8LfxfePtl+2NtSuN9FjrqoqSPNmt1OO+N/ThiDQ5
+        DnTgQNywKGLSIzKrb+yM7TcX2SBVdh4=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
+ us-mta-224-6aTdPA9qOeiIElW69Z4arQ-1; Mon, 14 Jun 2021 07:32:28 -0400
+X-MC-Unique: 6aTdPA9qOeiIElW69Z4arQ-1
+Received: by mail-wr1-f71.google.com with SMTP id h10-20020a5d688a0000b0290119c2ce2499so6844464wru.19
+        for <linux-ia64@vger.kernel.org>; Mon, 14 Jun 2021 04:32:28 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:to:cc:references:from:organization:subject
+         :message-id:date:user-agent:mime-version:in-reply-to
+         :content-language:content-transfer-encoding;
+        bh=auek9aYzqwxqvPN9zk1SNV1DLZg48GOMnwlLjvRnYkQ=;
+        b=TK85prtb9VtBTDda0rSeywnSYnToV2gUXi5auhbHV75QAq4lXJ4qi2NCA0qGYYTmDf
+         Z9uyr2ksyEX+UaReQbz9W6m8+fNw9GR2fjUp1dKRJov/YrvngjTmhDrU9uK3zQJt4tom
+         1Br8ftN/M2AwRm7XuswTJ3Naya6ridtSyvQUgYfvNGEaceL9dvJEqVAPAxMdn3S7ZBkS
+         6Qgu9Qi4Ca7PpYshTUxhecgJFUGw8J+FUHuqjMgQHZpYwRnHd8pCvrPEYFOasmnBpYIy
+         ZrhJneCZiZG+AEqS12W0qWN6r1eMZie0HVd69GlG4L5VzaLtl+a+295+rqxzjbn3pl3K
+         3wAA==
+X-Gm-Message-State: AOAM533x5Hn+i37J6yFCFgWMojzledLc1XYadCMxnb4qR6DNM/sOeZZx
+        DVCegAGVdC8yoOcF7h4WLUblgUnbNoJx32Wa/xQ8LiHaxLIQdDvpNxMPxInUod6MHu+ChG/y5v1
+        7UpqybqC9IdJDRIOK1/R3Sw==
+X-Received: by 2002:a05:600c:198c:: with SMTP id t12mr15621498wmq.16.1623670347343;
+        Mon, 14 Jun 2021 04:32:27 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJyvMFL31q/BXB05TUCa992j0Wb2DezhZXpGzHT9FW0vrh5G/XgKNYGQVj5KUX7aymkq5w5vWQ==
+X-Received: by 2002:a05:600c:198c:: with SMTP id t12mr15621479wmq.16.1623670347138;
+        Mon, 14 Jun 2021 04:32:27 -0700 (PDT)
+Received: from [192.168.3.132] (p5b0c66ca.dip0.t-ipconnect.de. [91.12.102.202])
+        by smtp.gmail.com with ESMTPSA id u16sm16870421wru.56.2021.06.14.04.32.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 14 Jun 2021 04:32:26 -0700 (PDT)
+To:     Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@suse.com>
+Cc:     Oscar Salvador <osalvador@suse.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
+        Andy Lutomirski <luto@kernel.org>,
+        "Rafael J . Wysocki" <rafael@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Wei Yang <richard.weiyang@linux.alibaba.com>,
         linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-mm@kvack.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH v3 5/9] mm: remove CONFIG_DISCONTIGMEM
-Message-ID: <YMRJhezHRZrbrO0Y@kernel.org>
-References: <20210608091316.3622-1-rppt@kernel.org>
- <20210608091316.3622-6-rppt@kernel.org>
- <87r1h886n7.fsf@stepbren-lnx.us.oracle.com>
+        linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org
+References: <20210506152623.178731-1-zi.yan@sent.com>
+ <fb60eabd-f8ef-2cb1-7338-7725efe3c286@redhat.com>
+ <YJUqrOacyqI+kiKW@dhcp22.suse.cz>
+ <792d73e2-5d63-74a5-5554-20351d5532ff@redhat.com>
+ <746780E5-0288-494D-8B19-538049F1B891@nvidia.com>
+ <289DA3C0-9AE5-4992-A35A-C13FCE4D8544@nvidia.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [RFC PATCH 0/7] Memory hotplug/hotremove at subsection size
+Message-ID: <640bd1da-4bcb-cfda-18c0-da0ddb90b661@redhat.com>
+Date:   Mon, 14 Jun 2021 13:32:25 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87r1h886n7.fsf@stepbren-lnx.us.oracle.com>
+In-Reply-To: <289DA3C0-9AE5-4992-A35A-C13FCE4D8544@nvidia.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Jun 11, 2021 at 01:53:48PM -0700, Stephen Brennan wrote:
-> Mike Rapoport <rppt@kernel.org> writes:
-> > From: Mike Rapoport <rppt@linux.ibm.com>
-> >
-> > There are no architectures that support DISCONTIGMEM left.
-> >
-> > Remove the configuration option and the dead code it was guarding in the
-> > generic memory management code.
-> >
-> > Signed-off-by: Mike Rapoport <rppt@linux.ibm.com>
-> > ---
-> >  include/asm-generic/memory_model.h | 37 ++++--------------------------
-> >  include/linux/mmzone.h             |  8 ++++---
-> >  mm/Kconfig                         | 25 +++-----------------
-> >  mm/page_alloc.c                    | 13 -----------
-> >  4 files changed, 12 insertions(+), 71 deletions(-)
-> >
-> > diff --git a/include/asm-generic/memory_model.h b/include/asm-generic/memory_model.h
-> > index 7637fb46ba4f..a2c8ed60233a 100644
-> > --- a/include/asm-generic/memory_model.h
-> > +++ b/include/asm-generic/memory_model.h
-> > @@ -6,47 +6,18 @@
-> >  
-> >  #ifndef __ASSEMBLY__
-> >  
-> > +/*
-> > + * supports 3 memory models.
-> > + */
+On 02.06.21 17:56, Zi Yan wrote:
+> On 10 May 2021, at 10:36, Zi Yan wrote:
 > 
-> This comment could either be updated to reflect 2 memory models, or
-> removed entirely.
+>> On 7 May 2021, at 10:00, David Hildenbrand wrote:
+>>
+>>> On 07.05.21 13:55, Michal Hocko wrote:
+>>>> [I haven't read through respective patches due to lack of time but let
+>>>>    me comment on the general idea and the underlying justification]
+>>>>
+>>>> On Thu 06-05-21 17:31:09, David Hildenbrand wrote:
+>>>>> On 06.05.21 17:26, Zi Yan wrote:
+>>>>>> From: Zi Yan <ziy@nvidia.com>
+>>>>>>
+>>>>>> Hi all,
+>>>>>>
+>>>>>> This patchset tries to remove the restriction on memory hotplug/hotremove
+>>>>>> granularity, which is always greater or equal to memory section size[1].
+>>>>>> With the patchset, kernel is able to online/offline memory at a size independent
+>>>>>> of memory section size, as small as 2MB (the subsection size).
+>>>>>
+>>>>> ... which doesn't make any sense as we can only online/offline whole memory
+>>>>> block devices.
+>>>>
+>>>> Agreed. The subsection thingy is just a hack to workaround pmem
+>>>> alignement problems. For the real memory hotplug it is quite hard to
+>>>> argue for reasonable hotplug scenarios for very small physical memory
+>>>> ranges wrt. to the existing sparsemem memory model.
+>>>>
+>>>>>> The motivation is to increase MAX_ORDER of the buddy allocator and pageblock
+>>>>>> size without increasing memory hotplug/hotremove granularity at the same time,
+>>>>>
+>>>>> Gah, no. Please no. No.
+>>>>
+>>>> Agreed. Those are completely independent concepts. MAX_ORDER is can be
+>>>> really arbitrary irrespective of the section size with vmemmap sparse
+>>>> model. The existing restriction is due to old sparse model not being
+>>>> able to do page pointer arithmetic across memory sections. Is there any
+>>>> reason to stick with that memory model for an advance feature you are
+>>>> working on?
+>>
+>> No. I just want to increase MAX_ORDER. If the existing restriction can
+>> be removed, that will be great.
+>>
+>>>
+>>> I gave it some more thought yesterday. I guess the first thing we should look into is increasing MAX_ORDER and leaving pageblock_order and section size as is -- finding out what we have to tweak to get that up and running. Once we have that in place, we can actually look into better fragmentation avoidance etc. One step at a time.
+>>
+>> It makes sense to me.
+>>
+>>>
+>>> Because that change itself might require some thought. Requiring that bigger MAX_ORDER depends on SPARSE_VMEMMAP is something reasonable to do.
+>>
+>> OK, if with SPARSE_VMEMMAP MAX_ORDER can be set to be bigger than
+>> SECTION_SIZE, it is perfectly OK to me. Since 1GB THP support, which I
+>> want to add ultimately, will require SPARSE_VMEMMAP too (otherwise,
+>> all page++ will need to be changed to nth_page(page,1)).
+>>
+>>>
+>>> As stated somewhere here already, we'll have to look into making alloc_contig_range() (and main users CMA and virtio-mem) independent of MAX_ORDER and mainly rely on pageblock_order. The current handling in alloc_contig_range() is far from optimal as we have to isolate a whole MAX_ORDER - 1 page -- and on ZONE_NORMAL we'll fail easily if any part contains something unmovable although we don't even want to allocate that part. I actually have that on my list (to be able to fully support pageblock_order instead of MAX_ORDER -1 chunks in virtio-mem), however didn't have time to look into it.
+>>
+>> So in your mind, for gigantic page allocation (> MAX_ORDER), alloc_contig_range()
+>> should be used instead of buddy allocator while pageblock_order is kept at a small
+>> granularity like 2MB. Is that the case? Isn’t it going to have high fail rate
+>> when any of the pageblocks within a gigantic page range (like 1GB) becomes unmovable?
+>> Are you thinking additional mechanism/policy to prevent such thing happening as
+>> an additional step for gigantic page allocation? Like your ZONE_PREFER_MOVABLE idea?
+>>
+>>>
+>>> Further, page onlining / offlining code and early init code most probably also needs care if MAX_ORDER - 1 crosses sections. Memory holes we might suddenly have in MAX_ORDER - 1 pages might become a problem and will have to be handled. Not sure which other code has to be tweaked (compaction? page isolation?).
+>>
+>> Can you elaborate it a little more? From what I understand, memory holes mean valid
+>> PFNs are not contiguous before and after a hole, so pfn++ will not work, but
+>> struct pages are still virtually contiguous assuming SPARSE_VMEMMAP, meaning page++
+>> would still work. So when MAX_ORDER - 1 crosses sections, additional code would be
+>> needed instead of simple pfn++. Is there anything I am missing?
+>>
+>> BTW, to test a system with memory holes, do you know is there an easy of adding
+>> random memory holes to an x86_64 VM, which can help reveal potential missing pieces
+>> in the code? Changing BIOS-e820 table might be one way, but I have no idea on
+>> how to do it on QEMU.
+>>
+>>>
+>>> Figuring out what needs care itself might take quite some effort.
+>>>
+>>> One thing I was thinking about as well: The bigger our MAX_ORDER, the slower it could be to allocate smaller pages. If we have 1G pages, splitting them down to 4k then takes 8 additional steps if I'm, not wrong. Of course, that's the worst case. Would be interesting to evaluate.
+>>
+>> Sure. I am planning to check it too. As a simple start, I am going to run will it scale
+>> benchmarks to see if there is any performance difference between different MAX_ORDERs.
+> 
+> I ran vm-scalablity and memory-related will-it-scale on a server with 256GB memory to
+> see the impact of increasing MAX_ORDER and didn’t see much difference for most of
+> the workloads like page_fault1, page_fault2, and page_fault3 from will-it-scale.
+> But feel free to check the attached complete results and let me know what should be
+> looked into. Thanks.
 
-I counted SPARSE and SPARSE_VMEMMAP as 2.
+Right, for will-it-scale it looks like there are mostly minor 
+differences, although I am not sure if the results are really stable 
+(reaching from -6% to +6%). For vm-scalability the numbers seem to vary 
+even more (e.g., stddev of ± 63%), so I have no idea how expressive they 
+are. But I guess for these benchmarks, the net change won't really be 
+significant.
 
-The code below has three clauses: one for FLATMEM, one for SPARSE and one
-for VMEMMAP.
- 
-> Thanks,
-> Stephen
-> 
-> >  #if defined(CONFIG_FLATMEM)
-> >  
-> >  #ifndef ARCH_PFN_OFFSET
-> >  #define ARCH_PFN_OFFSET		(0UL)
-> >  #endif
-> >  
-> > -#elif defined(CONFIG_DISCONTIGMEM)
-> > -
-> > -#ifndef arch_pfn_to_nid
-> > -#define arch_pfn_to_nid(pfn)	pfn_to_nid(pfn)
-> > -#endif
-> > -
-> > -#ifndef arch_local_page_offset
-> > -#define arch_local_page_offset(pfn, nid)	\
-> > -	((pfn) - NODE_DATA(nid)->node_start_pfn)
-> > -#endif
-> > -
-> > -#endif /* CONFIG_DISCONTIGMEM */
-> > -
-> > -/*
-> > - * supports 3 memory models.
-> > - */
-> > -#if defined(CONFIG_FLATMEM)
-> > -
-> >  #define __pfn_to_page(pfn)	(mem_map + ((pfn) - ARCH_PFN_OFFSET))
-> >  #define __page_to_pfn(page)	((unsigned long)((page) - mem_map) + \
-> >  				 ARCH_PFN_OFFSET)
-> > -#elif defined(CONFIG_DISCONTIGMEM)
-> > -
-> > -#define __pfn_to_page(pfn)			\
-> > -({	unsigned long __pfn = (pfn);		\
-> > -	unsigned long __nid = arch_pfn_to_nid(__pfn);  \
-> > -	NODE_DATA(__nid)->node_mem_map + arch_local_page_offset(__pfn, __nid);\
-> > -})
-> > -
-> > -#define __page_to_pfn(pg)						\
-> > -({	const struct page *__pg = (pg);					\
-> > -	struct pglist_data *__pgdat = NODE_DATA(page_to_nid(__pg));	\
-> > -	(unsigned long)(__pg - __pgdat->node_mem_map) +			\
-> > -	 __pgdat->node_start_pfn;					\
-> > -})
-> >  
-> >  #elif defined(CONFIG_SPARSEMEM_VMEMMAP)
-> >  
-> > @@ -70,7 +41,7 @@
-> >  	struct mem_section *__sec = __pfn_to_section(__pfn);	\
-> >  	__section_mem_map_addr(__sec) + __pfn;		\
-> >  })
-> > -#endif /* CONFIG_FLATMEM/DISCONTIGMEM/SPARSEMEM */
-> > +#endif /* CONFIG_FLATMEM/SPARSEMEM */
-> >  
-> >  /*
-> >   * Convert a physical address to a Page Frame Number and back
-> > diff --git a/include/linux/mmzone.h b/include/linux/mmzone.h
-> > index 0d53eba1c383..700032e99419 100644
-> > --- a/include/linux/mmzone.h
-> > +++ b/include/linux/mmzone.h
-> > @@ -738,10 +738,12 @@ struct zonelist {
-> >  	struct zoneref _zonerefs[MAX_ZONES_PER_ZONELIST + 1];
-> >  };
-> >  
-> > -#ifndef CONFIG_DISCONTIGMEM
-> > -/* The array of struct pages - for discontigmem use pgdat->lmem_map */
-> > +/*
-> > + * The array of struct pages for flatmem.
-> > + * It must be declared for SPARSEMEM as well because there are configurations
-> > + * that rely on that.
-> > + */
-> >  extern struct page *mem_map;
-> > -#endif
-> >  
-> >  #ifdef CONFIG_TRANSPARENT_HUGEPAGE
-> >  struct deferred_split {
-> > diff --git a/mm/Kconfig b/mm/Kconfig
-> > index 02d44e3420f5..218b96ccc84a 100644
-> > --- a/mm/Kconfig
-> > +++ b/mm/Kconfig
-> > @@ -19,7 +19,7 @@ choice
-> >  
-> >  config FLATMEM_MANUAL
-> >  	bool "Flat Memory"
-> > -	depends on !(ARCH_DISCONTIGMEM_ENABLE || ARCH_SPARSEMEM_ENABLE) || ARCH_FLATMEM_ENABLE
-> > +	depends on !ARCH_SPARSEMEM_ENABLE || ARCH_FLATMEM_ENABLE
-> >  	help
-> >  	  This option is best suited for non-NUMA systems with
-> >  	  flat address space. The FLATMEM is the most efficient
-> > @@ -32,21 +32,6 @@ config FLATMEM_MANUAL
-> >  
-> >  	  If unsure, choose this option (Flat Memory) over any other.
-> >  
-> > -config DISCONTIGMEM_MANUAL
-> > -	bool "Discontiguous Memory"
-> > -	depends on ARCH_DISCONTIGMEM_ENABLE
-> > -	help
-> > -	  This option provides enhanced support for discontiguous
-> > -	  memory systems, over FLATMEM.  These systems have holes
-> > -	  in their physical address spaces, and this option provides
-> > -	  more efficient handling of these holes.
-> > -
-> > -	  Although "Discontiguous Memory" is still used by several
-> > -	  architectures, it is considered deprecated in favor of
-> > -	  "Sparse Memory".
-> > -
-> > -	  If unsure, choose "Sparse Memory" over this option.
-> > -
-> >  config SPARSEMEM_MANUAL
-> >  	bool "Sparse Memory"
-> >  	depends on ARCH_SPARSEMEM_ENABLE
-> > @@ -62,17 +47,13 @@ config SPARSEMEM_MANUAL
-> >  
-> >  endchoice
-> >  
-> > -config DISCONTIGMEM
-> > -	def_bool y
-> > -	depends on (!SELECT_MEMORY_MODEL && ARCH_DISCONTIGMEM_ENABLE) || DISCONTIGMEM_MANUAL
-> > -
-> >  config SPARSEMEM
-> >  	def_bool y
-> >  	depends on (!SELECT_MEMORY_MODEL && ARCH_SPARSEMEM_ENABLE) || SPARSEMEM_MANUAL
-> >  
-> >  config FLATMEM
-> >  	def_bool y
-> > -	depends on (!DISCONTIGMEM && !SPARSEMEM) || FLATMEM_MANUAL
-> > +	depends on !SPARSEMEM || FLATMEM_MANUAL
-> >  
-> >  config FLAT_NODE_MEM_MAP
-> >  	def_bool y
-> > @@ -85,7 +66,7 @@ config FLAT_NODE_MEM_MAP
-> >  #
-> >  config NEED_MULTIPLE_NODES
-> >  	def_bool y
-> > -	depends on DISCONTIGMEM || NUMA
-> > +	depends on NUMA
-> >  
-> >  #
-> >  # SPARSEMEM_EXTREME (which is the default) does some bootmem
-> > diff --git a/mm/page_alloc.c b/mm/page_alloc.c
-> > index aaa1655cf682..6fc22482eaa8 100644
-> > --- a/mm/page_alloc.c
-> > +++ b/mm/page_alloc.c
-> > @@ -331,20 +331,7 @@ compound_page_dtor * const compound_page_dtors[NR_COMPOUND_DTORS] = {
-> >  
-> >  int min_free_kbytes = 1024;
-> >  int user_min_free_kbytes = -1;
-> > -#ifdef CONFIG_DISCONTIGMEM
-> > -/*
-> > - * DiscontigMem defines memory ranges as separate pg_data_t even if the ranges
-> > - * are not on separate NUMA nodes. Functionally this works but with
-> > - * watermark_boost_factor, it can reclaim prematurely as the ranges can be
-> > - * quite small. By default, do not boost watermarks on discontigmem as in
-> > - * many cases very high-order allocations like THP are likely to be
-> > - * unsupported and the premature reclaim offsets the advantage of long-term
-> > - * fragmentation avoidance.
-> > - */
-> > -int watermark_boost_factor __read_mostly;
-> > -#else
-> >  int watermark_boost_factor __read_mostly = 15000;
-> > -#endif
-> >  int watermark_scale_factor = 10;
-> >  
-> >  static unsigned long nr_kernel_pages __initdata;
-> > -- 
-> > 2.28.0
-> 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+Thanks!
 
 -- 
-Sincerely yours,
-Mike.
+Thanks,
+
+David / dhildenb
+
