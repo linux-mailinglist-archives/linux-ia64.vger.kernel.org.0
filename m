@@ -2,197 +2,156 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB2E83A6543
-	for <lists+linux-ia64@lfdr.de>; Mon, 14 Jun 2021 13:35:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2CFE73A6AD9
+	for <lists+linux-ia64@lfdr.de>; Mon, 14 Jun 2021 17:47:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235913AbhFNLgd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 14 Jun 2021 07:36:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:30666 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S236667AbhFNLec (ORCPT
+        id S234053AbhFNPtL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 14 Jun 2021 11:49:11 -0400
+Received: from mx0b-001b2d01.pphosted.com ([148.163.158.5]:26784 "EHLO
+        mx0a-001b2d01.pphosted.com" rhost-flags-OK-OK-OK-FAIL)
+        by vger.kernel.org with ESMTP id S234465AbhFNPtK (ORCPT
         <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 14 Jun 2021 07:34:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1623670349;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=auek9aYzqwxqvPN9zk1SNV1DLZg48GOMnwlLjvRnYkQ=;
-        b=XBULiev4S1TTFStDKUPWRpxmOvTZUreX3f4wK70Lgnem4fJEhWYz8qpnCvKqkeBjxFKHnQ
-        Ljha/br5SZtcOVn5uuS2/GNKgJLcKl8LfxfePtl+2NtSuN9FjrqoqSPNmt1OO+N/ThiDQ5
-        DnTgQNywKGLSIzKrb+yM7TcX2SBVdh4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-224-6aTdPA9qOeiIElW69Z4arQ-1; Mon, 14 Jun 2021 07:32:28 -0400
-X-MC-Unique: 6aTdPA9qOeiIElW69Z4arQ-1
-Received: by mail-wr1-f71.google.com with SMTP id h10-20020a5d688a0000b0290119c2ce2499so6844464wru.19
-        for <linux-ia64@vger.kernel.org>; Mon, 14 Jun 2021 04:32:28 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:to:cc:references:from:organization:subject
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=auek9aYzqwxqvPN9zk1SNV1DLZg48GOMnwlLjvRnYkQ=;
-        b=TK85prtb9VtBTDda0rSeywnSYnToV2gUXi5auhbHV75QAq4lXJ4qi2NCA0qGYYTmDf
-         Z9uyr2ksyEX+UaReQbz9W6m8+fNw9GR2fjUp1dKRJov/YrvngjTmhDrU9uK3zQJt4tom
-         1Br8ftN/M2AwRm7XuswTJ3Naya6ridtSyvQUgYfvNGEaceL9dvJEqVAPAxMdn3S7ZBkS
-         6Qgu9Qi4Ca7PpYshTUxhecgJFUGw8J+FUHuqjMgQHZpYwRnHd8pCvrPEYFOasmnBpYIy
-         ZrhJneCZiZG+AEqS12W0qWN6r1eMZie0HVd69GlG4L5VzaLtl+a+295+rqxzjbn3pl3K
-         3wAA==
-X-Gm-Message-State: AOAM533x5Hn+i37J6yFCFgWMojzledLc1XYadCMxnb4qR6DNM/sOeZZx
-        DVCegAGVdC8yoOcF7h4WLUblgUnbNoJx32Wa/xQ8LiHaxLIQdDvpNxMPxInUod6MHu+ChG/y5v1
-        7UpqybqC9IdJDRIOK1/R3Sw==
-X-Received: by 2002:a05:600c:198c:: with SMTP id t12mr15621498wmq.16.1623670347343;
-        Mon, 14 Jun 2021 04:32:27 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyvMFL31q/BXB05TUCa992j0Wb2DezhZXpGzHT9FW0vrh5G/XgKNYGQVj5KUX7aymkq5w5vWQ==
-X-Received: by 2002:a05:600c:198c:: with SMTP id t12mr15621479wmq.16.1623670347138;
-        Mon, 14 Jun 2021 04:32:27 -0700 (PDT)
-Received: from [192.168.3.132] (p5b0c66ca.dip0.t-ipconnect.de. [91.12.102.202])
-        by smtp.gmail.com with ESMTPSA id u16sm16870421wru.56.2021.06.14.04.32.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 14 Jun 2021 04:32:26 -0700 (PDT)
-To:     Zi Yan <ziy@nvidia.com>, Michal Hocko <mhocko@suse.com>
-Cc:     Oscar Salvador <osalvador@suse.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Thomas Gleixner <tglx@linutronix.de>, x86@kernel.org,
-        Andy Lutomirski <luto@kernel.org>,
-        "Rafael J . Wysocki" <rafael@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Wei Yang <richard.weiyang@linux.alibaba.com>,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-mm@kvack.org
-References: <20210506152623.178731-1-zi.yan@sent.com>
- <fb60eabd-f8ef-2cb1-7338-7725efe3c286@redhat.com>
- <YJUqrOacyqI+kiKW@dhcp22.suse.cz>
- <792d73e2-5d63-74a5-5554-20351d5532ff@redhat.com>
- <746780E5-0288-494D-8B19-538049F1B891@nvidia.com>
- <289DA3C0-9AE5-4992-A35A-C13FCE4D8544@nvidia.com>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [RFC PATCH 0/7] Memory hotplug/hotremove at subsection size
-Message-ID: <640bd1da-4bcb-cfda-18c0-da0ddb90b661@redhat.com>
-Date:   Mon, 14 Jun 2021 13:32:25 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        Mon, 14 Jun 2021 11:49:10 -0400
+Received: from pps.filterd (m0098414.ppops.net [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com (8.16.0.43/8.16.0.43) with SMTP id 15EFY9ZQ018819;
+        Mon, 14 Jun 2021 11:46:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : subject :
+ to : cc : references : in-reply-to : mime-version : message-id :
+ content-type : content-transfer-encoding; s=pp1;
+ bh=iufwgfEldV70ORNGlohIey8QqufRHIAQPypVoFkjH/c=;
+ b=g5x7zp+PG7xMDBOuvoeGo9SJ/yZacwobEq+73EjXMaihu3jab/BcA97o3+s1Dd1UcrAF
+ oZ1tY2Q5WHIdtGt1BK6YiesgPewW04WfNcxfPFrLFg7S1tTm5+AIOsezdtqn1cmz+0UH
+ hpw9cBsUS71JbcTQnqIQXRz8c/HeAVVzJ8aMiQX3IuxjVZ2WtFkf7opH5EFmYfk8jao7
+ 3JWl8F82SvdVEjnGzzlGYdDfPhOJQIvaVQhAnv67y7COBbb/+ib23AZ2y6FcZnUYim8o
+ tJ/b6qlbqohVEmUbdiHkM/PbKRfY+F35/cVDKVEtmoD4qN9SDUm99wmpsABZloGOHf5S 9Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 39671apvn4-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Jun 2021 11:46:34 -0400
+Received: from m0098414.ppops.net (m0098414.ppops.net [127.0.0.1])
+        by pps.reinject (8.16.0.43/8.16.0.43) with SMTP id 15EFYEt1019125;
+        Mon, 14 Jun 2021 11:46:33 -0400
+Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
+        by mx0b-001b2d01.pphosted.com with ESMTP id 39671apvm1-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Jun 2021 11:46:33 -0400
+Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
+        by ppma06ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 15EFguoA031047;
+        Mon, 14 Jun 2021 15:46:31 GMT
+Received: from b06cxnps4074.portsmouth.uk.ibm.com (d06relay11.portsmouth.uk.ibm.com [9.149.109.196])
+        by ppma06ams.nl.ibm.com with ESMTP id 394m6hs1nx-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Jun 2021 15:46:31 +0000
+Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
+        by b06cxnps4074.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 15EFkThE35258682
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 14 Jun 2021 15:46:29 GMT
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 54824AE055;
+        Mon, 14 Jun 2021 15:46:29 +0000 (GMT)
+Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id D2DB6AE045;
+        Mon, 14 Jun 2021 15:46:28 +0000 (GMT)
+Received: from localhost (unknown [9.85.73.215])
+        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTP;
+        Mon, 14 Jun 2021 15:46:28 +0000 (GMT)
+Date:   Mon, 14 Jun 2021 21:16:26 +0530
+From:   "Naveen N. Rao" <naveen.n.rao@linux.ibm.com>
+Subject: Re: [PATCH -tip v7 03/13] kprobes: treewide: Remove
+ trampoline_address from kretprobe_trampoline_handler()
+To:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Ingo Molnar <mingo@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>
+Cc:     Andrii Nakryiko <andrii.nakryiko@gmail.com>, ast@kernel.org,
+        bpf@vger.kernel.org, Daniel Xu <dxu@dxuuu.xyz>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, kernel-team@fb.com,
+        kuba@kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mingo@redhat.com,
+        Abhishek Sagar <sagar.abhishek@gmail.com>, tglx@linutronix.de,
+        X86 ML <x86@kernel.org>, yhs@fb.com
+References: <162209754288.436794.3904335049560916855.stgit@devnote2>
+        <162209757191.436794.12654958417415894884.stgit@devnote2>
+In-Reply-To: <162209757191.436794.12654958417415894884.stgit@devnote2>
 MIME-Version: 1.0
-In-Reply-To: <289DA3C0-9AE5-4992-A35A-C13FCE4D8544@nvidia.com>
+User-Agent: astroid/v0.15-23-gcdc62b30
+ (https://github.com/astroidmail/astroid)
+Message-Id: <1623685371.y5qy4nxer2.naveen@linux.ibm.com>
 Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: 9fhSx89odVf5INJWR2yl-7U9AFcZNx8R
+X-Proofpoint-ORIG-GUID: UohyzDTtlp9FN-x5xY_KM1UScthLuuh-
+X-Proofpoint-Virus-Version: vendor=fsecure engine=2.50.10434:6.0.391,18.0.761
+ definitions=2021-06-14_10:2021-06-14,2021-06-14 signatures=0
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ adultscore=0 mlxlogscore=999 phishscore=0 lowpriorityscore=0
+ suspectscore=0 impostorscore=0 spamscore=0 priorityscore=1501 mlxscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2104190000 definitions=main-2106140099
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 02.06.21 17:56, Zi Yan wrote:
-> On 10 May 2021, at 10:36, Zi Yan wrote:
-> 
->> On 7 May 2021, at 10:00, David Hildenbrand wrote:
->>
->>> On 07.05.21 13:55, Michal Hocko wrote:
->>>> [I haven't read through respective patches due to lack of time but let
->>>>    me comment on the general idea and the underlying justification]
->>>>
->>>> On Thu 06-05-21 17:31:09, David Hildenbrand wrote:
->>>>> On 06.05.21 17:26, Zi Yan wrote:
->>>>>> From: Zi Yan <ziy@nvidia.com>
->>>>>>
->>>>>> Hi all,
->>>>>>
->>>>>> This patchset tries to remove the restriction on memory hotplug/hotremove
->>>>>> granularity, which is always greater or equal to memory section size[1].
->>>>>> With the patchset, kernel is able to online/offline memory at a size independent
->>>>>> of memory section size, as small as 2MB (the subsection size).
->>>>>
->>>>> ... which doesn't make any sense as we can only online/offline whole memory
->>>>> block devices.
->>>>
->>>> Agreed. The subsection thingy is just a hack to workaround pmem
->>>> alignement problems. For the real memory hotplug it is quite hard to
->>>> argue for reasonable hotplug scenarios for very small physical memory
->>>> ranges wrt. to the existing sparsemem memory model.
->>>>
->>>>>> The motivation is to increase MAX_ORDER of the buddy allocator and pageblock
->>>>>> size without increasing memory hotplug/hotremove granularity at the same time,
->>>>>
->>>>> Gah, no. Please no. No.
->>>>
->>>> Agreed. Those are completely independent concepts. MAX_ORDER is can be
->>>> really arbitrary irrespective of the section size with vmemmap sparse
->>>> model. The existing restriction is due to old sparse model not being
->>>> able to do page pointer arithmetic across memory sections. Is there any
->>>> reason to stick with that memory model for an advance feature you are
->>>> working on?
->>
->> No. I just want to increase MAX_ORDER. If the existing restriction can
->> be removed, that will be great.
->>
->>>
->>> I gave it some more thought yesterday. I guess the first thing we should look into is increasing MAX_ORDER and leaving pageblock_order and section size as is -- finding out what we have to tweak to get that up and running. Once we have that in place, we can actually look into better fragmentation avoidance etc. One step at a time.
->>
->> It makes sense to me.
->>
->>>
->>> Because that change itself might require some thought. Requiring that bigger MAX_ORDER depends on SPARSE_VMEMMAP is something reasonable to do.
->>
->> OK, if with SPARSE_VMEMMAP MAX_ORDER can be set to be bigger than
->> SECTION_SIZE, it is perfectly OK to me. Since 1GB THP support, which I
->> want to add ultimately, will require SPARSE_VMEMMAP too (otherwise,
->> all page++ will need to be changed to nth_page(page,1)).
->>
->>>
->>> As stated somewhere here already, we'll have to look into making alloc_contig_range() (and main users CMA and virtio-mem) independent of MAX_ORDER and mainly rely on pageblock_order. The current handling in alloc_contig_range() is far from optimal as we have to isolate a whole MAX_ORDER - 1 page -- and on ZONE_NORMAL we'll fail easily if any part contains something unmovable although we don't even want to allocate that part. I actually have that on my list (to be able to fully support pageblock_order instead of MAX_ORDER -1 chunks in virtio-mem), however didn't have time to look into it.
->>
->> So in your mind, for gigantic page allocation (> MAX_ORDER), alloc_contig_range()
->> should be used instead of buddy allocator while pageblock_order is kept at a small
->> granularity like 2MB. Is that the case? Isn’t it going to have high fail rate
->> when any of the pageblocks within a gigantic page range (like 1GB) becomes unmovable?
->> Are you thinking additional mechanism/policy to prevent such thing happening as
->> an additional step for gigantic page allocation? Like your ZONE_PREFER_MOVABLE idea?
->>
->>>
->>> Further, page onlining / offlining code and early init code most probably also needs care if MAX_ORDER - 1 crosses sections. Memory holes we might suddenly have in MAX_ORDER - 1 pages might become a problem and will have to be handled. Not sure which other code has to be tweaked (compaction? page isolation?).
->>
->> Can you elaborate it a little more? From what I understand, memory holes mean valid
->> PFNs are not contiguous before and after a hole, so pfn++ will not work, but
->> struct pages are still virtually contiguous assuming SPARSE_VMEMMAP, meaning page++
->> would still work. So when MAX_ORDER - 1 crosses sections, additional code would be
->> needed instead of simple pfn++. Is there anything I am missing?
->>
->> BTW, to test a system with memory holes, do you know is there an easy of adding
->> random memory holes to an x86_64 VM, which can help reveal potential missing pieces
->> in the code? Changing BIOS-e820 table might be one way, but I have no idea on
->> how to do it on QEMU.
->>
->>>
->>> Figuring out what needs care itself might take quite some effort.
->>>
->>> One thing I was thinking about as well: The bigger our MAX_ORDER, the slower it could be to allocate smaller pages. If we have 1G pages, splitting them down to 4k then takes 8 additional steps if I'm, not wrong. Of course, that's the worst case. Would be interesting to evaluate.
->>
->> Sure. I am planning to check it too. As a simple start, I am going to run will it scale
->> benchmarks to see if there is any performance difference between different MAX_ORDERs.
-> 
-> I ran vm-scalablity and memory-related will-it-scale on a server with 256GB memory to
-> see the impact of increasing MAX_ORDER and didn’t see much difference for most of
-> the workloads like page_fault1, page_fault2, and page_fault3 from will-it-scale.
-> But feel free to check the attached complete results and let me know what should be
-> looked into. Thanks.
+Hi Masami,
 
-Right, for will-it-scale it looks like there are mostly minor 
-differences, although I am not sure if the results are really stable 
-(reaching from -6% to +6%). For vm-scalability the numbers seem to vary 
-even more (e.g., stddev of ± 63%), so I have no idea how expressive they 
-are. But I guess for these benchmarks, the net change won't really be 
-significant.
+Masami Hiramatsu wrote:
+> Remove trampoline_address from kretprobe_trampoline_handler().
+> Instead of passing the address, kretprobe_trampoline_handler()
+> can use new kretprobe_trampoline_addr().
+>=20
+> Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+> Tested-by: Andrii Nakryik <andrii@kernel.org>
+> ---
+>  Changes in v3:
+>    - Remove wrong kretprobe_trampoline declaration from
+>      arch/x86/include/asm/kprobes.h.
+>  Changes in v2:
+>    - Remove arch_deref_entry_point() from comment.
+> ---
+>  arch/arc/kernel/kprobes.c          |    2 +-
+>  arch/arm/probes/kprobes/core.c     |    3 +--
+>  arch/arm64/kernel/probes/kprobes.c |    3 +--
+>  arch/csky/kernel/probes/kprobes.c  |    2 +-
+>  arch/ia64/kernel/kprobes.c         |    5 ++---
+>  arch/mips/kernel/kprobes.c         |    3 +--
+>  arch/parisc/kernel/kprobes.c       |    4 ++--
+>  arch/powerpc/kernel/kprobes.c      |    2 +-
+>  arch/riscv/kernel/probes/kprobes.c |    2 +-
+>  arch/s390/kernel/kprobes.c         |    2 +-
+>  arch/sh/kernel/kprobes.c           |    2 +-
+>  arch/sparc/kernel/kprobes.c        |    2 +-
+>  arch/x86/include/asm/kprobes.h     |    1 -
+>  arch/x86/kernel/kprobes/core.c     |    2 +-
+>  include/linux/kprobes.h            |   18 +++++++++++++-----
+>  kernel/kprobes.c                   |    3 +--
+>  16 files changed, 29 insertions(+), 27 deletions(-)
+>=20
 
-Thanks!
+<snip>
 
--- 
+> diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
+> index d65c041b5c22..65dadd4238a2 100644
+> --- a/include/linux/kprobes.h
+> +++ b/include/linux/kprobes.h
+> @@ -205,15 +205,23 @@ extern void arch_prepare_kretprobe(struct kretprobe=
+_instance *ri,
+>  				   struct pt_regs *regs);
+>  extern int arch_trampoline_kprobe(struct kprobe *p);
+> =20
+> +void kretprobe_trampoline(void);
+> +/*
+> + * Since some architecture uses structured function pointer,
+> + * use dereference_function_descriptor() to get real function address.
+> + */
+> +static nokprobe_inline void *kretprobe_trampoline_addr(void)
+> +{
+> +	return dereference_function_descriptor(kretprobe_trampoline);
+
+I'm afraid this won't work correctly. For kernel functions, please use=20
+dereference_kernel_function_descriptor() which checks if the function=20
+has a descriptor before dereferencing it.
+
+
 Thanks,
-
-David / dhildenb
+Naveen
 
