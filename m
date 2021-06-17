@@ -2,55 +2,55 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DDE573AAA46
-	for <lists+linux-ia64@lfdr.de>; Thu, 17 Jun 2021 06:41:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 309C83AAA47
+	for <lists+linux-ia64@lfdr.de>; Thu, 17 Jun 2021 06:41:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229846AbhFQEnP (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 17 Jun 2021 00:43:15 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([216.205.24.124]:34076 "EHLO
+        id S229901AbhFQEnh (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 17 Jun 2021 00:43:37 -0400
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:39227 "EHLO
         us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229515AbhFQEnO (ORCPT
+        by vger.kernel.org with ESMTP id S229515AbhFQEng (ORCPT
         <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 17 Jun 2021 00:43:14 -0400
+        Thu, 17 Jun 2021 00:43:36 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1623904867;
+        s=mimecast20190719; t=1623904889;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=NRH1mIv3BE8eD5JB0vSdN7Y05iQZJajr4cyJmYooT0M=;
-        b=cPbwn7MwMbmNjYnzDZy2m8tTsU6m/3idVD8Xuuvd/uBf8Fu4WLAagbmZvU16g12wqHDHTc
-        D5NpTwVQc2YyO0y2MOiq210wK8WbHAVh7r/HGwSFUtMzPr7HHthV6QwdgxFKIZtVyv9n4i
-        FLgxZ5ky/juGP3uoxzYzOcakgnT/ySE=
+        bh=Gu9+RkggD0yW39knD2c9KhK9b8LU7wFL1uvtc5L0v/I=;
+        b=ilFsCmkIzeIKBGPT+xJSzcry2t5llFitmC87q5iLRCT0KGbOq7iLqSLXoLHn1uBqYsOhMi
+        rAxEo4nPQAjyA4F5HXVRMXX9q8s0ksRrhDDT0+hovVAG/o0vBwT8rfY7ntlQHTLezgMrBC
+        cRZcxfFmjtXZq12Ag3dpyhf0viB9bZk=
 Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
  [209.85.160.200]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-119-juvsTvnSNwuFbJpkcCf0Pw-1; Thu, 17 Jun 2021 00:41:03 -0400
-X-MC-Unique: juvsTvnSNwuFbJpkcCf0Pw-1
-Received: by mail-qt1-f200.google.com with SMTP id r17-20020ac842510000b02902456ec03025so3048143qtm.3
-        for <linux-ia64@vger.kernel.org>; Wed, 16 Jun 2021 21:41:03 -0700 (PDT)
+ us-mta-496-yuEGleIrM5SIkDKKC9-ikg-1; Thu, 17 Jun 2021 00:41:27 -0400
+X-MC-Unique: yuEGleIrM5SIkDKKC9-ikg-1
+Received: by mail-qt1-f200.google.com with SMTP id d12-20020ac8668c0000b0290246e35b30f8so356274qtp.21
+        for <linux-ia64@vger.kernel.org>; Wed, 16 Jun 2021 21:41:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=NRH1mIv3BE8eD5JB0vSdN7Y05iQZJajr4cyJmYooT0M=;
-        b=G2PMpTgyX3l6pIYZ7wuNZrSTyhul25lt1ICiA4gLhvcnpM9dGt3EBvV8pCD2d1vcV/
-         PZmOd4s7rc2q03SoZSTTjgGy5PpyjIt+xFWCeIunuPfXrT3Md4RIA5VFpfaExYf02Ny+
-         hY1+VG+M3pG0pukEk9Y8X4NN/hfLOeR5Bq6rWQ/gjzcatODqSTkYfVwQS7iqveK5tCay
-         RAulR9g4w/GkSm3Iq8v19efqwryuXmxQsTAnWG46yYUxSdR/1eTvyzjiYl+NVdS7SFzu
-         z0dcFzumJiDKHVSScSPMqpagrM8vCe51oU7XcuE2rttM6gROlM86o+fPaWxlZYe2kt1k
-         BOeg==
-X-Gm-Message-State: AOAM533XB3Whf09CbssjZF68B0Z+10JbEfLalhD+8u/CLRm0QOV2Vlyk
-        sjXD8RJMxiugwOdo7DHaiAn89cHge7RPQ8TdqZZuakoUHcEZfCFBw2BjmzlEtITD23D+l4+ILrz
-        aLDattyihhakNiiVjq85i5g==
-X-Received: by 2002:a37:a389:: with SMTP id m131mr1852465qke.134.1623904862697;
-        Wed, 16 Jun 2021 21:41:02 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJyy/rnTImZkYqGlwtbUgW/jE8SgnPZVG2s9z6nNoS60Q0zHIRP2wQA0sGlLTIxkcaBzfQbNYA==
-X-Received: by 2002:a37:a389:: with SMTP id m131mr1852440qke.134.1623904862501;
-        Wed, 16 Jun 2021 21:41:02 -0700 (PDT)
+        bh=Gu9+RkggD0yW39knD2c9KhK9b8LU7wFL1uvtc5L0v/I=;
+        b=EQyE9kQlCPWgsiKwJjtiNHAOo04bq/DeEPSjD9CLfAAoIsVoeqH7lUFJxVvpC+yn7O
+         hfDgs/VMwvHVB0sKBhT6zCW2e1SbJc2OUbqzs7yGhPQpuR/Fs1bShXHyoS72+KdOKLde
+         2j5MMpjeZVjlbyKLtiBGuIqwVbS0iaoMrZbygUppYuoMkLN/feioHOjihOLlSlj9W9Fs
+         DykuR0/9mBO8GOkWirmlZVaBt9qnwli0Kudalq4YbLrBsYE8/angZj4Iz9Uq937dcqr1
+         LKKWD4RbCUGZxaW5Suttq3cgyY1XlCSD2lDuP51n+07pFTCSEVLOHFxenzQCgsM4zr68
+         KcgQ==
+X-Gm-Message-State: AOAM533GtE7hfRRK/sBGtxAnHLxCkJ0SISBNXwy27N7anxRqNc70K6Y0
+        ssT7Ev488dkKIey3HJ1U+fL1ekJjmlA22ZPgtAdxOcn6+/mHMu5qeKkBLBiaIN41O14vTmGeflh
+        vbY+6/mvRfw+iM8jASVFI3Q==
+X-Received: by 2002:a0c:f3c8:: with SMTP id f8mr3937939qvm.58.1623904886762;
+        Wed, 16 Jun 2021 21:41:26 -0700 (PDT)
+X-Google-Smtp-Source: ABdhPJx2qJtGnUR5miTCWdvpT+hUy6c3l8oz/W+oT4ExJgMBBwY8BO4EAFQCDcDFXS8OOF7P0cwfAA==
+X-Received: by 2002:a0c:f3c8:: with SMTP id f8mr3937928qvm.58.1623904886602;
+        Wed, 16 Jun 2021 21:41:26 -0700 (PDT)
 Received: from treble ([68.52.236.68])
-        by smtp.gmail.com with ESMTPSA id w8sm967908qkp.136.2021.06.16.21.41.01
+        by smtp.gmail.com with ESMTPSA id h2sm979060qkf.106.2021.06.16.21.41.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Jun 2021 21:41:02 -0700 (PDT)
-Date:   Wed, 16 Jun 2021 23:41:00 -0500
+        Wed, 16 Jun 2021 21:41:26 -0700 (PDT)
+Date:   Wed, 16 Jun 2021 23:41:24 -0500
 From:   Josh Poimboeuf <jpoimboe@redhat.com>
 To:     Masami Hiramatsu <mhiramat@kernel.org>
 Cc:     Steven Rostedt <rostedt@goodmis.org>,
@@ -61,25 +61,45 @@ Cc:     Steven Rostedt <rostedt@goodmis.org>,
         linux-ia64@vger.kernel.org,
         Abhishek Sagar <sagar.abhishek@gmail.com>,
         Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Subject: Re: [PATCH -tip v7 10/13] x86/kprobes: Push a fake return address at
- kretprobe_trampoline
-Message-ID: <20210617044100.swsgkyio5wwdl2ic@treble>
+Subject: Re: [PATCH -tip v7 11/13] x86/unwind: Recover kretprobe trampoline
+ entry
+Message-ID: <20210617044124.pv4xm47cum4faaeo@treble>
 References: <162209754288.436794.3904335049560916855.stgit@devnote2>
- <162209763886.436794.6585363781863933939.stgit@devnote2>
+ <162209764814.436794.15907711942126944591.stgit@devnote2>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <162209763886.436794.6585363781863933939.stgit@devnote2>
+In-Reply-To: <162209764814.436794.15907711942126944591.stgit@devnote2>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, May 27, 2021 at 03:40:39PM +0900, Masami Hiramatsu wrote:
-> This changes x86/kretprobe stack frame on kretprobe_trampoline
-> a bit, which now push the kretprobe_trampoline as a fake return
-> address at the bottom of the stack frame. With this fix, the ORC
-> unwinder will see the kretprobe_trampoline as a return address.
+On Thu, May 27, 2021 at 03:40:48PM +0900, Masami Hiramatsu wrote:
+> Since the kretprobe replaces the function return address with
+> the kretprobe_trampoline on the stack, x86 unwinders can not
+> continue the stack unwinding at that point, or record
+> kretprobe_trampoline instead of correct return address.
 > 
+> To fix this issue, find the correct return address from task's
+> kretprobe_instances as like as function-graph tracer does.
+> 
+> With this fix, the unwinder can correctly unwind the stack
+> from kretprobe event on x86, as below.
+> 
+>            <...>-135     [003] ...1     6.722338: r_full_proxy_read_0: (vfs_read+0xab/0x1a0 <- full_proxy_read)
+>            <...>-135     [003] ...1     6.722377: <stack trace>
+>  => kretprobe_trace_func+0x209/0x2f0
+>  => kretprobe_dispatcher+0x4a/0x70
+>  => __kretprobe_trampoline_handler+0xca/0x150
+>  => trampoline_handler+0x44/0x70
+>  => kretprobe_trampoline+0x2a/0x50
+>  => vfs_read+0xab/0x1a0
+>  => ksys_read+0x5f/0xe0
+>  => do_syscall_64+0x33/0x40
+>  => entry_SYSCALL_64_after_hwframe+0x44/0xae
+> 
+> 
+> Reported-by: Daniel Xu <dxu@dxuuu.xyz>
 > Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
 > Suggested-by: Josh Poimboeuf <jpoimboe@redhat.com>
 > Tested-by: Andrii Nakryik <andrii@kernel.org>
