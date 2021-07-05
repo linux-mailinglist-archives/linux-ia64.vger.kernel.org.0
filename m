@@ -2,27 +2,27 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9373BC0BB
-	for <lists+linux-ia64@lfdr.de>; Mon,  5 Jul 2021 17:35:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 906D13BC0D2
+	for <lists+linux-ia64@lfdr.de>; Mon,  5 Jul 2021 17:35:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233468AbhGEPhS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 5 Jul 2021 11:37:18 -0400
-Received: from mail.kernel.org ([198.145.29.99]:58574 "EHLO mail.kernel.org"
+        id S233825AbhGEPhm (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 5 Jul 2021 11:37:42 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58848 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S233192AbhGEPgL (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 5 Jul 2021 11:36:11 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 2AE7C61A30;
-        Mon,  5 Jul 2021 15:31:54 +0000 (UTC)
+        id S233533AbhGEPg2 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 5 Jul 2021 11:36:28 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5676061C1F;
+        Mon,  5 Jul 2021 15:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625499115;
+        s=k20201202; t=1625499127;
         bh=b4Yuh9ZXGTBdk6of/NfxeZDGAlGbAWPMhlBaB7ZNN9c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VCJPWXFVgB0oPmXXYL8pf44XyaROplYoXqhhaAt9IsQmxF4gBIxNpKsyxYAY3F1m0
-         ypDlkfkOCctdLCyjKw8z33CM9FFcccyemfrM/bMUMjCvD/OcKYkHIwnEOYVwzqMFYO
-         w3/2R/M06XS+4gVfXKqbxLDo2NUKWOG2MnbNORO7zro9ZeYpeCkDo6pyhegrhC0vy0
-         +UT+0XvpS0zPGN1oITzLGka87Ng4e6WCu+nHKzN2SJ5CGmXU8qqK+Eha6lMVPGfX7s
-         K7RqjsAvTncfgULEmtmDvb/+JEFkCJ6F1Y8Hc6lcO6ODYBtctTDpQpMk+ypfv5RGXy
-         jrV2/ZSqZ+Dcw==
+        b=fY/A502FfFnD4cVBayY7BLdLqLkEd2s4e8odCFNyaL/SQ871M+lujeTb9eiNmB1r/
+         vpoU7LiD9OFbKBYmOb1NR8yrgQLCm0/l4Sepd8gca9cVU3ORS5JrczencDB0k5YPj1
+         LIW30s427HMffDOhsvQ5V4EfmTX0i4vKXxobslVZX7KInBFRJ/UpB8/yyz3azbSvP4
+         4Jiv7UPgPctucZbMZmjE0WMYwXXGEGVccZy/YwXr2sfKdjzIUQ7mkpmCoBddYvcYNO
+         mNfBAov70nJIiUumZZxuvXgwdxA6txpalYSHbED4tqwz+/VsTwKbsGcPWQwCXnbZg3
+         1eDdE05oR5Udw==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Arnd Bergmann <arnd@arndb.de>,
@@ -31,12 +31,12 @@ Cc:     Arnd Bergmann <arnd@arndb.de>,
         Andrew Morton <akpm@linux-foundation.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 15/15] ia64: mca_drv: fix incorrect array size calculation
-Date:   Mon,  5 Jul 2021 11:31:36 -0400
-Message-Id: <20210705153136.1522245-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.9 9/9] ia64: mca_drv: fix incorrect array size calculation
+Date:   Mon,  5 Jul 2021 11:31:55 -0400
+Message-Id: <20210705153155.1522423-9-sashal@kernel.org>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20210705153136.1522245-1-sashal@kernel.org>
-References: <20210705153136.1522245-1-sashal@kernel.org>
+In-Reply-To: <20210705153155.1522423-1-sashal@kernel.org>
+References: <20210705153155.1522423-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
