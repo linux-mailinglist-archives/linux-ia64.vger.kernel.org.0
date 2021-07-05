@@ -2,106 +2,56 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EEAD73BC124
-	for <lists+linux-ia64@lfdr.de>; Mon,  5 Jul 2021 17:43:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D9B93BC3DE
+	for <lists+linux-ia64@lfdr.de>; Tue,  6 Jul 2021 00:14:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232011AbhGEPpi (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 5 Jul 2021 11:45:38 -0400
-Received: from mail.kernel.org ([198.145.29.99]:39312 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231899AbhGEPph (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 5 Jul 2021 11:45:37 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 885F9613C1;
-        Mon,  5 Jul 2021 15:42:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625499780;
-        bh=aD6J7wwTkd61kTD+YwKULBV5n12ddnDruf6BnlnuTWo=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=QCNMDoMDhQ2wMpmN9RARXSdRUbarHsBSqXjBYzVz7WJMfPaB8IGGeX7UmgOF0mna2
-         b6OIgpWM9cYIYPRaPFVm0+kMLV8nhUfH4mpd9jedJ78esavfDRwug3o7cNM0PPKJIp
-         WysteeLoGKNKK+zxsamgNhAbuK5qeGbDnJ83no3TGnyeMZYg95IysbtYErZZCaHOcw
-         uYuQks9iveRmvZOP24S5ECMD9DjoX2xho/bzkcKGv9RoVFTtEGqbKq/E1AjFEc5tjY
-         pS+0eFNY7ZkiMQ0ASrLTQIp91v9k90qposfQrRjPUDhOgM9gGqdYRdRhTlAq5E5oYc
-         AORBYg4FHanEA==
-Date:   Tue, 6 Jul 2021 00:42:57 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
-        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
-        ast@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, kernel-team@fb.com, yhs@fb.com,
-        linux-ia64@vger.kernel.org,
-        Abhishek Sagar <sagar.abhishek@gmail.com>,
-        Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Subject: Re: [PATCH -tip v8 11/13] x86/unwind: Recover kretprobe trampoline
- entry
-Message-Id: <20210706004257.9e282b98f447251a380f658f@kernel.org>
-In-Reply-To: <YOLurg5mGHdBc+fz@hirez.programming.kicks-ass.net>
-References: <162399992186.506599.8457763707951687195.stgit@devnote2>
-        <162400002631.506599.2413605639666466945.stgit@devnote2>
-        <YOLurg5mGHdBc+fz@hirez.programming.kicks-ass.net>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S233139AbhGEWRS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 5 Jul 2021 18:17:18 -0400
+Received: from static-190-25-223-138.static.etb.net.co ([190.25.223.138]:46234
+        "EHLO correo.hdv.gov.co" rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org
+        with ESMTP id S233080AbhGEWRS (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 5 Jul 2021 18:17:18 -0400
+Received: from localhost (localhost [127.0.0.1])
+        by correo.hdv.gov.co (Postfix) with ESMTP id 3114D2204819;
+        Mon,  5 Jul 2021 15:42:55 -0500 (-05)
+Received: from correo.hdv.gov.co ([127.0.0.1])
+        by localhost (correo.hdv.gov.co [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id v5zhhlruGN9J; Mon,  5 Jul 2021 15:42:55 -0500 (-05)
+Received: from localhost (localhost [127.0.0.1])
+        by correo.hdv.gov.co (Postfix) with ESMTP id 5325522047F3;
+        Mon,  5 Jul 2021 15:42:52 -0500 (-05)
+DKIM-Filter: OpenDKIM Filter v2.10.3 correo.hdv.gov.co 5325522047F3
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hdv.gov.co;
+        s=11DF984A-9D1F-11E6-B193-F2669FC4C452; t=1625517772;
+        bh=Po3+jYC7/Rg7V8Ibt2yKIqN5eintSYPogxawXJ1TVGE=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=o4BJ5/9KbyPBxXt/nGUmbeUpHMi8Wi79rzHb/lhCmGlt6ZcyrGEu1YqRksLvyRM1u
+         zJWW0coHSW8kovGTHcc477RoHW1qqT6Nl9AaNBpxFQVKAA3VFLOpwZw1H3fJujjXZw
+         8v5YNBg+R7pWxJh92JC/OMGRKznr5JF6njpwRndM=
+X-Virus-Scanned: amavisd-new at correo.hdv.gov.co
+Received: from correo.hdv.gov.co ([127.0.0.1])
+        by localhost (correo.hdv.gov.co [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id jpgEgVcdn8is; Mon,  5 Jul 2021 15:42:52 -0500 (-05)
+Received: from [10.1.237.235] (unknown [154.13.1.139])
+        by correo.hdv.gov.co (Postfix) with ESMTPSA id 04F832204689;
+        Mon,  5 Jul 2021 15:42:44 -0500 (-05)
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: RE:
+To:     Recipients <planeacion.arquitecto@hdv.gov.co>
+From:   planeacion.arquitecto@hdv.gov.co
+Date:   Mon, 05 Jul 2021 22:42:30 +0200
+Reply-To: callumfoundation18@gmail.com
+Message-Id: <20210705204245.04F832204689@correo.hdv.gov.co>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, 5 Jul 2021 13:36:14 +0200
-Peter Zijlstra <peterz@infradead.org> wrote:
+F=C3=BCr Sie wurde eine Spende in H=C3=B6he von 2.800.000,00 =E2=82=AC gesp=
+endet. Bitte antworten Sie auf diese E-Mail, um die Spenderin (MRS. LERYNNE=
+ WEST) f=C3=BCr weitere Informationen zu gespendeten Mitteln zu kontaktiere=
+n.
 
-> On Fri, Jun 18, 2021 at 04:07:06PM +0900, Masami Hiramatsu wrote:
-> > @@ -549,7 +548,15 @@ bool unwind_next_frame(struct unwind_state *state)
-> >  					 (void *)orig_ip);
-> >  			goto err;
-> >  		}
-> > -
-> > +		/*
-> > +		 * There is a small chance to interrupt at the entry of
-> > +		 * kretprobe_trampoline where the ORC info doesn't exist.
-> > +		 * That point is right after the RET to kretprobe_trampoline
-> > +		 * which was modified return address. So the @addr_p must
-> > +		 * be right before the regs->sp.
-> > +		 */
-> > +		state->ip = unwind_recover_kretprobe(state, state->ip,
-> > +				(unsigned long *)(state->sp - sizeof(long)));
-> >  		state->regs = (struct pt_regs *)sp;
-> >  		state->prev_regs = NULL;
-> >  		state->full_regs = true;
-> > @@ -562,6 +569,9 @@ bool unwind_next_frame(struct unwind_state *state)
-> >  					 (void *)orig_ip);
-> >  			goto err;
-> >  		}
-> > +		/* See UNWIND_HINT_TYPE_REGS case comment. */
-> > +		state->ip = unwind_recover_kretprobe(state, state->ip,
-> > +				(unsigned long *)(state->sp - sizeof(long)));
-> >  
-> >  		if (state->full_regs)
-> >  			state->prev_regs = state->regs;
-> 
-> Why doesn't the ftrace case have this? That is, why aren't both return
-> trampolines having the same general shape?
-
-Ah, this strongly depends what the trampoline code does.
-For the kretprobe case, the PUSHQ at the entry of the kretprobe_trampoline()
-does not covered by UNWIND_HINT_FUNC. Thus it needs to find 'correct_ret_addr'
-by the frame pointer (which is next to the sp).
-
-        "kretprobe_trampoline:\n"
-#ifdef CONFIG_X86_64
-        /* Push fake return address to tell the unwinder it's a kretprobe */
-        "       pushq $kretprobe_trampoline\n"
-        UNWIND_HINT_FUNC
-
-But I'm not so sure how ftrace treat it. It seems that the return_to_handler()
-doesn't care such case. (anyway, return_to_handler() does not return but jump
-to the original call-site, in that case, the information will be lost.)
-
-Thank you,
-
--- 
-Masami Hiramatsu <mhiramat@kernel.org>
+Sch=C3=B6ne Gr=C3=BC=C3=9Fe
