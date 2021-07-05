@@ -2,68 +2,93 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3991C3BBB8D
-	for <lists+linux-ia64@lfdr.de>; Mon,  5 Jul 2021 12:50:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBFA23BBC4E
+	for <lists+linux-ia64@lfdr.de>; Mon,  5 Jul 2021 13:37:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230511AbhGEKwj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 5 Jul 2021 06:52:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60262 "EHLO
+        id S231371AbhGELkO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 5 Jul 2021 07:40:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230482AbhGEKwj (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 5 Jul 2021 06:52:39 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F28C061574
-        for <linux-ia64@vger.kernel.org>; Mon,  5 Jul 2021 03:50:01 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id j11so23144860edq.6
-        for <linux-ia64@vger.kernel.org>; Mon, 05 Jul 2021 03:50:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=xLoNOxCs1ubsbdkHIy646p19iJgcj2iwbWWJlijREbc=;
-        b=e5m7tjkl26A7dVIgDW3ZdSKLMndG3XMh3SylJse/MrgRmTjwHw/5UXqdruVSe2TGRV
-         ugW8uPnBh7BVcbR5zPwOo6olytB//x6t6vWPKNVIxjzt2VKBLQnOLxRjMePYWzLt+qAR
-         53dW54wolY51jfyMVYur9qLpOR6LGM3Atw51JR4KhH4cmd2p5pRleE5JuPd2vOdKOS24
-         CVyFNb/mlNsoLIOj4IsLdgR+zjuvlo4i7uHDdpTzOPZbSf2wu231i4V9CwfsCc421zyE
-         egn/USTgR8jdE4XNLEbn70wND4moSkf0+ZUrENX1Y0iSExyUPx2RxZw15RyTatvCZd85
-         YuBw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=xLoNOxCs1ubsbdkHIy646p19iJgcj2iwbWWJlijREbc=;
-        b=FOwHchO0Wcd6oa6fskN654+msx16Cpt/X0Sz3rvLXOX3RKeEvHsym+7g0rTUIkPNvz
-         +WSMqwmZjxsJ8GI7LzSC8mbtETYMjopZYSdE3/y+9V84IVM/3P9VxdPkL8qh6deyoyJZ
-         v2/rAY9oj1w4Z96qQ6d+3GIqK2OvVzN6pXOzljBYbWe9lICvH+H/Iwj6ru41SGYRH28v
-         vw1DQ5BzcDUgXZs3cFShvNCO2QQyoIraxvkhhdDKkBbkvhcZmDUW4I1h8aAjB6K3ssf6
-         YFolwCKE4Tikhk9CTIaia4aYhJrt1YM59jmoWUPRTfVc1cV9cNowgFtm04m6atJD7P3H
-         KJ0g==
-X-Gm-Message-State: AOAM532iUjykwc0YWhQKvkpQobel+fgVI0iWjB4Lk4JqLGc5uuWgZ8dc
-        dImBf85Che6AZ5Ptz3C7wGSHo+Nw5rBN6rGyFNM=
-X-Google-Smtp-Source: ABdhPJwHzgHhjanfV5Rnph+8nZ0E85W0SObCVL/7ms2GIOXbCqygYBP+ZqHPnnXNGLq7PODjpZcUC5LaE0PCp+Tx9ZY=
-X-Received: by 2002:a50:f0c1:: with SMTP id a1mr15560389edm.293.1625482200094;
- Mon, 05 Jul 2021 03:50:00 -0700 (PDT)
+        with ESMTP id S231286AbhGELkO (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 5 Jul 2021 07:40:14 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 761D3C061574;
+        Mon,  5 Jul 2021 04:37:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=CtwriWiKNwEyPS7wLGosDrs1cNvFIMaj7va3rpRQQIg=; b=tmtzEHW3+X0tS77m9YJ9iqG4hq
+        KZ6c5b4LQxTd/0FbCgReItHmXkmQXz+fVrK/XAThajPegKRWxD3+QLJE7XIuP054SYCBp5HRgsSrt
+        Krevd8NbRA3zaGwAEgi82jX1FzhtGyoXk2aC1FvLF7lPN1uIiEqFdOoikHiKE3HHyX4iIdIPH48Iz
+        XXOJIYcyJQIPz43O3BoIr1qmaNp6chmnlZGGCNNCSe/9vspoOMBEbME/WiysvjKHhpPhyJZIqQjKC
+        I4E0mb+HraGyZUN8qj3mgIY97Q/y97pDFmYzdb5UZLgh6RnGaqzDrviBlUZrbB3dmfJ+HiuT5DfVO
+        hoWLslYQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1m0Mtd-00ACWy-27; Mon, 05 Jul 2021 11:36:20 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id C2C3E3001DC;
+        Mon,  5 Jul 2021 13:36:14 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 5F23A200E1E64; Mon,  5 Jul 2021 13:36:14 +0200 (CEST)
+Date:   Mon, 5 Jul 2021 13:36:14 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
+        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
+        ast@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>, kernel-team@fb.com, yhs@fb.com,
+        linux-ia64@vger.kernel.org,
+        Abhishek Sagar <sagar.abhishek@gmail.com>,
+        Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Subject: Re: [PATCH -tip v8 11/13] x86/unwind: Recover kretprobe trampoline
+ entry
+Message-ID: <YOLurg5mGHdBc+fz@hirez.programming.kicks-ass.net>
+References: <162399992186.506599.8457763707951687195.stgit@devnote2>
+ <162400002631.506599.2413605639666466945.stgit@devnote2>
 MIME-Version: 1.0
-Received: by 2002:a54:3884:0:0:0:0:0 with HTTP; Mon, 5 Jul 2021 03:49:59 -0700 (PDT)
-Reply-To: yi.hiuman@hotmail.com
-From:   Yi Hiuman <gregtomosloanfirm@gmail.com>
-Date:   Mon, 5 Jul 2021 11:49:59 +0100
-Message-ID: <CAAbmwZwn238HdXf8hbcWMaNSSwzAKmbO0rbUuFjxVaaMtYzRqw@mail.gmail.com>
-Subject: =?UTF-8?Q?Ich_habe_ein_Gesch=C3=A4ft_f=C3=BCr_Sie?=
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <162400002631.506599.2413605639666466945.stgit@devnote2>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hallo,
+On Fri, Jun 18, 2021 at 04:07:06PM +0900, Masami Hiramatsu wrote:
+> @@ -549,7 +548,15 @@ bool unwind_next_frame(struct unwind_state *state)
+>  					 (void *)orig_ip);
+>  			goto err;
+>  		}
+> -
+> +		/*
+> +		 * There is a small chance to interrupt at the entry of
+> +		 * kretprobe_trampoline where the ORC info doesn't exist.
+> +		 * That point is right after the RET to kretprobe_trampoline
+> +		 * which was modified return address. So the @addr_p must
+> +		 * be right before the regs->sp.
+> +		 */
+> +		state->ip = unwind_recover_kretprobe(state, state->ip,
+> +				(unsigned long *)(state->sp - sizeof(long)));
+>  		state->regs = (struct pt_regs *)sp;
+>  		state->prev_regs = NULL;
+>  		state->full_regs = true;
+> @@ -562,6 +569,9 @@ bool unwind_next_frame(struct unwind_state *state)
+>  					 (void *)orig_ip);
+>  			goto err;
+>  		}
+> +		/* See UNWIND_HINT_TYPE_REGS case comment. */
+> +		state->ip = unwind_recover_kretprobe(state, state->ip,
+> +				(unsigned long *)(state->sp - sizeof(long)));
+>  
+>  		if (state->full_regs)
+>  			state->prev_regs = state->regs;
 
-Ich bin Herr Yi Huiman, ehemaliger Vorsitzender der Industrial and
-Commercial Bank of China (ICBC) und derzeitiger China Securities
-Regulatory Commission (CSRC). Ich habe einen Gesch=C3=A4ftsvorschlag, der
-uns beiden zugute kommt. Ich suche einen seri=C3=B6sen Partner, um eine
-Transaktion im Wert von 45.275.000,00 USD anzuvertrauen. Kann ich mich
-auf dich verlassen? Bitte kontaktieren Sie mich f=C3=BCr weitere
-Informationen =C3=BCber meine pers=C3=B6nliche E-Mail-Adresse:
-yi.hiuman@hotmail.com
+Why doesn't the ftrace case have this? That is, why aren't both return
+trampolines having the same general shape?
