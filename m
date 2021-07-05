@@ -2,91 +2,89 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 666E23BBE56
-	for <lists+linux-ia64@lfdr.de>; Mon,  5 Jul 2021 16:40:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C5EB3BC051
+	for <lists+linux-ia64@lfdr.de>; Mon,  5 Jul 2021 17:34:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231448AbhGEOmz (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 5 Jul 2021 10:42:55 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44982 "EHLO mail.kernel.org"
+        id S233260AbhGEPfX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 5 Jul 2021 11:35:23 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58848 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S230504AbhGEOmz (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 5 Jul 2021 10:42:55 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id BBDA16195E;
-        Mon,  5 Jul 2021 14:40:15 +0000 (UTC)
+        id S232100AbhGEPeQ (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 5 Jul 2021 11:34:16 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 8B441619C0;
+        Mon,  5 Jul 2021 15:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625496018;
-        bh=ZdnvFTKPNqMYGq5RT15Z4gJxdJYehJ1cRy+yS+OH5bM=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=hk4e4xRPtsJahAiWKdJey/x8nyohKetkvaYP3y14vHjX1VnoEO1TxKZq8jOr1EdE5
-         FMgmZ90/EzBuusZbCjtR7HColKmiHHNOugA9np1+eradUX0TPgdg5iHYkOdPOYN7LA
-         ITb06PDjGIX7DJ6NHFnt8GJveCYzYbalAZMMaubNeOilTKhTai8XjynyLUTMwa1MOV
-         k2Bz4C3YxglmEZG/QWQ9kd3sCI7kq8eh73ctPKZuGKxYJkPiWvY0L0pfR4b9OnLTOM
-         NwwIKS+pkDJI+tUbbOFebT6I4hGRrmFnr1g+TsxZKJtbZ4B7JHpUJ+hywEXUYrb0d9
-         RwloBPYVGbsYQ==
-Date:   Mon, 5 Jul 2021 23:40:14 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Ingo Molnar <mingo@kernel.org>
-Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>, X86 ML <x86@kernel.org>,
-        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
-        ast@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>, kernel-team@fb.com,
-        yhs@fb.com, linux-ia64@vger.kernel.org,
-        Abhishek Sagar <sagar.abhishek@gmail.com>,
-        Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Subject: Re: [PATCH -tip v8 08/13] arm: kprobes: Make a space for
- regs->ARM_pc at kretprobe_trampoline
-Message-Id: <20210705234014.4e0a9ec6a60ef2db5ff93819@kernel.org>
-In-Reply-To: <YOK9Gbcd63QkU5LB@gmail.com>
-References: <162399992186.506599.8457763707951687195.stgit@devnote2>
-        <162399999702.506599.16339931387573094059.stgit@devnote2>
-        <YOK9Gbcd63QkU5LB@gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        s=k20201202; t=1625499071;
+        bh=YmZvJ4+3XUk477qyxdL5bFEK3VrT0RD5RLuRY7lPUE0=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=Dj4lvTj1CEbHhkgaAceANFWOZF6zqtjMnMEExT8t9uP6OwNmSAudfa0cLnPr8zn/6
+         ywqjQHBA5XnTLmVHO5Vxvl9ZvhYInHYV7LXj5DePsReeeyQXonS3jXr2rL+v0GKWnB
+         edqL/GENvtXfM0AGyG5J6esUCZs4D50hTypxtIbrENwyuM41OJd6thrrnyVue76MND
+         5qgXsoi/BWe6W/1GBU2VfqxP3Uvo++zsJbrb4W6qwcNF+UwZcfA8/Dx8DTY5jRzH4Z
+         P36AB9iSDOcRQjsMecxslWwjhyMi9nyIaboZvn2cuS/h7EBUcKAjiE9hgYdFeL6mEN
+         JLhPFPfnEMm2A==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-ia64@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.4 25/26] ia64: mca_drv: fix incorrect array size calculation
+Date:   Mon,  5 Jul 2021 11:30:38 -0400
+Message-Id: <20210705153039.1521781-25-sashal@kernel.org>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20210705153039.1521781-1-sashal@kernel.org>
+References: <20210705153039.1521781-1-sashal@kernel.org>
+MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, 5 Jul 2021 10:04:41 +0200
-Ingo Molnar <mingo@kernel.org> wrote:
+From: Arnd Bergmann <arnd@arndb.de>
 
-> 
-> * Masami Hiramatsu <mhiramat@kernel.org> wrote:
-> 
-> > Change kretprobe_trampoline to make a space for regs->ARM_pc so that
-> > kretprobe_trampoline_handler can call instruction_pointer_set()
-> > safely.
-> 
-> The idiom is "make space", but in any case, what does this mean?
+[ Upstream commit c5f320ff8a79501bb59338278336ec43acb9d7e2 ]
 
-Since arm's kretprobe_trampoline() saves partial pt_regs, regs->ARM_pc
-is not accessible (it points the caller function's stack frame).
-Therefore, this extends the stack frame for storing regs->ARM_pc.
+gcc points out a mistake in the mca driver that goes back to before the
+git history:
 
-> 
-> Was the stack frame set up in kretprobe_trampoline() and calling 
-> trampoline_handler() buggy?
-> 
-> If yes, then explain the bad effects of the bug, and make all of this clear 
-> in the title & changelog.
+arch/ia64/kernel/mca_drv.c: In function 'init_record_index_pools':
+arch/ia64/kernel/mca_drv.c:346:54: error: expression does not compute the number of elements in this array; element typ
+e is 'int', not 'size_t' {aka 'long unsigned int'} [-Werror=sizeof-array-div]
+  346 |         for (i = 1; i < sizeof sal_log_sect_min_sizes/sizeof(size_t); i++)
+      |                                                      ^
 
-This is actually buggy from the specification viewpoint. And if
-the kretprobe handler sets the instruction pointer, it must be
-ignored, but in reallty, it breaks the stack frame (this does
-not happen in the ftrace/perf dynamic events, but a custom kretprobe
-kernel module can do this.)
+This is the same as sizeof(size_t), which is two shorter than the actual
+array.  Use the ARRAY_SIZE() macro to get the correct calculation instead.
 
-Thank you,
+Link: https://lkml.kernel.org/r/20210514214123.875971-1-arnd@kernel.org
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/ia64/kernel/mca_drv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
-> Thanks,
-> 
-> 	Ingo
-
-
+diff --git a/arch/ia64/kernel/mca_drv.c b/arch/ia64/kernel/mca_drv.c
+index 4d0ab323dee8..2a40268c3d49 100644
+--- a/arch/ia64/kernel/mca_drv.c
++++ b/arch/ia64/kernel/mca_drv.c
+@@ -343,7 +343,7 @@ init_record_index_pools(void)
+ 
+ 	/* - 2 - */
+ 	sect_min_size = sal_log_sect_min_sizes[0];
+-	for (i = 1; i < sizeof sal_log_sect_min_sizes/sizeof(size_t); i++)
++	for (i = 1; i < ARRAY_SIZE(sal_log_sect_min_sizes); i++)
+ 		if (sect_min_size > sal_log_sect_min_sizes[i])
+ 			sect_min_size = sal_log_sect_min_sizes[i];
+ 
 -- 
-Masami Hiramatsu <mhiramat@kernel.org>
+2.30.2
+
