@@ -2,121 +2,157 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CF2B3BC788
-	for <lists+linux-ia64@lfdr.de>; Tue,  6 Jul 2021 09:55:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B877C3BD74A
+	for <lists+linux-ia64@lfdr.de>; Tue,  6 Jul 2021 14:59:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230385AbhGFH6J (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 6 Jul 2021 03:58:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55118 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230274AbhGFH6J (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 6 Jul 2021 03:58:09 -0400
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9B0EC061574;
-        Tue,  6 Jul 2021 00:55:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=PHmwfF66DF3ND/ZlAeaO0Y+ydd1OV8Qn7m+HyKVviH0=; b=mDFoN6jKwbzJOcU3MKwK7TiDSw
-        TApWi0MZ26WSrA2OOgCBdYlgbApezWRB+u7yMnh7d5For8iLhQNieNbezlv8KsfG2Tbw+PiG0bKaR
-        PlEVyhQb6dgQNZjPwnBf2/KSz4gbwPCcRNGImP3fd5oUpZeZl3BL/Vl4x6gU9ZOMfygiaJ8Bc8396
-        ahg4qJ7Bt1i5GXiOt4oSeOoq5IBSgCxOyQlRrFaJiqTFbnyY9pi28n70w7QYErcD2FV5iB1wMSJl5
-        vDy5JRGXLap/ow0H/UbcEbwTOCzoOXSVW7sLp77yvU7Y6hGpfCJCOmbfLUMNOtGyEhZuXeXU2xHeu
-        kfKLCqTg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1m0fv8-00EyhE-0s; Tue, 06 Jul 2021 07:55:06 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 5A7B33001DC;
-        Tue,  6 Jul 2021 09:55:03 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 44BD2200E1E68; Tue,  6 Jul 2021 09:55:03 +0200 (CEST)
-Date:   Tue, 6 Jul 2021 09:55:03 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Masami Hiramatsu <mhiramat@kernel.org>
+        id S231774AbhGFNAg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 6 Jul 2021 09:00:36 -0400
+Received: from mail.kernel.org ([198.145.29.99]:56864 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231614AbhGFNAg (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 6 Jul 2021 09:00:36 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 95072619B2;
+        Tue,  6 Jul 2021 12:57:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1625576277;
+        bh=tXJG+vlNUQuSlsOGmqvU6o9KMiZhzD6lIR38SC/vSio=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=JdckYc3K8x8Unj771PzniuMxFqJCDQ00CQleN9+z74naWEyY6Yqc14+V3OZhT/75a
+         pDuFZq/PfVSKtR0rsC4l183ob4gwqMU4w8F3qYWmjWNveAqS95siHZtoXfBiTstsw+
+         J7xE14wMb2/2gtYaX20z9Gvsq4sBSfUixb8AyjF25YnS26QbF64AVuZPXG9sjPhJFq
+         ZO8MbM7S6uUEXFXcaMhadQ2+as58hzWLBlyqGpOAjvxX1RvwfcheuahNvxTc4nqOPY
+         QwOASxp7i0AsbkBCJ/NJrbY1q2noOyiGh0OfWxdqdES4hmA7P3P0lWISRy5IYc58hR
+         620aCKEn0JAKw==
+Date:   Tue, 6 Jul 2021 21:57:53 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Ingo Molnar <mingo@kernel.org>
 Cc:     Steven Rostedt <rostedt@goodmis.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>, X86 ML <x86@kernel.org>,
         Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
         bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
         ast@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, kernel-team@fb.com, yhs@fb.com,
-        linux-ia64@vger.kernel.org,
+        Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>, kernel-team@fb.com,
+        yhs@fb.com, linux-ia64@vger.kernel.org,
         Abhishek Sagar <sagar.abhishek@gmail.com>,
         Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Subject: Re: [PATCH -tip v8 11/13] x86/unwind: Recover kretprobe trampoline
- entry
-Message-ID: <YOQMV8uE/2bVkPOY@hirez.programming.kicks-ass.net>
+Subject: Re: [PATCH -tip v8 13/13] x86/kprobes: Fixup return address in
+ generic trampoline handler
+Message-Id: <20210706215753.c7cad02afdeda48bf801d294@kernel.org>
+In-Reply-To: <YOLEMvR1bCQiIMcl@gmail.com>
 References: <162399992186.506599.8457763707951687195.stgit@devnote2>
- <162400002631.506599.2413605639666466945.stgit@devnote2>
- <YOLurg5mGHdBc+fz@hirez.programming.kicks-ass.net>
- <20210706004257.9e282b98f447251a380f658f@kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20210706004257.9e282b98f447251a380f658f@kernel.org>
+        <162400004562.506599.7549585083316952768.stgit@devnote2>
+        <YOLEMvR1bCQiIMcl@gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Jul 06, 2021 at 12:42:57AM +0900, Masami Hiramatsu wrote:
-> On Mon, 5 Jul 2021 13:36:14 +0200
-> Peter Zijlstra <peterz@infradead.org> wrote:
+On Mon, 5 Jul 2021 10:34:58 +0200
+Ingo Molnar <mingo@kernel.org> wrote:
+
 > 
-> > On Fri, Jun 18, 2021 at 04:07:06PM +0900, Masami Hiramatsu wrote:
-> > > @@ -549,7 +548,15 @@ bool unwind_next_frame(struct unwind_state *state)
-> > >  					 (void *)orig_ip);
-> > >  			goto err;
-> > >  		}
-> > > -
-> > > +		/*
-> > > +		 * There is a small chance to interrupt at the entry of
-> > > +		 * kretprobe_trampoline where the ORC info doesn't exist.
-> > > +		 * That point is right after the RET to kretprobe_trampoline
-> > > +		 * which was modified return address. So the @addr_p must
-> > > +		 * be right before the regs->sp.
-> > > +		 */
-> > > +		state->ip = unwind_recover_kretprobe(state, state->ip,
-> > > +				(unsigned long *)(state->sp - sizeof(long)));
-> > >  		state->regs = (struct pt_regs *)sp;
-> > >  		state->prev_regs = NULL;
-> > >  		state->full_regs = true;
-> > > @@ -562,6 +569,9 @@ bool unwind_next_frame(struct unwind_state *state)
-> > >  					 (void *)orig_ip);
-> > >  			goto err;
-> > >  		}
-> > > +		/* See UNWIND_HINT_TYPE_REGS case comment. */
-> > > +		state->ip = unwind_recover_kretprobe(state, state->ip,
-> > > +				(unsigned long *)(state->sp - sizeof(long)));
-> > >  
-> > >  		if (state->full_regs)
-> > >  			state->prev_regs = state->regs;
+> * Masami Hiramatsu <mhiramat@kernel.org> wrote:
+> 
+> > In x86, kretprobe trampoline address on the stack frame will
+> > be replaced with the real return address after returning from
+> > trampoline_handler. Before fixing the return address, the real
+> > return address can be found in the current->kretprobe_instances.
 > > 
-> > Why doesn't the ftrace case have this? That is, why aren't both return
-> > trampolines having the same general shape?
+> > However, since there is a window between updating the
+> > current->kretprobe_instances and fixing the address on the stack,
+> > if an interrupt caused at that timing and the interrupt handler
+> > does stacktrace, it may fail to unwind because it can not get
+> > the correct return address from current->kretprobe_instances.
+> > 
+> > This will minimize that window by fixing the return address
+> > right before updating current->kretprobe_instances.
 > 
-> Ah, this strongly depends what the trampoline code does.
-> For the kretprobe case, the PUSHQ at the entry of the kretprobe_trampoline()
-> does not covered by UNWIND_HINT_FUNC. Thus it needs to find 'correct_ret_addr'
-> by the frame pointer (which is next to the sp).
-> 
->         "kretprobe_trampoline:\n"
-> #ifdef CONFIG_X86_64
->         /* Push fake return address to tell the unwinder it's a kretprobe */
->         "       pushq $kretprobe_trampoline\n"
->         UNWIND_HINT_FUNC
-> 
-> But I'm not so sure how ftrace treat it. It seems that the return_to_handler()
-> doesn't care such case. (anyway, return_to_handler() does not return but jump
-> to the original call-site, in that case, the information will be lost.)
+> Is there still a window? I.e. is it "minimized" (to how big of a window?), 
+> or eliminated?
 
-I find it bothersome (OCD, sorry :-) that both return trampolines behave
-differently. Doubly so because I know people (Steve in particular) have
-been talking about unifying them.
+Oh, this will eliminate the window, because the return address is
+fixed before updating the 'current->kretprobe_instance'.
 
-Steve, can you clarify the ftrace side here? Afaict return_to_handler()
-is similarly affected.
+
+> 
+> > +void arch_kretprobe_fixup_return(struct pt_regs *regs,
+> > +				 unsigned long correct_ret_addr)
+> > +{
+> > +	unsigned long *frame_pointer;
+> > +
+> > +	frame_pointer = ((unsigned long *)&regs->sp) + 1;
+> > +
+> > +	/* Replace fake return address with real one. */
+> > +	*frame_pointer = correct_ret_addr;
+> 
+> Firstly, why does &regs->sp have to be forced to 'unsigned long *'? 
+> 
+> pt_regs::sp is 'unsigned long' on both 32-bit and 64-bit kernels AFAICS.
+
+Ah, right.
+
+> 
+> Secondly, the new code modified by your patch now looks like this:
+> 
+>         frame_pointer = ((unsigned long *)&regs->sp) + 1;
+>  
+> +       kretprobe_trampoline_handler(regs, frame_pointer);
+> 
+> where:
+> 
+> +void arch_kretprobe_fixup_return(struct pt_regs *regs,
+> +                                unsigned long correct_ret_addr)
+> +{
+> +       unsigned long *frame_pointer;
+> +
+> +       frame_pointer = ((unsigned long *)&regs->sp) + 1;
+> +
+> +       /* Replace fake return address with real one. */
+> +       *frame_pointer = correct_ret_addr;
+> +}
+> 
+> So we first do:
+> 
+>         frame_pointer = ((unsigned long *)&regs->sp) + 1;
+> 
+> ... and pass that in to arch_kretprobe_fixup_return() as 
+> 'correct_ret_addr', which does:
+
+No, 'correct_ret_addr' is found from 'current->kretprobe_instances'
+
+        /* Find correct address and all nodes for this frame. */
+        correct_ret_addr = (void *)__kretprobe_find_ret_addr(current, &node);
+
+> 
+> +       frame_pointer = ((unsigned long *)&regs->sp) + 1;
+> +	*frame_pointer = correct_ret_addr;
+> 
+> ... which looks like the exact same thing as:
+> 
+> 	*frame_pointer = frame_pointer;
+> 
+> ... obfuscated through a thick layer of type casts?
+
+Thus it will be the same thing as
+
+	*frame_pointer = __kretprobe_find_ret_addr(current, &node);
+
+Actually, this is a bit confusing because same 'frame_pointer' is
+calcurated twice from 'regs->sp'. This is because the return address
+is stored at 'frame_pointer' or not depends on the architecture.
+
+
+Thank you,
+
+> 
+> Thanks,
+> 
+> 	Ingo
+
+
+-- 
+Masami Hiramatsu <mhiramat@kernel.org>
