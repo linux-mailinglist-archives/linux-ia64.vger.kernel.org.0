@@ -2,136 +2,99 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F0EA3BE9FD
-	for <lists+linux-ia64@lfdr.de>; Wed,  7 Jul 2021 16:43:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1A8AC3BEEB6
+	for <lists+linux-ia64@lfdr.de>; Wed,  7 Jul 2021 20:28:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232132AbhGGOps (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 7 Jul 2021 10:45:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43638 "EHLO
+        id S231364AbhGGSbL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 7 Jul 2021 14:31:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232072AbhGGOps (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 7 Jul 2021 10:45:48 -0400
-Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2456DC061760
-        for <linux-ia64@vger.kernel.org>; Wed,  7 Jul 2021 07:43:04 -0700 (PDT)
-Received: by mail-pj1-x1043.google.com with SMTP id p9so1673582pjl.3
-        for <linux-ia64@vger.kernel.org>; Wed, 07 Jul 2021 07:43:04 -0700 (PDT)
+        with ESMTP id S231561AbhGGSbF (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 7 Jul 2021 14:31:05 -0400
+Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7293FC061764;
+        Wed,  7 Jul 2021 11:28:22 -0700 (PDT)
+Received: by mail-yb1-xb2c.google.com with SMTP id i4so4672770ybe.2;
+        Wed, 07 Jul 2021 11:28:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
-        h=subject:to:cc:references:from:message-id:date:user-agent
-         :mime-version:in-reply-to:content-language:content-transfer-encoding;
-        bh=DnHcmdXOtXxSHt5VDmjCHahDFwLNZGsXgX+YAyZDBEc=;
-        b=dyqaCx/N48KX4H1SOiYEJ7PlH2DgZrxPddiT51efORM4VAeAPXJo6nIOFtiJU6o4Xo
-         Q8Of1CEYQvU+AsfeTu5VY27yUy/Ljf4M6WY/RHH66dXl+0+77p8g8vsAUl73GqPvDKDp
-         Xhy+MdUZxOAN6OgTanjuLdYyUbAOX78rwvghAXf7vMqrsTypIKiI5Z1lubDyzs0wuurA
-         g/MqSFlCo+N7J1KU3aXhEpjlWOkkJMUQS6QXzEEm0SlgZpWu0nCJT+aIdA3vLXGfpG0W
-         Xd8wK6kTedeHZcNm7w5Xba0HN3GRaIqaWW2quXXEo6hC30uhDwY3tc4zeA0ZfYN+61xn
-         C74w==
+        d=gmail.com; s=20161025;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=VK1b4T+tdxLj0ZaLZLl27Y238eANKisrNhi/wvZNAG0=;
+        b=c+gd0uM455Z5mJVonXFgsTe8dnzKXZqgjhsDfaDk98+xKhm1V/FETfwxBDUcSBeQ/Y
+         alcEQYAIrFiiAHT741iN/VM35WV0zi/Z1KwCKTFZ7NinPMkURdhMQfx/gupYfjMdxCEN
+         z1abS5/XscvX05GlmChkEba9sZkZCQqb8RpUhrqSD+xQ3ZfZDNU1DnZcXrkfta7wh+V/
+         qvKrA6KlAygZH68ZIc3bdzBvbZdJB8pHWICdmDAQWafHva2qDWr6kvqywDa+D7Hl36vR
+         9cMWNoD5HCCbJ2S7WNVTt42nlUQ7VGxffaKKcY4WB62hwK/avAOi++P1BEO7daQNzUT2
+         LRLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
-         :user-agent:mime-version:in-reply-to:content-language
-         :content-transfer-encoding;
-        bh=DnHcmdXOtXxSHt5VDmjCHahDFwLNZGsXgX+YAyZDBEc=;
-        b=S/TeVPstqGqySd7B+J/dv/CsHM8u3vBJZJRlXWbs82D1WUvP+3ZZZr9bG/c+gZBgiX
-         QkY8/gDOSUkOpO4aBJ+Ad0/Imf7Acwv2dRiTWpmmAP2MSTqb+yfIVTk9SUhgQFlXLxZT
-         8Ez0rpMl4pYNPf3FlnUC4uzhXyECBeH/hHu7gFOlCtYKs4JxtjRrqDWxAKdkkHcu8tix
-         YSlQdPZxQXYcniXLusM2QEAhGsQNZi6sWmqasFwgUzzXRHSU/jovI+cXBxzmLGZTobdD
-         v4ge4NAYlJNHaWPvmawGponXVC2MZpjxZx/ZIabpNSTVHu0hkYl+3tKXxtFFhkLx/1Hh
-         dvBQ==
-X-Gm-Message-State: AOAM531gS9zbjEUpC1ax1oxSt+f0u26uWSxeaRYX2RJtjiNJVTC1m41M
-        WspRbNA2xtEFvm78uiODE8S/+g==
-X-Google-Smtp-Source: ABdhPJz4cLmXypP8N6Xga5x368CM+hcB4Kd43JDg63IlBF7D576Gx/qo/nrb/bYGDZHIoeMTXBp3RA==
-X-Received: by 2002:a17:902:6904:b029:fb:42b6:e952 with SMTP id j4-20020a1709026904b02900fb42b6e952mr21656710plk.16.1625668983573;
-        Wed, 07 Jul 2021 07:43:03 -0700 (PDT)
-Received: from ?IPv6:240e:38a:3604:2400:7485:644e:8f74:dc56? ([240e:38a:3604:2400:7485:644e:8f74:dc56])
-        by smtp.gmail.com with ESMTPSA id q17sm12610916pfh.30.2021.07.07.07.42.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 07 Jul 2021 07:43:02 -0700 (PDT)
-Subject: Re: [PATCH -tip v8 11/13] x86/unwind: Recover kretprobe trampoline
- entry
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=VK1b4T+tdxLj0ZaLZLl27Y238eANKisrNhi/wvZNAG0=;
+        b=ukGh/pgHE8mnpZEYf86z+xpXAXFm1r3UOh+xOF0dWImc7SOA5DsuTEBGqG2kyhx8OY
+         MjeHJelmwgnzF5W4ySR6kbx2RypQWsPFoC2LQ4M1dV1CoNQ13h0XgSFr9UldT7IyaPrT
+         aJMycqnQt601Pzb55SRd9DEl61m8EwpJT6hm9MmeCZzazH8feM4jGJRU02ttl2N58mCX
+         wSKG93QB6u+rUUZH1LpurNVj14Dz5gYdYark+5ZmeNWiS3o1GeOI7lam9C097OFRmAmG
+         nZvk00K+K/kN/lkvHRfb4Ac3UOqgBDds4sHTWxEci9F/t1enhafNtKvXLGoEUjYLZeZR
+         GqNQ==
+X-Gm-Message-State: AOAM533SqofKj9y/WZnPVIdzdqf3/k5pUtq/vutmKi6tRjLi6Pv8unXX
+        rqFRa/ALWC+7XCMJ5XWmoBnqiTCpYNsKec5Gdu0=
+X-Google-Smtp-Source: ABdhPJxEZ9a60B15EkYK6EsPieQQ3WOyERQAF+OLp2bWcEh9iRZIzH1BUe5bI9A0Suj4Iy+dwtNl+Fi3V9C7QE8PWGA=
+X-Received: by 2002:a25:b741:: with SMTP id e1mr34963002ybm.347.1625682501624;
+ Wed, 07 Jul 2021 11:28:21 -0700 (PDT)
+MIME-Version: 1.0
+References: <162399992186.506599.8457763707951687195.stgit@devnote2> <162399994018.506599.10332627573727646767.stgit@devnote2>
+In-Reply-To: <162399994018.506599.10332627573727646767.stgit@devnote2>
+From:   Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date:   Wed, 7 Jul 2021 11:28:10 -0700
+Message-ID: <CAEf4BzY1D7NsrBwt3nLFRbaESb7b5pR9arLhrg8OmOAfxi+kaw@mail.gmail.com>
+Subject: Re: [PATCH -tip v8 02/13] kprobes: treewide: Replace
+ arch_deref_entry_point() with dereference_symbol_descriptor()
 To:     Masami Hiramatsu <mhiramat@kernel.org>
-Cc:     Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
-        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
-        ast@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, kernel-team@fb.com, yhs@fb.com,
+        Daniel Xu <dxu@dxuuu.xyz>,
+        open list <linux-kernel@vger.kernel.org>,
+        bpf <bpf@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Kernel Team <kernel-team@fb.com>, Yonghong Song <yhs@fb.com>,
         linux-ia64@vger.kernel.org,
-        Abhishek Sagar <sagar.abhishek@gmail.com>,
-        Andrii Nakryiko <andrii.nakryiko@gmail.com>
-References: <162399992186.506599.8457763707951687195.stgit@devnote2>
- <162400002631.506599.2413605639666466945.stgit@devnote2>
- <YOLurg5mGHdBc+fz@hirez.programming.kicks-ass.net>
- <20210706004257.9e282b98f447251a380f658f@kernel.org>
- <YOQMV8uE/2bVkPOY@hirez.programming.kicks-ass.net>
- <20210706111136.7c5e9843@oasis.local.home>
- <YOVj2VoyrcOvJfEB@hirez.programming.kicks-ass.net>
- <20210707191510.cb48ca4a20f0502ce6c46508@kernel.org>
- <YOWACec65qVdTD1y@hirez.programming.kicks-ass.net>
- <20210707194530.766a9c8364f3b2d7714ca590@kernel.org>
- <20210707222925.87ecc1391d0ab61db3d8398e@kernel.org>
-From:   Matt Wu <wuqiang.matt@bytedance.com>
-Message-ID: <3fc578e0-5b26-6067-d026-5b5d230d6720@bytedance.com>
-Date:   Wed, 7 Jul 2021 22:42:47 +0800
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
- Gecko/20100101 Thunderbird/78.11.0
-MIME-Version: 1.0
-In-Reply-To: <20210707222925.87ecc1391d0ab61db3d8398e@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+        Abhishek Sagar <sagar.abhishek@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 2021/7/7 PM9:29, Masami Hiramatsu wrote:
-> On Wed, 7 Jul 2021 19:45:30 +0900
-> Masami Hiramatsu <mhiramat@kernel.org> wrote:
-> 
->> On Wed, 7 Jul 2021 12:20:57 +0200
->> Peter Zijlstra <peterz@infradead.org> wrote:
->>
->>> On Wed, Jul 07, 2021 at 07:15:10PM +0900, Masami Hiramatsu wrote:
->>>
->>>> I actually don't want to keep this feature because no one use it.
->>>> (only systemtap needs it?)
->>>
->>> Yeah, you mentioned systemtap, but since that's out-of-tree I don't
->>> care. Their problem.
-> 
-> Yeah, maybe it is not hard to update.
-> 
->>>
->>>> Anyway, if we keep the idea-level compatibility (not code level),
->>>> what we need is 'void *data' in the struct kretprobe_instance.
->>>> User who needs it can allocate their own instance data for their
->>>> kretprobes when initialising it and sets in their entry handler.
->>>>
->>>> Then we can have a simple kretprobe_instance.
->>>
->>> When would you do the alloc? When installing the retprobe, but that
->>> might be inside the allocator, which means you can't call the allocator
->>> etc.. :-)
->>
->> Yes, so the user may need to allocate a pool right before register_kretprobe().
->> (whether per-kretprobe or per-task or global pool, that is user's choice.)
->>
->>>
->>> If we look at struct ftrace_ret_stack, it has a few fixed function
->>> fields. The calltime one is all that is needed for the kretprobe
->>> example code.
->>
->> kretprobe consumes 3 fields, a pointer to 'struct kretprobe' (which
->> stores callee function address in 'kretprobe::kp.addr'), a return
->> address and a frame pointer (*).
->  > Oops, I forgot to add "void *data" for storing user data.
-> 
+On Fri, Jun 18, 2021 at 12:05 AM Masami Hiramatsu <mhiramat@kernel.org> wrote:
+>
+> Replace arch_deref_entry_point() with dereference_symbol_descriptor()
+> because those are doing same thing.
+>
+> Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+> Tested-by: Andrii Nakryik <andrii@kernel.org>
 
-Should use "struct kretprobe_holder *rph", since "struct kretprobe" belongs
-to 3rd-party module (which might be unloaded any time).
+Hi Masami,
 
-User's own pool might not work if the module can be unloaded. Better manage
-the pool in kretprobe_holder, which needs no changes from user side.
+If you are going to post v9 anyway, can you please fix up my name, it
+should be "Andrii Nakryiko", thanks!
+
+> ---
+>  Changes in v6:
+>   - Use dereference_symbol_descriptor() so that it can handle address in
+>     modules correctly.
+> ---
+>  arch/ia64/kernel/kprobes.c    |    5 -----
+>  arch/powerpc/kernel/kprobes.c |   11 -----------
+>  include/linux/kprobes.h       |    1 -
+>  kernel/kprobes.c              |    7 +------
+>  lib/error-inject.c            |    3 ++-
+>  5 files changed, 3 insertions(+), 24 deletions(-)
+>
+
+[...]
