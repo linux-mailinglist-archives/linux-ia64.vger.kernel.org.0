@@ -2,56 +2,30 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A8AC3BEEB6
-	for <lists+linux-ia64@lfdr.de>; Wed,  7 Jul 2021 20:28:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B1693BF46F
+	for <lists+linux-ia64@lfdr.de>; Thu,  8 Jul 2021 06:09:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231364AbhGGSbL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 7 Jul 2021 14:31:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38092 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231561AbhGGSbF (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 7 Jul 2021 14:31:05 -0400
-Received: from mail-yb1-xb2c.google.com (mail-yb1-xb2c.google.com [IPv6:2607:f8b0:4864:20::b2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7293FC061764;
-        Wed,  7 Jul 2021 11:28:22 -0700 (PDT)
-Received: by mail-yb1-xb2c.google.com with SMTP id i4so4672770ybe.2;
-        Wed, 07 Jul 2021 11:28:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=VK1b4T+tdxLj0ZaLZLl27Y238eANKisrNhi/wvZNAG0=;
-        b=c+gd0uM455Z5mJVonXFgsTe8dnzKXZqgjhsDfaDk98+xKhm1V/FETfwxBDUcSBeQ/Y
-         alcEQYAIrFiiAHT741iN/VM35WV0zi/Z1KwCKTFZ7NinPMkURdhMQfx/gupYfjMdxCEN
-         z1abS5/XscvX05GlmChkEba9sZkZCQqb8RpUhrqSD+xQ3ZfZDNU1DnZcXrkfta7wh+V/
-         qvKrA6KlAygZH68ZIc3bdzBvbZdJB8pHWICdmDAQWafHva2qDWr6kvqywDa+D7Hl36vR
-         9cMWNoD5HCCbJ2S7WNVTt42nlUQ7VGxffaKKcY4WB62hwK/avAOi++P1BEO7daQNzUT2
-         LRLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=VK1b4T+tdxLj0ZaLZLl27Y238eANKisrNhi/wvZNAG0=;
-        b=ukGh/pgHE8mnpZEYf86z+xpXAXFm1r3UOh+xOF0dWImc7SOA5DsuTEBGqG2kyhx8OY
-         MjeHJelmwgnzF5W4ySR6kbx2RypQWsPFoC2LQ4M1dV1CoNQ13h0XgSFr9UldT7IyaPrT
-         aJMycqnQt601Pzb55SRd9DEl61m8EwpJT6hm9MmeCZzazH8feM4jGJRU02ttl2N58mCX
-         wSKG93QB6u+rUUZH1LpurNVj14Dz5gYdYark+5ZmeNWiS3o1GeOI7lam9C097OFRmAmG
-         nZvk00K+K/kN/lkvHRfb4Ac3UOqgBDds4sHTWxEci9F/t1enhafNtKvXLGoEUjYLZeZR
-         GqNQ==
-X-Gm-Message-State: AOAM533SqofKj9y/WZnPVIdzdqf3/k5pUtq/vutmKi6tRjLi6Pv8unXX
-        rqFRa/ALWC+7XCMJ5XWmoBnqiTCpYNsKec5Gdu0=
-X-Google-Smtp-Source: ABdhPJxEZ9a60B15EkYK6EsPieQQ3WOyERQAF+OLp2bWcEh9iRZIzH1BUe5bI9A0Suj4Iy+dwtNl+Fi3V9C7QE8PWGA=
-X-Received: by 2002:a25:b741:: with SMTP id e1mr34963002ybm.347.1625682501624;
- Wed, 07 Jul 2021 11:28:21 -0700 (PDT)
-MIME-Version: 1.0
-References: <162399992186.506599.8457763707951687195.stgit@devnote2> <162399994018.506599.10332627573727646767.stgit@devnote2>
-In-Reply-To: <162399994018.506599.10332627573727646767.stgit@devnote2>
-From:   Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Date:   Wed, 7 Jul 2021 11:28:10 -0700
-Message-ID: <CAEf4BzY1D7NsrBwt3nLFRbaESb7b5pR9arLhrg8OmOAfxi+kaw@mail.gmail.com>
-Subject: Re: [PATCH -tip v8 02/13] kprobes: treewide: Replace
- arch_deref_entry_point() with dereference_symbol_descriptor()
-To:     Masami Hiramatsu <mhiramat@kernel.org>
+        id S229552AbhGHELl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 8 Jul 2021 00:11:41 -0400
+Received: from mail.kernel.org ([198.145.29.99]:59500 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229467AbhGHELk (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 8 Jul 2021 00:11:40 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 95F2B61CDD;
+        Thu,  8 Jul 2021 04:08:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1625717339;
+        bh=wqJqFD3qGrE1t3kNGHSepaX9WVAOjtC6nrIZ4/hXn+o=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=IszRWoKx3c5MPWQjXv4QChm84oBo0emYG/YlvTVVTorXYrcVQTeEpbqtk0bW+z58T
+         tNtRSmPWY8k7fVTQcsfvl6BMdoNYNY7izmyIqF4NaUTh4pNi6w1cQ160QALl/BhWv3
+         s6sbl2ncB1OX3UI8Pww+kFF8mgGpk1GWkbpT673Fw6gCJYEOcc5oVtP+FS4wAEHjyy
+         D++e+I/hH4kuKdUpEDEb5W/RNCRyQSiq6HzQQooNyErxRhOozAHQMeu039nb+Zo8B7
+         5e3vXPUcB4gFUUTCF7bpKemWgFRl4yPIvkX7EEG0UwMuZKHOCdf5xv437f+As23/lz
+         sNl5ZcQCmQbxQ==
+Date:   Thu, 8 Jul 2021 13:08:56 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Andrii Nakryiko <andrii.nakryiko@gmail.com>
 Cc:     Steven Rostedt <rostedt@goodmis.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
         Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
@@ -66,35 +40,57 @@ Cc:     Steven Rostedt <rostedt@goodmis.org>,
         Kernel Team <kernel-team@fb.com>, Yonghong Song <yhs@fb.com>,
         linux-ia64@vger.kernel.org,
         Abhishek Sagar <sagar.abhishek@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+Subject: Re: [PATCH -tip v8 02/13] kprobes: treewide: Replace
+ arch_deref_entry_point() with dereference_symbol_descriptor()
+Message-Id: <20210708130856.ccb7cfb4f92e5896d597906a@kernel.org>
+In-Reply-To: <CAEf4BzY1D7NsrBwt3nLFRbaESb7b5pR9arLhrg8OmOAfxi+kaw@mail.gmail.com>
+References: <162399992186.506599.8457763707951687195.stgit@devnote2>
+        <162399994018.506599.10332627573727646767.stgit@devnote2>
+        <CAEf4BzY1D7NsrBwt3nLFRbaESb7b5pR9arLhrg8OmOAfxi+kaw@mail.gmail.com>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Jun 18, 2021 at 12:05 AM Masami Hiramatsu <mhiramat@kernel.org> wrote:
->
-> Replace arch_deref_entry_point() with dereference_symbol_descriptor()
-> because those are doing same thing.
->
-> Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-> Tested-by: Andrii Nakryik <andrii@kernel.org>
+On Wed, 7 Jul 2021 11:28:10 -0700
+Andrii Nakryiko <andrii.nakryiko@gmail.com> wrote:
 
-Hi Masami,
+> On Fri, Jun 18, 2021 at 12:05 AM Masami Hiramatsu <mhiramat@kernel.org> wrote:
+> >
+> > Replace arch_deref_entry_point() with dereference_symbol_descriptor()
+> > because those are doing same thing.
+> >
+> > Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+> > Tested-by: Andrii Nakryik <andrii@kernel.org>
+> 
+> Hi Masami,
+> 
+> If you are going to post v9 anyway, can you please fix up my name, it
+> should be "Andrii Nakryiko", thanks!
 
-If you are going to post v9 anyway, can you please fix up my name, it
-should be "Andrii Nakryiko", thanks!
+Oops, sorry. OK, I'll fix it.
 
-> ---
->  Changes in v6:
->   - Use dereference_symbol_descriptor() so that it can handle address in
->     modules correctly.
-> ---
->  arch/ia64/kernel/kprobes.c    |    5 -----
->  arch/powerpc/kernel/kprobes.c |   11 -----------
->  include/linux/kprobes.h       |    1 -
->  kernel/kprobes.c              |    7 +------
->  lib/error-inject.c            |    3 ++-
->  5 files changed, 3 insertions(+), 24 deletions(-)
->
+Thank you,
 
-[...]
+> 
+> > ---
+> >  Changes in v6:
+> >   - Use dereference_symbol_descriptor() so that it can handle address in
+> >     modules correctly.
+> > ---
+> >  arch/ia64/kernel/kprobes.c    |    5 -----
+> >  arch/powerpc/kernel/kprobes.c |   11 -----------
+> >  include/linux/kprobes.h       |    1 -
+> >  kernel/kprobes.c              |    7 +------
+> >  lib/error-inject.c            |    3 ++-
+> >  5 files changed, 3 insertions(+), 24 deletions(-)
+> >
+> 
+> [...]
+
+
+-- 
+Masami Hiramatsu <mhiramat@kernel.org>
