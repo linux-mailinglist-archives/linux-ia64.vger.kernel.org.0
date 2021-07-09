@@ -2,28 +2,28 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 644E03C265D
-	for <lists+linux-ia64@lfdr.de>; Fri,  9 Jul 2021 16:55:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC32B3C26D9
+	for <lists+linux-ia64@lfdr.de>; Fri,  9 Jul 2021 17:31:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232330AbhGIO6T (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 9 Jul 2021 10:58:19 -0400
-Received: from mail.kernel.org ([198.145.29.99]:44368 "EHLO mail.kernel.org"
+        id S232291AbhGIPe2 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 9 Jul 2021 11:34:28 -0400
+Received: from mail.kernel.org ([198.145.29.99]:49340 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S231972AbhGIO6T (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 9 Jul 2021 10:58:19 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 47D0661242;
-        Fri,  9 Jul 2021 14:55:33 +0000 (UTC)
+        id S232248AbhGIPe2 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 9 Jul 2021 11:34:28 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id E700F613C1;
+        Fri,  9 Jul 2021 15:31:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1625842536;
-        bh=Q2WG2NG1T89ViRXSnVoTpzh42KcKP8D2yuxnM2NHFLk=;
+        s=k20201202; t=1625844704;
+        bh=EJGDTErqhFfO+4+vO3fnUq+RuTjIL8rzCpz3Xvt7RAg=;
         h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=fBhhIzyyAoLntM8rT07BquH3igKKEvTX2kQj+DWRV+X4ADbvirwhloSDGtaFij3Ik
-         n17gc+bDJLT826iPEC1EWuvqRvCH4uTMUj18U/KoZVMyraHebRg6vZE1E6ZsycgDxE
-         RN9bo82HHDyppAnO5bYXlUmWHG0lKG6k8rCKSkJlVXyMHSLmjTsgqdLkIU5cHsOUfK
-         O+fpPhhJ1l/y3pxcuOe/DreJxFv53TURXVuN91GnShGLXnBLhwtp5LfJ18rwDDSoSa
-         SAP2UWPWvCRCqxEcolzKaWZGu4fCA2RLPRWf3M98wCU2DctHXgUbVGzyvTPo8CH30j
-         QG9NG40CposHw==
-Date:   Fri, 9 Jul 2021 23:55:31 +0900
+        b=nAuK98c1w4esf+28ABqRQMXZ/TSLSo9cs01eDTxLDD0GrdE4WUkH+DmwMCQUdYjlJ
+         wdNRiLZJvshUGJUkF+BBUz6X9Bd9mOwMhoyy3LxVlWM7eHfVVLpCOtly+/JM8DupTL
+         85Pl0hown2YU/9o/yw/N+1LWRZnglUVckqA4YW8yukfeZGkO1fWC+VLyDny/h+lHNX
+         HGM9eG0HFYOyCFpSyxraIk6ozDWDBAVCLqRkU2t2KxJASRnz4Q9zE+tdKUnV68/NQD
+         x0BWRQq6fHp0I8QnjnQntzO4ArOqSNuvEQ+gi2g20UhdcNLGqD0slG59NtV5nX1LY7
+         lbDQ1y6yAOYvw==
+Date:   Sat, 10 Jul 2021 00:31:40 +0900
 From:   Masami Hiramatsu <mhiramat@kernel.org>
 To:     Ingo Molnar <mingo@kernel.org>
 Cc:     Steven Rostedt <rostedt@goodmis.org>,
@@ -36,13 +36,13 @@ Cc:     Steven Rostedt <rostedt@goodmis.org>,
         yhs@fb.com, linux-ia64@vger.kernel.org,
         Abhishek Sagar <sagar.abhishek@gmail.com>,
         Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Subject: Re: [PATCH -tip v8 10/13] x86/kprobes: Push a fake return address
- at kretprobe_trampoline
-Message-Id: <20210709235531.527d5cbb59c5669eed885b32@kernel.org>
-In-Reply-To: <YOLAFswnvyNReMmI@gmail.com>
+Subject: Re: [PATCH -tip v8 05/13] x86/kprobes: Add UNWIND_HINT_FUNC on
+ kretprobe_trampoline code
+Message-Id: <20210710003140.8e561ad33d42f9ac78de6a15@kernel.org>
+In-Reply-To: <YOK8pzp8B2V+1EaU@gmail.com>
 References: <162399992186.506599.8457763707951687195.stgit@devnote2>
-        <162400001661.506599.5153975410607447958.stgit@devnote2>
-        <YOLAFswnvyNReMmI@gmail.com>
+        <162399996966.506599.810050095040575221.stgit@devnote2>
+        <YOK8pzp8B2V+1EaU@gmail.com>
 X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
 Mime-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
@@ -51,34 +51,131 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, 5 Jul 2021 10:17:26 +0200
+On Mon, 5 Jul 2021 10:02:47 +0200
 Ingo Molnar <mingo@kernel.org> wrote:
 
 > 
 > * Masami Hiramatsu <mhiramat@kernel.org> wrote:
 > 
-> > +	/* Replace fake return address with real one. */
-> > +	*frame_pointer = kretprobe_trampoline_handler(regs, frame_pointer);
-> > +	/*
-> > +	 * Move flags to sp so that kretprobe_trapmoline can return
-> > +	 * right after popf.
+> > From: Josh Poimboeuf <jpoimboe@redhat.com>
+> > 
+> > Add UNWIND_HINT_FUNC on kretporbe_trampoline code so that ORC
+> > information is generated on the kretprobe_trampoline correctly.
 > 
-> What is a trapmoline?
+> What is a 'kretporbe'?
 
-This means kretprobe_trampoline() code.
+Oops, it's a typo.
 
 > 
-> Also, in the x86 code we capitalize register and instruction names so that 
-> they are more distinctive and easier to read in the flow of English text.
+> > Note that when the CONFIG_FRAME_POINTER=y, since the
+> > kretprobe_trampoline skips updating frame pointer, the stack frame
+> > of the kretprobe_trampoline seems non-standard. So this marks it
+> > is STACK_FRAME_NON_STANDARD() and undefine UNWIND_HINT_FUNC.
+> 
+> What does 'marks it is' mean?
 
-OK, let me update it.
+Sorry, I meant, this marks the kretprobe_trampoline as non-standard
+stack frame by STACK_FRAME_NON_STANDARD().
+
+> 
+> 'undefine' UNWIND_HINT_FUNC?
+> 
+> Doesn't the patch do the exact opposite:
+> 
+>   > +#define UNWIND_HINT_FUNC \
+>   > +	UNWIND_HINT(ORC_REG_SP, 8, UNWIND_HINT_TYPE_FUNC, 0)
+> 
+> But it does undefine it in a specific spot:
+
+Yes, if you think this is not correct way, what about the following?
+
+#ifdef CONFIG_FRAME_POINTER
+STACK_FRAME_NON_STANDARD(kretprobe_trampoline);
+#define KRETPROBE_UNWIND_HINT_FUNC
+#else
+#define KRETPROBE_UNWIND_HINT_FUNC	UNWIND_HINT_FUNC
+#endif
+
+
+> > Anyway, with the frame pointer, FP unwinder can unwind the stack
+> > frame correctly without that hint.
+> > 
+> > Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+> > Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+> > Tested-by: Andrii Nakryik <andrii@kernel.org>
+> 
+> I have to say these changelogs are very careless.
+
+Sorry for inconvenience...
+
+> 
+> > +#else
+> > +
+> 
+> In headers, in longer CPP blocks, please always mark the '#else' branch 
+> with what it is the else branch of.
+
+OK.
+
+> 
+> See the output of:
+> 
+>    kepler:~/tip> git grep '#else' arch/x86/include/asm/ | head
+
+Thanks for the hint!
+
+> 
+> > +#ifdef CONFIG_FRAME_POINTER
+> > +/*
+> > + * kretprobe_trampoline skips updating frame pointer. The frame pointer
+> > + * saved in trampoline_handler points to the real caller function's
+> > + * frame pointer. Thus the kretprobe_trampoline doesn't seems to have a
+> > + * standard stack frame with CONFIG_FRAME_POINTER=y.
+> > + * Let's mark it non-standard function. Anyway, FP unwinder can correctly
+> > + * unwind without the hint.
+> 
+> s/doesn't seems to have a standard stack frame
+>  /doesn't have a standard stack frame
+> 
+> There's nothing 'seems' about the situation - it's a non-standard function 
+> entry and stack frame situation, and the unwinder needs to know about it.
+
+OK.
+
+> 
+> > +STACK_FRAME_NON_STANDARD(kretprobe_trampoline);
+> > +#undef UNWIND_HINT_FUNC
+> > +#define UNWIND_HINT_FUNC
+> > +#endif
+> >  /*
+> >   * When a retprobed function returns, this code saves registers and
+> >   * calls trampoline_handler() runs, which calls the kretprobe's handler.
+> > @@ -1031,6 +1044,7 @@ asm(
+> >  	/* We don't bother saving the ss register */
+> >  #ifdef CONFIG_X86_64
+> >  	"	pushq %rsp\n"
+> > +	UNWIND_HINT_FUNC
+> >  	"	pushfq\n"
+> >  	SAVE_REGS_STRING
+> >  	"	movq %rsp, %rdi\n"
+> > @@ -1041,6 +1055,7 @@ asm(
+> >  	"	popfq\n"
+> >  #else
+> >  	"	pushl %esp\n"
+> > +	UNWIND_HINT_FUNC
+> >  	"	pushfl\n"
+> >  	SAVE_REGS_STRING
+> >  	"	movl %esp, %eax\n"
+> 
+> Why not provide an appropriate annotation method in <asm/unwind_hints.h>, 
+> so that other future code can use it too instead of reinventing the wheel?
+
+Would you mean we should define the UNWIND_HINT_FUNC as a macro
+which depends on CONFIG_FRAME_POINTER, in <asm/unwind_hints.h>?
+
+Josh, what would you think?
 
 Thank you,
-
-> 
-> Thanks,
-> 
-> 	Ingo
 
 
 -- 
