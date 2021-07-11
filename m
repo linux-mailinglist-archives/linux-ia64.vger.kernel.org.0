@@ -2,30 +2,55 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E47B3C3D3A
-	for <lists+linux-ia64@lfdr.de>; Sun, 11 Jul 2021 16:09:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D725E3C3DAB
+	for <lists+linux-ia64@lfdr.de>; Sun, 11 Jul 2021 17:29:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233013AbhGKOMB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 11 Jul 2021 10:12:01 -0400
-Received: from mail.kernel.org ([198.145.29.99]:40930 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232544AbhGKOMA (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 11 Jul 2021 10:12:00 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 8C7EE61156;
-        Sun, 11 Jul 2021 14:09:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626012554;
-        bh=i2fNzSjVsNS7h5czCODLDyPYDvbmFr0lvLFj67DgUho=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=AH/UnpLXKJqBzTKfaPEPvgAFQbwrjI/ubNwdP4j8ChqB6Vb/rAIATXv/NqnImWz4K
-         sZ+lOMp407S3ym1dvHf7rCvYggASAeQlGNuY9Rau0fgVKjA6mMOyjLJqFPGWVAyARd
-         vmHwVw3SjMas3CZibt1oUT+M4kz9P1Lkz3EbYpwjeUFdMMeR1wW7oGB7O444NFWFMm
-         BIBEKy4QGXiOO9j/Z9qM2lP2kVFERtNbx1vdFsjTHXjWx9Y2uLh+I5hKoPpgWt5MhO
-         4bI7ThCIsfTDzHt99iawJP/Kf3MIsHxWj0roiAmKhO1ON6yo9AmYlVM+G0UgCzkntd
-         eqf3YHN7Fm7Lw==
-Date:   Sun, 11 Jul 2021 23:09:09 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Matt Wu <wuqiang.matt@bytedance.com>
+        id S235842AbhGKPb7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 11 Jul 2021 11:31:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55436 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S235839AbhGKPb6 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 11 Jul 2021 11:31:58 -0400
+Received: from mail-pj1-x1043.google.com (mail-pj1-x1043.google.com [IPv6:2607:f8b0:4864:20::1043])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDC57C0613DD
+        for <linux-ia64@vger.kernel.org>; Sun, 11 Jul 2021 08:29:11 -0700 (PDT)
+Received: by mail-pj1-x1043.google.com with SMTP id n11so8583220pjo.1
+        for <linux-ia64@vger.kernel.org>; Sun, 11 Jul 2021 08:29:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance-com.20150623.gappssmtp.com; s=20150623;
+        h=subject:to:cc:references:from:message-id:date:user-agent
+         :mime-version:in-reply-to:content-language:content-transfer-encoding;
+        bh=n3YRHkj0c58PDufExs5GW5EqSsqejMDzvuIBPPdMvOg=;
+        b=cftgdsHyZHCgsdByowpFdQGqA8FjOTGeVyz2P4bO1ZPaUO0n6CJX5jUm0hkxED8zJU
+         xq0gPh0zyTrbhWUCVnYCl9bXBNqoDAEEFBtUYF9VTbhlnbXwl7oof186KaSl6kpWyLdC
+         TPuQygx25GH/YQdmFAbmgOvPIn0iGuugXMqezVWieGdmwgTAI2lb39QeTGSKIGO6ZukQ
+         QemdQWgetrSXQJ/NuI0UGINfnUhbQW6KvuPJlat/l9Rfe1IgacNIagJ1La0M6T0Ivy84
+         qPq40yPnzuWfNAjtVjtqbmf+/FATYadA9qE7b2wNo75WEtZ7/r3epXFna48S+AgdmBri
+         xM9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:subject:to:cc:references:from:message-id:date
+         :user-agent:mime-version:in-reply-to:content-language
+         :content-transfer-encoding;
+        bh=n3YRHkj0c58PDufExs5GW5EqSsqejMDzvuIBPPdMvOg=;
+        b=d0++zJZomia7KJhRXt3laOt67PbxeiZupCpQQ3ZjbUxXASstV4NsBo9TlnXDqhrReP
+         wYkE8xw+ScI4t3HHIg6UURy//O64KIrAAa3LNGu+rqeDtmf3o25pKqtJTDHriyU+dlZW
+         WUor5mWteINviq15ce/8k2I5sw5kn5zbCUyH84q84bLelkoE/+uAHi2oHQkDDsH66glh
+         50FEWijdgRof8lW2mTQOxGFUzf0ZYaJpUCWZzlCf9C+WfWhZsuQV5uK/xS3gZw/6W2jM
+         az1oNkbv0UT393aLUD7womO/fiwvuHsRW2MFsfCQ5aDFhes+h3SUvvwErK8RsgrEygEe
+         ZYuw==
+X-Gm-Message-State: AOAM530H/EMHF9+Wu17g8B3GS+zD/b6H+lcNZhwATiATpZojVLSmCyIb
+        dGJctWuQX2FkenywK0nre3Dw6g==
+X-Google-Smtp-Source: ABdhPJz0wCI+ok2I8JvUEiK3CSWSTqh3K3oYq6HltM2HravvA/Af1qVij8wZ0KUEEG9Ey2GdBpymAA==
+X-Received: by 2002:a17:90a:7d13:: with SMTP id g19mr49022034pjl.163.1626017351507;
+        Sun, 11 Jul 2021 08:29:11 -0700 (PDT)
+Received: from ?IPv6:240e:38a:3604:2400:8585:964d:c4ab:ba4c? ([240e:38a:3604:2400:8585:964d:c4ab:ba4c])
+        by smtp.gmail.com with ESMTPSA id j20sm9964157pfc.203.2021.07.11.08.28.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 11 Jul 2021 08:29:10 -0700 (PDT)
+Subject: Re: [PATCH -tip v8 11/13] x86/unwind: Recover kretprobe trampoline
+ entry
+To:     Masami Hiramatsu <mhiramat@kernel.org>
 Cc:     Peter Zijlstra <peterz@infradead.org>,
         Steven Rostedt <rostedt@goodmis.org>,
         Josh Poimboeuf <jpoimboe@redhat.com>,
@@ -37,89 +62,97 @@ Cc:     Peter Zijlstra <peterz@infradead.org>,
         linux-ia64@vger.kernel.org,
         Abhishek Sagar <sagar.abhishek@gmail.com>,
         Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Subject: Re: [PATCH -tip v8 11/13] x86/unwind: Recover kretprobe trampoline
- entry
-Message-Id: <20210711230909.dac1ff010a94831d5e9c25cd@kernel.org>
-In-Reply-To: <3fc578e0-5b26-6067-d026-5b5d230d6720@bytedance.com>
 References: <162399992186.506599.8457763707951687195.stgit@devnote2>
-        <162400002631.506599.2413605639666466945.stgit@devnote2>
-        <YOLurg5mGHdBc+fz@hirez.programming.kicks-ass.net>
-        <20210706004257.9e282b98f447251a380f658f@kernel.org>
-        <YOQMV8uE/2bVkPOY@hirez.programming.kicks-ass.net>
-        <20210706111136.7c5e9843@oasis.local.home>
-        <YOVj2VoyrcOvJfEB@hirez.programming.kicks-ass.net>
-        <20210707191510.cb48ca4a20f0502ce6c46508@kernel.org>
-        <YOWACec65qVdTD1y@hirez.programming.kicks-ass.net>
-        <20210707194530.766a9c8364f3b2d7714ca590@kernel.org>
-        <20210707222925.87ecc1391d0ab61db3d8398e@kernel.org>
-        <3fc578e0-5b26-6067-d026-5b5d230d6720@bytedance.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+ <162400002631.506599.2413605639666466945.stgit@devnote2>
+ <YOLurg5mGHdBc+fz@hirez.programming.kicks-ass.net>
+ <20210706004257.9e282b98f447251a380f658f@kernel.org>
+ <YOQMV8uE/2bVkPOY@hirez.programming.kicks-ass.net>
+ <20210706111136.7c5e9843@oasis.local.home>
+ <YOVj2VoyrcOvJfEB@hirez.programming.kicks-ass.net>
+ <20210707191510.cb48ca4a20f0502ce6c46508@kernel.org>
+ <YOWACec65qVdTD1y@hirez.programming.kicks-ass.net>
+ <20210707194530.766a9c8364f3b2d7714ca590@kernel.org>
+ <20210707222925.87ecc1391d0ab61db3d8398e@kernel.org>
+ <3fc578e0-5b26-6067-d026-5b5d230d6720@bytedance.com>
+ <20210711230909.dac1ff010a94831d5e9c25cd@kernel.org>
+From:   Matt Wu <wuqiang.matt@bytedance.com>
+Message-ID: <9c160404-ad6d-816a-93ed-91bb6e7c26a9@bytedance.com>
+Date:   Sun, 11 Jul 2021 23:28:49 +0800
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:78.0)
+ Gecko/20100101 Thunderbird/78.11.0
+MIME-Version: 1.0
+In-Reply-To: <20210711230909.dac1ff010a94831d5e9c25cd@kernel.org>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
 Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, 7 Jul 2021 22:42:47 +0800
-Matt Wu <wuqiang.matt@bytedance.com> wrote:
-
-> On 2021/7/7 PM9:29, Masami Hiramatsu wrote:
-> > On Wed, 7 Jul 2021 19:45:30 +0900
-> > Masami Hiramatsu <mhiramat@kernel.org> wrote:
-> > 
-> >> On Wed, 7 Jul 2021 12:20:57 +0200
-> >> Peter Zijlstra <peterz@infradead.org> wrote:
-> >>
-> >>> On Wed, Jul 07, 2021 at 07:15:10PM +0900, Masami Hiramatsu wrote:
-> >>>
-> >>>> I actually don't want to keep this feature because no one use it.
-> >>>> (only systemtap needs it?)
-> >>>
-> >>> Yeah, you mentioned systemtap, but since that's out-of-tree I don't
-> >>> care. Their problem.
-> > 
-> > Yeah, maybe it is not hard to update.
-> > 
-> >>>
-> >>>> Anyway, if we keep the idea-level compatibility (not code level),
-> >>>> what we need is 'void *data' in the struct kretprobe_instance.
-> >>>> User who needs it can allocate their own instance data for their
-> >>>> kretprobes when initialising it and sets in their entry handler.
-> >>>>
-> >>>> Then we can have a simple kretprobe_instance.
-> >>>
-> >>> When would you do the alloc? When installing the retprobe, but that
-> >>> might be inside the allocator, which means you can't call the allocator
-> >>> etc.. :-)
-> >>
-> >> Yes, so the user may need to allocate a pool right before register_kretprobe().
-> >> (whether per-kretprobe or per-task or global pool, that is user's choice.)
-> >>
-> >>>
-> >>> If we look at struct ftrace_ret_stack, it has a few fixed function
-> >>> fields. The calltime one is all that is needed for the kretprobe
-> >>> example code.
-> >>
-> >> kretprobe consumes 3 fields, a pointer to 'struct kretprobe' (which
-> >> stores callee function address in 'kretprobe::kp.addr'), a return
-> >> address and a frame pointer (*).
-> >  > Oops, I forgot to add "void *data" for storing user data.
-> > 
+On 2021/7/11 PM10:09, Masami Hiramatsu wrote:
+> On Wed, 7 Jul 2021 22:42:47 +0800
+> Matt Wu <wuqiang.matt@bytedance.com> wrote:
 > 
-> Should use "struct kretprobe_holder *rph", since "struct kretprobe" belongs
-> to 3rd-party module (which might be unloaded any time).
+>> On 2021/7/7 PM9:29, Masami Hiramatsu wrote:
+>>> On Wed, 7 Jul 2021 19:45:30 +0900
+>>> Masami Hiramatsu <mhiramat@kernel.org> wrote:
+>>>
+>>>> On Wed, 7 Jul 2021 12:20:57 +0200
+>>>> Peter Zijlstra <peterz@infradead.org> wrote:
+>>>>
+>>>>> On Wed, Jul 07, 2021 at 07:15:10PM +0900, Masami Hiramatsu wrote:
+>>>>>
+>>>>>> I actually don't want to keep this feature because no one use it.
+>>>>>> (only systemtap needs it?)
+>>>>>
+>>>>> Yeah, you mentioned systemtap, but since that's out-of-tree I don't
+>>>>> care. Their problem.
+>>>
+>>> Yeah, maybe it is not hard to update.
+>>>
+>>>>>
+>>>>>> Anyway, if we keep the idea-level compatibility (not code level),
+>>>>>> what we need is 'void *data' in the struct kretprobe_instance.
+>>>>>> User who needs it can allocate their own instance data for their
+>>>>>> kretprobes when initialising it and sets in their entry handler.
+>>>>>>
+>>>>>> Then we can have a simple kretprobe_instance.
+>>>>>
+>>>>> When would you do the alloc? When installing the retprobe, but that
+>>>>> might be inside the allocator, which means you can't call the allocator
+>>>>> etc.. :-)
+>>>>
+>>>> Yes, so the user may need to allocate a pool right before register_kretprobe().
+>>>> (whether per-kretprobe or per-task or global pool, that is user's choice.)
+>>>>
+>>>>>
+>>>>> If we look at struct ftrace_ret_stack, it has a few fixed function
+>>>>> fields. The calltime one is all that is needed for the kretprobe
+>>>>> example code.
+>>>>
+>>>> kretprobe consumes 3 fields, a pointer to 'struct kretprobe' (which
+>>>> stores callee function address in 'kretprobe::kp.addr'), a return
+>>>> address and a frame pointer (*).
+>>>   > Oops, I forgot to add "void *data" for storing user data.
+>>>
+>>
+>> Should use "struct kretprobe_holder *rph", since "struct kretprobe" belongs
+>> to 3rd-party module (which might be unloaded any time).
+> 
+> Good catch. Yes, instead of 'struct kretprobe', we need to use the holder.
+> 
+>> User's own pool might not work if the module can be unloaded. Better manage
+>> the pool in kretprobe_holder, which needs no changes from user side.
+> 
+> No, since the 'data' will be only refered from user handler. If the kretprobe
+> is released, then the kretprobe_holder will clear the refernce to the 'struct
+> kretprobe'. Then, the user handler is never called. No one access the 'data'.
 
-Good catch. Yes, instead of 'struct kretprobe', we need to use the holder.
+Indeed, there is no race of "data" accessing, since unregister_kretprobes()
+is taking care of it.
 
-> User's own pool might not work if the module can be unloaded. Better manage
-> the pool in kretprobe_holder, which needs no changes from user side.
+This implementation just increases the complexity of caller to keep track
+of all allocated instances and release them after unregistration.
 
-No, since the 'data' will be only refered from user handler. If the kretprobe
-is released, then the kretprobe_holder will clear the refernce to the 'struct
-kretprobe'. Then, the user handler is never called. No one access the 'data'.
-
-Thank you,
-
--- 
-Masami Hiramatsu <mhiramat@kernel.org>
+But guys are likely to use kmalloc in pre-handler and kfree in post-handler,
+which will lead to memory leaks.
