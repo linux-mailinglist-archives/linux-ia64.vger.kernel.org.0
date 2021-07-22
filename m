@@ -2,105 +2,173 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EEB733D0B4A
-	for <lists+linux-ia64@lfdr.de>; Wed, 21 Jul 2021 11:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA52C3D2389
+	for <lists+linux-ia64@lfdr.de>; Thu, 22 Jul 2021 14:49:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237536AbhGUIWC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 21 Jul 2021 04:22:02 -0400
-Received: from mail.kernel.org ([198.145.29.99]:53694 "EHLO mail.kernel.org"
+        id S231887AbhGVMIT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 22 Jul 2021 08:08:19 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60728 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235143AbhGUINs (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 21 Jul 2021 04:13:48 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id DCD5061029;
-        Wed, 21 Jul 2021 08:42:59 +0000 (UTC)
+        id S231838AbhGVMIS (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 22 Jul 2021 08:08:18 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6B77A61285;
+        Thu, 22 Jul 2021 12:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1626856982;
-        bh=zaxBgl0zmqFoRCTU1TKbNY9Ob5tCMwIxamYH6mVMFV8=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=LG0eVYN12xOURN7r0bA3jJ7dGpw6SpSOR7sqA+lH7bme3QHLolqgA5zAzqch+nu3x
-         zYgRbEk2OzWL0uVLFKCk4/kgy8z0jQpK/tcBYiw13cFSR86sZA93nWU078G2HuH6oy
-         rvqswbeX+wuCupd+z8FqCIWX9QGHbmhm0pjoUmahPDcy5YSqOPUDq513sljul05OE8
-         VwwJl42IvVDviDvRyYsLw573rDW1lGXu87vAM+m5lCPgXrYIYf4SjYCz6MucYQ/p6F
-         13lQ2lQ8tC0H1F+ZUFKDQprGCfwQpCS4KhafHjFrX0ljrHBXGOJfyGZLnc0glgeW3+
-         L1pZzXedGEysQ==
-Date:   Wed, 21 Jul 2021 17:42:58 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Masami Hiramatsu <mhiramat@kernel.org>
-Cc:     X86 ML <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
-        ast@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>, kernel-team@fb.com,
-        yhs@fb.com, linux-ia64@vger.kernel.org,
-        Abhishek Sagar <sagar.abhishek@gmail.com>,
-        Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-        Joe Perches <joe@perches.com>
-Subject: Re: [PATCH -tip v2 0/6] kprobes: treewide: Clean up kprobe code
-Message-Id: <20210721174258.0fc04b1ab8d8c3ebcba6295e@kernel.org>
-In-Reply-To: <162598881438.1222130.11530594038964049135.stgit@devnote2>
-References: <162598881438.1222130.11530594038964049135.stgit@devnote2>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        s=k20201202; t=1626958132;
+        bh=PX46ntR2F8mhtnTnqk6z0maUFKW3hKlsYGyDxWq8nt8=;
+        h=From:To:Cc:Subject:Date:From;
+        b=uI8fZsAnCujH8W7YiEBRgCAjHShI6gE1mvUR0l57R+InmBX0WanZ/uw9vRAOln3Z8
+         nGIW49oPfs3Z0oGoceXArCb+pcxtHVC7BDgIPVu7ZQgOSXVYcpE0fh0cemOAHYvVRq
+         FKI2JY1Q7ji5J3em2CfLjWBtEWHTWOWxHMmXXgWyndwrPSlVntSikFKkr25MPmfWRd
+         v73iMcJt52+PkD+rdPNKZ3PKisAXpGa6fQ8OZroEymMb7Gi2et/DUC63IcI09aav3H
+         3ECp+pAFmA7kucS8vsrWJ92J66Z8gjShxT5O7vJdnqnBEe0ThenTNBxBPkUxQ1dKDS
+         brNKF2Qpg7HWw==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     linux-arch@vger.kernel.org
+Cc:     Arnd Bergmann <arnd@arndb.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Brian Cain <bcain@codeaurora.org>,
+        Chris Zankel <chris@zankel.net>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Christoph Hellwig <hch@lst.de>, Guo Ren <guoren@kernel.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Helge Deller <deller@gmx.de>, Jeff Dike <jdike@addtoit.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michal Simek <monstr@monstr.eu>,
+        Richard Weinberger <richard@nod.at>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Vineet Gupta <vgupta@synopsys.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        uclinux-h8-devel@lists.sourceforge.jp
+Subject: [PATCH v3 0/6] asm-generic: strncpy_from_user/strnlen_user cleanup
+Date:   Thu, 22 Jul 2021 14:48:05 +0200
+Message-Id: <20210722124814.778059-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi,
+From: Arnd Bergmann <arnd@arndb.de>
 
-On Sun, 11 Jul 2021 16:33:34 +0900
-Masami Hiramatsu <mhiramat@kernel.org> wrote:
+I had run into some regressions for the previous version of this
+series, the new version is based on v5.14-rc2 instead.
 
-> Hi,
-> 
-> Here is the 2nd series of patches to cleanup the kprobes code. Previous
-> version is here.
-> 
->  https://lore.kernel.org/bpf/162592891873.1158485.768824457210707916.stgit@devnote2/
-> 
-> This version is just add a cleanup of trace_kprobes to the [6/6], thanks
-> Joe to find it out!
+These two functions appear to be unnecessarily different between
+architectures, and the asm-generic version is a bit questionable,
+even for NOMMU architectures.
 
-Does anyone have any comments? Or should I make a pull request for this change?
+Clean this up to just use the generic library version for anything
+that uses the generic version today. I've expanded on the patch
+descriptions a little, as suggested by Christoph Hellwig, but I
+suspect a more detailed review would uncover additional problems
+with the custom versions that are getting removed.
 
-Thank you,
+I ended up adding patches for csky and microblaze as they had the
+same implementation that I removed elsewhere, these are now gone
+as well.
 
-> 
-> 
-> Thank you,
-> 
-> ---
-> 
-> Masami Hiramatsu (6):
->       kprobes: treewide: Cleanup the error messages for kprobes
->       kprobes: Fix coding style issues
->       kprobes: Use IS_ENABLED() instead of kprobes_built_in()
->       kprobes: Add assertions for required lock
->       kprobes: treewide: Use 'kprobe_opcode_t *' for the code address in get_optimized_kprobe()
->       kprobes: Use bool type for functions which returns boolean value
-> 
-> 
->  arch/arm/probes/kprobes/core.c     |    4 
->  arch/arm/probes/kprobes/opt-arm.c  |    7 -
->  arch/arm64/kernel/probes/kprobes.c |    5 -
->  arch/csky/kernel/probes/kprobes.c  |   10 +
->  arch/mips/kernel/kprobes.c         |   11 +
->  arch/powerpc/kernel/optprobes.c    |    6 -
->  arch/riscv/kernel/probes/kprobes.c |   11 +
->  arch/s390/kernel/kprobes.c         |    4 
->  arch/x86/kernel/kprobes/opt.c      |    6 -
->  include/linux/kprobes.h            |   64 +++----
->  kernel/kprobes.c                   |  315 +++++++++++++++++++-----------------
->  kernel/trace/trace_kprobe.c        |    2 
->  12 files changed, 227 insertions(+), 218 deletions(-)
-> 
-> --
-> Masami Hiramatsu (Linaro) <mhiramat@kernel.org>
+If I hear no objections from architecture maintainers or new
+build regressions, I'll queue these up in the asm-generic tree
+for 5.15.
 
+       Arnd
+
+Link: https://lore.kernel.org/linux-arch/20210515101803.924427-1-arnd@kernel.org/
+
+Arnd Bergmann (9):
+  asm-generic/uaccess.h: remove __strncpy_from_user/__strnlen_user
+  h8300: remove stale strncpy_from_user
+  hexagon: use generic strncpy/strnlen from_user
+  arc: use generic strncpy/strnlen from_user
+  csky: use generic strncpy/strnlen from_user
+  microblaze: use generic strncpy/strnlen from_user
+  asm-generic: uaccess: remove inline strncpy_from_user/strnlen_user
+  asm-generic: remove extra strn{cpy_from,len}_user declarations
+  asm-generic: reverse GENERIC_{STRNCPY_FROM,STRNLEN}_USER symbols
+
+ arch/alpha/Kconfig                        |   2 -
+ arch/arc/include/asm/uaccess.h            |  72 -------------
+ arch/arc/mm/extable.c                     |  12 ---
+ arch/arm/Kconfig                          |   2 -
+ arch/arm64/Kconfig                        |   2 -
+ arch/csky/include/asm/uaccess.h           |   6 --
+ arch/csky/lib/usercopy.c                  | 102 ------------------
+ arch/h8300/kernel/h8300_ksyms.c           |   2 -
+ arch/h8300/lib/Makefile                   |   2 +-
+ arch/h8300/lib/strncpy.S                  |  35 ------
+ arch/hexagon/include/asm/uaccess.h        |  31 ------
+ arch/hexagon/kernel/hexagon_ksyms.c       |   1 -
+ arch/hexagon/mm/Makefile                  |   2 +-
+ arch/hexagon/mm/strnlen_user.S            | 126 ----------------------
+ arch/ia64/Kconfig                         |   2 +
+ arch/m68k/Kconfig                         |   2 -
+ arch/microblaze/include/asm/uaccess.h     |  19 +---
+ arch/microblaze/kernel/microblaze_ksyms.c |   3 -
+ arch/microblaze/lib/uaccess_old.S         |  90 ----------------
+ arch/mips/Kconfig                         |   2 +
+ arch/nds32/Kconfig                        |   2 -
+ arch/nios2/Kconfig                        |   2 -
+ arch/openrisc/Kconfig                     |   2 -
+ arch/parisc/Kconfig                       |   2 +-
+ arch/powerpc/Kconfig                      |   2 -
+ arch/riscv/Kconfig                        |   2 -
+ arch/s390/Kconfig                         |   2 +
+ arch/sh/Kconfig                           |   2 -
+ arch/sparc/Kconfig                        |   2 -
+ arch/um/Kconfig                           |   2 +
+ arch/um/include/asm/uaccess.h             |   5 +-
+ arch/um/kernel/skas/uaccess.c             |  14 ++-
+ arch/x86/Kconfig                          |   2 -
+ arch/xtensa/Kconfig                       |   3 +-
+ arch/xtensa/include/asm/uaccess.h         |   3 +-
+ include/asm-generic/uaccess.h             |  52 ++-------
+ lib/Kconfig                               |  10 +-
+ 37 files changed, 43 insertions(+), 581 deletions(-)
+ delete mode 100644 arch/h8300/lib/strncpy.S
+ delete mode 100644 arch/hexagon/mm/strnlen_user.S
 
 -- 
-Masami Hiramatsu <mhiramat@kernel.org>
+2.29.2
+
+Cc: "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com> 
+Cc: Al Viro <viro@zeniv.linux.org.uk> 
+Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com> 
+Cc: Brian Cain <bcain@codeaurora.org> 
+Cc: Chris Zankel <chris@zankel.net> 
+Cc: Christian Borntraeger <borntraeger@de.ibm.com> 
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Guo Ren <guoren@kernel.org> 
+Cc: Heiko Carstens <hca@linux.ibm.com> 
+Cc: Helge Deller <deller@gmx.de> 
+Cc: Jeff Dike <jdike@addtoit.com> 
+Cc: Linus Walleij <linus.walleij@linaro.org> 
+Cc: Max Filippov <jcmvbkbc@gmail.com> 
+Cc: Michal Simek <monstr@monstr.eu> 
+Cc: Richard Weinberger <richard@nod.at> 
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de> 
+Cc: Vasily Gorbik <gor@linux.ibm.com> 
+Cc: Vineet Gupta <vgupta@synopsys.com> 
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp> 
+Cc: linux-arch@vger.kernel.org 
+Cc: linux-csky@vger.kernel.org 
+Cc: linux-hexagon@vger.kernel.org 
+Cc: linux-ia64@vger.kernel.org 
+Cc: linux-kernel@vger.kernel.org 
+Cc: linux-mips@vger.kernel.org 
+Cc: linux-parisc@vger.kernel.org 
+Cc: linux-s390@vger.kernel.org 
+Cc: linux-snps-arc@lists.infradead.org 
+Cc: linux-um@lists.infradead.org 
+Cc: linux-xtensa@linux-xtensa.org 
+Cc: uclinux-h8-devel@lists.sourceforge.jp 
