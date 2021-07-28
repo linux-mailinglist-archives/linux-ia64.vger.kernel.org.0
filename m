@@ -2,106 +2,97 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3734E3D55F2
-	for <lists+linux-ia64@lfdr.de>; Mon, 26 Jul 2021 10:56:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E9F73D91DF
+	for <lists+linux-ia64@lfdr.de>; Wed, 28 Jul 2021 17:29:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232211AbhGZIPk (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 26 Jul 2021 04:15:40 -0400
-Received: from mout.gmx.net ([212.227.15.19]:52713 "EHLO mout.gmx.net"
+        id S237026AbhG1P3Z (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 28 Jul 2021 11:29:25 -0400
+Received: from mail.kernel.org ([198.145.29.99]:44398 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232041AbhGZIPj (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 26 Jul 2021 04:15:39 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1627289727;
-        bh=WkWs2yjbuB7rMLWgvsxBc4/Z976NwWWIEDiSOgTN55I=;
-        h=X-UI-Sender-Class:Subject:To:Cc:References:From:Date:In-Reply-To;
-        b=E7jOP/dwH1+3UHoNaSbTx2XDQRxAN5F8L7jEpZmRIgESVf9ne0KM7xfW0ObhH8vkT
-         ABXz8dsUiPiO1dwu3MUYUkMNesxVe0Yk5ji3YVzpNZGn/BfZ3uPtXbOes3Ed2hx1cN
-         YAlh6MXWhHfFt0OlfJQAeFIRfElfQswmhjdssuBY=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.59] ([92.116.128.43]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MHG8g-1lugpy469A-00DFk8; Mon, 26
- Jul 2021 10:55:27 +0200
-Subject: Re: [PATCH v3 9/9] asm-generic: reverse
- GENERIC_{STRNCPY_FROM,STRNLEN}_USER symbols
-To:     Arnd Bergmann <arnd@kernel.org>, linux-arch@vger.kernel.org
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Brian Cain <bcain@codeaurora.org>,
-        Chris Zankel <chris@zankel.net>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Christoph Hellwig <hch@lst.de>, Guo Ren <guoren@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Jeff Dike <jdike@addtoit.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michal Simek <monstr@monstr.eu>,
-        Richard Weinberger <richard@nod.at>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Vineet Gupta <vgupta@synopsys.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        uclinux-h8-devel@lists.sourceforge.jp
-References: <20210722124814.778059-1-arnd@kernel.org>
- <20210722124814.778059-10-arnd@kernel.org>
-From:   Helge Deller <deller@gmx.de>
-Message-ID: <b89d9932-7498-edd2-0369-227ce17bcba6@gmx.de>
-Date:   Mon, 26 Jul 2021 10:55:17 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S235648AbhG1P3Z (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 28 Jul 2021 11:29:25 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 71B8760F91;
+        Wed, 28 Jul 2021 15:29:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1627486163;
+        bh=4eOv0S36oCuufYDKfUQ15IpJrB2UwmRfcJL2L/+B+3A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=TqbNHbt6wWfa/2LJtvPtFOg6fyhBsMKy2W7BZJ/kOq/bBVBSZ0zwbMwuGCKGgcbfM
+         QB4dqILEfFRR4uK7VYqjSPPokmtsVkvfgezxRXHZbXzMHi1aIkqPSHjdMQN0klLynt
+         zo2G95Zc6DvCQs9gpUbl7sM7fJfT3WPBBFGzibgKsEqKr7w02vHWGsRIffZnfb4uAs
+         6oOmjfgIYjVWbVNUsP4h+jVS0Agcio5nfO6nGlDHzVqiuUHpmfgt4jHDwPTnXKwb8t
+         trKdlDow1jmCxyPhneOYmqONpwAzgdZRPLoWFQP9HAhaszC4oOW4F4Mw1NIL4wGab8
+         yBs0KrbdRwQig==
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     X86 ML <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
+        ast@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>, kernel-team@fb.com,
+        yhs@fb.com, linux-ia64@vger.kernel.org,
+        Abhishek Sagar <sagar.abhishek@gmail.com>,
+        Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+        Joe Perches <joe@perches.com>
+Subject: [PATCH -tip v3 0/6] kprobes: treewide: Clean up kprobe code
+Date:   Thu, 29 Jul 2021 00:29:20 +0900
+Message-Id: <162748615977.59465.13262421617578791515.stgit@devnote2>
+X-Mailer: git-send-email 2.25.1
+User-Agent: StGit/0.19
 MIME-Version: 1.0
-In-Reply-To: <20210722124814.778059-10-arnd@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:kdIeDnlaRuH2T6rYGVMcZI1y8GGtOS/nCSrzGPNZ3OUQY5MU47B
- 5CBoPs+/Yybus1lp3BFr1TFHG7JdG2o5Hk/+MOXzTPoZvzj/YZ/cz0YWZjRIVcPlnwe88YM
- WDlT2nlwI7uszkXCcyqKqCixlXZhA3YZdT580q2WrQJMaYRDbQNCq2HCRZf0EsBm4LR75i3
- BHhYUoKB70JevsBXEfP+w==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:t7OOfsjhfdM=:cPmtJv3NWFJm9d/RuoNb+/
- Ou4Bbj6nA8Q23PNuEt+UCFyyraXkWNdlDMwrkBg6/uFHrFY5gewiHslDKOPvwvPZ4QoBcNuDT
- 8bh8p1CqRqBNHsASvkEW+aJWm7j9TC8kTFOu4TqiRXvTqGCDIZxCBbYk3f4lF/KmzuVlpr0Du
- E6C7Nzp0ITty3fkhOUAZ7wUXr3fIAjaxGFOEos4Wax/D/96hS2a6wrxxpOtPW0jHf8YZSnTSW
- +ywaHc1qBSckC2nArgXnml3LmH/tsv8FS8c8fz5NB7haNTuVB2mlV0T1Vj4jUSZlFG40Gwuh+
- Qrs/0c1D57oh8kEVO16Yxgp9ls6PVKeBRbaiSNH6omxp9zKHT1mUSR523x7yUMgOqnIwFCvQm
- Me+mKB5Jup/it+POvsUV+NExWuf1EU1Q6I3aIWzXucxBkrfZ8sNKgj9/ZrGi4s5deIMCkm4jD
- WaWwGwylSRBIWBpcPDH0v0u+AcyK6mHWrvLsuJgLfVQZ5MtFihjQ7IUGh9k2b0pB61aSNX6Ja
- aUKIE1tfVrDqxg6QPCBlKIYbOglFx3Of70KtfGF8Y17PfXUSYPqmIeU6f6rsvThB99NrFTtHg
- UuNp7rNTATgACIDJvcPung6RI/RTVo7xMb5KnslJrTw9tyOlK9c2QiI4u0GzBTGGhI8sB+xEQ
- jccA0NGTg7ONUDj1qS8/RGqjPZqiAucjd60cgrD9OBfKsNeFwDYDDjlfg22beeNTYtcRRGsU/
- cwWoNxvInEN7Q5ES0wOBjYvb7zo04AJRFD5+mjf/YJhtmoSZpHSjHRKmLuE8O3jTocx33DzoS
- l3W3ypaoWe9H/E/AKrwcePngCJNADVH5MLl1qd1trF5lrhH1mRqrIzmYoSrFiehrBph0pN1BH
- etTVyfghR0rL7vavgTnKsreSpMyl3W3flVYYrL1VFrOZOaFlu4o/STXYiDOLTuais8R4uHZ9m
- rx7BDIdUVUu2cfGdCxzn72+/DIL+wTIkX3hYLkdhLbb0ILsnNCRr3C7E2s1DdY1NyblFsxj3/
- LgqPcJqCPQLSSnri/QeHDporOJ+A2BTzG1/uoMuWJameE3z/JlSz+68zDXDri1c2g98Ia8/zM
- mym0OeKhYLafNgyhfcmFszob94nhnmC8BqG
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 7/22/21 2:48 PM, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> Most architectures do not need a custom implementation, and in most
-> cases the generic implementation is preferred, so change the polariy
-> on these Kconfig symbols to require architectures to select them when
-> they provide their own version.
->
-> The new name is CONFIG_ARCH_HAS_{STRNCPY_FROM,STRNLEN}_USER.
->
-> The remaining architectures at the moment are: ia64, mips, parisc,
-> s390, um and xtensa. We should probably convert these as well, but
-> I was not sure how far to take this series.
+Hi,
 
-Acked-by: Helge Deller <deller@gmx.de> # parisc
+Here is the 3rd series of patches to cleanup the kprobes code. Previous
+version is here.
 
-Thanks!
-Helge
+ https://lore.kernel.org/bpf/162598881438.1222130.11530594038964049135.stgit@devnote2/
+
+This version is rebased on the latest tip/master and Punit's cleanup series;
+
+ https://lore.kernel.org/linux-csky/20210727133426.2919710-1-punitagrawal@gmail.com/
+
+Just fixed some conflicts, basically no change.
+
+I pushed his series and this series as the 'kprobes/cleanup' branch on my tree.
+So you can pull the series (and Punit's series too) from the branch below.
+
+ git://git.kernel.org/pub/scm/linux/kernel/git/mhiramat/linux.git kprobes/cleanup 
+
+Thank you,
+
+---
+
+Masami Hiramatsu (6):
+      kprobes: treewide: Cleanup the error messages for kprobes
+      kprobes: Fix coding style issues
+      kprobes: Use IS_ENABLED() instead of kprobes_built_in()
+      kprobes: Add assertions for required lock
+      kprobes: treewide: Use 'kprobe_opcode_t *' for the code address in get_optimized_kprobe()
+      kprobes: Use bool type for functions which returns boolean value
+
+
+ arch/arm/probes/kprobes/core.c     |    4 
+ arch/arm/probes/kprobes/opt-arm.c  |    7 -
+ arch/arm64/kernel/probes/kprobes.c |    5 -
+ arch/csky/kernel/probes/kprobes.c  |   10 +
+ arch/mips/kernel/kprobes.c         |   11 +
+ arch/powerpc/kernel/optprobes.c    |    6 -
+ arch/riscv/kernel/probes/kprobes.c |   11 +
+ arch/s390/kernel/kprobes.c         |    4 
+ arch/x86/kernel/kprobes/opt.c      |    6 -
+ include/linux/kprobes.h            |   64 +++----
+ kernel/kprobes.c                   |  313 +++++++++++++++++++-----------------
+ kernel/trace/trace_kprobe.c        |    2 
+ 12 files changed, 226 insertions(+), 217 deletions(-)
+
+--
+Masami Hiramatsu (Linaro) <mhiramat@kernel.org>
