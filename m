@@ -2,89 +2,74 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BA3A3DB812
-	for <lists+linux-ia64@lfdr.de>; Fri, 30 Jul 2021 13:54:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 529E13DCF52
+	for <lists+linux-ia64@lfdr.de>; Mon,  2 Aug 2021 06:24:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238777AbhG3LyL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 30 Jul 2021 07:54:11 -0400
-Received: from mail-vs1-f43.google.com ([209.85.217.43]:44557 "EHLO
-        mail-vs1-f43.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238687AbhG3LyJ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 30 Jul 2021 07:54:09 -0400
-Received: by mail-vs1-f43.google.com with SMTP id t2so5247878vsa.11;
-        Fri, 30 Jul 2021 04:54:03 -0700 (PDT)
+        id S231958AbhHBEYU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 2 Aug 2021 00:24:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43666 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231441AbhHBEYT (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 2 Aug 2021 00:24:19 -0400
+Received: from mail-ed1-x541.google.com (mail-ed1-x541.google.com [IPv6:2a00:1450:4864:20::541])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90BDFC06179A
+        for <linux-ia64@vger.kernel.org>; Sun,  1 Aug 2021 21:24:10 -0700 (PDT)
+Received: by mail-ed1-x541.google.com with SMTP id n2so22621742eda.10
+        for <linux-ia64@vger.kernel.org>; Sun, 01 Aug 2021 21:24:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=FtyL1jenxhHoD0FEqr0JzEzar9WxjQ0aFEwPIjOui/KxHqjdRIaWw+qc9fVrqT7/Dn
+         Pnh35Va41LybAL6U8YkeIBgROe6j/64zDWESXr3a3yRfbQQPGRB9fNiPFd+zLtRJzUIN
+         QuzzTY5SkBKHMhw3aNm828s4szNx+qezVfjbXBb1AnLosRqM3hZLsmXFs11UFe9XwQd0
+         8wSmR+hXWoecdn7C1dRJ3raMOO2OzRp8To/v4OIIenhLUR2Xi2bEwQKHQsPiMZ9RJ/f/
+         /P5G34L+RYG0gvY4mQKUVcv9jgYngramQoP+XViWVUuAojxufRmPTkFAnPt7xVda61k1
+         G8fw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=10AbK6xK8RHobfuB2T0I9ydjpvpHcTKY9gPukwHCGGA=;
-        b=YmhSWe4ysVoxpkFxv01nZcYjbowvxAt4AmXoLUb1J5l/9+OVzYtM/U91iSFuVd4j1T
-         OOh41vU1X7Q5YEO2iFZlnSlMyK8akuCce5aqJaFeb4HurZk5i/1LZIHnxTCeF8Fjwtop
-         KUappP524ABfwUd2AFwE09lg8Mmuo06WYnD5+apwUDyOJO5MIUq+Jvy/N2IttQwvOgF3
-         R3LydwxxLjPTHCsCKY7xgLlYA4CXleO5UPOae10xxjHpDHHgznosWs8JvYeCihUtzmTY
-         3duBjo7i7c1jqowm3jL2a8f78hL5inxsc9ylnmUxBqxfWiZUdlSJjQ3TXUE3/9wK14Pc
-         H5vw==
-X-Gm-Message-State: AOAM5303d4WMe9j/oJTT97blA0+lnvq55eCvWzmCWUDxkPK+X74oFZj1
-        hH9ZuWXv8hGKrJNelNzFSAfwu74ds1W7dXLHTiM=
-X-Google-Smtp-Source: ABdhPJz4vdafBihdMrOKEMxBFoPjbpJQjxu69DET98mge7/3K8Au1C7Ct04O+Z9CWQAOZ0tklY4nnHzuyfbZq+wo9hQ=
-X-Received: by 2002:a05:6102:321c:: with SMTP id r28mr1030174vsf.40.1627646043462;
- Fri, 30 Jul 2021 04:54:03 -0700 (PDT)
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=JbMtpdZj7sghISs4e5T5yryQDvERMuYalazmdQP0RcA=;
+        b=kgoIljbLuTN9bID0XnodRD29DcDI32T8AMwNkPJzRzmq+zZOVihtXXUP3+DiZA5rfX
+         mWCe1wmvSZVFPn6RxlRKAKZ0f0f947/qxdNj8dvicyEvV1nUzXTZ1HCLU/JT1quxGOzG
+         1bItW2jaiUQ8p+0CGn/hl5bwKU5efaLt3mO+YXrG7ZCLUFePYoqmCCo8/gPU+oLQBF6T
+         3A4YXU3ilj1H/YT9Qnjzwnj9Yto0rUum0S2HJSfeP/3PpZlwLvBiTxYVi1xwpw6L+K/H
+         2BvN6eA6M72tc8K0cwrenXtkcqfyiI5QiBQFUCbdaDMUlHrY/ilH9U5+YBdN6jLIZllV
+         HC+w==
+X-Gm-Message-State: AOAM531o4jxXFGHsEl/9PvHrCQRMPfGnIKXMGUewmSrLFWnjVlr6RgPR
+        ProzLQ2n25ftLomd7J+1ZVyeTXNE01Xyfltkmw4=
+X-Google-Smtp-Source: ABdhPJzys5yCwXnLOHH4NsCIcKA9f726GMnAOsN9NLlhSmyZNb7UhzU0IEwJ6FYKksyg3UeOKVwrbLA6pAJm2hMlOV0=
+X-Received: by 2002:aa7:c0d1:: with SMTP id j17mr16890014edp.217.1627878249276;
+ Sun, 01 Aug 2021 21:24:09 -0700 (PDT)
 MIME-Version: 1.0
-References: <20210728182115.4401-1-lukas.bulwahn@gmail.com>
-In-Reply-To: <20210728182115.4401-1-lukas.bulwahn@gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Fri, 30 Jul 2021 13:53:52 +0200
-Message-ID: <CAMuHMdXt4tYHcgPNUZ0ZQ9iKhmZ_dC=ub=Ha35xDy+jR2-CroQ@mail.gmail.com>
-Subject: Re: [PATCH] arch: Kconfig: clean up obsolete use of HAVE_IDE
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        "moderated list:H8/300 ARCHITECTURE" 
-        <uclinux-h8-devel@lists.sourceforge.jp>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        kernel-janitors@vger.kernel.org
+Received: by 2002:a17:907:d0b:0:0:0:0 with HTTP; Sun, 1 Aug 2021 21:24:08
+ -0700 (PDT)
+Reply-To: ablahikazabl67@gmail.com
+From:   Abdoulahi Kazim <drwilliamcuthbert@gmail.com>
+Date:   Mon, 2 Aug 2021 05:24:08 +0100
+Message-ID: <CAKwBCXuzDf40zPCct3xg8L9LubxzXWgC230fQ80GXrmg_Yuttw@mail.gmail.com>
+Subject: More Authentic Information
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Jul 28, 2021 at 8:21 PM Lukas Bulwahn <lukas.bulwahn@gmail.com> wrote:
-> The arch-specific Kconfig files use HAVE_IDE to indicate if IDE is
-> supported.
->
-> As IDE support and the HAVE_IDE config vanishes with commit b7fb14d3ac63
-> ("ide: remove the legacy ide driver"), there is no need to mention
-> HAVE_IDE in all those arch-specific Kconfig files.
->
-> The issue was identified with ./scripts/checkkconfigsymbols.py.
->
-> Fixes: b7fb14d3ac63 ("ide: remove the legacy ide driver")
-> Suggested-by: Randy Dunlap <rdunlap@infradead.org>
-> Signed-off-by: Lukas Bulwahn <lukas.bulwahn@gmail.com>
-
->  arch/m68k/Kconfig             | 1 -
-
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Dear Partner,
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+I am soliciting your partnership to relocate $12.5 Million to your
+country for investment on my behalf and you will be entitled to 30% of
+the sum once the transaction is successful made.
+
+Please indicate your genuine interest if you are capable so that i
+will send you the authentic details and documents of the transaction
+in awareness with some of my fellow Directors in the bank.
+
+If you are interested, here is my private Email address:
+(ablahikazabl67@gmail.com)
+For more authentic and legit information.
+
+
+Regards :  Abdoulahi Kazim
