@@ -2,65 +2,43 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 87D533E3497
-	for <lists+linux-ia64@lfdr.de>; Sat,  7 Aug 2021 12:09:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 276953E4871
+	for <lists+linux-ia64@lfdr.de>; Mon,  9 Aug 2021 17:16:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231640AbhHGKJP (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 7 Aug 2021 06:09:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35980 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231820AbhHGKJM (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 7 Aug 2021 06:09:12 -0400
-Received: from mail-qt1-x829.google.com (mail-qt1-x829.google.com [IPv6:2607:f8b0:4864:20::829])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F303C0617A4
-        for <linux-ia64@vger.kernel.org>; Sat,  7 Aug 2021 03:08:33 -0700 (PDT)
-Received: by mail-qt1-x829.google.com with SMTP id w10so8472885qtj.3
-        for <linux-ia64@vger.kernel.org>; Sat, 07 Aug 2021 03:08:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=aiYv+ghkj1wcr5KlnL1ML71lfnXzfmxAeT1E5sMi1Qw=;
-        b=S3l4T9e2tP5pVS7ZuYdu+1Y0qbKkJYnejhs8S6oYuW6LYwueyDMIGlxr2QviX908pZ
-         9SPZJLnYHgJvYg3PLTI5fWJK5TkMxVO2qBa2FrvvgMmkTyowY9FDC29BPjsdhbPhxQLa
-         tYnwYex5seRxFiLy8EoSSBUznJBTlHeb/Bz5niZL/Il13kvDN2O2xOxWpnGH2uLwHscT
-         DoTFOxHdTymP4E3acGtQxboa5XPRRUPIM6mlAfcr7/ekHDJNJv4uG6dy2JtyqWn88ow0
-         hsiNGB55/AYboSktIHGsl5ebXsVnqzSR6R9ebR+QIoCvocI54gGy0g8VDA3p78wJouiN
-         BLYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=aiYv+ghkj1wcr5KlnL1ML71lfnXzfmxAeT1E5sMi1Qw=;
-        b=HOR2Camy/B9kVsFiebY/QIHsiBYVlhizsHG5wDZA6eui27JRc9lsJqANfjmzOzHoLB
-         A0ZD8gufiy0b9oesy78nnI/n5wIHwxs7kw2XRSQ5KbbD2/AkGkjA+dzAlFTPr71aGghx
-         Jcu/onCD1lFJJaAywTeMW6AwbmRP32keKDteJvKocEAuorzKAjpP+cjvEP3Vs7VeEs67
-         YuDfG05LUrKLgQV6fQvrR+JPv7vVBgwyonrvqGyqbGGYck2fBKYb8uW1XN6/+hbLM1vF
-         jpf5JF+QkrEnQlm4AlqbMDaPv2+gFuMCciCPHYaDFRAQyS1iXk/P2M3mbcmP66Wprj3V
-         0rKg==
-X-Gm-Message-State: AOAM5325pm1ZjvOUy1qUc7HbleQGaclEP3jZgLkfDrG7AFcMu+GsmiXH
-        U1/fuTkg1oW9gBYD1/PJ71uGlxFGY52gFx9ZbPU=
-X-Google-Smtp-Source: ABdhPJxgyuRRXsSMd0R6a3b0A3hI9pouiu6GtIO5W43J3txGTJtR81T+4t2OwT3S4z6DuFUIj52qGnoLd2PfTJY5Mrs=
-X-Received: by 2002:ac8:6611:: with SMTP id c17mr12282490qtp.392.1628330911954;
- Sat, 07 Aug 2021 03:08:31 -0700 (PDT)
+        id S234075AbhHIPQs (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 9 Aug 2021 11:16:48 -0400
+Received: from verein.lst.de ([213.95.11.211]:60961 "EHLO verein.lst.de"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S233058AbhHIPQr (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 9 Aug 2021 11:16:47 -0400
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 6D60467357; Mon,  9 Aug 2021 17:16:22 +0200 (CEST)
+Date:   Mon, 9 Aug 2021 17:16:22 +0200
+From:   Christoph Hellwig <hch@lst.de>
+To:     Logan Gunthorpe <logang@deltatee.com>
+Cc:     linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, sparclinux@vger.kernel.org,
+        iommu@lists.linux-foundation.org, linux-parisc@vger.kernel.org,
+        xen-devel@lists.xenproject.org, Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Stephen Bates <sbates@raithlin.com>,
+        Martin Oliveira <martin.oliveira@eideticom.com>
+Subject: Re: [PATCH v3 00/21] .map_sg() error cleanup
+Message-ID: <20210809151622.GB22445@lst.de>
+References: <20210729201539.5602-1-logang@deltatee.com>
 MIME-Version: 1.0
-Received: by 2002:a05:622a:112:0:0:0:0 with HTTP; Sat, 7 Aug 2021 03:08:31
- -0700 (PDT)
-Reply-To: ssaar0101@gmail.com
-From:   Medinat Sherrif <do348911@gmail.com>
-Date:   Sat, 7 Aug 2021 10:08:31 +0000
-Message-ID: <CA+WgU6p7R+UtP_5FzWNKmG6hkPWxb7Kfk5rN4WNbAMA9+mot=Q@mail.gmail.com>
-Subject: Good morning,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20210729201539.5602-1-logang@deltatee.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Greetings from here.
+Thanks,
 
-My name is Medinat. M  Sherrif, I have something very confidential to
-discuss with you in my next mail. Reply to me with your private email
-address for confidential discussion.
-
-Best Regards.
-Medinat. M  Sherrif,
+I've applied this to the dma-mapping tree with a few minor cosmetic
+tweaks.
