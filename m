@@ -2,67 +2,77 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A6903E94D8
-	for <lists+linux-ia64@lfdr.de>; Wed, 11 Aug 2021 17:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D9D73E965F
+	for <lists+linux-ia64@lfdr.de>; Wed, 11 Aug 2021 18:54:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233201AbhHKPpS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 11 Aug 2021 11:45:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47732 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233178AbhHKPpS (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 11 Aug 2021 11:45:18 -0400
-Received: from mail-wm1-x341.google.com (mail-wm1-x341.google.com [IPv6:2a00:1450:4864:20::341])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33DC8C0613D3;
-        Wed, 11 Aug 2021 08:44:54 -0700 (PDT)
-Received: by mail-wm1-x341.google.com with SMTP id k4so2274209wms.3;
-        Wed, 11 Aug 2021 08:44:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=message-id:from:mime-version:content-transfer-encoding
-         :content-description:subject:to:date:reply-to;
-        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
-        b=s9lvfnIkcbYPwpiqZqBHi1uc6AuLXz97atVS1nXzbxOwq0bBopxH1a9Hl3lZqJw9ol
-         PRxHgwbW1eo1gvbbN4I3ibwLlB0S56X1YY+0e3lSTmgDBPEy67XB4y6Q4/XYPaCtgFhX
-         tJ/8+K+H0HBqlqQert+6jtO3sa3cV5hsBk/2w2WFrIGXbSFlgsYutEYrJOStOcwIAjaM
-         LevwcNOKVY+LEcM+CVyQrdnSsXIRtykrIPNHR8prBsGF37tQ0Bjix7FU+mDEwC2hc7fO
-         Y+FSPPWc2Dngwj0Z/Yl00xISx8o4bq/q/FLM49AuaZuS3jua3oN3+dv2ZC+pJ8YBIA3E
-         ck6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:message-id:from:mime-version
-         :content-transfer-encoding:content-description:subject:to:date
-         :reply-to;
-        bh=5NTJSky9UX3JbuB9riY3wCYfXDpCwy2c7hzO0kF4AHA=;
-        b=mib393Y+MUg9mPA6VY7/V0y/cFHfIrFJWoUjWtI8wo4cqqUxUQDZh39NsQzOkXhhWo
-         27+6ZQwW2oHRlzE0RuVjh1nYRfi102zb2HqMHFryWyV6ckY0FrTEcB5Qu7vdDfUcdxwT
-         pOBTckyAxIWpsHRVpVGDkIo5WT08IsrMNo6k0VYba/H/7DgjMn44VgLyAooVUnDkiOSP
-         X4yHQuLhHFmbPUs1s9F7vI3i0Ft6y63Fbsjpapa0BoWtBRHhA0Zk81P0fwyWYl8dHzsD
-         U7lwU+TSiOiD0QImYdgrgNfUPUCTCmWIw9stLgySpqFiZ/C/lKaTVRThe7PPVxeHVGV4
-         cMQQ==
-X-Gm-Message-State: AOAM531b2aUgq5ddopwbFdd1QdkGOk3xoWkrwXcwwm/q/7eEWPfw0BOJ
-        QJQesg93F04Os5oQGO2Nw4o=
-X-Google-Smtp-Source: ABdhPJxXGeiBPH8sIkHK7kfq+gzk7OLgOB/B4V9K8If8z7dRU7dKdqbPECh4OHSQ9N1Vc7iZ7/gnCA==
-X-Received: by 2002:a1c:a50c:: with SMTP id o12mr9717981wme.4.1628696692827;
-        Wed, 11 Aug 2021 08:44:52 -0700 (PDT)
-Received: from [192.168.1.70] ([102.64.209.185])
-        by smtp.gmail.com with ESMTPSA id r18sm9485707wrt.76.2021.08.11.08.44.48
-        (version=TLS1 cipher=AES128-SHA bits=128/128);
-        Wed, 11 Aug 2021 08:44:52 -0700 (PDT)
-Message-ID: <6113f074.1c69fb81.ffd8e.2b02@mx.google.com>
-From:   Vanina curth <curtisvani0038@gmail.com>
-X-Google-Original-From: Vanina  curth
-Content-Type: text/plain; charset="iso-8859-1"
+        id S229600AbhHKQzQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 11 Aug 2021 12:55:16 -0400
+Received: from condef-02.nifty.com ([202.248.20.67]:34110 "EHLO
+        condef-02.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229484AbhHKQzQ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 11 Aug 2021 12:55:16 -0400
+X-Greylist: delayed 361 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Aug 2021 12:55:15 EDT
+Received: from conuserg-12.nifty.com ([10.126.8.75])by condef-02.nifty.com with ESMTP id 17BGhhP8025267
+        for <linux-ia64@vger.kernel.org>; Thu, 12 Aug 2021 01:43:43 +0900
+Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
+        by conuserg-12.nifty.com with ESMTP id 17BGhElC021169;
+        Thu, 12 Aug 2021 01:43:15 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com 17BGhElC021169
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1628700195;
+        bh=Oo0qxzwEX8jTeYTynAg3pP99anNAWJAkg0EUTQi23K4=;
+        h=From:To:Cc:Subject:Date:From;
+        b=n2XySUou+8cbUywODpS13bHwRWP9tqRutkEVs5P+qKmhg1EaJ1NTWGaVr+hNVGM0H
+         +tEz3rXOjD3yEwhRbJWxIlj+XGJAokVCNrSd9uYaxn/OZ6UWHWeiKChRo6WMjZXchf
+         qU5bju5ar1gTL8b5yHkZX2Std0TNQXqk+AuXc9bxXHF6h3a0hpJYp1PA5Dwhym81yV
+         bZSEySZHs+DHdNixvFt1QW15LCLSXUwClBQt2W7xbyIZEuPx++V88B2n8EJbg/U6zz
+         IZPqzG0J2skEAzBOe25eP2mh3Y+5rKQFVYgaU33Q/fyQyKJrm4foMi0eigkHKe1ZsG
+         zUmaN119Lct5w==
+X-Nifty-SrcIP: [133.32.232.101]
+From:   Masahiro Yamada <masahiroy@kernel.org>
+To:     linux-ia64@vger.kernel.org
+Cc:     Masahiro Yamada <masahiroy@kernel.org>,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] ia64: move core-y in arch/ia64/Makefile to arch/ia64/Kbuild
+Date:   Thu, 12 Aug 2021 01:43:12 +0900
+Message-Id: <20210811164312.187226-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Dear
-To:     Recipients <Vanina@vger.kernel.org>
-Date:   Wed, 11 Aug 2021 15:44:17 +0000
-Reply-To: curtisvani9008@gmail.com
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-How are you? I'm Vanina. I'm interested to know you and I would like to kno=
-w more about you and establish relationship with you. i will wait for your =
-response. thank you.
+Use obj-y to clean up Makefile.
+
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+ arch/ia64/Kbuild   | 2 ++
+ arch/ia64/Makefile | 2 --
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/arch/ia64/Kbuild b/arch/ia64/Kbuild
+index a4e40e534e6a..e77cc76d228c 100644
+--- a/arch/ia64/Kbuild
++++ b/arch/ia64/Kbuild
+@@ -1 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
++obj-y				+= kernel/ mm/
++obj-$(CONFIG_IA64_SGI_UV)	+= uv/
+diff --git a/arch/ia64/Makefile b/arch/ia64/Makefile
+index 467b7e7f967c..7e548c654a29 100644
+--- a/arch/ia64/Makefile
++++ b/arch/ia64/Makefile
+@@ -47,8 +47,6 @@ KBUILD_CFLAGS += $(cflags-y)
+ head-y := arch/ia64/kernel/head.o
+ 
+ libs-y				+= arch/ia64/lib/
+-core-y				+= arch/ia64/kernel/ arch/ia64/mm/
+-core-$(CONFIG_IA64_SGI_UV)	+= arch/ia64/uv/
+ 
+ drivers-y			+= arch/ia64/pci/ arch/ia64/hp/common/
+ 
+-- 
+2.30.2
+
