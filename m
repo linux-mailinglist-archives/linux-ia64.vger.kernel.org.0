@@ -2,77 +2,113 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D9D73E965F
-	for <lists+linux-ia64@lfdr.de>; Wed, 11 Aug 2021 18:54:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 935343EB93F
+	for <lists+linux-ia64@lfdr.de>; Fri, 13 Aug 2021 17:27:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbhHKQzQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 11 Aug 2021 12:55:16 -0400
-Received: from condef-02.nifty.com ([202.248.20.67]:34110 "EHLO
-        condef-02.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229484AbhHKQzQ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 11 Aug 2021 12:55:16 -0400
-X-Greylist: delayed 361 seconds by postgrey-1.27 at vger.kernel.org; Wed, 11 Aug 2021 12:55:15 EDT
-Received: from conuserg-12.nifty.com ([10.126.8.75])by condef-02.nifty.com with ESMTP id 17BGhhP8025267
-        for <linux-ia64@vger.kernel.org>; Thu, 12 Aug 2021 01:43:43 +0900
-Received: from localhost.localdomain (133-32-232-101.west.xps.vectant.ne.jp [133.32.232.101]) (authenticated)
-        by conuserg-12.nifty.com with ESMTP id 17BGhElC021169;
-        Thu, 12 Aug 2021 01:43:15 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-12.nifty.com 17BGhElC021169
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1628700195;
-        bh=Oo0qxzwEX8jTeYTynAg3pP99anNAWJAkg0EUTQi23K4=;
-        h=From:To:Cc:Subject:Date:From;
-        b=n2XySUou+8cbUywODpS13bHwRWP9tqRutkEVs5P+qKmhg1EaJ1NTWGaVr+hNVGM0H
-         +tEz3rXOjD3yEwhRbJWxIlj+XGJAokVCNrSd9uYaxn/OZ6UWHWeiKChRo6WMjZXchf
-         qU5bju5ar1gTL8b5yHkZX2Std0TNQXqk+AuXc9bxXHF6h3a0hpJYp1PA5Dwhym81yV
-         bZSEySZHs+DHdNixvFt1QW15LCLSXUwClBQt2W7xbyIZEuPx++V88B2n8EJbg/U6zz
-         IZPqzG0J2skEAzBOe25eP2mh3Y+5rKQFVYgaU33Q/fyQyKJrm4foMi0eigkHKe1ZsG
-         zUmaN119Lct5w==
-X-Nifty-SrcIP: [133.32.232.101]
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     linux-ia64@vger.kernel.org
-Cc:     Masahiro Yamada <masahiroy@kernel.org>,
-        linux-kernel@vger.kernel.org
-Subject: [PATCH] ia64: move core-y in arch/ia64/Makefile to arch/ia64/Kbuild
-Date:   Thu, 12 Aug 2021 01:43:12 +0900
-Message-Id: <20210811164312.187226-1-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.30.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+        id S242640AbhHMP0v (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 13 Aug 2021 11:26:51 -0400
+Received: from mail.kernel.org ([198.145.29.99]:37042 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240849AbhHMP0q (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Fri, 13 Aug 2021 11:26:46 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 2F66A604AC;
+        Fri, 13 Aug 2021 15:26:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1628868379;
+        bh=PnDYHEZmtLQzD+SDpkgm+FUo4/MBMwul90100w6jt/s=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=gaGlUBWpFHeJQE1TfvzBOX8xCyVGsmI7prs53046uxJtuP3ST1Hx2sfHMD4WZeoaI
+         0ZD62KDF3GN/EmhihlMzEuvbYTRe4LTLQqXkYYpio3CCWTxR7cmCgZHSUAQ58/xRjm
+         dcrdr8zqGIFkKJw64zooKHAzH3fLvwkCpYHF1Sq2382JKHGVgH+VLv7E9qTxbvm1l6
+         vup8PZmbcpuVhVdRSjw/zzFT1WgPGgUsS38xCWETfELVX3Z5lhQJHW4D5W9JE8ZG/i
+         AM7ZhXoIPVXq7jngftf8rQj9RYRbPGYnh4CQjSUdueGC10qxENmEiaumFPK57/grf9
+         VDsEPz0QYTfOA==
+Date:   Sat, 14 Aug 2021 00:26:14 +0900
+From:   Masami Hiramatsu <mhiramat@kernel.org>
+To:     Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     X86 ML <x86@kernel.org>, Ingo Molnar <mingo@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
+        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
+        ast@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>, kernel-team@fb.com,
+        yhs@fb.com, linux-ia64@vger.kernel.org,
+        Abhishek Sagar <sagar.abhishek@gmail.com>,
+        Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+        Joe Perches <joe@perches.com>
+Subject: Re: [PATCH -tip v3 0/6] kprobes: treewide: Clean up kprobe code
+Message-Id: <20210814002614.1e4711003e9013e0b60aa789@kernel.org>
+In-Reply-To: <162748615977.59465.13262421617578791515.stgit@devnote2>
+References: <162748615977.59465.13262421617578791515.stgit@devnote2>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Use obj-y to clean up Makefile.
+Hi Ingo,
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
+Could you pick this series if no problem?
+These patches do not change any functionalities. (of course some of them
+changes function APIs, like the type of return value and arguments)
 
- arch/ia64/Kbuild   | 2 ++
- arch/ia64/Makefile | 2 --
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Thank you,
 
-diff --git a/arch/ia64/Kbuild b/arch/ia64/Kbuild
-index a4e40e534e6a..e77cc76d228c 100644
---- a/arch/ia64/Kbuild
-+++ b/arch/ia64/Kbuild
-@@ -1 +1,3 @@
- # SPDX-License-Identifier: GPL-2.0-only
-+obj-y				+= kernel/ mm/
-+obj-$(CONFIG_IA64_SGI_UV)	+= uv/
-diff --git a/arch/ia64/Makefile b/arch/ia64/Makefile
-index 467b7e7f967c..7e548c654a29 100644
---- a/arch/ia64/Makefile
-+++ b/arch/ia64/Makefile
-@@ -47,8 +47,6 @@ KBUILD_CFLAGS += $(cflags-y)
- head-y := arch/ia64/kernel/head.o
- 
- libs-y				+= arch/ia64/lib/
--core-y				+= arch/ia64/kernel/ arch/ia64/mm/
--core-$(CONFIG_IA64_SGI_UV)	+= arch/ia64/uv/
- 
- drivers-y			+= arch/ia64/pci/ arch/ia64/hp/common/
- 
+On Thu, 29 Jul 2021 00:29:20 +0900
+Masami Hiramatsu <mhiramat@kernel.org> wrote:
+
+> Hi,
+> 
+> Here is the 3rd series of patches to cleanup the kprobes code. Previous
+> version is here.
+> 
+>  https://lore.kernel.org/bpf/162598881438.1222130.11530594038964049135.stgit@devnote2/
+> 
+> This version is rebased on the latest tip/master and Punit's cleanup series;
+> 
+>  https://lore.kernel.org/linux-csky/20210727133426.2919710-1-punitagrawal@gmail.com/
+> 
+> Just fixed some conflicts, basically no change.
+> 
+> I pushed his series and this series as the 'kprobes/cleanup' branch on my tree.
+> So you can pull the series (and Punit's series too) from the branch below.
+> 
+>  git://git.kernel.org/pub/scm/linux/kernel/git/mhiramat/linux.git kprobes/cleanup 
+> 
+> Thank you,
+> 
+> ---
+> 
+> Masami Hiramatsu (6):
+>       kprobes: treewide: Cleanup the error messages for kprobes
+>       kprobes: Fix coding style issues
+>       kprobes: Use IS_ENABLED() instead of kprobes_built_in()
+>       kprobes: Add assertions for required lock
+>       kprobes: treewide: Use 'kprobe_opcode_t *' for the code address in get_optimized_kprobe()
+>       kprobes: Use bool type for functions which returns boolean value
+> 
+> 
+>  arch/arm/probes/kprobes/core.c     |    4 
+>  arch/arm/probes/kprobes/opt-arm.c  |    7 -
+>  arch/arm64/kernel/probes/kprobes.c |    5 -
+>  arch/csky/kernel/probes/kprobes.c  |   10 +
+>  arch/mips/kernel/kprobes.c         |   11 +
+>  arch/powerpc/kernel/optprobes.c    |    6 -
+>  arch/riscv/kernel/probes/kprobes.c |   11 +
+>  arch/s390/kernel/kprobes.c         |    4 
+>  arch/x86/kernel/kprobes/opt.c      |    6 -
+>  include/linux/kprobes.h            |   64 +++----
+>  kernel/kprobes.c                   |  313 +++++++++++++++++++-----------------
+>  kernel/trace/trace_kprobe.c        |    2 
+>  12 files changed, 226 insertions(+), 217 deletions(-)
+> 
+> --
+> Masami Hiramatsu (Linaro) <mhiramat@kernel.org>
+
+
 -- 
-2.30.2
-
+Masami Hiramatsu <mhiramat@kernel.org>
