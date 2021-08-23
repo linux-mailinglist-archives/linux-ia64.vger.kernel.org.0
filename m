@@ -2,106 +2,73 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 824453F432E
-	for <lists+linux-ia64@lfdr.de>; Mon, 23 Aug 2021 03:51:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 224E53F514A
+	for <lists+linux-ia64@lfdr.de>; Mon, 23 Aug 2021 21:31:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234539AbhHWBwE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 22 Aug 2021 21:52:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54892 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233258AbhHWBwE (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 22 Aug 2021 21:52:04 -0400
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 609A5C061575;
-        Sun, 22 Aug 2021 18:51:22 -0700 (PDT)
-Received: by mail-qt1-x835.google.com with SMTP id v6so2845541qto.3;
-        Sun, 22 Aug 2021 18:51:22 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20161025;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=eMZjJs2MyYsquLxQqFWMFIkZS5sBK3Cb5C1crrxN1Zs=;
-        b=B+9o/BBHRQx2r+YeODkTRx0IpIAX7G64UB6NGH6lshT2oWkB2iH7/KjVo7la9VZMEf
-         7Jr4LlYawMvd4UJ1zVi2Jvz7UpWNIk7JPwdZJQzrPHkRRuFbp+T2YvIaG2vcacTTXHEC
-         +bkLtifGMNEs8weRoRo5y/8HXbj+TI0UnLvHq1SuZOJo3+NCARmGW8fuEzLsgH1kK0/Y
-         Ct/ISzYWZ45ZbQLOvLV5hht/dYgUMu2CXvXn7rkOhFH7oczerG/ust042D86reZ/zUJd
-         KmPjSR0cmS9juPW5+IdCl7DclTYPQFG3lEOqgeG3AjC2mdI/5DEBdS/BgrjNT1Stsl/V
-         gwcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20161025;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=eMZjJs2MyYsquLxQqFWMFIkZS5sBK3Cb5C1crrxN1Zs=;
-        b=Vbc8xkc1jPAhctIEG0ofviQXmalTzqqtfjNjjnRy8oKkg7csuP9rNoXJJUAU+4JBfi
-         HqmZU2wpjvb5iWUzHUEtufFeoTeSFWVrhf3ZkhFQiaJUronDh9TLtdmDZ9mmW9rm2KTs
-         GS8zwqxofXaEebj3kS7wxSIFXJGfuyIiclQznx4u4aRCYUwXkekq9W+9f6vqbtzh0CD1
-         +nXX8GhZczVIY11E4ixw8rhVxxfr7oD7bV+BHfUP1CWMD6SozYEOIdAK7oXrRT888uxJ
-         r3r4Ve6rb5ETp5kdeToj24zS3J2UOu8a/fxRJ5kcSxLumZptpCbUFHiLKpHewQHvS2FU
-         tDSw==
-X-Gm-Message-State: AOAM530Bj8Hrsh3FWXE+J0shesVJqKsgWIJccXV346PwNqgccU35LHgf
-        0E0nnr9M7UC+n4HBM5sbyjkpXapw/BM=
-X-Google-Smtp-Source: ABdhPJxuMl+9vhtvwYFGyB/C7LT/MpkTGMxy2SQGIYqAB++TSdTTGUIO7Ut4QQ8AXYGNq2mO8KSoSg==
-X-Received: by 2002:a05:622a:353:: with SMTP id r19mr27821404qtw.3.1629683481465;
-        Sun, 22 Aug 2021 18:51:21 -0700 (PDT)
-Received: from localhost.localdomain ([193.203.214.57])
-        by smtp.gmail.com with ESMTPSA id v145sm7791609qkb.132.2021.08.22.18.51.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Aug 2021 18:51:20 -0700 (PDT)
-From:   CGEL <cgel.zte@gmail.com>
-X-Google-Original-From: CGEL <jing.yangyang@zte.com.cn>
-To:     "Gustavo A . R . Silva" <gustavoars@kernel.org>
-Cc:     Sergei Trofimovich <slyfox@gentoo.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S230506AbhHWTcW (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 23 Aug 2021 15:32:22 -0400
+Received: from mail.kernel.org ([198.145.29.99]:48822 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S230377AbhHWTcW (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 23 Aug 2021 15:32:22 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 6C4E461040;
+        Mon, 23 Aug 2021 19:31:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1629747099;
+        bh=xWVdb08TAxTvVeKVZ1u+P+w0yrUcdC0QFXlFHnzyBtk=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=LqBZeCXJAOYw9lM3D/zuojqPXzYvDFUzYhXlzsyJHl+hY+UwwNMX8OTqJKH/sKQKt
+         tkiZs+51EP2HGdL0aVyJYhU0DI4xZHeiNldDcqVpuywEQpgEh75rzd61NAHbhQ+Drm
+         uuDjnKMaS51yQ+ZKEeEJ5/h/uAIXIOr8eUsmFjYU=
+Date:   Mon, 23 Aug 2021 12:31:38 -0700
+From:   Andrew Morton <akpm@linux-foundation.org>
+To:     CGEL <cgel.zte@gmail.com>
+Cc:     "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+        Sergei Trofimovich <slyfox@gentoo.org>,
         linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
         Jing Yangyang <jing.yangyang@zte.com.cn>,
         Zeal Robot <zealci@zte.com.cn>
-Subject: [PATCH linux-next] arch/ia64/kernel/module.c: fix bugon.cocci warnings
-Date:   Sun, 22 Aug 2021 18:51:10 -0700
-Message-Id: <20210823015110.44069-1-jing.yangyang@zte.com.cn>
-X-Mailer: git-send-email 2.25.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH linux-next] arch/ia64/kernel/module.c: fix bugon.cocci
+ warnings
+Message-Id: <20210823123138.7ce66561a0d108bbdffb25ff@linux-foundation.org>
+In-Reply-To: <20210823015110.44069-1-jing.yangyang@zte.com.cn>
+References: <20210823015110.44069-1-jing.yangyang@zte.com.cn>
+X-Mailer: Sylpheed 3.5.1 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Jing Yangyang <jing.yangyang@zte.com.cn>
+On Sun, 22 Aug 2021 18:51:10 -0700 CGEL <cgel.zte@gmail.com> wrote:
 
-Use BUG_ON instead of a if condition followed by BUG.
+> From: Jing Yangyang <jing.yangyang@zte.com.cn>
+> 
+> Use BUG_ON instead of a if condition followed by BUG.
+> 
+> Generated by: scripts/coccinelle/misc/bugon.cocci
+> 
+> ...
+>
+> --- a/arch/ia64/kernel/module.c
+> +++ b/arch/ia64/kernel/module.c
+> @@ -560,8 +560,7 @@ struct plt_entry {
+>  	while (plt->bundle[0][0]) {
+>  		if (plt_target(plt) == target_ip)
+>  			goto found;
+> -		if (++plt >= plt_end)
+> -			BUG();
+> +		BUG_ON(++plt >= plt_end);
 
-Generated by: scripts/coccinelle/misc/bugon.cocci
+There are concerns that there might be a config combination in which
+BUG_ON() expands to a no-op.  It this situation, `plt' won't get
+incremented and we have a bug.
 
-Reported-by: Zeal Robot <zealci@zte.com.cn>
-Signed-off-by: Jing Yangyang <jing.yangyang@zte.com.cn>
----
- arch/ia64/kernel/module.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+Now, we have taken care to prevent this from happening, via the
+implementations of BUG_ON().  But still, mistakes happen and out of an
+abundance of caution people avoid statements of the form
 
-diff --git a/arch/ia64/kernel/module.c b/arch/ia64/kernel/module.c
-index 2cba53c..f199378 100644
---- a/arch/ia64/kernel/module.c
-+++ b/arch/ia64/kernel/module.c
-@@ -560,8 +560,7 @@ struct plt_entry {
- 	while (plt->bundle[0][0]) {
- 		if (plt_target(plt) == target_ip)
- 			goto found;
--		if (++plt >= plt_end)
--			BUG();
-+		BUG_ON(++plt >= plt_end);
- 	}
- 	*plt = ia64_plt_template;
- 	if (!patch_plt(mod, plt, target_ip, target_gp)) {
-@@ -605,8 +604,7 @@ struct plt_entry {
- 	while (fdesc->ip) {
- 		if (fdesc->ip == value)
- 			return (uint64_t)fdesc;
--		if ((uint64_t) ++fdesc >= mod->arch.opd->sh_addr + mod->arch.opd->sh_size)
--			BUG();
-+		BUG_ON((uint64_t) ++fdesc >= mod->arch.opd->sh_addr + mod->arch.opd->sh_size);
- 	}
- 
- 	/* Create new one */
--- 
-1.8.3.1
+	assert(expression-with-side-effects)
 
 
