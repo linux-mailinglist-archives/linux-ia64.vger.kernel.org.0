@@ -2,64 +2,106 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 060A13EEB93
-	for <lists+linux-ia64@lfdr.de>; Tue, 17 Aug 2021 13:25:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 824453F432E
+	for <lists+linux-ia64@lfdr.de>; Mon, 23 Aug 2021 03:51:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236541AbhHQLZr (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 17 Aug 2021 07:25:47 -0400
-Received: from smtpbg126.qq.com ([106.55.201.22]:59020 "EHLO smtpbg587.qq.com"
-        rhost-flags-OK-OK-OK-FAIL) by vger.kernel.org with ESMTP
-        id S231515AbhHQLZr (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 17 Aug 2021 07:25:47 -0400
-X-QQ-mid: bizesmtp49t1629199503tl9nxqiz
-Received: from localhost.localdomain (unknown [125.69.42.50])
-        by esmtp6.qq.com (ESMTP) with 
-        id ; Tue, 17 Aug 2021 19:25:02 +0800 (CST)
-X-QQ-SSF: 01000000004000B0C000B00A0000000
-X-QQ-FEAT: E35I0CyQR8OS92NvTVxc7V3QIeX7HEFo+Ft+PyTOhA92pqpZ74iXDfRXkXy0W
-        gsqgs+gfZf5bceT/1mKI1MMujn8ETUXiCQH81AlL2Vi7BLHZv+rCVvMf2eZQkE5g5EYlsVC
-        4OmDnXoB0YJ4prUa/4FhuslRapE5R4GjOdVm8uX1SUWz2rNk9Mnl3bbsTO+dE9AefZPrpBd
-        FrRAfFaQ3mZZeqfTMcuP/m9IwkO4NrjQ+3EEz6CYBGUsaoIWEg7ka6mbgtkgL3eRRK7mRG7
-        n0WDCfipyZaFEGCWQq5F5Chg1nKM4WtpDBfaRGUAWV3YId3AzcDr/QpEcDG7LwPy/DbZnPq
-        xjQvpKY
-X-QQ-GoodBg: 0
-From:   Jason Wang <wangborong@cdjrlc.com>
-To:     valentin.schneider@arm.com
-Cc:     akpm@linux-foundation.org, wangborong@cdjrlc.com,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] ia64: fix typo in a comment
-Date:   Tue, 17 Aug 2021 19:25:00 +0800
-Message-Id: <20210817112500.12848-1-wangborong@cdjrlc.com>
-X-Mailer: git-send-email 2.32.0
+        id S234539AbhHWBwE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 22 Aug 2021 21:52:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54892 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233258AbhHWBwE (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 22 Aug 2021 21:52:04 -0400
+Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 609A5C061575;
+        Sun, 22 Aug 2021 18:51:22 -0700 (PDT)
+Received: by mail-qt1-x835.google.com with SMTP id v6so2845541qto.3;
+        Sun, 22 Aug 2021 18:51:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20161025;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eMZjJs2MyYsquLxQqFWMFIkZS5sBK3Cb5C1crrxN1Zs=;
+        b=B+9o/BBHRQx2r+YeODkTRx0IpIAX7G64UB6NGH6lshT2oWkB2iH7/KjVo7la9VZMEf
+         7Jr4LlYawMvd4UJ1zVi2Jvz7UpWNIk7JPwdZJQzrPHkRRuFbp+T2YvIaG2vcacTTXHEC
+         +bkLtifGMNEs8weRoRo5y/8HXbj+TI0UnLvHq1SuZOJo3+NCARmGW8fuEzLsgH1kK0/Y
+         Ct/ISzYWZ45ZbQLOvLV5hht/dYgUMu2CXvXn7rkOhFH7oczerG/ust042D86reZ/zUJd
+         KmPjSR0cmS9juPW5+IdCl7DclTYPQFG3lEOqgeG3AjC2mdI/5DEBdS/BgrjNT1Stsl/V
+         gwcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=eMZjJs2MyYsquLxQqFWMFIkZS5sBK3Cb5C1crrxN1Zs=;
+        b=Vbc8xkc1jPAhctIEG0ofviQXmalTzqqtfjNjjnRy8oKkg7csuP9rNoXJJUAU+4JBfi
+         HqmZU2wpjvb5iWUzHUEtufFeoTeSFWVrhf3ZkhFQiaJUronDh9TLtdmDZ9mmW9rm2KTs
+         GS8zwqxofXaEebj3kS7wxSIFXJGfuyIiclQznx4u4aRCYUwXkekq9W+9f6vqbtzh0CD1
+         +nXX8GhZczVIY11E4ixw8rhVxxfr7oD7bV+BHfUP1CWMD6SozYEOIdAK7oXrRT888uxJ
+         r3r4Ve6rb5ETp5kdeToj24zS3J2UOu8a/fxRJ5kcSxLumZptpCbUFHiLKpHewQHvS2FU
+         tDSw==
+X-Gm-Message-State: AOAM530Bj8Hrsh3FWXE+J0shesVJqKsgWIJccXV346PwNqgccU35LHgf
+        0E0nnr9M7UC+n4HBM5sbyjkpXapw/BM=
+X-Google-Smtp-Source: ABdhPJxuMl+9vhtvwYFGyB/C7LT/MpkTGMxy2SQGIYqAB++TSdTTGUIO7Ut4QQ8AXYGNq2mO8KSoSg==
+X-Received: by 2002:a05:622a:353:: with SMTP id r19mr27821404qtw.3.1629683481465;
+        Sun, 22 Aug 2021 18:51:21 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id v145sm7791609qkb.132.2021.08.22.18.51.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 22 Aug 2021 18:51:20 -0700 (PDT)
+From:   CGEL <cgel.zte@gmail.com>
+X-Google-Original-From: CGEL <jing.yangyang@zte.com.cn>
+To:     "Gustavo A . R . Silva" <gustavoars@kernel.org>
+Cc:     Sergei Trofimovich <slyfox@gentoo.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Jing Yangyang <jing.yangyang@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH linux-next] arch/ia64/kernel/module.c: fix bugon.cocci warnings
+Date:   Sun, 22 Aug 2021 18:51:10 -0700
+Message-Id: <20210823015110.44069-1-jing.yangyang@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:cdjrlc.com:qybgspam:qybgspam2
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-The double `when' in comment `TBD when when IA64 starts to support
-suspend...' is repeated. Consequently, one `when' should be removed
-from the comment.
+From: Jing Yangyang <jing.yangyang@zte.com.cn>
 
-Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
+Use BUG_ON instead of a if condition followed by BUG.
+
+Generated by: scripts/coccinelle/misc/bugon.cocci
+
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Jing Yangyang <jing.yangyang@zte.com.cn>
 ---
- arch/ia64/kernel/acpi.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/ia64/kernel/module.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/ia64/kernel/acpi.c b/arch/ia64/kernel/acpi.c
-index e2af6b172200..96d13cb7c19f 100644
---- a/arch/ia64/kernel/acpi.c
-+++ b/arch/ia64/kernel/acpi.c
-@@ -906,6 +906,6 @@ EXPORT_SYMBOL(acpi_unregister_ioapic);
- /*
-  * acpi_suspend_lowlevel() - save kernel state and suspend.
-  *
-- * TBD when when IA64 starts to support suspend...
-+ * TBD when IA64 starts to support suspend...
-  */
- int acpi_suspend_lowlevel(void) { return 0; }
+diff --git a/arch/ia64/kernel/module.c b/arch/ia64/kernel/module.c
+index 2cba53c..f199378 100644
+--- a/arch/ia64/kernel/module.c
++++ b/arch/ia64/kernel/module.c
+@@ -560,8 +560,7 @@ struct plt_entry {
+ 	while (plt->bundle[0][0]) {
+ 		if (plt_target(plt) == target_ip)
+ 			goto found;
+-		if (++plt >= plt_end)
+-			BUG();
++		BUG_ON(++plt >= plt_end);
+ 	}
+ 	*plt = ia64_plt_template;
+ 	if (!patch_plt(mod, plt, target_ip, target_gp)) {
+@@ -605,8 +604,7 @@ struct plt_entry {
+ 	while (fdesc->ip) {
+ 		if (fdesc->ip == value)
+ 			return (uint64_t)fdesc;
+-		if ((uint64_t) ++fdesc >= mod->arch.opd->sh_addr + mod->arch.opd->sh_size)
+-			BUG();
++		BUG_ON((uint64_t) ++fdesc >= mod->arch.opd->sh_addr + mod->arch.opd->sh_size);
+ 	}
+ 
+ 	/* Create new one */
 -- 
-2.32.0
+1.8.3.1
+
 
