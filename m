@@ -2,163 +2,95 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C7D4C3F579A
-	for <lists+linux-ia64@lfdr.de>; Tue, 24 Aug 2021 07:32:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ABBC3F60A0
+	for <lists+linux-ia64@lfdr.de>; Tue, 24 Aug 2021 16:39:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229937AbhHXFda (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 24 Aug 2021 01:33:30 -0400
-Received: from mail.kernel.org ([198.145.29.99]:57464 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S229885AbhHXFda (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 24 Aug 2021 01:33:30 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6F6F061248;
-        Tue, 24 Aug 2021 05:32:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1629783166;
-        bh=f3m6wH4+fUErojWFkMzb2VSfAZFVHpeOf9zaKd26vUU=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=aX6dqSl7l3PBrOEetm7QCnu9p7urn2Nrg3lR5/gHQF0uCUyFJc28wF5S7uqTiWuKH
-         QbdnsziFjFyQTiknbnHxAh4r/6u6uvs1Y2Wtqr8jBzH5F0oEn49rXWPBAeM8ilUJwL
-         GSr1VTRrgdRXme5Qiqc91tGmabSyRbWHWNETN4HiaW0NS+TrFMZ1r0kTL66DvqdQVJ
-         xtra/loqc5TqfKHWBkIl+WZR9R3vZavrjZWTXL0mD7h0qttrzsfqv4+2j/fVwCgEdL
-         jACp/sT9Tt8UTs91M9i7xpWePWvF7rO5jeHpyIQLagfiZQR+mj/Swn5e1ntm5oEsu+
-         Rd9imtXLvcQlw==
-Date:   Tue, 24 Aug 2021 14:32:42 +0900
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>
-Cc:     Steven Rostedt <rostedt@goodmis.org>, X86 ML <x86@kernel.org>,
-        Daniel Xu <dxu@dxuuu.xyz>,
-        open list <linux-kernel@vger.kernel.org>,
-        bpf <bpf@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Kernel Team <kernel-team@fb.com>, Yonghong Song <yhs@fb.com>,
-        linux-ia64@vger.kernel.org,
-        Abhishek Sagar <sagar.abhishek@gmail.com>
-Subject: Re: [PATCH -tip v10 00/16] kprobes: Fix stacktrace with kretprobes
- on x86
-Message-Id: <20210824143242.a0558b6632eef0407282364e@kernel.org>
-In-Reply-To: <CAEf4Bzb2i4Z9kUWU+L-HF3k+XQ0V3hLH1Er7U2_oCdv1BTvaBw@mail.gmail.com>
-References: <162756755600.301564.4957591913842010341.stgit@devnote2>
-        <20210730083549.4e36df1cba88e408dc60b031@kernel.org>
-        <CAEf4Bzb2i4Z9kUWU+L-HF3k+XQ0V3hLH1Er7U2_oCdv1BTvaBw@mail.gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.32; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+        id S237813AbhHXOkU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 24 Aug 2021 10:40:20 -0400
+Received: from condef-10.nifty.com ([202.248.20.75]:44080 "EHLO
+        condef-10.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S237701AbhHXOkU (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 24 Aug 2021 10:40:20 -0400
+Received: from conssluserg-02.nifty.com ([10.126.8.81])by condef-10.nifty.com with ESMTP id 17OEagBV009254
+        for <linux-ia64@vger.kernel.org>; Tue, 24 Aug 2021 23:36:42 +0900
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53]) (authenticated)
+        by conssluserg-02.nifty.com with ESMTP id 17OEaKGl002419;
+        Tue, 24 Aug 2021 23:36:20 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com 17OEaKGl002419
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1629815780;
+        bh=LDUinWDYcMafcuwuZgx51MuB0hgd3uqfhfVl28Yz2lY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=RUkn4WtQNHCHjC1wuJNUZqQnkEAJL1yPibNrflc0xi5Im/4265g1flrl1zhCOamt3
+         qK9e9fy6Aq04g66YCsBiB3v21Oc1H02HKLDm2vtGmf70FE7amAnCwifTqL/ug9upZH
+         Ve8yAhrV750gFSXkanOYQdg2+9C6ANeJjizHZXznXKZROEkr0z3TZt0qRyU56ylP3h
+         DKGJ7WsMo4P8xb4mrOnBneeNLtJK+iym5SIIcmfw2H9kx5Ubxyl2l9jarjrjjJodq6
+         2bJCCvskmESCKlz/grcyAeAZ6yM+8REdyBNNvmE6zVQ4Y6RrwgLY9XFOQBpiU9JJ7I
+         uPAS4vDbF/5Qw==
+X-Nifty-SrcIP: [209.85.216.53]
+Received: by mail-pj1-f53.google.com with SMTP id om1-20020a17090b3a8100b0017941c44ce4so1922354pjb.3;
+        Tue, 24 Aug 2021 07:36:20 -0700 (PDT)
+X-Gm-Message-State: AOAM530dpJcXg4BIszCngMTT79tdxPEujDWunZXoH9MpEqveoi/WF2qq
+        whsyIHmunOdd7KWX/trcXlqgBzSHd+ymaK69y0s=
+X-Google-Smtp-Source: ABdhPJwPeLIdxB2QPnplhAcW5HIiHgTgytQq6nWt7NRNcAGuSUYBMYQujxv7cGwzuQznSO80JlJRaOqbTzK8TQsM2d4=
+X-Received: by 2002:a17:90a:9314:: with SMTP id p20mr4838371pjo.87.1629815779802;
+ Tue, 24 Aug 2021 07:36:19 -0700 (PDT)
+MIME-Version: 1.0
+References: <20210811164312.187226-1-masahiroy@kernel.org>
+In-Reply-To: <20210811164312.187226-1-masahiroy@kernel.org>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Tue, 24 Aug 2021 23:35:42 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARRF6wRY4wC-K36v7k9MWMN0hDYC4=G=5LS0rfFeO4hAg@mail.gmail.com>
+Message-ID: <CAK7LNARRF6wRY4wC-K36v7k9MWMN0hDYC4=G=5LS0rfFeO4hAg@mail.gmail.com>
+Subject: Re: [PATCH] ia64: move core-y in arch/ia64/Makefile to arch/ia64/Kbuild
+To:     linux-ia64@vger.kernel.org
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, 23 Aug 2021 22:12:06 -0700
-Andrii Nakryiko <andrii.nakryiko@gmail.com> wrote:
+On Thu, Aug 12, 2021 at 1:43 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+>
+> Use obj-y to clean up Makefile.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
 
-> On Thu, Jul 29, 2021 at 4:35 PM Masami Hiramatsu <mhiramat@kernel.org> wrote:
-> >
-> > On Thu, 29 Jul 2021 23:05:56 +0900
-> > Masami Hiramatsu <mhiramat@kernel.org> wrote:
-> >
-> > > Hello,
-> > >
-> > > This is the 10th version of the series to fix the stacktrace with kretprobe on x86.
-> > >
-> > > The previous version is here;
-> > >
-> > >  https://lore.kernel.org/bpf/162601048053.1318837.1550594515476777588.stgit@devnote2/
-> > >
-> > > This version is rebased on top of new kprobes cleanup series(*1) and merging
-> > > Josh's objtool update series (*2)(*3) as [6/16] and [7/16].
-> > >
-> > > (*1) https://lore.kernel.org/bpf/162748615977.59465.13262421617578791515.stgit@devnote2/
-> > > (*2) https://lore.kernel.org/bpf/20210710192433.x5cgjsq2ksvaqnss@treble/
-> > > (*3) https://lore.kernel.org/bpf/20210710192514.ghvksi3ozhez4lvb@treble/
-> > >
-> > > Changes from v9:
-> > >  - Add Josh's objtool update patches with a build error fix as [6/16] and [7/16].
-> > >  - Add a API document for kretprobe_find_ret_addr() and check cur != NULL in [5/16].
-> > >
-> > > With this series, unwinder can unwind stack correctly from ftrace as below;
-> > >
-> > >   # cd /sys/kernel/debug/tracing
-> > >   # echo > trace
-> > >   # echo 1 > options/sym-offset
-> > >   # echo r vfs_read >> kprobe_events
-> > >   # echo r full_proxy_read >> kprobe_events
-> > >   # echo traceoff:1 > events/kprobes/r_vfs_read_0/trigger
-> > >   # echo stacktrace:1 > events/kprobes/r_full_proxy_read_0/trigger
-> > >   # echo 1 > events/kprobes/enable
-> > >   # cat /sys/kernel/debug/kprobes/list
-> > > ffffffff8133b740  r  full_proxy_read+0x0    [FTRACE]
-> > > ffffffff812560b0  r  vfs_read+0x0    [FTRACE]
-> > >   # echo 0 > events/kprobes/enable
-> > >   # cat trace
-> > > # tracer: nop
-> > > #
-> > > # entries-in-buffer/entries-written: 3/3   #P:8
-> > > #
-> > > #                                _-----=> irqs-off
-> > > #                               / _----=> need-resched
-> > > #                              | / _---=> hardirq/softirq
-> > > #                              || / _--=> preempt-depth
-> > > #                              ||| /     delay
-> > > #           TASK-PID     CPU#  ||||   TIMESTAMP  FUNCTION
-> > > #              | |         |   ||||      |         |
-> > >            <...>-134     [007] ...1    16.185877: r_full_proxy_read_0: (vfs_read+0x98/0x180 <- full_proxy_read)
-> > >            <...>-134     [007] ...1    16.185901: <stack trace>
-> > >  => kretprobe_trace_func+0x209/0x300
-> > >  => kretprobe_dispatcher+0x4a/0x70
-> > >  => __kretprobe_trampoline_handler+0xd4/0x170
-> > >  => trampoline_handler+0x43/0x60
-> > >  => kretprobe_trampoline+0x2a/0x50
-> > >  => vfs_read+0x98/0x180
-> > >  => ksys_read+0x5f/0xe0
-> > >  => do_syscall_64+0x37/0x90
-> > >  => entry_SYSCALL_64_after_hwframe+0x44/0xae
-> > >            <...>-134     [007] ...1    16.185902: r_vfs_read_0: (ksys_read+0x5f/0xe0 <- vfs_read)
-> > >
-> > > This shows the double return probes (vfs_read() and full_proxy_read()) on the stack
-> > > correctly unwinded. (vfs_read() returns to 'ksys_read+0x5f' and full_proxy_read()
-> > > returns to 'vfs_read+0x98')
-> > >
-> > > This also changes the kretprobe behavisor a bit, now the instraction pointer in
-> > > the 'pt_regs' passed to kretprobe user handler is correctly set the real return
-> > > address. So user handlers can get it via instruction_pointer() API, and can use
-> > > stack_trace_save_regs().
-> > >
-> > > You can also get this series from
-> > >  git://git.kernel.org/pub/scm/linux/kernel/git/mhiramat/linux.git kprobes/kretprobe-stackfix-v9
-> >
-> > Oops, this is of course 'kprobes/kretprobe-stackfix-v10'. And this branch includes above (*1) series.
-> 
-> Hi Masami,
-> 
-> Was this ever merged/applied? This is a very important functionality
-> for BPF kretprobes, so I hope this won't slip through the cracks.
-
-No, not yet as far as I know.
-I'm waiting for any comment on this series. Since this is basically
-x86 ORC unwinder improvement, this series should be merged to -tip tree.
-
-Ingo and Josh,
-
-Could you give me any comment, please?
-
-Thank you,
+Applied to linux-kbuild.
 
 
-> Thanks!
-> 
-> >
-> > Thank you,
-> >
-> > --
-> > Masami Hiramatsu <mhiramat@kernel.org>
+>
+>  arch/ia64/Kbuild   | 2 ++
+>  arch/ia64/Makefile | 2 --
+>  2 files changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/ia64/Kbuild b/arch/ia64/Kbuild
+> index a4e40e534e6a..e77cc76d228c 100644
+> --- a/arch/ia64/Kbuild
+> +++ b/arch/ia64/Kbuild
+> @@ -1 +1,3 @@
+>  # SPDX-License-Identifier: GPL-2.0-only
+> +obj-y                          += kernel/ mm/
+> +obj-$(CONFIG_IA64_SGI_UV)      += uv/
+> diff --git a/arch/ia64/Makefile b/arch/ia64/Makefile
+> index 467b7e7f967c..7e548c654a29 100644
+> --- a/arch/ia64/Makefile
+> +++ b/arch/ia64/Makefile
+> @@ -47,8 +47,6 @@ KBUILD_CFLAGS += $(cflags-y)
+>  head-y := arch/ia64/kernel/head.o
+>
+>  libs-y                         += arch/ia64/lib/
+> -core-y                         += arch/ia64/kernel/ arch/ia64/mm/
+> -core-$(CONFIG_IA64_SGI_UV)     += arch/ia64/uv/
+>
+>  drivers-y                      += arch/ia64/pci/ arch/ia64/hp/common/
+>
+> --
+> 2.30.2
+>
 
 
 -- 
-Masami Hiramatsu <mhiramat@kernel.org>
+Best Regards
+Masahiro Yamada
