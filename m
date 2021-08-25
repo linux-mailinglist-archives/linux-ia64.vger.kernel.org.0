@@ -2,95 +2,79 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ABBC3F60A0
-	for <lists+linux-ia64@lfdr.de>; Tue, 24 Aug 2021 16:39:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F8893F7490
+	for <lists+linux-ia64@lfdr.de>; Wed, 25 Aug 2021 13:48:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237813AbhHXOkU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 24 Aug 2021 10:40:20 -0400
-Received: from condef-10.nifty.com ([202.248.20.75]:44080 "EHLO
-        condef-10.nifty.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237701AbhHXOkU (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 24 Aug 2021 10:40:20 -0400
-Received: from conssluserg-02.nifty.com ([10.126.8.81])by condef-10.nifty.com with ESMTP id 17OEagBV009254
-        for <linux-ia64@vger.kernel.org>; Tue, 24 Aug 2021 23:36:42 +0900
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53]) (authenticated)
-        by conssluserg-02.nifty.com with ESMTP id 17OEaKGl002419;
-        Tue, 24 Aug 2021 23:36:20 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-02.nifty.com 17OEaKGl002419
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1629815780;
-        bh=LDUinWDYcMafcuwuZgx51MuB0hgd3uqfhfVl28Yz2lY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=RUkn4WtQNHCHjC1wuJNUZqQnkEAJL1yPibNrflc0xi5Im/4265g1flrl1zhCOamt3
-         qK9e9fy6Aq04g66YCsBiB3v21Oc1H02HKLDm2vtGmf70FE7amAnCwifTqL/ug9upZH
-         Ve8yAhrV750gFSXkanOYQdg2+9C6ANeJjizHZXznXKZROEkr0z3TZt0qRyU56ylP3h
-         DKGJ7WsMo4P8xb4mrOnBneeNLtJK+iym5SIIcmfw2H9kx5Ubxyl2l9jarjrjjJodq6
-         2bJCCvskmESCKlz/grcyAeAZ6yM+8REdyBNNvmE6zVQ4Y6RrwgLY9XFOQBpiU9JJ7I
-         uPAS4vDbF/5Qw==
-X-Nifty-SrcIP: [209.85.216.53]
-Received: by mail-pj1-f53.google.com with SMTP id om1-20020a17090b3a8100b0017941c44ce4so1922354pjb.3;
-        Tue, 24 Aug 2021 07:36:20 -0700 (PDT)
-X-Gm-Message-State: AOAM530dpJcXg4BIszCngMTT79tdxPEujDWunZXoH9MpEqveoi/WF2qq
-        whsyIHmunOdd7KWX/trcXlqgBzSHd+ymaK69y0s=
-X-Google-Smtp-Source: ABdhPJwPeLIdxB2QPnplhAcW5HIiHgTgytQq6nWt7NRNcAGuSUYBMYQujxv7cGwzuQznSO80JlJRaOqbTzK8TQsM2d4=
-X-Received: by 2002:a17:90a:9314:: with SMTP id p20mr4838371pjo.87.1629815779802;
- Tue, 24 Aug 2021 07:36:19 -0700 (PDT)
+        id S232199AbhHYLtW (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 25 Aug 2021 07:49:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60040 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S240140AbhHYLtV (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 25 Aug 2021 07:49:21 -0400
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7119C0613CF
+        for <linux-ia64@vger.kernel.org>; Wed, 25 Aug 2021 04:48:35 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed20:91f7:1ea1:147b:586f])
+        by laurent.telenet-ops.be with bizsmtp
+        id lnoW2500N34CCxU01noWjW; Wed, 25 Aug 2021 13:48:34 +0200
+Received: from rox.of.borg ([192.168.97.57])
+        by ramsan.of.borg with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mIrOQ-005kYQ-JW; Wed, 25 Aug 2021 13:48:30 +0200
+Received: from geert by rox.of.borg with local (Exim 4.93)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1mIrOQ-00DDKB-59; Wed, 25 Aug 2021 13:48:30 +0200
+From:   Geert Uytterhoeven <geert+renesas@glider.be>
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Simon Horman <horms@verge.net.au>,
+        Tony Luck <tony.luck@intel.com>, Jay Lan <jlan@sgi.com>,
+        Magnus Damm <magnus.damm@gmail.com>,
+        Mike Rapoport <rppt@linux.vnet.ibm.com>
+Cc:     Rob Herring <robh+dt@kernel.org>,
+        Frank Rowand <frowand.list@gmail.com>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        devicetree@vger.kernel.org,
+        Geert Uytterhoeven <geert+renesas@glider.be>
+Subject: [PATCH 0/3] ia64: Miscellaneous fixes and cleanups
+Date:   Wed, 25 Aug 2021 13:48:26 +0200
+Message-Id: <cover.1629884459.git.geert+renesas@glider.be>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-References: <20210811164312.187226-1-masahiroy@kernel.org>
-In-Reply-To: <20210811164312.187226-1-masahiroy@kernel.org>
-From:   Masahiro Yamada <masahiroy@kernel.org>
-Date:   Tue, 24 Aug 2021 23:35:42 +0900
-X-Gmail-Original-Message-ID: <CAK7LNARRF6wRY4wC-K36v7k9MWMN0hDYC4=G=5LS0rfFeO4hAg@mail.gmail.com>
-Message-ID: <CAK7LNARRF6wRY4wC-K36v7k9MWMN0hDYC4=G=5LS0rfFeO4hAg@mail.gmail.com>
-Subject: Re: [PATCH] ia64: move core-y in arch/ia64/Makefile to arch/ia64/Kbuild
-To:     linux-ia64@vger.kernel.org
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Aug 12, 2021 at 1:43 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> Use obj-y to clean up Makefile.
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
+	Hi Andrew,
 
-Applied to linux-kbuild.
+This patch series contains some miscellaneous fixes and cleanups for
+ia64.  The second patch fixes a naming conflict triggered by a patch for
+the FDT code.
 
+This has been compile-tested only, due to lack of hardware.
 
->
->  arch/ia64/Kbuild   | 2 ++
->  arch/ia64/Makefile | 2 --
->  2 files changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/arch/ia64/Kbuild b/arch/ia64/Kbuild
-> index a4e40e534e6a..e77cc76d228c 100644
-> --- a/arch/ia64/Kbuild
-> +++ b/arch/ia64/Kbuild
-> @@ -1 +1,3 @@
->  # SPDX-License-Identifier: GPL-2.0-only
-> +obj-y                          += kernel/ mm/
-> +obj-$(CONFIG_IA64_SGI_UV)      += uv/
-> diff --git a/arch/ia64/Makefile b/arch/ia64/Makefile
-> index 467b7e7f967c..7e548c654a29 100644
-> --- a/arch/ia64/Makefile
-> +++ b/arch/ia64/Makefile
-> @@ -47,8 +47,6 @@ KBUILD_CFLAGS += $(cflags-y)
->  head-y := arch/ia64/kernel/head.o
->
->  libs-y                         += arch/ia64/lib/
-> -core-y                         += arch/ia64/kernel/ arch/ia64/mm/
-> -core-$(CONFIG_IA64_SGI_UV)     += arch/ia64/uv/
->
->  drivers-y                      += arch/ia64/pci/ arch/ia64/hp/common/
->
-> --
-> 2.30.2
->
+Thanks!
 
+Geert Uytterhoeven (3):
+  ia64: Fix #endif comment for reserve_elfcorehdr()
+  ia64: Make reserve_elfcorehdr() static
+  ia64: Make num_rsvd_regions static
+
+ arch/ia64/include/asm/meminit.h |  2 --
+ arch/ia64/kernel/setup.c        | 53 ++++++++++++++++-----------------
+ 2 files changed, 26 insertions(+), 29 deletions(-)
 
 -- 
-Best Regards
-Masahiro Yamada
+2.25.1
+
+Gr{oetje,eeting}s,
+
+						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+							    -- Linus Torvalds
