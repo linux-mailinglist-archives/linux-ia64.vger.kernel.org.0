@@ -2,111 +2,114 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AA6A140602D
-	for <lists+linux-ia64@lfdr.de>; Fri, 10 Sep 2021 01:39:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B6EF408B34
+	for <lists+linux-ia64@lfdr.de>; Mon, 13 Sep 2021 14:41:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229945AbhIIXkX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 9 Sep 2021 19:40:23 -0400
-Received: from mail.kernel.org ([198.145.29.99]:54360 "EHLO mail.kernel.org"
+        id S238610AbhIMMmn (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 13 Sep 2021 08:42:43 -0400
+Received: from foss.arm.com ([217.140.110.172]:57456 "EHLO foss.arm.com"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S232591AbhIIXiK (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 9 Sep 2021 19:38:10 -0400
-Received: from gandalf.local.home (cpe-66-24-58-225.stny.res.rr.com [66.24.58.225])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mail.kernel.org (Postfix) with ESMTPSA id 2AF536108D;
-        Thu,  9 Sep 2021 23:36:57 +0000 (UTC)
-Date:   Thu, 9 Sep 2021 19:36:55 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Weizhao Ouyang <o451686892@gmail.com>
-Cc:     Ingo Molnar <mingo@redhat.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org
-Subject: Re: [PATCH v4] ftrace: Cleanup ftrace_dyn_arch_init()
-Message-ID: <20210909193655.7bc715af@gandalf.local.home>
-In-Reply-To: <20210909090216.1955240-1-o451686892@gmail.com>
-References: <20210909090216.1955240-1-o451686892@gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        id S236180AbhIMMmn (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 13 Sep 2021 08:42:43 -0400
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6946D31B;
+        Mon, 13 Sep 2021 05:41:27 -0700 (PDT)
+Received: from 010265703453.arm.com (unknown [10.57.15.112])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 1C33D3F59C;
+        Mon, 13 Sep 2021 05:41:25 -0700 (PDT)
+From:   Robin Murphy <robin.murphy@arm.com>
+To:     joro@8bytes.org, will@kernel.org
+Cc:     iommu@lists.linux-foundation.org, linux-kernel@vger.kernel.org,
+        Christoph Hellwig <hch@lst.de>,
+        Marek Szyprowski <m.szyprowski@samsung.com>, x86@kernel.org,
+        linux-ia64@vger.kernel.org
+Subject: [PATCH] iommu/dma: Tidy up Kconfig selects
+Date:   Mon, 13 Sep 2021 13:41:19 +0100
+Message-Id: <9ba6f2e8568a3ff6a94fade66668d99705433c44.1631536879.git.robin.murphy@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu,  9 Sep 2021 17:02:16 +0800
-Weizhao Ouyang <o451686892@gmail.com> wrote:
+Now that the dust has settled on converting all the x86 drivers to
+iommu-dma, we can punt the Kconfig selection to arch code where it
+was always intended to be.
 
-> Most of ARCHs use empty ftrace_dyn_arch_init(), introduce a weak common
-> ftrace_dyn_arch_init() to cleanup them.
+CC: Christoph Hellwig <hch@lst.de>
+CC: Marek Szyprowski <m.szyprowski@samsung.com>
+CC: x86@kernel.org
+CC: linux-ia64@vger.kernel.org
+Signed-off-by: Robin Murphy <robin.murphy@arm.com>
+---
+ arch/ia64/Kconfig           | 1 +
+ arch/x86/Kconfig            | 1 +
+ drivers/iommu/Kconfig       | 1 -
+ drivers/iommu/amd/Kconfig   | 1 -
+ drivers/iommu/intel/Kconfig | 1 -
+ 5 files changed, 2 insertions(+), 3 deletions(-)
 
-FYI,
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index 045792cde481..56c00a0851ce 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -51,6 +51,7 @@ config IA64
+ 	select GENERIC_TIME_VSYSCALL
+ 	select LEGACY_TIMER_TICK
+ 	select SWIOTLB
++	select IOMMU_DMA if INTEL_IOMMU
+ 	select SYSCTL_ARCH_UNALIGN_NO_WARN
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select MODULES_USE_ELF_RELA
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 4e001bbbb425..10ea941e7c80 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -247,6 +247,7 @@ config X86
+ 	select HAVE_USER_RETURN_NOTIFIER
+ 	select HAVE_GENERIC_VDSO
+ 	select HOTPLUG_SMT			if SMP
++	select IOMMU_DMA			if IOMMU_SUPPORT
+ 	select IRQ_FORCED_THREADING
+ 	select NEED_SG_DMA_LENGTH
+ 	select PCI_DOMAINS			if PCI
+diff --git a/drivers/iommu/Kconfig b/drivers/iommu/Kconfig
+index 124c41adeca1..3538a2f38b94 100644
+--- a/drivers/iommu/Kconfig
++++ b/drivers/iommu/Kconfig
+@@ -459,7 +459,6 @@ config VIRTIO_IOMMU
+ 	depends on VIRTIO
+ 	depends on (ARM64 || X86)
+ 	select IOMMU_API
+-	select IOMMU_DMA
+ 	select INTERVAL_TREE
+ 	select ACPI_VIOT if ACPI
+ 	help
+diff --git a/drivers/iommu/amd/Kconfig b/drivers/iommu/amd/Kconfig
+index a3cbafb603f5..9b5fc3356bf2 100644
+--- a/drivers/iommu/amd/Kconfig
++++ b/drivers/iommu/amd/Kconfig
+@@ -9,7 +9,6 @@ config AMD_IOMMU
+ 	select PCI_PASID
+ 	select IOMMU_API
+ 	select IOMMU_IOVA
+-	select IOMMU_DMA
+ 	select IOMMU_IO_PGTABLE
+ 	depends on X86_64 && PCI && ACPI && HAVE_CMPXCHG_DOUBLE
+ 	help
+diff --git a/drivers/iommu/intel/Kconfig b/drivers/iommu/intel/Kconfig
+index 0ddb77115be7..28c3e922ca27 100644
+--- a/drivers/iommu/intel/Kconfig
++++ b/drivers/iommu/intel/Kconfig
+@@ -16,7 +16,6 @@ config INTEL_IOMMU
+ 	select DMAR_TABLE
+ 	select SWIOTLB
+ 	select IOASID
+-	select IOMMU_DMA
+ 	select PCI_ATS
+ 	help
+ 	  DMA remapping (DMAR) devices support enables independent address
+-- 
+2.25.1
 
-I'm not ignoring this patch. I just wont be able to look at it until the
-merge window is over.
-
--- Steve
-
-
-> 
-> Signed-off-by: Weizhao Ouyang <o451686892@gmail.com>
-> Acked-by: Heiko Carstens <hca@linux.ibm.com> (s390)
-> Acked-by: Helge Deller <deller@gmx.de> (parisc)
-> 
-> ---
-> Changes in v4:
-> -- revert the generic declaration
-> 
-> Changes in v3:
-> -- fix unrecognized opcode on PowerPC
-> 
-> Changes in v2:
-> -- correct CONFIG_DYNAMIC_FTRACE on PowerPC
-> -- add Acked-by tag
-> 
-> ---
->  arch/arm/kernel/ftrace.c        | 5 -----
->  arch/arm64/kernel/ftrace.c      | 5 -----
->  arch/csky/kernel/ftrace.c       | 5 -----
->  arch/ia64/kernel/ftrace.c       | 6 ------
->  arch/microblaze/kernel/ftrace.c | 5 -----
->  arch/nds32/kernel/ftrace.c      | 5 -----
->  arch/parisc/kernel/ftrace.c     | 5 -----
->  arch/riscv/kernel/ftrace.c      | 5 -----
->  arch/s390/kernel/ftrace.c       | 5 -----
->  arch/sh/kernel/ftrace.c         | 5 -----
->  arch/sparc/kernel/ftrace.c      | 5 -----
->  arch/x86/kernel/ftrace.c        | 5 -----
->  kernel/trace/ftrace.c           | 5 +++++
->  13 files changed, 5 insertions(+), 61 deletions(-)
-> 
->
