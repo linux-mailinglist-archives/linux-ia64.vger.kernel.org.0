@@ -2,161 +2,237 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id AC4B840B1BC
-	for <lists+linux-ia64@lfdr.de>; Tue, 14 Sep 2021 16:43:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45B4640BBD3
+	for <lists+linux-ia64@lfdr.de>; Wed, 15 Sep 2021 00:55:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234838AbhINOow (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 14 Sep 2021 10:44:52 -0400
-Received: from mail.kernel.org ([198.145.29.99]:37716 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S235303AbhINOoM (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 14 Sep 2021 10:44:12 -0400
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 746F460698;
-        Tue, 14 Sep 2021 14:42:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1631630574;
-        bh=vq57kfNtne2ZkfDVHujGhteCErzVm2gfEbZS/xIziG0=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mCpDHh5Lm+mE8XL6aKyUPTMVSL/FmzJvwE6mT8TZHhAJpdtudU+Fmdf1NYwCF5Wg/
-         yMtm1hNCW/FWvD3vxVtP3fhXfKuZYG5Xi5TKvvr7zQRH0QbMLxtsuHXJS40XbMg8sM
-         Mef5EapdnXdCXxXMUbRjWrszEqbEe3a7Db7qc0qlvjFzLvaMpmyaKHEeWEzfupp21Z
-         oC2ilE47cptRJ9JGw4vAc8qJkwTN2Evp7p7vvW3W9xBCNuyidi127/0gBlqFK0qC90
-         zg7nUjLhD7E+kmGoE9Auwsj36Gg35ieD7zmxDCdlwbQofBQ7TZP1fDI4/0DjH2Kco2
-         qi9yyeM8YK9Iw==
-From:   Masami Hiramatsu <mhiramat@kernel.org>
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        Josh Poimboeuf <jpoimboe@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>
-Cc:     X86 ML <x86@kernel.org>, Masami Hiramatsu <mhiramat@kernel.org>,
-        Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org,
-        bpf@vger.kernel.org, kuba@kernel.org, mingo@redhat.com,
-        ast@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Borislav Petkov <bp@alien8.de>,
-        Peter Zijlstra <peterz@infradead.org>, kernel-team@fb.com,
-        yhs@fb.com, linux-ia64@vger.kernel.org,
-        Abhishek Sagar <sagar.abhishek@gmail.com>,
-        Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-        Paul McKenney <paulmck@kernel.org>
-Subject: [PATCH -tip v11 27/27] x86/kprobes: Fixup return address in generic trampoline handler
-Date:   Tue, 14 Sep 2021 23:42:51 +0900
-Message-Id: <163163057094.489837.9044470370440745866.stgit@devnote2>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <163163030719.489837.2236069935502195491.stgit@devnote2>
-References: <163163030719.489837.2236069935502195491.stgit@devnote2>
-User-Agent: StGit/0.19
+        id S235631AbhINW5L (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 14 Sep 2021 18:57:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45170 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231994AbhINW5K (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 14 Sep 2021 18:57:10 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91B62C061574;
+        Tue, 14 Sep 2021 15:55:52 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id s11so1512042yba.11;
+        Tue, 14 Sep 2021 15:55:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=0B3klIkpb3nInzJRZwG50vUBeb7cpWi8YoICQPgl+iI=;
+        b=NClC5iW4gXTXrl99QvDPgtEkHY2B9mqNdZRT00HzJe4fKnRoF9S4VpRkxCkkYiO1qC
+         TcNHFjsCIdpSR0Z+XcoElB16L63kpZoMdBwcRu6GcnSRLTcsrFomW4JqNZUB+ovbKkKd
+         KeutWuvdWfoZMvFUPQCrfa0Wu7pnxMA0P/+VHal6htxJulS/HE7KV1ZhDaRKINN/DBAL
+         yzIP0DC5OXJAmLAv/AriWd/TfbPCQokuyuQvblItRvlt6AkCSWB8COeYfLm+80D1/Mle
+         bxFN43durd2Oe4FLeIz+7u0CVWRV4JYk+j5eQaULQ7lF7SGQAKp32+tx2nNWAxcQErSV
+         EwAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=0B3klIkpb3nInzJRZwG50vUBeb7cpWi8YoICQPgl+iI=;
+        b=ySoAyEg/pdj4lEFhtqCgidz0Cu4ewH6kKgsM52lgLHEpmbAQ9rEIsRAlahP2uKZXBI
+         GFl3RGE1Av0cb71NuoeGL4HjT/3ligI8dX//tFvLcGE00yB8eSFab7+5onpG/4Lppi0Z
+         w7M1vVYT18qtCicCJACgFj6ulbFIZD5kF+syxL9Nrok7vf4EwBXzaL6bG1VAQjHYA810
+         AaffhlTPvyoTTSEbTi/Xx6zk8fM9bGr1Mk0z3+zrF5EhqZoqW++yRGlIVqoZ3YvAbBXK
+         phwSLQpnio9yINFUP4e/9lHb632xWFTowNRPKrrWj4kB8IZSVQlDrReHPlw8VlsX6125
+         1EEA==
+X-Gm-Message-State: AOAM533oFC7sHt64XjM2urISxsGHBOuKcGKJwRz2Kz7qOLVLxTeBjxJI
+        RndtZdFa9mXTPC5elD9aT+AXX2xPLSr37wPrOec=
+X-Google-Smtp-Source: ABdhPJwZhtOZnW/SAsDIaJy9ovBDZT4STyMWszIVik9OhcGii4FS4g8CftwDOh0DjHPE30OHClcZTbCNj7iQw9bWk/o=
+X-Received: by 2002:a25:bbc4:: with SMTP id c4mr2215277ybk.114.1631660151720;
+ Tue, 14 Sep 2021 15:55:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <163163030719.489837.2236069935502195491.stgit@devnote2>
+In-Reply-To: <163163030719.489837.2236069935502195491.stgit@devnote2>
+From:   Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date:   Tue, 14 Sep 2021 15:55:40 -0700
+Message-ID: <CAEf4BzaAHhEgsyBV07Q37FkUSh9wypuJW6HqJ1jS8-XrjzKDmA@mail.gmail.com>
+Subject: Re: [PATCH -tip v11 00/27] kprobes: Fix stacktrace with kretprobes on x86
+To:     Masami Hiramatsu <mhiramat@kernel.org>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Josh Poimboeuf <jpoimboe@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>, X86 ML <x86@kernel.org>,
+        Daniel Xu <dxu@dxuuu.xyz>,
+        open list <linux-kernel@vger.kernel.org>,
+        bpf <bpf@vger.kernel.org>, Jakub Kicinski <kuba@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Borislav Petkov <bp@alien8.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Kernel Team <kernel-team@fb.com>, Yonghong Song <yhs@fb.com>,
+        linux-ia64@vger.kernel.org,
+        Abhishek Sagar <sagar.abhishek@gmail.com>,
+        Paul McKenney <paulmck@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-In x86, the fake return address on the stack saved by
-__kretprobe_trampoline() will be replaced with the real return
-address after returning from trampoline_handler(). Before fixing
-the return address, the real return address can be found in the
-'current->kretprobe_instances'.
+On Tue, Sep 14, 2021 at 7:38 AM Masami Hiramatsu <mhiramat@kernel.org> wrote:
+>
+> Hello,
+>
+> This is the 11th version of the series to fix the stacktrace with kretprobe on x86.
+>
+> The previous version is here;
+>
+>  https://lore.kernel.org/all/162756755600.301564.4957591913842010341.stgit@devnote2/
+>
+> This version is rebased on the latest tip/master branch and includes the kprobe cleanup
+> series[1][2]. No code change.
+>
+> [1] https://lore.kernel.org/bpf/162748615977.59465.13262421617578791515.stgit@devnote2/
+> [2] https://lore.kernel.org/linux-csky/20210727133426.2919710-1-punitagrawal@gmail.com/
+>
+>
+> With this series, unwinder can unwind stack correctly from ftrace as below;
+>
+>   # cd /sys/kernel/debug/tracing
+>   # echo > trace
+>   # echo 1 > options/sym-offset
+>   # echo r vfs_read >> kprobe_events
+>   # echo r full_proxy_read >> kprobe_events
+>   # echo traceoff:1 > events/kprobes/r_vfs_read_0/trigger
+>   # echo stacktrace:1 > events/kprobes/r_full_proxy_read_0/trigger
+>   # echo 1 > events/kprobes/enable
+>   # cat /sys/kernel/debug/kprobes/list
+> ffffffff813bedf0  r  full_proxy_read+0x0    [FTRACE]
+> ffffffff812c13e0  r  vfs_read+0x0    [FTRACE]
+>   # echo 0 > events/kprobes/enable
+>   # cat trace
+> # tracer: nop
+> #
+> # entries-in-buffer/entries-written: 3/3   #P:8
+> #
+> #                                _-----=> irqs-off
+> #                               / _----=> need-resched
+> #                              | / _---=> hardirq/softirq
+> #                              || / _--=> preempt-depth
+> #                              ||| / _-=> migrate-disable
+> #                              |||| /     delay
+> #           TASK-PID     CPU#  |||||  TIMESTAMP  FUNCTION
+> #              | |         |   |||||     |         |
+>              cat-136     [000] ...1.    14.474966: r_full_proxy_read_0: (vfs_read+0x99/0x190 <- full_proxy_read)
+>              cat-136     [000] ...1.    14.474970: <stack trace>
+>  => kretprobe_trace_func+0x209/0x300
+>  => kretprobe_dispatcher+0x9d/0xb0
+>  => __kretprobe_trampoline_handler+0xd4/0x1b0
+>  => trampoline_handler+0x43/0x60
+>  => __kretprobe_trampoline+0x2a/0x50
+>  => vfs_read+0x99/0x190
+>  => ksys_read+0x68/0xe0
+>  => do_syscall_64+0x3b/0x90
+>  => entry_SYSCALL_64_after_hwframe+0x44/0xae
+>              cat-136     [000] ...1.    14.474971: r_vfs_read_0: (ksys_read+0x68/0xe0 <- vfs_read)
+>
+> This shows the double return probes (vfs_read() and full_proxy_read()) on the stack
+> correctly unwinded. (vfs_read() returns to 'ksys_read+0x68' and full_proxy_read()
+> returns to 'vfs_read+0x99')
+>
+> This also changes the kretprobe behavisor a bit, now the instraction pointer in
+> the 'pt_regs' passed to kretprobe user handler is correctly set the real return
+> address. So user handlers can get it via instruction_pointer() API, and can use
+> stack_trace_save_regs().
+>
+> You can also get this series from
+>  git://git.kernel.org/pub/scm/linux/kernel/git/mhiramat/linux.git kprobes/kretprobe-stackfix-v11
+>
+>
+> Thank you,
+>
+> ---
+>
+> Josh Poimboeuf (3):
+>       objtool: Add frame-pointer-specific function ignore
+>       objtool: Ignore unwind hints for ignored functions
+>       x86/kprobes: Add UNWIND_HINT_FUNC on kretprobe_trampoline()
+>
+> Masami Hiramatsu (19):
+>       kprobes: treewide: Cleanup the error messages for kprobes
+>       kprobes: Fix coding style issues
+>       kprobes: Use IS_ENABLED() instead of kprobes_built_in()
+>       kprobes: Add assertions for required lock
+>       kprobes: treewide: Use 'kprobe_opcode_t *' for the code address in get_optimized_kprobe()
+>       kprobes: Use bool type for functions which returns boolean value
+>       ia64: kprobes: Fix to pass correct trampoline address to the handler
+>       kprobes: treewide: Replace arch_deref_entry_point() with dereference_symbol_descriptor()
+>       kprobes: treewide: Remove trampoline_address from kretprobe_trampoline_handler()
+>       kprobes: treewide: Make it harder to refer kretprobe_trampoline directly
+>       kprobes: Add kretprobe_find_ret_addr() for searching return address
+>       ARC: Add instruction_pointer_set() API
+>       ia64: Add instruction_pointer_set() API
+>       arm: kprobes: Make space for instruction pointer on stack
+>       kprobes: Enable stacktrace from pt_regs in kretprobe handler
+>       x86/kprobes: Push a fake return address at kretprobe_trampoline
+>       x86/unwind: Recover kretprobe trampoline entry
+>       tracing: Show kretprobe unknown indicator only for kretprobe_trampoline
+>       x86/kprobes: Fixup return address in generic trampoline handler
+>
+> Punit Agrawal (5):
+>       kprobes: Do not use local variable when creating debugfs file
+>       kprobes: Use helper to parse boolean input from userspace
+>       kprobe: Simplify prepare_kprobe() by dropping redundant version
+>       csky: ftrace: Drop duplicate implementation of arch_check_ftrace_location()
+>       kprobes: Make arch_check_ftrace_location static
+>
 
-However, since there is a window between updating the
-'current->kretprobe_instances' and fixing the address on the stack,
-if an interrupt happens at that timing and the interrupt handler
-does stacktrace, it may fail to unwind because it can not get
-the correct return address from 'current->kretprobe_instances'.
+Re-tested with latest BPF selftests and retsnoop tool utilizing
+kretprobe and capturing stack traces (broken without these changes).
+Looks good, thank you!
 
-This will eliminate that window by fixing the return address
-right before updating 'current->kretprobe_instances'.
+Tested-by: Andrii Nakryiko <andriin@kernel.org>
 
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Tested-by: Andrii Nakryiko <andrii@kernel.org>
----
- Changes in v9:
-  - Fixes the changelog. This can eliminate the window.
-  - Add more comment how it works.
- Changes in v7:
-  - Add a prototype for arch_kretprobe_fixup_return()
----
- arch/x86/kernel/kprobes/core.c |   18 ++++++++++++++++--
- include/linux/kprobes.h        |    3 +++
- kernel/kprobes.c               |   11 +++++++++++
- 3 files changed, 30 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kernel/kprobes/core.c b/arch/x86/kernel/kprobes/core.c
-index 7e1111c19605..fce99e249d61 100644
---- a/arch/x86/kernel/kprobes/core.c
-+++ b/arch/x86/kernel/kprobes/core.c
-@@ -1065,6 +1065,16 @@ NOKPROBE_SYMBOL(__kretprobe_trampoline);
-  */
- STACK_FRAME_NON_STANDARD_FP(__kretprobe_trampoline);
- 
-+/* This is called from kretprobe_trampoline_handler(). */
-+void arch_kretprobe_fixup_return(struct pt_regs *regs,
-+				 kprobe_opcode_t *correct_ret_addr)
-+{
-+	unsigned long *frame_pointer = &regs->sp + 1;
-+
-+	/* Replace fake return address with real one. */
-+	*frame_pointer = (unsigned long)correct_ret_addr;
-+}
-+
- /*
-  * Called from __kretprobe_trampoline
-  */
-@@ -1082,8 +1092,12 @@ __used __visible void trampoline_handler(struct pt_regs *regs)
- 	regs->sp += sizeof(long);
- 	frame_pointer = &regs->sp + 1;
- 
--	/* Replace fake return address with real one. */
--	*frame_pointer = kretprobe_trampoline_handler(regs, frame_pointer);
-+	/*
-+	 * The return address at 'frame_pointer' is recovered by the
-+	 * arch_kretprobe_fixup_return() which called from the
-+	 * kretprobe_trampoline_handler().
-+	 */
-+	kretprobe_trampoline_handler(regs, frame_pointer);
- 
- 	/*
- 	 * Copy FLAGS to 'pt_regs::sp' so that __kretprobe_trapmoline()
-diff --git a/include/linux/kprobes.h b/include/linux/kprobes.h
-index 6d47a9da1e0a..e974caf39d3e 100644
---- a/include/linux/kprobes.h
-+++ b/include/linux/kprobes.h
-@@ -188,6 +188,9 @@ extern void arch_prepare_kretprobe(struct kretprobe_instance *ri,
- 				   struct pt_regs *regs);
- extern int arch_trampoline_kprobe(struct kprobe *p);
- 
-+void arch_kretprobe_fixup_return(struct pt_regs *regs,
-+				 kprobe_opcode_t *correct_ret_addr);
-+
- void __kretprobe_trampoline(void);
- /*
-  * Since some architecture uses structured function pointer,
-diff --git a/kernel/kprobes.c b/kernel/kprobes.c
-index ebc587b9a346..b62af9fc3607 100644
---- a/kernel/kprobes.c
-+++ b/kernel/kprobes.c
-@@ -1922,6 +1922,15 @@ unsigned long kretprobe_find_ret_addr(struct task_struct *tsk, void *fp,
- }
- NOKPROBE_SYMBOL(kretprobe_find_ret_addr);
- 
-+void __weak arch_kretprobe_fixup_return(struct pt_regs *regs,
-+					kprobe_opcode_t *correct_ret_addr)
-+{
-+	/*
-+	 * Do nothing by default. Please fill this to update the fake return
-+	 * address on the stack with the correct one on each arch if possible.
-+	 */
-+}
-+
- unsigned long __kretprobe_trampoline_handler(struct pt_regs *regs,
- 					     void *frame_pointer)
- {
-@@ -1967,6 +1976,8 @@ unsigned long __kretprobe_trampoline_handler(struct pt_regs *regs,
- 		first = first->next;
- 	}
- 
-+	arch_kretprobe_fixup_return(regs, correct_ret_addr);
-+
- 	/* Unlink all nodes for this frame. */
- 	first = current->kretprobe_instances.first;
- 	current->kretprobe_instances.first = node->next;
-
+>
+>  arch/arc/include/asm/kprobes.h                |    2
+>  arch/arc/include/asm/ptrace.h                 |    5
+>  arch/arc/kernel/kprobes.c                     |   13 -
+>  arch/arm/probes/kprobes/core.c                |   15 -
+>  arch/arm/probes/kprobes/opt-arm.c             |    7
+>  arch/arm64/include/asm/kprobes.h              |    2
+>  arch/arm64/kernel/probes/kprobes.c            |   10
+>  arch/arm64/kernel/probes/kprobes_trampoline.S |    4
+>  arch/csky/include/asm/kprobes.h               |    2
+>  arch/csky/kernel/probes/ftrace.c              |    7
+>  arch/csky/kernel/probes/kprobes.c             |   14 -
+>  arch/csky/kernel/probes/kprobes_trampoline.S  |    4
+>  arch/ia64/include/asm/ptrace.h                |    5
+>  arch/ia64/kernel/kprobes.c                    |   15 -
+>  arch/mips/kernel/kprobes.c                    |   26 +
+>  arch/parisc/kernel/kprobes.c                  |    6
+>  arch/powerpc/include/asm/kprobes.h            |    2
+>  arch/powerpc/kernel/kprobes.c                 |   29 -
+>  arch/powerpc/kernel/optprobes.c               |    8
+>  arch/powerpc/kernel/stacktrace.c              |    2
+>  arch/riscv/include/asm/kprobes.h              |    2
+>  arch/riscv/kernel/probes/kprobes.c            |   15 -
+>  arch/riscv/kernel/probes/kprobes_trampoline.S |    4
+>  arch/s390/include/asm/kprobes.h               |    2
+>  arch/s390/kernel/kprobes.c                    |   16 -
+>  arch/s390/kernel/stacktrace.c                 |    2
+>  arch/sh/include/asm/kprobes.h                 |    2
+>  arch/sh/kernel/kprobes.c                      |   12 -
+>  arch/sparc/include/asm/kprobes.h              |    2
+>  arch/sparc/kernel/kprobes.c                   |   12 -
+>  arch/x86/include/asm/kprobes.h                |    1
+>  arch/x86/include/asm/unwind.h                 |   23 +
+>  arch/x86/include/asm/unwind_hints.h           |    5
+>  arch/x86/kernel/kprobes/core.c                |   71 +++-
+>  arch/x86/kernel/kprobes/opt.c                 |    6
+>  arch/x86/kernel/unwind_frame.c                |    3
+>  arch/x86/kernel/unwind_guess.c                |    3
+>  arch/x86/kernel/unwind_orc.c                  |   21 +
+>  include/linux/kprobes.h                       |  113 ++++--
+>  include/linux/objtool.h                       |   12 +
+>  kernel/kprobes.c                              |  502 ++++++++++++++-----------
+>  kernel/trace/trace_kprobe.c                   |    2
+>  kernel/trace/trace_output.c                   |   17 -
+>  lib/error-inject.c                            |    3
+>  tools/include/linux/objtool.h                 |   12 +
+>  tools/objtool/check.c                         |    2
+>  46 files changed, 607 insertions(+), 436 deletions(-)
+>
+> --
+> Masami Hiramatsu (Linaro) <mhiramat@kernel.org>
