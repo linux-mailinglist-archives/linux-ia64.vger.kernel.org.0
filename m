@@ -2,82 +2,102 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 48D374186B7
-	for <lists+linux-ia64@lfdr.de>; Sun, 26 Sep 2021 08:33:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC3F14187DA
+	for <lists+linux-ia64@lfdr.de>; Sun, 26 Sep 2021 11:10:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229754AbhIZGfE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 26 Sep 2021 02:35:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57932 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229498AbhIZGfE (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 26 Sep 2021 02:35:04 -0400
-Received: from bombadil.infradead.org (unknown [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D609C061570;
-        Sat, 25 Sep 2021 23:33:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=waCOeT4+Z0Ug7ewSDQv+n5+FK5owylBFTxfyHY08lGY=; b=bvXvLlGHr5uTg2W4Dfol7Cewsk
-        0KWITElrJ6bWouKm4EhseHCiHhJ6mWIFkOAcreG9HMkGjxJ+jZni34ZhnYGnV9fWSl2eEcEv23HaL
-        fUgT6Kz4Ns9xrbDlgAV/ePMGyV/uYzleA8J31udHOwx+F251NIRF1Qi3nEwv67gdA3REq7GIWjn6D
-        w8j4Q7YHqQkJgkBHFAeFnIsSoVThJoplt27LuSXyu/aFppHHfdrkhbWj+2DNaWxSNljHzsLFFV1Xy
-        dV9qDgH2ocB01G2ywYaMo5YoeahUT0R3DbXQORc3f/zg6Wc1U/b1Dry+OeMSVq+DWbP+hzU67Ozxi
-        ZbLdJDRw==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mUNj4-0005xW-W1; Sun, 26 Sep 2021 06:33:27 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>, linux-ia64@vger.kernel.org,
-        Petr Mladek <pmladek@suse.com>,
+        id S229850AbhIZJM0 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 26 Sep 2021 05:12:26 -0400
+Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:57461 "EHLO
+        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S229687AbhIZJM0 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>);
+        Sun, 26 Sep 2021 05:12:26 -0400
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.94)
+          with esmtps (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1mUQBL-001bVp-ID; Sun, 26 Sep 2021 11:10:47 +0200
+Received: from p57bd97e9.dip0.t-ipconnect.de ([87.189.151.233] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.94)
+          with esmtpsa (TLS1.2)
+          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1mUQBL-0041Cw-BF; Sun, 26 Sep 2021 11:10:47 +0200
+Message-ID: <6ee982ca-6b99-da23-ec60-97ca2c317bd5@physik.fu-berlin.de>
+Date:   Sun, 26 Sep 2021 11:10:46 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.1.0
+Subject: Re: [PATCH] ia64: don't do IA64_CMPXCHG_DEBUG without CONFIG_PRINTK
+Content-Language: en-US
+To:     Randy Dunlap <rdunlap@infradead.org>, linux-kernel@vger.kernel.org
+Cc:     linux-ia64@vger.kernel.org, Petr Mladek <pmladek@suse.com>,
         Andrew Morton <akpm@linux-foundation.org>,
         Tony Luck <tony.luck@intel.com>,
         Chris Down <chris@chrisdown.name>
-Subject: [PATCH] ia64: don't do IA64_CMPXCHG_DEBUG without CONFIG_PRINTK
-Date:   Sat, 25 Sep 2021 23:33:25 -0700
-Message-Id: <20210926063325.13581-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.31.1
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20210926063325.13581-1-rdunlap@infradead.org>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+In-Reply-To: <20210926063325.13581-1-rdunlap@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.151.233
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-When CONFIG_PRINTK is not set, the CMPXCHG_BUGCHECK() macro calls
-_printk(), but _printk() is a static inline function, not available
-as an extern.
-Since the purpose of the macro is to print the BUGCHECK info,
-make this config option depend on PRINTK.
+Hi Randy!
 
-Fixes multiple occurrences of this build error:
+On 9/26/21 08:33, Randy Dunlap wrote:
+> When CONFIG_PRINTK is not set, the CMPXCHG_BUGCHECK() macro calls
+> _printk(), but _printk() is a static inline function, not available
+> as an extern.
+> Since the purpose of the macro is to print the BUGCHECK info,
+> make this config option depend on PRINTK.
+> 
+> Fixes multiple occurrences of this build error:
+> 
+> ../include/linux/printk.h:208:5: error: static declaration of '_printk' follows non-static declaration
+>   208 | int _printk(const char *s, ...)
+>       |     ^~~~~~~
+> In file included from ../arch/ia64/include/asm/cmpxchg.h:5,
+> ../arch/ia64/include/uapi/asm/cmpxchg.h:146:28: note: previous declaration of '_printk' with type 'int(const char *, ...)'
+>   146 |                 extern int _printk(const char *fmt, ...);
+> 
+> Fixes: 337015573718 ("printk: Userspace format indexing support")
+> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+> Cc: linux-ia64@vger.kernel.org
+> Cc: Petr Mladek <pmladek@suse.com>
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Tony Luck <tony.luck@intel.com>
+> Cc: Chris Down <chris@chrisdown.name>
+> ---
+>  arch/ia64/Kconfig.debug |    2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> --- linux-next-20210917.orig/arch/ia64/Kconfig.debug
+> +++ linux-next-20210917/arch/ia64/Kconfig.debug
+> @@ -39,7 +39,7 @@ config DISABLE_VHPT
+>  
+>  config IA64_DEBUG_CMPXCHG
+>  	bool "Turn on compare-and-exchange bug checking (slow!)"
+> -	depends on DEBUG_KERNEL
+> +	depends on DEBUG_KERNEL && PRINTK
+>  	help
+>  	  Selecting this option turns on bug checking for the IA-64
+>  	  compare-and-exchange instructions.  This is slow!  Itaniums
 
-../include/linux/printk.h:208:5: error: static declaration of '_printk' follows non-static declaration
-  208 | int _printk(const char *s, ...)
-      |     ^~~~~~~
-In file included from ../arch/ia64/include/asm/cmpxchg.h:5,
-../arch/ia64/include/uapi/asm/cmpxchg.h:146:28: note: previous declaration of '_printk' with type 'int(const char *, ...)'
-  146 |                 extern int _printk(const char *fmt, ...);
+We currently don't have a maintainer for ia64 - although I would be willing to pick
+up the job - so your patch would have to go through someone else's tree.
 
-Fixes: 337015573718 ("printk: Userspace format indexing support")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: linux-ia64@vger.kernel.org
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Chris Down <chris@chrisdown.name>
----
- arch/ia64/Kconfig.debug |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I can boot test the patch on my RX2660 in the mean time.
 
---- linux-next-20210917.orig/arch/ia64/Kconfig.debug
-+++ linux-next-20210917/arch/ia64/Kconfig.debug
-@@ -39,7 +39,7 @@ config DISABLE_VHPT
- 
- config IA64_DEBUG_CMPXCHG
- 	bool "Turn on compare-and-exchange bug checking (slow!)"
--	depends on DEBUG_KERNEL
-+	depends on DEBUG_KERNEL && PRINTK
- 	help
- 	  Selecting this option turns on bug checking for the IA-64
- 	  compare-and-exchange instructions.  This is slow!  Itaniums
+Adrian
+
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer - glaubitz@debian.org
+`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+
