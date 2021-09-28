@@ -2,106 +2,209 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B875C419EC1
-	for <lists+linux-ia64@lfdr.de>; Mon, 27 Sep 2021 20:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6887641AA19
+	for <lists+linux-ia64@lfdr.de>; Tue, 28 Sep 2021 09:52:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234508AbhI0S7C (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 27 Sep 2021 14:59:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36496 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236136AbhI0S7B (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 27 Sep 2021 14:59:01 -0400
-Received: from bombadil.infradead.org (unknown [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0CDBC061714
-        for <linux-ia64@vger.kernel.org>; Mon, 27 Sep 2021 11:57:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        Content-Type:In-Reply-To:MIME-Version:Date:Message-ID:From:References:Cc:To:
-        Subject:Sender:Reply-To:Content-ID:Content-Description;
-        bh=As20ET0yHWEcNeKUAlVHfVnK+1oUqLdGDH5prpgujwg=; b=z5Ny+UEsOhsvyGzATU3S6luhX+
-        7klGEkECyKGIC6jibC6Joq+lrgU3MY0mSSLQXlTN7F0Pjg0NntTBMs3vhhWRTzRHYiX58vJXbKurS
-        j1rK5xJUhlc1xBtMV34TdNZ1AwCJqlDPxQl/VPa++MZiSKhON/XckNQc3p/cMOYqnB+3rnSGzjD1k
-        NEF9HIjxo/RCDi09kZwce+TCBqEAGTrRemqry8x7GdNR2H5VHl8WuSUg84Ocaxm3dl3+KEEVnAHvj
-        H050RK7nZdb7r1qs2C1bOgCBbO9hVIn89RNnrI2mskPpPPnJuCsbbY3md0/eM6OpkAcFUS7NfLfDn
-        8UIooKpg==;
-Received: from [2601:1c0:6280:3f0::aa0b]
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mUvoU-003s6p-LH; Mon, 27 Sep 2021 18:57:18 +0000
-Subject: Re: [PATCH v2] ia64: don't do IA64_CMPXCHG_DEBUG without
- CONFIG_PRINTK
-To:     Petr Mladek <pmladek@suse.com>
-Cc:     Paul Gortmaker <paul.gortmaker@windriver.com>,
-        linux-ia64@vger.kernel.org,
+        id S239331AbhI1HyK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 28 Sep 2021 03:54:10 -0400
+Received: from mail.kernel.org ([198.145.29.99]:35528 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S239287AbhI1HyJ (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 28 Sep 2021 03:54:09 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 5137D61130;
+        Tue, 28 Sep 2021 07:52:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632815550;
+        bh=lFsTmsn7BYcrty0qzd1AqSPHwOiCHDnCX/Te4vlwM7A=;
+        h=From:To:Cc:Subject:Date:From;
+        b=WJNbYy6q2dLmrox1V9lvJ3yNXIMuZp8b7wEDV18kZkrcMMEkz4ZdaL6+wMd/EJuzu
+         rCVh5UO5rDIvSMr3BDOE/uQnc8i5D1Q9+JeiaFU/tIjaphu0W1GPoetd8AQBZjw1L8
+         0shNSrZjCEMwmQ4lAz7eX9+gzn2cfrRChhTiVafD5FTWjnzkJLmdRGCJJAUrXGYmRR
+         xWRUINz2rJ3DofuTl/d+o5LYqevL22s3N3ljhF9382UP92IH2f538r4skWsFBqOxEO
+         tqwBVxxgOpwAZI8EZexXd4qGch5isT0eB+UmUDVvwm1yAlEkEW4xjjT4KCRUn+5IP0
+         tEuej0ZCMgWjA==
+From:   Arnd Bergmann <arnd@kernel.org>
+To:     Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Simon Trimmer <simont@opensource.cirrus.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Chris Down <chris@chrisdown.name>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-References: <20210926171224.27019-1-rdunlap@infradead.org>
- <20210927032234.GA20607@windriver.com>
- <69ba95ea-a9f3-0739-f64a-a590a61cda58@infradead.org> <YVGn3ptoeDsXs58J@alley>
-From:   Randy Dunlap <rdunlap@infradead.org>
-Message-ID: <076c71da-e072-69f6-dd94-9882636b1beb@infradead.org>
-Date:   Mon, 27 Sep 2021 11:57:18 -0700
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.13.0
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org
+Subject: [PATCH 1/2] firmware: include drivers/firmware/Kconfig unconditionally
+Date:   Tue, 28 Sep 2021 09:50:26 +0200
+Message-Id: <20210928075216.4193128-1-arnd@kernel.org>
+X-Mailer: git-send-email 2.29.2
 MIME-Version: 1.0
-In-Reply-To: <YVGn3ptoeDsXs58J@alley>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 9/27/21 4:15 AM, Petr Mladek wrote:
-> On Sun 2021-09-26 21:53:33, Randy Dunlap wrote:
->> On 9/26/21 8:22 PM, Paul Gortmaker wrote:
->>> [[PATCH v2] ia64: don't do IA64_CMPXCHG_DEBUG without CONFIG_PRINTK] On 26/09/2021 (Sun 10:12) Randy Dunlap wrote:
->>>
->>>> When CONFIG_PRINTK is not set, the CMPXCHG_BUGCHECK() macro calls
->>>> _printk(), but _printk() is a static inline function, not available
->>>> as an extern.
->>>> Since the purpose of the macro is to print the BUGCHECK info,
->>>> make this config option depend on PRINTK.
->>>>
->>>> Fixes multiple occurrences of this build error:
->>>>
->>>> ../include/linux/printk.h:208:5: error: static declaration of '_printk' follows non-static declaration
->>>>     208 | int _printk(const char *s, ...)
->>>>         |     ^~~~~~~
->>>> In file included from ../arch/ia64/include/asm/cmpxchg.h:5,
->>>> ../arch/ia64/include/uapi/asm/cmpxchg.h:146:28: note: previous declaration of '_printk' with type 'int(const char *, ...)'
->>>>     146 |                 extern int _printk(const char *fmt, ...);
->>>>
->>>> Fixes: 85f8f7759e41 ("ia64: populate the cmpxchg header with appropriate code")
->>>
->>> I don't think this fixes tag makes sense either as it was just a
->>> straightforward code relocation.  As pointed out elsewhere, it will
->>> probably be back even further where CONFIG_PRINTK was introduced, which
->>> would be d59745ce3e7a (2005 vintage).  The ia64 debug option predates
->>> git, so it isn't at fault (and you can't blame it anyway).
->>>
->>> Honestly, realize this is just for a randconfig for ia64 where PRINTK is
->>> disabled - something that will never be done in any of the remaining
->>> ia64 deployments out there (if there is any).  So I'd just recommend
->>> dropping the Fixes tag and move on.  It isn't like there is a lot of
->>> people out there doing randconfig builds on linux-stable releases.
->>>
->>
->> Yes, I like the idea of dropping the Fixes: tag also. Thanks.
->> Guess I'll send a v3.
-> 
-> I could take it via printk tree. I am going to wait 2-3 more days
-> just in case anyone has a comment.
-> 
-> Feel free to send v3 but I could just remove the tag when pushing v2.
+From: Arnd Bergmann <arnd@arndb.de>
 
-Hi Petr,
+Compile-testing drivers that require access to a firmware layer
+fails when that firmware symbol is unavailable. This happened
+twice this week:
 
-Please just remove the Fixes: tag after waiting a few more days
-for comments.
+ - My proposed to change to rework the QCOM_SCM firmware symbol
+   broke on ppc64 and others.
 
-thanks.
+ - The cs_dsp firmware patch added device specific firmware loader
+   into drivers/firmware, which broke on the same set of
+   architectures.
 
+We should probably do the same thing for other subsystems as well,
+but fix this one first as this is a dependency for other patches
+getting merged.
+
+Cc: Mark Brown <broonie@kernel.org>
+Cc: Liam Girdwood <lgirdwood@gmail.com>
+Cc: Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc: Simon Trimmer <simont@opensource.cirrus.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+---
+Not sure how we'd want to merge this patch, if two other things
+need it. I'd prefer to merge it along with the QCOM_SCM change
+through the soc tree, but that leaves the cirrus firmware broken
+unless we also merge it the same way (rather than through ASoC
+as it is now).
+
+Alternatively, we can try to find a different home for the Cirrus
+firmware to decouple the two problems. I'd argue that it's actually
+misplaced here, as drivers/firmware is meant for kernel code that
+interfaces with system firmware, not for device drivers to load
+their own firmware blobs from user space.
+---
+ arch/arm/Kconfig    | 2 --
+ arch/arm64/Kconfig  | 2 --
+ arch/ia64/Kconfig   | 2 --
+ arch/mips/Kconfig   | 2 --
+ arch/parisc/Kconfig | 2 --
+ arch/riscv/Kconfig  | 2 --
+ arch/x86/Kconfig    | 2 --
+ drivers/Kconfig     | 2 ++
+ 8 files changed, 2 insertions(+), 14 deletions(-)
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index ad96f3dd7e83..194d10bbff9e 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1993,8 +1993,6 @@ config ARCH_HIBERNATION_POSSIBLE
+ 
+ endmenu
+ 
+-source "drivers/firmware/Kconfig"
+-
+ if CRYPTO
+ source "arch/arm/crypto/Kconfig"
+ endif
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index ebb49585a63f..8749517482ae 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -1931,8 +1931,6 @@ source "drivers/cpufreq/Kconfig"
+ 
+ endmenu
+ 
+-source "drivers/firmware/Kconfig"
+-
+ source "drivers/acpi/Kconfig"
+ 
+ source "arch/arm64/kvm/Kconfig"
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index 045792cde481..1e33666fa679 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -388,8 +388,6 @@ config CRASH_DUMP
+ 	  help
+ 	    Generate crash dump after being started by kexec.
+ 
+-source "drivers/firmware/Kconfig"
+-
+ endmenu
+ 
+ menu "Power management and ACPI options"
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 771ca53af06d..6b8f591c5054 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -3316,8 +3316,6 @@ source "drivers/cpuidle/Kconfig"
+ 
+ endmenu
+ 
+-source "drivers/firmware/Kconfig"
+-
+ source "arch/mips/kvm/Kconfig"
+ 
+ source "arch/mips/vdso/Kconfig"
+diff --git a/arch/parisc/Kconfig b/arch/parisc/Kconfig
+index 4742b6f169b7..27a8b49af11f 100644
+--- a/arch/parisc/Kconfig
++++ b/arch/parisc/Kconfig
+@@ -384,6 +384,4 @@ config KEXEC_FILE
+ 
+ endmenu
+ 
+-source "drivers/firmware/Kconfig"
+-
+ source "drivers/parisc/Kconfig"
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 301a54233c7e..6a6fa9e976d5 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -561,5 +561,3 @@ menu "Power management options"
+ source "kernel/power/Kconfig"
+ 
+ endmenu
+-
+-source "drivers/firmware/Kconfig"
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index e5ba8afd29a0..5dcec5f13a82 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -2834,8 +2834,6 @@ config HAVE_ATOMIC_IOMAP
+ 	def_bool y
+ 	depends on X86_32
+ 
+-source "drivers/firmware/Kconfig"
+-
+ source "arch/x86/kvm/Kconfig"
+ 
+ source "arch/x86/Kconfig.assembler"
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 30d2db37cc87..0d399ddaa185 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -17,6 +17,8 @@ source "drivers/bus/Kconfig"
+ 
+ source "drivers/connector/Kconfig"
+ 
++source "drivers/firmware/Kconfig"
++
+ source "drivers/gnss/Kconfig"
+ 
+ source "drivers/mtd/Kconfig"
 -- 
-~Randy
+2.29.2
+
