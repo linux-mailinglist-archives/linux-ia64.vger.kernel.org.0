@@ -2,126 +2,117 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E1F541ACA7
-	for <lists+linux-ia64@lfdr.de>; Tue, 28 Sep 2021 12:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99C7141ADC1
+	for <lists+linux-ia64@lfdr.de>; Tue, 28 Sep 2021 13:26:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240121AbhI1KNQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 28 Sep 2021 06:13:16 -0400
-Received: from mailout1.w1.samsung.com ([210.118.77.11]:11468 "EHLO
-        mailout1.w1.samsung.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240118AbhI1KNQ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 28 Sep 2021 06:13:16 -0400
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-        by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20210928101135euoutp01b33947d074ce32d2b9c6fbf5cd591329~o9K6kpQOI2381623816euoutp01O
-        for <linux-ia64@vger.kernel.org>; Tue, 28 Sep 2021 10:11:35 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20210928101135euoutp01b33947d074ce32d2b9c6fbf5cd591329~o9K6kpQOI2381623816euoutp01O
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1632823895;
-        bh=Uq7JRZfgtgIv8od+MEX1Yfq8ZJs11gdCeWJ7IvAJEEA=;
-        h=Subject:To:Cc:From:Date:In-Reply-To:References:From;
-        b=HjxN/tf7pdMxGuOY9ZboCv30dvt0rlPvMCjj74WHuW6wIU519w9hrRRXqq4+zBpdg
-         oIieXU7Aqez4eSTcQZFL6RF4cYdykaDU9DdY/rRWtfOEHBac2mqxIcH8VNmq/rPe2e
-         jCcXGKwKk29AzMSZ/I3uekDn5rovvlvd9zVBnlBA=
-Received: from eusmges3new.samsung.com (unknown [203.254.199.245]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTP id
-        20210928101135eucas1p1bb9f8b528c94e8bfac0bdd9a60404e72~o9K55rkHy1386313863eucas1p1Z;
-        Tue, 28 Sep 2021 10:11:35 +0000 (GMT)
-Received: from eucas1p1.samsung.com ( [182.198.249.206]) by
-        eusmges3new.samsung.com (EUCPMTA) with SMTP id DB.67.56448.65AE2516; Tue, 28
-        Sep 2021 11:11:34 +0100 (BST)
-Received: from eusmtrp1.samsung.com (unknown [182.198.249.138]) by
-        eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-        20210928101134eucas1p107ae33386004de51bdcc1d240b097980~o9K5kBEmR2078120781eucas1p1p;
-        Tue, 28 Sep 2021 10:11:34 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-        eusmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20210928101134eusmtrp1fb43c49b5403cc6df32cbe8848fd4994~o9K5i38nM0481104811eusmtrp1_;
-        Tue, 28 Sep 2021 10:11:34 +0000 (GMT)
-X-AuditID: cbfec7f5-d3bff7000002dc80-27-6152ea56b9d1
-Received: from eusmtip2.samsung.com ( [203.254.199.222]) by
-        eusmgms1.samsung.com (EUCPMTA) with SMTP id F2.FC.31287.65AE2516; Tue, 28
-        Sep 2021 11:11:34 +0100 (BST)
-Received: from [106.210.134.192] (unknown [106.210.134.192]) by
-        eusmtip2.samsung.com (KnoxPortal) with ESMTPA id
-        20210928101134eusmtip219257f3df32cf3a26d2a67ad319979be~o9K49EOtN1684316843eusmtip2q;
-        Tue, 28 Sep 2021 10:11:34 +0000 (GMT)
-Subject: Re: [PATCH] iommu/dma: Tidy up Kconfig selects
-To:     Joerg Roedel <joro@8bytes.org>, Robin Murphy <robin.murphy@arm.com>
-Cc:     will@kernel.org, iommu@lists.linux-foundation.org,
-        linux-kernel@vger.kernel.org, Christoph Hellwig <hch@lst.de>,
-        x86@kernel.org, linux-ia64@vger.kernel.org
-From:   Marek Szyprowski <m.szyprowski@samsung.com>
-Message-ID: <e88879bf-cd4e-1018-da50-6f0a1dda4784@samsung.com>
-Date:   Tue, 28 Sep 2021 12:11:33 +0200
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:78.0)
-        Gecko/20100101 Thunderbird/78.14.0
+        id S239952AbhI1L1r (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 28 Sep 2021 07:27:47 -0400
+Received: from mail.kernel.org ([198.145.29.99]:58068 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S231202AbhI1L1r (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Tue, 28 Sep 2021 07:27:47 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 7925960F4F;
+        Tue, 28 Sep 2021 11:26:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1632828368;
+        bh=R8KAqiUVcTbld8SsRhBAD3xBl/gv/DjOFjV7VeJVJDA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZDP54yBqAPPjJtMo6FUl3/T3DClmyQtNWx6vavSHrpsh16x4kVdk0SYdvj80Ex+M4
+         Yj4H6MT1ZJPcH37iU+qXGnSM2i7cgqGyFOddHKn+i/QO+5fhah8KHxPCzdVjGgkiWn
+         aadoi/Wq66w2jIYJHDiiK44z8nbbFZj/Zn+f68+nJjuJjCI/dXoDcLZv8L/5PPP6HD
+         dU50BkbVZcwtl6As8COrJI8vAUqrmShnCWO6Rk4P7YDBkJL2HLE5piBcI1MWTR6Fsg
+         RQhKhavzvBOk0b/x1YjTRPzr9XxB6rjo/MS5icvZViqJ7ZEIAlwE2XccdOvV0T/oeB
+         xSvt2+C3tBIdQ==
+Date:   Tue, 28 Sep 2021 12:25:19 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Charles Keepax <ckeepax@opensource.cirrus.com>
+Cc:     Arnd Bergmann <arnd@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Simon Trimmer <simont@opensource.cirrus.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>
+Subject: Re: [PATCH 1/2] firmware: include drivers/firmware/Kconfig
+ unconditionally
+Message-ID: <20210928112519.GI4199@sirena.org.uk>
+References: <20210928075216.4193128-1-arnd@kernel.org>
+ <20210928083751.GG9223@ediswmail.ad.cirrus.com>
+ <CAK8P3a11c6eLRWKvQeSqvEicc9bMDeEEGV5fygTidoRzYf9KnQ@mail.gmail.com>
+ <20210928092400.GH9223@ediswmail.ad.cirrus.com>
 MIME-Version: 1.0
-In-Reply-To: <YVLgw1nfEf7U13Mh@8bytes.org>
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Brightmail-Tracker: H4sIAAAAAAAAA02Se2xLcRTH97v39vZu0bqqsmPYpIt6zDaLNW6MBhEqXssWFhKmqatEW9Ka
-        V0yWeu5i80pNN7XQPc3IwsyEaanGq15LNibxKtMyM5ttLBprr8f++57z+5zzPd/kR+GSEkEU
-        tc6wiTUa1DoZGUHU3vnhic/wp6knVYiZinMujCluSGFyCy8Kma/7vwiYZ/VFJOP46hUwu18q
-        mN6L7wQzKJXXYcNUVbYqpKqpzCVVx5rLkOra8xxS1VkTnUouj5i2mtWt28waE5WrItb2FtrR
-        xnPk1mvfnHgOyhNwKJwCOhlqbp8mOBRBSehyBO0HehFfdCGwd7WgICWhOxHUcaK/E5++nMJ5
-        qAyBq9X+Z6IDQevJZixIDaWnwJnaAiKopfRcsObXCYIQTp9FUFbXG4JIOgm4No4MahGthFuH
-        PCFN0GOg++7V0IHDaA1YfplxnhkCd096Q0vD6QnQUPE9pHE6Bq60FeG8joQX3tNY0AxoLwXX
-        ufx+iOovZsN7n5aPMBT87ktCXo+E+8cOEjy/C8Ebz3khXxxE8MxcgHgqBV56fpLBRTg9Hi7U
-        J/LtmcDdsAn5/WJobhvC3yCGo7UncL4tgv17JTwtB6u7+p+t4/FT/DCSWQcksw5IYx2Qxvrf
-        txgRlSiSzTLptaxpsoHdkmBS601ZBm2CZoO+BvX/pPsB9/c6VO7vSHAijEJOBBQuk4rSicVq
-        iWi1ett21rgh05ilY01ONIIiZJGi+stVmRJaq97ErmfZjazx7ytGhUflYOYnlcexvr57wkGd
-        9Z+v9zE7w9umx+/4qWuXxS5a0555ddTyxvQwKBjT0xllFjO5+mJLWvnrBQFVSbIv1fugpTTG
-        8qBjqsaPJVXKXZg35bi7o0s/TtPUl1EWZluwbOI7uXJXIM5z86MhTqd86GspGv9R1rP00YuA
-        v3vrK65k1JHC8tY9XPJMvz3mxLeGOcUXFmYv3Ocbnv+hCRMekBr9sY/lipaSOY7obNeS+HaF
-        /dErccHYPIt32srGaqonLtMy3ZfHbLdFxwZyzVLt7rh0m7ixdtlIjVIowlzO+WFOhWPGvEkr
-        spnS0tHPMxLl1U3Vc8Osb2cNVmQRn93N3VIZYVqrTpqAG03q35Dv+4O4AwAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrFIsWRmVeSWpSXmKPExsVy+t/xe7phr4ISDZZ2aFisXH2UyWLBfmuL
-        ztkb2C0+dLxjtbi8aw6bxcEPT1gtWu6YWvzY8JjVgcPjycF5TB5r5q1h9Ni0qpPNY/KN5Ywe
-        u282sHl83iQXwBalZ1OUX1qSqpCRX1xiqxRtaGGkZ2hpoWdkYqlnaGwea2VkqqRvZ5OSmpNZ
-        llqkb5egl/Fj9hLGgtVsFbs/HWJuYOxj7WLk5JAQMJF4/W4ucxcjF4eQwFJGiZVzNrFBJGQk
-        Tk5rgCoSlvhzrYsNoug9o8SZtVPZQRLCAuYSi7bNYAGxRQTcJWb172AFKWIWWMwoceDIPSaI
-        jnOMEgv+ngEbxSZgKNH1tgtsBa+AncTh3nNgNouAqsS3kzvBakQFkiXevv7OBFEjKHFy5hOw
-        DZwCWhL7V34Fs5kFzCTmbX7IDGHLS2x/OwfKFpe49WQ+0wRGoVlI2mchaZmFpGUWkpYFjCyr
-        GEVSS4tz03OLDfWKE3OLS/PS9ZLzczcxAiNx27Gfm3cwznv1Ue8QIxMH4yFGCQ5mJRHeYBb/
-        RCHelMTKqtSi/Pii0pzU4kOMpkD/TGSWEk3OB6aCvJJ4QzMDU0MTM0sDU0szYyVx3q1z18QL
-        CaQnlqRmp6YWpBbB9DFxcEo1MOmelvZo3VO570BSSdqDZapf5vFpW3cpOn3wdZYvjMn/czpa
-        smoBr0XtxiLJw1am2WyTrJaf+TLvsM1x/ZWaZ+4Udfhkt6h/6LSJn3/4qQkvi9ilX8fu/nCS
-        PORy/6jOXY91Ln87o5PLHqSnnFJct1KDj0vjywbn14pv/2cvPr5nxa1Gv59KqfbtFVwNK50y
-        /W7tWfdmz8RFgWH7Tz8QiMhx9tzLc+XIx+AjZQKPdUqTkza82NK/SzMx6mGZU9CNM1kua/n8
-        dMrCmo+WVVn9dY8q3vgo+Hny842p30+Wrj9XeU64LCBMY69W4hfGW0LX8gpXHJJMcMn12LiX
-        vXztFH159U2uDvnHpr2bpr50qRJLcUaioRZzUXEiADLqOW5NAwAA
-X-CMS-MailID: 20210928101134eucas1p107ae33386004de51bdcc1d240b097980
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-RootMTR: 20210928093051eucas1p2fc69dc7b8dff175901ac2b00be6c33c7
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20210928093051eucas1p2fc69dc7b8dff175901ac2b00be6c33c7
-References: <9ba6f2e8568a3ff6a94fade66668d99705433c44.1631536879.git.robin.murphy@arm.com>
-        <CGME20210928093051eucas1p2fc69dc7b8dff175901ac2b00be6c33c7@eucas1p2.samsung.com>
-        <YVLgw1nfEf7U13Mh@8bytes.org>
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="cf0hFtnykp6aONGL"
+Content-Disposition: inline
+In-Reply-To: <20210928092400.GH9223@ediswmail.ad.cirrus.com>
+X-Cookie: 98% lean.
+User-Agent: Mutt/1.10.1 (2018-07-13)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 28.09.2021 11:30, Joerg Roedel wrote:
-> On Mon, Sep 13, 2021 at 01:41:19PM +0100, Robin Murphy wrote:
->> Now that the dust has settled on converting all the x86 drivers to
->> iommu-dma, we can punt the Kconfig selection to arch code where it
->> was always intended to be.
-> Can we select IOMMU_DMA under IOMMU_SUPPORT instead? The only drivers
-> not using IOMMU_DMA are the arm32 ones, afaics.
->
-> If we could get rid of the arm32 exception, the IOMMU_DMA symbol could
-> also go away entirely and we handle it under IOMMU_SUPPORT instead. But
-> that is something for the future :)
 
-Maybe it would be a good motivation to get back to 
-https://lore.kernel.org/linux-iommu/cover.1597931875.git.robin.murphy@arm.com/ 
-:)
+--cf0hFtnykp6aONGL
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Best regards
--- 
-Marek Szyprowski, PhD
-Samsung R&D Institute Poland
+On Tue, Sep 28, 2021 at 09:24:00AM +0000, Charles Keepax wrote:
+> On Tue, Sep 28, 2021 at 10:51:36AM +0200, Arnd Bergmann wrote:
 
+> > Other DSPs use the drivers/remoteproc/ subsystem, but that
+> > is more for general-purpose DSPs that can load application
+> > specific firmware rather than loading a single firmware blob
+> > as you'd normally do with the request_firmware() style interface.
+
+> > Not sure if that fits what you do. Can you point to a high-level
+> > description of what this DSP does besides audio, and how
+> > flexible it is? That might help find the right place for this.
+
+> Hm... wasn't aware of that one, we should probably investigate that
+> a little more at this end. From a quick look, seems a bit more like
+> it is designed for much larger more general purpose probably memory
+> mapped DSPs. I guess our code is a little more firmware parsing
+> and loading, and a bit less generic remote proceedure call stuff.
+
+Right, that was why I didn't suggest remoteproc - the DSPs wm_adsp
+covers seem much smaller than fits comfortably with remoteproc.  You
+probably could make it fit though.
+
+--cf0hFtnykp6aONGL
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmFS+54ACgkQJNaLcl1U
+h9A8qQf/YB0k06nBX21Y0D9WiuzfAdegrPLdfUizVJ4VMq/8sIzxSUr3yXB0F0rR
+iqS0ArRzG105rz27TluAzsoN7T1TngfvDTrQFvUBG8/xBjhNBbCxMyU7q9n8wNkC
+Jjc5ylof97391uxN+1o72Unu/AOe8V6xhR4kqvQ/Sm827dp8UZIJmP0oFFw15Sgy
+FCx2FaweLYfuqY4YKLdpPF3/dcvfli6O0itg7FnZHX1PLkqq5K+WKKcG5WEP+Jt2
+gKccsPs2YJefc8ecZMLp6NU+T8bQraAKkpph7a2ahTNe6Ltt36E3zahy7cp7wjuZ
+Nae3bwDF2mJrxNhyKnTwKBfRZvtAvg==
+=SewW
+-----END PGP SIGNATURE-----
+
+--cf0hFtnykp6aONGL--
