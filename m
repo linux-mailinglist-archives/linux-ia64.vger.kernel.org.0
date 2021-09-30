@@ -2,145 +2,150 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 47B0241CAAC
-	for <lists+linux-ia64@lfdr.de>; Wed, 29 Sep 2021 18:55:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5C8441DF4D
+	for <lists+linux-ia64@lfdr.de>; Thu, 30 Sep 2021 18:41:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344205AbhI2Qzu (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 29 Sep 2021 12:55:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:22341 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S1343910AbhI2Qzt (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 29 Sep 2021 12:55:49 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1632934448;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=wz7/LCBNzU2qEx/p5MvqtYMtlnh6TSWHAxM6fGc3vyI=;
-        b=AZI0/QgFD2B5O6XPH6sEgh7RXjoFSpaESNqU0i6Mib7FolWxBW4P9xqfLct23zR3aZ1pFS
-        H7FfQckMsvb0LRmacL8ZNaVH/HddSA2CYjjQaB5gfn1dx2tAbxb4t58oH09xBtpikyWNMB
-        qJlZi6GqnkxEeTRX/y+eKfH70hbNVD4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-438-1aMFPL11N1-7wNmVj12Z0Q-1; Wed, 29 Sep 2021 12:54:05 -0400
-X-MC-Unique: 1aMFPL11N1-7wNmVj12Z0Q-1
-Received: by mail-wm1-f72.google.com with SMTP id n30-20020a05600c3b9e00b002fbbaada5d7so2970094wms.7
-        for <linux-ia64@vger.kernel.org>; Wed, 29 Sep 2021 09:54:04 -0700 (PDT)
+        id S1352207AbhI3QnN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 30 Sep 2021 12:43:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39488 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1352188AbhI3QnM (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 30 Sep 2021 12:43:12 -0400
+Received: from mail-ua1-x942.google.com (mail-ua1-x942.google.com [IPv6:2607:f8b0:4864:20::942])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04A75C06176E
+        for <linux-ia64@vger.kernel.org>; Thu, 30 Sep 2021 09:41:30 -0700 (PDT)
+Received: by mail-ua1-x942.google.com with SMTP id u11so4691453uaw.3
+        for <linux-ia64@vger.kernel.org>; Thu, 30 Sep 2021 09:41:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=j1UJnp458dIEvjVJtN6CKP2ctPUxsmgz04t8NXos4kesHfzDvERDLB8/JVfEW5X5My
+         7DG0/bATp0zvbY23Vz2uMejBck1IuqlkBvjqvKXoonDiy1fbB/W2vRx7MLc8WnOuiOVy
+         tXeXRJwkBL2jsTM3APXXRu5SQMIqKNgFEGCDPAVUwyXF46hUIaO4FtU/05t01029ZsZ9
+         3EXjRpDbbs+h5E1LTKE2dMUU+vixNvLN8JgyRt64sTM8sxk+V7l0LPF7mN4s13xCVZhF
+         pcVeazdg7uTLX2crn4TtZ1zJINi7n3wyGkDqVJI/Mly3Iswaj2gR4A9RfjfOkygJ0eJr
+         Bc6Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:to:cc:references:from:organization:subject
-         :message-id:date:user-agent:mime-version:in-reply-to
-         :content-language:content-transfer-encoding;
-        bh=wz7/LCBNzU2qEx/p5MvqtYMtlnh6TSWHAxM6fGc3vyI=;
-        b=Cn1HA9izCHdl8UP7dR4rescP+5VvlfqaCKcaXsWGttwG7vw5iUp7DfWT9QDNgsFqg2
-         snp5O8p1LdSHIQf9r+od8WAT27ykV2NW8l43Kl3zMG+xz21u4q9CoyLt5dEmw3EIKT/w
-         SRqEvXqbCvb+eU9fzS7emAio/Osr98OKHr9l2UxBSLfYqMoVYMwTa/b++jkInW1vVQ1+
-         gBj9f3K7vHLq0gxr9saIXfzKSFEDNFNJL6D68NPFKk8j3EqGwNL1D8tVzw/x5qWDFWDh
-         PrHSFN0qbhjgXwWSMpFNaMLBYfWTFpcsuRSlh34+TEkZBNoHhI32Drrd+kkYBem+L8gr
-         UllA==
-X-Gm-Message-State: AOAM533442uPwygzrtZd0zM7x5556VhzOG2rLjcEkD4jIZcyhLz6G28A
-        GaVSiF/KF1otpKToE2K6BFQkfNKh4+uQu4wG0x5Cy8y66ZQsu1vngeDuwtP3kxYOmC7Yo0TfUuy
-        5bdd/vg4kOBqdVwOC0/GE9Q==
-X-Received: by 2002:adf:de86:: with SMTP id w6mr1061891wrl.287.1632934443883;
-        Wed, 29 Sep 2021 09:54:03 -0700 (PDT)
-X-Google-Smtp-Source: ABdhPJzGkSiAZ0xz7kEyNo1HVkBwp/AkS+PaM+h+PvcslevGOtwequrlIC8Rb0h3s3NmIdNpczjkgw==
-X-Received: by 2002:adf:de86:: with SMTP id w6mr1061866wrl.287.1632934443713;
-        Wed, 29 Sep 2021 09:54:03 -0700 (PDT)
-Received: from [192.168.3.132] (p4ff23c3b.dip0.t-ipconnect.de. [79.242.60.59])
-        by smtp.gmail.com with ESMTPSA id m4sm465862wrx.81.2021.09.29.09.54.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Sep 2021 09:54:03 -0700 (PDT)
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Michal Hocko <mhocko@suse.com>,
-        Oscar Salvador <osalvador@suse.de>,
-        Jianyong Wu <Jianyong.Wu@arm.com>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-        Vineet Gupta <vgupta@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        linux-snps-arc@lists.infradead.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-s390@vger.kernel.org, linux-mm@kvack.org,
-        kexec@lists.infradead.org
-References: <20210927150518.8607-1-david@redhat.com>
- <20210927150518.8607-4-david@redhat.com> <YVSW3uuu7mIcJMm3@kernel.org>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH v1 3/4] memblock: add MEMBLOCK_DRIVER_MANAGED to mimic
- IORESOURCE_SYSRAM_DRIVER_MANAGED
-Message-ID: <830c1670-378b-0fb6-bd5e-208e545fa126@redhat.com>
-Date:   Wed, 29 Sep 2021 18:54:01 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=/T9drlD1s9vO6lHEMs4LJzmDo2MKXEHBXvFYaWoQWpk=;
+        b=Ew+BVt4aKtT8nI3gXxx2EG4R+AKxZbGn7fKIFxpZYSKgm8SHSWAR7f2X4tdslPRAx8
+         Kw9Ybq6Yv6vrlxNCDSDrzQL2Dr3KnHNYrf8GgjXhxyhziYd+4flz6380+jqjMLb1c3LS
+         hSwjNQl/QTmnN25zq3UZ+77385XqtvBApPvVCrlgYy3u2k5SYB15zr244R4faTwF7/bL
+         vM5B/dsgcuMmw1eqnCz5bcq0mEUT7yBSjRea9leUHip0JS76hOKF+7ctH4TEbHwzLQBo
+         ZSFZHVt8B7al/qmpRJEYNdsglzQscEGRS81RyMPvrcORp3e86/CHbQeAFlmzYL9HigUs
+         5eIA==
+X-Gm-Message-State: AOAM533hBNfJd2s5BkMjAIy8aTqkfoy8WZPpRSq+ixlzCam6y8Odxi8C
+        5itXFGMnCLZ4CCC6b1bVioc08x/FKTrFYMCOENk=
+X-Google-Smtp-Source: ABdhPJxh1XcqFqfBj0WOPVC5cweUa+MyTCV2dZP5Jb5aJR1Oz5eabDOsQSlv8k4sWxC5Ywk/sK1qR28EC+QnibR3pLM=
+X-Received: by 2002:ab0:5852:: with SMTP id p18mr6173195uac.31.1633020086986;
+ Thu, 30 Sep 2021 09:41:26 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <YVSW3uuu7mIcJMm3@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a59:ab2e:0:b0:22d:7f44:603a with HTTP; Thu, 30 Sep 2021
+ 09:41:26 -0700 (PDT)
+Reply-To: irenezakari24@gmail.com
+From:   Irene zakari <irenezakari88@gmail.com>
+Date:   Thu, 30 Sep 2021 09:41:26 -0700
+Message-ID: <CAFT8PFEq9XMk-KwEfBX_uRx7zxkGga6q82pYRbxUVYwrqawqjA@mail.gmail.com>
+Subject: PLEASE I NEED YOUR HELP
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 29.09.21 18:39, Mike Rapoport wrote:
-> Hi,
-> 
-> On Mon, Sep 27, 2021 at 05:05:17PM +0200, David Hildenbrand wrote:
->> Let's add a flag that corresponds to IORESOURCE_SYSRAM_DRIVER_MANAGED.
->> Similar to MEMBLOCK_HOTPLUG, most infrastructure has to treat such memory
->> like ordinary MEMBLOCK_NONE memory -- for example, when selecting memory
->> regions to add to the vmcore for dumping in the crashkernel via
->> for_each_mem_range().
->   
-> Can you please elaborate on the difference in semantics of MEMBLOCK_HOTPLUG
-> and MEMBLOCK_DRIVER_MANAGED?
-> Unless I'm missing something they both mark memory that can be unplugged
-> anytime and so it should not be used in certain cases. Why is there a need
-> for a new flag?
+Hello   ..
 
-In the cover letter I have "Alternative B: Reuse MEMBLOCK_HOTPLUG. 
-MEMBLOCK_HOTPLUG serves a different purpose, though.", but looking into 
-the details it won't work as is.
+How do you do over there? I hope you are doing well?
 
-MEMBLOCK_HOTPLUG is used to mark memory early during boot that can later 
-get hotunplugged again and should be placed into ZONE_MOVABLE if the 
-"movable_node" kernel parameter is set.
+My name is Irene. (24 years), i am single, from Gambia, the only child
+of late Eng. Bernard Bakary Zakaria. the Director of Bajam Enterprise
+(Building Construction Company in The Gambia) also the CEO of Bernard
+Import and Export (GAMBIA).
 
-The confusing part is that we talk about "hotpluggable" but really mean 
-"hotunpluggable": the reason is that HW flags DIMM slots that can later 
-be hotplugged as "hotpluggable" even though there is already something 
-hotplugged.
+As a matter of fact my mother died when i was barely 4 years old
+according to my late father and because of the type of love he had for
+my mother made him to remain UN-married till he left the ghost..
 
-For example, ranges in the ACPI SRAT that are marked as 
-ACPI_SRAT_MEM_HOT_PLUGGABLE will be marked MEMBLOCK_HOTPLUG early during 
-boot (drivers/acpi/numa/srat.c:acpi_numa_memory_affinity_init()). Later, 
-we use that information to size ZONE_MOVABLE 
-(mm/page_alloc.c:find_zone_movable_pfns_for_nodes()). This will make 
-sure that these "hotpluggable" DIMMs can later get hotunplugged.
+So after the death of my father as a result of assassinate, his brother (My
+Uncle) who is the purchasing and marketing sale manager of my late
+fathers company named (Mr. James Tokunbo Oriade Zakaria) wanted to
+convert all the properties and resources of my late father into his
+which i quarreled with him and it made him to lay his anger on me to
+the extent of hiring an assassins to kill me but to God be the glory i
+succeeded by making a way to Burkina faso for my dear life.
+Honestly i do live a fearful life even here in Burkina faso because of
+those Assassins coming after me .
 
-Also, see should_skip_region() how this relates to the "movable_node" 
-kernel parameter:
+I would want to live and study in your country for my better future.
+because my father same blood brother wanted to force me into undecided
+marriage, just for me to leave my father home and went and live with
+another man I never know as he want to occupied all my father home
+and maybe to sold it as my father no longer alive, I'm the only child
+daughter my father born, '' but he don't know that i am not
+interesting in any of my father properties or early marriage for now,
+because i still have future to think about and to focus on my studies
+first as i was doing my first year in the University before the death
+of my father.
 
-	/* skip hotpluggable memory regions if needed */
-	if (movable_node_is_enabled() && memblock_is_hotpluggable(m) &&
-	    (flags & MEMBLOCK_HOTPLUG))
-		return true;
+Actually what I want to discuss with you is about my personal issue
+concern funds my late father deposited in a bank outside my country,
+worth $4.5 million united state dollars. i need your assistance to
+receive and invest this funds in your country.
 
-Long story short: MEMBLOCK_HOTPLUG has different semantics and is a 
-special case for "movable_node".
+Please help me, I am sincere to you and I want to be member of your
+family as well if you wouldn't mind to accept me and lead me to better
+future in your country.
 
--- 
-Thanks,
+All the documents the bank issue to my father during time of deposit
+is with me now.
+I already notify the bank on phone about the death of my father and
+they are surprise for the news and accept that my father is their good
+customer.
+I will be happy if this money can be invested in any business of your
+choice and it will be under your control till i finished my education,
+also I'm assuring you good relationship and I am ready to discuss the
+amount of money to give you from this money for your help.
 
-David / dhildenb
+Therefore, I shall give you the bank contact and other necessary
+information in my next email if you will only promise me that you will
+not/never betray and disclosed this matter to anybody, because, this
+money is the only hope i have for survival on earth since I have lost
+my parents.
 
+Moreover I have the FUND PLACEMENT CERTIFICATE and the DEATH
+CERTIFICATE here with me, but before I give you further information, i
+will like to know your full data
+
+1. Full Name: ........................
+2. Address: ..................
+3. Nationality: ........... Sex................
+4. Age:........... Date of Birth:................
+5. Occupation:...................
+.....
+6. Phone: ........... Fax:.........................
+7. State of Origin: .......Country:..............
+8. Occupation:...................
+................
+9. Marital status........... E-mail address's: ............
+10. Scan copy of your ID card or Driving License/Photo:............
+DECLARATION:
+
+so that i will be fully sure that i am not trusting the wrong person.
+and it will also give me the mind to send you the bank contact for you
+to communicate with them for more verification about this money. and
+to know you more better.
+
+Meanwhile, you can reach me through my pastor,his name is Pastor Paul
+any time you call, tell him that you want to speak with me because
+right now i am living in the church here in Burkina faso and i don't
+want to stay here any longer,
+send for me to speak with you his phone number is this(+226 75213646)
+
+I will stop here and i will be waiting for your reply and feel free
+ask any thing you want to know about me.
+Please help me, I would be highly appreciated
+Have nice day.
+From Irene
