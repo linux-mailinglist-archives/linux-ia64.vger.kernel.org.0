@@ -2,167 +2,171 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B132D429326
-	for <lists+linux-ia64@lfdr.de>; Mon, 11 Oct 2021 17:26:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89B15429BC3
+	for <lists+linux-ia64@lfdr.de>; Tue, 12 Oct 2021 05:11:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238457AbhJKP2p (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 11 Oct 2021 11:28:45 -0400
-Received: from pegase2.c-s.fr ([93.17.235.10]:52677 "EHLO pegase2.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238231AbhJKP2n (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 11 Oct 2021 11:28:43 -0400
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4HSjM41DLlz9sV4;
-        Mon, 11 Oct 2021 17:26:40 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id fpQr6HfP7u29; Mon, 11 Oct 2021 17:26:40 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4HSjM271n6z9sTs;
-        Mon, 11 Oct 2021 17:26:38 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id CC8AA8B773;
-        Mon, 11 Oct 2021 17:26:38 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id jI_UH71UA1dc; Mon, 11 Oct 2021 17:26:38 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.103])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 4A8238B77A;
-        Mon, 11 Oct 2021 17:26:38 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-        by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19BFQWd31585043
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Mon, 11 Oct 2021 17:26:32 +0200
-Received: (from chleroy@localhost)
-        by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19BFQWRh1585042;
-        Mon, 11 Oct 2021 17:26:32 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
-        Kees Cook <keescook@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: [PATCH v1 10/10] lkdtm: Fix execute_[user]_location()
-Date:   Mon, 11 Oct 2021 17:25:37 +0200
-Message-Id: <c551f3f4b803d1a4a184b0fa94475d405ba436d8.1633964380.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <cover.1633964380.git.christophe.leroy@csgroup.eu>
-References: <cover.1633964380.git.christophe.leroy@csgroup.eu>
+        id S232126AbhJLDNg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 11 Oct 2021 23:13:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46962 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S231951AbhJLDNf (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 11 Oct 2021 23:13:35 -0400
+Received: from mail-lf1-x136.google.com (mail-lf1-x136.google.com [IPv6:2a00:1450:4864:20::136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB0C3C061745
+        for <linux-ia64@vger.kernel.org>; Mon, 11 Oct 2021 20:11:34 -0700 (PDT)
+Received: by mail-lf1-x136.google.com with SMTP id r19so78996938lfe.10
+        for <linux-ia64@vger.kernel.org>; Mon, 11 Oct 2021 20:11:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=w2FJM5xq0hHLOwYkxQq9HjtkvFRksFK+c9CUBnhMlUA=;
+        b=ECxgpBAgFN57M9Muv6HgPW+2gsbKzFTgbdkbk/wcoXHhkLozGpRLLlOMDYegVvygHN
+         2py0lXASeUR5ykVbr81UL/hPafzHt+NJHhyIvmIYcmytMQ6GdAJ8dUABYBTqcJvXUoDk
+         df377gxkJR4hl2XnoHq6H5fg1PhPosrjlO+vw06vz95++L7FV4HiYbwq2J1WFfNnN/jf
+         Mx2ogkRKfRgA5smJ82Ca1+NvpsHAbDGCT+LpTXs64ymH6okmPAuVxvDsTmmJO9KVLgUG
+         pZxdks765lI2PhK8KGoyJxBi3yRR/GHoeDDoq3qeWcq50tyooD3LpiVGlx8t8P9OlzUu
+         Hbhg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=w2FJM5xq0hHLOwYkxQq9HjtkvFRksFK+c9CUBnhMlUA=;
+        b=QqMk//esx1zNfZIpWN7e5f+PS0n3EF+Q6AKlWyK/yPiaozZv2Ks53bYwO/sliBIC+f
+         li7hX40QATJNpUsIh5AlK9wj+6lg0kzlLxpPL50pU1Gg1Iaz4vHb+KNvUgCITGyQidAC
+         9gxqfEqogDAm71Xd6IpV/alZjS7BYVAJ8gcTFvg8qGy0SHInyaN2Uln3SkycWdYUiLAv
+         NJ3rqIl0AvftGi8w4dci9QXOQacIeXje7ZlWcAC42T4kqjcgyxmthKzA7SMlc/vs5fIj
+         Tf8FPQp7xyei6Foo/L60G8mUW5pvSEgQ4cx2Oe8qHXhzn6UvBZjbOx5JFZsB3F+QanVS
+         qnow==
+X-Gm-Message-State: AOAM532G7FDTC5VKX9ZkFbGOvkg8pyV+OYYPYm1Fjxgeq0qZoSvhw8ac
+        0N9Vog75ugVG5bygm+e7DIddczTdXjrtIl+6w51bYg==
+X-Google-Smtp-Source: ABdhPJyrNsMKS3+CiKmx5Tie0/Y10h5OgwLQcjWxqMC9cxgYiRdOXIj2B1esdvuIxFjjlUZ3q1gGQg9rDQ/7FbCROq4=
+X-Received: by 2002:a05:651c:b21:: with SMTP id b33mr25766490ljr.515.1634008293091;
+ Mon, 11 Oct 2021 20:11:33 -0700 (PDT)
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1633965929; l=3205; s=20211009; h=from:subject:message-id; bh=l9VMW9X0cJdJ5G39QvOQSX7TaMvTqTcPjFZvPR3zBnY=; b=jicnpEgsrfjH5zYpDhYjzje61oqpOOuq/IuppB5jOn2Ba0Gd0x1VsCW6/z7XdMGhv8A23JZri38f B8zYR3a+B6WB1RVyyaaI9RtV86aWs3LS+2H/2P5Ya4RB7CP/W3A1
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+References: <20211007151010.333516-1-arnd@kernel.org> <20211007151010.333516-2-arnd@kernel.org>
+In-Reply-To: <20211007151010.333516-2-arnd@kernel.org>
+From:   John Stultz <john.stultz@linaro.org>
+Date:   Mon, 11 Oct 2021 20:11:20 -0700
+Message-ID: <CALAqxLVVEi67HQbjCSvfDPmfjeeZ4ROvqa8yfYMnRmeyi34Ddw@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] qcom_scm: hide Kconfig symbol
+To:     Arnd Bergmann <arnd@kernel.org>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>
+Cc:     lkml <linux-kernel@vger.kernel.org>,
+        linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-arm-msm <linux-arm-msm@vger.kernel.org>,
+        dri-devel <dri-devel@lists.freedesktop.org>,
+        "open list:DRM DRIVER FOR MSM ADRENO GPU" 
+        <freedreno@lists.freedesktop.org>,
+        "list@263.net:IOMMU DRIVERS <iommu@lists.linux-foundation.org>, Joerg
+        Roedel <joro@8bytes.org>," <iommu@lists.linux-foundation.org>,
+        linux-media <linux-media@vger.kernel.org>,
+        linux-mmc <linux-mmc@vger.kernel.org>,
+        Network Development <netdev@vger.kernel.org>,
+        ath10k <ath10k@lists.infradead.org>,
+        linux-wireless@vger.kernel.org,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Kalle Valo <kvalo@codeaurora.org>,
+        Alex Elder <elder@linaro.org>,
+        Amit Pundir <amit.pundir@linaro.org>,
+        Caleb Connolly <caleb.connolly@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-execute_location() and execute_user_location() intent
-to copy do_nothing() text and execute it at a new location.
-However, at the time being it doesn't copy do_nothing() function
-but do_nothing() function descriptor which still points to the
-original text. So at the end it still executes do_nothing() at
-its original location allthough using a copied function descriptor.
+On Thu, Oct 7, 2021 at 8:10 AM Arnd Bergmann <arnd@kernel.org> wrote:
+>
+> From: Arnd Bergmann <arnd@arndb.de>
+>
+> Now that SCM can be a loadable module, we have to add another
+> dependency to avoid link failures when ipa or adreno-gpu are
+> built-in:
+>
+> aarch64-linux-ld: drivers/net/ipa/ipa_main.o: in function `ipa_probe':
+> ipa_main.c:(.text+0xfc4): undefined reference to `qcom_scm_is_available'
+>
+> ld.lld: error: undefined symbol: qcom_scm_is_available
+> >>> referenced by adreno_gpu.c
+> >>>               gpu/drm/msm/adreno/adreno_gpu.o:(adreno_zap_shader_load) in archive drivers/built-in.a
+>
+> This can happen when CONFIG_ARCH_QCOM is disabled and we don't select
+> QCOM_MDT_LOADER, but some other module selects QCOM_SCM. Ideally we'd
+> use a similar dependency here to what we have for QCOM_RPROC_COMMON,
+> but that causes dependency loops from other things selecting QCOM_SCM.
+>
+> This appears to be an endless problem, so try something different this
+> time:
+>
+>  - CONFIG_QCOM_SCM becomes a hidden symbol that nothing 'depends on'
+>    but that is simply selected by all of its users
+>
+>  - All the stubs in include/linux/qcom_scm.h can go away
+>
+>  - arm-smccc.h needs to provide a stub for __arm_smccc_smc() to
+>    allow compile-testing QCOM_SCM on all architectures.
+>
+>  - To avoid a circular dependency chain involving RESET_CONTROLLER
+>    and PINCTRL_SUNXI, drop the 'select RESET_CONTROLLER' statement.
+>    According to my testing this still builds fine, and the QCOM
+>    platform selects this symbol already.
+>
+> Acked-by: Kalle Valo <kvalo@codeaurora.org>
+> Acked-by: Alex Elder <elder@linaro.org>
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> Changes in v2:
+> - fix the iommu dependencies
 
-So, fix that by really copying do_nothing() text and build a new
-function descriptor by copying do_nothing() function descriptor and
-updating the target address with the new location.
+Hey Arnd,
+   Thanks again so much for working out these details. Also my
+apologies, as Bjorn asked for me to test this patch, but I wasn't able
+to get to it before it landed.  Unfortunately I've hit an issue that
+is keeping the db845c from booting with this.
 
-Also fix the displayed addresses by dereferencing do_nothing()
-function descriptor.
+> diff --git a/drivers/iommu/arm/arm-smmu/Makefile b/drivers/iommu/arm/arm-smmu/Makefile
+> index e240a7bcf310..b0cc01aa20c9 100644
+> --- a/drivers/iommu/arm/arm-smmu/Makefile
+> +++ b/drivers/iommu/arm/arm-smmu/Makefile
+> @@ -1,4 +1,5 @@
+>  # SPDX-License-Identifier: GPL-2.0
+>  obj-$(CONFIG_QCOM_IOMMU) += qcom_iommu.o
+>  obj-$(CONFIG_ARM_SMMU) += arm_smmu.o
+> -arm_smmu-objs += arm-smmu.o arm-smmu-impl.o arm-smmu-nvidia.o arm-smmu-qcom.o
+> +arm_smmu-objs += arm-smmu.o arm-smmu-impl.o arm-smmu-nvidia.o
+> +arm_smmu-$(CONFIG_ARM_SMMU_QCOM) += arm-smmu-qcom.o
+> diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
+> index 9f465e146799..2c25cce38060 100644
+> --- a/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
+> +++ b/drivers/iommu/arm/arm-smmu/arm-smmu-impl.c
+> @@ -215,7 +215,8 @@ struct arm_smmu_device *arm_smmu_impl_init(struct arm_smmu_device *smmu)
+>             of_device_is_compatible(np, "nvidia,tegra186-smmu"))
+>                 return nvidia_smmu_impl_init(smmu);
+>
+> -       smmu = qcom_smmu_impl_init(smmu);
+> +       if (IS_ENABLED(CONFIG_ARM_SMMU_QCOM))
+> +               smmu = qcom_smmu_impl_init(smmu);
+>
+>         if (of_device_is_compatible(np, "marvell,ap806-smmu-500"))
+>                 smmu->impl = &mrvl_mmu500_impl;
 
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
- drivers/misc/lkdtm/perms.c | 45 +++++++++++++++++++++++++++++++-------
- 1 file changed, 37 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-index da16564e1ecd..1d03cd44c21d 100644
---- a/drivers/misc/lkdtm/perms.c
-+++ b/drivers/misc/lkdtm/perms.c
-@@ -44,19 +44,42 @@ static noinline void do_overwritten(void)
- 	return;
- }
- 
-+static void *setup_function_descriptor(funct_descr_t *fdesc, void *dst)
-+{
-+	int err;
-+
-+	if (!__is_defined(HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR))
-+		return dst;
-+
-+	err = copy_from_kernel_nofault(fdesc, do_nothing, sizeof(*fdesc));
-+	if (err < 0)
-+		return ERR_PTR(err);
-+
-+	fdesc->addr = (unsigned long)dst;
-+	barrier();
-+
-+	return fdesc;
-+}
-+
- static noinline void execute_location(void *dst, bool write)
- {
--	void (*func)(void) = dst;
-+	void (*func)(void);
-+	funct_descr_t fdesc;
-+	void *do_nothing_text = dereference_symbol_descriptor(do_nothing);
- 
--	pr_info("attempting ok execution at %px\n", do_nothing);
-+	pr_info("attempting ok execution at %px\n", do_nothing_text);
- 	do_nothing();
- 
- 	if (write == CODE_WRITE) {
--		memcpy(dst, do_nothing, EXEC_SIZE);
-+		memcpy(dst, do_nothing_text, EXEC_SIZE);
- 		flush_icache_range((unsigned long)dst,
- 				   (unsigned long)dst + EXEC_SIZE);
- 	}
--	pr_info("attempting bad execution at %px\n", func);
-+	func = setup_function_descriptor(&fdesc, dst);
-+	if (IS_ERR(func))
-+		return;
-+
-+	pr_info("attempting bad execution at %px\n", dst);
- 	func();
- 	pr_err("FAIL: func returned\n");
- }
-@@ -66,16 +89,22 @@ static void execute_user_location(void *dst)
- 	int copied;
- 
- 	/* Intentionally crossing kernel/user memory boundary. */
--	void (*func)(void) = dst;
-+	void (*func)(void);
-+	funct_descr_t fdesc;
-+	void *do_nothing_text = dereference_symbol_descriptor(do_nothing);
- 
--	pr_info("attempting ok execution at %px\n", do_nothing);
-+	pr_info("attempting ok execution at %px\n", do_nothing_text);
- 	do_nothing();
- 
--	copied = access_process_vm(current, (unsigned long)dst, do_nothing,
-+	copied = access_process_vm(current, (unsigned long)dst, do_nothing_text,
- 				   EXEC_SIZE, FOLL_WRITE);
- 	if (copied < EXEC_SIZE)
- 		return;
--	pr_info("attempting bad execution at %px\n", func);
-+	func = setup_function_descriptor(&fdesc, dst);
-+	if (IS_ERR(func))
-+		return;
-+
-+	pr_info("attempting bad execution at %px\n", dst);
- 	func();
- 	pr_err("FAIL: func returned\n");
- }
--- 
-2.31.1
+The problem with these two chunks is that there is currently no
+CONFIG_ARM_SMMU_QCOM option. :)
 
+Was that something you intended to add in the patch?
+
+I'm working up a Kconfig patch to do so, so I'll send that out in a
+second here, but let me know if you already have that somewhere (I
+suspect you implemented it and just forgot to add the change to the
+commit), as I'm sure your Kconfig help text will be better than mine.
+:)
+
+Again, I'm so sorry I didn't get over to testing your patch before
+seeing this here!
+
+thanks
+-john
