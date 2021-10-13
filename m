@@ -2,49 +2,49 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A64E42B864
-	for <lists+linux-ia64@lfdr.de>; Wed, 13 Oct 2021 09:05:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B3A742B880
+	for <lists+linux-ia64@lfdr.de>; Wed, 13 Oct 2021 09:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238193AbhJMHHb (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 13 Oct 2021 03:07:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59606 "EHLO
+        id S232118AbhJMHLW (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 13 Oct 2021 03:11:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238124AbhJMHHb (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 13 Oct 2021 03:07:31 -0400
-Received: from mail-pl1-x631.google.com (mail-pl1-x631.google.com [IPv6:2607:f8b0:4864:20::631])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62AF0C061749
-        for <linux-ia64@vger.kernel.org>; Wed, 13 Oct 2021 00:05:28 -0700 (PDT)
-Received: by mail-pl1-x631.google.com with SMTP id l6so1157172plh.9
-        for <linux-ia64@vger.kernel.org>; Wed, 13 Oct 2021 00:05:28 -0700 (PDT)
+        with ESMTP id S238302AbhJMHLU (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 13 Oct 2021 03:11:20 -0400
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB059C061570
+        for <linux-ia64@vger.kernel.org>; Wed, 13 Oct 2021 00:09:17 -0700 (PDT)
+Received: by mail-pj1-x1032.google.com with SMTP id oa4so1485121pjb.2
+        for <linux-ia64@vger.kernel.org>; Wed, 13 Oct 2021 00:09:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=6tGvcqjwGnkwXapVdxREWLfq3SeiEzYltujninCiyHk=;
-        b=Y9iLi2JrztwgqJU7WxouRqkcs19pQmlvc+dwqmTt/LsB2A/+LkmdmebziJqWx90+1l
-         QGUBkBxPvUXkDNRhn2WfhIRnIA//lJRWBR6Sy4+Bvt3AZnPK5owInFUImk8i6ZlkNfXx
-         3PbBkcLhCoweDrO9NiqjhNF4c3MLWR35u5DiA=
+        bh=9B8532Yqv4ro9UPpSECsrKFDalIVcpozoR3xlP35mOo=;
+        b=mOSmWjnWgLyjFNwZ0JklI8sCKMnMMWbDMjBEiqgViAMnDbbLoqtyhfRZSXhu78BZva
+         fZi0/vUzbbm9hey6oND+v9LEaQMLMU+ZNQpseYV/sBelGJ8lZ6Uni5v40eDIb3NjnOvq
+         Fz3mNpV5Hm0WMOjWDkkg0bltm0biFBS/mCHk4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=6tGvcqjwGnkwXapVdxREWLfq3SeiEzYltujninCiyHk=;
-        b=A3id3WLvNuiiQQjYO5av75zQbXA9UQE1ashbrWQosEe1RR4ws72wEoIcMSD/QMtEJp
-         8yBBjnKKPRceqA/69B7ZRULXsndROb+PunEu+WdRxPHFDb1JdCK3YQOXyICkRvpmkkYz
-         cI2Dk3gi02fHKZpV+4QEUx7pcyxWw7f9qYTXXzyv3LNd6JHNRgMZQXve/3Dz9jP6DPTN
-         3PIgsTXT3GbkhiixwluMkvGJc6K3lBowScFZc/RGszd+sKvr7w/UJqDKFDTHQjFripNW
-         Omxey/zWBeEuliDKN9H3psCqjXTR2umRv9aPSbIJKAdGC3HOCfu1qkbH3JQeEB069Zsc
-         GsFQ==
-X-Gm-Message-State: AOAM532oJLjImln7GmmyvrVf0RQAPkHX8oR0mCsAyJZFOvm09vH2rj5G
-        293xEys8P67PjVONThMSYT1DXw==
-X-Google-Smtp-Source: ABdhPJxyo+lKj4DVYPaWC7XDi86I8yDjK4zmQZScEiHVyq9xnd6FexVoNrQNr9v1X26KMPGowX7ckA==
-X-Received: by 2002:a17:90b:3b44:: with SMTP id ot4mr11523975pjb.73.1634108727909;
-        Wed, 13 Oct 2021 00:05:27 -0700 (PDT)
+        bh=9B8532Yqv4ro9UPpSECsrKFDalIVcpozoR3xlP35mOo=;
+        b=vhpz7VTFTquFyxOYRmjomxV2gl/HCUV7NEWz50rrMk0apRk6obZiGkb/KA7zdexuGF
+         FMGxDoNyZBQYdgdaqSc7AQLmk1xmqG0VnyXsWuRLeLYFfO5QFNzuuxPgunb8+If+HLAa
+         E6+T8+w9E9HnbDJNTptJDIpRY/V5zlq2FGAVbD4llrVvEvsrbjfH5w9aginQEpPX7dGq
+         oGKBHkGCLfVu7kJSLuFQVhEl32mCpouLQ5e+nqeMbf1/GrU4+77bfEOqv9Ur2NVkjrjn
+         dWyinHotx1UUmZBgqhSxbmA9hW7dxVvr3YnnkZx78JVbRkTLh0YJbydk/S9yyIIc6VG5
+         pTeA==
+X-Gm-Message-State: AOAM5303Ir8Div6LuAVM0v2GIT/nKCGltYc1QfHYpcuJ5Ib1tg1/Dkag
+        fSS1a/hACCSeIb1aPN3LJDve8w==
+X-Google-Smtp-Source: ABdhPJwNfT+PN9/6KcLorXFjdNFizJJQ4LNC6e+5MQ9vFZUDGTpFiM1qVaKprUL29bSaC2DkxYGXsw==
+X-Received: by 2002:a17:90a:6542:: with SMTP id f2mr8159904pjs.159.1634108957279;
+        Wed, 13 Oct 2021 00:09:17 -0700 (PDT)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id ip10sm5334805pjb.40.2021.10.13.00.05.27
+        by smtp.gmail.com with ESMTPSA id p2sm4697310pja.51.2021.10.13.00.09.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 Oct 2021 00:05:27 -0700 (PDT)
-Date:   Wed, 13 Oct 2021 00:05:26 -0700
+        Wed, 13 Oct 2021 00:09:16 -0700 (PDT)
+Date:   Wed, 13 Oct 2021 00:09:16 -0700
 From:   Kees Cook <keescook@chromium.org>
 To:     Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -57,79 +57,56 @@ Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
         linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v1 08/10] lkdtm: Really write into kernel text in
- WRITE_KERN
-Message-ID: <202110130004.880A6C841@keescook>
+Subject: Re: [PATCH v1 09/10] lkdtm: Fix lkdtm_EXEC_RODATA()
+Message-ID: <202110130008.EC5E957D4A@keescook>
 References: <cover.1633964380.git.christophe.leroy@csgroup.eu>
- <624940395e5d81967246f911a65740b9a15b5a70.1633964380.git.christophe.leroy@csgroup.eu>
+ <7da92e59e148bd23564d63bdd8bcfaba0ba6d1f1.1633964380.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <624940395e5d81967246f911a65740b9a15b5a70.1633964380.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <7da92e59e148bd23564d63bdd8bcfaba0ba6d1f1.1633964380.git.christophe.leroy@csgroup.eu>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Oct 11, 2021 at 05:25:35PM +0200, Christophe Leroy wrote:
-> WRITE_KERN is supposed to overwrite some kernel text, namely
-> do_overwritten() function.
+On Mon, Oct 11, 2021 at 05:25:36PM +0200, Christophe Leroy wrote:
+> Behind a location, lkdtm_EXEC_RODATA() executes a real function,
+> not a copy of do_nothing().
 > 
-> But at the time being it overwrites do_overwritten() function
-> descriptor, not function text.
+> So do it directly instead of using execute_location().
+
+I don't understand this. Why does the next patch not fix this?
+
+-Kees
+
 > 
-> Fix it by dereferencing the function descriptor to obtain
-> function text pointer.
-> 
-> And make do_overwritten() noinline so that it is really
-> do_overwritten() which is called by lkdtm_WRITE_KERN().
+> And fix displayed addresses by dereferencing the function descriptors.
 > 
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
 > ---
->  drivers/misc/lkdtm/perms.c | 8 +++++---
->  1 file changed, 5 insertions(+), 3 deletions(-)
+>  drivers/misc/lkdtm/perms.c | 9 ++++++++-
+>  1 file changed, 8 insertions(+), 1 deletion(-)
 > 
 > diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-> index 60b3b2fe929d..442d60ed25ef 100644
+> index 442d60ed25ef..da16564e1ecd 100644
 > --- a/drivers/misc/lkdtm/perms.c
 > +++ b/drivers/misc/lkdtm/perms.c
-> @@ -5,6 +5,7 @@
->   * even non-readable regions.
->   */
->  #include "lkdtm.h"
-> +#include <linux/kallsyms.h>
-
-Why not #include <asm/sections.h> instead here?
-
->  #include <linux/slab.h>
->  #include <linux/vmalloc.h>
->  #include <linux/mman.h>
-> @@ -37,7 +38,7 @@ static noinline void do_nothing(void)
+> @@ -153,7 +153,14 @@ void lkdtm_EXEC_VMALLOC(void)
+>  
+>  void lkdtm_EXEC_RODATA(void)
+>  {
+> -	execute_location(lkdtm_rodata_do_nothing, CODE_AS_IS);
+> +	pr_info("attempting ok execution at %px\n",
+> +		dereference_symbol_descriptor(do_nothing));
+> +	do_nothing();
+> +
+> +	pr_info("attempting bad execution at %px\n",
+> +		dereference_symbol_descriptor(lkdtm_rodata_do_nothing));
+> +	lkdtm_rodata_do_nothing();
+> +	pr_err("FAIL: func returned\n");
 >  }
 >  
->  /* Must immediately follow do_nothing for size calculuations to work out. */
-> -static void do_overwritten(void)
-> +static noinline void do_overwritten(void)
->  {
->  	pr_info("do_overwritten wasn't overwritten!\n");
->  	return;
-> @@ -113,8 +114,9 @@ void lkdtm_WRITE_KERN(void)
->  	size_t size;
->  	volatile unsigned char *ptr;
->  
-> -	size = (unsigned long)do_overwritten - (unsigned long)do_nothing;
-> -	ptr = (unsigned char *)do_overwritten;
-> +	size = (unsigned long)dereference_symbol_descriptor(do_overwritten) -
-> +	       (unsigned long)dereference_symbol_descriptor(do_nothing);
-> +	ptr = dereference_symbol_descriptor(do_overwritten);
-
-But otherwise, yup, I expect there will be a bunch of things like this
-to clean up in LKDTM. :| Sorry about that!
-
-Acked-by: Kees Cook <keescook@chromium.org>
-
->  
->  	pr_info("attempting bad %zu byte write at %px\n", size, ptr);
->  	memcpy((void *)ptr, (unsigned char *)do_nothing, size);
+>  void lkdtm_EXEC_USERSPACE(void)
 > -- 
 > 2.31.1
 > 
