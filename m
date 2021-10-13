@@ -2,138 +2,111 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D0DE342B97C
-	for <lists+linux-ia64@lfdr.de>; Wed, 13 Oct 2021 09:48:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCC5E42BAA1
+	for <lists+linux-ia64@lfdr.de>; Wed, 13 Oct 2021 10:38:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238606AbhJMHvA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 13 Oct 2021 03:51:00 -0400
-Received: from pegase2.c-s.fr ([93.17.235.10]:46475 "EHLO pegase2.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238597AbhJMHu7 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 13 Oct 2021 03:50:59 -0400
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4HTl5z2pvVz9sSS;
-        Wed, 13 Oct 2021 09:48:55 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id adj2QVTuN7-k; Wed, 13 Oct 2021 09:48:55 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4HTl5z1lNGz9sRn;
-        Wed, 13 Oct 2021 09:48:55 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 2425B8B77E;
-        Wed, 13 Oct 2021 09:48:55 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id m9ol1goCz6oD; Wed, 13 Oct 2021 09:48:55 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.103])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id E7EB88B763;
-        Wed, 13 Oct 2021 09:48:54 +0200 (CEST)
-Subject: Re: [PATCH v1 09/10] lkdtm: Fix lkdtm_EXEC_RODATA()
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org
-References: <cover.1633964380.git.christophe.leroy@csgroup.eu>
- <7da92e59e148bd23564d63bdd8bcfaba0ba6d1f1.1633964380.git.christophe.leroy@csgroup.eu>
- <202110130018.7B2129375@keescook>
- <be307455-b02b-f382-851f-091ea26040b7@csgroup.eu>
-Message-ID: <134b968f-f65f-cd74-3db1-fff60e5ebeb8@csgroup.eu>
-Date:   Wed, 13 Oct 2021 09:48:54 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+        id S238327AbhJMIkX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 13 Oct 2021 04:40:23 -0400
+Received: from mout.kundenserver.de ([212.227.126.134]:54755 "EHLO
+        mout.kundenserver.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229644AbhJMIkX (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 13 Oct 2021 04:40:23 -0400
+Received: from mail-wr1-f45.google.com ([209.85.221.45]) by
+ mrelayeu.kundenserver.de (mreue012 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MTw02-1m9jDc1EHK-00R2xI; Wed, 13 Oct 2021 10:38:18 +0200
+Received: by mail-wr1-f45.google.com with SMTP id t2so5611840wrb.8;
+        Wed, 13 Oct 2021 01:38:18 -0700 (PDT)
+X-Gm-Message-State: AOAM532sIms2k2gL9BMiv8xID3CPh7cFSIveAH5Y8WyvdAWsIEGWyEgZ
+        iv9ehvy8A0i6G3ZX+hTnK+srXYjStOxauLLqUGU=
+X-Google-Smtp-Source: ABdhPJzERy7qzxbolOT39FrUcwqPdeh2fIURPv4ilmByKiguzqnvn/Xhapdln0hugnZ2cVo72Y7EAER3Sss3B8QKu2E=
+X-Received: by 2002:adf:a3da:: with SMTP id m26mr37292890wrb.336.1634114297720;
+ Wed, 13 Oct 2021 01:38:17 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <be307455-b02b-f382-851f-091ea26040b7@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
-Content-Transfer-Encoding: 8bit
+References: <20211013005532.700190-1-sashal@kernel.org> <20211013005532.700190-11-sashal@kernel.org>
+ <YWZ1om+pLmV3atTd@kroah.com>
+In-Reply-To: <YWZ1om+pLmV3atTd@kroah.com>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 13 Oct 2021 10:38:01 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a2AC9-ogoxi1q+NQyBqMwrFqSZtHvZVdJ9HF+OLB3O62g@mail.gmail.com>
+Message-ID: <CAK8P3a2AC9-ogoxi1q+NQyBqMwrFqSZtHvZVdJ9HF+OLB3O62g@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 5.10 11/11] firmware: include drivers/firmware/Kconfig
+ unconditionally
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     Sasha Levin <sashal@kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        "# 3.4.x" <stable@vger.kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Bjorn Andersson <bjorn.andersson@linaro.org>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Will Deacon <will@kernel.org>, Mark Brown <broonie@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Simon Trimmer <simont@opensource.cirrus.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        James Bottomley <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Russell King <rmk+kernel@armlinux.org.uk>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        =?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Mike Rapoport <rppt@kernel.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Sergei Trofimovich <slyfox@gentoo.org>,
+        Jens Axboe <axboe@kernel.dk>, ben.widawsky@intel.com,
+        Dan Williams <dan.j.williams@intel.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-ia64@vger.kernel.org,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:zhj9YlgIJvmAFu1sVCt9oWh31Lweh3k5LoV6efB6VHK7enEic5L
+ 0lnGmkqqdJ+BqVVa49I3PMBcAU5O/W2dgpXbb3bx8ZBRCK3pFXKDFiXFDVt0BOHyVhhHo9W
+ fVZLkHYBUtk8BWjH7XC6NZb8jNqAE70rJfVP11RuN0gte7xLck4Yt0toweqvM8zBtuvGkKX
+ aCT663Pj+9ZvzG+rWL7Pw==
+X-Spam-Flag: NO
+X-UI-Out-Filterresults: notjunk:1;V03:K0:cNkEPDcmdec=:Dn2SUKIhNPMW5NrVK4+yq3
+ LoxGp86ovdWOWxU1h/l8RkVfDuwwKWW2l1meWQiyxmJdIJVHmU+mMpk/GxPcGaMoxPWbyaHRt
+ UhVOwsJEVGZd7hQR2YFYS4QewnAbh7jLgOICYBit/xCpjG/Ux7YAK9WHxozkwTWuhG69fG9jk
+ pqynODcbLH8kxolLq2JrVywRRNXN1wxtkgRwmdY2PyqRozOjSukXiQcJx3gpcVJeSonF2y+tS
+ /jSgeMvKCk8ZGgLCTOXT8f64z1+9uFc4ZBrI67INehFfd3HSmK4xkttWlQjCmNSb4Iw728451
+ wyZVGn2iXknQtPiJR5Hn1ihfxHHtkZeztZ/mCk0aagrZzREBKXdijqVATUh4Z2QZZIHHmOfQ1
+ cW4IJ5WD3OpxcxY5u1nUHqY867j97yTjxaoZgRxwdj9ZG7w91GylgKf9oM/mhKW2cE5x160mS
+ in5SYhz4kXcHBFTFSOt9l9Gv5XlQY8V4oapOH+wAGySPWlESLNHJEUnxQZiu3F4WPJLRrN1Jb
+ Gnz9dIv8KSxtOGNPP1O04evz59eXObl2fyzfqcv81m3eDPNlcn9FHudA9DQ4e29aGeuPVraOv
+ DW+nhPHzlMqTtZpS/foczN2MRZzDKASXXS+SoF7qzcyOzJ1khyuh4pdD47TfHCBtxzAqr4WIk
+ p9QyRpWHUY3c4FYdiM2Wbp7FMIPrSTon7m10/hulJdCJJLBCa9r+zXa0xg/OKq6YJyxgiG8I2
+ ULjP4gSNeElevnFOxzrgBnirhHycAiNstPuymr4CrXLd1AbX0FKeBi9t2vOpMXp9CXJ9fZKNI
+ BIWP4Ip9XULklH9MHWfZDBC5FslZZIU5ClLJ+H8JpRg3j9IKXYidoHeoMDsYtENLNoKMscyyC
+ h0ZzjXaMGXqKPCquwZAg==
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+On Wed, Oct 13, 2021 at 7:58 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+> On Tue, Oct 12, 2021 at 08:55:31PM -0400, Sasha Levin wrote:
+>
+> This isn't for stable kernels, it should be dropped from all of your
+> AUTOSEL queues.
 
+Agreed. The second patch that depends on this does fix a (randconfig)
+build issue in stable kernels as well, but that patch is currently broken,
+and the two patches combined do feel a little too invasive for addressing
+such a minor issue in the stable kernels.
 
-Le 13/10/2021 à 09:39, Christophe Leroy a écrit :
-> 
-> 
-> Le 13/10/2021 à 09:23, Kees Cook a écrit :
->> On Mon, Oct 11, 2021 at 05:25:36PM +0200, Christophe Leroy wrote:
->>> Behind a location, lkdtm_EXEC_RODATA() executes a real function,
->>> not a copy of do_nothing().
->>>
->>> So do it directly instead of using execute_location().
->>>
->>> And fix displayed addresses by dereferencing the function descriptors.
->>>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> ---
->>>   drivers/misc/lkdtm/perms.c | 9 ++++++++-
->>>   1 file changed, 8 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
->>> index 442d60ed25ef..da16564e1ecd 100644
->>> --- a/drivers/misc/lkdtm/perms.c
->>> +++ b/drivers/misc/lkdtm/perms.c
->>> @@ -153,7 +153,14 @@ void lkdtm_EXEC_VMALLOC(void)
->>>
->>>   void lkdtm_EXEC_RODATA(void)
->>>   {
->>> -    execute_location(lkdtm_rodata_do_nothing, CODE_AS_IS);
->>> +    pr_info("attempting ok execution at %px\n",
->>> +        dereference_symbol_descriptor(do_nothing));
->>> +    do_nothing();
->>> +
->>> +    pr_info("attempting bad execution at %px\n",
->>> +        dereference_symbol_descriptor(lkdtm_rodata_do_nothing));
->>> +    lkdtm_rodata_do_nothing();
->>> +    pr_err("FAIL: func returned\n");
->>>   }
->>
->> (In re-reading this more carefully, I see now why kallsyms.h is used
->> earlier: _function_ vs _symbol_ descriptor.)
->>
->> In the next patch:
->>
->> static noinline void execute_location(void *dst, bool write)
->> {
->> ...
->>         func = setup_function_descriptor(&fdesc, dst);
->>         if (IS_ERR(func))
->>                 return;
->>
->>         pr_info("attempting bad execution at %px\n", dst);
->>         func();
->>         pr_err("FAIL: func returned\n");
->> }
->>
->> What are the conditions for which dereference_symbol_descriptor works
->> but dereference _function_descriptor doesn't?
->>
-> 
-> When LKDTM is built as a module I guess ?
-> 
+If anyone runs into the QCOM_SCM link failures on stable kernels, I
+can come up with a more localized fix.
 
-To be more precise, dereference_symbol_descriptor() calls either 
-dereference_kernel_function_descriptor() or 
-dereference_module_function_descriptor()
-
-Both functions call dereference_function_descriptor() after checking 
-that we want to dereference something that is in the OPD section.
-
-If we call dereference_function_descriptor() directly instead of 
-dereference_symbol_descriptor() we skip the range verification and may 
-dereference something that is not a function descriptor.
-
-Should we do that ?
-
-Christophe
+       Arnd
