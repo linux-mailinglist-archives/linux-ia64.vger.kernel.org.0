@@ -2,144 +2,122 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id C3DFB42C06A
-	for <lists+linux-ia64@lfdr.de>; Wed, 13 Oct 2021 14:45:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF8C542D273
+	for <lists+linux-ia64@lfdr.de>; Thu, 14 Oct 2021 08:24:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234542AbhJMMrR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 13 Oct 2021 08:47:17 -0400
-Received: from pegase2.c-s.fr ([93.17.235.10]:60009 "EHLO pegase2.c-s.fr"
+        id S230109AbhJNG06 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 14 Oct 2021 02:26:58 -0400
+Received: from pegase2.c-s.fr ([93.17.235.10]:45337 "EHLO pegase2.c-s.fr"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S234032AbhJMMrQ (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Wed, 13 Oct 2021 08:47:16 -0400
+        id S230176AbhJNG04 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Thu, 14 Oct 2021 02:26:56 -0400
 Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4HTsgq6Dhtz9sSZ;
-        Wed, 13 Oct 2021 14:45:11 +0200 (CEST)
+        by localhost (Postfix) with ESMTP id 4HVK9c0vCCz9sSX;
+        Thu, 14 Oct 2021 08:24:04 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from pegase2.c-s.fr ([172.26.127.65])
         by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id sJfMM_mh-Nz0; Wed, 13 Oct 2021 14:45:11 +0200 (CEST)
+        with ESMTP id LiGzj5s01Skc; Thu, 14 Oct 2021 08:24:04 +0200 (CEST)
 Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4HTsgq5CtZz9sSP;
-        Wed, 13 Oct 2021 14:45:11 +0200 (CEST)
+        by pegase2.c-s.fr (Postfix) with ESMTP id 4HVK9X6CGLz9sSg;
+        Thu, 14 Oct 2021 08:24:00 +0200 (CEST)
 Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 9B4B48B77E;
-        Wed, 13 Oct 2021 14:45:11 +0200 (CEST)
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id BED538B788;
+        Thu, 14 Oct 2021 08:24:00 +0200 (CEST)
 X-Virus-Scanned: amavisd-new at c-s.fr
 Received: from messagerie.si.c-s.fr ([127.0.0.1])
         by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id HiVledeU5Q_n; Wed, 13 Oct 2021 14:45:11 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [172.25.230.103])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 64F5C8B763;
-        Wed, 13 Oct 2021 14:45:11 +0200 (CEST)
-Subject: Re: [PATCH v1 09/10] lkdtm: Fix lkdtm_EXEC_RODATA()
+        with ESMTP id 2RVU6yhCvY2z; Thu, 14 Oct 2021 08:24:00 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.202.231])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 728758B763;
+        Thu, 14 Oct 2021 08:24:00 +0200 (CEST)
+Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
+        by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19E5oP5w2265994
+        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+        Thu, 14 Oct 2021 07:50:25 +0200
+Received: (from chleroy@localhost)
+        by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19E5oLaE2265993;
+        Thu, 14 Oct 2021 07:50:21 +0200
+X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
 From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Andrew Morton <akpm@linux-foundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
         Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Kees Cook <keescook@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
         linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
         linux-arch@vger.kernel.org, linux-mm@kvack.org
-References: <cover.1633964380.git.christophe.leroy@csgroup.eu>
- <7da92e59e148bd23564d63bdd8bcfaba0ba6d1f1.1633964380.git.christophe.leroy@csgroup.eu>
- <202110130018.7B2129375@keescook>
- <be307455-b02b-f382-851f-091ea26040b7@csgroup.eu>
- <134b968f-f65f-cd74-3db1-fff60e5ebeb8@csgroup.eu>
-Message-ID: <c87e4e91-ee66-77b8-863a-27a34f41623e@csgroup.eu>
-Date:   Wed, 13 Oct 2021 14:45:11 +0200
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.11.0
+Subject: [PATCH v2 00/13] Fix LKDTM for PPC64/IA64/PARISC
+Date:   Thu, 14 Oct 2021 07:49:49 +0200
+Message-Id: <cover.1634190022.git.christophe.leroy@csgroup.eu>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-In-Reply-To: <134b968f-f65f-cd74-3db1-fff60e5ebeb8@csgroup.eu>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: fr-FR
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1634190595; l=2563; s=20211009; h=from:subject:message-id; bh=cNLqnGC16keQp9TRMu9i7mx7estWUR7e+YxBH3wdm44=; b=JsOuva0v9GOX4ctr1bves2MuJ2oHLBxyn3WTGDx0mB/I/UH42HwXFV/G31u6m2c2QubqytaXKHqK LpR2P9uYAHzCae/tI99AK9953llR4YtYtl/K03JU4bfxOY+c+LLu
+X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+PPC64/IA64/PARISC have function descriptors. LKDTM doesn't work
+on those three architectures because LKDTM messes up function
+descriptors with functions.
 
+This series does some cleanup in the three architectures and
+refactors function descriptors so that it can then easily use it
+in a generic way in LKDTM.
 
-Le 13/10/2021 à 09:48, Christophe Leroy a écrit :
-> 
-> 
-> Le 13/10/2021 à 09:39, Christophe Leroy a écrit :
->>
->>
->> Le 13/10/2021 à 09:23, Kees Cook a écrit :
->>> On Mon, Oct 11, 2021 at 05:25:36PM +0200, Christophe Leroy wrote:
->>>> Behind a location, lkdtm_EXEC_RODATA() executes a real function,
->>>> not a copy of do_nothing().
->>>>
->>>> So do it directly instead of using execute_location().
->>>>
->>>> And fix displayed addresses by dereferencing the function descriptors.
->>>>
->>>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>>> ---
->>>>   drivers/misc/lkdtm/perms.c | 9 ++++++++-
->>>>   1 file changed, 8 insertions(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
->>>> index 442d60ed25ef..da16564e1ecd 100644
->>>> --- a/drivers/misc/lkdtm/perms.c
->>>> +++ b/drivers/misc/lkdtm/perms.c
->>>> @@ -153,7 +153,14 @@ void lkdtm_EXEC_VMALLOC(void)
->>>>
->>>>   void lkdtm_EXEC_RODATA(void)
->>>>   {
->>>> -    execute_location(lkdtm_rodata_do_nothing, CODE_AS_IS);
->>>> +    pr_info("attempting ok execution at %px\n",
->>>> +        dereference_symbol_descriptor(do_nothing));
->>>> +    do_nothing();
->>>> +
->>>> +    pr_info("attempting bad execution at %px\n",
->>>> +        dereference_symbol_descriptor(lkdtm_rodata_do_nothing));
->>>> +    lkdtm_rodata_do_nothing();
->>>> +    pr_err("FAIL: func returned\n");
->>>>   }
->>>
->>> (In re-reading this more carefully, I see now why kallsyms.h is used
->>> earlier: _function_ vs _symbol_ descriptor.)
->>>
->>> In the next patch:
->>>
->>> static noinline void execute_location(void *dst, bool write)
->>> {
->>> ...
->>>         func = setup_function_descriptor(&fdesc, dst);
->>>         if (IS_ERR(func))
->>>                 return;
->>>
->>>         pr_info("attempting bad execution at %px\n", dst);
->>>         func();
->>>         pr_err("FAIL: func returned\n");
->>> }
->>>
->>> What are the conditions for which dereference_symbol_descriptor works
->>> but dereference _function_descriptor doesn't?
->>>
->>
->> When LKDTM is built as a module I guess ?
->>
-> 
-> To be more precise, dereference_symbol_descriptor() calls either 
-> dereference_kernel_function_descriptor() or 
-> dereference_module_function_descriptor()
-> 
-> Both functions call dereference_function_descriptor() after checking 
-> that we want to dereference something that is in the OPD section.
-> 
-> If we call dereference_function_descriptor() directly instead of 
-> dereference_symbol_descriptor() we skip the range verification and may 
-> dereference something that is not a function descriptor.
-> 
-> Should we do that ?
-> 
+Patch 8 is not absolutely necessary but it is a good trivial cleanup.
 
-Indeed we are using it only for well known functions so using 
-dereference_function_descriptor() is good enough. I'll use that in v2.
+Changes in v2:
+- Addressed received comments
+- Moved dereference_[kernel]_function_descriptor() out of line
+- Added patches to remove func_descr_t and func_desc_t in powerpc
+- Using func_desc_t instead of funct_descr_t
+- Renamed HAVE_DEREFERENCE_FUNCTION_DESCRIPTOR to HAVE_FUNCTION_DESCRIPTORS
+- Added a new lkdtm test to check protection of function descriptors
+
+Christophe Leroy (13):
+  powerpc: Move 'struct ppc64_opd_entry' back into asm/elf.h
+  powerpc: Rename 'funcaddr' to 'addr' in 'struct ppc64_opd_entry'
+  powerpc: Remove func_descr_t
+  powerpc: Prepare func_desc_t for refactorisation
+  ia64: Rename 'ip' to 'addr' in 'struct fdesc'
+  asm-generic: Use HAVE_FUNCTION_DESCRIPTORS to define associated stubs
+  asm-generic: Define 'func_desc_t' to commonly describe function
+    descriptors
+  asm-generic: Refactor dereference_[kernel]_function_descriptor()
+  lkdtm: Force do_nothing() out of line
+  lkdtm: Really write into kernel text in WRITE_KERN
+  lkdtm: Fix lkdtm_EXEC_RODATA()
+  lkdtm: Fix execute_[user]_location()
+  lkdtm: Add a test for function descriptors protection
+
+ arch/ia64/include/asm/elf.h              |  2 +-
+ arch/ia64/include/asm/sections.h         | 25 ++-------
+ arch/ia64/kernel/module.c                |  6 +--
+ arch/parisc/include/asm/sections.h       | 17 +++---
+ arch/parisc/kernel/process.c             | 21 --------
+ arch/powerpc/include/asm/code-patching.h |  2 +-
+ arch/powerpc/include/asm/elf.h           |  6 +++
+ arch/powerpc/include/asm/sections.h      | 30 ++---------
+ arch/powerpc/include/asm/types.h         |  6 ---
+ arch/powerpc/include/uapi/asm/elf.h      |  8 ---
+ arch/powerpc/kernel/module_64.c          | 38 +++++--------
+ arch/powerpc/kernel/signal_64.c          |  8 +--
+ drivers/misc/lkdtm/core.c                |  1 +
+ drivers/misc/lkdtm/lkdtm.h               |  1 +
+ drivers/misc/lkdtm/perms.c               | 68 ++++++++++++++++++++----
+ include/asm-generic/sections.h           | 13 ++++-
+ include/linux/kallsyms.h                 |  2 +-
+ kernel/extable.c                         | 23 +++++++-
+ 18 files changed, 138 insertions(+), 139 deletions(-)
+
+-- 
+2.31.1
+
