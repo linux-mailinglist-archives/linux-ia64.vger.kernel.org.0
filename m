@@ -2,136 +2,191 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A444442F1B1
-	for <lists+linux-ia64@lfdr.de>; Fri, 15 Oct 2021 15:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64A0542FD6D
+	for <lists+linux-ia64@lfdr.de>; Fri, 15 Oct 2021 23:31:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239112AbhJONJB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 15 Oct 2021 09:09:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35924 "EHLO
+        id S238583AbhJOVdn (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 15 Oct 2021 17:33:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235689AbhJONJB (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 15 Oct 2021 09:09:01 -0400
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E09EC061570;
-        Fri, 15 Oct 2021 06:06:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=GcG/LD4wXLRkh+mkTSYxktAgp6NtEFjg5wt7NUrIBQ8=; b=uayJR1a282ytfFfr7pGkZzKhEI
-        IluB/YpfG7Onwx7r1QjKfC1tsftLKfxav3VC38k67GpIyk/1ybeAGQUxvDR+zHqr8EKJVPlRZBA9/
-        /wpTA2a/mIgs+KwDypwHUlt5exYlO5YauSTxiForL6Zk2ddG+l9BfoSzKxtnDQxKPvn5PwybVyKMr
-        2sXVB6PGJ0CaomGm5OmpmwcYJjrxCbBh03Lz6TD+0UpZALAbk0Ks+Tm2EO0gwNMexvTrd+iVHfAOl
-        L1EzBGZvN5/X+htNwR68fjDLwpfpBBFno+c1d7bIoN6mV3eoharT65WSKmRRs2o1NAkDG7hXrV1hK
-        6PnwqnJg==;
-Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=noisy.programming.kicks-ass.net)
-        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mbMtI-0091pf-5y; Fri, 15 Oct 2021 13:05:05 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 1918F300577;
-        Fri, 15 Oct 2021 15:04:50 +0200 (CEST)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id C9DB5212B43C0; Fri, 15 Oct 2021 15:04:50 +0200 (CEST)
-Date:   Fri, 15 Oct 2021 15:04:50 +0200
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Valentin Schneider <valentin.schneider@arm.com>
-Cc:     Barry Song <21cnbao@gmail.com>,
-        LKML <linux-kernel@vger.kernel.org>,
-        LAK <linux-arm-kernel@lists.infradead.org>,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, Aubrey Li <aubrey.li@linux.intel.com>,
-        Barry Song <song.bao.hua@hisilicon.com>,
-        Tim Chen <tim.c.chen@linux.intel.com>,
-        Jonathan Cameron <jonathan.cameron@huawei.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        with ESMTP id S235514AbhJOVdm (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 15 Oct 2021 17:33:42 -0400
+Received: from mail-pg1-x529.google.com (mail-pg1-x529.google.com [IPv6:2607:f8b0:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B959C061762
+        for <linux-ia64@vger.kernel.org>; Fri, 15 Oct 2021 14:31:35 -0700 (PDT)
+Received: by mail-pg1-x529.google.com with SMTP id 133so9729119pgb.1
+        for <linux-ia64@vger.kernel.org>; Fri, 15 Oct 2021 14:31:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=kKloKGIwGWmZY9+Er8BC6aPtcIV5M1fZmtHmnCWa8iU=;
+        b=JeYYnn823k8n2zSxtjokkfqoZ5ilS26HSi3+OKWmuzF1ap1aszmc7JLPZWsF4HCG0w
+         31EKzOJ0R9W8h1AKhQ/AK6BIP9nPFEBX8Fhn+ihNhFPlklATnjeMva6cxWbMA+SX6L+t
+         CU/dKvCcEPU/V6JRuGbgX3x4m1PI5C82Th35I=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=kKloKGIwGWmZY9+Er8BC6aPtcIV5M1fZmtHmnCWa8iU=;
+        b=P8NHiKThN8D3fr35yFR63Et0vYwUxuDqxFyw+c6jGXclB5c21atUHOGkSBL+ce41sF
+         LDHBfSIkPnnQA9gnWeqWQfW6CyAkonw4hPY/Loe3zL7U8HGgW+PsP+J7oEEF9n7vZoKa
+         V6g28fxtFrmWyIordAdCv89F3VhzisLCXmxKJsRWAIETFz2VE6eVd5FSrpqsbkGlvbZ7
+         wmH0snQTuusMdf1geS/MFW9QXoet5KS7xNVaGEavRcfq/YRMZmBC75DmFi1tO36nQGnU
+         pXhuyy95w01tyF8djV10Z9GtNwuqRUBjxodjyaS+i3LVixcE2gAb+mDigMS/5DW85Lkz
+         dNfA==
+X-Gm-Message-State: AOAM533JZMEo/afcWmIVsqH6KhKwZsak5eGmS+Dq+Up5MtBnFt/+Ptj8
+        MxBr/+y7LdrB/R9Ibol0M6cdlQ==
+X-Google-Smtp-Source: ABdhPJwdYjbf9GZPBypn6MBgVe8w8NzMTcIJZgnbet0In82Ohn0MIUwTdtq337oO2srKIC8IRC508w==
+X-Received: by 2002:a05:6a00:992:b0:44d:8981:37f6 with SMTP id u18-20020a056a00099200b0044d898137f6mr9473913pfg.76.1634333495151;
+        Fri, 15 Oct 2021 14:31:35 -0700 (PDT)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id gf23sm6006874pjb.26.2021.10.15.14.31.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 Oct 2021 14:31:34 -0700 (PDT)
+Date:   Fri, 15 Oct 2021 14:31:33 -0700
+From:   Kees Cook <keescook@chromium.org>
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        x86 <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Andrew Morton <akpm@linux-foundation.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Mike Rapoport <rppt@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        YiFei Zhu <yifeifz2@illinois.edu>,
-        Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Sergei Trofimovich <slyfox@gentoo.org>,
-        David Hildenbrand <david@redhat.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Kees Cook <keescook@chromium.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Chris Down <chris@chrisdown.name>,
-        Vipin Sharma <vipinsh@google.com>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Hugh Dickins <hughd@google.com>,
-        Michal Hocko <mhocko@kernel.org>
-Subject: Re: [PATCH 2/2] sched: Centralize SCHED_{SMT, MC, CLUSTER}
- definitions
-Message-ID: <YWl8cogsS2Lah1mk@hirez.programming.kicks-ass.net>
-References: <20211008115347.425234-1-valentin.schneider@arm.com>
- <20211008115347.425234-3-valentin.schneider@arm.com>
- <CAGsJ_4wqtcOdsFDzR98PFbjxRyTqzf7P3p3erup84SXESYonYw@mail.gmail.com>
- <87bl3zlex8.mognet@arm.com>
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v2 12/13] lkdtm: Fix execute_[user]_location()
+Message-ID: <202110151428.187B1CF@keescook>
+References: <cover.1634190022.git.christophe.leroy@csgroup.eu>
+ <cbee30c66890994e116a8eae8094fa8c5336f90a.1634190022.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87bl3zlex8.mognet@arm.com>
+In-Reply-To: <cbee30c66890994e116a8eae8094fa8c5336f90a.1634190022.git.christophe.leroy@csgroup.eu>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Oct 08, 2021 at 04:22:27PM +0100, Valentin Schneider wrote:
-
-> So x86 has it default yes, and a lot of others (e.g. arm64) have it default
-> no.
+On Thu, Oct 14, 2021 at 07:50:01AM +0200, Christophe Leroy wrote:
+> execute_location() and execute_user_location() intent
+> to copy do_nothing() text and execute it at a new location.
+> However, at the time being it doesn't copy do_nothing() function
+> but do_nothing() function descriptor which still points to the
+> original text. So at the end it still executes do_nothing() at
+> its original location allthough using a copied function descriptor.
 > 
-> IMO you don't gain much by disabling them. SCHED_MC and SCHED_CLUSTER only
-> control the presence of a sched_domain_topology_level - if it's useless it
-> gets degenerated at domain build time. Some valid reasons for not using
-> them is if the architecture defines its own topology table (e.g. powerpc
-> has CACHE and MC levels which are not gated behind any CONFIG).
+> So, fix that by really copying do_nothing() text and build a new
+> function descriptor by copying do_nothing() function descriptor and
+> updating the target address with the new location.
 > 
-> SCHED_SMT has an impact on code generated in sched/core.c, but that is also
-> gated by a static key.
+> Also fix the displayed addresses by dereferencing do_nothing()
+> function descriptor.
 > 
-> So I'd say having them default yes is sensible. I'd even say we should
-> change the "If unsure say N here." to "Y".
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  drivers/misc/lkdtm/perms.c     | 25 +++++++++++++++++++++----
+>  include/asm-generic/sections.h |  5 +++++
+>  2 files changed, 26 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
+> index 5266dc28df6e..96b3ebfcb8ed 100644
+> --- a/drivers/misc/lkdtm/perms.c
+> +++ b/drivers/misc/lkdtm/perms.c
+> @@ -44,19 +44,32 @@ static noinline void do_overwritten(void)
+>  	return;
+>  }
+>  
+> +static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
+> +{
+> +	memcpy(fdesc, do_nothing, sizeof(*fdesc));
+> +	fdesc->addr = (unsigned long)dst;
+> +	barrier();
+> +
+> +	return fdesc;
+> +}
 
-Right, so I tend to agree (and also that we should fix that Kconfig help
-text). But it would be very nice to have feedback from the affected arch
-maintainers.
+How about collapsing the "have_function_descriptors()" check into
+setup_function_descriptor()?
 
+static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
+{
+	if (__is_defined(HAVE_FUNCTION_DESCRIPTORS)) {
+		memcpy(fdesc, do_nothing, sizeof(*fdesc));
+		fdesc->addr = (unsigned long)dst;
+		barrier();
+		return fdesc;
+	} else {
+		return dst;
+	}
+}
+
+> +
+>  static noinline void execute_location(void *dst, bool write)
+>  {
+>  	void (*func)(void) = dst;
+> +	func_desc_t fdesc;
+> +	void *do_nothing_text = dereference_function_descriptor(do_nothing);
+>  
+> -	pr_info("attempting ok execution at %px\n", do_nothing);
+> +	pr_info("attempting ok execution at %px\n", do_nothing_text);
+>  	do_nothing();
+>  
+>  	if (write == CODE_WRITE) {
+> -		memcpy(dst, do_nothing, EXEC_SIZE);
+> +		memcpy(dst, do_nothing_text, EXEC_SIZE);
+>  		flush_icache_range((unsigned long)dst,
+>  				   (unsigned long)dst + EXEC_SIZE);
+>  	}
+>  	pr_info("attempting bad execution at %px\n", func);
+> +	if (have_function_descriptors())
+> +		func = setup_function_descriptor(&fdesc, dst);
+>  	func();
+>  	pr_err("FAIL: func returned\n");
+>  }
+> @@ -67,15 +80,19 @@ static void execute_user_location(void *dst)
+>  
+>  	/* Intentionally crossing kernel/user memory boundary. */
+>  	void (*func)(void) = dst;
+> +	func_desc_t fdesc;
+> +	void *do_nothing_text = dereference_function_descriptor(do_nothing);
+>  
+> -	pr_info("attempting ok execution at %px\n", do_nothing);
+> +	pr_info("attempting ok execution at %px\n", do_nothing_text);
+>  	do_nothing();
+>  
+> -	copied = access_process_vm(current, (unsigned long)dst, do_nothing,
+> +	copied = access_process_vm(current, (unsigned long)dst, do_nothing_text,
+>  				   EXEC_SIZE, FOLL_WRITE);
+>  	if (copied < EXEC_SIZE)
+>  		return;
+>  	pr_info("attempting bad execution at %px\n", func);
+> +	if (have_function_descriptors())
+> +		func = setup_function_descriptor(&fdesc, dst);
+>  	func();
+>  	pr_err("FAIL: func returned\n");
+>  }
+
+
+> diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
+> index 76163883c6ff..d225318538bd 100644
+> --- a/include/asm-generic/sections.h
+> +++ b/include/asm-generic/sections.h
+> @@ -70,6 +70,11 @@ typedef struct {
+>  } func_desc_t;
+>  #endif
+>  
+> +static inline bool have_function_descriptors(void)
+> +{
+> +	return __is_defined(HAVE_FUNCTION_DESCRIPTORS);
+> +}
+> +
+>  /* random extra sections (if any).  Override
+>   * in asm/sections.h */
+>  #ifndef arch_is_kernel_text
+
+This hunk seems like it should live in a separate patch.
+
+-- 
+Kees Cook
