@@ -2,191 +2,177 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76D7D430B2A
-	for <lists+linux-ia64@lfdr.de>; Sun, 17 Oct 2021 19:20:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 470DC43100D
+	for <lists+linux-ia64@lfdr.de>; Mon, 18 Oct 2021 07:58:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344390AbhJQRWV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 17 Oct 2021 13:22:21 -0400
-Received: from pegase2.c-s.fr ([93.17.235.10]:34937 "EHLO pegase2.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1344366AbhJQRWV (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Sun, 17 Oct 2021 13:22:21 -0400
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4HXRbF62kYz9sSf;
-        Sun, 17 Oct 2021 19:20:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id UU0pFAL3_At5; Sun, 17 Oct 2021 19:20:09 +0200 (CEST)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4HXRbF4sf6z9sSH;
-        Sun, 17 Oct 2021 19:20:09 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 8A7FE8B76C;
-        Sun, 17 Oct 2021 19:20:09 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id d2p_rn7meVln; Sun, 17 Oct 2021 19:20:09 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (unknown [192.168.203.38])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id 3416F8B763;
-        Sun, 17 Oct 2021 19:20:09 +0200 (CEST)
-Received: from PO20335.IDSI0.si.c-s.fr (localhost [127.0.0.1])
-        by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1) with ESMTPS id 19HHJuwJ2995765
-        (version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-        Sun, 17 Oct 2021 19:19:56 +0200
-Received: (from chleroy@localhost)
-        by PO20335.IDSI0.si.c-s.fr (8.16.1/8.16.1/Submit) id 19HHJqeL2995764;
-        Sun, 17 Oct 2021 19:19:52 +0200
-X-Authentication-Warning: PO20335.IDSI0.si.c-s.fr: chleroy set sender to christophe.leroy@csgroup.eu using -f
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-To:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        id S230114AbhJRGAk (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 18 Oct 2021 02:00:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43678 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229847AbhJRGAj (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 18 Oct 2021 02:00:39 -0400
+Received: from mail-pg1-x52a.google.com (mail-pg1-x52a.google.com [IPv6:2607:f8b0:4864:20::52a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71F0FC06161C;
+        Sun, 17 Oct 2021 22:58:28 -0700 (PDT)
+Received: by mail-pg1-x52a.google.com with SMTP id f5so14947296pgc.12;
+        Sun, 17 Oct 2021 22:58:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:subject:to:cc:references:in-reply-to:mime-version
+         :message-id:content-transfer-encoding;
+        bh=X4ObKuSSQv+G50bHKT8TIyKSkdwsT91S+K4zGdNUDYc=;
+        b=Lx6Kua8eCdB6ynkVlMcdhmK5TPoD66KEfA5sFkjG/jTtVfqyJExe3fuC0Puxhk8YDW
+         oMbdqYvv8LDN5Fl7oeWI1jsOaMhDpBXR56LaquS2aHLuOG+chQvabNZZiYOgQw2jCRXx
+         GjqHc3TmuiHshjuXyEvHVNkjO+/pj9Nt+n8rlscssMhmARCGM0bkwW3hBJxfoW2Ns9lI
+         9+lZARUtvknB91k784nVDrt8t1ZL45iOFMhOZ8uIXyEdX+qkq8QlZCtWuGvFsRsuieHm
+         i9hlkomX8vHYTO13Yqzs+HvKtBJi/31h/KAhjzJ06LpbBnHy8UWyCoDLACtjvJnquGex
+         3DsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
+         :mime-version:message-id:content-transfer-encoding;
+        bh=X4ObKuSSQv+G50bHKT8TIyKSkdwsT91S+K4zGdNUDYc=;
+        b=NHUXoumfdbosONMB/vmAWf9LW247kkkxAMn0qgWgKCN4JgdM9/5kzU8NI7u8u/5ctL
+         ewf/OyJultbFkcxf74pE/fJfJYzDzmCWT3NIqtCstwpq2IVRcLVqaI9a3bpwrxkDtroa
+         RhdBjg86ylG1YRbsTG3AKycMcWbwJfhz6SRf4Ek2BBVcY+dHHeSr0NLs2/csD1qJMlPX
+         mNMgv+vPcNXd+Pj7th9FD+0xv/07TWK/14QuRX6ttJkyYbqsZLL4Rxa2J3KL742tc9LR
+         Wq5dJzr6I4908w7uE28erIE5YKR5FkSCnhr7KrZn2AwziEG34GPXIXoFliosVgx375ir
+         b+6w==
+X-Gm-Message-State: AOAM531AJxzNMh5SITbdGrz4CVh2eqHjJqgn1hFCU2moT/FnpZ/UnD/h
+        niruDF0iU/l+i6D1se4H3Y0=
+X-Google-Smtp-Source: ABdhPJwB4aZOEF4c4x+POdQ74CsyuEUoXurySgutsGWF+Sp9p2tOiLlNP0zuxpWool6b+cUy0ckW/Q==
+X-Received: by 2002:a63:340c:: with SMTP id b12mr21911013pga.241.1634536707973;
+        Sun, 17 Oct 2021 22:58:27 -0700 (PDT)
+Received: from localhost ([1.128.241.174])
+        by smtp.gmail.com with ESMTPSA id c12sm11569352pfc.161.2021.10.17.22.58.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 17 Oct 2021 22:58:27 -0700 (PDT)
+Date:   Mon, 18 Oct 2021 15:58:21 +1000
+From:   Nicholas Piggin <npiggin@gmail.com>
+Subject: Re: [PATCH v3 01/12] powerpc: Move and rename func_descr_t
+To:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Helge Deller <deller@gmx.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
         Kees Cook <keescook@chromium.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: [RFC PATCH] lkdtm: Replace lkdtm_rodata_do_nothing() by do_nothing()
-Date:   Sun, 17 Oct 2021 19:19:47 +0200
-Message-Id: <fe36bf23fb14e7eff92a95a1092ed38edb01d5f5.1634491011.git.christophe.leroy@csgroup.eu>
-X-Mailer: git-send-email 2.31.1
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Mackerras <paulus@samba.org>
+Cc:     linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
+        <637a9a11263afa216fdfa7fb470a54479c67c61c.1634457599.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <637a9a11263afa216fdfa7fb470a54479c67c61c.1634457599.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1634491186; l=4650; s=20211009; h=from:subject:message-id; bh=Gwq3WsZiMgEzCWeCZvvJz2QFh6/yASMBkt0EwoqhfqU=; b=tNEufT0EvPpoA817u75WWILDHvNRtl8NSHiO7I4zTt1LQhPaOg9RzOWV74NlxFf0C2nuxBLt9G3g 3Yo7SMx+CM6PPLrmoIohglXpAMq3LzxPHBKWOMPxySmIxlVza90N
-X-Developer-Key: i=christophe.leroy@csgroup.eu; a=ed25519; pk=HIzTzUj91asvincQGOFx6+ZF5AoUuP9GdOtQChs7Mm0=
-Content-Transfer-Encoding: 8bit
+Message-Id: <1634536669.2nedzrtfjt.astroid@bobo.none>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-All EXEC tests are based on running a copy of do_nothing()
-except lkdtm_EXEC_RODATA which uses a different function
-called lkdtm_rodata_do_nothing().
+Excerpts from Christophe Leroy's message of October 17, 2021 10:38 pm:
+> There are three architectures with function descriptors, try to
+> have common names for the address they contain in order to
+> refactor some functions into generic functions later.
+>=20
+> powerpc has 'entry'
+> ia64 has 'ip'
+> parisc has 'addr'
+>=20
+> Vote for 'addr' and update 'func_descr_t' accordingly.
+>=20
+> Move it in asm/elf.h to have it at the same place on all
+> three architectures, remove the typedef which hides its real
+> type, and change it to a smoother name 'struct func_desc'.
+>=20
 
-On architectures using function descriptors, EXEC tests are
-performed using execute_location() which is a function
-that most of the time copies do_nothing() at the tested
-location then duplicates do_nothing() function descriptor
-and updates it with the address of the copy of do_nothing().
+Reviewed-by: Nicholas Piggin <npiggin@gmail.com>
 
-But for EXEC_RODATA test, execute_location() uses
-lkdtm_rodata_do_nothing() which is already in rodata section
-at build time instead of using a copy of do_nothing(). However
-it still uses the function descriptor of do_nothing(). There
-is a risk that running lkdtm_rodata_do_nothing() with the
-function descriptor of do_thing() is wrong.
-
-To remove the above risk, change the approach and do the same
-as for other EXEC tests: use a copy of do_nothing(). The copy
-cannot be done during the test because RODATA area is write
-protected. Do the copy during init, before RODATA becomes
-write protected.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
----
-This applies on top of series v3 "Fix LKDTM for PPC64/IA64/PARISC"
-
- drivers/misc/lkdtm/Makefile | 11 -----------
- drivers/misc/lkdtm/lkdtm.h  |  3 ---
- drivers/misc/lkdtm/perms.c  |  9 +++++++--
- drivers/misc/lkdtm/rodata.c | 11 -----------
- 4 files changed, 7 insertions(+), 27 deletions(-)
- delete mode 100644 drivers/misc/lkdtm/rodata.c
-
-diff --git a/drivers/misc/lkdtm/Makefile b/drivers/misc/lkdtm/Makefile
-index e2984ce51fe4..3d45a2b3007d 100644
---- a/drivers/misc/lkdtm/Makefile
-+++ b/drivers/misc/lkdtm/Makefile
-@@ -6,21 +6,10 @@ lkdtm-$(CONFIG_LKDTM)		+= bugs.o
- lkdtm-$(CONFIG_LKDTM)		+= heap.o
- lkdtm-$(CONFIG_LKDTM)		+= perms.o
- lkdtm-$(CONFIG_LKDTM)		+= refcount.o
--lkdtm-$(CONFIG_LKDTM)		+= rodata_objcopy.o
- lkdtm-$(CONFIG_LKDTM)		+= usercopy.o
- lkdtm-$(CONFIG_LKDTM)		+= stackleak.o
- lkdtm-$(CONFIG_LKDTM)		+= cfi.o
- lkdtm-$(CONFIG_LKDTM)		+= fortify.o
- lkdtm-$(CONFIG_PPC_BOOK3S_64)	+= powerpc.o
- 
--KASAN_SANITIZE_rodata.o		:= n
- KASAN_SANITIZE_stackleak.o	:= n
--KCOV_INSTRUMENT_rodata.o	:= n
--CFLAGS_REMOVE_rodata.o		+= $(CC_FLAGS_LTO)
--
--OBJCOPYFLAGS :=
--OBJCOPYFLAGS_rodata_objcopy.o	:= \
--			--rename-section .noinstr.text=.rodata,alloc,readonly,load,contents
--targets += rodata.o rodata_objcopy.o
--$(obj)/rodata_objcopy.o: $(obj)/rodata.o FORCE
--	$(call if_changed,objcopy)
-diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
-index 188bd0fd6575..905555d4c2cf 100644
---- a/drivers/misc/lkdtm/lkdtm.h
-+++ b/drivers/misc/lkdtm/lkdtm.h
-@@ -137,9 +137,6 @@ void lkdtm_REFCOUNT_SUB_AND_TEST_SATURATED(void);
- void lkdtm_REFCOUNT_TIMING(void);
- void lkdtm_ATOMIC_TIMING(void);
- 
--/* rodata.c */
--void lkdtm_rodata_do_nothing(void);
--
- /* usercopy.c */
- void __init lkdtm_usercopy_init(void);
- void __exit lkdtm_usercopy_exit(void);
-diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-index 2c6aba3ff32b..9b951ca48363 100644
---- a/drivers/misc/lkdtm/perms.c
-+++ b/drivers/misc/lkdtm/perms.c
-@@ -27,6 +27,7 @@ static const unsigned long rodata = 0xAA55AA55;
- 
- /* This is marked __ro_after_init, so it should ultimately be .rodata. */
- static unsigned long ro_after_init __ro_after_init = 0x55AA5500;
-+static u8 rodata_area[EXEC_SIZE] __ro_after_init;
- 
- /*
-  * This just returns to the caller. It is designed to be copied into
-@@ -193,8 +194,7 @@ void lkdtm_EXEC_VMALLOC(void)
- 
- void lkdtm_EXEC_RODATA(void)
- {
--	execute_location(dereference_function_descriptor(lkdtm_rodata_do_nothing),
--			 CODE_AS_IS);
-+	execute_location(rodata_area, CODE_AS_IS);
- }
- 
- void lkdtm_EXEC_USERSPACE(void)
-@@ -269,4 +269,9 @@ void __init lkdtm_perms_init(void)
- {
- 	/* Make sure we can write to __ro_after_init values during __init */
- 	ro_after_init |= 0xAA;
-+
-+	memcpy(rodata_area, dereference_function_descriptor(do_nothing),
-+	       EXEC_SIZE);
-+	flush_icache_range((unsigned long)rodata_area,
-+			   (unsigned long)rodata_area + EXEC_SIZE);
- }
-diff --git a/drivers/misc/lkdtm/rodata.c b/drivers/misc/lkdtm/rodata.c
-deleted file mode 100644
-index baacb876d1d9..000000000000
---- a/drivers/misc/lkdtm/rodata.c
-+++ /dev/null
-@@ -1,11 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--/*
-- * This includes functions that are meant to live entirely in .rodata
-- * (via objcopy tricks), to validate the non-executability of .rodata.
-- */
--#include "lkdtm.h"
--
--void noinstr lkdtm_rodata_do_nothing(void)
--{
--	/* Does nothing. We just want an architecture agnostic "return". */
--}
--- 
-2.31.1
-
+> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/include/asm/code-patching.h | 2 +-
+>  arch/powerpc/include/asm/elf.h           | 6 ++++++
+>  arch/powerpc/include/asm/types.h         | 6 ------
+>  arch/powerpc/kernel/signal_64.c          | 8 ++++----
+>  4 files changed, 11 insertions(+), 11 deletions(-)
+>=20
+> diff --git a/arch/powerpc/include/asm/code-patching.h b/arch/powerpc/incl=
+ude/asm/code-patching.h
+> index 4ba834599c4d..c6e805976e6f 100644
+> --- a/arch/powerpc/include/asm/code-patching.h
+> +++ b/arch/powerpc/include/asm/code-patching.h
+> @@ -110,7 +110,7 @@ static inline unsigned long ppc_function_entry(void *=
+func)
+>  	 * function's descriptor. The first entry in the descriptor is the
+>  	 * address of the function text.
+>  	 */
+> -	return ((func_descr_t *)func)->entry;
+> +	return ((struct func_desc *)func)->addr;
+>  #else
+>  	return (unsigned long)func;
+>  #endif
+> diff --git a/arch/powerpc/include/asm/elf.h b/arch/powerpc/include/asm/el=
+f.h
+> index b8425e3cfd81..971589a21bc0 100644
+> --- a/arch/powerpc/include/asm/elf.h
+> +++ b/arch/powerpc/include/asm/elf.h
+> @@ -176,4 +176,10 @@ do {									\
+>  /* Relocate the kernel image to @final_address */
+>  void relocate(unsigned long final_address);
+> =20
+> +struct func_desc {
+> +	unsigned long addr;
+> +	unsigned long toc;
+> +	unsigned long env;
+> +};
+> +
+>  #endif /* _ASM_POWERPC_ELF_H */
+> diff --git a/arch/powerpc/include/asm/types.h b/arch/powerpc/include/asm/=
+types.h
+> index f1630c553efe..97da77bc48c9 100644
+> --- a/arch/powerpc/include/asm/types.h
+> +++ b/arch/powerpc/include/asm/types.h
+> @@ -23,12 +23,6 @@
+> =20
+>  typedef __vector128 vector128;
+> =20
+> -typedef struct {
+> -	unsigned long entry;
+> -	unsigned long toc;
+> -	unsigned long env;
+> -} func_descr_t;
+> -
+>  #endif /* __ASSEMBLY__ */
+> =20
+>  #endif /* _ASM_POWERPC_TYPES_H */
+> diff --git a/arch/powerpc/kernel/signal_64.c b/arch/powerpc/kernel/signal=
+_64.c
+> index 1831bba0582e..36537d7d5191 100644
+> --- a/arch/powerpc/kernel/signal_64.c
+> +++ b/arch/powerpc/kernel/signal_64.c
+> @@ -933,11 +933,11 @@ int handle_rt_signal64(struct ksignal *ksig, sigset=
+_t *set,
+>  		 * descriptor is the entry address of signal and the second
+>  		 * entry is the TOC value we need to use.
+>  		 */
+> -		func_descr_t __user *funct_desc_ptr =3D
+> -			(func_descr_t __user *) ksig->ka.sa.sa_handler;
+> +		struct func_desc __user *ptr =3D
+> +			(struct func_desc __user *)ksig->ka.sa.sa_handler;
+> =20
+> -		err |=3D get_user(regs->ctr, &funct_desc_ptr->entry);
+> -		err |=3D get_user(regs->gpr[2], &funct_desc_ptr->toc);
+> +		err |=3D get_user(regs->ctr, &ptr->addr);
+> +		err |=3D get_user(regs->gpr[2], &ptr->toc);
+>  	}
+> =20
+>  	/* enter the signal handler in native-endian mode */
+> --=20
+> 2.31.1
+>=20
+>=20
+>=20
