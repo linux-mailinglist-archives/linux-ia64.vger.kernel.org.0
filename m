@@ -2,97 +2,62 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EDFB643328F
-	for <lists+linux-ia64@lfdr.de>; Tue, 19 Oct 2021 11:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F569433396
+	for <lists+linux-ia64@lfdr.de>; Tue, 19 Oct 2021 12:34:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235136AbhJSJlK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 19 Oct 2021 05:41:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54112 "EHLO
+        id S235245AbhJSKgx (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 19 Oct 2021 06:36:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235044AbhJSJlG (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 19 Oct 2021 05:41:06 -0400
-Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04D26C061778
-        for <linux-ia64@vger.kernel.org>; Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
-Received: by mail-io1-xd30.google.com with SMTP id e144so19595773iof.3
-        for <linux-ia64@vger.kernel.org>; Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
+        with ESMTP id S234914AbhJSKgx (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 19 Oct 2021 06:36:53 -0400
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C61B5C061749
+        for <linux-ia64@vger.kernel.org>; Tue, 19 Oct 2021 03:34:40 -0700 (PDT)
+Received: by mail-il1-x131.google.com with SMTP id l7so4553013iln.8
+        for <linux-ia64@vger.kernel.org>; Tue, 19 Oct 2021 03:34:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=h7Ka/8DlpkXEXF23rPgOfJJ3SyquA2FhD5HYDsybiG4=;
-        b=TOvN/3L74NxJ8jkZLAwc1HWcAigE5PqgL50bgmFqgfF5N3Ni/F/hFF6HKKLKTN31yN
-         HevaAXYbPfypt8hhKvSPyehT5ALdXqczNk+5xUwtC+i5sgHXh2uIQwAecZjfCaWU8ix6
-         IP3iNNDeKzM9Rarn67S7Y6Q5meavaw7Mpk+sez5Jm9gTXVkS2K7rH0HxN0wGBD1vTEZW
-         SlZ7Ohjm5TDffwxVe9psHKkZrw9F8ewS3UJdvRp48BugnVC9N6o6tGt7kOuD9dBL9WOI
-         l1dbXlU20FuuDCR1G9eGV6dpPzPq/obtSd+vSUmjw4dvgQ3M4KndmuUgzevCd5/KLP2j
-         AvJA==
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=1fHli0Y7ukDxNuAT5ZXebI19L35uKvvemX9ZjZqRSdg=;
+        b=nR1X+erv5EN/vky/Ir69nPjkLCCSIIoZUipb5nM6BfgEeUxc8HAYCjVrALJOCZjTxA
+         lis2Wb9C4KZUuYk7+Q7hO44YX1IoYonQkd2C5zTKoIaItnWorRfGvtzzYJvEQb8QeOSh
+         03NUnMqCUcNQrOu5Hl2olvxTankzThOCoUiXvwpzIefc1G5AorpttEhY2134AbRk6Xqk
+         wm1tl677+tjP1fqOiFEhUyhTEvcCuSiGTJ13pohVf0kdEs23luyaSgKaLllxrk6T2eOx
+         npJYqdmNmAdJL9duWyTRFxGiv+MHWVMrxZa+JMq8NtWk6ahxL9+2ZAqJQmPQRlOWNUWE
+         nTkQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=h7Ka/8DlpkXEXF23rPgOfJJ3SyquA2FhD5HYDsybiG4=;
-        b=QrY/Ee6f/DnJeRImbVdjQ7LJCEjPgWT3dfmZUS21cGXjPQv5giip3oD2ZLfIM6JFPU
-         JOWTBNukOU9O7jNtTgksjXhs77lwDMaqJPBDwaB17JNsts/ry/dCTpqNLkaoGZ09uqO7
-         Ls8Db9trd6KyJ7RsHfpJY5vMX9BBU1lYP0zGMVVnrgTDOP4zVDw3GbnbtuSv5k+kBkWA
-         bhO8ivHbvLwMQRU5gfDQsfzZpFmaOyfnKu7y3etGmutcPxBvooPn/0x8f7QzB83Z9aqz
-         lDyQbzrCAUU/+KZsJ3W6ryHKgJIBUhPEliuOmH5Lp0K/Al+KNiNXNbiK+xnF27ghtpW7
-         aMHg==
-X-Gm-Message-State: AOAM532AK49nmM0UEQoPH6TH2dZLo0MA6nXsmm6jKjA/Cbasnts5wdhZ
-        B6+9+WyVZuCp1fXlj0Q8VOnmsh7VTMxsJs42I/8=
-X-Google-Smtp-Source: ABdhPJzMH7/Viv+gmOFi/wRxRbcc549EbhNxq1WBmFuuCl5Y1sIaNw3hPc5P9A8SHm6QnP1HNGNAvecvirmJS/oiL6w=
-X-Received: by 2002:a02:6f5d:: with SMTP id b29mr3319085jae.113.1634636331013;
- Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
+         :subject:to;
+        bh=1fHli0Y7ukDxNuAT5ZXebI19L35uKvvemX9ZjZqRSdg=;
+        b=PyK1GidQZJ7fM5JroNFyK3eFSidVxu1Vxc0JD6/cxqODv8irXbkqENVE8vL8l1a+go
+         zoSxc6xG1bEFoTBmh96AMmJOYGgzGgWHtA0GpFchn24pQl9k8BumsPl9UJy2SVx6cbyi
+         Qwb8u6qZdZpuCqdk8Xk8pJgqS3PCLFV9CBnNeSvTccKoJLYTtFvtb0GclLgpLCEzl6Cz
+         o0ErtD15u+U1l5zxtwRHBwDfe2vX/bHfIawYvADByVeZBKvBm8UP2VB9JEClOyDqCh9a
+         uCZN1ozWyCtSkwbuVx3xTovg9mzf+cnNwVSyvEEGMyyMhvjs2QnRsFUESvHTuhs89BJN
+         ligw==
+X-Gm-Message-State: AOAM532lWIcq51BoM3Zlob5LKgQh5nk77IyPDIA/KzQl+2tUofiHhBPL
+        V8H46E9aV3VuAXjvSAfU6In4l2agOejUUsTWNvw=
+X-Google-Smtp-Source: ABdhPJzmqRGov2VinbRx5vtMHFl4IOT3PCON5l7eRJ8jsIqEp27Bu8lT0s/gWwkIyMNtkZ0XtjOxNaLRom+bbOWKlUM=
+X-Received: by 2002:a05:6e02:1a43:: with SMTP id u3mr17745471ilv.35.1634639680049;
+ Tue, 19 Oct 2021 03:34:40 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a92:c7c6:0:0:0:0:0 with HTTP; Tue, 19 Oct 2021 02:38:50
+Received: by 2002:a6b:fd11:0:0:0:0:0 with HTTP; Tue, 19 Oct 2021 03:34:39
  -0700 (PDT)
-Reply-To: megaritalouisdrayfu199@yahoo.com
-From:   "Mrs. Margarita Louis-Dreyfus." <anniewei112@gmail.com>
-Date:   Mon, 18 Oct 2021 21:38:50 -1200
-Message-ID: <CAGT4pMkzKn8mfeY05OAG04CCAxodKEVDUk46D=O7cfK8+n1=tA@mail.gmail.com>
-Subject: Charitable funds to help the less privilege!
+Reply-To: mcchember@gmail.com
+From:   Michael Christopher <johnadillchember2@gmail.com>
+Date:   Tue, 19 Oct 2021 11:34:39 +0100
+Message-ID: <CAJ8VP79WdSih5KDw7DqE-3G=LrYQjjgO5xdSfUN4z5gTqM1vRg@mail.gmail.com>
+Subject: Hi
 To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
---=20
-Hello,
+Hello
 
-I am sorry to encroach into your privacy in this manner, my name
-Margarita Louis-Dreyfus , I find it pleasurable to offer you my
-partnership in business, i only pray at this time that your email
-address is still valid. I want to solicit your attention to receive
-money on my behalf for humanitarian project to help the less
-priviledge.
-
-The purpose of my contacting you is because my status would not permit
-me to do this alone. Given my current state of health, I have decided
-to donate Ninety -Eight Million United State Dollars to establish a
-foundation with your help to reach out to the less privilege, orphans,
-sick and homeless people in your country who will receive their
-blessings as i promised my God before i leave this earth.
-
-I got your contact through my personal search, you were revealed as
-being quite astute in private entrepreneurship, and i have no doubt
-that you can handle this huge financial transaction. Please contact my
-executor for more information:
-
-Mr. Ford Spencer(Attorney at Law).
-For: Mrs. Margarita Louis-Dreyfus
-LEGAL DEPARTMENT LAWSON & ASSOCIATES
-(JUSTICE, FAIRPLAY & EQUITY)
-Email: fordspencer828@yahoo.com, fordspencereqs828@gmail.com
-Office: +1-970-414-1400
-+1-702-714-3422
-Mobile: +1 916 269 2733
-Fax: +1-970-414-1433
-=C2=AE Property of Steven C Spence PA.
-
-Your earliest response to this letter will be appreciated.
-
-Kind Regards,
-
-Mrs. Margarita Louis-Dreyfus.
+I am Barrister.Michael Christopher attorney to your late relative, now
+am contacting you for the claim of your late relatives fund.Please
+contact me with this email.(michaelchember@gmail.com
