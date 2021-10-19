@@ -2,137 +2,97 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6995C431317
-	for <lists+linux-ia64@lfdr.de>; Mon, 18 Oct 2021 11:16:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDFB643328F
+	for <lists+linux-ia64@lfdr.de>; Tue, 19 Oct 2021 11:39:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231610AbhJRJSu (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 18 Oct 2021 05:18:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60192 "EHLO
+        id S235136AbhJSJlK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 19 Oct 2021 05:41:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54112 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231570AbhJRJSn (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 18 Oct 2021 05:18:43 -0400
-Received: from mail-pj1-x1036.google.com (mail-pj1-x1036.google.com [IPv6:2607:f8b0:4864:20::1036])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8A70C061768;
-        Mon, 18 Oct 2021 02:16:31 -0700 (PDT)
-Received: by mail-pj1-x1036.google.com with SMTP id g13-20020a17090a3c8d00b00196286963b9so14014294pjc.3;
-        Mon, 18 Oct 2021 02:16:31 -0700 (PDT)
+        with ESMTP id S235044AbhJSJlG (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 19 Oct 2021 05:41:06 -0400
+Received: from mail-io1-xd30.google.com (mail-io1-xd30.google.com [IPv6:2607:f8b0:4864:20::d30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04D26C061778
+        for <linux-ia64@vger.kernel.org>; Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
+Received: by mail-io1-xd30.google.com with SMTP id e144so19595773iof.3
+        for <linux-ia64@vger.kernel.org>; Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=date:from:subject:to:cc:references:in-reply-to:mime-version
-         :message-id:content-transfer-encoding;
-        bh=bk4CmdQz8HPJtWkdQrroAn/KfmHvlYv0QT69F5KgUYY=;
-        b=SIY6SmxSooe6c5+WSnMw0wpVs8QY7NiY+XZuBJ+D71+hWvHEdC2Vbwe6t160uJL/aH
-         SxAjedhuo7/GPRc5DJ/SEAzpZfnAKWBOZFVYti9AdvfYsJcQ4rL3+DM2dFweZBuHNa2+
-         +plqntehvZ9SJWnhWeMNJxgbPzWwOsSXBy+aWPK6JCymQrSbx9dlArY4Er+FBijnqB2+
-         KaAdeks2O345KWfd39ueUFOjpMJSBOKHlggozA8hAbjjoen/SEHYJ6ZGB4a5AA4ymoTX
-         S+O+sY98XhFR6qaduHBAgc9j1zJ+556dXM7nA9EQbpd+M4xKLyV6Ni7/OoKNvSsZa2tY
-         Ga4w==
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=h7Ka/8DlpkXEXF23rPgOfJJ3SyquA2FhD5HYDsybiG4=;
+        b=TOvN/3L74NxJ8jkZLAwc1HWcAigE5PqgL50bgmFqgfF5N3Ni/F/hFF6HKKLKTN31yN
+         HevaAXYbPfypt8hhKvSPyehT5ALdXqczNk+5xUwtC+i5sgHXh2uIQwAecZjfCaWU8ix6
+         IP3iNNDeKzM9Rarn67S7Y6Q5meavaw7Mpk+sez5Jm9gTXVkS2K7rH0HxN0wGBD1vTEZW
+         SlZ7Ohjm5TDffwxVe9psHKkZrw9F8ewS3UJdvRp48BugnVC9N6o6tGt7kOuD9dBL9WOI
+         l1dbXlU20FuuDCR1G9eGV6dpPzPq/obtSd+vSUmjw4dvgQ3M4KndmuUgzevCd5/KLP2j
+         AvJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:subject:to:cc:references:in-reply-to
-         :mime-version:message-id:content-transfer-encoding;
-        bh=bk4CmdQz8HPJtWkdQrroAn/KfmHvlYv0QT69F5KgUYY=;
-        b=5nYtRgq2Toy28qbK2Vhl6j+WwkAJ11wQq+duvX+5EuTlX3Cpjjq5oM5AEgg4tpnA3A
-         WyFLsUHfmyQCtKy2VWbaEJNBxvOGnXiT4yIA3FhDy8MnVZ7AudNbtCFeXAf6xjnbuAW8
-         HqbU+ksjJCQrVw+xuCmSigYZMCTu9QO8CKAqVIMUu6z0DLhivu5gIGflNUWvsY96P2Z3
-         AC0zt7u2FcRZwHDccLRne/8kdHMf3JSdgOu+mTsNqLDOC/8hX1txBm+go27UzvXx2ro6
-         azP8GQJyoVVFw94HYtI4H+fra99KnS2VA6dI9HG17x/ZaTZVWW9/HcFyFCYQucvL7Z+D
-         vVjg==
-X-Gm-Message-State: AOAM531mwAf/DTq/s4u6PBmWrnM23b8R7855l0ZFWlxIeX00Oxgkmwj+
-        kY0gQUs61uZ0iVpOpsQ1QR4=
-X-Google-Smtp-Source: ABdhPJzhlLMrCQ4LZ3XWVQonDSXYo92dxUzu1RcvXP5BET6OhlsHPRAv2Q264erQZkrgYN002t+nDA==
-X-Received: by 2002:a17:90a:2c02:: with SMTP id m2mr17579869pjd.109.1634548591342;
-        Mon, 18 Oct 2021 02:16:31 -0700 (PDT)
-Received: from localhost ([58.171.214.181])
-        by smtp.gmail.com with ESMTPSA id rj2sm13068038pjb.32.2021.10.18.02.16.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 Oct 2021 02:16:31 -0700 (PDT)
-Date:   Mon, 18 Oct 2021 19:16:25 +1000
-From:   Nicholas Piggin <npiggin@gmail.com>
-Subject: Re: [PATCH v3 07/12] asm-generic: Define 'func_desc_t' to commonly
- describe function descriptors
-To:     Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Helge Deller <deller@gmx.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Kees Cook <keescook@chromium.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Mackerras <paulus@samba.org>
-Cc:     linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
-References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
-        <a33107c5b82580862510cc20af0d61e33a2b841d.1634457599.git.christophe.leroy@csgroup.eu>
-        <1634538449.eah9b31bbz.astroid@bobo.none>
-        <802b3ff9-8ada-b45b-2b69-b6a23f0c3664@csgroup.eu>
-In-Reply-To: <802b3ff9-8ada-b45b-2b69-b6a23f0c3664@csgroup.eu>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=h7Ka/8DlpkXEXF23rPgOfJJ3SyquA2FhD5HYDsybiG4=;
+        b=QrY/Ee6f/DnJeRImbVdjQ7LJCEjPgWT3dfmZUS21cGXjPQv5giip3oD2ZLfIM6JFPU
+         JOWTBNukOU9O7jNtTgksjXhs77lwDMaqJPBDwaB17JNsts/ry/dCTpqNLkaoGZ09uqO7
+         Ls8Db9trd6KyJ7RsHfpJY5vMX9BBU1lYP0zGMVVnrgTDOP4zVDw3GbnbtuSv5k+kBkWA
+         bhO8ivHbvLwMQRU5gfDQsfzZpFmaOyfnKu7y3etGmutcPxBvooPn/0x8f7QzB83Z9aqz
+         lDyQbzrCAUU/+KZsJ3W6ryHKgJIBUhPEliuOmH5Lp0K/Al+KNiNXNbiK+xnF27ghtpW7
+         aMHg==
+X-Gm-Message-State: AOAM532AK49nmM0UEQoPH6TH2dZLo0MA6nXsmm6jKjA/Cbasnts5wdhZ
+        B6+9+WyVZuCp1fXlj0Q8VOnmsh7VTMxsJs42I/8=
+X-Google-Smtp-Source: ABdhPJzMH7/Viv+gmOFi/wRxRbcc549EbhNxq1WBmFuuCl5Y1sIaNw3hPc5P9A8SHm6QnP1HNGNAvecvirmJS/oiL6w=
+X-Received: by 2002:a02:6f5d:: with SMTP id b29mr3319085jae.113.1634636331013;
+ Tue, 19 Oct 2021 02:38:51 -0700 (PDT)
 MIME-Version: 1.0
-Message-Id: <1634546857.xamu59z8sr.astroid@bobo.none>
-Content-Type: text/plain; charset=UTF-8
+Received: by 2002:a92:c7c6:0:0:0:0:0 with HTTP; Tue, 19 Oct 2021 02:38:50
+ -0700 (PDT)
+Reply-To: megaritalouisdrayfu199@yahoo.com
+From:   "Mrs. Margarita Louis-Dreyfus." <anniewei112@gmail.com>
+Date:   Mon, 18 Oct 2021 21:38:50 -1200
+Message-ID: <CAGT4pMkzKn8mfeY05OAG04CCAxodKEVDUk46D=O7cfK8+n1=tA@mail.gmail.com>
+Subject: Charitable funds to help the less privilege!
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Excerpts from Christophe Leroy's message of October 18, 2021 5:07 pm:
->=20
->=20
-> Le 18/10/2021 =C3=A0 08:29, Nicholas Piggin a =C3=A9crit=C2=A0:
->> Excerpts from Christophe Leroy's message of October 17, 2021 10:38 pm:
->>> We have three architectures using function descriptors, each with its
->>> own type and name.
->>>
->>> Add a common typedef that can be used in generic code.
->>>
->>> Also add a stub typedef for architecture without function descriptors,
->>> to avoid a forest of #ifdefs.
->>>
->>> It replaces the similar 'func_desc_t' previously defined in
->>> arch/powerpc/kernel/module_64.c
->>>
->>> Reviewed-by: Kees Cook <keescook@chromium.org>
->>> Acked-by: Arnd Bergmann <arnd@arndb.de>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> ---
->>=20
->> [...]
->>=20
->>> diff --git a/include/asm-generic/sections.h b/include/asm-generic/secti=
-ons.h
->>> index a918388d9bf6..33b51efe3a24 100644
->>> --- a/include/asm-generic/sections.h
->>> +++ b/include/asm-generic/sections.h
->>> @@ -63,6 +63,9 @@ extern __visible const void __nosave_begin, __nosave_=
-end;
->>>   #else
->>>   #define dereference_function_descriptor(p) ((void *)(p))
->>>   #define dereference_kernel_function_descriptor(p) ((void *)(p))
->>> +typedef struct {
->>> +	unsigned long addr;
->>> +} func_desc_t;
->>>   #endif
->>>  =20
->>=20
->> I think that deserves a comment. If it's just to allow ifdef to be
->> avoided, I guess that's okay with a comment. Would be nice if you could
->> cause it to generate a link time error if it was ever used like
->> undefined functions, but I guess you can't. It's not a necessity though.
->>=20
->=20
-> I tried to explain it in the commit message, but I can add a comment=20
-> here in addition for sure.
+--=20
+Hello,
 
-Thanks.
+I am sorry to encroach into your privacy in this manner, my name
+Margarita Louis-Dreyfus , I find it pleasurable to offer you my
+partnership in business, i only pray at this time that your email
+address is still valid. I want to solicit your attention to receive
+money on my behalf for humanitarian project to help the less
+priviledge.
 
->=20
-> By the way, it IS used in powerpc's module_64.c:
+The purpose of my contacting you is because my status would not permit
+me to do this alone. Given my current state of health, I have decided
+to donate Ninety -Eight Million United State Dollars to establish a
+foundation with your help to reach out to the less privilege, orphans,
+sick and homeless people in your country who will receive their
+blessings as i promised my God before i leave this earth.
 
-Ah yes of course. I guess the point is function descriptors don't exist=20
-so it should not be used (in general). powerpc module code knows what it
-is doing, I guess it's okay for it to use it.
+I got your contact through my personal search, you were revealed as
+being quite astute in private entrepreneurship, and i have no doubt
+that you can handle this huge financial transaction. Please contact my
+executor for more information:
 
-Thanks,
-Nick
+Mr. Ford Spencer(Attorney at Law).
+For: Mrs. Margarita Louis-Dreyfus
+LEGAL DEPARTMENT LAWSON & ASSOCIATES
+(JUSTICE, FAIRPLAY & EQUITY)
+Email: fordspencer828@yahoo.com, fordspencereqs828@gmail.com
+Office: +1-970-414-1400
++1-702-714-3422
+Mobile: +1 916 269 2733
+Fax: +1-970-414-1433
+=C2=AE Property of Steven C Spence PA.
+
+Your earliest response to this letter will be appreciated.
+
+Kind Regards,
+
+Mrs. Margarita Louis-Dreyfus.
