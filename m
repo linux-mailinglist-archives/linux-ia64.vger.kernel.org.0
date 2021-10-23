@@ -2,102 +2,91 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 73D0243814A
-	for <lists+linux-ia64@lfdr.de>; Sat, 23 Oct 2021 03:37:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 774B0438412
+	for <lists+linux-ia64@lfdr.de>; Sat, 23 Oct 2021 17:42:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230317AbhJWBj6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 22 Oct 2021 21:39:58 -0400
-Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:22097 "EHLO
-        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S229507AbhJWBjz (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 22 Oct 2021 21:39:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1634953056;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=VMIfEUdyS7S9YycGnN8abTq0K/b0QBW0FaCGofvAkWQ=;
-        b=UNXBFTHbzZlA/82GUAjSGeFRNRQpMy24hfm0ERQ+hG6wnqKf2UIFxa3NQ5DiihQZ3qdcwa
-        m1pjUTDbaPdlcHKRBGzyNp4/tapwk6nXYmlZmsEf9SE0EWBFP0v5SIFN97bOAuPjdem7Df
-        PaRrCEyoxsXDWx3z2IHVjrC+N2Cjl1o=
-Received: from mimecast-mx01.redhat.com (mimecast-mx01.redhat.com
- [209.132.183.4]) (Using TLS) by relay.mimecast.com with ESMTP id
- us-mta-140-dGKLLbnsONGXIqdLVyqF3w-1; Fri, 22 Oct 2021 21:37:31 -0400
-X-MC-Unique: dGKLLbnsONGXIqdLVyqF3w-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.phx2.redhat.com [10.5.11.14])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx01.redhat.com (Postfix) with ESMTPS id 89FC5362F8;
-        Sat, 23 Oct 2021 01:37:27 +0000 (UTC)
-Received: from llong.remote.csb (unknown [10.22.16.242])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 4E1F817CEE;
-        Sat, 23 Oct 2021 01:37:23 +0000 (UTC)
-Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
-To:     Arnd Bergmann <arnd@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Boqun Feng <boqun.feng@gmail.com>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        Stafford Horne <shorne@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@de.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-s390@vger.kernel.org
-References: <20211022120058.1031690-1-arnd@kernel.org>
-From:   Waiman Long <longman@redhat.com>
-Message-ID: <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
-Date:   Fri, 22 Oct 2021 21:37:22 -0400
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        id S230104AbhJWPpN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 23 Oct 2021 11:45:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46440 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230361AbhJWPpM (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 23 Oct 2021 11:45:12 -0400
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F66C061220
+        for <linux-ia64@vger.kernel.org>; Sat, 23 Oct 2021 08:42:52 -0700 (PDT)
+Received: by mail-wr1-x444.google.com with SMTP id d10so1879793wrb.1
+        for <linux-ia64@vger.kernel.org>; Sat, 23 Oct 2021 08:42:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=F26I+cBcpyIkdxRfcHLvmvj+TTSmfbBclURHJNpWXCA=;
+        b=AYtLHgTG+6uRU7+ihCnpuOHko6pqohXhhQkkijOFNs1K9R3uZtGzQ5Q1/HW70ikQOH
+         to4qY+MneU8Wp5m/9lAfflx+y719nabfpikWCEUlEWf4TV2mCVtwTqCiU9WBe0/PueVA
+         Ai5uemlRsLruanwKtfzO+GeDcAbGf94MhP9fVYsSthGmJThkp9aXQloZUCc7KpPJDIe5
+         ZDHZUIMzc7AFUI4sZuF8c0yufIwBcSuY8XEdvjlaOTWtthy6nwfYJOAMZizkpVyMjWcI
+         yYcYAJzSYs4KyL2X7l5KUECXBatU7ZxHLxcDM7wHj0/uSurwobyzbl1doBaHD0t2U4Ok
+         8KFA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=F26I+cBcpyIkdxRfcHLvmvj+TTSmfbBclURHJNpWXCA=;
+        b=UZ1cPqaZY9f96+Dv/2BZQc5xa/goM8gEUO8rvasx9Ex+gm6q8yipsU9/OXmjbW/NP5
+         c26zsRYjaSeePo1LGs5oQBKfAhgsZ6lnMk20ykAYY9GYjk6c6vGYFQAvCiy8kYRA5p80
+         Adtu4izkKp3ZiDRSCOoGvjqvoCzhjNhc9yvQsfxztWeZb378Kku6v4F9WpVws0cJc2gl
+         nZULegbaunmVJlEAovNNTRHoitiHBrmtHhY+6LGJlqFloYQJ8YHkcEODV2CMRI/X0iz7
+         mPI27EEookxqU7ZmTsIJhlB2ZDGzUqwvpwx/jXJNLUGowkSkgpmJw2ylWvIj4ILJOw/4
+         ixiQ==
+X-Gm-Message-State: AOAM533QZtkVEnCOzPwod5Cc3FOIStB4xwLvMvFhWQ/r2/L3xZ3riKMj
+        +mq3Z/LfiKrZjmwCwy7w099ScB74D88z2XuE9d8=
+X-Google-Smtp-Source: ABdhPJxbHWCQaA22XVwQFJLeK97z9oroWNyFUNBz/3teSSfazwM0svrL6URXAe5PADGpGE0jjZn5M2av0IBmVyuOXKg=
+X-Received: by 2002:adf:a411:: with SMTP id d17mr3075552wra.232.1635003770995;
+ Sat, 23 Oct 2021 08:42:50 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20211022120058.1031690-1-arnd@kernel.org>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-Scanned-By: MIMEDefang 2.79 on 10.5.11.14
+Received: by 2002:a1c:a916:0:0:0:0:0 with HTTP; Sat, 23 Oct 2021 08:42:50
+ -0700 (PDT)
+Reply-To: martinafrancis01@gmail.com
+From:   martinafran42 <martinafran42@gmail.com>
+Date:   Sat, 23 Oct 2021 08:42:50 -0700
+Message-ID: <CAC1Op46rzf-95OpiL4YE=Lzvu2F7NstX11WdGagxm5dfjjFJ3w@mail.gmail.com>
+Subject: =?UTF-8?Q?Dobry_dzie=C5=84_moja_droga?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 10/22/21 7:59 AM, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
->
-> parisc, ia64 and powerpc32 are the only remaining architectures that
-> provide custom arch_{spin,read,write}_lock_flags() functions, which are
-> meant to re-enable interrupts while waiting for a spinlock.
->
-> However, none of these can actually run into this codepath, because
-> it is only called on architectures without CONFIG_GENERIC_LOCKBREAK,
-> or when CONFIG_DEBUG_LOCK_ALLOC is set without CONFIG_LOCKDEP, and none
-> of those combinations are possible on the three architectures.
->
-> Going back in the git history, it appears that arch/mn10300 may have
-> been able to run into this code path, but there is a good chance that
-> it never worked. On the architectures that still exist, it was
-> already impossible to hit back in 2008 after the introduction of
-> CONFIG_GENERIC_LOCKBREAK, and possibly earlier.
->
-> As this is all dead code, just remove it and the helper functions built
-> around it. For arch/ia64, the inline asm could be cleaned up, but
-> it seems safer to leave it untouched.
->
-> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+--=20
+Dobry dzie=C5=84 moja droga
+Jak si=C4=99 masz i twoja rodzina.
+Jestem pani Martina Francis, chora wdowa pisz=C4=85ca ze szpitalnego =C5=82=
+=C3=B3=C5=BCka
+bez dziecka. Kontaktuj=C4=99 si=C4=99 z Pa=C5=84stwem, aby=C5=9Bcie dowiedz=
+ieli si=C4=99 o moim
+pragnieniu przekazania sumy (2 700 000,00 USD MILION=C3=93W USD), kt=C3=B3r=
+=C4=85
+odziedziczy=C5=82am po moim zmar=C5=82ym m=C4=99=C5=BCu na cele charytatywn=
+e, obecnie
+fundusz jest nadal w banku. Niedawno m=C3=B3j lekarz powiedzia=C5=82 mi, =
+=C5=BCe mam
+powa=C5=BCn=C4=85 chorob=C4=99 nowotworow=C4=85 i moje =C5=BCycie nie jest =
+ju=C5=BC gwarantowane,
+dlatego podejmuj=C4=99 t=C4=99 decyzj=C4=99..
 
-Does that mean we can also remove the GENERIC_LOCKBREAK config option 
-from the Kconfig files as well?
+Chc=C4=99, aby=C5=9Bcie skorzystali z tego funduszu dla ludzi ubogich,
+maltretowanych dzieci, mniej uprzywilejowanych, ko=C5=9Bcio=C5=82=C3=B3w, s=
+ieroci=C5=84c=C3=B3w
+i cierpi=C4=85cych wd=C3=B3w w spo=C5=82ecze=C5=84stwie.
 
-Cheers,
-Longman
+Prosz=C4=99, wr=C3=B3=C4=87 do mnie natychmiast po przeczytaniu tej wiadomo=
+=C5=9Bci, aby
+uzyska=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3w dotycz=C4=85cych tej age=
+ndy humanitarnej.
 
+Niech B=C3=B3g ci=C4=99 b=C5=82ogos=C5=82awi, kiedy czekam na twoj=C4=85 od=
+powied=C5=BA.
 
+Twoja siostra.
+Pani Martina Francis.
