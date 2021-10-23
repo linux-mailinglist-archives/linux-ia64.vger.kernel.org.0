@@ -2,91 +2,91 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 774B0438412
-	for <lists+linux-ia64@lfdr.de>; Sat, 23 Oct 2021 17:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF08443843D
+	for <lists+linux-ia64@lfdr.de>; Sat, 23 Oct 2021 18:05:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230104AbhJWPpN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 23 Oct 2021 11:45:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46440 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230361AbhJWPpM (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 23 Oct 2021 11:45:12 -0400
-Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F66C061220
-        for <linux-ia64@vger.kernel.org>; Sat, 23 Oct 2021 08:42:52 -0700 (PDT)
-Received: by mail-wr1-x444.google.com with SMTP id d10so1879793wrb.1
-        for <linux-ia64@vger.kernel.org>; Sat, 23 Oct 2021 08:42:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=F26I+cBcpyIkdxRfcHLvmvj+TTSmfbBclURHJNpWXCA=;
-        b=AYtLHgTG+6uRU7+ihCnpuOHko6pqohXhhQkkijOFNs1K9R3uZtGzQ5Q1/HW70ikQOH
-         to4qY+MneU8Wp5m/9lAfflx+y719nabfpikWCEUlEWf4TV2mCVtwTqCiU9WBe0/PueVA
-         Ai5uemlRsLruanwKtfzO+GeDcAbGf94MhP9fVYsSthGmJThkp9aXQloZUCc7KpPJDIe5
-         ZDHZUIMzc7AFUI4sZuF8c0yufIwBcSuY8XEdvjlaOTWtthy6nwfYJOAMZizkpVyMjWcI
-         yYcYAJzSYs4KyL2X7l5KUECXBatU7ZxHLxcDM7wHj0/uSurwobyzbl1doBaHD0t2U4Ok
-         8KFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=F26I+cBcpyIkdxRfcHLvmvj+TTSmfbBclURHJNpWXCA=;
-        b=UZ1cPqaZY9f96+Dv/2BZQc5xa/goM8gEUO8rvasx9Ex+gm6q8yipsU9/OXmjbW/NP5
-         c26zsRYjaSeePo1LGs5oQBKfAhgsZ6lnMk20ykAYY9GYjk6c6vGYFQAvCiy8kYRA5p80
-         Adtu4izkKp3ZiDRSCOoGvjqvoCzhjNhc9yvQsfxztWeZb378Kku6v4F9WpVws0cJc2gl
-         nZULegbaunmVJlEAovNNTRHoitiHBrmtHhY+6LGJlqFloYQJ8YHkcEODV2CMRI/X0iz7
-         mPI27EEookxqU7ZmTsIJhlB2ZDGzUqwvpwx/jXJNLUGowkSkgpmJw2ylWvIj4ILJOw/4
-         ixiQ==
-X-Gm-Message-State: AOAM533QZtkVEnCOzPwod5Cc3FOIStB4xwLvMvFhWQ/r2/L3xZ3riKMj
-        +mq3Z/LfiKrZjmwCwy7w099ScB74D88z2XuE9d8=
-X-Google-Smtp-Source: ABdhPJxbHWCQaA22XVwQFJLeK97z9oroWNyFUNBz/3teSSfazwM0svrL6URXAe5PADGpGE0jjZn5M2av0IBmVyuOXKg=
-X-Received: by 2002:adf:a411:: with SMTP id d17mr3075552wra.232.1635003770995;
- Sat, 23 Oct 2021 08:42:50 -0700 (PDT)
+        id S229954AbhJWQHf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 23 Oct 2021 12:07:35 -0400
+Received: from mail.kernel.org ([198.145.29.99]:60218 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S229901AbhJWQHe (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Sat, 23 Oct 2021 12:07:34 -0400
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 51A1E6109E;
+        Sat, 23 Oct 2021 16:05:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1635005115;
+        bh=a0FullCysk1UJY/SuwNW+JkwKz1DX5zFsZR7u65jCCk=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=YcA0X7ZJT9KPq++0vy4Zc9YPjW55ngCXT3XYqy0oc0V32YWSyFzKjWH46Wfk6JUB6
+         PCIDwfEBeDkcsFDGtdhqthdSSccuQ4eBo6P/LqmrXl9bChhrw5voAlYoYh7iNIzAji
+         I/i5bgtEUMvO3AEqG3qlH4MZ1DNT15pXqUIREZ0Yj9fWIMtdEKWa5Dl0hx2Av4mXBx
+         aZYfYYaL5Ja4lDViVX9MnZlv3E1cOX3kebEmYI6h4HSEkK5Cu3dI3EbNPUElSQ0S/m
+         arVBv2qit0AEO2JDL2ItsVAj0xcsKg0bg0oX/nPHGUknfGsiTy2YfqGtAARZUCZBYT
+         WlW6qCwcUiNFA==
+Received: by mail-wm1-f43.google.com with SMTP id 193-20020a1c01ca000000b00327775075f7so7440134wmb.5;
+        Sat, 23 Oct 2021 09:05:15 -0700 (PDT)
+X-Gm-Message-State: AOAM53104sgHT455SKw/nCLQ+2DmR7UQH8Q0rOPpZBlfJr0HxHgiM5nl
+        PG6STbi3Srwj7X7BDwhMJA7ar3RAApKwyU2XHuc=
+X-Google-Smtp-Source: ABdhPJzw9bHMXdBR8sTpnXzuM1z62QqWWvXCArLgXmJmvR/CFzjvKRNvYnRPFIYed1aqogH5ms1MCPnMvzTwp0uq874=
+X-Received: by 2002:a05:600c:4f42:: with SMTP id m2mr36618604wmq.82.1635005113773;
+ Sat, 23 Oct 2021 09:05:13 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a1c:a916:0:0:0:0:0 with HTTP; Sat, 23 Oct 2021 08:42:50
- -0700 (PDT)
-Reply-To: martinafrancis01@gmail.com
-From:   martinafran42 <martinafran42@gmail.com>
-Date:   Sat, 23 Oct 2021 08:42:50 -0700
-Message-ID: <CAC1Op46rzf-95OpiL4YE=Lzvu2F7NstX11WdGagxm5dfjjFJ3w@mail.gmail.com>
-Subject: =?UTF-8?Q?Dobry_dzie=C5=84_moja_droga?=
-To:     undisclosed-recipients:;
+References: <20211022120058.1031690-1-arnd@kernel.org> <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
+In-Reply-To: <cc8e3c58-457d-fdf3-6a62-98bde0cefdea@redhat.com>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Sat, 23 Oct 2021 18:04:57 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
+Message-ID: <CAK8P3a0YjaRS+aUCOKGjsfkR3TM49PrG6U4ftG_Fz+OFuyCb0w@mail.gmail.com>
+Subject: Re: [PATCH] locking: remove spin_lock_flags() etc
+To:     Waiman Long <longman@redhat.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@de.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-ia64@vger.kernel.org,
+        Openrisc <openrisc@lists.librecores.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-s390 <linux-s390@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
---=20
-Dobry dzie=C5=84 moja droga
-Jak si=C4=99 masz i twoja rodzina.
-Jestem pani Martina Francis, chora wdowa pisz=C4=85ca ze szpitalnego =C5=82=
-=C3=B3=C5=BCka
-bez dziecka. Kontaktuj=C4=99 si=C4=99 z Pa=C5=84stwem, aby=C5=9Bcie dowiedz=
-ieli si=C4=99 o moim
-pragnieniu przekazania sumy (2 700 000,00 USD MILION=C3=93W USD), kt=C3=B3r=
-=C4=85
-odziedziczy=C5=82am po moim zmar=C5=82ym m=C4=99=C5=BCu na cele charytatywn=
-e, obecnie
-fundusz jest nadal w banku. Niedawno m=C3=B3j lekarz powiedzia=C5=82 mi, =
-=C5=BCe mam
-powa=C5=BCn=C4=85 chorob=C4=99 nowotworow=C4=85 i moje =C5=BCycie nie jest =
-ju=C5=BC gwarantowane,
-dlatego podejmuj=C4=99 t=C4=99 decyzj=C4=99..
+On Sat, Oct 23, 2021 at 3:37 AM Waiman Long <longman@redhat.com> wrote:
+>> On 10/22/21 7:59 AM, Arnd Bergmann wrote:
+> > From: Arnd Bergmann <arnd@arndb.de>
+> >
+> > As this is all dead code, just remove it and the helper functions built
+> > around it. For arch/ia64, the inline asm could be cleaned up, but
+> > it seems safer to leave it untouched.
+> >
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+> Does that mean we can also remove the GENERIC_LOCKBREAK config option
+> from the Kconfig files as well?
 
-Chc=C4=99, aby=C5=9Bcie skorzystali z tego funduszu dla ludzi ubogich,
-maltretowanych dzieci, mniej uprzywilejowanych, ko=C5=9Bcio=C5=82=C3=B3w, s=
-ieroci=C5=84c=C3=B3w
-i cierpi=C4=85cych wd=C3=B3w w spo=C5=82ecze=C5=84stwie.
+ I couldn't figure this out.
 
-Prosz=C4=99, wr=C3=B3=C4=87 do mnie natychmiast po przeczytaniu tej wiadomo=
-=C5=9Bci, aby
-uzyska=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3w dotycz=C4=85cych tej age=
-ndy humanitarnej.
+What I see is that the only architectures setting GENERIC_LOCKBREAK are
+nds32, parisc, powerpc, s390, sh and sparc64, while the only architectures
+implementing arch_spin_is_contended() are arm32, csky and ia64.
 
-Niech B=C3=B3g ci=C4=99 b=C5=82ogos=C5=82awi, kiedy czekam na twoj=C4=85 od=
-powied=C5=BA.
+The part I don't understand is whether the option actually does anything
+useful any more after commit d89c70356acf ("locking/core: Remove break_lock
+field when CONFIG_GENERIC_LOCKBREAK=y").
 
-Twoja siostra.
-Pani Martina Francis.
+      Arnd
