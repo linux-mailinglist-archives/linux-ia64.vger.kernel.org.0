@@ -2,27 +2,27 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2046444A266
-	for <lists+linux-ia64@lfdr.de>; Tue,  9 Nov 2021 02:16:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 88E4844A378
+	for <lists+linux-ia64@lfdr.de>; Tue,  9 Nov 2021 02:25:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242133AbhKIBSD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 8 Nov 2021 20:18:03 -0500
-Received: from mail.kernel.org ([198.145.29.99]:40848 "EHLO mail.kernel.org"
+        id S240949AbhKIB1G (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 8 Nov 2021 20:27:06 -0500
+Received: from mail.kernel.org ([198.145.29.99]:46548 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S242878AbhKIBO2 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 8 Nov 2021 20:14:28 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id A7CD1610A2;
-        Tue,  9 Nov 2021 01:05:52 +0000 (UTC)
+        id S242657AbhKIBRx (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 8 Nov 2021 20:17:53 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 03CB261207;
+        Tue,  9 Nov 2021 01:07:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636419953;
-        bh=f3goWkIl2SxeAHIEjXf1JM0ql4jX1tMGWMOabFRzUHM=;
+        s=k20201202; t=1636420042;
+        bh=oehcgmk304cGqbJQRJWFO3w2iPk0lZBUvG+Ct+rgIZk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TSf5wlGJ07fTW4H0D5u/YvsX54lJYw8wNiKj2yFCwZDgaerheItJ0RB/BKywv6HD/
-         tWTuhJ60xJ9/j+HGFNkNu6wgBGPTcbNpY3Fho1lbrHRnXFzCWhbhx/Q/W5XdO0c7tx
-         9/q8wQKuY7QeUMSI8XWVlLuV9ydoBM7uOIDEcuLT9ImT5FigAhOzOEmucyZ/0EwSas
-         qResyOEtYLyJqq544EmaOJJDIu55LcbxxUe8hhmLFwBTAlgrSz1tcpGnODHMRnRYeP
-         Oj+da1Ckn8bKsb0UU4Ty2677K2tCL3fJcLM4a8OQAPN3/CxYDOfG7ikgsQFCWPY3kA
-         dQRF/zCHXy99w==
+        b=atbKa0OHtnv73DfDBIFj/cjkK5oPMu02e6P1ueyEkndGaKS8nb+Mnp4NEOS4DcF1+
+         wNGQh0ipzQTY8byj5JRHh5q8nzY8owKTpOx7olyKdsaGTdgS4UYifLD1LbmC8VsNiN
+         AeUyfHnMYR+iJYxOU6LAdb6Z5TbaLW/SyQx/wIbgpKpIe+0daZBz9/g/5Np2xMkbwU
+         F0oqLyca/U48hVU+NgTM477EcuLig8jsI410Ck/4YSainmzPVaqpZDd1/F/iZEBzVe
+         crm0dbYyGWoY/AZ9+UEEWYaQO7I/MgdPhWEBQ+A6RVJENk7h/zBfGgonlzIlEaKw8e
+         UX2uKwGsMkhpQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Randy Dunlap <rdunlap@infradead.org>, linux-ia64@vger.kernel.org,
@@ -32,12 +32,12 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>, linux-ia64@vger.kernel.org,
         Paul Gortmaker <paul.gortmaker@windriver.com>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.19 21/47] ia64: don't do IA64_CMPXCHG_DEBUG without CONFIG_PRINTK
-Date:   Mon,  8 Nov 2021 12:50:05 -0500
-Message-Id: <20211108175031.1190422-21-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.14 18/39] ia64: don't do IA64_CMPXCHG_DEBUG without CONFIG_PRINTK
+Date:   Mon,  8 Nov 2021 20:06:28 -0500
+Message-Id: <20211109010649.1191041-18-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211108175031.1190422-1-sashal@kernel.org>
-References: <20211108175031.1190422-1-sashal@kernel.org>
+In-Reply-To: <20211109010649.1191041-1-sashal@kernel.org>
+References: <20211109010649.1191041-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
@@ -79,10 +79,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/ia64/Kconfig.debug b/arch/ia64/Kconfig.debug
-index 1371efc9b0055..637ac79c29b6d 100644
+index 677c409425df2..c27c13ca77f47 100644
 --- a/arch/ia64/Kconfig.debug
 +++ b/arch/ia64/Kconfig.debug
-@@ -39,7 +39,7 @@ config DISABLE_VHPT
+@@ -42,7 +42,7 @@ config DISABLE_VHPT
  
  config IA64_DEBUG_CMPXCHG
  	bool "Turn on compare-and-exchange bug checking (slow!)"
