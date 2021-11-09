@@ -2,27 +2,27 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 50AE644A379
+	by mail.lfdr.de (Postfix) with ESMTP id BDBF444A37A
 	for <lists+linux-ia64@lfdr.de>; Tue,  9 Nov 2021 02:25:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242466AbhKIB1H (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 8 Nov 2021 20:27:07 -0500
-Received: from mail.kernel.org ([198.145.29.99]:46240 "EHLO mail.kernel.org"
+        id S243286AbhKIB1J (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 8 Nov 2021 20:27:09 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50184 "EHLO mail.kernel.org"
         rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S243317AbhKIBVn (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 8 Nov 2021 20:21:43 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id 6C7FB61A50;
-        Tue,  9 Nov 2021 01:08:34 +0000 (UTC)
+        id S244268AbhKIBZF (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 8 Nov 2021 20:25:05 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id 904EA61A55;
+        Tue,  9 Nov 2021 01:09:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1636420115;
+        s=k20201202; t=1636420184;
         bh=KleTAuiYN08CCakSJryb9oz0+fFiyLC9ruYBaQfpj4A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K4OnlsKMtS8DePD0P15yg0gO96VuG5hQKO3ffkrBegExLA0/OGCHQzs5VjNFzYnfB
-         j5FQLWgBi5fPyoo+P7LkpDWnWAj3KKzOGZHrCieU8mKaf3SvRWg2Rk89eMaJU8jEhr
-         sPtk2okBM1W8Uvao9hharSKf2SX5FZ2I9dbXvG1UdKHrOG5gb9YZlfXcu14NTqpZUB
-         It5h4IDWIAoW3ATMVElcT8SrRc0wp4UTHNw1zZVsiBQgTsroTgr+qjJ1yPjeqR8PAm
-         p1cgepJLwBLpfc0B+rt9jl0obU4b+fJ/LMEDfDSQMswFhGAgSVljZ+AQz9u31VBfgt
-         2G99ohv/e0saw==
+        b=IPRLd8Mj9wx4T8zag1unBE1M8SbPoFC5J0cNtEZNTb/X0KSnySZFXQ1agHe3ERUrv
+         QcdAgv1dzOEuoaCpH9PmiUPYEn4NP506mql4EH3hVHE3AzQn3GrZRCruP1lhuYLSmx
+         iK0snsy/PSn5ZLMRyXq9NbBlicfxkku575DdSf2HTrJhYGlHHIT+D+i21YQLYdGqPA
+         QxTRTqnKtIiW+ZEUJkhcntfcI7hzPbpCZgGIh8fFgjDGAO+eincn+D/Yvh//2MwGz8
+         TSOuhUEZk5yfh5llKMmuJPhSqU4FIjHDn35OCnwVi8eaucc37VJvL/89ajJ+BCfnK2
+         oTzJp5wKC03kg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Cc:     Randy Dunlap <rdunlap@infradead.org>, linux-ia64@vger.kernel.org,
@@ -32,12 +32,12 @@ Cc:     Randy Dunlap <rdunlap@infradead.org>, linux-ia64@vger.kernel.org,
         Paul Gortmaker <paul.gortmaker@windriver.com>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.9 15/33] ia64: don't do IA64_CMPXCHG_DEBUG without CONFIG_PRINTK
-Date:   Mon,  8 Nov 2021 20:07:49 -0500
-Message-Id: <20211109010807.1191567-15-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 4.4 14/30] ia64: don't do IA64_CMPXCHG_DEBUG without CONFIG_PRINTK
+Date:   Mon,  8 Nov 2021 20:09:02 -0500
+Message-Id: <20211109010918.1192063-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.33.0
-In-Reply-To: <20211109010807.1191567-1-sashal@kernel.org>
-References: <20211109010807.1191567-1-sashal@kernel.org>
+In-Reply-To: <20211109010918.1192063-1-sashal@kernel.org>
+References: <20211109010918.1192063-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
