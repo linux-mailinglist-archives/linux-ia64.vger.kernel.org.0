@@ -2,111 +2,96 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7D30044FFCE
-	for <lists+linux-ia64@lfdr.de>; Mon, 15 Nov 2021 09:11:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E63F5450B78
+	for <lists+linux-ia64@lfdr.de>; Mon, 15 Nov 2021 18:22:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229929AbhKOIOE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 15 Nov 2021 03:14:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53502 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237055AbhKOIOA (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 15 Nov 2021 03:14:00 -0500
-Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 684B3C061746
-        for <linux-ia64@vger.kernel.org>; Mon, 15 Nov 2021 00:11:04 -0800 (PST)
-Received: by mail-pg1-x532.google.com with SMTP id q12so2206915pgh.5
-        for <linux-ia64@vger.kernel.org>; Mon, 15 Nov 2021 00:11:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=uNJGLM8xEPqjYMIrgbPXyu52Km6pAEeQHq8g2XIJ8Qs=;
-        b=QH0yflGbaDzRDsV2VgDEN2XLHoXJeWEELB0TF5dyJuCbPW7omjywAZRR6nyc6CArtZ
-         hMROghKucLh4SjxQMdFMjHYkpMfQNFRIrlnRDZ2MiXzzfko4+QUqWHxl2MIDEZYcpE0C
-         fVqnCtiUh/Vaps5OX3NRG5QCrqHOz20YHZGallgJxswCKYlsY8Z2UrIuxlKA/2qP4/Ov
-         4AfZM9XfyXBASG5Xn/JMfv2aueRrllPicnh6YfZ5drSpRK7XwBTawtyT2Lsob24RkH2x
-         GgXrsp8+uAmTqNTDo6lRduvNCS2vVyrF40m6B92yteUVvnr0BoDmYKUcuxYMtkWH37p5
-         9RgQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to:content-transfer-encoding;
-        bh=uNJGLM8xEPqjYMIrgbPXyu52Km6pAEeQHq8g2XIJ8Qs=;
-        b=X3GLPH4aT9MggT7O1q+1uJGvhrjkArVCnoHJ8D4PJY2cs/8vlkLikh6HfsLxLFjKMR
-         QmkW+/Ta3VAs3T1SdlCBrrBmpI+3+Nl0tw4A3+wsnYn2HjTkXs5aj53W1WXKIsorNhXP
-         HziwcbTDvL8kn27QJD52ybrLi5ESdoGy+amneH32d9bIwGvCA0Z5EYdqfMowSEqTvAiZ
-         3jhan2v0+WLRW04RxRGvlEgiOr45nTOojPL8CpmUN2vczN1sHGhYYRdE73ICsT4ejHIO
-         AyJtibqRbAw4W2ftXK14zplW5CZ6nniZM+t6FbsndHwXTo4AWG5JiMtzkXInYK3EPZpu
-         Vcpw==
-X-Gm-Message-State: AOAM531OU4W4gd8GjZfGpbHN7MCe7pWGImMNEMxy6Y/ph7ZbHprLwRLM
-        dskomkdiHEMttp1Fn0MEPdnjVBF7Plx3hqLz1Po=
-X-Google-Smtp-Source: ABdhPJwx5S9Cvud6V42D5N5kvzTfMW20J7anCBgKua0+CaOD8pHP1x6yZoxiNxiXAvG6ppxk+QUqE6xiFqjrjUrmq78=
-X-Received: by 2002:a62:16c7:0:b0:49f:a6cc:c77d with SMTP id
- 190-20020a6216c7000000b0049fa6ccc77dmr30653851pfw.23.1636963863983; Mon, 15
- Nov 2021 00:11:03 -0800 (PST)
+        id S235593AbhKORY4 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 15 Nov 2021 12:24:56 -0500
+Received: from mail.kernel.org ([198.145.29.99]:50936 "EHLO mail.kernel.org"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S237647AbhKORXm (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 15 Nov 2021 12:23:42 -0500
+Received: by mail.kernel.org (Postfix) with ESMTPSA id CAC4263246;
+        Mon, 15 Nov 2021 17:15:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1636996525;
+        bh=LuA1Ioty0p7m4NLfqNvuURt4xangfK27QVOJTs23rKU=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=C43OPaXGkn8jDnh0BfY/PVtEoMrm/FPbaAEwHV5PO10gO+ORSAZfynkOIOwxIFJnu
+         HJ1CV/WWHQQ2AsUzBPSPADiW4fRnxkFaI9+DguObDSWqjb5uSqCUGsJjXPfz0Cp2Y1
+         xu1LKQCPrlloLZN+rHLE7U6JuTCLkcmA4QMKD/gE=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, linux-ia64@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Tony Luck <tony.luck@intel.com>,
+        Chris Down <chris@chrisdown.name>,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 139/355] ia64: dont do IA64_CMPXCHG_DEBUG without CONFIG_PRINTK
+Date:   Mon, 15 Nov 2021 18:01:03 +0100
+Message-Id: <20211115165318.294086865@linuxfoundation.org>
+X-Mailer: git-send-email 2.33.1
+In-Reply-To: <20211115165313.549179499@linuxfoundation.org>
+References: <20211115165313.549179499@linuxfoundation.org>
+User-Agent: quilt/0.66
 MIME-Version: 1.0
-Received: by 2002:a05:6a10:2d0e:0:0:0:0 with HTTP; Mon, 15 Nov 2021 00:11:03
- -0800 (PST)
-Reply-To: maureenhinckley24@aol.com
-From:   "Mrs. Maureen Hinckley" <franklymiller417@gmail.com>
-Date:   Mon, 15 Nov 2021 09:11:03 +0100
-Message-ID: <CAM6ufjA3K+9-=SsH7M47FpKRcT9Y_7nj68Do8hdpTemVg5YqSA@mail.gmail.com>
-Subject: BRAUCHEN SIE EINEN KREDIT??
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
---=20
-Ben=C3=B6tigen Sie eine pers=C3=B6nliche & gesch=C3=A4ftliche oder
-Investitionsf=C3=B6rderung, ohne Stress und schnelle Genehmigung? Wenn ja,
-kontaktieren Sie uns noch heute, da wir derzeit Kredite zu einem
-hervorragenden Zinssatz von 3% anbieten. Unsere Finanzierung ist
-gesichert und sicher. Das Gl=C3=BCck unserer Kunden ist unsere St=C3=A4rke.
-Darlehen in H=C3=B6he von 5.000 =E2=82=AC bis 1.000.000 =E2=82=AC USD Euro =
-und Pfund sind
-ab sofort verf=C3=BCgbar: Gesch=C3=A4fts-, Privat-, Haus-, Reise- und
-Studentendarlehen usw. F=C3=BCr weitere Informationen Kreditsachbearbeiter.
+From: Randy Dunlap <rdunlap@infradead.org>
 
-ANGABEN ZUM kreditnehmer
+[ Upstream commit c15b5fc054c3d6c97e953617605235c5cb8ce979 ]
 
-Dein Name:
-Kreditbetrag:
-Kreditlaufzeit:
-Land
-Die Anschrift:
-G=C3=BCltige Handynummer:
+When CONFIG_PRINTK is not set, the CMPXCHG_BUGCHECK() macro calls
+_printk(), but _printk() is a static inline function, not available
+as an extern.
+Since the purpose of the macro is to print the BUGCHECK info,
+make this config option depend on PRINTK.
 
-Danke f=C3=BCr dein Verst=C3=A4ndnis.
+Fixes multiple occurrences of this build error:
 
-Gr=C3=BC=C3=9Fe
-Verwaltung
+../include/linux/printk.h:208:5: error: static declaration of '_printk' follows non-static declaration
+  208 | int _printk(const char *s, ...)
+      |     ^~~~~~~
+In file included from ../arch/ia64/include/asm/cmpxchg.h:5,
+../arch/ia64/include/uapi/asm/cmpxchg.h:146:28: note: previous declaration of '_printk' with type 'int(const char *, ...)'
+  146 |                 extern int _printk(const char *fmt, ...);
 
-F=C3=BCr dringende Antworten sehr gerne verf=C3=BCgbar E-Mail:
-maureenhinckley24@aol.comHallo,
+Cc: linux-ia64@vger.kernel.org
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: Chris Down <chris@chrisdown.name>
+Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/ia64/Kconfig.debug | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-          Wir sind eine christliche Organisation, die gegr=C3=BCndet wurde,
-um Menschen zu helfen, die Hilfe ben=C3=B6tigen, z Begleichen Sie Ihre
-Schulden oder begleichen Sie Ihre Rechnungen, gr=C3=BCnden Sie ein sch=C3=
-=B6nes
-Gesch=C3=A4ft oder finden Sie es schwierig, einen Kapitalkredit von lokalen
-Banken zu erhalten, kontaktieren Sie uns noch heute per E-Mail:
-maureenhinckley24@aol.com wer fragt, erh=C3=A4lt; wer sucht, findet; und
-dem, der anklopft, wird die T=C3=BCr ge=C3=B6ffnet. Lassen Sie sich diese
-Gelegenheit nicht entgehen, denn Jesus ist gestern, heute und f=C3=BCr
-immer derselbe. Bitte, dies ist f=C3=BCr ernsthafte und gottesf=C3=BCrchtig=
-e
-Menschen.
+diff --git a/arch/ia64/Kconfig.debug b/arch/ia64/Kconfig.debug
+index 40ca23bd228d6..2ce008e2d1644 100644
+--- a/arch/ia64/Kconfig.debug
++++ b/arch/ia64/Kconfig.debug
+@@ -39,7 +39,7 @@ config DISABLE_VHPT
+ 
+ config IA64_DEBUG_CMPXCHG
+ 	bool "Turn on compare-and-exchange bug checking (slow!)"
+-	depends on DEBUG_KERNEL
++	depends on DEBUG_KERNEL && PRINTK
+ 	help
+ 	  Selecting this option turns on bug checking for the IA-64
+ 	  compare-and-exchange instructions.  This is slow!  Itaniums
+-- 
+2.33.0
 
-ANGABEN ZUM kreditnehmer
 
-Dein Name:
-Kreditbetrag:
-Kreditlaufzeit:
-Land
-Die Anschrift:
-G=C3=BCltige Handynummer:
 
-Danke f=C3=BCr dein Verst=C3=A4ndnis.
