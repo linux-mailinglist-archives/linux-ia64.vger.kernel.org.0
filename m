@@ -2,96 +2,54 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D03F452781
-	for <lists+linux-ia64@lfdr.de>; Tue, 16 Nov 2021 03:23:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 68D7A452D4D
+	for <lists+linux-ia64@lfdr.de>; Tue, 16 Nov 2021 09:56:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346898AbhKPCZ5 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 15 Nov 2021 21:25:57 -0500
-Received: from mail.kernel.org ([198.145.29.99]:47400 "EHLO mail.kernel.org"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S237408AbhKORVC (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 15 Nov 2021 12:21:02 -0500
-Received: by mail.kernel.org (Postfix) with ESMTPSA id CAC4263246;
-        Mon, 15 Nov 2021 17:15:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1636996525;
-        bh=LuA1Ioty0p7m4NLfqNvuURt4xangfK27QVOJTs23rKU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C43OPaXGkn8jDnh0BfY/PVtEoMrm/FPbaAEwHV5PO10gO+ORSAZfynkOIOwxIFJnu
-         HJ1CV/WWHQQ2AsUzBPSPADiW4fRnxkFaI9+DguObDSWqjb5uSqCUGsJjXPfz0Cp2Y1
-         xu1LKQCPrlloLZN+rHLE7U6JuTCLkcmA4QMKD/gE=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, linux-ia64@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Tony Luck <tony.luck@intel.com>,
-        Chris Down <chris@chrisdown.name>,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Petr Mladek <pmladek@suse.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 139/355] ia64: dont do IA64_CMPXCHG_DEBUG without CONFIG_PRINTK
-Date:   Mon, 15 Nov 2021 18:01:03 +0100
-Message-Id: <20211115165318.294086865@linuxfoundation.org>
-X-Mailer: git-send-email 2.33.1
-In-Reply-To: <20211115165313.549179499@linuxfoundation.org>
-References: <20211115165313.549179499@linuxfoundation.org>
-User-Agent: quilt/0.66
+        id S232594AbhKPI7W (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 16 Nov 2021 03:59:22 -0500
+Received: from mail.bizjoindeal.pl ([80.211.97.164]:52680 "EHLO
+        mail.bizjoindeal.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232601AbhKPI7R (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 16 Nov 2021 03:59:17 -0500
+X-Greylist: delayed 574 seconds by postgrey-1.27 at vger.kernel.org; Tue, 16 Nov 2021 03:59:16 EST
+Received: by mail.bizjoindeal.pl (Postfix, from userid 1001)
+        id 87744A27B3; Tue, 16 Nov 2021 08:46:29 +0000 (GMT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bizjoindeal.pl;
+        s=mail; t=1637052404;
+        bh=JZuQ1fK7zFtz2oeUB7Xfid9vb7kUywdmDd2OluR8ywA=;
+        h=Date:From:To:Subject:From;
+        b=T0xj+iY3QmMc1FvXb3qhC9zCUUghtpCg9EU32ZC5xFaiOnhSfQyCg/+i2+dcr2tvd
+         XAmAEAcJcSR2WVYsV4xWei8xVrjX6FDmYKfsnGVC3kpTJu94B8pxkNb2oFX1g07Ley
+         hfi5EfxqtrYLmZkN0MtpOtgUeB/VFCKagDpIPXIdRO+0ZgE9XmI8+yMi/yZwhYwMjZ
+         t1qJD3icnt+g+OpstqiSH6vWQahk8cXxTxJfmbIK+5dyXMywvgRnYcYH3q2cOOJAqE
+         3hXemym4TshLCZL0FU+SBsETwkMQyIC1aAuwAZeiKbYaScqjb56FaoJb4FPKY3dAb5
+         PTgRSpHgHEqVQ==
+Received: by mail.bizjoindeal.pl for <linux-ia64@vger.kernel.org>; Tue, 16 Nov 2021 08:46:10 GMT
+Message-ID: <20211116074500-0.1.60.f0fc.0.cimrzu8l7n@bizjoindeal.pl>
+Date:   Tue, 16 Nov 2021 08:46:10 GMT
+From:   "Dorian Kwiatkowski" <dorian.kwiatkowski@bizjoindeal.pl>
+To:     <linux-ia64@vger.kernel.org>
+Subject: Fotowoltaika dla firm
+X-Mailer: mail.bizjoindeal.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+Dzie=C5=84 dobry,
 
-[ Upstream commit c15b5fc054c3d6c97e953617605235c5cb8ce979 ]
+kontaktuj=C4=99 si=C4=99 z Pa=C5=84stwem, poniewa=C5=BC dostrzegam mo=C5=BC=
+liwo=C5=9B=C4=87 redukcji op=C5=82at za pr=C4=85d.
 
-When CONFIG_PRINTK is not set, the CMPXCHG_BUGCHECK() macro calls
-_printk(), but _printk() is a static inline function, not available
-as an extern.
-Since the purpose of the macro is to print the BUGCHECK info,
-make this config option depend on PRINTK.
+Odpowiednio dobrana instalacja fotowoltaiczna to rozwi=C4=85zanie, kt=C3=B3=
+re pozwala wygenerowa=C4=87 spore oszcz=C4=99dno=C5=9Bci w skali roku.
 
-Fixes multiple occurrences of this build error:
+Chcia=C5=82bym porozmawia=C4=87 z Pa=C5=84stwem o tego typu rozwi=C4=85za=
+niu, a tak=C5=BCe przedstawi=C4=87 wst=C4=99pne kalkulacje.
 
-../include/linux/printk.h:208:5: error: static declaration of '_printk' follows non-static declaration
-  208 | int _printk(const char *s, ...)
-      |     ^~~~~~~
-In file included from ../arch/ia64/include/asm/cmpxchg.h:5,
-../arch/ia64/include/uapi/asm/cmpxchg.h:146:28: note: previous declaration of '_printk' with type 'int(const char *, ...)'
-  146 |                 extern int _printk(const char *fmt, ...);
+Czy s=C4=85 Pa=C5=84stwo zainteresowani?
 
-Cc: linux-ia64@vger.kernel.org
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: Chris Down <chris@chrisdown.name>
-Cc: Paul Gortmaker <paul.gortmaker@windriver.com>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/ia64/Kconfig.debug | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/ia64/Kconfig.debug b/arch/ia64/Kconfig.debug
-index 40ca23bd228d6..2ce008e2d1644 100644
---- a/arch/ia64/Kconfig.debug
-+++ b/arch/ia64/Kconfig.debug
-@@ -39,7 +39,7 @@ config DISABLE_VHPT
- 
- config IA64_DEBUG_CMPXCHG
- 	bool "Turn on compare-and-exchange bug checking (slow!)"
--	depends on DEBUG_KERNEL
-+	depends on DEBUG_KERNEL && PRINTK
- 	help
- 	  Selecting this option turns on bug checking for the IA-64
- 	  compare-and-exchange instructions.  This is slow!  Itaniums
--- 
-2.33.0
-
-
-
+Pozdrawiam,
+Dorian Kwiatkowski
