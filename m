@@ -2,96 +2,136 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DCED045594B
-	for <lists+linux-ia64@lfdr.de>; Thu, 18 Nov 2021 11:43:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 60349455E35
+	for <lists+linux-ia64@lfdr.de>; Thu, 18 Nov 2021 15:35:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244615AbhKRKqI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 18 Nov 2021 05:46:08 -0500
-Received: from outpost1.zedat.fu-berlin.de ([130.133.4.66]:51981 "EHLO
-        outpost1.zedat.fu-berlin.de" rhost-flags-OK-OK-OK-OK)
-        by vger.kernel.org with ESMTP id S244339AbhKRKqH (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>);
-        Thu, 18 Nov 2021 05:46:07 -0500
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1mnesh-003VDt-Kw; Thu, 18 Nov 2021 11:43:03 +0100
-Received: from p57bd9804.dip0.t-ipconnect.de ([87.189.152.4] helo=[192.168.178.81])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1mnesh-000icS-BO; Thu, 18 Nov 2021 11:43:03 +0100
-Message-ID: <da752ffc-1694-d76b-cd65-ebbbec11b8ea@physik.fu-berlin.de>
-Date:   Thu, 18 Nov 2021 11:43:02 +0100
+        id S233286AbhKROiT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 18 Nov 2021 09:38:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45060 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233393AbhKROiB (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 18 Nov 2021 09:38:01 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5671C061757;
+        Thu, 18 Nov 2021 06:35:00 -0800 (PST)
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1637246099;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=++fnSqF7SKAvIK4Pg185tBBXPEgD0u7ybbMtaGqP/oQ=;
+        b=loStlT89MAtHaI/zTxAm48gHA9I4WMx6Xe+ok54Fi1OSNDgGLOPOW0exoN2r3lKYuAS8Tx
+        mK2KKKHQHZWsVtzK9GxxcreUS2vlvNYb/wMxGzRYTZoL0cC1tYsdLoEY8JRoHgS4FsoRCx
+        a/Eioymf24/FswioXHk4ivWdWdP4Cf/Q7Yx0NNY/rE+RtltkiCprH0w8MblVJpcsvUx2xr
+        Xejq/orSNm2nBrXMvTG2yaopc9bymQ/EOS0voE6hc0Dl36Dw43MRYgVs4oujBBMQNU0ewu
+        69JJ5qHzRoh0Stoo2WZs9n8WrB1D9iN6JuBW9aYfyJhFWM0qb1a3tGfX3Da2tA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1637246099;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=++fnSqF7SKAvIK4Pg185tBBXPEgD0u7ybbMtaGqP/oQ=;
+        b=ghbUpXniAXTb77umNwBX6q41XWb+43BQDDIglzzWaE9td3kjtJQo1WGofXhnTXw/gXQ0ka
+        00OjC2nbVsvgeABg==
+To:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
+Cc:     Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>
+Subject: [PATCH 0/8] kernel/fork: Move thread stack free otu of the scheduler path.
+Date:   Thu, 18 Nov 2021 15:34:44 +0100
+Message-Id: <20211118143452.136421-1-bigeasy@linutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH] ia64: module: use swap() to make code cleaner
-Content-Language: en-US
-To:     cgel.zte@gmail.com, akpm@linux-foundation.org
-Cc:     slyfox@gentoo.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Yao Jing <yao.jing2@zte.com.cn>,
-        Zeal Robot <zealci@zte.com.cn>
-References: <20211118062002.164121-1-yao.jing2@zte.com.cn>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <20211118062002.164121-1-yao.jing2@zte.com.cn>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.189.152.4
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi!
 
-On 11/18/21 07:20, cgel.zte@gmail.com wrote:
-> From: Yao Jing <yao.jing2@zte.com.cn>
-> 
-> Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
-> opencoding it.
-> 
-> Reported-by: Zeal Robot <zealci@zte.com.cn>
-> Signed-off-by: Yao Jing <yao.jing2@zte.com.cn>
-> ---
->  arch/ia64/kernel/module.c | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
-> 
-> diff --git a/arch/ia64/kernel/module.c b/arch/ia64/kernel/module.c
-> index 2cba53c1da82..360f36b0eb3f 100644
-> --- a/arch/ia64/kernel/module.c
-> +++ b/arch/ia64/kernel/module.c
-> @@ -848,7 +848,7 @@ register_unwind_table (struct module *mod)
->  {
->  	struct unw_table_entry *start = (void *) mod->arch.unwind->sh_addr;
->  	struct unw_table_entry *end = start + mod->arch.unwind->sh_size / sizeof (*start);
-> -	struct unw_table_entry tmp, *e1, *e2, *core, *init;
-> +	struct unw_table_entry *e1, *e2, *core, *init;
->  	unsigned long num_init = 0, num_core = 0;
->  
->  	/* First, count how many init and core unwind-table entries there are.  */
-> @@ -865,9 +865,7 @@ register_unwind_table (struct module *mod)
->  	for (e1 = start; e1 < end; ++e1) {
->  		for (e2 = e1 + 1; e2 < end; ++e2) {
->  			if (e2->start_offset < e1->start_offset) {
-> -				tmp = *e1;
-> -				*e1 = *e2;
-> -				*e2 = tmp;
-> +				swap(*e1, *e2);
->  			}
->  		}
->  	}
+This is a follup-up on the patch
+    sched: Delay task stack freeing on RT=20
+    https://lkml.kernel.org/r/20210928122411.593486363@linutronix.de
 
-I will test this patch later this week.
+It addresses the review feedback:
+- Decouple stack accounting from its free invocation. The accounting
+  happens in do_exit(), the final free call happens later.
 
-Adrian
+- Add put_task_stack_sched() to finish_task_switch(). Here the VMAP
+  stack is cached only. If it fails, or in the !VMAP case then the final
+  free happens in delayed_put_task_struct(). This is also an oportunity
+  to cache the stack.
 
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+From testing I observe the following:
+
+|            bash-1715    [006] .....   124.901510: copy_process: allocC ff=
+ffc90007e70000
+|      sh-cmds.sh-1746    [007] .....   124.907389: copy_process: allocC ff=
+ffc90007dc4000
+|          <idle>-0       [019] ...1.   124.918126: free_thread_stack: cach=
+e ffffc90007dc4000
+|      sh-cmds.sh-1746    [007] .....   124.918279: copy_process: allocC ff=
+ffc90007de8000
+|          <idle>-0       [004] ...1.   124.920121: free_thread_stack: dela=
+y ffffc90007de8001
+|          <idle>-0       [007] ...1.   124.920299: free_thread_stack: cach=
+e ffffc90007e70000
+|          <idle>-0       [007] ..s1.   124.945433: free_thread_stack: cach=
+e ffffc90007de8000
+
+TS 124.901510, bash started sh-cmds.sh, obtained stack from cache.
+TS 124.907389, script invokes its first command, obtained stacak from
+cache. As you can see bash was running on CPU6 but its child was moved
+CPU7. This happens a lot, maybe because my test system is too idle.
+TS 124.918126, the first command is done, stack is ached on CPU19.
+TS 124.918279, script's second command, stack from cache.
+TS 124.920121, the command is done. The stack cache on CPU4 is full.
+TS 124.920299, the script is done, caches stack on CPU7.
+TS 124.945433, the RCU-callback of last command is now happening. On
+CPU7, which is where the command was invoked (but not running). Instead
+of freeing the stack, it was cached since CPU7 had an empty slot. \o/.
+
+If I pin the script to CPU5 and run it with multiple commands then it
+works as expected:
+
+|            bash-1799    [005] .....   993.608131: copy_process: allocC ff=
+ffc90007fa0000
+|      sh-cmds.sh-1827    [005] .....   993.608888: copy_process: allocC ff=
+ffc90007fa8000
+|      sh-cmds.sh-1827    [005] .....   993.610734: copy_process: allocV ff=
+ffc90007ff4000
+|      sh-cmds.sh-1829    [005] ...1.   993.610757: free_thread_stack: cach=
+e ffffc90007fa8000
+|      sh-cmds.sh-1827    [005] .....   993.612401: copy_process: allocC ff=
+ffc90007fa8000
+|           <...>-1830    [005] ...1.   993.612416: free_thread_stack: cach=
+e ffffc90007ff4000
+|      sh-cmds.sh-1827    [005] .....   993.613707: copy_process: allocC ff=
+ffc90007ff4000
+|      sh-cmds.sh-1831    [005] ...1.   993.613723: free_thread_stack: cach=
+e ffffc90007fa8000
+|      sh-cmds.sh-1827    [005] .....   993.615024: copy_process: allocC ff=
+ffc90007fa8000
+|           <...>-1832    [005] ...1.   993.615040: free_thread_stack: cach=
+e ffffc90007ff4000
+|      sh-cmds.sh-1827    [005] .....   993.616380: copy_process: allocC ff=
+ffc90007ff4000
+|           <...>-1833    [005] ...1.   993.616397: free_thread_stack: cach=
+e ffffc90007fa8000
+|            bash-1799    [005] ...1.   993.617759: free_thread_stack: cach=
+e ffffc90007fa0000
+|          <idle>-0       [005] ...1.   993.617871: free_thread_stack: dela=
+y ffffc90007ff4001
+|          <idle>-0       [005] ..s1.   993.638311: free_thread_stack: free=
+ ffffc90007ff4000
+
+and after a warm up no new stack is allocated during its runtime and a
+cached stack is used instead.
+
+Sebastian
 
