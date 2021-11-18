@@ -2,157 +2,102 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 3613445354A
-	for <lists+linux-ia64@lfdr.de>; Tue, 16 Nov 2021 16:08:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D6D64554B5
+	for <lists+linux-ia64@lfdr.de>; Thu, 18 Nov 2021 07:20:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237841AbhKPPLx (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 16 Nov 2021 10:11:53 -0500
-Received: from pegase2.c-s.fr ([93.17.235.10]:60505 "EHLO pegase2.c-s.fr"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S238030AbhKPPKw (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Tue, 16 Nov 2021 10:10:52 -0500
-Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
-        by localhost (Postfix) with ESMTP id 4HtqDn6zyFz9sSD;
-        Tue, 16 Nov 2021 16:07:53 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from pegase2.c-s.fr ([172.26.127.65])
-        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id PgI9HqTlkXHf; Tue, 16 Nov 2021 16:07:53 +0100 (CET)
-Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
-        by pegase2.c-s.fr (Postfix) with ESMTP id 4HtqDl0Nrmz9sS6;
-        Tue, 16 Nov 2021 16:07:51 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id EBD668B77A;
-        Tue, 16 Nov 2021 16:07:50 +0100 (CET)
-X-Virus-Scanned: amavisd-new at c-s.fr
-Received: from messagerie.si.c-s.fr ([127.0.0.1])
-        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
-        with ESMTP id 81iAcOPwdzPt; Tue, 16 Nov 2021 16:07:50 +0100 (CET)
-Received: from [192.168.234.8] (unknown [192.168.234.8])
-        by messagerie.si.c-s.fr (Postfix) with ESMTP id DA0A08B763;
-        Tue, 16 Nov 2021 16:07:49 +0100 (CET)
-Message-ID: <8ba77500-cb40-0662-f571-6a6f391374b9@csgroup.eu>
-Date:   Tue, 16 Nov 2021 16:07:47 +0100
+        id S243017AbhKRGXI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 18 Nov 2021 01:23:08 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45722 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S242003AbhKRGXG (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 18 Nov 2021 01:23:06 -0500
+Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52E08C061570;
+        Wed, 17 Nov 2021 22:20:07 -0800 (PST)
+Received: by mail-pj1-x102b.google.com with SMTP id gf14-20020a17090ac7ce00b001a7a2a0b5c3so7304762pjb.5;
+        Wed, 17 Nov 2021 22:20:07 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RoYCEa35yWQpbsRMiUsNjWpekgd7QWGvSSthS44F8g0=;
+        b=bBfb5oEgu6F/76M8eDrzPh/ZwVHkNC/ssyC77zAP2YKASSwTkW1bHBtYtCFfAut8wO
+         fJfV3OYGX2a9lDcjSerpc5RFiZM4GbZxHQC66XfRBCZeKwmcs0HNOyBf4pznwtHXuHYq
+         pfCvL4X4G/yG3hW7BDciwGBrLEi+w8auXUqzK7SyU0Ntgo7DAvM5fIiRnbN85jCEtIUi
+         O2yb0/t0b4JTGdAE1WxlYfRxT7HOZu/cmMVgSpleovrc4yVRWSlGulE7avwNQHhspB2o
+         vlyweuG+ZLmO1UJIsL7EV4DQ+AB8j1c47Wb44o/eaV3oAl5616UgMURLZJ8PUS1T2k45
+         aWag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=RoYCEa35yWQpbsRMiUsNjWpekgd7QWGvSSthS44F8g0=;
+        b=Ssn7tehNTYUnsgUKabZZcLrs5YFa0Gmi0+/D6Fai3cY89CXY5/GEUxrRJVUcEbrgth
+         Q+OwSlHHEtr+LDxPdWa60P8dNdMLDmDYy1RBYAJMBLt206Rf0kbOzx8XpnZld5nf8Hg8
+         fdbayekS+CX0RO0+9lZBL5UQ8ebtx+kQdaH7VfS/t7wsgu49y6SCe1sIKKbOk3VUrhNI
+         /DAhgK4ZYNhlQm9o6cn1KJLn85JwqGiGUsd+nNxhexcn2cT6N0Jeq5QkYVMUJDUh75XY
+         JVPuH7fsZqhSq5uGBxfr1gn2xHPfOa23Za+1ZrcMbE3VqkPT9n5uNGsAzr8DTgSX23nj
+         Ptmg==
+X-Gm-Message-State: AOAM531yG9ck2xleZiLPMYyTqxkF9cDxlvdZIttSESfRD9UqQr1FhiXj
+        InptuqhzrfGzdjxJzBjfAKFMQo6e0Zk=
+X-Google-Smtp-Source: ABdhPJx6AF0hwNYuyvmlEPbV8cFcj+fzECG7PPqxTbNCGseWSbtzXpO5zQZuDMr9xbzM4/tHmwGt9Q==
+X-Received: by 2002:a17:90b:4d86:: with SMTP id oj6mr7547264pjb.101.1637216406930;
+        Wed, 17 Nov 2021 22:20:06 -0800 (PST)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id j22sm1745329pfj.130.2021.11.17.22.20.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 17 Nov 2021 22:20:06 -0800 (PST)
+From:   cgel.zte@gmail.com
+X-Google-Original-From: yao.jing2@zte.com.cn
+To:     akpm@linux-foundation.org
+Cc:     slyfox@gentoo.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Yao Jing <yao.jing2@zte.com.cn>,
+        Zeal Robot <zealci@zte.com.cn>
+Subject: [PATCH] ia64: module: use swap() to make code cleaner
+Date:   Thu, 18 Nov 2021 06:20:02 +0000
+Message-Id: <20211118062002.164121-1-yao.jing2@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH v2 12/13] lkdtm: Fix execute_[user]_location()
-Content-Language: fr-FR
-From:   Christophe Leroy <christophe.leroy@csgroup.eu>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org
-References: <cover.1634190022.git.christophe.leroy@csgroup.eu>
- <cbee30c66890994e116a8eae8094fa8c5336f90a.1634190022.git.christophe.leroy@csgroup.eu>
- <202110151428.187B1CF@keescook>
- <9b4c39d4-1322-89af-585c-679a574576a2@csgroup.eu>
-In-Reply-To: <9b4c39d4-1322-89af-585c-679a574576a2@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Kees,
+From: Yao Jing <yao.jing2@zte.com.cn>
 
-Le 16/10/2021 à 08:42, Christophe Leroy a écrit :
-> 
-> 
-> Le 15/10/2021 à 23:31, Kees Cook a écrit :
->> On Thu, Oct 14, 2021 at 07:50:01AM +0200, Christophe Leroy wrote:
->>> execute_location() and execute_user_location() intent
->>> to copy do_nothing() text and execute it at a new location.
->>> However, at the time being it doesn't copy do_nothing() function
->>> but do_nothing() function descriptor which still points to the
->>> original text. So at the end it still executes do_nothing() at
->>> its original location allthough using a copied function descriptor.
->>>
->>> So, fix that by really copying do_nothing() text and build a new
->>> function descriptor by copying do_nothing() function descriptor and
->>> updating the target address with the new location.
->>>
->>> Also fix the displayed addresses by dereferencing do_nothing()
->>> function descriptor.
->>>
->>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->>> ---
->>>   drivers/misc/lkdtm/perms.c     | 25 +++++++++++++++++++++----
->>>   include/asm-generic/sections.h |  5 +++++
->>>   2 files changed, 26 insertions(+), 4 deletions(-)
->>>
->>> diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
->>> index 5266dc28df6e..96b3ebfcb8ed 100644
->>> --- a/drivers/misc/lkdtm/perms.c
->>> +++ b/drivers/misc/lkdtm/perms.c
->>> @@ -44,19 +44,32 @@ static noinline void do_overwritten(void)
->>>       return;
->>>   }
->>> +static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
->>> +{
->>> +    memcpy(fdesc, do_nothing, sizeof(*fdesc));
->>> +    fdesc->addr = (unsigned long)dst;
->>> +    barrier();
->>> +
->>> +    return fdesc;
->>> +}
->>
->> How about collapsing the "have_function_descriptors()" check into
->> setup_function_descriptor()?
->>
->> static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
->> {
->>     if (__is_defined(HAVE_FUNCTION_DESCRIPTORS)) {
->>         memcpy(fdesc, do_nothing, sizeof(*fdesc));
->>         fdesc->addr = (unsigned long)dst;
->>         barrier();
->>         return fdesc;
->>     } else {
->>         return dst;
->>     }
->> }
-> 
-> Ok
-> 
+Use the macro 'swap()' defined in 'include/linux/minmax.h' to avoid
+opencoding it.
 
-...
+Reported-by: Zeal Robot <zealci@zte.com.cn>
+Signed-off-by: Yao Jing <yao.jing2@zte.com.cn>
+---
+ arch/ia64/kernel/module.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
->>
->>> diff --git a/include/asm-generic/sections.h 
->>> b/include/asm-generic/sections.h
->>> index 76163883c6ff..d225318538bd 100644
->>> --- a/include/asm-generic/sections.h
->>> +++ b/include/asm-generic/sections.h
->>> @@ -70,6 +70,11 @@ typedef struct {
->>>   } func_desc_t;
->>>   #endif
->>> +static inline bool have_function_descriptors(void)
->>> +{
->>> +    return __is_defined(HAVE_FUNCTION_DESCRIPTORS);
->>> +}
->>> +
->>>   /* random extra sections (if any).  Override
->>>    * in asm/sections.h */
->>>   #ifndef arch_is_kernel_text
->>
->> This hunk seems like it should live in a separate patch.
->>
-> 
-> Ok I move it in a previous patch.
+diff --git a/arch/ia64/kernel/module.c b/arch/ia64/kernel/module.c
+index 2cba53c1da82..360f36b0eb3f 100644
+--- a/arch/ia64/kernel/module.c
++++ b/arch/ia64/kernel/module.c
+@@ -848,7 +848,7 @@ register_unwind_table (struct module *mod)
+ {
+ 	struct unw_table_entry *start = (void *) mod->arch.unwind->sh_addr;
+ 	struct unw_table_entry *end = start + mod->arch.unwind->sh_size / sizeof (*start);
+-	struct unw_table_entry tmp, *e1, *e2, *core, *init;
++	struct unw_table_entry *e1, *e2, *core, *init;
+ 	unsigned long num_init = 0, num_core = 0;
+ 
+ 	/* First, count how many init and core unwind-table entries there are.  */
+@@ -865,9 +865,7 @@ register_unwind_table (struct module *mod)
+ 	for (e1 = start; e1 < end; ++e1) {
+ 		for (e2 = e1 + 1; e2 < end; ++e2) {
+ 			if (e2->start_offset < e1->start_offset) {
+-				tmp = *e1;
+-				*e1 = *e2;
+-				*e2 = tmp;
++				swap(*e1, *e2);
+ 			}
+ 		}
+ 	}
+-- 
+2.25.1
 
-
-Do you have any additional feedback or comment on series v3 ?
-
-What's the way forward, should it go via LKDTM tree or via powerpc tree 
-or another tree ? I see there are neither Ack-by nor Reviewed-by for the 
-last 2 patches.
-
-Thanks
-Christophe
