@@ -2,37 +2,40 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EE52455E33
-	for <lists+linux-ia64@lfdr.de>; Thu, 18 Nov 2021 15:35:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB933455E46
+	for <lists+linux-ia64@lfdr.de>; Thu, 18 Nov 2021 15:36:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229926AbhKROiS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 18 Nov 2021 09:38:18 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:39392 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233364AbhKROiB (ORCPT
+        id S231330AbhKROjJ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 18 Nov 2021 09:39:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45078 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233411AbhKROiB (ORCPT
         <rfc822;linux-ia64@vger.kernel.org>); Thu, 18 Nov 2021 09:38:01 -0500
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79C1EC061574;
+        Thu, 18 Nov 2021 06:35:01 -0800 (PST)
 From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1637246099;
+        s=2020; t=1637246100;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EWsDuhYwDmjO2QKAYvZZ7cOB40/dUe6Z02V8M2yXQrs=;
-        b=H9FFUm6wIaROitku13XykLHAbS0CP7vequgXVCrcv5XsMbBie5l/eHiX1rt8BMsdCQpkpA
-        svn3VmjyUG6W4OQrAPDDYceuF75/Go2ik7yvwVKFVCmtT3HzbpWgz34rLYZ0TqukXh8cmH
-        JPAdf0HnZhcM0Lu2XP36ZT4MG2Bv94AOODPsnUaTvyCgNCxdbVqzpi7juXSAy+h4niP55H
-        lOlnINzuLnDcy5GlOtFvWqdTsA3Itq96lG7i+wLiB/BsV+jcNtIheyLF1NU6l7M/sBR3jh
-        o09vfP8ovTibhZ303H3nfqUvUFGKiy/ytOITQbceU0jVlkoRsSOaIhFVIl4YaQ==
+        bh=KUNMcUshYRp4Dcgj0kO/IyCaRl0KYjlIIE6AZgFbc/A=;
+        b=vM9fzQMQJMlPMq7plXP7uVQJVSaegzSiWoEr9WvW5SlueyvOZLAqTqpZGJQqH+ftcYZm6M
+        XbqulE3HmyHtOzKv+YlZYUNpwDDQm7rWD8oQK3HmSi6bp4xHi6xxeKTW1qjs0uj1tuq+fc
+        OEQKBejpN73RkWG6r61uR8eKAI+1y5PTJ378BfUdDWU0R4MINFSKT5qf4yYFIq7goX1unD
+        F86wPnmfNy/fzSIVhLABjnBs0xRXVAl11PQ+yQ8UdGKjrGyZUkVBkkJnzmuVCEhVaOUXOa
+        2x4Xj94MN8xUVvCBcZVErJtqp4SkiemEY6Xs684wXXIR9EvbPhOIh9mzFbNzGQ==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1637246099;
+        s=2020e; t=1637246100;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:
          content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=EWsDuhYwDmjO2QKAYvZZ7cOB40/dUe6Z02V8M2yXQrs=;
-        b=HINac8iWV8Do0OwTDKkjicINsGeWv+/2yGuxdIZQb062boBr/zLWah1RrF7CjW4KYXr+cH
-        kkLQjBClxxGWzcBw==
+        bh=KUNMcUshYRp4Dcgj0kO/IyCaRl0KYjlIIE6AZgFbc/A=;
+        b=Vs0ExN21FF8U6XHJjK/8ckB2ndSgdtPulnaoQRLc1arYjcBPWx9St4ZsA/f8L9ykxRLamm
+        i2+yD1Z6RxT293AA==
 To:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
 Cc:     Ingo Molnar <mingo@redhat.com>,
         Peter Zijlstra <peterz@infradead.org>,
@@ -44,9 +47,9 @@ Cc:     Ingo Molnar <mingo@redhat.com>,
         Ben Segall <bsegall@google.com>,
         Daniel Bristot de Oliveira <bristot@redhat.com>,
         Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Subject: [PATCH 1/8] kernel/fork: Redo ifdefs around task's handling.
-Date:   Thu, 18 Nov 2021 15:34:45 +0100
-Message-Id: <20211118143452.136421-2-bigeasy@linutronix.de>
+Subject: [PATCH 2/8] kernel/fork: Duplicate task_struct before stack allocation.
+Date:   Thu, 18 Nov 2021 15:34:46 +0100
+Message-Id: <20211118143452.136421-3-bigeasy@linutronix.de>
 In-Reply-To: <20211118143452.136421-1-bigeasy@linutronix.de>
 References: <20211118143452.136421-1-bigeasy@linutronix.de>
 MIME-Version: 1.0
@@ -55,170 +58,55 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-The use of ifdef CONFIG_VMAP_STACK is confusing in terms what is
-actually happenning and what can happen.
-For instance from reading free_thread_stack() it appears that in the
-CONFIG_VMAP_STACK case we may receive a non-NULL vm pointer but it may
-also be NULL in which case __free_pages() is used to free the stack.
-This is however not the case because in the VMAP case a non-NULL pointer
-is always returned here.
-Since it looks like this might happen, the compiler creates the correct
-dead code with the invocation to __free_pages() and everything around
-it. Twice.
+alloc_thread_stack_node() already populates the task_struct::stack
+member except on IA64. The stack pointer is saved and populated again
+because IA64 needs it and arch_dup_task_struct() overwrites it.
 
-Add spaces between the ifdef and the identifer to recognize the ifdef
-level that we are currently in.
-Add the current identifer as a comment behind #else and #endif.
-Move the code within free_thread_stack() and alloc_thread_stack_node()
-into the relavant ifdef block.
+Allocate thread's stack after task_struct has been duplicated as a
+preparation.
 
 Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 ---
- kernel/fork.c | 74 +++++++++++++++++++++++++++------------------------
- 1 file changed, 39 insertions(+), 35 deletions(-)
+ kernel/fork.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
 diff --git a/kernel/fork.c b/kernel/fork.c
-index 3244cc56b697d..bb3f2980f94fb 100644
+index bb3f2980f94fb..ce320d4b8e1f4 100644
 --- a/kernel/fork.c
 +++ b/kernel/fork.c
-@@ -184,7 +184,7 @@ static inline void free_task_struct(struct task_struct =
-*tsk)
-  */
- # if THREAD_SIZE >=3D PAGE_SIZE || defined(CONFIG_VMAP_STACK)
+@@ -887,6 +887,10 @@ static struct task_struct *dup_task_struct(struct task=
+_struct *orig, int node)
+ 	if (!tsk)
+ 		return NULL;
 =20
--#ifdef CONFIG_VMAP_STACK
-+#  ifdef CONFIG_VMAP_STACK
- /*
-  * vmalloc() is a bit slow, and calling vfree() enough times will force a =
-TLB
-  * flush.  Try to minimize the number of calls by caching stacks.
-@@ -209,11 +209,9 @@ static int free_vm_stack_cache(unsigned int cpu)
++	err =3D arch_dup_task_struct(tsk, orig);
++	if (err)
++		goto free_tsk;
++
+ 	stack =3D alloc_thread_stack_node(tsk, node);
+ 	if (!stack)
+ 		goto free_tsk;
+@@ -896,8 +900,6 @@ static struct task_struct *dup_task_struct(struct task_=
+struct *orig, int node)
 =20
- 	return 0;
- }
--#endif
+ 	stack_vm_area =3D task_stack_vm_area(tsk);
 =20
- static unsigned long *alloc_thread_stack_node(struct task_struct *tsk, int=
- node)
- {
--#ifdef CONFIG_VMAP_STACK
- 	void *stack;
- 	int i;
-=20
-@@ -257,7 +255,34 @@ static unsigned long *alloc_thread_stack_node(struct t=
-ask_struct *tsk, int node)
- 		tsk->stack =3D stack;
- 	}
- 	return stack;
--#else
-+}
-+
-+static void free_thread_stack(struct task_struct *tsk)
-+{
-+	struct vm_struct *vm =3D task_stack_vm_area(tsk);
-+	int i;
-+
-+	for (i =3D 0; i < THREAD_SIZE / PAGE_SIZE; i++)
-+		memcg_kmem_uncharge_page(vm->pages[i], 0);
-+
-+	for (i =3D 0; i < NR_CACHED_STACKS; i++) {
-+		if (this_cpu_cmpxchg(cached_stacks[i], NULL,
-+				     tsk->stack_vm_area) !=3D NULL)
-+			continue;
-+
-+		tsk->stack =3D NULL;
-+		tsk->stack_vm_area =3D NULL;
-+		return;
-+	}
-+	vfree_atomic(tsk->stack);
-+	tsk->stack =3D NULL;
-+	tsk->stack_vm_area =3D NULL;
-+}
-+
-+#  else /* !CONFIG_VMAP_STACK */
-+
-+static unsigned long *alloc_thread_stack_node(struct task_struct *tsk, int=
- node)
-+{
- 	struct page *page =3D alloc_pages_node(node, THREADINFO_GFP,
- 					     THREAD_SIZE_ORDER);
-=20
-@@ -266,36 +291,17 @@ static unsigned long *alloc_thread_stack_node(struct =
-task_struct *tsk, int node)
- 		return tsk->stack;
- 	}
- 	return NULL;
--#endif
- }
-=20
--static inline void free_thread_stack(struct task_struct *tsk)
-+static void free_thread_stack(struct task_struct *tsk)
- {
--#ifdef CONFIG_VMAP_STACK
--	struct vm_struct *vm =3D task_stack_vm_area(tsk);
+-	err =3D arch_dup_task_struct(tsk, orig);
 -
--	if (vm) {
--		int i;
--
--		for (i =3D 0; i < THREAD_SIZE / PAGE_SIZE; i++)
--			memcg_kmem_uncharge_page(vm->pages[i], 0);
--
--		for (i =3D 0; i < NR_CACHED_STACKS; i++) {
--			if (this_cpu_cmpxchg(cached_stacks[i],
--					NULL, tsk->stack_vm_area) !=3D NULL)
--				continue;
--
--			return;
--		}
--
--		vfree_atomic(tsk->stack);
--		return;
--	}
--#endif
--
- 	__free_pages(virt_to_page(tsk->stack), THREAD_SIZE_ORDER);
-+	tsk->stack =3D NULL;
- }
--# else
-+
-+#  endif /* CONFIG_VMAP_STACK */
-+# else /* !(THREAD_SIZE >=3D PAGE_SIZE || defined(CONFIG_VMAP_STACK)) */
-+
- static struct kmem_cache *thread_stack_cache;
+ 	/*
+ 	 * arch_dup_task_struct() clobbers the stack-related fields.  Make
+ 	 * sure they're properly initialized before using any stack-related
+@@ -911,9 +913,6 @@ static struct task_struct *dup_task_struct(struct task_=
+struct *orig, int node)
+ 	refcount_set(&tsk->stack_refcount, 1);
+ #endif
 =20
- static unsigned long *alloc_thread_stack_node(struct task_struct *tsk,
-@@ -311,6 +317,7 @@ static unsigned long *alloc_thread_stack_node(struct ta=
-sk_struct *tsk,
- static void free_thread_stack(struct task_struct *tsk)
- {
- 	kmem_cache_free(thread_stack_cache, tsk->stack);
-+	tsk->stack =3D NULL;
- }
-=20
- void thread_stack_cache_init(void)
-@@ -320,8 +327,9 @@ void thread_stack_cache_init(void)
- 					THREAD_SIZE, NULL);
- 	BUG_ON(thread_stack_cache =3D=3D NULL);
- }
--# endif
--#endif
-+
-+# endif /* THREAD_SIZE >=3D PAGE_SIZE || defined(CONFIG_VMAP_STACK) */
-+#endif /* !CONFIG_ARCH_THREAD_STACK_ALLOCATOR */
-=20
- /* SLAB cache for signal_struct structures (tsk->signal) */
- static struct kmem_cache *signal_cachep;
-@@ -429,10 +437,6 @@ static void release_task_stack(struct task_struct *tsk)
-=20
- 	account_kernel_stack(tsk, -1);
- 	free_thread_stack(tsk);
--	tsk->stack =3D NULL;
--#ifdef CONFIG_VMAP_STACK
--	tsk->stack_vm_area =3D NULL;
--#endif
- }
-=20
- #ifdef CONFIG_THREAD_INFO_IN_TASK
+-	if (err)
+-		goto free_stack;
+-
+ 	err =3D scs_prepare(tsk, node);
+ 	if (err)
+ 		goto free_stack;
 --=20
 2.33.1
 
