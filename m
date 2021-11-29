@@ -2,435 +2,394 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A64D461D0C
-	for <lists+linux-ia64@lfdr.de>; Mon, 29 Nov 2021 18:50:52 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 20745462576
+	for <lists+linux-ia64@lfdr.de>; Mon, 29 Nov 2021 23:37:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344925AbhK2Rxy (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 29 Nov 2021 12:53:54 -0500
-Received: from Galois.linutronix.de ([193.142.43.55]:55256 "EHLO
-        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242755AbhK2Rvv (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 29 Nov 2021 12:51:51 -0500
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638208111;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Tbl3+zAOEmpP6ZGCt/BD/PG2cZ3xnDr+Tb2+yq81oZo=;
-        b=arWwcpj6Q/D6pvkRJiP142R5s1arQMXkHQxn/zOjEbHQImbzvbopydkHkJVlZU1LyU8wcj
-        lfTHFIczOSU8/AxvkV7RlMv59UNEsq07wTaCjGR0hhzFxAJqBfsG+RQLUCnFd9mRROoZHy
-        oM36Hu/i3jaiMslNkMd8KSiGnZnfD6E9OtVayofH2faDlnYttgS8ROCBpOUjRvircInDcE
-        D7QYx/vTcwEIm1WQMEwbO3ryNqgSOcogR0awZvPqk+/4Ssex92D191dUHP56nk8LNkAmH/
-        ofoyFF9VV4Dvtt12/JcPQ5Oupu94FrnmDjslyjx9Wa1m2kjHBmo475RB/hQL+w==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638208111;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=Tbl3+zAOEmpP6ZGCt/BD/PG2cZ3xnDr+Tb2+yq81oZo=;
-        b=5xRw1Cp/h/haoQhJAxftFnjCbEc9UKH/scHgQVSdL5qC+aJRF+i0MC2mtjiyiG1rOEKaPZ
-        igMovB8jTE5WtwCQ==
-To:     linux-kernel@vger.kernel.org
-Cc:     Ben Segall <bsegall@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Mel Gorman <mgorman@suse.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Waiman Long <longman@redhat.com>,
-        Will Deacon <will@kernel.org>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Brian Cain <bcain@codeaurora.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chris Zankel <chris@zankel.net>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Guo Ren <guoren@kernel.org>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Rich Felker <dalias@libc.org>,
-        Richard Henderson <rth@twiddle.net>,
-        Russell King <linux@armlinux.org.uk>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH 11/11] locking: Allow to include asm/spinlock_types.h from linux/spinlock_types_raw.h
-Date:   Mon, 29 Nov 2021 18:46:54 +0100
-Message-Id: <20211129174654.668506-12-bigeasy@linutronix.de>
-In-Reply-To: <20211129174654.668506-1-bigeasy@linutronix.de>
-References: <20211129174654.668506-1-bigeasy@linutronix.de>
+        id S233869AbhK2WkU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 29 Nov 2021 17:40:20 -0500
+Received: from mail-qk1-f174.google.com ([209.85.222.174]:43904 "EHLO
+        mail-qk1-f174.google.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S233951AbhK2Wjg (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 29 Nov 2021 17:39:36 -0500
+Received: by mail-qk1-f174.google.com with SMTP id 193so24663495qkh.10;
+        Mon, 29 Nov 2021 14:36:18 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=oYq4GIQm8QrcJcBYcEtsoL1OUQLtI2uaYWFL3tBum1w=;
+        b=LbgBUqhNIy40wg1QUS1O3Fphc27umuphTHuXF3Vh3p1aXDpxMB8u1x0uBkoReEpCim
+         Qws+MlUTR+44z5ZnZVEakENKrcwpLTdrfU6pwuCdhEuE6836/zJvFiv0hy41mtw4lmZY
+         1YLN8tM5kVsTYc3cIzQP+cRTcOaYPlO8T+3OWsTzHWZrV97lVx4noL+mCOFlQM5/kb/e
+         xtbk1IkPKi2J95tRlaAM1vZee91lCGFIz1G0UNuyid/iSgKkmcIGicP2EandWWCAfE0l
+         7uRKUoXjM5Kdq43vLMRdIArpNpF15lLBKDwojgjufzkihBUzlfrXdJGQbOAFXSSB8sJh
+         HP+w==
+X-Gm-Message-State: AOAM5331ZxbkcQSMXFEsbKKOYHbqHyekgfiKxHLIJOBJGBNeYh9fEOy4
+        V58Wg1UvjDtYEfnBxmUGGkPHwgK+q5yYNA==
+X-Google-Smtp-Source: ABdhPJzJz5BEY0tJAESTBlt73gwvqVTS7JmG7hyL3hoGsSGW1neE0oIGr731XokwLH4ohx1EX356dw==
+X-Received: by 2002:a05:620a:4092:: with SMTP id f18mr31107993qko.629.1638225377694;
+        Mon, 29 Nov 2021 14:36:17 -0800 (PST)
+Received: from fedora (pool-173-68-57-129.nycmny.fios.verizon.net. [173.68.57.129])
+        by smtp.gmail.com with ESMTPSA id 9sm8636358qkm.5.2021.11.29.14.36.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 29 Nov 2021 14:36:17 -0800 (PST)
+Date:   Mon, 29 Nov 2021 17:36:15 -0500
+From:   Dennis Zhou <dennis@kernel.org>
+To:     Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc:     dennis@kernel.org, akpm@linux-foundation.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org, tj@kernel.org,
+        gregkh@linuxfoundation.org, cl@linux.com, catalin.marinas@arm.com,
+        will@kernel.org, tsbogend@alpha.franken.de, mpe@ellerman.id.au,
+        benh@kernel.crashing.org, paulus@samba.org,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, davem@davemloft.net, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        hpa@zytor.com, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH RFC 1/4] mm: percpu: Generalize percpu related config
+Message-ID: <YaVV38QSn6LEBKH/@fedora>
+References: <20211121093557.139034-1-wangkefeng.wang@huawei.com>
+ <20211121093557.139034-2-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20211121093557.139034-2-wangkefeng.wang@huawei.com>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-The printk header file includes ratelimit_types.h for its __ratelimit()
-based usage. It is required for the static initializer used in
-printk_ratelimited(). It uses a raw_spinlock_t and includes the
-spinlock_types.h.
+Hello,
 
-PREEMPT_RT substitutes spinlock_t with a rtmutex based implementation and so
-its spinlock_t implmentation (provided by spinlock_rt.h) includes rtmutex.h=
- and
-atomic.h which leads to recursive includes where defines are missing.
+On Sun, Nov 21, 2021 at 05:35:54PM +0800, Kefeng Wang wrote:
+> The HAVE_SETUP_PER_CPU_AREA/NEED_PER_CPU_EMBED_FIRST_CHUNK/
+> NEED_PER_CPU_PAGE_FIRST_CHUNK/USE_PERCPU_NUMA_NODE_ID configs,
+> which has duplicate definitions on platforms that subscribe it.
+> 
+> Move them into mm, drop these redundant definitions and instead
+> just select it on applicable platforms.
+> 
+> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
+> ---
+>  arch/arm64/Kconfig   | 20 ++++----------------
+>  arch/ia64/Kconfig    |  9 ++-------
+>  arch/mips/Kconfig    | 10 ++--------
+>  arch/powerpc/Kconfig | 17 ++++-------------
+>  arch/riscv/Kconfig   | 10 ++--------
+>  arch/sparc/Kconfig   | 12 +++---------
+>  arch/x86/Kconfig     | 17 ++++-------------
+>  mm/Kconfig           | 12 ++++++++++++
+>  8 files changed, 33 insertions(+), 74 deletions(-)
+> 
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index c4207cf9bb17..4ff73299f8a9 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -1135,6 +1135,10 @@ config NUMA
+>  	select GENERIC_ARCH_NUMA
+>  	select ACPI_NUMA if ACPI
+>  	select OF_NUMA
+> +	select HAVE_SETUP_PER_CPU_AREA
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+> +	select NEED_PER_CPU_PAGE_FIRST_CHUNK
+> +	select USE_PERCPU_NUMA_NODE_ID
+>  	help
+>  	  Enable NUMA (Non-Uniform Memory Access) support.
+>  
+> @@ -1151,22 +1155,6 @@ config NODES_SHIFT
+>  	  Specify the maximum number of NUMA Nodes available on the target
+>  	  system.  Increases memory reserved to accommodate various tables.
+>  
+> -config USE_PERCPU_NUMA_NODE_ID
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config NEED_PER_CPU_PAGE_FIRST_CHUNK
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  source "kernel/Kconfig.hz"
+>  
+>  config ARCH_SPARSEMEM_ENABLE
+> diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+> index 1e33666fa679..703952819e10 100644
+> --- a/arch/ia64/Kconfig
+> +++ b/arch/ia64/Kconfig
+> @@ -32,6 +32,7 @@ config IA64
+>  	select HAVE_FTRACE_MCOUNT_RECORD
+>  	select HAVE_DYNAMIC_FTRACE if (!ITANIUM)
+>  	select HAVE_FUNCTION_TRACER
+> +	select HAVE_SETUP_PER_CPU_AREA
+>  	select TTY
+>  	select HAVE_ARCH_TRACEHOOK
+>  	select HAVE_VIRT_CPU_ACCOUNTING
+> @@ -88,9 +89,6 @@ config GENERIC_CALIBRATE_DELAY
+>  	bool
+>  	default y
+>  
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool y
+> -
+>  config DMI
+>  	bool
+>  	default y
+> @@ -292,6 +290,7 @@ config NUMA
+>  	bool "NUMA support"
+>  	depends on !FLATMEM
+>  	select SMP
+> +	select USE_PERCPU_NUMA_NODE_ID
+>  	help
+>  	  Say Y to compile the kernel to support NUMA (Non-Uniform Memory
+>  	  Access).  This option is for configuring high-end multiprocessor
+> @@ -311,10 +310,6 @@ config HAVE_ARCH_NODEDATA_EXTENSION
+>  	def_bool y
+>  	depends on NUMA
+>  
+> -config USE_PERCPU_NUMA_NODE_ID
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  config HAVE_MEMORYLESS_NODES
+>  	def_bool NUMA
+>  
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index de60ad190057..c106a2080877 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -2666,6 +2666,8 @@ config NUMA
+>  	bool "NUMA Support"
+>  	depends on SYS_SUPPORTS_NUMA
+>  	select SMP
+> +	select HAVE_SETUP_PER_CPU_AREA
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+>  	help
+>  	  Say Y to compile the kernel to support NUMA (Non-Uniform Memory
+>  	  Access).  This option improves performance on systems with more
+> @@ -2676,14 +2678,6 @@ config NUMA
+>  config SYS_SUPPORTS_NUMA
+>  	bool
+>  
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  config RELOCATABLE
+>  	bool "Relocatable kernel"
+>  	depends on SYS_SUPPORTS_RELOCATABLE
+> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+> index dea74d7717c0..8badd39854a0 100644
+> --- a/arch/powerpc/Kconfig
+> +++ b/arch/powerpc/Kconfig
+> @@ -55,15 +55,6 @@ config ARCH_MMAP_RND_COMPAT_BITS_MIN
+>  	default 9 if PPC_16K_PAGES	#  9 = 23 (8MB) - 14 (16K)
+>  	default 11			# 11 = 23 (8MB) - 12 (4K)
+>  
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool PPC64
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y if PPC64
+> -
+> -config NEED_PER_CPU_PAGE_FIRST_CHUNK
+> -	def_bool y if PPC64
+> -
+>  config NR_IRQS
+>  	int "Number of virtual interrupt numbers"
+>  	range 32 1048576
+> @@ -240,6 +231,7 @@ config PPC
+>  	select HAVE_REGS_AND_STACK_ACCESS_API
+>  	select HAVE_RELIABLE_STACKTRACE
+>  	select HAVE_RSEQ
+> +	select HAVE_SETUP_PER_CPU_AREA		if PPC64
+>  	select HAVE_SOFTIRQ_ON_OWN_STACK
+>  	select HAVE_STACKPROTECTOR		if PPC32 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r2)
+>  	select HAVE_STACKPROTECTOR		if PPC64 && $(cc-option,-mstack-protector-guard=tls -mstack-protector-guard-reg=r13)
+> @@ -254,6 +246,8 @@ config PPC
+>  	select MMU_GATHER_RCU_TABLE_FREE
+>  	select MODULES_USE_ELF_RELA
+>  	select NEED_DMA_MAP_STATE		if PPC64 || NOT_COHERENT_CACHE
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK	if PPC64
+> +	select NEED_PER_CPU_PAGE_FIRST_CHUNK	if PPC64
+>  	select NEED_SG_DMA_LENGTH
+>  	select OF
+>  	select OF_DMA_DEFAULT_COHERENT		if !NOT_COHERENT_CACHE
+> @@ -659,6 +653,7 @@ config NUMA
+>  	bool "NUMA Memory Allocation and Scheduler Support"
+>  	depends on PPC64 && SMP
+>  	default y if PPC_PSERIES || PPC_POWERNV
+> +	select USE_PERCPU_NUMA_NODE_ID
+>  	help
+>  	  Enable NUMA (Non-Uniform Memory Access) support.
+>  
+> @@ -672,10 +667,6 @@ config NODES_SHIFT
+>  	default "4"
+>  	depends on NUMA
+>  
+> -config USE_PERCPU_NUMA_NODE_ID
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  config HAVE_MEMORYLESS_NODES
+>  	def_bool y
+>  	depends on NUMA
+> diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+> index 821252b65f89..bf66bcbc5a39 100644
+> --- a/arch/riscv/Kconfig
+> +++ b/arch/riscv/Kconfig
+> @@ -334,6 +334,8 @@ config NUMA
+>  	select GENERIC_ARCH_NUMA
+>  	select OF_NUMA
+>  	select ARCH_SUPPORTS_NUMA_BALANCING
+> +	select USE_PERCPU_NUMA_NODE_ID
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+>  	help
+>  	  Enable NUMA (Non-Uniform Memory Access) support.
+>  
+> @@ -349,14 +351,6 @@ config NODES_SHIFT
+>  	  Specify the maximum number of NUMA Nodes available on the target
+>  	  system.  Increases memory reserved to accommodate various tables.
+>  
+> -config USE_PERCPU_NUMA_NODE_ID
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  config RISCV_ISA_C
+>  	bool "Emit compressed instructions when building Linux"
+>  	default y
+> diff --git a/arch/sparc/Kconfig b/arch/sparc/Kconfig
+> index 66fc08646be5..a6765e0fe6a8 100644
+> --- a/arch/sparc/Kconfig
+> +++ b/arch/sparc/Kconfig
+> @@ -97,6 +97,9 @@ config SPARC64
+>  	select PCI_DOMAINS if PCI
+>  	select ARCH_HAS_GIGANTIC_PAGE
+>  	select HAVE_SOFTIRQ_ON_OWN_STACK
+> +	select HAVE_SETUP_PER_CPU_AREA
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+> +	select NEED_PER_CPU_PAGE_FIRST_CHUUNK
+>  
+>  config ARCH_PROC_KCORE_TEXT
+>  	def_bool y
+> @@ -123,15 +126,6 @@ config AUDIT_ARCH
+>  	bool
+>  	default y
+>  
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool y if SPARC64
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y if SPARC64
+> -
+> -config NEED_PER_CPU_PAGE_FIRST_CHUNK
+> -	def_bool y if SPARC64
+> -
+>  config MMU
+>  	bool
+>  	default y
+> diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+> index 7399327d1eff..ca120a1f5857 100644
+> --- a/arch/x86/Kconfig
+> +++ b/arch/x86/Kconfig
+> @@ -239,6 +239,7 @@ config X86
+>  	select HAVE_REGS_AND_STACK_ACCESS_API
+>  	select HAVE_RELIABLE_STACKTRACE		if X86_64 && (UNWINDER_FRAME_POINTER || UNWINDER_ORC) && STACK_VALIDATION
+>  	select HAVE_FUNCTION_ARG_ACCESS_API
+> +	select HAVE_SETUP_PER_CPU_AREA
+>  	select HAVE_SOFTIRQ_ON_OWN_STACK
+>  	select HAVE_STACKPROTECTOR		if CC_HAS_SANE_STACKPROTECTOR
+>  	select HAVE_STACK_VALIDATION		if X86_64
+> @@ -252,6 +253,8 @@ config X86
+>  	select HAVE_GENERIC_VDSO
+>  	select HOTPLUG_SMT			if SMP
+>  	select IRQ_FORCED_THREADING
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+> +	select NEED_PER_CPU_PAGE_FIRST_CHUNK
+>  	select NEED_SG_DMA_LENGTH
+>  	select PCI_DOMAINS			if PCI
+>  	select PCI_LOCKLESS_CONFIG		if PCI
+> @@ -331,15 +334,6 @@ config ARCH_HAS_CPU_RELAX
+>  config ARCH_HAS_FILTER_PGPROT
+>  	def_bool y
+>  
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool y
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y
+> -
+> -config NEED_PER_CPU_PAGE_FIRST_CHUNK
+> -	def_bool y
+> -
+>  config ARCH_HIBERNATION_POSSIBLE
+>  	def_bool y
+>  
+> @@ -1557,6 +1551,7 @@ config NUMA
+>  	depends on SMP
+>  	depends on X86_64 || (X86_32 && HIGHMEM64G && X86_BIGSMP)
+>  	default y if X86_BIGSMP
+> +	select USE_PERCPU_NUMA_NODE_ID
+>  	help
+>  	  Enable NUMA (Non-Uniform Memory Access) support.
+>  
+> @@ -2430,10 +2425,6 @@ config ARCH_HAS_ADD_PAGES
+>  config ARCH_MHP_MEMMAP_ON_MEMORY_ENABLE
+>  	def_bool y
+>  
+> -config USE_PERCPU_NUMA_NODE_ID
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  menu "Power management and ACPI options"
+>  
+>  config ARCH_HIBERNATION_HEADER
+> diff --git a/mm/Kconfig b/mm/Kconfig
+> index 28edafc820ad..6bc5d780c51b 100644
+> --- a/mm/Kconfig
+> +++ b/mm/Kconfig
+> @@ -432,6 +432,18 @@ config NEED_PER_CPU_KM
+>  	bool
+>  	default y
+>  
+> +config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> +	bool
+> +
+> +config NEED_PER_CPU_PAGE_FIRST_CHUNK
+> +	bool
+> +
+> +config USE_PERCPU_NUMA_NODE_ID
+> +	bool
+> +
+> +config HAVE_SETUP_PER_CPU_AREA
+> +	bool
+> +
+>  config CLEANCACHE
+>  	bool "Enable cleancache driver to cache clean pages if tmem is present"
+>  	help
+> -- 
+> 2.26.2
+> 
 
-By including only the raw_spinlock_t defines it avoids the atomic.h
-related includes at this stage.
+This makes sense and looks good. A series like this is a little tricky.
+The latter patches change the contracts so it'd be easiest to run it
+through my tree. We'd need to get explicit acks from each arch
+maintainer to make sure they're fine with this.
 
-An example on powerpc:
-
-|  CALL    scripts/atomic/check-atomics.sh
-|In file included from include/linux/bug.h:5,
-|                 from include/linux/page-flags.h:10,
-|                 from kernel/bounds.c:10:
-|arch/powerpc/include/asm/page_32.h: In function =E2=80=98clear_page=E2=80=
-=99:
-|arch/powerpc/include/asm/bug.h:87:4: error: implicit declaration of functi=
-on =E2=80=98__WARN=E2=80=99 [-Werror=3Dimplicit-function-declaration]
-|   87 |    __WARN();    \
-|      |    ^~~~~~
-|arch/powerpc/include/asm/page_32.h:48:2: note: in expansion of macro =E2=
-=80=98WARN_ON=E2=80=99
-|   48 |  WARN_ON((unsigned long)addr & (L1_CACHE_BYTES - 1));
-|      |  ^~~~~~~
-|arch/powerpc/include/asm/bug.h:58:17: error: invalid application of =E2=80=
-=98sizeof=E2=80=99 to incomplete type =E2=80=98struct bug_entry=E2=80=99
-|   58 |     "i" (sizeof(struct bug_entry)), \
-|      |                 ^~~~~~
-|arch/powerpc/include/asm/bug.h:89:3: note: in expansion of macro =E2=80=98=
-BUG_ENTRY=E2=80=99
-|   89 |   BUG_ENTRY(PPC_TLNEI " %4, 0",   \
-|      |   ^~~~~~~~~
-|arch/powerpc/include/asm/page_32.h:48:2: note: in expansion of macro =E2=
-=80=98WARN_ON=E2=80=99
-|   48 |  WARN_ON((unsigned long)addr & (L1_CACHE_BYTES - 1));
-|      |  ^~~~~~~
-|In file included from arch/powerpc/include/asm/ptrace.h:298,
-|                 from arch/powerpc/include/asm/hw_irq.h:12,
-|                 from arch/powerpc/include/asm/irqflags.h:12,
-|                 from include/linux/irqflags.h:16,
-|                 from include/asm-generic/cmpxchg-local.h:6,
-|                 from arch/powerpc/include/asm/cmpxchg.h:526,
-|                 from arch/powerpc/include/asm/atomic.h:11,
-|                 from include/linux/atomic.h:7,
-|                 from include/linux/rwbase_rt.h:6,
-|                 from include/linux/rwlock_types.h:55,
-|                 from include/linux/spinlock_types.h:74,
-|                 from include/linux/ratelimit_types.h:7,
-|                 from include/linux/printk.h:10,
-|                 from include/asm-generic/bug.h:22,
-|                 from arch/powerpc/include/asm/bug.h:109,
-|                 from include/linux/bug.h:5,
-|                 from include/linux/page-flags.h:10,
-|                 from kernel/bounds.c:10:
-|include/linux/thread_info.h: In function =E2=80=98copy_overflow=E2=80=99:
-|include/linux/thread_info.h:210:2: error: implicit declaration of function=
- =E2=80=98WARN=E2=80=99 [-Werror=3Dimplicit-function-declaration]
-|  210 |  WARN(1, "Buffer overflow detected (%d < %lu)!\n", size, count);
-|      |  ^~~~
-
-The WARN / BUG include pulls in printk.h and then ptrace.h expects WARN
-(from bug.h) which is not yet complete. Even hw_irq.h has WARN_ON()
-statements.
-
-On POWERPC64 there are missing atomic64 defines while building 32bit
-VDSO:
-|  VDSO32C arch/powerpc/kernel/vdso32/vgettimeofday.o
-|In file included from include/linux/atomic.h:80,
-|                 from include/linux/rwbase_rt.h:6,
-|                 from include/linux/rwlock_types.h:55,
-|                 from include/linux/spinlock_types.h:74,
-|                 from include/linux/ratelimit_types.h:7,
-|                 from include/linux/printk.h:10,
-|                 from include/linux/kernel.h:19,
-|                 from arch/powerpc/include/asm/page.h:11,
-|                 from arch/powerpc/include/asm/vdso/gettimeofday.h:5,
-|                 from include/vdso/datapage.h:137,
-|                 from lib/vdso/gettimeofday.c:5,
-|                 from <command-line>:
-|include/linux/atomic-arch-fallback.h: In function =E2=80=98arch_atomic64_i=
-nc=E2=80=99:
-|include/linux/atomic-arch-fallback.h:1447:2: error: implicit declaration o=
-f function =E2=80=98arch_atomic64_add=E2=80=99; did you mean =E2=80=98arch_=
-atomic_add=E2=80=99? [-Werror=3Dimpl
-|icit-function-declaration]
-| 1447 |  arch_atomic64_add(1, v);
-|      |  ^~~~~~~~~~~~~~~~~
-|      |  arch_atomic_add
-
-The generic fallback is not included, atomics itself are not used. If
-kernel.h does not include printk.h then it comes later from the bug.h
-include.
-
-Allow asm/spinlock_types.h to be included from
-linux/spinlock_types_raw.h.
-
-Cc: Albert Ou <aou@eecs.berkeley.edu>
-Cc: Alexander Gordeev <agordeev@linux.ibm.com>
-Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
-Cc: Brian Cain <bcain@codeaurora.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Chris Zankel <chris@zankel.net>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>
-Cc: Guo Ren <guoren@kernel.org>
-Cc: Heiko Carstens <hca@linux.ibm.com>
-Cc: Ivan Kokshaysky <ink@jurassic.park.msu.ru>
-Cc: Matt Turner <mattst88@gmail.com>
-Cc: Max Filippov <jcmvbkbc@gmail.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>
-Cc: Paul Mackerras <paulus@samba.org>
-Cc: Paul Walmsley <paul.walmsley@sifive.com>
-Cc: Rich Felker <dalias@libc.org>
-Cc: Richard Henderson <rth@twiddle.net>
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: linux-alpha@vger.kernel.org
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-csky@vger.kernel.org
-Cc: linux-hexagon@vger.kernel.org
-Cc: linux-ia64@vger.kernel.org
-Cc: linux-riscv@lists.infradead.org
-Cc: linux-s390@vger.kernel.org
-Cc: linux-sh@vger.kernel.org
-Cc: linux-xtensa@linux-xtensa.org
-Cc: linuxppc-dev@lists.ozlabs.org
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
- arch/alpha/include/asm/spinlock_types.h          | 2 +-
- arch/arm/include/asm/spinlock_types.h            | 2 +-
- arch/arm64/include/asm/spinlock_types.h          | 2 +-
- arch/csky/include/asm/spinlock_types.h           | 2 +-
- arch/hexagon/include/asm/spinlock_types.h        | 2 +-
- arch/ia64/include/asm/spinlock_types.h           | 2 +-
- arch/powerpc/include/asm/simple_spinlock_types.h | 2 +-
- arch/powerpc/include/asm/spinlock_types.h        | 2 +-
- arch/riscv/include/asm/spinlock_types.h          | 2 +-
- arch/s390/include/asm/spinlock_types.h           | 2 +-
- arch/sh/include/asm/spinlock_types.h             | 2 +-
- arch/xtensa/include/asm/spinlock_types.h         | 2 +-
- include/linux/ratelimit_types.h                  | 2 +-
- include/linux/spinlock_types_up.h                | 2 +-
- 14 files changed, 14 insertions(+), 14 deletions(-)
-
-diff --git a/arch/alpha/include/asm/spinlock_types.h b/arch/alpha/include/a=
-sm/spinlock_types.h
-index 1d5716bc060be..2526fd3be5fd7 100644
---- a/arch/alpha/include/asm/spinlock_types.h
-+++ b/arch/alpha/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef _ALPHA_SPINLOCK_TYPES_H
- #define _ALPHA_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/arm/include/asm/spinlock_types.h b/arch/arm/include/asm/s=
-pinlock_types.h
-index 5976958647fe1..0c14b36ef1013 100644
---- a/arch/arm/include/asm/spinlock_types.h
-+++ b/arch/arm/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_SPINLOCK_TYPES_H
- #define __ASM_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/arm64/include/asm/spinlock_types.h b/arch/arm64/include/a=
-sm/spinlock_types.h
-index 18782f0c47212..11ab1c0776977 100644
---- a/arch/arm64/include/asm/spinlock_types.h
-+++ b/arch/arm64/include/asm/spinlock_types.h
-@@ -5,7 +5,7 @@
- #ifndef __ASM_SPINLOCK_TYPES_H
- #define __ASM_SPINLOCK_TYPES_H
-=20
--#if !defined(__LINUX_SPINLOCK_TYPES_H) && !defined(__ASM_SPINLOCK_H)
-+#if !defined(__LINUX_SPINLOCK_TYPES_RAW_H) && !defined(__ASM_SPINLOCK_H)
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/csky/include/asm/spinlock_types.h b/arch/csky/include/asm=
-/spinlock_types.h
-index 8ff0f6ff3a006..db87a12c3827d 100644
---- a/arch/csky/include/asm/spinlock_types.h
-+++ b/arch/csky/include/asm/spinlock_types.h
-@@ -3,7 +3,7 @@
- #ifndef __ASM_CSKY_SPINLOCK_TYPES_H
- #define __ASM_CSKY_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/hexagon/include/asm/spinlock_types.h b/arch/hexagon/inclu=
-de/asm/spinlock_types.h
-index 19d233497ba52..d5f66495b670f 100644
---- a/arch/hexagon/include/asm/spinlock_types.h
-+++ b/arch/hexagon/include/asm/spinlock_types.h
-@@ -8,7 +8,7 @@
- #ifndef _ASM_SPINLOCK_TYPES_H
- #define _ASM_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/ia64/include/asm/spinlock_types.h b/arch/ia64/include/asm=
-/spinlock_types.h
-index 6e345fefcdcab..14b8a161c1652 100644
---- a/arch/ia64/include/asm/spinlock_types.h
-+++ b/arch/ia64/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef _ASM_IA64_SPINLOCK_TYPES_H
- #define _ASM_IA64_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/powerpc/include/asm/simple_spinlock_types.h b/arch/powerp=
-c/include/asm/simple_spinlock_types.h
-index 0f3cdd8faa959..08243338069d2 100644
---- a/arch/powerpc/include/asm/simple_spinlock_types.h
-+++ b/arch/powerpc/include/asm/simple_spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef _ASM_POWERPC_SIMPLE_SPINLOCK_TYPES_H
- #define _ASM_POWERPC_SIMPLE_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/powerpc/include/asm/spinlock_types.h b/arch/powerpc/inclu=
-de/asm/spinlock_types.h
-index c5d742f18021d..d5f8a74ed2e8c 100644
---- a/arch/powerpc/include/asm/spinlock_types.h
-+++ b/arch/powerpc/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef _ASM_POWERPC_SPINLOCK_TYPES_H
- #define _ASM_POWERPC_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/riscv/include/asm/spinlock_types.h b/arch/riscv/include/a=
-sm/spinlock_types.h
-index f398e7638dd63..5a35a49505da2 100644
---- a/arch/riscv/include/asm/spinlock_types.h
-+++ b/arch/riscv/include/asm/spinlock_types.h
-@@ -6,7 +6,7 @@
- #ifndef _ASM_RISCV_SPINLOCK_TYPES_H
- #define _ASM_RISCV_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/s390/include/asm/spinlock_types.h b/arch/s390/include/asm=
-/spinlock_types.h
-index a2bbfd7df85fa..b69695e399574 100644
---- a/arch/s390/include/asm/spinlock_types.h
-+++ b/arch/s390/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_SPINLOCK_TYPES_H
- #define __ASM_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/sh/include/asm/spinlock_types.h b/arch/sh/include/asm/spi=
-nlock_types.h
-index e82369f286a20..907bda4b1619a 100644
---- a/arch/sh/include/asm/spinlock_types.h
-+++ b/arch/sh/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_SH_SPINLOCK_TYPES_H
- #define __ASM_SH_SPINLOCK_TYPES_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/arch/xtensa/include/asm/spinlock_types.h b/arch/xtensa/include=
-/asm/spinlock_types.h
-index 64c9389254f13..797aed7df3dd8 100644
---- a/arch/xtensa/include/asm/spinlock_types.h
-+++ b/arch/xtensa/include/asm/spinlock_types.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_SPINLOCK_TYPES_H
- #define __ASM_SPINLOCK_TYPES_H
-=20
--#if !defined(__LINUX_SPINLOCK_TYPES_H) && !defined(__ASM_SPINLOCK_H)
-+#if !defined(__LINUX_SPINLOCK_TYPES_RAW_H) && !defined(__ASM_SPINLOCK_H)
- # error "please don't include this file directly"
- #endif
-=20
-diff --git a/include/linux/ratelimit_types.h b/include/linux/ratelimit_type=
-s.h
-index b676aa419eef8..c21c7f8103e2b 100644
---- a/include/linux/ratelimit_types.h
-+++ b/include/linux/ratelimit_types.h
-@@ -4,7 +4,7 @@
-=20
- #include <linux/bits.h>
- #include <linux/param.h>
--#include <linux/spinlock_types.h>
-+#include <linux/spinlock_types_raw.h>
-=20
- #define DEFAULT_RATELIMIT_INTERVAL	(5 * HZ)
- #define DEFAULT_RATELIMIT_BURST		10
-diff --git a/include/linux/spinlock_types_up.h b/include/linux/spinlock_typ=
-es_up.h
-index c09b6407ae1b3..7f86a2016ac5c 100644
---- a/include/linux/spinlock_types_up.h
-+++ b/include/linux/spinlock_types_up.h
-@@ -1,7 +1,7 @@
- #ifndef __LINUX_SPINLOCK_TYPES_UP_H
- #define __LINUX_SPINLOCK_TYPES_UP_H
-=20
--#ifndef __LINUX_SPINLOCK_TYPES_H
-+#ifndef __LINUX_SPINLOCK_TYPES_RAW_H
- # error "please don't include this file directly"
- #endif
-=20
---=20
-2.34.0
-
+Thanks,
+Dennis
