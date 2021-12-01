@@ -2,132 +2,77 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 06AF3462D1F
-	for <lists+linux-ia64@lfdr.de>; Tue, 30 Nov 2021 07:53:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C877464CCC
+	for <lists+linux-ia64@lfdr.de>; Wed,  1 Dec 2021 12:34:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238825AbhK3G44 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 30 Nov 2021 01:56:56 -0500
-Received: from szxga03-in.huawei.com ([45.249.212.189]:28194 "EHLO
-        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232051AbhK3G44 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 30 Nov 2021 01:56:56 -0500
-Received: from dggpemm500022.china.huawei.com (unknown [172.30.72.53])
-        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4J3CYk04yNz8vg4;
-        Tue, 30 Nov 2021 14:51:38 +0800 (CST)
-Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
- dggpemm500022.china.huawei.com (7.185.36.162) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.20; Tue, 30 Nov 2021 14:53:35 +0800
-Received: from [10.174.177.243] (10.174.177.243) by
- dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.20; Tue, 30 Nov 2021 14:53:34 +0800
-Message-ID: <617f11ad-3033-473f-162e-cb7ecd67a78a@huawei.com>
-Date:   Tue, 30 Nov 2021 14:53:33 +0800
+        id S1348983AbhLALhg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 1 Dec 2021 06:37:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33510 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1348918AbhLALhc (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 1 Dec 2021 06:37:32 -0500
+Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E222C061759
+        for <linux-ia64@vger.kernel.org>; Wed,  1 Dec 2021 03:34:10 -0800 (PST)
+Received: by mail-pf1-x429.google.com with SMTP id n26so24108100pff.3
+        for <linux-ia64@vger.kernel.org>; Wed, 01 Dec 2021 03:34:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=nKE9e+4jEQRb21OhoYPSbxPLfJ2IuSmNXU0U6wmcP4ykCacrWpdbtE0jjuz/hSLLGi
+         3CHjeG+lFmWzoULwCsmlhVFgDEk5dLFaYb51pw7bXGjZ9H8t0j91dP9aL17MRQYkMPZK
+         Snvty/Yp8/ZrWZr2EuFXHqBxUdbU8X39ik45viERJ1Dn7qW8BPCFp2vlafV2okU0kn5j
+         QPTIDY8QJSy8zAVbK10d6+AY0lky+mrQRAAg0uS1DacQStzD/dQtt/uBz/RlGIdZCai/
+         BHep24kmiLdl1nvBvHYMFonu8NoJvJlErv7lbZlg2+2c277BpkzmDA4WwPZoxzlIf0Mh
+         Af5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=l4J9Z+m4hmgZbWtQHlC70w1zjUmiI7wjClCwm6dHAnY=;
+        b=wfVe386qmQwkl0houMxv8ccwy5rWWfkLH09hm/gcwx/DzliD1YkAOomsi4ww3kHfsH
+         oEunaMIM/0zJbqlBh9Wp2wip72U7Mze+pL6+jpdBsYu26vqyV+RqabNjRuaIcjaNxXKK
+         q1dBmn5ISBe5oeXCwoNbQUUAar2QrQehOVYLdEwW4UrfNVCHrH9H0fw5JHZ3WOwuWa0e
+         JHoIuJqDvE4ray/fmsnso9WA7N6x22wDt5fuV0Ew8W7arp7hbdbZVwFDqzuRGk3cp9zY
+         vtRt8wiAoxvt6KMfGZ/4/YS54OGXNmt0TfWZn6zjLB+xLdaYXKRnhZyFgui5O/ZKxJmm
+         cFbA==
+X-Gm-Message-State: AOAM533n6zAhGruR2KBYkuIA4JspaNFjbruhXrD9wrM0WmdQ4079CiqT
+        WQDBEyQiFANTTaLM6m2NwjT3PMbX98pBPwmCFbcXjQTtj6A=
+X-Google-Smtp-Source: ABdhPJwK+H50pzFgfv5CJPfAwBzUdMqIKHh+Ckkuju2lG2knVlJrzqINPiiwPjc/Uz6xuSJez7Fkn5YZPcfa5CPpvro=
+X-Received: by 2002:a67:ef4d:: with SMTP id k13mr6266305vsr.4.1638358439020;
+ Wed, 01 Dec 2021 03:33:59 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.2.0
-Subject: Re: [PATCH RFC 0/4] mm: percpu: Cleanup percpu first chunk funciton
-Content-Language: en-US
-To:     Dennis Zhou <dennis@kernel.org>
-CC:     <akpm@linux-foundation.org>, <linux-kernel@vger.kernel.org>,
-        <linux-mm@kvack.org>, <tj@kernel.org>,
-        <gregkh@linuxfoundation.org>, <cl@linux.com>,
-        <catalin.marinas@arm.com>, <will@kernel.org>,
-        <tsbogend@alpha.franken.de>, <mpe@ellerman.id.au>,
-        <benh@kernel.crashing.org>, <paulus@samba.org>,
-        <paul.walmsley@sifive.com>, <palmer@dabbelt.com>,
-        <aou@eecs.berkeley.edu>, <davem@davemloft.net>,
-        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
-        <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-ia64@vger.kernel.org>, <linux-mips@vger.kernel.org>,
-        <linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>,
-        <sparclinux@vger.kernel.org>, <x86@kernel.org>
-References: <20211121093557.139034-1-wangkefeng.wang@huawei.com>
- <YaVaTwjiZmWz8PKY@fedora>
-From:   Kefeng Wang <wangkefeng.wang@huawei.com>
-In-Reply-To: <YaVaTwjiZmWz8PKY@fedora>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.174.177.243]
-X-ClientProxiedBy: dggeme705-chm.china.huawei.com (10.1.199.101) To
- dggpemm500001.china.huawei.com (7.185.36.107)
-X-CFilter-Loop: Reflected
+Sender: unitednationawardwinner@gmail.com
+Received: by 2002:ab0:6c55:0:0:0:0:0 with HTTP; Wed, 1 Dec 2021 03:33:58 -0800 (PST)
+From:   "Mrs. Orgil Baatar" <mrs.orgilbaatar21@gmail.com>
+Date:   Wed, 1 Dec 2021 03:33:58 -0800
+X-Google-Sender-Auth: uTQ_nfkzXaWGWaTWp1BSFqK3Ucs
+Message-ID: <CAJ4dHaSrD-X=xpfKNZV-hXSiMV6mNYrgy5vWCNkKm6iu5RQStg@mail.gmail.com>
+Subject: Your long awaited part payment of $2.5.000.00Usd
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+Attention: Beneficiary, Your long awaited part payment of
+$2.5.000.00Usd (TWO MILLION FIVE Hundred Thousand United State
+Dollars) is ready for immediate release to you, and it was
+electronically credited into an ATM Visa Card for easy delivery.
 
-On 2021/11/30 6:55, Dennis Zhou wrote:
-> Hello,
->
-> On Sun, Nov 21, 2021 at 05:35:53PM +0800, Kefeng Wang wrote:
->> When support page mapping percpu first chunk allocator on arm64, we
->> found there are lots of duplicated codes in percpu embed/page first
->> chunk allocator. This patchset is aimed to cleanup them and should
->> no funciton change, only test on arm64.
->>
->> Kefeng Wang (4):
->>    mm: percpu: Generalize percpu related config
->>    mm: percpu: Add pcpu_fc_cpu_to_node_fn_t typedef
->>    mm: percpu: Add generic pcpu_fc_alloc/free funciton
->>    mm: percpu: Add generic pcpu_populate_pte() function
->>
->>   arch/arm64/Kconfig             |  20 +----
->>   arch/ia64/Kconfig              |   9 +--
->>   arch/mips/Kconfig              |  10 +--
->>   arch/mips/mm/init.c            |  14 +---
->>   arch/powerpc/Kconfig           |  17 +---
->>   arch/powerpc/kernel/setup_64.c |  92 +--------------------
->>   arch/riscv/Kconfig             |  10 +--
->>   arch/sparc/Kconfig             |  12 +--
->>   arch/sparc/kernel/smp_64.c     | 105 +-----------------------
->>   arch/x86/Kconfig               |  17 +---
->>   arch/x86/kernel/setup_percpu.c |  66 ++-------------
->>   drivers/base/arch_numa.c       |  68 +---------------
->>   include/linux/percpu.h         |  13 +--
->>   mm/Kconfig                     |  12 +++
->>   mm/percpu.c                    | 143 +++++++++++++++++++++++++--------
->>   15 files changed, 165 insertions(+), 443 deletions(-)
->>
->> -- 
->> 2.26.2
->>
-> I've made a few comments. I think this will be a little bit of a
-> challenge to get through due to it touching so many architectures. For
-> ease, it probably makes sense to run it through mny tree, but we'll need
-> explicit acks as I mentioned.
->
-> I like getting rid of the pcpu_alloc_bootmem()/pcpu_free_bootmem()
-> functions. However, let's keep the implementation identical to x86.
-ok , will change patch3 in v2
->
->
-> I don't think we should get rid of the populate_pte_fn(). I'm not
-> comfortable changing x86's implementation. Simply offer a NULL, and if
-> NULL use the default.
+Your new Payment Reference No.- 6363836,
+Pin Code No: 1787
+Your Certificate of Merit Payment No: 05872,
 
-As replied in patch4, we use __weak method, and x86's implementation is
+Your Names: |
+Address: |
 
-not changed in patch4, is this ok?
+Person to Contact:MR KELLY HALL the Director of the International
+Audit unit ATM Payment Center,
 
->
-> Do you have a tree that intel pulls? I suggest cleaning up the patches
-> and pushing to a remote branch that they pick up. That would have caught
-> the mips typo. Send a PR creating a file in [1] for your branch, github
-> is fine. Basic validation needs to be done before I can pick this up
-> too on more than arm64.
+Email: uba-bf@e-ubabf.com
+TELEPHONE: +226 64865611 You can whatsApp the bank
 
-Ok, x86/arm64/riscv are tested, but I don't has ppc/mips/sparc compliler.
-
-I will try to push new version into github and test by lkp.
-
-Thanks.
-
->
-> [1] https://github.com/intel/lkp-tests/tree/master/repo/linux
->
-> Thanks,
-> Dennis
-> .
+Regards.
+Mrs ORGIL BAATAR
