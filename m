@@ -2,84 +2,89 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id F1222467B3C
-	for <lists+linux-ia64@lfdr.de>; Fri,  3 Dec 2021 17:22:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DD508467D91
+	for <lists+linux-ia64@lfdr.de>; Fri,  3 Dec 2021 19:54:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348939AbhLCQZl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 3 Dec 2021 11:25:41 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51194 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349889AbhLCQZj (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 3 Dec 2021 11:25:39 -0500
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A832EC061751;
-        Fri,  3 Dec 2021 08:22:14 -0800 (PST)
-Date:   Fri, 3 Dec 2021 17:22:11 +0100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1638548532;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=BJ6x9GmhrMGSwleKWOyUnt6LaxJim77CKztb61Kx8l4=;
-        b=lyum7gvBn8nygbp+Au1Oq42kgYVbwkSLmcXAkzVYHNTQdzRNVqKrO/5mv/UFmC2QUItLmy
-        RCsrLqpnp/XycPynd6SE8bVDFppJk1wmLnjvcmnEMz0xO6i2nDgd3mnNTtgU+rPxJZFQXA
-        fpHrEre47SiUSCuaJy5fDy8qOhBDpXCnyw6qbI5JudCoT8cyemjC2ru3BDiD5mI7tNsegf
-        C04D8xR/XWtoyUj0ux3PpWKF3/W9M9Ty/ZX5WW0EK3X1xxbsaEkoEAs0zF10nODWFN1i/6
-        MXQIJKA77zgnRQjLXu6JWKSgzKOgy873aA8E/zapXpEFDCVXU8rsenEX3R/2GQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1638548532;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=BJ6x9GmhrMGSwleKWOyUnt6LaxJim77CKztb61Kx8l4=;
-        b=94vvCxucgox7cFwviKtvhz2CZXAphlNc8z06ilF52qco2dvXgJ2KYaTogkTipJBHyjlw2K
-        bVIJo0SA4WC0XPBw==
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
-        tglx@linutronix.de
-Cc:     Ingo Molnar <mingo@redhat.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>
-Subject: Re: [PATCH 0/8] kernel/fork: Move thread stack free otu of the
- scheduler path.
-Message-ID: <20211203162211.qvcnvbj4cdsa5g3a@linutronix.de>
-References: <20211118143452.136421-1-bigeasy@linutronix.de>
- <20211118143850.ygpp7xetpz3pt2nj@linutronix.de>
+        id S231276AbhLCS6M (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 3 Dec 2021 13:58:12 -0500
+Received: from dfw.source.kernel.org ([139.178.84.217]:53098 "EHLO
+        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229825AbhLCS6L (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 3 Dec 2021 13:58:11 -0500
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BD5362CAA;
+        Fri,  3 Dec 2021 18:54:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC384C53FCE;
+        Fri,  3 Dec 2021 18:54:41 +0000 (UTC)
+Date:   Fri, 3 Dec 2021 18:54:38 +0000
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc:     dennis@kernel.org, akpm@linux-foundation.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org, tj@kernel.org,
+        gregkh@linuxfoundation.org, cl@linux.com, will@kernel.org,
+        tsbogend@alpha.franken.de, mpe@ellerman.id.au,
+        benh@kernel.crashing.org, paulus@samba.org,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, davem@davemloft.net, tglx@linutronix.de,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        hpa@zytor.com, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        sparclinux@vger.kernel.org, x86@kernel.org
+Subject: Re: [PATCH RFC 1/4] mm: percpu: Generalize percpu related config
+Message-ID: <Yapn7veWrVvWpskW@arm.com>
+References: <20211121093557.139034-1-wangkefeng.wang@huawei.com>
+ <20211121093557.139034-2-wangkefeng.wang@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20211118143850.ygpp7xetpz3pt2nj@linutronix.de>
+In-Reply-To: <20211121093557.139034-2-wangkefeng.wang@huawei.com>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 2021-11-18 15:38:50 [+0100], To linux-kernel@vger.kernel.org wrote:
-> + tglx.
-> 
-> It starts at
->    https://lore.kernel.org/all/20211118143452.136421-1-bigeasy@linutronix.de/
-> 
-> On 2021-11-18 15:34:44 [+0100], To linux-kernel@vger.kernel.org wrote:
-> > 
-> > This is a follup-up on the patch
-> >     sched: Delay task stack freeing on RT 
-> >     https://lkml.kernel.org/r/20210928122411.593486363@linutronix.de
-> > 
-> > It addresses the review feedback:
-> > - Decouple stack accounting from its free invocation. The accounting
-> >   happens in do_exit(), the final free call happens later.
-> > 
-> > - Add put_task_stack_sched() to finish_task_switch(). Here the VMAP
-> >   stack is cached only. If it fails, or in the !VMAP case then the final
-> >   free happens in delayed_put_task_struct(). This is also an oportunity
-> >   to cache the stack.
+On Sun, Nov 21, 2021 at 05:35:54PM +0800, Kefeng Wang wrote:
+> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> index c4207cf9bb17..4ff73299f8a9 100644
+> --- a/arch/arm64/Kconfig
+> +++ b/arch/arm64/Kconfig
+> @@ -1135,6 +1135,10 @@ config NUMA
+>  	select GENERIC_ARCH_NUMA
+>  	select ACPI_NUMA if ACPI
+>  	select OF_NUMA
+> +	select HAVE_SETUP_PER_CPU_AREA
+> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK
+> +	select NEED_PER_CPU_PAGE_FIRST_CHUNK
+> +	select USE_PERCPU_NUMA_NODE_ID
+>  	help
+>  	  Enable NUMA (Non-Uniform Memory Access) support.
+>  
+> @@ -1151,22 +1155,6 @@ config NODES_SHIFT
+>  	  Specify the maximum number of NUMA Nodes available on the target
+>  	  system.  Increases memory reserved to accommodate various tables.
+>  
+> -config USE_PERCPU_NUMA_NODE_ID
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config HAVE_SETUP_PER_CPU_AREA
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
+> -	def_bool y
+> -	depends on NUMA
+> -
+> -config NEED_PER_CPU_PAGE_FIRST_CHUNK
+> -	def_bool y
+> -	depends on NUMA
+> -
+>  source "kernel/Kconfig.hz"
+>  
+>  config ARCH_SPARSEMEM_ENABLE
 
-ping ;)
+For arm64:
 
-Sebastian
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
