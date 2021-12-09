@@ -2,89 +2,69 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id DD508467D91
-	for <lists+linux-ia64@lfdr.de>; Fri,  3 Dec 2021 19:54:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6E5FB46F56F
+	for <lists+linux-ia64@lfdr.de>; Thu,  9 Dec 2021 22:00:12 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231276AbhLCS6M (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 3 Dec 2021 13:58:12 -0500
-Received: from dfw.source.kernel.org ([139.178.84.217]:53098 "EHLO
-        dfw.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229825AbhLCS6L (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 3 Dec 2021 13:58:11 -0500
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BD5362CAA;
-        Fri,  3 Dec 2021 18:54:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC384C53FCE;
-        Fri,  3 Dec 2021 18:54:41 +0000 (UTC)
-Date:   Fri, 3 Dec 2021 18:54:38 +0000
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc:     dennis@kernel.org, akpm@linux-foundation.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org, tj@kernel.org,
-        gregkh@linuxfoundation.org, cl@linux.com, will@kernel.org,
-        tsbogend@alpha.franken.de, mpe@ellerman.id.au,
-        benh@kernel.crashing.org, paulus@samba.org,
-        paul.walmsley@sifive.com, palmer@dabbelt.com,
-        aou@eecs.berkeley.edu, davem@davemloft.net, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        hpa@zytor.com, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        sparclinux@vger.kernel.org, x86@kernel.org
-Subject: Re: [PATCH RFC 1/4] mm: percpu: Generalize percpu related config
-Message-ID: <Yapn7veWrVvWpskW@arm.com>
-References: <20211121093557.139034-1-wangkefeng.wang@huawei.com>
- <20211121093557.139034-2-wangkefeng.wang@huawei.com>
+        id S232465AbhLIVDp (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 9 Dec 2021 16:03:45 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43542 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229799AbhLIVDo (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 9 Dec 2021 16:03:44 -0500
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD3CEC0617A2
+        for <linux-ia64@vger.kernel.org>; Thu,  9 Dec 2021 13:00:10 -0800 (PST)
+Received: by mail-pg1-x52e.google.com with SMTP id m15so6155146pgu.11
+        for <linux-ia64@vger.kernel.org>; Thu, 09 Dec 2021 13:00:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=BJPWo58tKlQXm4vRD5vnXhZrKIbn/SXsA1N14vuJVFE=;
+        b=HDQaSwQak/N2he922zPWW8Kt6V0y0r/r/ddXnOE8ZVwjUOuGXpgvCGPpWbPgasJsad
+         MPdAnPSXNHDpBngIzfZSLvS/pSAWzKXZ7Vjvhw7xbMj4SM5q3CUcIf+mNsBXs5MDyYWA
+         OfjtHHyde7aXAJboFDFcGNbYI/gyyD98vnSZEuLHcvkKqabz+vDAJ5unUzRi7PscRn2O
+         QrelYzgAEtKPRzTB5LruOfzV20SIAmyJaDE+Wq8vfpbT5HZcYTImeebJLSfFYkmHgVbL
+         REUS2fCCmT9JlSATiuR03IW/4wMV6B0XSdU1hpY2/HCM/dEIi2J71CiSST2fOw32hORr
+         UrFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=BJPWo58tKlQXm4vRD5vnXhZrKIbn/SXsA1N14vuJVFE=;
+        b=DpKKEoIEwOahxvvhUdX5FqWw5vqkBzhPMhHTNLj4cFf/RvG2CfQ6XwQ1xJzJR5HqUV
+         Rze+lxIAZr2BQptjj4Qhi2KzqHcstqUsdXQKyTqtyABa00crVSl84myEu0cXHeQYH57V
+         OWHsRXtoMr07FJKGhn3MgQIEbZ/5bKrfepc4nMe93WYnJg0JfH8D7hgxrFyqVvjwp4Sj
+         +v+C/2YAjdnHCD7ZOMSljxVKBArfn8asokJ2dD/UJuk2lx7Yg2jVlCauIKJ9GnVQeOxe
+         zeQUXXlBHI/fkHjUYcH5MDurNzswuMot/n77PlaudfXDe1nR/Pt7APZ76K6nIcH+smGg
+         2inA==
+X-Gm-Message-State: AOAM5307bObMSTWsiuihFGIRFo2YXgan8r+gm7QlRJzoESNUD1KvKNpf
+        Of1GX+4Pyi9AuBeuor4voKlp7tk6kywMAV3d6KA=
+X-Google-Smtp-Source: ABdhPJx5f68YiYU2AwdcRxyp33aawqMiDcSXXGsErgxO0ZniginZy8l5PTlStnNdcjb+PHnlPE1dewX0IwOAdPab5eg=
+X-Received: by 2002:a63:4a5d:: with SMTP id j29mr34783247pgl.455.1639083610189;
+ Thu, 09 Dec 2021 13:00:10 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20211121093557.139034-2-wangkefeng.wang@huawei.com>
+Received: by 2002:a05:6a20:7d8b:b0:5d:5c22:870b with HTTP; Thu, 9 Dec 2021
+ 13:00:09 -0800 (PST)
+Reply-To: clmloans9@gmail.com
+From:   MR ANTHONY EDWARD <debraalessii@gmail.com>
+Date:   Thu, 9 Dec 2021 22:00:09 +0100
+Message-ID: <CAM30Livg1bgTR9ct7i5sZ9vpaSp0Rf1Wd64CyxsccyW8Vf1FvA@mail.gmail.com>
+Subject: DARLEHEN ZU 2% BEANTRAGEN
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sun, Nov 21, 2021 at 05:35:54PM +0800, Kefeng Wang wrote:
-> diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> index c4207cf9bb17..4ff73299f8a9 100644
-> --- a/arch/arm64/Kconfig
-> +++ b/arch/arm64/Kconfig
-> @@ -1135,6 +1135,10 @@ config NUMA
->  	select GENERIC_ARCH_NUMA
->  	select ACPI_NUMA if ACPI
->  	select OF_NUMA
-> +	select HAVE_SETUP_PER_CPU_AREA
-> +	select NEED_PER_CPU_EMBED_FIRST_CHUNK
-> +	select NEED_PER_CPU_PAGE_FIRST_CHUNK
-> +	select USE_PERCPU_NUMA_NODE_ID
->  	help
->  	  Enable NUMA (Non-Uniform Memory Access) support.
->  
-> @@ -1151,22 +1155,6 @@ config NODES_SHIFT
->  	  Specify the maximum number of NUMA Nodes available on the target
->  	  system.  Increases memory reserved to accommodate various tables.
->  
-> -config USE_PERCPU_NUMA_NODE_ID
-> -	def_bool y
-> -	depends on NUMA
-> -
-> -config HAVE_SETUP_PER_CPU_AREA
-> -	def_bool y
-> -	depends on NUMA
-> -
-> -config NEED_PER_CPU_EMBED_FIRST_CHUNK
-> -	def_bool y
-> -	depends on NUMA
-> -
-> -config NEED_PER_CPU_PAGE_FIRST_CHUNK
-> -	def_bool y
-> -	depends on NUMA
-> -
->  source "kernel/Kconfig.hz"
->  
->  config ARCH_SPARSEMEM_ENABLE
+--=20
+Ben=C3=B6tigen Sie einen Gesch=C3=A4ftskredit oder einen Kredit jeglicher A=
+rt?
+Wenn ja, kontaktieren Sie uns
 
-For arm64:
-
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+*Vollst=C3=A4ndiger Name:
+*Ben=C3=B6tigte Menge:
+*Darlehensdauer:
+*Handy:
+*Land:
