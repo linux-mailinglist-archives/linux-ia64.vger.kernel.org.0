@@ -2,84 +2,85 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id BCCEA472FAE
-	for <lists+linux-ia64@lfdr.de>; Mon, 13 Dec 2021 15:44:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0120D473046
+	for <lists+linux-ia64@lfdr.de>; Mon, 13 Dec 2021 16:18:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237014AbhLMOoC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 13 Dec 2021 09:44:02 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44258 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234143AbhLMOoB (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 13 Dec 2021 09:44:01 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD9BBC061574;
-        Mon, 13 Dec 2021 06:44:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=WN0UBRQSaVnqth1lPLeu1h3m2LsiDV8FPn8ylQJCtw8=; b=p3RXvBFb2so3jcvbNtFm9YqLoy
-        Db6NHe524T07Hi4ZiyLaxSrQxikXMESk//fQ258u8C8HwL4tvSiBf9GqWsbjwUJj0MpZb99Q3r7Gn
-        U8I4uIl0lJmqmxhPuXIO2nSstlKIwd5Iq6DRxuuB+XewafpJUhhMkxy8nn3Di3UE6QlKKR/tkzwqN
-        82AY01mLzM89zRBTPtsel1HfkWhp0iwheQwoshPsb7I7IaBR/GEnNFzI6tMIojo9QsGW9FNyl0q0u
-        8cNlSbM2lT2wank3wbXnRWxj4TWJs6JahqJ/E/e+nJSdtlRCOOK0S/1TpqDLQhR1BBCV9fSEeWv7a
-        TVTjir2Q==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1mwmYS-00Csn8-Vy; Mon, 13 Dec 2021 14:43:53 +0000
-Date:   Mon, 13 Dec 2021 14:43:52 +0000
-From:   Matthew Wilcox <willy@infradead.org>
-To:     David Laight <David.Laight@aculab.com>
-Cc:     'Tiezhu Yang' <yangtiezhu@loongson.cn>,
-        Dave Young <dyoung@redhat.com>, Baoquan He <bhe@redhat.com>,
-        Vivek Goyal <vgoyal@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>,
-        "kexec@lists.infradead.org" <kexec@lists.infradead.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        Xuefeng Li <lixuefeng@loongson.cn>
-Subject: Re: [PATCH v2 0/2] kdump: simplify code
-Message-ID: <YbdcKK3Cq6ITTg/l@casper.infradead.org>
-References: <1639193588-7027-1-git-send-email-yangtiezhu@loongson.cn>
- <0c5cb37139af4f3e85cc2c5115d7d006@AcuMS.aculab.com>
- <YbXhVxRJfjvKw++W@casper.infradead.org>
- <b7a75ae9253445af81ff2fedd5268af4@AcuMS.aculab.com>
+        id S235094AbhLMPSf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 13 Dec 2021 10:18:35 -0500
+Received: from Galois.linutronix.de ([193.142.43.55]:35492 "EHLO
+        galois.linutronix.de" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230072AbhLMPSe (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 13 Dec 2021 10:18:34 -0500
+Date:   Mon, 13 Dec 2021 16:18:32 +0100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1639408713;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=TX3eom1lYu6OGAOAK4JwRKmKt4IK3B4TvEl+DOVnKvY=;
+        b=HbZY+MJSlii1p6qKOMoVqFD0r/0td+E5fgfrUk6LhiBPsNzaPEDMZjhykpqRsPHBv0ELwh
+        TtjXaIpTN4hW9NbvM5sFRhNrz58Qq6er6Y16SWLLApv5xF61+j7t5Wyy0pDesePEM8g60Z
+        O44s9Qrq5HeWN6VljDRSo34lo0VvShOuUT1ayZ36ioC6jwMnHMJPLQwt40BCS+32U7rimf
+        9CmPPpylOOmiW7DRYOy/qcq4rMZtYe0N5vCjjLzXjrp+NF8xfvqisI5KqL59fJl/zvCQT+
+        PjhBViFKu0DAmay3yDmEGz/Md7CXDCSa873PCcJi52sKbhxvTif/Rp8dBFTEaw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1639408713;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=TX3eom1lYu6OGAOAK4JwRKmKt4IK3B4TvEl+DOVnKvY=;
+        b=/8lZGa6C0D875LYPVLKG+pgaJcQV4ZXgEJ1vSr9puVws13ACX8kNyiQRWI4/Y2uJ32uHPZ
+        kO40C+EmXo14T7CA==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        tglx@linutronix.de
+Cc:     Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>
+Subject: Re: [PATCH 0/8] kernel/fork: Move thread stack free otu of the
+ scheduler path.
+Message-ID: <YbdkSLFdBL/xeRbA@linutronix.de>
+References: <20211118143452.136421-1-bigeasy@linutronix.de>
+ <20211118143850.ygpp7xetpz3pt2nj@linutronix.de>
+ <20211203162211.qvcnvbj4cdsa5g3a@linutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <b7a75ae9253445af81ff2fedd5268af4@AcuMS.aculab.com>
+In-Reply-To: <20211203162211.qvcnvbj4cdsa5g3a@linutronix.de>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Dec 13, 2021 at 08:30:33AM +0000, David Laight wrote:
-> From: Matthew Wilcox
-> > Sent: 12 December 2021 11:48
+On 2021-12-03 17:22:13 [+0100], To linux-kernel@vger.kernel.org wrote:
+> On 2021-11-18 15:38:50 [+0100], To linux-kernel@vger.kernel.org wrote:
+> > + tglx.
 > > 
-> > On Sat, Dec 11, 2021 at 05:53:46PM +0000, David Laight wrote:
-> > > From: Tiezhu Yang
-> > > > Sent: 11 December 2021 03:33
-> > > >
-> > > > v2:
-> > > >   -- add copy_to_user_or_kernel() in lib/usercopy.c
-> > > >   -- define userbuf as bool type
-> > >
-> > > Instead of having a flag to indicate whether the buffer is user or kernel,
-> > > would it be better to have two separate buffer pointers.
-> > > One for a user space buffer, the other for a kernel space buffer.
-> > > Exactly one of the buffers should always be NULL.
+> > It starts at
+> >    https://lore.kernel.org/all/20211118143452.136421-1-bigeasy@linutronix.de/
 > > 
-> > No.  You should be using an iov_iter instead.  See
-> > https://lore.kernel.org/all/Ya4bdB0UBJCZhUSo@casper.infradead.org/
-> > for a start on this.
+> > On 2021-11-18 15:34:44 [+0100], To linux-kernel@vger.kernel.org wrote:
+> > > 
+> > > This is a follup-up on the patch
+> > >     sched: Delay task stack freeing on RT 
+> > >     https://lkml.kernel.org/r/20210928122411.593486363@linutronix.de
+> > > 
+> > > It addresses the review feedback:
+> > > - Decouple stack accounting from its free invocation. The accounting
+> > >   happens in do_exit(), the final free call happens later.
+> > > 
+> > > - Add put_task_stack_sched() to finish_task_switch(). Here the VMAP
+> > >   stack is cached only. If it fails, or in the !VMAP case then the final
+> > >   free happens in delayed_put_task_struct(). This is also an oportunity
+> > >   to cache the stack.
 > 
-> iov_iter gets horribly expensive...
+> ping ;)
 
-Oh, right.  Reading the kcore is a high-performance path, my mistake.
+ping.
+
+Sebastian
