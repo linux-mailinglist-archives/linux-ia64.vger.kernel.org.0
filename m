@@ -2,176 +2,142 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D887A475F9C
-	for <lists+linux-ia64@lfdr.de>; Wed, 15 Dec 2021 18:45:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E56E6476FC3
+	for <lists+linux-ia64@lfdr.de>; Thu, 16 Dec 2021 12:15:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237633AbhLORpo (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 15 Dec 2021 12:45:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40878 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235513AbhLORpn (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Dec 2021 12:45:43 -0500
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA136C061574;
-        Wed, 15 Dec 2021 09:45:42 -0800 (PST)
-Received: by mail-pj1-x102a.google.com with SMTP id n15-20020a17090a160f00b001a75089daa3so21092777pja.1;
-        Wed, 15 Dec 2021 09:45:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=RLdWdHoT6O3wLXgWsRx2m2m62hSjV0BcJXlTjn5JUFY=;
-        b=fVGVY8wqrxR8Y9FDXFtr4SE6iyR8BVVbZ5vgJ4y8dkqTnryOyAM1f7oIOnezuj4A6J
-         xZUPr4yWMlNLYsHQ1fallxSJg8aU00+SwAnq0ijeJb6rpCasKd3VYye0HMu7Rz4Fmzli
-         VTY7ooY+g0kHA+TAUoyyLgzX0mSn9ha1KmFllLdg51BzQBC+Mgmo9+XdPBjphX6Y4e34
-         aHA3UHFWRC7Btex9u1tZiEFoYFee/G/WGm4rYd3nNUPqV0MpixQGc6Vx0PruHv6wejmQ
-         Ow0n2j4fyu9ba9vCZKTh9cTJvx1bERx0Yn7rh5DuRA2QxMZuAeUzJXU06wIQ9Mevfcss
-         WI7w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=RLdWdHoT6O3wLXgWsRx2m2m62hSjV0BcJXlTjn5JUFY=;
-        b=sXa4PcQUXBKlR2VROcfOlrvxsOIi4XVb+mljr5YNYnVds/2Me+M5DI44i8rGe9Rcnk
-         UY8yugizTuUUUgzZfMVuh3URcNtM660AB1Gkd67ZcxQTgY24kDF9abv/x9fBJqAeEReX
-         7Zhgo7ET0YVC0GzDKs17CDVjYYvF160fhZSSG+SILcsHJRVm1vPoqWcO6rSfwCUaY+lV
-         PlbbsWM06gUdehVGBC4896CjSbgZKstoR0VClDQoo6UyaLnWd9E9cshdwORHG/jN/RdJ
-         xaV+ctip9qT+NOtVFAFVnv0azE6qDGv3C/xyePJvckwSI/ZKrDcygb4xLSWyNvJ6P6b4
-         7aPQ==
-X-Gm-Message-State: AOAM531bZh5ia5V0qOR9CYeeK4bH6cqyS2+9ClJCKIRMj41tZ4/JaYmR
-        GzI4SXUAq703SpgzI+2TkhJHRYocxravu9zYHsQ=
-X-Google-Smtp-Source: ABdhPJxIcVzS1V95pBlMUcYP2k7Lrcyzl/rBNhnf3pbvrkTovj6aQvXpyQPCUffP2FcbLTl6T7AIgJQIhLFRrE2qAuQ=
-X-Received: by 2002:a17:90a:4a06:: with SMTP id e6mr968675pjh.228.1639590342342;
- Wed, 15 Dec 2021 09:45:42 -0800 (PST)
-MIME-Version: 1.0
-References: <20211128035704.270739-1-yury.norov@gmail.com> <20211128035704.270739-3-yury.norov@gmail.com>
- <YaPGDOvBzhiRFcOP@qmqm.qmqm.pl> <CAAH8bW9-dbENFUrwPUQ-uJVVX_s=PWb2zpAJ8BqkV3vJE696mA@mail.gmail.com>
- <0ccb827de1164b2989d652bfb6f1bbab@AcuMS.aculab.com>
-In-Reply-To: <0ccb827de1164b2989d652bfb6f1bbab@AcuMS.aculab.com>
-From:   Yury Norov <yury.norov@gmail.com>
-Date:   Wed, 15 Dec 2021 09:45:30 -0800
-Message-ID: <CAAH8bW-u5AsFTXUOJPRkF-6dk1LcL7PE0Tm+dUc9Ctb6JMy=tg@mail.gmail.com>
-Subject: Re: [PATCH 2/9] lib/bitmap: implement bitmap_{empty,full} with bitmap_weight_eq()
-To:     David Laight <David.Laight@aculab.com>
-Cc:     =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-        Alexey Klimov <aklimov@redhat.com>,
-        Amitkumar Karwar <amitkarwar@gmail.com>,
-        Andi Kleen <ak@linux.intel.com>, Andrew Lunn <andrew@lunn.ch>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Gross <agross@kernel.org>,
-        Andy Lutomirski <luto@kernel.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Anup Patel <anup.patel@wdc.com>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Arnaldo Carvalho de Melo <acme@kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christoph Hellwig <hch@lst.de>,
-        Christoph Lameter <cl@linux.com>,
-        Daniel Vetter <daniel@ffwll.ch>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        David Airlie <airlied@linux.ie>,
-        Dennis Zhou <dennis@kernel.org>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Geetha sowjanya <gakula@marvell.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Guo Ren <guoren@kernel.org>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Ian Rogers <irogers@google.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Jason Wessel <jason.wessel@windriver.com>,
-        Jens Axboe <axboe@fb.com>, Jiri Olsa <jolsa@redhat.com>,
-        Jonathan Cameron <jic23@kernel.org>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Kalle Valo <kvalo@codeaurora.org>,
-        Kees Cook <keescook@chromium.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Lee Jones <lee.jones@linaro.org>,
-        Marc Zyngier <maz@kernel.org>, Marcin Wojtas <mw@semihalf.com>,
-        Mark Gross <markgross@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matti Vaittinen <mazziesaccount@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Mel Gorman <mgorman@suse.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Petr Mladek <pmladek@suse.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Roy Pledge <Roy.Pledge@nxp.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        Solomon Peachy <pizza@shaftnet.org>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Stephen Rothwell <sfr@canb.auug.org.au>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Subbaraya Sundeep <sbhatta@marvell.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Tariq Toukan <tariqt@nvidia.com>, Tejun Heo <tj@kernel.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Vineet Gupta <vgupta@kernel.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        Vivien Didelot <vivien.didelot@gmail.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Will Deacon <will@kernel.org>,
-        "bcm-kernel-feedback-list@broadcom.com" 
-        <bcm-kernel-feedback-list@broadcom.com>,
-        "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-arm-kernel@lists.infradead.org" 
+        id S236693AbhLPLOK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 16 Dec 2021 06:14:10 -0500
+Received: from szxga03-in.huawei.com ([45.249.212.189]:29202 "EHLO
+        szxga03-in.huawei.com" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S236702AbhLPLN7 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 16 Dec 2021 06:13:59 -0500
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.54])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4JF8ZQ0B4xz8vpZ;
+        Thu, 16 Dec 2021 19:11:42 +0800 (CST)
+Received: from dggpemm500001.china.huawei.com (7.185.36.107) by
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Thu, 16 Dec 2021 19:13:56 +0800
+Received: from localhost.localdomain.localdomain (10.175.113.25) by
+ dggpemm500001.china.huawei.com (7.185.36.107) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.20; Thu, 16 Dec 2021 19:13:55 +0800
+From:   Kefeng Wang <wangkefeng.wang@huawei.com>
+To:     <dennis@kernel.org>, <akpm@linux-foundation.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mm@kvack.org>
+CC:     <tj@kernel.org>, <gregkh@linuxfoundation.org>, <cl@linux.com>,
+        <catalin.marinas@arm.com>, <will@kernel.org>,
+        <tsbogend@alpha.franken.de>, <mpe@ellerman.id.au>,
+        <benh@kernel.crashing.org>, <paulus@samba.org>,
+        <paul.walmsley@sifive.com>, <palmer@dabbelt.com>,
+        <aou@eecs.berkeley.edu>, <davem@davemloft.net>,
+        <tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+        <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
         <linux-arm-kernel@lists.infradead.org>,
-        "linux-crypto@vger.kernel.org" <linux-crypto@vger.kernel.org>,
-        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-perf-users@vger.kernel.org" <linux-perf-users@vger.kernel.org>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-snps-arc@lists.infradead.org" 
-        <linux-snps-arc@lists.infradead.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Content-Type: text/plain; charset="UTF-8"
+        <linux-ia64@vger.kernel.org>, <linux-mips@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <linux-riscv@lists.infradead.org>,
+        <sparclinux@vger.kernel.org>, <x86@kernel.org>,
+        <wangkefeng.wang@huawei.com>
+Subject: [PATCH 0/4] mm: percpu: Cleanup percpu first chunk function
+Date:   Thu, 16 Dec 2021 19:23:55 +0800
+Message-ID: <20211216112359.103822-1-wangkefeng.wang@huawei.com>
+X-Mailer: git-send-email 2.26.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.113.25]
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ dggpemm500001.china.huawei.com (7.185.36.107)
+X-CFilter-Loop: Reflected
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Dec 15, 2021 at 12:41 AM David Laight <David.Laight@aculab.com> wrote:
->
-> From: Yury Norov
-> > Sent: 14 December 2021 19:43
-> ...
-> >
-> > I think that for long bitmaps the most time consuming operation is moving
-> > data to L1, and for short bitmaps the difference between approaches is
-> > barely measurable.
-> >
-> > But hweght_long on each iteration can't be more effective than the current
-> > version. So, I'll drop this patch for v2 and keep things unchanged.
->
-> Actually do bitmap_full/empty() calls make any sense at all?
-> The result is stale since bitmaps are designed to do locked operations.
-> If you have a lock covering the bitmap then you should be using
-> something that uses non-locked accesses.
-> Rightly or wrongly that isn't the bitmap api.
+When support page mapping percpu first chunk allocator on arm64, we
+found there are lots of duplicated codes in percpu embed/page first
+chunk allocator. This patchset is aimed to cleanup them and should
+no function change. 
 
-Are you talking about __{set,clear}_bit()?
-include/asm-generic/bitops/non-atomic.h
+The currently supported status about 'embed' and 'page' in Archs shows
+below,
+
+embed: NEED_PER_CPU_PAGE_FIRST_CHUNK
+page:  NEED_PER_CPU_EMBED_FIRST_CHUNK
+
+	embed	page
+------------------------
+arm64	  Y	 Y
+mips	  Y	 N
+powerpc	  Y	 Y
+riscv	  Y	 N
+sparc	  Y	 Y
+x86	  Y	 Y
+------------------------
+
+There are two interfaces about percpu first chunk allocator,
+
+ extern int __init pcpu_embed_first_chunk(size_t reserved_size, size_t dyn_size,
+                                size_t atom_size,
+                                pcpu_fc_cpu_distance_fn_t cpu_distance_fn,
+-                               pcpu_fc_alloc_fn_t alloc_fn,
+-                               pcpu_fc_free_fn_t free_fn);
++                               pcpu_fc_cpu_to_node_fn_t cpu_to_nd_fn);
+
+
+ extern int __init pcpu_page_first_chunk(size_t reserved_size,
+-                               pcpu_fc_alloc_fn_t alloc_fn,
+-                               pcpu_fc_free_fn_t free_fn,
+-                               pcpu_fc_populate_pte_fn_t populate_pte_fn);
++                               pcpu_fc_cpu_to_node_fn_t cpu_to_nd_fn);
+
+
+The pcpu_fc_alloc_fn_t/pcpu_fc_free_fn_t is killed, we provide generic
+pcpu_fc_alloc() and pcpu_fc_free() function, which are called in the
+pcpu_embed/page_first_chunk().
+
+1) For pcpu_embed_first_chunk(), pcpu_fc_cpu_to_node_fn_t is needed to be
+   provided when archs supported NUMA.
+2) For pcpu_page_first_chunk(), the pcpu_fc_populate_pte_fn_t is killed too,
+   a generic pcpu_populate_pte() which marked '__weak' is provided, if you
+   need a different function to populate pte on the arch(like x86), please
+   provide its own implementation.
+
+I have been built test on arm64/ia64/mips/powerpc/sparcx86/riscv based
+on v5.16-rc4 on my machine, also all patches are in[1], which checked
+by lkp too,
+  [kevin78:percpu-cleanup] BUILD SUCCESS c14a59a0aad7db88ebddbeb5e914ddcccb406e1c.
+
+[1] https://github.com/kevin78/linux.git percpu-cleanup
+
+Changes since RFC
+- Address Dennis's comments 
+
+RFC:
+https://lore.kernel.org/linux-mm/4fecd1ac-6c0a-f0fa-1ffb-18f3f266809d@huawei.com/T/
+
+Kefeng Wang (4):
+  mm: percpu: Generalize percpu related config
+  mm: percpu: Add pcpu_fc_cpu_to_node_fn_t typedef
+  mm: percpu: Add generic pcpu_fc_alloc/free funciton
+  mm: percpu: Add generic pcpu_populate_pte() function
+
+ arch/arm64/Kconfig             |  20 +----
+ arch/ia64/Kconfig              |   9 +-
+ arch/mips/Kconfig              |  10 +--
+ arch/mips/mm/init.c            |  14 +--
+ arch/powerpc/Kconfig           |  17 +---
+ arch/powerpc/kernel/setup_64.c |  97 ++-------------------
+ arch/riscv/Kconfig             |  10 +--
+ arch/sparc/Kconfig             |  12 +--
+ arch/sparc/kernel/smp_64.c     | 103 +---------------------
+ arch/x86/Kconfig               |  17 +---
+ arch/x86/kernel/setup_percpu.c |  66 ++------------
+ drivers/base/arch_numa.c       |  68 +--------------
+ include/linux/percpu.h         |  13 +--
+ mm/Kconfig                     |  12 +++
+ mm/percpu.c                    | 154 +++++++++++++++++++++++++--------
+ 15 files changed, 180 insertions(+), 442 deletions(-)
+
+-- 
+2.18.0.huawei.25
+
