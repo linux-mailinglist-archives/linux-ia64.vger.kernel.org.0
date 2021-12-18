@@ -2,201 +2,284 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 57D65479282
-	for <lists+linux-ia64@lfdr.de>; Fri, 17 Dec 2021 18:12:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 77D56479CD3
+	for <lists+linux-ia64@lfdr.de>; Sat, 18 Dec 2021 22:20:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239677AbhLQRMq (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 17 Dec 2021 12:12:46 -0500
-Received: from mout.gmx.net ([212.227.15.18]:43203 "EHLO mout.gmx.net"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S239675AbhLQRMp (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Fri, 17 Dec 2021 12:12:45 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net;
-        s=badeba3b8450; t=1639761149;
-        bh=nTwjJ/cnuT0Typyl6+FFGgb6cw8PUp2Hhdq7Dxmubh0=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=lykRjIGV1WZ4x1rUUW1JP9Q+AVEhoaNcZId8Xz4gVZnXbJTa8yRl8wie7jYiZ638y
-         dlH2hW+G/1MxaHlAQJCiExujeRGXt1euORu6VTwApA1uJRwhxvljqJr3+It+T81ihR
-         i1lzXA1zjpQAyGilujChARH640I0PhgT2rQR29Ig=
-X-UI-Sender-Class: 01bb95c1-4bf8-414a-932a-4f6e2808ef9c
-Received: from [192.168.20.60] ([92.116.181.24]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MPXd2-1nBy8t2stu-00MapY; Fri, 17
- Dec 2021 18:12:29 +0100
-Message-ID: <295e2386-eda8-a9d8-3748-60f48205a815@gmx.de>
-Date:   Fri, 17 Dec 2021 18:12:19 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.3.0
-Subject: Re: [PATCH v3 11/12] lkdtm: Fix execute_[user]_location()
-Content-Language: en-US
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Kees Cook <keescook@chromium.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        id S232310AbhLRVUT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 18 Dec 2021 16:20:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56170 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S230480AbhLRVUS (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 18 Dec 2021 16:20:18 -0500
+Received: from mail-oi1-x230.google.com (mail-oi1-x230.google.com [IPv6:2607:f8b0:4864:20::230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F184C061574;
+        Sat, 18 Dec 2021 13:20:18 -0800 (PST)
+Received: by mail-oi1-x230.google.com with SMTP id r26so9354373oiw.5;
+        Sat, 18 Dec 2021 13:20:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JzsjdMdsnVfTtF2jA28Re9um5Pc1jpset8TjSm+sCCQ=;
+        b=JJsYWCM4ZBrFr/QGYcVtz1O5XpwXMR8kjk5zvlx1xd9d3Bnfs+RyARM+UF2BFzbQzh
+         Gtz0Jhiop3r+qa0tUyPUPAMdU6Jzy350IR0tNVuhpUl5a46wJZSSCfrlTroVV0iEzWQm
+         jnatXUCyMxUjx4zPd6MbwV+jlb+bcIyfWFewnkHP1g6bfMLkxOoJnBeNiY1ltSGyKLUW
+         NJO78tJlSMx+Op9iY217snQDmDuDZZGnfHCB/c9C+zObP29p/bUuiIWC4jVIoflp+GZQ
+         +vsH2Ey++3hW+p7C5pzF3cKCahFFKGna42dCmd+BpNpZItDrp0SdGfIa8OEsJ5ce8y7A
+         EIWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=JzsjdMdsnVfTtF2jA28Re9um5Pc1jpset8TjSm+sCCQ=;
+        b=xgY6/Txzwb3iK+Jl2xwcNDPv2AKxxdcywww5yieirupvunu8ZI3FAYMw+1qI9A1TkZ
+         u3+0InpVcCX+xAx2Sopr2kLP1LpeuCenZNMGkh7MV1RF6JYzCRhAVxwp4RpEh62za8sW
+         Yl5tQ0S1m59XX+yvGrzyUo2R8iEAT6a/O3AwPZzc9PNg3aG+D8DVUaJ4S5EYZh+B//yx
+         ZryAXsNt49RlmFfwqYhiqFkf+rT5JYuy2AfavIvyvz6syPup41ggeZoQJZa7y4Ieg9nR
+         oDXJO3c+3uuLKzXHw5RLP4zR+NA5fKFW5vjogYFEAZotdpX6lSvwbALb1dDU2nXz8VxF
+         b04A==
+X-Gm-Message-State: AOAM532JVjUdHz3Fx8TMLVX+Yuo3KVTKXfZ7DdRO9ClLLOPlt+c0y3XO
+        lASmYyEcs+H9uLfn4LDVmHY3rL7O+I1t/Q==
+X-Google-Smtp-Source: ABdhPJx5aJcpDQGi8bZmEiNIZHDj12WYIMCd+iCUv3wO5n9NxzqY0XYaFcTOfyycv/QCCz3me1Quxg==
+X-Received: by 2002:a05:6808:a8f:: with SMTP id q15mr12338850oij.65.1639862417151;
+        Sat, 18 Dec 2021 13:20:17 -0800 (PST)
+Received: from localhost (searspoint.nvidia.com. [216.228.112.21])
+        by smtp.gmail.com with ESMTPSA id g26sm2402061ots.25.2021.12.18.13.20.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 18 Dec 2021 13:20:16 -0800 (PST)
+From:   Yury Norov <yury.norov@gmail.com>
+To:     linux-kernel@vger.kernel.org, Yury Norov <yury.norov@gmail.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexey Klimov <aklimov@redhat.com>,
+        Amitkumar Karwar <amitkarwar@gmail.com>,
+        Andi Kleen <ak@linux.intel.com>, Andrew Lunn <andrew@lunn.ch>,
         Andrew Morton <akpm@linux-foundation.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Arnd Bergmann <arnd@arndb.de>
-References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
- <d4688c2af08dda706d3b6786ae5ec5a74e6171f1.1634457599.git.christophe.leroy@csgroup.eu>
- <e7793192-6879-490d-1f37-3d6d6908a121@csgroup.eu>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <e7793192-6879-490d-1f37-3d6d6908a121@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:t39+qgQtUdFYhLWaR4ktFZpw2IGTCWRMsa8sbAkTDnzeLkkp4HT
- FG3itWE0wReh8ICjXvNXQqBVvWU8r9tHp74/IvFzsj3pQKsdbmv5IVZFgPMGs1V+ynIicFL
- S1NXCiSVkystwXxmUcf422y8pBCACWrFUu6Ju5WSOvH+2M7s30bAyU3Or/idGaJubajv3pa
- LqJFVrkPjs7P44jc25gnQ==
-X-Spam-Flag: NO
-X-UI-Out-Filterresults: notjunk:1;V03:K0:sphp7f4HiA4=:RFQYrMUnJl770ORGTHOd3x
- 4AhdwQpuV/Jb6WLYV74GPqymlKonWTF4A4XA7VljZdm32iMWrqgP0aZfIZzBr99TSX4Fj6ZQ3
- Xt5Xqywk5Z0x0zJnX7p0i/WNuy714W3aJDZlWZaATcgRQ2qQvaeRASX1kuY0dcGgEAqz65LWw
- H9KpKEfkax0kzKB9+npQ0NA/WKigs4A0eadclz0p2fO64DBHoD41LDqYNPKxvgVSkRBc3U3+I
- HHRAOm2K9rOgcznvNeNAfFMgV+noGvJ9jD3xW04AcHOdNU3ftKp5s2lcNUG9nG8md2UQQWiD8
- f0zRXniz2dnGu3149SCccXg0aSuc3r1JuZdqWX8bAYo0wzfPdflOEDsrS2GuuaZ00d7bmPqDf
- VJYiLpJr8iu5Be7JeXGF5vo0SXCy4tqC/huk7YIVq1fLl/BF7OC3i02I2y4pnb03DEXPhWCXP
- bSDVKvzUVnn+mXMt3UkQ/Op90KorOtedRL7VJpiCdHv5xTT+wYQA7WTQ2VDRUX3CaqolHLrBe
- /ip1P1LbcspP74KR2srEzj/5xW3LYoXiunEsRRmKz0Dnnjn1epW0Ba9UdQ25DTt9EaqgN686H
- RTfBHI6F8KxLlE/JTa8B+vC+MRPSdMNuojqB04xPNBL4c+kYIdVZhwZh3WbQE1TVKu7gLG4wl
- lLnD+MwZEE7AZhegL4vKyQy+1NOCdtu1vg0OGkIEO3ppZJjov6GvKWfDgwxsSFrbmaXBJwbpK
- vEZVMrvAhqrqfpICCKitouq67tvrfkcrheN1NeCmgAjapTACz1rWakP1Ceo2IMTZ325F0ItXz
- oIxntJkSFGoW8CCWzjBNyUkPvkKGFBgKRm+LH2jW0zUkKWdlzAP1it06+6FCHEUF6Y194og6a
- ZsgxSlnM+Ad/qNxMV+ZpnO+Uco8bysc7MGaaoybrtgKWHWhQue6ZhDZX/5lIDJrUpf+AB743A
- 63/IXKaCO0EWpdsxwQis4A2sK5fH4Tt6amvD56lTUEKfZzvxI1GmSd4P5SRR2iMtSChCW4aGz
- cwUg1KUOGBBP11YtwZg31QxwcPF6WmqDwwhmbHbuHPU+BWhEnqv/baVfp0YhbhRDhtLyNtY7R
- yNphjEqau1iVOY=
+        Andy Gross <agross@kernel.org>,
+        Andy Lutomirski <luto@kernel.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Anup Patel <anup.patel@wdc.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Arnaldo Carvalho de Melo <acme@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>, Borislav Petkov <bp@alien8.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Christoph Lameter <cl@linux.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        David Airlie <airlied@linux.ie>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Dennis Zhou <dennis@kernel.org>,
+        Emil Renner Berthing <kernel@esmil.dk>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Geetha sowjanya <gakula@marvell.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Guo Ren <guoren@kernel.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Ian Rogers <irogers@google.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Jason Wessel <jason.wessel@windriver.com>,
+        Jens Axboe <axboe@fb.com>, Jiri Olsa <jolsa@redhat.com>,
+        Joe Perches <joe@perches.com>,
+        Jonathan Cameron <jic23@kernel.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Kees Cook <keescook@chromium.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Marc Zyngier <maz@kernel.org>, Marcin Wojtas <mw@semihalf.com>,
+        Mark Gross <markgross@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Matti Vaittinen <mazziesaccount@gmail.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Mel Gorman <mgorman@suse.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Mike Marciniszyn <mike.marciniszyn@cornelisnetworks.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Petr Mladek <pmladek@suse.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+        Russell King <linux@armlinux.org.uk>,
+        Saeed Mahameed <saeedm@nvidia.com>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Solomon Peachy <pizza@shaftnet.org>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Stephen Rothwell <sfr@canb.auug.org.au>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Subbaraya Sundeep <sbhatta@marvell.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Sunil Goutham <sgoutham@marvell.com>,
+        Tariq Toukan <tariqt@nvidia.com>, Tejun Heo <tj@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Vineet Gupta <vgupta@kernel.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
+        Vivien Didelot <vivien.didelot@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Will Deacon <will@kernel.org>,
+        bcm-kernel-feedback-list@broadcom.com, kvm@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-crypto@vger.kernel.org, linux-csky@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linuxppc-dev@lists.ozlabs.org
+Subject: [PATCH v2 00/17] lib/bitmap: optimize bitmap_weight() usage
+Date:   Sat, 18 Dec 2021 13:19:56 -0800
+Message-Id: <20211218212014.1315894-1-yury.norov@gmail.com>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 12/17/21 12:49, Christophe Leroy wrote:
-> Hi Kees,
->
-> Le 17/10/2021 =C3=A0 14:38, Christophe Leroy a =C3=A9crit=C2=A0:
->> execute_location() and execute_user_location() intent
->> to copy do_nothing() text and execute it at a new location.
->> However, at the time being it doesn't copy do_nothing() function
->> but do_nothing() function descriptor which still points to the
->> original text. So at the end it still executes do_nothing() at
->> its original location allthough using a copied function descriptor.
->>
->> So, fix that by really copying do_nothing() text and build a new
->> function descriptor by copying do_nothing() function descriptor and
->> updating the target address with the new location.
->>
->> Also fix the displayed addresses by dereferencing do_nothing()
->> function descriptor.
->>
->> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
->
-> Do you have any comment to this patch and to patch 12 ?
->
-> If not, is it ok to get your acked-by ?
+In many cases people use bitmap_weight()-based functions to compare
+the result against a number of expression:
 
+	if (cpumask_weight(...) > 1)
+		do_something();
 
-Hi Christophe,
+This may take considerable amount of time on many-cpus machines because
+cpumask_weight(...) will traverse every word of underlying cpumask
+unconditionally.
 
-I think this whole series is a nice cleanup and harmonization
-of how function descriptors are used.
+We can significantly improve on it for many real cases if stop traversing
+the mask as soon as we count cpus to any number greater than 1:
 
-At least for the PA-RISC parts you may add:
-Acked-by: Helge Deller <deller@gmx.de>
+	if (cpumask_weight_gt(..., 1))
+		do_something();
 
-Thanks!
-Helge
+To implement this idea, the series adds bitmap_weight_cmp() function
+and bitmap_weight_{eq,gt,ge,lt,le} macros on top of it; corresponding
+wrappers in cpumask and nodemask.
 
->
->> ---
->>   drivers/misc/lkdtm/perms.c | 37 ++++++++++++++++++++++++++++---------
->>   1 file changed, 28 insertions(+), 9 deletions(-)
->>
->> diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
->> index 035fcca441f0..1cf24c4a79e9 100644
->> --- a/drivers/misc/lkdtm/perms.c
->> +++ b/drivers/misc/lkdtm/perms.c
->> @@ -44,19 +44,34 @@ static noinline void do_overwritten(void)
->>   	return;
->>   }
->>
->> +static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
->> +{
->> +	if (!have_function_descriptors())
->> +		return dst;
->> +
->> +	memcpy(fdesc, do_nothing, sizeof(*fdesc));
->> +	fdesc->addr =3D (unsigned long)dst;
->> +	barrier();
->> +
->> +	return fdesc;
->> +}
->> +
->>   static noinline void execute_location(void *dst, bool write)
->>   {
->> -	void (*func)(void) =3D dst;
->> +	void (*func)(void);
->> +	func_desc_t fdesc;
->> +	void *do_nothing_text =3D dereference_function_descriptor(do_nothing)=
-;
->>
->> -	pr_info("attempting ok execution at %px\n", do_nothing);
->> +	pr_info("attempting ok execution at %px\n", do_nothing_text);
->>   	do_nothing();
->>
->>   	if (write =3D=3D CODE_WRITE) {
->> -		memcpy(dst, do_nothing, EXEC_SIZE);
->> +		memcpy(dst, do_nothing_text, EXEC_SIZE);
->>   		flush_icache_range((unsigned long)dst,
->>   				   (unsigned long)dst + EXEC_SIZE);
->>   	}
->> -	pr_info("attempting bad execution at %px\n", func);
->> +	pr_info("attempting bad execution at %px\n", dst);
->> +	func =3D setup_function_descriptor(&fdesc, dst);
->>   	func();
->>   	pr_err("FAIL: func returned\n");
->>   }
->> @@ -66,16 +81,19 @@ static void execute_user_location(void *dst)
->>   	int copied;
->>
->>   	/* Intentionally crossing kernel/user memory boundary. */
->> -	void (*func)(void) =3D dst;
->> +	void (*func)(void);
->> +	func_desc_t fdesc;
->> +	void *do_nothing_text =3D dereference_function_descriptor(do_nothing)=
-;
->>
->> -	pr_info("attempting ok execution at %px\n", do_nothing);
->> +	pr_info("attempting ok execution at %px\n", do_nothing_text);
->>   	do_nothing();
->>
->> -	copied =3D access_process_vm(current, (unsigned long)dst, do_nothing,
->> +	copied =3D access_process_vm(current, (unsigned long)dst, do_nothing_=
-text,
->>   				   EXEC_SIZE, FOLL_WRITE);
->>   	if (copied < EXEC_SIZE)
->>   		return;
->> -	pr_info("attempting bad execution at %px\n", func);
->> +	pr_info("attempting bad execution at %px\n", dst);
->> +	func =3D setup_function_descriptor(&fdesc, dst);
->>   	func();
->>   	pr_err("FAIL: func returned\n");
->>   }
->> @@ -153,7 +171,8 @@ void lkdtm_EXEC_VMALLOC(void)
->>
->>   void lkdtm_EXEC_RODATA(void)
->>   {
->> -	execute_location(lkdtm_rodata_do_nothing, CODE_AS_IS);
->> +	execute_location(dereference_function_descriptor(lkdtm_rodata_do_noth=
-ing),
->> +			 CODE_AS_IS);
->>   }
->>
->>   void lkdtm_EXEC_USERSPACE(void)
+There are 3 cpumasks, for which weight is counted frequently: possible,
+present and active. They all are read-mostly, and to optimize counting
+number of set bits for them, this series adds atomic counters, similarly
+to online cpumask.
+
+v1: https://lkml.org/lkml/2021/11/27/339
+v2:
+  - add bitmap_weight_cmp();
+  - fix bitmap_weight_le semantics and provide full set of {eq,gt,ge,lt,le}
+    as wrappers around bitmap_weight_cmp();
+  - don't touch small bitmaps (less than 32 bits) - optimization works
+    only for large bitmaps;
+  - move bitmap_weight() == 0 -> bitmap_empty() conversion to a separate
+    patch, ditto cpumask_weight() and nodes_weight;
+  - add counters for possible, present and active cpus;
+  - drop bitmap_empty() where possible;
+  - various fixes around bit counting that spotted my eyes.
+
+Yury Norov (17):
+  all: don't use bitmap_weight() where possible
+  drivers: rename num_*_cpus variables
+  fix open-coded for_each_set_bit()
+  all: replace bitmap_weight with bitmap_empty where appropriate
+  all: replace cpumask_weight with cpumask_empty where appropriate
+  all: replace nodes_weight with nodes_empty where appropriate
+  lib/bitmap: add bitmap_weight_{cmp,eq,gt,ge,lt,le} functions
+  all: replace bitmap_weight with bitmap_weight_{eq,gt,ge,lt,le} where
+    appropriate
+  lib/cpumask: add cpumask_weight_{eq,gt,ge,lt,le}
+  lib/nodemask: add nodemask_weight_{eq,gt,ge,lt,le}
+  lib/nodemask: add num_node_state_eq()
+  kernel/cpu.c: fix init_cpu_online
+  kernel/cpu: add num_possible_cpus counter
+  kernel/cpu: add num_present_cpu counter
+  kernel/cpu: add num_active_cpu counter
+  tools/bitmap: sync bitmap_weight
+  MAINTAINERS: add cpumask and nodemask files to BITMAP_API
+
+ MAINTAINERS                                   |   4 +
+ arch/alpha/kernel/process.c                   |   2 +-
+ arch/ia64/kernel/setup.c                      |   2 +-
+ arch/ia64/mm/tlb.c                            |   2 +-
+ arch/mips/cavium-octeon/octeon-irq.c          |   4 +-
+ arch/mips/kernel/crash.c                      |   2 +-
+ arch/nds32/kernel/perf_event_cpu.c            |   2 +-
+ arch/powerpc/kernel/smp.c                     |   2 +-
+ arch/powerpc/kernel/watchdog.c                |   2 +-
+ arch/powerpc/xmon/xmon.c                      |   4 +-
+ arch/s390/kernel/perf_cpum_cf.c               |   2 +-
+ arch/x86/kernel/cpu/resctrl/rdtgroup.c        |  16 +--
+ arch/x86/kernel/smpboot.c                     |   4 +-
+ arch/x86/kvm/hyperv.c                         |   8 +-
+ arch/x86/mm/amdtopology.c                     |   2 +-
+ arch/x86/mm/mmio-mod.c                        |   2 +-
+ arch/x86/mm/numa_emulation.c                  |   4 +-
+ arch/x86/platform/uv/uv_nmi.c                 |   2 +-
+ drivers/acpi/numa/srat.c                      |   2 +-
+ drivers/cpufreq/qcom-cpufreq-hw.c             |   2 +-
+ drivers/cpufreq/scmi-cpufreq.c                |   2 +-
+ drivers/firmware/psci/psci_checker.c          |   2 +-
+ drivers/gpu/drm/i915/i915_pmu.c               |   2 +-
+ drivers/gpu/drm/msm/disp/mdp5/mdp5_smp.c      |   2 +-
+ drivers/hv/channel_mgmt.c                     |   4 +-
+ drivers/iio/dummy/iio_simple_dummy_buffer.c   |   4 +-
+ drivers/iio/industrialio-trigger.c            |   2 +-
+ drivers/infiniband/hw/hfi1/affinity.c         |  13 +-
+ drivers/infiniband/hw/qib/qib_file_ops.c      |   2 +-
+ drivers/infiniband/hw/qib/qib_iba7322.c       |   2 +-
+ drivers/irqchip/irq-bcm6345-l1.c              |   2 +-
+ drivers/leds/trigger/ledtrig-cpu.c            |   6 +-
+ drivers/memstick/core/ms_block.c              |   4 +-
+ drivers/net/dsa/b53/b53_common.c              |   6 +-
+ drivers/net/ethernet/broadcom/bcmsysport.c    |   6 +-
+ .../net/ethernet/intel/ice/ice_virtchnl_pf.c  |   4 +-
+ .../net/ethernet/intel/ixgbe/ixgbe_sriov.c    |   2 +-
+ .../marvell/octeontx2/nic/otx2_ethtool.c      |   2 +-
+ .../marvell/octeontx2/nic/otx2_flows.c        |   8 +-
+ .../ethernet/marvell/octeontx2/nic/otx2_pf.c  |   2 +-
+ drivers/net/ethernet/mellanox/mlx4/cmd.c      |  33 ++---
+ drivers/net/ethernet/mellanox/mlx4/eq.c       |   4 +-
+ drivers/net/ethernet/mellanox/mlx4/fw.c       |   4 +-
+ drivers/net/ethernet/mellanox/mlx4/main.c     |   2 +-
+ drivers/net/ethernet/qlogic/qed/qed_rdma.c    |   4 +-
+ drivers/net/ethernet/qlogic/qed/qed_roce.c    |   2 +-
+ drivers/perf/arm-cci.c                        |   2 +-
+ drivers/perf/arm_pmu.c                        |   4 +-
+ drivers/perf/hisilicon/hisi_uncore_pmu.c      |   2 +-
+ drivers/perf/thunderx2_pmu.c                  |   4 +-
+ drivers/perf/xgene_pmu.c                      |   2 +-
+ drivers/scsi/lpfc/lpfc_init.c                 |   2 +-
+ drivers/scsi/storvsc_drv.c                    |   6 +-
+ drivers/soc/fsl/qbman/qman_test_stash.c       |   2 +-
+ drivers/staging/media/tegra-video/vi.c        |   2 +-
+ drivers/thermal/intel/intel_powerclamp.c      |   9 +-
+ include/linux/bitmap.h                        |  80 +++++++++++
+ include/linux/cpumask.h                       | 131 +++++++++++++-----
+ include/linux/nodemask.h                      |  40 ++++++
+ kernel/cpu.c                                  |  54 ++++++++
+ kernel/irq/affinity.c                         |   2 +-
+ kernel/padata.c                               |   2 +-
+ kernel/rcu/tree_nocb.h                        |   4 +-
+ kernel/rcu/tree_plugin.h                      |   2 +-
+ kernel/sched/core.c                           |  10 +-
+ kernel/sched/topology.c                       |   4 +-
+ kernel/time/clockevents.c                     |   2 +-
+ kernel/time/clocksource.c                     |   2 +-
+ lib/bitmap.c                                  |  21 +++
+ mm/mempolicy.c                                |   2 +-
+ mm/page_alloc.c                               |   2 +-
+ mm/vmstat.c                                   |   4 +-
+ tools/include/linux/bitmap.h                  |  44 ++++++
+ tools/lib/bitmap.c                            |  20 +++
+ tools/perf/builtin-c2c.c                      |   4 +-
+ tools/perf/util/pmu.c                         |   2 +-
+ 76 files changed, 480 insertions(+), 183 deletions(-)
+
+-- 
+2.30.2
 
