@@ -2,54 +2,88 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id EB0F6482F48
-	for <lists+linux-ia64@lfdr.de>; Mon,  3 Jan 2022 10:18:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D6D40484527
+	for <lists+linux-ia64@lfdr.de>; Tue,  4 Jan 2022 16:48:06 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232312AbiACJSQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 3 Jan 2022 04:18:16 -0500
-Received: from mail.tomediacase.pl ([151.236.18.187]:58854 "EHLO
-        mail.tomediacase.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232315AbiACJSQ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 3 Jan 2022 04:18:16 -0500
-Received: by mail.tomediacase.pl (Postfix, from userid 1001)
-        id 75D1840D5A; Mon,  3 Jan 2022 10:10:29 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tomediacase.pl;
-        s=mail; t=1641201034;
-        bh=1KDTsB3nJcWAjbNGIw57IBVNLXBfvIhwZJ5safZoOHQ=;
-        h=Date:From:To:Subject:From;
-        b=vna9UPgRuG6F8BqbtnpN7Q287UDCXZI6VVb0KVC1uIvcCxi/d6OP+ysrjgdqsNKbP
-         GE00ho2KBFQDedpdNguGagBNRZnQNYkaLlg0PavlOsVgDHAMTJeWde9N6DTYbolsDl
-         uLMPetBijbnykIwDUVwf4tbvL4zFiF+i2oAyEZl2O/GHa4pEZdyA5h0tI40Notk+uX
-         k1tAHczosGVC5N32x95hBDwVVbicEWhJ4JaXqx1UABb3c8uLFk1YDq1SUQKO8V2rSZ
-         7Q+p8xQmIa5VabFvivjaIZWSgJJX2R2/E+hclwVh8EiaVn40FRZhHaNROF2nHhmWBc
-         SoqqlhnHok+lg==
-Received: by mail.tomediacase.pl for <linux-ia64@vger.kernel.org>; Mon,  3 Jan 2022 09:10:24 GMT
-Message-ID: <20220103084500-0.1.z.2qfw.0.h1ns8a4jll@tomediacase.pl>
-Date:   Mon,  3 Jan 2022 09:10:24 GMT
-From:   "Adam Charachuta" <adam.charachuta@tomediacase.pl>
-To:     <linux-ia64@vger.kernel.org>
-Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
-X-Mailer: mail.tomediacase.pl
+        id S229744AbiADPsG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 4 Jan 2022 10:48:06 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44880 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S229702AbiADPsF (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 4 Jan 2022 10:48:05 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C41BC061761;
+        Tue,  4 Jan 2022 07:48:05 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A2D961492;
+        Tue,  4 Jan 2022 15:48:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBC9C36AE9;
+        Tue,  4 Jan 2022 15:48:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1641311284;
+        bh=dDzMHlLnNUUHegsHLetyjpYo/44r9VvVT/d4vsDqNrE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=LazF/egiOSl1C/q0ggX1XNs4/tt4hOpWZP4yFEStOtV5s/sVa9ajv9k0+3jW7TDsf
+         J5GWYOpyjhTddU0f2BMo1ShKjdzAwTrfi3UOl2Tuyxg6gl4KxUFLoBB4IARfg3rKkW
+         nbzySwRv9hSKfmH5I8/RllP8aMQKwwL4z+dehn9s=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        David Hildenbrand <david@redhat.com>,
+        linux-ia64@vger.kernel.org
+Subject: [PATCH] ia64: topology: use default_groups in kobj_type
+Date:   Tue,  4 Jan 2022 16:48:00 +0100
+Message-Id: <20220104154800.1287947-1-gregkh@linuxfoundation.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1477; h=from:subject; bh=dDzMHlLnNUUHegsHLetyjpYo/44r9VvVT/d4vsDqNrE=; b=owGbwMvMwCRo6H6F97bub03G02pJDIlXcvQZAjkFFd1EXiybGy5j63FrXcHlx56ZTR5Wa65pL827 bPS7I5aFQZCJQVZMkeXLNp6j+ysOKXoZ2p6GmcPKBDaEi1MAJnJBjGHBsdnpOwz/36qSOaha62DDnd TapqXEMFfu7cGzpYeuL4rd/a/Xu7lyWcny3ssA
+X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dzie=C5=84 dobry,
+There are currently 2 ways to create a set of sysfs files for a
+kobj_type, through the default_attrs field, and the default_groups
+field.  Move the ia64 topology sysfs code to use default_groups field
+which has been the preferred way since aa30f47cf666 ("kobject: Add
+support for default attribute groups to kobj_type") so that we can soon
+get rid of the obsolete default_attrs field.
 
-zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
-=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
-o dalszych rozm=C3=B3w.=20
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: linux-ia64@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/ia64/kernel/topology.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
-=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
-=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
-strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+diff --git a/arch/ia64/kernel/topology.c b/arch/ia64/kernel/topology.c
+index 3639e0a7cb3b..e4992917a24b 100644
+--- a/arch/ia64/kernel/topology.c
++++ b/arch/ia64/kernel/topology.c
+@@ -264,6 +264,7 @@ static struct attribute * cache_default_attrs[] = {
+ 	&shared_cpu_map.attr,
+ 	NULL
+ };
++ATTRIBUTE_GROUPS(cache_default);
+ 
+ #define to_object(k) container_of(k, struct cache_info, kobj)
+ #define to_attr(a) container_of(a, struct cache_attr, attr)
+@@ -284,7 +285,7 @@ static const struct sysfs_ops cache_sysfs_ops = {
+ 
+ static struct kobj_type cache_ktype = {
+ 	.sysfs_ops	= &cache_sysfs_ops,
+-	.default_attrs	= cache_default_attrs,
++	.default_groups	= cache_default_groups,
+ };
+ 
+ static struct kobj_type cache_ktype_percpu_entry = {
+-- 
+2.34.1
 
-Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
-
-
-Pozdrawiam,
-Adam Charachuta
