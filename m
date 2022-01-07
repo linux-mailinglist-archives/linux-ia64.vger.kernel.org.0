@@ -2,88 +2,96 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id D6D40484527
-	for <lists+linux-ia64@lfdr.de>; Tue,  4 Jan 2022 16:48:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AEF07487026
+	for <lists+linux-ia64@lfdr.de>; Fri,  7 Jan 2022 03:06:20 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229744AbiADPsG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 4 Jan 2022 10:48:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44880 "EHLO
+        id S1344420AbiAGCGU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 6 Jan 2022 21:06:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229702AbiADPsF (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 4 Jan 2022 10:48:05 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8C41BC061761;
-        Tue,  4 Jan 2022 07:48:05 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2A2D961492;
-        Tue,  4 Jan 2022 15:48:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EBC9C36AE9;
-        Tue,  4 Jan 2022 15:48:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1641311284;
-        bh=dDzMHlLnNUUHegsHLetyjpYo/44r9VvVT/d4vsDqNrE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=LazF/egiOSl1C/q0ggX1XNs4/tt4hOpWZP4yFEStOtV5s/sVa9ajv9k0+3jW7TDsf
-         J5GWYOpyjhTddU0f2BMo1ShKjdzAwTrfi3UOl2Tuyxg6gl4KxUFLoBB4IARfg3rKkW
-         nbzySwRv9hSKfmH5I8/RllP8aMQKwwL4z+dehn9s=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        David Hildenbrand <david@redhat.com>,
-        linux-ia64@vger.kernel.org
-Subject: [PATCH] ia64: topology: use default_groups in kobj_type
-Date:   Tue,  4 Jan 2022 16:48:00 +0100
-Message-Id: <20220104154800.1287947-1-gregkh@linuxfoundation.org>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S1344622AbiAGCGT (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 6 Jan 2022 21:06:19 -0500
+Received: from mail-pj1-x102f.google.com (mail-pj1-x102f.google.com [IPv6:2607:f8b0:4864:20::102f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE886C061245
+        for <linux-ia64@vger.kernel.org>; Thu,  6 Jan 2022 18:06:18 -0800 (PST)
+Received: by mail-pj1-x102f.google.com with SMTP id l10-20020a17090a384a00b001b22190e075so10478605pjf.3
+        for <linux-ia64@vger.kernel.org>; Thu, 06 Jan 2022 18:06:18 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/lrDPbQs3KHJCrVcWUo6pV+dyvz8Zpq7B3I12E0rmrA=;
+        b=ncxlH7LFooYor/lSSUKywmyYBjGAdx95GaBg30qU4tINiQu0CLRTaKkRAu+u9fZ3bu
+         Aty15dmC8MgSb8OCEaLVvilpvfPq1Flpo60JUZc7KPoAgTTsSBBi7ATQshWXFtwhxBTB
+         q1QcQJ6Fl1HUMYrrQCrEt/SIa6tQkNfAXm6rIq9g3wOvaXoVc+ufDR3pOUlJaFCr8LWk
+         DJEOLforxpnFHwjoo/SnEPNhBrhhNTRsvxgkg3GYsS1sozKqRKwZTBMgm1SDos7SQab6
+         GeLEkCC+FCfk9GUGvGlsmnZy+xC5Ky8jICDdvTvXz5L4KSCBJT1Oq9G0Z+brpQjk850p
+         tOmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=/lrDPbQs3KHJCrVcWUo6pV+dyvz8Zpq7B3I12E0rmrA=;
+        b=QPbMKMKCB6LFzB8//lptj2o+E6NsUvpSWhXbYNd5WYuRGk2iujNQGp811yIaa/ruxc
+         SZ1SkR3fscgu8iCSW+kRW/T4r6/epij66HryrFL7MBuhZ7tD+OQ/NDSUYUUW64jcwGb6
+         mpDj5qviY0rPyZXlgRh47/DmkQXh9Faj+83/+32QNOdhz5Ieynmm+N+myH22g7e/DkSn
+         ii93EdniNw4yPlemDwIN9tFe9zypJrvWjmfXtyXHWxxlwuGzEK6yzSg50vhggfNvvzwK
+         ORGnMKWCsA07PyhSqgqicmNW5XhDeW2oj3tTDFm/bd2+shsczYlgvcn0YTy3A66w7/Vd
+         rChA==
+X-Gm-Message-State: AOAM5327EBE35LGiM6qcYvwse8wIJ91ye411tb62dH4rCqfSG4zzkdp6
+        bLSd1Ix4ITFPU2v/BSQYwXdWgrFoHg==
+X-Google-Smtp-Source: ABdhPJweZm8W9S+PbvmIugvPfuqncrVJ8JzxdFQ+cr9wlKUiOkqJAGAVPpWbZjruw9IwfVRDCMQHmw==
+X-Received: by 2002:a17:902:b908:b0:149:f6e8:7e0e with SMTP id bf8-20020a170902b90800b00149f6e87e0emr4415282plb.138.1641521178263;
+        Thu, 06 Jan 2022 18:06:18 -0800 (PST)
+Received: from piliu.users.ipa.redhat.com ([209.132.188.80])
+        by smtp.gmail.com with ESMTPSA id o1sm3394030pjr.4.2022.01.06.18.06.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jan 2022 18:06:17 -0800 (PST)
+From:   Pingfan Liu <kernelfans@gmail.com>
+To:     linux-ia64@vger.kernel.org
+Cc:     Pingfan Liu <kernelfans@gmail.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Kees Cook <keescook@chromium.org>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 1/3] ia64: kexec: fix the primary cpu passed to smp_shutdown_nonboot_cpus()
+Date:   Fri,  7 Jan 2022 10:05:06 +0800
+Message-Id: <20220107020508.9778-1-kernelfans@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1477; h=from:subject; bh=dDzMHlLnNUUHegsHLetyjpYo/44r9VvVT/d4vsDqNrE=; b=owGbwMvMwCRo6H6F97bub03G02pJDIlXcvQZAjkFFd1EXiybGy5j63FrXcHlx56ZTR5Wa65pL827 bPS7I5aFQZCJQVZMkeXLNp6j+ysOKXoZ2p6GmcPKBDaEi1MAJnJBjGHBsdnpOwz/36qSOaha62DDnd TapqXEMFfu7cGzpYeuL4rd/a/Xu7lyWcny3ssA
-X-Developer-Key: i=gregkh@linuxfoundation.org; a=openpgp; fpr=F4B60CC5BF78C2214A313DCB3147D40DDB2DFB29
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-There are currently 2 ways to create a set of sysfs files for a
-kobj_type, through the default_attrs field, and the default_groups
-field.  Move the ia64 topology sysfs code to use default_groups field
-which has been the preferred way since aa30f47cf666 ("kobject: Add
-support for default attribute groups to kobj_type") so that we can soon
-get rid of the obsolete default_attrs field.
+kernel_kexec()->migrate_to_reboot_cpu() has already pinned the reboot
+thread on either reboot_cpu or the first online cpu.
 
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: linux-ia64@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So machine_shutdown() should pass smp_processor_id() as the primary cpu
+to smp_shutdown_nonboot_cpus().
+
+Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+To: linux-ia64@vger.kernel.org
 ---
- arch/ia64/kernel/topology.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/ia64/kernel/process.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/ia64/kernel/topology.c b/arch/ia64/kernel/topology.c
-index 3639e0a7cb3b..e4992917a24b 100644
---- a/arch/ia64/kernel/topology.c
-+++ b/arch/ia64/kernel/topology.c
-@@ -264,6 +264,7 @@ static struct attribute * cache_default_attrs[] = {
- 	&shared_cpu_map.attr,
- 	NULL
- };
-+ATTRIBUTE_GROUPS(cache_default);
+diff --git a/arch/ia64/kernel/process.c b/arch/ia64/kernel/process.c
+index 834df24a88f1..88ca3f587783 100644
+--- a/arch/ia64/kernel/process.c
++++ b/arch/ia64/kernel/process.c
+@@ -575,7 +575,7 @@ cpu_halt (void)
  
- #define to_object(k) container_of(k, struct cache_info, kobj)
- #define to_attr(a) container_of(a, struct cache_attr, attr)
-@@ -284,7 +285,7 @@ static const struct sysfs_ops cache_sysfs_ops = {
+ void machine_shutdown(void)
+ {
+-	smp_shutdown_nonboot_cpus(reboot_cpu);
++	smp_shutdown_nonboot_cpus(smp_processor_id());
  
- static struct kobj_type cache_ktype = {
- 	.sysfs_ops	= &cache_sysfs_ops,
--	.default_attrs	= cache_default_attrs,
-+	.default_groups	= cache_default_groups,
- };
- 
- static struct kobj_type cache_ktype_percpu_entry = {
+ #ifdef CONFIG_KEXEC
+ 	kexec_disable_iosapic();
 -- 
-2.34.1
+2.31.1
 
