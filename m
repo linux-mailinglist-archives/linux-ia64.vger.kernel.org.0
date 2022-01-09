@@ -2,199 +2,42 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id A26354942B2
-	for <lists+linux-ia64@lfdr.de>; Wed, 19 Jan 2022 23:00:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A83D49637C
+	for <lists+linux-ia64@lfdr.de>; Fri, 21 Jan 2022 17:58:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229935AbiASWA3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 19 Jan 2022 17:00:29 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35454 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357465AbiASWA2 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 19 Jan 2022 17:00:28 -0500
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70610C06173F
-        for <linux-ia64@vger.kernel.org>; Wed, 19 Jan 2022 14:00:28 -0800 (PST)
-Received: by mail-pg1-x535.google.com with SMTP id q75so3873305pgq.5
-        for <linux-ia64@vger.kernel.org>; Wed, 19 Jan 2022 14:00:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=JI5jEcI1hiEGc8WLPgbqQTxkl08Ju0kSWlXY2eIoY9Q=;
-        b=Qxk8ZlOzgx4vMG2yojzX5wqvtn5rpGheXm11Z2NyGGBIUXeWLr4XOg3b0q3SyZigtH
-         iGaQnWl3zb1OvgUv/kyJhvoC8mXZPAhUz50q7uhfasP7KXx2JeaPhKPNgtg4s8H9BDUo
-         vvaHlGGVz9UU7HVblsspusc51ErXeXhgqq8Bk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=JI5jEcI1hiEGc8WLPgbqQTxkl08Ju0kSWlXY2eIoY9Q=;
-        b=EPxV32XBd7gChl2L4ctaGL6E7u1FfN2fAcmLAiimu3GdXJ/uA6RjWKLlHzURUqvIbc
-         WWW6Jnmur2WxrRbcvKEi0IwCyRO/+V9//+23yShHInhcxQpF44EswXTh7WnEhH8XxUdF
-         04n/KQxjOD/eGkA1AgogYcIAmjxnGrKGkkSIShnhmmxp+gjmerfJ97oLvpj+dAEJarXd
-         4TeEPXD55q/KWjdkenls8XiqSZgyxB0Te6pSoz8SNnF4GouGXBzVQ2Crk19UOUw7n7yX
-         CBeDlgxzWgXqkhHZHKzmfwzRMAUZ3NFa88qeraXaLS7AQVaVCfrqixPgMNA3VLefR2K8
-         9jXA==
-X-Gm-Message-State: AOAM530yX8oGxXFkQcxQ3R7UvHosq60kK6HJfABkjJ+GwusOW5GM7xTk
-        +FBI0G/c5q1Q2WRynb2UQISfMA==
-X-Google-Smtp-Source: ABdhPJwt4Nv5793SP6zTE20w2tmeoTfB5V156ftaoTtLpJsdxvELruQabzZX/RUlM9ATmwCRik8jUg==
-X-Received: by 2002:aa7:918e:0:b0:4bb:793:b7a7 with SMTP id x14-20020aa7918e000000b004bb0793b7a7mr32876692pfa.71.1642629627636;
-        Wed, 19 Jan 2022 14:00:27 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id k12sm602597pfc.107.2022.01.19.14.00.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jan 2022 14:00:26 -0800 (PST)
-Date:   Wed, 19 Jan 2022 14:00:26 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     Helge Deller <deller@gmx.de>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org, linux-ia64@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Paul Mackerras <paulus@samba.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: [PATCH v3 11/12] lkdtm: Fix execute_[user]_location()
-Message-ID: <202201191359.5E67E74A@keescook>
-References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
- <d4688c2af08dda706d3b6786ae5ec5a74e6171f1.1634457599.git.christophe.leroy@csgroup.eu>
- <e7793192-6879-490d-1f37-3d6d6908a121@csgroup.eu>
- <c635dff6-2bca-3486-014f-12ae00bd1777@csgroup.eu>
+        id S1381901AbiAUQ6q (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 21 Jan 2022 11:58:46 -0500
+Received: from [36.155.112.122] ([36.155.112.122]:49544 "EHLO
+        ecs-42a4.novalocal" rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org
+        with ESMTP id S1381169AbiAUQ5g (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 21 Jan 2022 11:57:36 -0500
+Received: from User (localhost [127.0.0.1])
+        by ecs-42a4.novalocal (Postfix) with SMTP id F273C3045F2;
+        Sun,  9 Jan 2022 13:57:24 +0800 (CST)
+Reply-To: <andbaill228@mail2world.com>
+From:   "Vlieghe" <andbaill228@mail2world.com>
+Subject: Very Importante Notice
+Date:   Sun, 9 Jan 2022 07:55:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c635dff6-2bca-3486-014f-12ae00bd1777@csgroup.eu>
+Content-Type: text/plain;
+        charset="Windows-1251"
+Content-Transfer-Encoding: 7bit
+X-Priority: 3
+X-MSMail-Priority: Normal
+X-Mailer: Microsoft Outlook Express 6.00.2600.0000
+X-MimeOLE: Produced By Microsoft MimeOLE V6.00.2600.0000
+Message-Id: <20220109055724.F273C3045F2@ecs-42a4.novalocal>
+To:     undisclosed-recipients:;
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Jan 19, 2022 at 08:28:54PM +0100, Christophe Leroy wrote:
-> Hi Kees,
-> 
-> 
-> Le 17/12/2021 à 12:49, Christophe Leroy a écrit :
-> > Hi Kees,
-> > 
-> > Le 17/10/2021 à 14:38, Christophe Leroy a écrit :
-> > > execute_location() and execute_user_location() intent
-> > > to copy do_nothing() text and execute it at a new location.
-> > > However, at the time being it doesn't copy do_nothing() function
-> > > but do_nothing() function descriptor which still points to the
-> > > original text. So at the end it still executes do_nothing() at
-> > > its original location allthough using a copied function descriptor.
-> > > 
-> > > So, fix that by really copying do_nothing() text and build a new
-> > > function descriptor by copying do_nothing() function descriptor and
-> > > updating the target address with the new location.
-> > > 
-> > > Also fix the displayed addresses by dereferencing do_nothing()
-> > > function descriptor.
-> > > 
-> > > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-> > 
-> > Do you have any comment to this patch and to patch 12 ?
-> > 
-> > If not, is it ok to get your acked-by ?
-> 
-> Any feedback please, even if it's to say no feedback ?
+Sir/Madam,
 
-Hi! Thanks for the ping; I haven't had time yet to look at this, but
-with -rc1 coming, I should be able to task-switch back to LKDTM for the
-dev cycle and I can give some feedback.
+Good day to you.
 
--Kees
+I am Dr.Gertjan Vlieghe personal Secretary to Andrew Bailey who double as the Governor, Bank of England (https://en.wikipedia.org/wiki/Andrew_Bailey_%28banker%29). We have an inheritance of a deceased client, who bear the same name  with your surname. kindly contact Andrew Bailey through his personal email ( andbaill228@mail2world.com ) with your details for more information.
 
-> 
-> Many thanks,
-> Christophe
-> 
-> > 
-> > Thanks
-> > Christophe
-> > 
-> > > ---
-> > >   drivers/misc/lkdtm/perms.c | 37 ++++++++++++++++++++++++++++---------
-> > >   1 file changed, 28 insertions(+), 9 deletions(-)
-> > > 
-> > > diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
-> > > index 035fcca441f0..1cf24c4a79e9 100644
-> > > --- a/drivers/misc/lkdtm/perms.c
-> > > +++ b/drivers/misc/lkdtm/perms.c
-> > > @@ -44,19 +44,34 @@ static noinline void do_overwritten(void)
-> > >       return;
-> > >   }
-> > > +static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
-> > > +{
-> > > +    if (!have_function_descriptors())
-> > > +        return dst;
-> > > +
-> > > +    memcpy(fdesc, do_nothing, sizeof(*fdesc));
-> > > +    fdesc->addr = (unsigned long)dst;
-> > > +    barrier();
-> > > +
-> > > +    return fdesc;
-> > > +}
-> > > +
-> > >   static noinline void execute_location(void *dst, bool write)
-> > >   {
-> > > -    void (*func)(void) = dst;
-> > > +    void (*func)(void);
-> > > +    func_desc_t fdesc;
-> > > +    void *do_nothing_text = dereference_function_descriptor(do_nothing);
-> > > -    pr_info("attempting ok execution at %px\n", do_nothing);
-> > > +    pr_info("attempting ok execution at %px\n", do_nothing_text);
-> > >       do_nothing();
-> > >       if (write == CODE_WRITE) {
-> > > -        memcpy(dst, do_nothing, EXEC_SIZE);
-> > > +        memcpy(dst, do_nothing_text, EXEC_SIZE);
-> > >           flush_icache_range((unsigned long)dst,
-> > >                      (unsigned long)dst + EXEC_SIZE);
-> > >       }
-> > > -    pr_info("attempting bad execution at %px\n", func);
-> > > +    pr_info("attempting bad execution at %px\n", dst);
-> > > +    func = setup_function_descriptor(&fdesc, dst);
-> > >       func();
-> > >       pr_err("FAIL: func returned\n");
-> > >   }
-> > > @@ -66,16 +81,19 @@ static void execute_user_location(void *dst)
-> > >       int copied;
-> > >       /* Intentionally crossing kernel/user memory boundary. */
-> > > -    void (*func)(void) = dst;
-> > > +    void (*func)(void);
-> > > +    func_desc_t fdesc;
-> > > +    void *do_nothing_text = dereference_function_descriptor(do_nothing);
-> > > -    pr_info("attempting ok execution at %px\n", do_nothing);
-> > > +    pr_info("attempting ok execution at %px\n", do_nothing_text);
-> > >       do_nothing();
-> > > -    copied = access_process_vm(current, (unsigned long)dst, do_nothing,
-> > > +    copied = access_process_vm(current, (unsigned long)dst,
-> > > do_nothing_text,
-> > >                      EXEC_SIZE, FOLL_WRITE);
-> > >       if (copied < EXEC_SIZE)
-> > >           return;
-> > > -    pr_info("attempting bad execution at %px\n", func);
-> > > +    pr_info("attempting bad execution at %px\n", dst);
-> > > +    func = setup_function_descriptor(&fdesc, dst);
-> > >       func();
-> > >       pr_err("FAIL: func returned\n");
-> > >   }
-> > > @@ -153,7 +171,8 @@ void lkdtm_EXEC_VMALLOC(void)
-> > >   void lkdtm_EXEC_RODATA(void)
-> > >   {
-> > > -    execute_location(lkdtm_rodata_do_nothing, CODE_AS_IS);
-> > > +    execute_location(dereference_function_descriptor(lkdtm_rodata_do_nothing),
-> > > 
-> > > +             CODE_AS_IS);
-> > >   }
-> > >   void lkdtm_EXEC_USERSPACE(void)
-> > > 
+Thank you.
 
--- 
-Kees Cook
+Dr.Gertjan Vlieghe
