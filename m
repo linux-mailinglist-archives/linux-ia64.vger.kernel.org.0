@@ -2,139 +2,51 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A8BD48996E
-	for <lists+linux-ia64@lfdr.de>; Mon, 10 Jan 2022 14:12:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A47448A8C0
+	for <lists+linux-ia64@lfdr.de>; Tue, 11 Jan 2022 08:48:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231670AbiAJNLw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 10 Jan 2022 08:11:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44362 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230376AbiAJNLr (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 10 Jan 2022 08:11:47 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C840C034003
-        for <linux-ia64@vger.kernel.org>; Mon, 10 Jan 2022 05:11:46 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id a5so22735519wrh.5
-        for <linux-ia64@vger.kernel.org>; Mon, 10 Jan 2022 05:11:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
-        b=Bgie3w5lZXcUpEJsNUNnYT9D80sz6831OKMgWSWMpAMR4c04HQM1hwHkoZ1AqHgJ5M
-         pQJfhFBsNTGc+jfMsWTuSDXhNBe5XPwJ8/UQZKbYcWTDQ68Eu4MBBVsHf0V3Baa+27Pp
-         IUJW/950IUGNsTto2NnsTW49/Cy4Vf+KfgzDT0+KZ2gcb/QkEKg3LEIj8qPJpiII0Qbk
-         buE3CbPl0T8T6omQLXT3KYJBxN98pPIrfxDam1Qs0diPFN43pWVugWbd8LU8WaIGviK3
-         O/t/NLMKhR03EdE8rMi5c8T5epCw09Yzc4YmAU5QrO9ZaREbayNwAtpm1SWYSR1IiBuY
-         5w9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=STst/NZz7XpLuhkw/fjT1YooCLQUEgoChj9j28RAYfs=;
-        b=o9la6u2D1Gv0Lk5oIVoBKgYGCeflGeQiSQNx0FwH9QVpQ5ryT8JRyFVjJ4IiUqo7EI
-         5vpNz0P3q7bwKGnizhHXWGEBbMH+ma26rgquTqS3x/Vwr8hx59nf55Wk9bQT0TT6ueXj
-         IKQez6CnNobFgVMSaM0P3BFfg5QHmW5xd2fO5Kh2f/Ti5fG6oRSO/zAsG/CyKxOfHj2x
-         85sYIa60XNFO5Ag8UzC+M4YsDh0yYBz9RSAf46oBtFiGYVP9DlNizsyhpqlhYJ0Ye7/Y
-         lExhP6sisI436x563r044Xw+4q2LXj/WxQXmFonxRZLakzuMhhgCTgsG0YrYPkAprncK
-         niJQ==
-X-Gm-Message-State: AOAM533+2m63roF/0VYFOHIOdN4cnoXYyTcgSL4lfLm9OkyYQbJRwMdD
-        x7wbioqDJ7XePcD6Bf7T+iEggixrGJbeKTVDb544pINVDMw=
-X-Google-Smtp-Source: ABdhPJyUuzfRq9+VAp3YIslVsNF7E8r6u+SDvjtiaFw6sfTA9uOxrmlrl9JDay/jDh10uqplhgk07a+YHTpM3Ge0znw=
-X-Received: by 2002:ac2:4c51:: with SMTP id o17mr60639917lfk.558.1641820293776;
- Mon, 10 Jan 2022 05:11:33 -0800 (PST)
+        id S1348618AbiAKHsh (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 11 Jan 2022 02:48:37 -0500
+Received: from mail.BETTERBIZ.PL ([45.86.209.138]:42566 "EHLO
+        mail.betterbiz.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S232589AbiAKHsg (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 11 Jan 2022 02:48:36 -0500
+Received: by mail.betterbiz.pl (Postfix, from userid 1001)
+        id 63AAC82EC4; Tue, 11 Jan 2022 02:45:48 -0500 (EST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=betterbiz.pl; s=mail;
+        t=1641887316; bh=07NAgW1e0WiNB9zqagiM2BnwZfWBCpNa2E4+ccxBPgw=;
+        h=Date:From:To:Subject:From;
+        b=mOXNaIvanq+MY1Oql5lYDXDvS9lGI4KmP+DlCnBqjGr14/af9SqOD2lnlYsga1C/K
+         NkzejsFsxwcB82GnJ64dYH8dg4Qt7ukjl1/ABL30sxKDoGMvdolG7d8u+tJ+pzM0MF
+         HQPMEKo3yw2IymmsuQMs5TOoZ5FO7DbKcjYX5RgertzZyw0h0MMoeEhTeA1WOacCBA
+         ricgRHgeBzAy4PEuv30wkP4D6ugsWrL8PYzSoV+YjsuXRk0brjgx90k2ylP+6oB4X2
+         9DaIorPwC7tnSP8Jw4Q1wL5h8U3WScGhBo/GUrZv+AOY0eGrh+gp3ycA5Y1LjxlzO+
+         INhOvSVQRMThQ==
+Received: by mail.betterbiz.pl for <linux-ia64@vger.kernel.org>; Tue, 11 Jan 2022 07:45:45 GMT
+Message-ID: <20220111024500-0.1.o.10h8.0.obcjovh149@betterbiz.pl>
+Date:   Tue, 11 Jan 2022 07:45:45 GMT
+From:   "Jakub Daroch" <jakub.daroch@betterbiz.pl>
+To:     <linux-ia64@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.betterbiz.pl
 MIME-Version: 1.0
-Received: by 2002:a05:6504:15d1:0:0:0:0 with HTTP; Mon, 10 Jan 2022 05:11:32
- -0800 (PST)
-Reply-To: gtbank107@yahoo.com
-From:   Barr Robert Richter <westernunion.benin982@gmail.com>
-Date:   Mon, 10 Jan 2022 14:11:32 +0100
-Message-ID: <CAP=nHBK9zHzp_=-EVswWQiLxEoc+HV4oqddgtnEqf-9qYab_4Q@mail.gmail.com>
-Subject: Contact GT Bank-Benin to receive your transfer amount of $18.5m US Dollars.
-To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Attn,Dear
-I need you to know that the fear of the LORD is
-the beginning of wisdom, and knowledge of the Holy One is
-understanding. As power of God Most High. And This is the confidence
-we have in approaching God, that if we ask anything according to his
-will, he hears us. I will make you know that Slow and steady wins the race.
-It is your turn to receive your overdue compensation funds total
-amount $18.5Milion  USD.
-I actualized that you will receive your transfer today without any more delay
-No More fee OK, Believe me , I am your Attorney standing here on your favor.
-I just concluded conversation with the Gt Bank Director, Mrs Mary Gate
-And She told me that your transfer is ready today
+Dzie=C5=84 dobry,
 
-So the Bank Asked you to contact them immediately by re-confirming
-your Bank details asap.
-Because this is the Only thing holding this transfer
-If you did not trust me and Mrs Mary Gate,Who Else will you Trust?
-For we are the ones trying to protect your funds here
-and make sure that your funds is secure.
-So Promisingly, I am here to assure you, that Grate Miracle is coming on
-your way, and this funds total amount of $18.500,000 is your
-compensation, entitlement inheritance overdue funds on your name.
-Which you cannot let anything delay you from receiving your funds now,
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
 
-Finally i advised you to try your possible best and contact Gt Bank Benin
-once you get this message to receive your transfer $18.5 USD today.
-I know that a journey of thousand miles begins with a single step.
-Always put your best foot forward
-Try as hard as you can, God give you best.
-take my advice and follow the due process of your payment, the
-transfer will be released to
-you smoothly without any hitches or hindrance.
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
 
-Contact DR.MRS MARY GATE, Director Gt bank-Benin to receive your
-transfer amount of $18.5m US Dollars
-It was deposited and registered to your name this morning.
-Contact the Bank now to know when they will transfer to your
-country today
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
 
-Email id: gtbank107@yahoo.com
-Tel/mobile, +229 99069872
-Contact person, Mrs Mary Gate,Director Gt bank-Benin.
-Among the blind the one-eyed man is king
 
-As you sow, so you shall reap, i want you to receive your funds
-Best things in life are free
-Send to her your Bank Details as i listed here.
-
-Your account name-------------
-Your Bank Name----------------
-Account Number----------
-your Bank address----------
-Country-----------
-Your private phone number---------
-Routing Numbers-------------
-Swift Code-----------
-
-Note, Your funds is %100 Percent ready for
-transfer.
-Everything you do remember that Good things come to those who wait.
-I have done this work for you with my personally effort, Honesty is
-the best policy.
-now your transfer is currently deposited with paying bank this morning.
-It is by the grace of God that I received Christ, having known the truth.
-I had no choice than to do what is lawful and justice in the
-sight of God for eternal life and in the sight of man for witness of
-God & His Mercies and glory upon my life.
-
-send this needed bank details to the bank today, so that you receive
-your transfer today as
-it is available for your confirmation today.
-Please do your best as a serious person and send the fee urgent, Note
-that this transfer of $18.500.000 M USD is a Gift from God to Bless
-you.
-
-If you did not contact the bank urgent, finally the Bank will release
-your transfer of $18.500.000M USD to  Mr. David Bollen as your
-representative.
-So not allow another to claim your Money.
-Thanks For your Understanding.
-
-Barr Robert Richter, UN Attorney At Law Court-Benin
+Pozdrawiam,
+Jakub Daroch
