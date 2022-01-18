@@ -2,76 +2,116 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 5231A4921D8
-	for <lists+linux-ia64@lfdr.de>; Tue, 18 Jan 2022 10:04:17 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CEBC649252B
+	for <lists+linux-ia64@lfdr.de>; Tue, 18 Jan 2022 12:48:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231831AbiARJD4 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 18 Jan 2022 04:03:56 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37710 "EHLO
+        id S241062AbiARLsW (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 18 Jan 2022 06:48:22 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233444AbiARJDv (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 18 Jan 2022 04:03:51 -0500
-Received: from mail-yb1-xb2e.google.com (mail-yb1-xb2e.google.com [IPv6:2607:f8b0:4864:20::b2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D36D0C06173F
-        for <linux-ia64@vger.kernel.org>; Tue, 18 Jan 2022 01:03:50 -0800 (PST)
-Received: by mail-yb1-xb2e.google.com with SMTP id v186so53730807ybg.1
-        for <linux-ia64@vger.kernel.org>; Tue, 18 Jan 2022 01:03:50 -0800 (PST)
+        with ESMTP id S239760AbiARLsW (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 18 Jan 2022 06:48:22 -0500
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9383C061574;
+        Tue, 18 Jan 2022 03:48:21 -0800 (PST)
+Received: by mail-pl1-x62d.google.com with SMTP id c6so15653069plh.6;
+        Tue, 18 Jan 2022 03:48:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=IAamEH5Xu1dJ3X0trVcFTPIrL7aTtcDGn5mUS4vw1a8=;
-        b=MKVoGuH84JEqwH7FLePXiHWn749zPRU0NdtP8Sm2JMhUl9c1iVyWjbwz6g8cfGp/lf
-         wGwjovvsv0mdzOrkruLS7VCe5a7nqOLOAOguQfLlO7KlNogBFH31ts7TJnJIMROay93O
-         zLFD2FXmAbjh/mANJwaPSceaNEIBY2ial/GMPVceYyFjbk49spZ6usuG0YECL34rgvGB
-         iei5o2VJiTWPHrHs+06yeYgSnvm3Lro4YfCcKClwdqQV0oHYRRf0rSUvau/jSGUGIY/g
-         PIq25ry8zIUYTR1kpaKtOSp5p5QnPiBRoNfQN58gXlJM4igUY1pzRJNojXS4U/9SVgkd
-         1m4A==
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:in-reply-to;
+        bh=Dejh5tcJ4gWGMzdNPEhsckEWG7ff8PXHm722G9XwW+k=;
+        b=lhyWQKxAG89IPXoDBrz6HFbtQzqa9iaOYj+PFdjDoTlmha8BtPoN/SFZIdB4e77qbZ
+         CBlTTcpb1QSpDDgbaKs/yMQRWx9xJEXXy+ObN+vGaqwEMUHvNvPJBcdihgIWzbIbwIyi
+         t0z3JbvURqorA6ScZQzlV6PZRhjt97uJ/0+BbBjzHQmSKSLHn+JB8eFs2Fs6o8tQ/mKQ
+         rUwpVZK3W7hmfBhNJ7b3ynsP/J30cSDxjWsJesM1dv+MWnERRqVLqHEqhrY7T3xefrk/
+         40Idt100/aXP2A0ckDAObcJP+ame/UJT0rubeLfx0tMIplSAiSL4vidJMCU86XCODEqc
+         kKAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=IAamEH5Xu1dJ3X0trVcFTPIrL7aTtcDGn5mUS4vw1a8=;
-        b=ewC1y8a9PL3DA4GDmPGpvNLnXrKpkBLPIz/bs/scCtEWcLKBvap5NH4jGM92X0uUgQ
-         mB5sFgtYzaMmktX0qk8k6mblCsCFZpoxVml1wOr/sDR8WueBKBXzpsMWhIq3vx58ewCd
-         4lc8yA487skfYDtCqsMuD+ENLEbVq0WY258b4ga6cXa7CrZTsBn6kiIe97TNf52lnSg2
-         1dkQA1hsD5ZeIemiUBf9FdoAGGG3EyNpg0wj1mlPDjd16qYIxEbsWlD/cO/xcBkAFm/l
-         UR2xS7+uIfSEP6C1QHCxmH9SIKO54shqcozxq6IWpIMBfgglubxGv4zxUJfWkFdP6YST
-         IMtw==
-X-Gm-Message-State: AOAM533YDNr7W9WpOBZAdEtfddH4GSgCRSUiIsiHb4vVSEUoZjnf3LZ7
-        HNBMSaLtfyHBOumS7Wwir2Xm4Dl8HMDZaKVbuFY=
-X-Google-Smtp-Source: ABdhPJy6S8YpzyetQz5KgFrhfh63qx4z5C4Z/Y2SVI8oau6/Qt6fRl+454Z9GiaGeU2dYh9fMxr8ktnL9Tw7RDFSq4I=
-X-Received: by 2002:a25:7287:: with SMTP id n129mr30710797ybc.351.1642496630031;
- Tue, 18 Jan 2022 01:03:50 -0800 (PST)
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:in-reply-to;
+        bh=Dejh5tcJ4gWGMzdNPEhsckEWG7ff8PXHm722G9XwW+k=;
+        b=tgEzA75tCdbW9465sQfcQT3i0XFvlMxqwWv3kN9Mpr6jfz1qolRforlEXQ6mHzJ1Dw
+         QMGk2L9t/7R+7Qo2aE/D6K4RVT3r22IH/hILpc7wCt26lZ38s+WSTwbVOdrrQwqGFXH7
+         Ri8ncBrtJMI9BgdpBtMNi+JI7STXjLsDFEYTuCN+zK3mt0mDDMKOk1FCpXhPwGgbr4Vc
+         FThCNaHghxjZyn386doOTPTw8SjcCEg5ZuHUveeWrFrKaYa3gk2T1Ut2g7szW1UokgON
+         21wAPqdtV07fMcIo7wVHFFVwUBKkeW9gmaFllQubSEYaVZAnNWeXnbzan0OJp6Kb+LW3
+         Uhhw==
+X-Gm-Message-State: AOAM5328p7rI41zU19zNU3qs4z9MRNmlW+5cZCytAVq1vpL8r+r/51Ry
+        3I9eiv/CR9HsoP4399HymsI=
+X-Google-Smtp-Source: ABdhPJxwzr02xBpJ396V3SpOF+QPWB4Svb44p09ND0mT7txf7kG/F8oGaHQopWM70s1EOb1e2640uQ==
+X-Received: by 2002:a17:902:ec83:b0:14a:3c28:6820 with SMTP id x3-20020a170902ec8300b0014a3c286820mr27820410plg.43.1642506501286;
+        Tue, 18 Jan 2022 03:48:21 -0800 (PST)
+Received: from localhost ([2409:10:24a0:4700:e8ad:216a:2a9d:6d0c])
+        by smtp.gmail.com with ESMTPSA id k9sm14959387pgr.47.2022.01.18.03.48.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jan 2022 03:48:20 -0800 (PST)
+Date:   Tue, 18 Jan 2022 20:48:17 +0900
+From:   Stafford Horne <shorne@gmail.com>
+To:     Christoph Hellwig <hch@lst.de>
+Cc:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Vineet Gupta <vgupta@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Brian Cain <bcain@codeaurora.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        linux-arch@linux-xtensa.org, linux-kernel@linux-xtensa.org
+Subject: Re: architectures that still need to remove set_fs()
+Message-ID: <YeapAai1NIuy0zV4@antec>
+References: <20220118074836.GA20994@lst.de>
 MIME-Version: 1.0
-Received: by 2002:a05:7108:3655:0:0:0:0 with HTTP; Tue, 18 Jan 2022 01:03:49
- -0800 (PST)
-Reply-To: asil.ajwad@gmail.com
-From:   Asil Ajwad <graceyaogokamboule@gmail.com>
-Date:   Mon, 17 Jan 2022 21:03:49 -1200
-Message-ID: <CA+Yy_gAHH8Aue7iwiH_cJ4+g8NkHKK3sLYXeb_HRC+HesC70HA@mail.gmail.com>
-Subject: Greetings,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220118074836.GA20994@lst.de>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
--- 
-Greetings,
+Hi,
 
-I am Mr.Asil Ajwad, I work with United Bank of Africa, can you use
-an ATM Visa Card to withdraw money at, ATM Cash Machine in your
-country, if yes I want to transfer abounded fund the sum of $10.5million
-US-Dollars, to you from my country, this is part of the money that was
-abounded by our late old client a politician who unfortunately lost
-his life and was forced out of power Du to greedy act, the bank will
+On Tue, Jan 18, 2022 at 08:48:36AM +0100, Christoph Hellwig wrote:
+> Hi all,
+> 
+> you are in this list because your architecture still implements and
+> uses address space overrides using set_fs(), which are deprecated and
+> have been removed from all mainstream architecture ports.  To help
+> cleanup the core kernel it would be great to make progress on removing
+> set_fs entirely.
+> 
+> The following steps are required:
+> 
+>  (1) implement the __get_kernel_nofault and __put_kernel_nofault
+>      helper to access kernel memory without page faults, replacing
+>      the get/put_user under set_fs(KERNEL_DS) abuse.  Mips has a good
+>      example for a trivial implementation for architectures that use
+>      a common address space in commit 04324f44cb69
 
-change the account details to your name, and apply for a Visa Card
-with your details, the Visa Card will be send to you, and you can be
-withdrawing money with it always, whatever any amount you withdraw
-daily, you will send 60% to me and you will take 40%, the Visa Card
-and the bank account will be on your name, I will be waiting for your
-response for more details, thanks to you a lot for giving me your time.
+Also see commit 08ee3a009f49a which is preparation for removing set_fs/get_fs
+this commit implements __get_kernel_nofault/__put_kernel_nofault for mips.
 
-regards,
-Mr.Asil Ajwad.
+>  (2) remove any architecture specific use of such constructs.  This
+>      only affects ia64 and sh.
+>  (3) stop selecting the SET_FS and remove all the set_fs-related
+>      infrastructure.  The above mips commit is a good guide once again.
+> 
+> Thanks!
+
+I will look into this for OpenRISC.
+
+-Stafford
