@@ -2,79 +2,176 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 2323C49262C
-	for <lists+linux-ia64@lfdr.de>; Tue, 18 Jan 2022 13:56:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 616244940DA
+	for <lists+linux-ia64@lfdr.de>; Wed, 19 Jan 2022 20:29:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240878AbiARM4c (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 18 Jan 2022 07:56:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35118 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241146AbiARM4b (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 18 Jan 2022 07:56:31 -0500
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E73F7C061748
-        for <linux-ia64@vger.kernel.org>; Tue, 18 Jan 2022 04:56:30 -0800 (PST)
-Received: by mail-wm1-x331.google.com with SMTP id j5-20020a05600c1c0500b0034d2e956aadso4569218wms.4
-        for <linux-ia64@vger.kernel.org>; Tue, 18 Jan 2022 04:56:30 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=kt7BSYvG+rr2bLEECwLOEMCvBVZotJIk44/4XcKD9H0=;
-        b=qVnMKKFkDFfregDqIMLKYbf/6Rfv7ZYgGOembxhYq270XML2HKFtTQgZWIe4suSlTH
-         9ZzqBt5SMc2HUATvpaoydj6CpAH75hfC5DF+qG4KwifTo4DrFaHm4c8fs1QJQm7jolVG
-         Yz4zXdaQM20LOthQjIWFNEHmWnNyurUbd97AZ4ibUQhIkLNbnMtMag6Xrg6QZ8gZZqDm
-         AhE1vYxascg6oV2aYaMhw3KgbAVODS8uHXaxJLKE26GX1yPfuLfQGBvcHdmtP8IdG3mL
-         tZhPduIc/yXpUOsnqZjXTAJXBz08l+EgG80HPIwCF9codvQmj8aBOWuUqBF+k09ulJ3k
-         hb2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=kt7BSYvG+rr2bLEECwLOEMCvBVZotJIk44/4XcKD9H0=;
-        b=4YqAGjLttCn1HH+DkK8C9adySDNjBNnnsgUbh3t5UH5sa/DxTCOxB9/2P3WSs8ZLfc
-         nBBl7Ci2cf21jelqE2m+myKGkUY94+FAq1XSxpw/+OKL2GPCLR4VKD+B7wT37rEIssZn
-         RLEdCeKqjdCKRHOGYAqLpGBwU5IAc7FqIs+HLHw58TiFur0JAT9e+l+FZOIp6dv/pMMi
-         i3bsY/NFeri55wLw17VADgCY+cMKnw45OGdEiM10WrJDERSZPjAGFOBnfVBfmtyjAYJI
-         DXFKMWGG+C8X31+4Oy9TFuOGdXdOT+Eg9n1VlJ+CFgMDXFGZeENvHX7ZxhxEYIhh1Rla
-         PoRQ==
-X-Gm-Message-State: AOAM531HgAjP4x60pKY7Vg2Gj+vyHfoXnlIb4SYrM32pWDbwdM8sFTR1
-        oYp+8XtKpli60RzxcgzVGdFhZAmbosZq0u07N5E=
-X-Google-Smtp-Source: ABdhPJxGKt76Lg3GTqSnJwaq8ce07osyp5P35JeSOcN9tb1VXjOIJO04UXEDjKYPd9tAaf1+CAAgchajeREZcdHreE4=
-X-Received: by 2002:a05:6000:1b0e:: with SMTP id f14mr24751578wrz.100.1642510589314;
- Tue, 18 Jan 2022 04:56:29 -0800 (PST)
+        id S240422AbiAST3K (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 19 Jan 2022 14:29:10 -0500
+Received: from pegase2.c-s.fr ([93.17.235.10]:52035 "EHLO pegase2.c-s.fr"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S240311AbiAST27 (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Wed, 19 Jan 2022 14:28:59 -0500
+Received: from localhost (mailhub3.si.c-s.fr [172.26.127.67])
+        by localhost (Postfix) with ESMTP id 4JfG0R2Jr1z9sT0;
+        Wed, 19 Jan 2022 20:28:55 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from pegase2.c-s.fr ([172.26.127.65])
+        by localhost (pegase2.c-s.fr [127.0.0.1]) (amavisd-new, port 10024)
+        with ESMTP id VomG4PXD1d1F; Wed, 19 Jan 2022 20:28:55 +0100 (CET)
+Received: from messagerie.si.c-s.fr (messagerie.si.c-s.fr [192.168.25.192])
+        by pegase2.c-s.fr (Postfix) with ESMTP id 4JfG0R0h6xz9sSy;
+        Wed, 19 Jan 2022 20:28:55 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id DB6AB8B781;
+        Wed, 19 Jan 2022 20:28:54 +0100 (CET)
+X-Virus-Scanned: amavisd-new at c-s.fr
+Received: from messagerie.si.c-s.fr ([127.0.0.1])
+        by localhost (messagerie.si.c-s.fr [127.0.0.1]) (amavisd-new, port 10023)
+        with ESMTP id DY-vqUvxFL90; Wed, 19 Jan 2022 20:28:54 +0100 (CET)
+Received: from [192.168.4.44] (unknown [192.168.4.44])
+        by messagerie.si.c-s.fr (Postfix) with ESMTP id 2296E8B768;
+        Wed, 19 Jan 2022 20:28:54 +0100 (CET)
+Message-ID: <c635dff6-2bca-3486-014f-12ae00bd1777@csgroup.eu>
+Date:   Wed, 19 Jan 2022 20:28:54 +0100
 MIME-Version: 1.0
-Received: by 2002:adf:e18f:0:0:0:0:0 with HTTP; Tue, 18 Jan 2022 04:56:28
- -0800 (PST)
-Reply-To: mohsheikhalhamed@gmail.com
-From:   bratikox <bratikox@gmail.com>
-Date:   Tue, 18 Jan 2022 13:56:28 +0100
-Message-ID: <CAFuXTSxdo5QqN-cWu1zvOLDOxST9c2oW0BX-ZHL4Uwk2Qh45dA@mail.gmail.com>
-Subject: Salam Alaikum /ADIA LOAN OFFER
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH v3 11/12] lkdtm: Fix execute_[user]_location()
+Content-Language: fr-FR
+From:   Christophe Leroy <christophe.leroy@csgroup.eu>
+To:     Kees Cook <keescook@chromium.org>
+Cc:     Helge Deller <deller@gmx.de>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org, linux-ia64@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Paul Mackerras <paulus@samba.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Michael Ellerman <mpe@ellerman.id.au>
+References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
+ <d4688c2af08dda706d3b6786ae5ec5a74e6171f1.1634457599.git.christophe.leroy@csgroup.eu>
+ <e7793192-6879-490d-1f37-3d6d6908a121@csgroup.eu>
+In-Reply-To: <e7793192-6879-490d-1f37-3d6d6908a121@csgroup.eu>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Salam Alaikum,
-
-We are a United Arab Emirates based investment company known as Abu
-Dhabi Investment Authority working on expanding its portfolio globally
-and financing projects.
-
-We are offering Corporate and Personal Loan at 3.5% Interest Rate for
-a duration of 5 to 10 years.
-
-Please get back to us on Email: mohsheikhalhamed@gmail.com ,if you are
-interested for further embellishment.
-
-We also pay 2% commission to brokers who introduce project owners for
-finance or other opportunities.
+Hi Kees,
 
 
- Yours truly,
- Hamed Mohammad
- (Personal Assistant)
- Abu Dhabi Investment Authority
- 211 Corniche, P.O Box 3600
- Abu Dhabi,United Arab Emirates
+Le 17/12/2021 à 12:49, Christophe Leroy a écrit :
+> Hi Kees,
+> 
+> Le 17/10/2021 à 14:38, Christophe Leroy a écrit :
+>> execute_location() and execute_user_location() intent
+>> to copy do_nothing() text and execute it at a new location.
+>> However, at the time being it doesn't copy do_nothing() function
+>> but do_nothing() function descriptor which still points to the
+>> original text. So at the end it still executes do_nothing() at
+>> its original location allthough using a copied function descriptor.
+>>
+>> So, fix that by really copying do_nothing() text and build a new
+>> function descriptor by copying do_nothing() function descriptor and
+>> updating the target address with the new location.
+>>
+>> Also fix the displayed addresses by dereferencing do_nothing()
+>> function descriptor.
+>>
+>> Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> 
+> Do you have any comment to this patch and to patch 12 ?
+> 
+> If not, is it ok to get your acked-by ?
+
+Any feedback please, even if it's to say no feedback ?
+
+Many thanks,
+Christophe
+
+> 
+> Thanks
+> Christophe
+> 
+>> ---
+>>   drivers/misc/lkdtm/perms.c | 37 ++++++++++++++++++++++++++++---------
+>>   1 file changed, 28 insertions(+), 9 deletions(-)
+>>
+>> diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
+>> index 035fcca441f0..1cf24c4a79e9 100644
+>> --- a/drivers/misc/lkdtm/perms.c
+>> +++ b/drivers/misc/lkdtm/perms.c
+>> @@ -44,19 +44,34 @@ static noinline void do_overwritten(void)
+>>       return;
+>>   }
+>> +static void *setup_function_descriptor(func_desc_t *fdesc, void *dst)
+>> +{
+>> +    if (!have_function_descriptors())
+>> +        return dst;
+>> +
+>> +    memcpy(fdesc, do_nothing, sizeof(*fdesc));
+>> +    fdesc->addr = (unsigned long)dst;
+>> +    barrier();
+>> +
+>> +    return fdesc;
+>> +}
+>> +
+>>   static noinline void execute_location(void *dst, bool write)
+>>   {
+>> -    void (*func)(void) = dst;
+>> +    void (*func)(void);
+>> +    func_desc_t fdesc;
+>> +    void *do_nothing_text = dereference_function_descriptor(do_nothing);
+>> -    pr_info("attempting ok execution at %px\n", do_nothing);
+>> +    pr_info("attempting ok execution at %px\n", do_nothing_text);
+>>       do_nothing();
+>>       if (write == CODE_WRITE) {
+>> -        memcpy(dst, do_nothing, EXEC_SIZE);
+>> +        memcpy(dst, do_nothing_text, EXEC_SIZE);
+>>           flush_icache_range((unsigned long)dst,
+>>                      (unsigned long)dst + EXEC_SIZE);
+>>       }
+>> -    pr_info("attempting bad execution at %px\n", func);
+>> +    pr_info("attempting bad execution at %px\n", dst);
+>> +    func = setup_function_descriptor(&fdesc, dst);
+>>       func();
+>>       pr_err("FAIL: func returned\n");
+>>   }
+>> @@ -66,16 +81,19 @@ static void execute_user_location(void *dst)
+>>       int copied;
+>>       /* Intentionally crossing kernel/user memory boundary. */
+>> -    void (*func)(void) = dst;
+>> +    void (*func)(void);
+>> +    func_desc_t fdesc;
+>> +    void *do_nothing_text = dereference_function_descriptor(do_nothing);
+>> -    pr_info("attempting ok execution at %px\n", do_nothing);
+>> +    pr_info("attempting ok execution at %px\n", do_nothing_text);
+>>       do_nothing();
+>> -    copied = access_process_vm(current, (unsigned long)dst, do_nothing,
+>> +    copied = access_process_vm(current, (unsigned long)dst, 
+>> do_nothing_text,
+>>                      EXEC_SIZE, FOLL_WRITE);
+>>       if (copied < EXEC_SIZE)
+>>           return;
+>> -    pr_info("attempting bad execution at %px\n", func);
+>> +    pr_info("attempting bad execution at %px\n", dst);
+>> +    func = setup_function_descriptor(&fdesc, dst);
+>>       func();
+>>       pr_err("FAIL: func returned\n");
+>>   }
+>> @@ -153,7 +171,8 @@ void lkdtm_EXEC_VMALLOC(void)
+>>   void lkdtm_EXEC_RODATA(void)
+>>   {
+>> -    execute_location(lkdtm_rodata_do_nothing, CODE_AS_IS);
+>> +    
+>> execute_location(dereference_function_descriptor(lkdtm_rodata_do_nothing), 
+>>
+>> +             CODE_AS_IS);
+>>   }
+>>   void lkdtm_EXEC_USERSPACE(void)
+>>
