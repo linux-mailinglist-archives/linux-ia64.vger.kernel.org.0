@@ -2,76 +2,90 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 81E32496D23
-	for <lists+linux-ia64@lfdr.de>; Sat, 22 Jan 2022 18:48:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C34F496F8B
+	for <lists+linux-ia64@lfdr.de>; Sun, 23 Jan 2022 02:36:11 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232887AbiAVRsh (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 22 Jan 2022 12:48:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38480 "EHLO
+        id S229540AbiAWBgK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 22 Jan 2022 20:36:10 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230289AbiAVRsg (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 22 Jan 2022 12:48:36 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3970C06173B;
-        Sat, 22 Jan 2022 09:48:36 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
-        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
-        Content-ID:Content-Description:In-Reply-To:References;
-        bh=kTOLNIcUI/OpFocR5/mh8LFmWzu6xroLWktyW1LbA4c=; b=pX33jnXRpPi7N+XWJ91t6H6S7m
-        Ji6uvc9I15QtNcWtGAqiV3Ept53eczK6Wmv2J8iTHgxkz9qaPchBUzcUEWtuigdAPjS71ag8A7hkP
-        od+nChR8VUGt4NIAv6UffFGV8wriqBGvX6vgp/YpSsNckrNk1mY8FWrDROB7uSJYo1i6Bfj5aUDoP
-        lRMpersmPuuJf5mKlSlzj+x3Uj4bBqt+ylWejQf5EjZTCNZgUxS1kjdpxTGyFS1ovtYUUAeKn6M/3
-        4apVPO4lxDlD2+3trKkAMr/m/oOHWLHz0QwpzTF/Rj4FFBd2Wr48nLzo/aEI+7njZCYmUw8kOWsOI
-        N6UsOYug==;
-Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
-        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nBKV9-00HXLF-G4; Sat, 22 Jan 2022 17:48:35 +0000
-From:   Randy Dunlap <rdunlap@infradead.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Randy Dunlap <rdunlap@infradead.org>,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        linux-ia64@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        kernel test robot <lkp@intel.com>
-Subject: [PATCH -next] exit: export make_task_dead()
-Date:   Sat, 22 Jan 2022 09:48:34 -0800
-Message-Id: <20220122174834.6493-1-rdunlap@infradead.org>
-X-Mailer: git-send-email 2.31.1
+        with ESMTP id S229507AbiAWBgK (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 22 Jan 2022 20:36:10 -0500
+Received: from mail-pj1-x1044.google.com (mail-pj1-x1044.google.com [IPv6:2607:f8b0:4864:20::1044])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E555BC06173B
+        for <linux-ia64@vger.kernel.org>; Sat, 22 Jan 2022 17:36:09 -0800 (PST)
+Received: by mail-pj1-x1044.google.com with SMTP id d5so10337399pjk.5
+        for <linux-ia64@vger.kernel.org>; Sat, 22 Jan 2022 17:36:09 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to
+         :content-transfer-encoding;
+        bh=JBo39Y+I2aAWyqSG6abXc/K7m8aUzAhFEBypnl/Snzg=;
+        b=cJmaT2iXMKidSZeo6OIwaBWIEsIX9nIbYQZuitlC4w9viiRu+jZlCjbBbPZ21ExgcS
+         Q6flSWiQxECCqHWKl/LUCAqlaygxfh2Bl5LwEwqs0r6TA/lAUV115DbaD86j25jftCMP
+         etRPMYS/bFAlc2FTFOmJRzRo+DU2MUzrVCSUscVqSEwmxtPLSwJ/u6s7OIqLNvGWOCeY
+         dPz29K+NQSsNaDBMTR1OtymcHq9pD+kU38/rk0p2QJeQQuJjeUmBdtf4fahF95LIIZxj
+         p7vvf6q9BuKtqpaazQxv6hQkCpZCQyLWiKwbij+T372OM38H0GOPHr+lFV+37WEg9Iig
+         wr/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to:content-transfer-encoding;
+        bh=JBo39Y+I2aAWyqSG6abXc/K7m8aUzAhFEBypnl/Snzg=;
+        b=Mxv7plEvKm2iHssJISQnkHna1YKjELukdjZ6CELiGYtcuhs0kB5DpiUqlT/pEPEeEH
+         3GoDclhkc9+fC1QOAnrm4jOSzpf40Elokut+Bo8TdPqr1TkuWm+uwT4iOrxtsnzoxoZp
+         TJPv8gcIbmL7+W+ZD26Y9TclLFlx8SRyEClxewmSpnhHtXxk8T85ibldiURpO4qHKnEb
+         VCU4zfy14TwPcIuxJYZOWZWqNI8w6W2V3VrZU5b0mVVJPbcjYe6yWbVVU3Ecij25NaYB
+         b56YbnGEZeTbADsjsW9DP9CkaXGVQXJN8yDNo4TeRRxed28EtdYtyMiKUxCrJd2dyjAQ
+         qv6g==
+X-Gm-Message-State: AOAM533uQauEXRdsqoEScwYV/6otPtM7zogcHgfSZ2fLveBane+Drknc
+        5JBB8/uVRZl03uuI4AJ2TpFJ/w0G6HT7fUP8e8c=
+X-Google-Smtp-Source: ABdhPJzyx+wuq041uoQi6Z+qKjwBD2IBHoU/9Hw7xo2XElD314TTRr2SVVD/AIdWwpx4QlaqqBs6sWclUJzkjEnF0K4=
+X-Received: by 2002:a17:90a:bc84:: with SMTP id x4mr7130159pjr.230.1642901769510;
+ Sat, 22 Jan 2022 17:36:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Received: by 2002:a05:6a10:1251:0:0:0:0 with HTTP; Sat, 22 Jan 2022 17:36:09
+ -0800 (PST)
+Reply-To: huiman43@hotmail.com
+From:   Yi Hiuman <bitcoin.minners250@gmail.com>
+Date:   Sat, 22 Jan 2022 17:36:09 -0800
+Message-ID: <CAHD-T39mPXBicEADX6rwJ4-FLBAP_h0=7tewLkrrCvat9fN3UQ@mail.gmail.com>
+Subject: =?UTF-8?Q?Ich_habe_einen_Gesch=C3=A4ftsvorschlag_f=C3=BCr_Sie_=2F_I_have?=
+        =?UTF-8?Q?_a_business_proposal_for_you?=
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-In a config file from "kernel test robot <lkp@intel.com>" for a
-different problem, this linker error was exposed when
-CONFIG_IA64_MCA_RECOVERY=m.
+Hallo,
 
-We could either export make_task_dead() or restrict IA64_MCA_RECOVERY
-to a bool Kconfig symbol instead of a tristate symbol, so go with the
-EXPORT_SYMBOL() path.
+Ich bin Herr Yi Huiman, ehemaliger Vorsitzender der Industrial and
+Commercial Bank of China (ICBC) und derzeitige China Securities
+Regulatory Commission (CSRC). Ich habe einen Gesch=C3=A4ftsvorschlag, von
+dem wir beide profitieren werden. Ich suche einen seri=C3=B6sen Partner, um
+eine Transaktion im Wert von 45.275.000,00 USD anzuvertrauen. Kann ich
+mich auf dich verlassen? Bitte kontaktieren Sie mich f=C3=BCr weitere
+Informationen =C3=BCber meine pers=C3=B6nliche E-Mail-Adresse:
+huiman43@hotmail.com
 
-Fixes this build error:
+Yi Hiuman
 
-ERROR: modpost: "make_task_dead" [arch/ia64/kernel/mca_recovery.ko] undefined!
 
-Fixes: 0e25498f8cd4 ("exit: Add and use make_task_dead.")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: "Eric W. Biederman" <ebiederm@xmission.com>
-Cc: linux-ia64@vger.kernel.org
-Cc: Tony Luck <tony.luck@intel.com>
-Cc: kernel test robot <lkp@intel.com>
----
- kernel/exit.c |    1 +
- 1 file changed, 1 insertion(+)
 
---- linux-next-20220121.orig/kernel/exit.c
-+++ linux-next-20220121/kernel/exit.c
-@@ -896,6 +896,7 @@ void __noreturn make_task_dead(int signr
- 
- 	do_exit(signr);
- }
-+EXPORT_SYMBOL(make_task_dead);
- 
- SYSCALL_DEFINE1(exit, int, error_code)
- {
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+
+Hello,
+
+I'm Mr. Yi Huiman, former chairman of the Industrial and Commercial
+Bank of China (ICBC) and current China Securities Regulatory
+Commission (CSRC).. I have a business proposal that will benefit both
+of us. I am looking for a serious partner to entrust a transaction
+worth $45,275,000.00 USD. Can i rely on you? Please contact me for
+more information via my personal email address: huiman43@hotmail.com
+
+Yi Hiuman
