@@ -2,56 +2,85 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 76DBB49A779
-	for <lists+linux-ia64@lfdr.de>; Tue, 25 Jan 2022 03:46:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 31FCD49A778
+	for <lists+linux-ia64@lfdr.de>; Tue, 25 Jan 2022 03:45:54 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233856AbiAYCoR convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Mon, 24 Jan 2022 21:44:17 -0500
-Received: from [103.153.79.64] ([103.153.79.64]:62765 "EHLO [103.153.79.64]"
-        rhost-flags-FAIL-FAIL-OK-FAIL) by vger.kernel.org with ESMTP
-        id S1347875AbiAXTsn (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 24 Jan 2022 14:48:43 -0500
-Reply-To: Nasser Rashid <nasserrashid.uae@gmail.com>
-From:   Nasser Rashid <anice.fronteracapitalgroup@gmail.com>
-To:     linux-ia64@vger.kernel.org
-Subject: EXPO 2020 BUSINESS PROPOSAL
-Date:   24 Jan 2022 11:48:45 -0800
-Message-ID: <20220124114845.C928396CD0700F68@gmail.com>
+        id S233753AbiAYCoS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 24 Jan 2022 21:44:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53378 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1385512AbiAXX2E (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 24 Jan 2022 18:28:04 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 648D4C01D7F5;
+        Mon, 24 Jan 2022 13:31:32 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=0s5qsJ6CO8DHG5dILS8ndyGrYhqvc3LsWkk+L8HKEI0=; b=gJFxnAsU44AByjE9wITE9i1Tjw
+        FJwXhpBr5nd/5sGygmwrjDEglZZaBdUDof9zwV6r2VI3sFRCXlTH+vkU4BLoRJRR9ZFFxsMPt0S0D
+        hAfl2O+bJNZp4cNOKTYPYW9CSKYwC5QQt0WMY3wZp6KBbetSaf5z+KgQdoERNWcGBBG3IrcSpHkDx
+        kDPVaa7rSpVcSGvnLexZCuqzPQgOcZ4MZ5oUufxETQuZfoMSmHtzdJp4vgN9w3YN5+zujDh7S8GrK
+        JF5t9Fp2icGJt/Hx5/uxP/c1yciGxw+uS0A6jRe9ftYdUQ7AFQnclzNQQUcB3CCyE3CUWCvJ109AS
+        Plb+5iEA==;
+Received: from [2601:1c0:6280:3f0::aa0b] (helo=bombadil.infradead.org)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nC6vy-005Kjw-Dl; Mon, 24 Jan 2022 21:31:30 +0000
+From:   Randy Dunlap <rdunlap@infradead.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     Randy Dunlap <rdunlap@infradead.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-ia64@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
+        kernel test robot <lkp@intel.com>,
+        Christoph Hellwig <hch@infradead.org>
+Subject: [PATCH -next v2] ia64: make IA64_MCA_RECOVERY bool instead of tristate
+Date:   Mon, 24 Jan 2022 13:31:29 -0800
+Message-Id: <20220124213129.29306-1-rdunlap@infradead.org>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain;
-        charset="utf-8"
-Content-Transfer-Encoding: 8BIT
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Greetings!
+In linux-next, IA64_MCA_RECOVERY uses the (new) function make_task_dead(),
+which is not exported for use by modules. Instead of exporting it for
+one user, convert IA64_MCA_RECOVERY to be a bool Kconfig symbol.
 
-I'm Nasser Rashid, a business financial specialist and investment 
-expert. consultant experienced in financial funding services. I 
-have a
+In a config file from "kernel test robot <lkp@intel.com>" for a
+different problem, this linker error was exposed when
+CONFIG_IA64_MCA_RECOVERY=m.
 
-I have a serious business investment opportunity to discuss with 
-you. Century Financial Dubai is the home of discerning investors.
-We
+Fixes this build error:
 
-We offer independent financial advice and assist our clients in 
-making sound investment decisions from a variety of investment 
-options.
+ERROR: modpost: "make_task_dead" [arch/ia64/kernel/mca_recovery.ko] undefined!
 
-Opportunities are available.
+Fixes: 0e25498f8cd4 ("exit: Add and use make_task_dead.")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-ia64@vger.kernel.org
+Cc: Tony Luck <tony.luck@intel.com>
+Cc: kernel test robot <lkp@intel.com>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+---
+v1 was [PATCH -next] exit: export make_task_dead().
+Christoph suggests and prefers that IA64 MCA recovery code just be
+forced to be builtin if it is enabled.
 
-Our company is structured to provide personalized services to As 
-a result, capital security and adequate funding are ensured.
+ arch/ia64/Kconfig |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-returns on investment. Our investors are ready to provide funding 
-for your business expansion, such as debt and equity.
-
-financing. If you require funding, we would be able to partner 
-with you. We look forward to your response.
-
-Thank you and stay safe,
-
-Nasser Rashid, CFA,
-
-Century Financial
+--- linux-next-20220121.orig/arch/ia64/Kconfig
++++ linux-next-20220121/arch/ia64/Kconfig
+@@ -318,7 +318,7 @@ config ARCH_PROC_KCORE_TEXT
+ 	depends on PROC_KCORE
+ 
+ config IA64_MCA_RECOVERY
+-	tristate "MCA recovery from errors other than TLB."
++	bool "MCA recovery from errors other than TLB."
+ 
+ config IA64_PALINFO
+ 	tristate "/proc/pal support"
