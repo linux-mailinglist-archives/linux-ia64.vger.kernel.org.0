@@ -2,52 +2,52 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B6D7D49AD42
-	for <lists+linux-ia64@lfdr.de>; Tue, 25 Jan 2022 08:15:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 39C5749B01F
+	for <lists+linux-ia64@lfdr.de>; Tue, 25 Jan 2022 10:41:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1442378AbiAYHPA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 25 Jan 2022 02:15:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46826 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1442364AbiAYHIb (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 25 Jan 2022 02:08:31 -0500
-Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFBF7C0619CD;
-        Mon, 24 Jan 2022 21:55:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=M7NmYC/Iylm9myghHwqILim55SAUt9QrM+UZYk0eJlw=; b=2JMWkRT8bMLZY9sQn3htmqSvZP
-        lOVpVLnLFAnunA+AXaPhmuUNgQzEskFJjGE+pT0rWgwddAysc6ld9mIXDmRNfqakXv4twJ1WGThl2
-        ZjqLs74FV7HSU/wiSeqQfM3GtaUn/FubrdsfI1GlZg0qoA+WDO/iXVwISjkLftmIlyzvQIE13Xb9u
-        xDsKmQwI4r0T+JaXQ2h1XTOWHNKscC72hVLfyXnjvh6AnS9ag7ed/je7KmOxa9cYBQcytt9J//lgc
-        uFmgHBccyRDSAz5JyqS60dUY1a6fa8pKgTt0Js+R0sxq2biVrsvRmKJWH+UM5+D5fWj5jxCt1cCzo
-        b1o/Ec8g==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1nCEnm-006XD8-Ud; Tue, 25 Jan 2022 05:55:34 +0000
-Date:   Mon, 24 Jan 2022 21:55:34 -0800
-From:   Christoph Hellwig <hch@infradead.org>
-To:     Randy Dunlap <rdunlap@infradead.org>
-Cc:     linux-kernel@vger.kernel.org,
-        "Eric W. Biederman" <ebiederm@xmission.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linux-ia64@vger.kernel.org, Tony Luck <tony.luck@intel.com>,
-        kernel test robot <lkp@intel.com>,
-        Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH -next v2] ia64: make IA64_MCA_RECOVERY bool instead of
- tristate
-Message-ID: <Ye+Q1nOv3twgwCuq@infradead.org>
-References: <20220124213129.29306-1-rdunlap@infradead.org>
+        id S1458101AbiAYJ0T (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 25 Jan 2022 04:26:19 -0500
+Received: from mail.belongsenergy.pl ([185.45.112.191]:35906 "EHLO
+        mail.belongsenergy.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1457011AbiAYJOD (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 25 Jan 2022 04:14:03 -0500
+Received: by mail.belongsenergy.pl (Postfix, from userid 1001)
+        id 7DBA7266AD; Tue, 25 Jan 2022 09:05:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=belongsenergy.pl;
+        s=mail; t=1643101540;
+        bh=JAEkA4FCBmQ7T7M+WVau75EdqeDf4MEEr9hE2/l61BA=;
+        h=Date:From:To:Subject:From;
+        b=IB9snAk8UaHQxoA2PYj3DzVfPmw/uzk4M+v8p31WtBTyLs5GZ7Akzf1F2btAJ+ePA
+         ES1Lu/dE3dYqe0adMCCfbR+YLtb8i9rJ2WE925VQtPqquudXyhEBMA9NNIwU++Fw8A
+         X0JI6I5CGZVf/NrRQIezyTZY6q42yuRaCdny7jjx4qKKFoBOgygJkUZRSJdNYNtLGT
+         AbjOBTrWLwQ2boRUdBv1gGikX8NoLdXRBJVKhM+tAxvgwV7LPcbpM5pR8gABGYXK01
+         aDR+ZrLT0NNrlz88UFag7DZzb6eooH0VuHhPjrANtuS785Qju0xvN22AfZkMRTSWJT
+         LwxCCkxOGJnjA==
+Received: by mail.belongsenergy.pl for <linux-ia64@vger.kernel.org>; Tue, 25 Jan 2022 09:05:20 GMT
+Message-ID: <20220125074500-0.1.7.2d0.0.yp9p88a7b9@belongsenergy.pl>
+Date:   Tue, 25 Jan 2022 09:05:20 GMT
+From:   "Maciej Nitycz" <maciej.nitycz@belongsenergy.pl>
+To:     <linux-ia64@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.belongsenergy.pl
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220124213129.29306-1-rdunlap@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Looks good:
+Dzie=C5=84 dobry,
 
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
+
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
+
+
+Pozdrawiam,
+Maciej Nitycz
