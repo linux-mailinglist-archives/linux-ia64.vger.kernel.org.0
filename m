@@ -2,128 +2,166 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id B2C9449CB2C
-	for <lists+linux-ia64@lfdr.de>; Wed, 26 Jan 2022 14:45:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F34349CEC0
+	for <lists+linux-ia64@lfdr.de>; Wed, 26 Jan 2022 16:40:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240533AbiAZNpf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 26 Jan 2022 08:45:35 -0500
-Received: from ams.source.kernel.org ([145.40.68.75]:58226 "EHLO
-        ams.source.kernel.org" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235305AbiAZNpe (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 26 Jan 2022 08:45:34 -0500
+        id S242887AbiAZPkT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 26 Jan 2022 10:40:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47660 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S243019AbiAZPkQ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 26 Jan 2022 10:40:16 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D1A2C06161C;
+        Wed, 26 Jan 2022 07:40:16 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 7CE77B81E0F;
-        Wed, 26 Jan 2022 13:45:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9195C340E3;
-        Wed, 26 Jan 2022 13:45:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1643204731;
-        bh=aXQde9wq7cWvdCRLRrI1FIQr3++bEQ4exG2q/lhqD3E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=v+g8gUQjIt/c0ktBUQcit03sTj8G5mLw8FT+LXQqudlxh2iXfgafDrgsKIgJcd+6A
-         KW7BP0Pf7wtiKC9gzDKJw1Q0VKMx5apmABXH/60JK3d2VK/Sw93FHWeCcfYpb1QPrC
-         cxProUa3b1FFVLRT4j2tOajkb4EpxDNqSymszfjw=
-Date:   Wed, 26 Jan 2022 14:45:28 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Walt Drummond <walt@drummond.us>
-Cc:     agordeev@linux.ibm.com, arnd@arndb.de, benh@kernel.crashing.org,
-        borntraeger@linux.ibm.com, chris@zankel.net, davem@davemloft.net,
-        hca@linux.ibm.com, deller@gmx.de, ink@jurassic.park.msu.ru,
-        James.Bottomley@hansenpartnership.com, jirislaby@kernel.org,
-        mattst88@gmail.com, jcmvbkbc@gmail.com, mpe@ellerman.id.au,
-        paulus@samba.org, rth@twiddle.net, dalias@libc.org,
-        tsbogend@alpha.franken.de, gor@linux.ibm.com, ysato@users.osdn.me,
-        linux-kernel@vger.kernel.org, ar@cs.msu.ru,
-        linux-alpha@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, sparclinux@vger.kernel.org
-Subject: Re: [PATCH 0/3] status: TTY status message request
-Message-ID: <YfFQeC1cUVFmISMK@kroah.com>
-References: <20220118044259.764945-1-walt@drummond.us>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9ECB46194F;
+        Wed, 26 Jan 2022 15:40:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1864C340E3;
+        Wed, 26 Jan 2022 15:40:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1643211615;
+        bh=07/MIz8fKzhFCCwBfpvqCou3XnqmFxByCSYEulgW10Y=;
+        h=From:To:Cc:Subject:Date:From;
+        b=XptR4jlYs3Qr0ObepVT4rVv9NF1gMCB3lwPa04JnyftMfCmJCVczvxA2AJphqNrfx
+         gll2dSP1hFbsupvnvp5ToX7/OpFyvlQ/QZyttGXDbTUVVUVS7opmZTtx1wS4MOodXj
+         HCIzGoAWCcJvqmmdvxH0wjIZOgNBQWhjg4p91E+iuf4V0NEhSq0nHxQsxw53/xkp6i
+         og5yltCoFP0kzR6FBDv0bnRyXJzwHjTBwh+u2OUCPEJ2DhpEr02JD1EaJ63i7JqMiv
+         R9O4+5dXGKYHcCHAh+Z97x8rNTw0AYAVTVtr3i/xgqtayUC6Dhh0A1pQzHdXmUFyEe
+         L01xklJmtuHwg==
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     linux-pci@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-ia64@vger.kernel.org, x86@kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        =?UTF-8?q?Ville=20Syrj=C3=A4l=C3=A4?= 
+        <ville.syrjala@linux.intel.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kw@linux.com>
+Subject: [PATCH v1] PCI/sysfs: Find shadow ROM before static attribute initialization
+Date:   Wed, 26 Jan 2022 09:40:01 -0600
+Message-Id: <20220126154001.16895-1-helgaas@kernel.org>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220118044259.764945-1-walt@drummond.us>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Jan 17, 2022 at 08:42:57PM -0800, Walt Drummond wrote:
-> This patchset adds TTY status message request feature to the n_tty
-> line dicipline.  This feature prints a brief message containing basic
-> system and process group information to a user's TTY in response to a
-> new control character in the line dicipline (default Ctrl-T) or the
-> TIOCSTAT ioctl.  The message contains the current system load, the
-> name and PID of an interesting process in the forground process group,
-> it's run time, percent CPU usage and RSS.  An example of this message
-> is:
-> 
->   load: 0.31  cmd: sleep 3616843 [sleeping] 0.36r 0.00u 0.00s 0% 696k
-> 
-> User API visible changes are limited to:
->  - The addition of VSTATUS in termios.c_cc[]
->  - The addition of NOKERNINFO bit in termios.l_cflags
->  - The addition of the TIOCSTAT ioctl number
-> 
-> None of these changes break the existing kernel api as the termios
-> structure on all architectures has enough space in the control
-> character array (.c_cc) for the new character, and the other changes
-> are space agnostic.
-> 
-> This feature is in many other Unix-like systems, both current and
-> historical.  In other implementations, this feature would also send
-> SIGINFO to the process group; this implementation does not.
-> 
-> Walt Drummond (3):
->   vstatus: Allow the n_tty line dicipline to write to a user tty
->   vstatus: Add user space API definitions for VSTATUS, NOKERNINFO and
->     TIOCSTAT
->   status: Display an informational message when the VSTATUS character is
->     pressed or TIOCSTAT ioctl is called.
-> 
->  arch/alpha/include/asm/termios.h         |   4 +-
->  arch/alpha/include/uapi/asm/ioctls.h     |   1 +
->  arch/alpha/include/uapi/asm/termbits.h   |  34 ++---
->  arch/ia64/include/asm/termios.h          |   4 +-
->  arch/ia64/include/uapi/asm/termbits.h    |  34 ++---
->  arch/mips/include/asm/termios.h          |   4 +-
->  arch/mips/include/uapi/asm/ioctls.h      |   1 +
->  arch/mips/include/uapi/asm/termbits.h    |  36 ++---
->  arch/parisc/include/asm/termios.h        |   4 +-
->  arch/parisc/include/uapi/asm/ioctls.h    |   1 +
->  arch/parisc/include/uapi/asm/termbits.h  |  34 ++---
->  arch/powerpc/include/asm/termios.h       |   4 +-
->  arch/powerpc/include/uapi/asm/ioctls.h   |   2 +
->  arch/powerpc/include/uapi/asm/termbits.h |  34 ++---
->  arch/s390/include/asm/termios.h          |   4 +-
->  arch/sh/include/uapi/asm/ioctls.h        |   1 +
->  arch/sparc/include/uapi/asm/ioctls.h     |   1 +
->  arch/sparc/include/uapi/asm/termbits.h   |  38 +++---
->  arch/xtensa/include/uapi/asm/ioctls.h    |   1 +
->  drivers/tty/Makefile                     |   2 +-
->  drivers/tty/n_tty.c                      | 113 +++++++++++-----
->  drivers/tty/n_tty_status.c               | 162 +++++++++++++++++++++++
->  drivers/tty/tty_io.c                     |   2 +-
->  include/asm-generic/termios.h            |   4 +-
->  include/linux/tty.h                      | 123 ++++++++---------
->  include/uapi/asm-generic/ioctls.h        |   1 +
->  include/uapi/asm-generic/termbits.h      |  34 ++---
->  27 files changed, 461 insertions(+), 222 deletions(-)
->  create mode 100644 drivers/tty/n_tty_status.c
-> 
-> -- 
-> 2.30.2
-> 
+From: Bjorn Helgaas <bhelgaas@google.com>
 
-You forgot to cc: me on patch 2/3, which would be needed if I was to
-take them all.
+Ville reported that the sysfs "rom" file for VGA devices disappeared after
+527139d738d7 ("PCI/sysfs: Convert "rom" to static attribute").
 
-Please fix up patch 2 and resend the whole series.
+Prior to 527139d738d7, FINAL fixups, including pci_fixup_video() where we
+find shadow ROMs, were run before pci_create_sysfs_dev_files() created the
+sysfs "rom" file.
 
-thanks,
+After 527139d738d7, "rom" is a static attribute and is created before FINAL
+fixups are run, so we didn't create "rom" files for shadow ROMs:
 
-greg k-h
+  acpi_pci_root_add
+    ...
+      pci_scan_single_device
+        pci_device_add
+          pci_fixup_video                    # <-- new HEADER fixup
+          device_add
+            ...
+              if (grp->is_visible())
+                pci_dev_rom_attr_is_visible  # after 527139d738d7
+    pci_bus_add_devices
+      pci_bus_add_device
+        pci_fixup_device(pci_fixup_final)
+          pci_fixup_video                    # <-- previous FINAL fixup
+        pci_create_sysfs_dev_files
+          if (pci_resource_len(pdev, PCI_ROM_RESOURCE))
+            sysfs_create_bin_file("rom")     # before 527139d738d7
+
+Change pci_fixup_video() to be a HEADER fixup so it runs before sysfs
+static attributes are initialized.
+
+Rename the Loongson pci_fixup_radeon() to pci_fixup_video() and make its
+dmesg logging identical to the others since it is doing the same job.
+
+Fixes: 527139d738d7 ("PCI/sysfs: Convert "rom" to static attribute")
+Link: https://lore.kernel.org/r/YbxqIyrkv3GhZVxx@intel.com
+Reported-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Tested-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Huacai Chen <chenhuacai@kernel.org>
+Cc: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Borislav Petkov <bp@alien8.de>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Krzysztof Wilczyński <kw@linux.com>
+---
+ arch/ia64/pci/fixup.c              | 4 ++--
+ arch/mips/loongson64/vbios_quirk.c | 9 ++++-----
+ arch/x86/pci/fixup.c               | 4 ++--
+ 3 files changed, 8 insertions(+), 9 deletions(-)
+
+diff --git a/arch/ia64/pci/fixup.c b/arch/ia64/pci/fixup.c
+index acb55a41260d..2bcdd7d3a1ad 100644
+--- a/arch/ia64/pci/fixup.c
++++ b/arch/ia64/pci/fixup.c
+@@ -76,5 +76,5 @@ static void pci_fixup_video(struct pci_dev *pdev)
+ 		}
+ 	}
+ }
+-DECLARE_PCI_FIXUP_CLASS_FINAL(PCI_ANY_ID, PCI_ANY_ID,
+-				PCI_CLASS_DISPLAY_VGA, 8, pci_fixup_video);
++DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_ANY_ID, PCI_ANY_ID,
++			       PCI_CLASS_DISPLAY_VGA, 8, pci_fixup_video);
+diff --git a/arch/mips/loongson64/vbios_quirk.c b/arch/mips/loongson64/vbios_quirk.c
+index 9a29e94d3db1..3115d4de982c 100644
+--- a/arch/mips/loongson64/vbios_quirk.c
++++ b/arch/mips/loongson64/vbios_quirk.c
+@@ -3,7 +3,7 @@
+ #include <linux/pci.h>
+ #include <loongson.h>
+ 
+-static void pci_fixup_radeon(struct pci_dev *pdev)
++static void pci_fixup_video(struct pci_dev *pdev)
+ {
+ 	struct resource *res = &pdev->resource[PCI_ROM_RESOURCE];
+ 
+@@ -22,8 +22,7 @@ static void pci_fixup_radeon(struct pci_dev *pdev)
+ 	res->flags = IORESOURCE_MEM | IORESOURCE_ROM_SHADOW |
+ 		     IORESOURCE_PCI_FIXED;
+ 
+-	dev_info(&pdev->dev, "BAR %d: assigned %pR for Radeon ROM\n",
+-		 PCI_ROM_RESOURCE, res);
++	dev_info(&pdev->dev, "Video device with shadowed ROM at %pR\n", res);
+ }
+-DECLARE_PCI_FIXUP_CLASS_FINAL(PCI_VENDOR_ID_ATI, 0x9615,
+-				PCI_CLASS_DISPLAY_VGA, 8, pci_fixup_radeon);
++DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_VENDOR_ID_ATI, 0x9615,
++			       PCI_CLASS_DISPLAY_VGA, 8, pci_fixup_video);
+diff --git a/arch/x86/pci/fixup.c b/arch/x86/pci/fixup.c
+index 2edd86649468..615a76d70019 100644
+--- a/arch/x86/pci/fixup.c
++++ b/arch/x86/pci/fixup.c
+@@ -353,8 +353,8 @@ static void pci_fixup_video(struct pci_dev *pdev)
+ 		}
+ 	}
+ }
+-DECLARE_PCI_FIXUP_CLASS_FINAL(PCI_ANY_ID, PCI_ANY_ID,
+-				PCI_CLASS_DISPLAY_VGA, 8, pci_fixup_video);
++DECLARE_PCI_FIXUP_CLASS_HEADER(PCI_ANY_ID, PCI_ANY_ID,
++			       PCI_CLASS_DISPLAY_VGA, 8, pci_fixup_video);
+ 
+ 
+ static const struct dmi_system_id msi_k8t_dmi_table[] = {
+-- 
+2.25.1
+
