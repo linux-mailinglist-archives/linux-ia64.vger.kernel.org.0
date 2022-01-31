@@ -2,77 +2,90 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 108864A436C
-	for <lists+linux-ia64@lfdr.de>; Mon, 31 Jan 2022 12:21:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C8DE4A51A1
+	for <lists+linux-ia64@lfdr.de>; Mon, 31 Jan 2022 22:39:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359474AbiAaLV3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 31 Jan 2022 06:21:29 -0500
-Received: from foss.arm.com ([217.140.110.172]:47680 "EHLO foss.arm.com"
-        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
-        id S1378380AbiAaLUG (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
-        Mon, 31 Jan 2022 06:20:06 -0500
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9BB62D6E;
-        Mon, 31 Jan 2022 03:20:04 -0800 (PST)
-Received: from FVFF7649Q05P (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E600C3F774;
-        Mon, 31 Jan 2022 03:20:02 -0800 (PST)
-Date:   Mon, 31 Jan 2022 11:19:57 +0000
-From:   Vincent Donnefort <vincent.donnefort@arm.com>
-To:     Yury Norov <yury.norov@gmail.com>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Yuan ZhaoXiong <yuanzhaoxiong@baidu.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] kernel/cpu.c: fix init_cpu_online
-Message-ID: <YffF3e+uUIDVO7hm@FVFF7649Q05P>
-References: <20220131014648.941629-1-yury.norov@gmail.com>
+        id S1381252AbiAaVjA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 31 Jan 2022 16:39:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51584 "EHLO
+        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
+        with ESMTP id S1381150AbiAaViT (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 31 Jan 2022 16:38:19 -0500
+Received: from mail-oi1-x242.google.com (mail-oi1-x242.google.com [IPv6:2607:f8b0:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46581C06175A
+        for <linux-ia64@vger.kernel.org>; Mon, 31 Jan 2022 13:38:10 -0800 (PST)
+Received: by mail-oi1-x242.google.com with SMTP id e81so29406610oia.6
+        for <linux-ia64@vger.kernel.org>; Mon, 31 Jan 2022 13:38:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=RcCyF58LaRxi/j1nHAT0ApLeXmQ9s66f3iMVqhPacvY=;
+        b=dEuqzCa7Zlz6s4mRGbRbRWXXanD59qsT+xmKk7tBbCVL8shmNgt9pnuL3r3GZQALql
+         Y63DqHUGCnZO0yzAtzp7ZNS2CuC8pMKUMaMtNqE3s9gB45FDt9/C7CdeYDqwmv7HZJbj
+         h6fZit5aG7dGp8FvXKTscfcGshyIKAGZl/Y4NFvWe+GDkg5MDDBzPsbgzyvzZ7B1mfX4
+         ltlQ0tRJrdsWlCdvxMPpvS+PhwNDM1Zp7MYHnfnHzWMTP4bbhrhxbQSB0Xw9LPR0gSp/
+         L2Vas/DZH4ZiZyplfhihUfOHaOD2GjtH1tg3ZI6lVgxDcwRnl8d4U3qCI5tj+07J/ZXk
+         SzvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=RcCyF58LaRxi/j1nHAT0ApLeXmQ9s66f3iMVqhPacvY=;
+        b=1G/MOw/TwDtUgDonkYukXecumsqWROujwodKQSd/Wa9cMBZSftvQhT16GMHgPRKTIT
+         o3gYHwPJYGTeuN1Lkln7sjy5lEValVB/Tsrd0HpQvrfk2boR6R/JxpLPYLn99lxgd3R+
+         l+DF216Peo7TrplNVSSxNdhfsyiCk2DZsW90PFdby3ZJIyf0zntfHqyWnyFyC/7lfcsO
+         pNtY0oNwcttiGNkXwKxBLcPrmzOHC13DGbaVVYap1Ah/4K/sl0CAI6c6ojvwm0dq2c2u
+         adGVdW5rjTLE1XF3yIF5fgk+csngfKZbaEji3y77u2mlYv9eDp7HEmiGt08wT43d7Yas
+         4tnA==
+X-Gm-Message-State: AOAM53234msatY3HUNxPaNSkoP2PXcXisByxBs2NIneg/XqzKchYTHX6
+        0h8CLmdT9flrR1i8lZI5paqKmYeJefQ7X/jnIrY=
+X-Google-Smtp-Source: ABdhPJzjG4nHBnpm1YeRsvfpKVsM6nmNJIeFJaztEJrNHMe+iyJctx1iGavTAT23A2IhS4j6LtYbunRiUquAn1xj08o=
+X-Received: by 2002:a54:4490:: with SMTP id v16mr14818764oiv.157.1643665089421;
+ Mon, 31 Jan 2022 13:38:09 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220131014648.941629-1-yury.norov@gmail.com>
+Received: by 2002:a4a:c30d:0:0:0:0:0 with HTTP; Mon, 31 Jan 2022 13:38:09
+ -0800 (PST)
+Reply-To: westerunion909@gmail.com
+From:   "Antonia Lloyd." <anthonylloydatmxxx04@gmail.com>
+Date:   Mon, 31 Jan 2022 13:38:09 -0800
+Message-ID: <CAExPwBBpihjV-rv_-+hYqb1WD3wpSWx81B_Q3ES15U3TXSPsyw@mail.gmail.com>
+Subject: Dear Email ID Owner.(USD$4000 IMF COMPENSATION FUND TO PICK UP TODAY).
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Yury,
+Dear Email ID Owner.
 
-On Sun, Jan 30, 2022 at 05:46:48PM -0800, Yury Norov wrote:
-> cpu_online_mask has an associate counter of online cpus, which must be
-> initialized in init_cpu_online().
-> 
-> Fixes: 0c09ab96fc82010 (cpu/hotplug: Cache number of online CPUs)
+The IMF is compensating all the email address that was funds as one of
+the ward win Victims and your email address and your name is among the
+listed one of approved to pay the sum of $3.6 million U.S Dollars. We
+have concluded to effect your own payment through Western Union Money
+Transfer for easy pick-up of those funds in good condition,$4000 twice
+daily,till the $3.6 million is completely transferred to you.We now
+need your information where we will be sending the funds,such
+as;Receiver name(Your full Name)address and phone number.Contact
+Western Union agent with this Email: ( westerunion995@gmail.com  ) for
+your payment fund.
 
-Aren't the increments/decrements from set_cpu_online() enough?
+Ms.Maria Zatto
+E-mail:westerunion995@gmail.com
+Telephone: +229 682 97 169
 
-I guess we could argue that this isn't a private function and the
-num_online_cpus should be updated here. But unless I missed something,
-init_cpu_online() is only called in ia64 arch, in the !SMP case. Is
-this the problem you're trying to tackle? If not, I'm not sure that warrants a
-"Fixes:" tag
+Contact Ms.Maria,immediately you get this mail through western union
+email address above to enable her speed-up.your payment and release
+the $4000 dollars MTCN today for you to pick up the payment OK.
 
-> Signed-off-by: Yury Norov <yury.norov@gmail.com>
-> ---
->  kernel/cpu.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/kernel/cpu.c b/kernel/cpu.c
-> index 407a2568f35e..cd7605204d4d 100644
-> --- a/kernel/cpu.c
-> +++ b/kernel/cpu.c
-> @@ -2616,6 +2616,7 @@ void init_cpu_possible(const struct cpumask *src)
->  void init_cpu_online(const struct cpumask *src)
->  {
->  	cpumask_copy(&__cpu_online_mask, src);
-> +	atomic_set(&__num_online_cpus, cpumask_weight(cpu_online_mask));
->  }
->  
->  void set_cpu_online(unsigned int cpu, bool online)
-> -- 
-> 2.30.2
-> 
+You are expected to provide us with the details as prescribed below to
+enable safe and easy release of your funds today.
+
+(1)Your Full name:
+(2)Your Phone number:
+(3)Your Country:
+(4)Your Age:
+
+Thank you,
+Dr.Antonia Lloyd.
+Contact Dir.Western Union Money Transfer,
+Cotonou-Benin Republic.
