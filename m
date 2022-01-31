@@ -2,165 +2,94 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E0C64A3BCC
-	for <lists+linux-ia64@lfdr.de>; Mon, 31 Jan 2022 00:40:41 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id DC1D84A3C79
+	for <lists+linux-ia64@lfdr.de>; Mon, 31 Jan 2022 02:46:51 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357017AbiA3Xkk (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 30 Jan 2022 18:40:40 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34434 "EHLO
+        id S235650AbiAaBqt (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 30 Jan 2022 20:46:49 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1357008AbiA3XiG (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 30 Jan 2022 18:38:06 -0500
-Received: from mail-lf1-x12e.google.com (mail-lf1-x12e.google.com [IPv6:2a00:1450:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BC0BC061768;
-        Sun, 30 Jan 2022 15:38:05 -0800 (PST)
-Received: by mail-lf1-x12e.google.com with SMTP id a28so23276906lfl.7;
-        Sun, 30 Jan 2022 15:38:04 -0800 (PST)
+        with ESMTP id S230269AbiAaBqs (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 30 Jan 2022 20:46:48 -0500
+Received: from mail-pg1-x52e.google.com (mail-pg1-x52e.google.com [IPv6:2607:f8b0:4864:20::52e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A1C2C061714;
+        Sun, 30 Jan 2022 17:46:48 -0800 (PST)
+Received: by mail-pg1-x52e.google.com with SMTP id e16so10885668pgn.4;
+        Sun, 30 Jan 2022 17:46:48 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=kEaxNtq4BarrclNUiioDBF+6lBsKK3a9toXDktjcMR4=;
-        b=HntJ6DyCYL+ke6f/r0is/oFtPZ4gM0JnOcriee/6UCUdnbMrZ6NOZCGasE1GEHraDu
-         pCBWJZjwmgcL07nwsUauAU2GlxacbaVxZhonKlPwwFBuAdu9viIQHcwKhf5dcL+qJ3nn
-         XhquQFTcfNjpbKfwUnK91j3Ge7sDIsFDFI/0mJTVowVMyA1BhEquZb8cXOuqYsZtg9aC
-         IwXRQGqgPsQgyNkeIMf9S+4pn8Wundfp1v2UsKp+neG01ddR2rxW0d3I1LRmyGvULbSe
-         5ToOMq/E6pAjk3+OSUQ6ZeKR1+WuSDVpNO845bw8OU98QhOQkdAG7afJAysxD5/92Ee2
-         gC9A==
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2cW2Lx4AI8MPH4Bk7KXj4Vkw5vzZl1ppTAqKUBR+xkU=;
+        b=di32sGTYWtFxvcNV7gCw2VmdXnsDRngMicftxh+8EjZE6gpb7tN6DJZMCuZRsEEbD/
+         JUdpGLJKHjdRbpzM0MWLnd1kPW03aNsegwJsWU0jIw1Yj6F5bdAd333iH9X+IwQuLOIf
+         JT3z0BD0YIEc+a3Zusez0XBzJ0/dSTUs28POo6p9a6T81wXr8aX4Mz/ll8bb3lWlRne9
+         dNO/Bf5ex6mNBAXc12cpcX2UpV4NAvfPAypCx+lkEKSqLBf64MmYGJe8LDsFRhBGtDAu
+         gE6LDBqVvwxucKPxGas8FnsWgUVBlI6OkBOjGhx54iknNXISVrATVWZwNmIT+R/UMs7r
+         9gsw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=kEaxNtq4BarrclNUiioDBF+6lBsKK3a9toXDktjcMR4=;
-        b=w1fPv78lWgedNIBanxpYqZC53NvGvi2vz2vyHiIwQk3p6nCZegGVNjIYnhbDTFxU15
-         HpP2pxMl9wZcQCf6X99bcGzqC9AXUWWHQhSd1VCubuc8kH43amvs9WHwkYdZSjZZ4uWB
-         Uv0sJYhCS6gJrituWKKj8zT0wnXlSUaSdxUSEoY1RjREQjLzjTOdVAFlQRWWJes0ng7l
-         NxOOToSpYw2ASMcBnflHo4G29jYQrL7DlVSb68zvwspP93aoEPx0zQsD3wfGeszt5izy
-         D+AVYpccTrPQ96vQEQEcZJyaPFwZf24SkDC/VtQo+QGgE5Fkbs1lGEtoYBT1w70rb9zg
-         rgCA==
-X-Gm-Message-State: AOAM5330N36hGX/Hwmsb7hHX3nhs69r8OqgEdhfUGEZw+vjTeiO4n/ji
-        lsHJfD8cZNBLDv1JiQV7gg8=
-X-Google-Smtp-Source: ABdhPJy7y3uqXOwOev3QXphmi8L7tLYmjKiDpJEwGe8WqzvjXRaZTuzAa3HaIFQiqtNJq5XkxRnQXQ==
-X-Received: by 2002:a05:6512:310:: with SMTP id t16mr13842194lfp.138.1643585883411;
-        Sun, 30 Jan 2022 15:38:03 -0800 (PST)
-Received: from localhost.localdomain (109-252-138-126.dynamic.spd-mgts.ru. [109.252.138.126])
-        by smtp.gmail.com with ESMTPSA id a24sm1262950ljp.112.2022.01.30.15.38.01
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=2cW2Lx4AI8MPH4Bk7KXj4Vkw5vzZl1ppTAqKUBR+xkU=;
+        b=QRfmts7w7D6qZutOA8BPbJhhdDN5zk/gpbc3C0MqS0jfE2ncWLpmQCr0X5+tA1mDmR
+         CJkcBKfcAnxRxhL1og/1Zj/Ac6MXotvm9RyAr0Q7OT8qoyyFvEXswoX1Ab0M5BW5LuI5
+         +bKzEvNuVgKJjoXXxO0kUfQLzbtBCFHqusKqcyWp5Gnq0IfmYowKZtPQZzwaXV1Hnetb
+         sMbs+YOsGWbBJ9iUDFvStKagqE5uAlvdMxpUVlORrI5pBk9datZ1MfmBscrpIkOz3hNm
+         6a0YOEazryt2KRAcwDVXsE/fhNO4KFQJoKBvylM9GjnV9OlQiYB0PuL99mIRQ2HqG5wb
+         WuLw==
+X-Gm-Message-State: AOAM532qAlAf8ejkHutNPBhe4lDrruefyNBzamPyvnwfhY57ihQITYmQ
+        AMjR69mXeOQptJD0vjXj6PY=
+X-Google-Smtp-Source: ABdhPJxjS7AM92NRmg0JyGGcwR5KFUYFuWzwtfbLZUdnNRXDZ2kOIuGTNdOkF67TRR1wqVEnmDYw7g==
+X-Received: by 2002:a05:6a00:1805:: with SMTP id y5mr18664694pfa.6.1643593607472;
+        Sun, 30 Jan 2022 17:46:47 -0800 (PST)
+Received: from localhost (searspoint.nvidia.com. [216.228.112.21])
+        by smtp.gmail.com with ESMTPSA id c20sm15361033pfn.190.2022.01.30.17.46.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 30 Jan 2022 15:38:03 -0800 (PST)
-From:   Dmitry Osipenko <digetx@gmail.com>
-To:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@canonical.com>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>, alankao@andestech.com,
-        "K . C . Kuen-Chern Lin" <kclin@andestech.com>,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>
-Cc:     linux-kernel@vger.kernel.org, linux-csky@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, linux-sh@vger.kernel.org,
-        xen-devel@lists.xenproject.org, linux-acpi@vger.kernel.org,
-        linux-pm@vger.kernel.org, linux-tegra@vger.kernel.org
-Subject: [PATCH v6 21/21] reboot: Remove pm_power_off_prepare()
-Date:   Mon, 31 Jan 2022 02:37:18 +0300
-Message-Id: <20220130233718.21544-22-digetx@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220130233718.21544-1-digetx@gmail.com>
-References: <20220130233718.21544-1-digetx@gmail.com>
+        Sun, 30 Jan 2022 17:46:47 -0800 (PST)
+From:   Yury Norov <yury.norov@gmail.com>
+To:     Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Vincent Donnefort <vincent.donnefort@arm.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Yuan ZhaoXiong <yuanzhaoxiong@baidu.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc:     Yury Norov <yury.norov@gmail.com>
+Subject: [PATCH] kernel/cpu.c: fix init_cpu_online
+Date:   Sun, 30 Jan 2022 17:46:48 -0800
+Message-Id: <20220131014648.941629-1-yury.norov@gmail.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-All pm_power_off_prepare() users were converted to sys-off handler API.
-Remove the obsolete callback.
+cpu_online_mask has an associate counter of online cpus, which must be
+initialized in init_cpu_online().
 
-Signed-off-by: Dmitry Osipenko <digetx@gmail.com>
+Fixes: 0c09ab96fc82010 (cpu/hotplug: Cache number of online CPUs)
+Signed-off-by: Yury Norov <yury.norov@gmail.com>
 ---
- include/linux/pm.h |  1 -
- kernel/reboot.c    | 11 -----------
- 2 files changed, 12 deletions(-)
+ kernel/cpu.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/pm.h b/include/linux/pm.h
-index f7d2be686359..62879bfc4b8e 100644
---- a/include/linux/pm.h
-+++ b/include/linux/pm.h
-@@ -21,7 +21,6 @@
-  * Callbacks for platform drivers to implement.
-  */
- extern void (*pm_power_off)(void);
--extern void (*pm_power_off_prepare)(void);
- 
- struct device; /* we have a circular dep with device.h */
- #ifdef CONFIG_VT_CONSOLE_SLEEP
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index 1ae5ba86b150..6e0d4deda987 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -48,13 +48,6 @@ int reboot_cpu;
- enum reboot_type reboot_type = BOOT_ACPI;
- int reboot_force;
- 
--/*
-- * If set, this is used for preparing the system to power off.
-- */
--
--void (*pm_power_off_prepare)(void);
--EXPORT_SYMBOL_GPL(pm_power_off_prepare);
--
- /**
-  *	emergency_restart - reboot the system
-  *
-@@ -828,10 +821,6 @@ void do_kernel_power_off(void)
- 
- static void do_kernel_power_off_prepare(void)
+diff --git a/kernel/cpu.c b/kernel/cpu.c
+index 407a2568f35e..cd7605204d4d 100644
+--- a/kernel/cpu.c
++++ b/kernel/cpu.c
+@@ -2616,6 +2616,7 @@ void init_cpu_possible(const struct cpumask *src)
+ void init_cpu_online(const struct cpumask *src)
  {
--	/* legacy pm_power_off_prepare() is unchained and has highest priority */
--	if (pm_power_off_prepare)
--		return pm_power_off_prepare();
--
- 	blocking_notifier_call_chain(&power_off_handler_list, POWEROFF_PREPARE,
- 				     NULL);
+ 	cpumask_copy(&__cpu_online_mask, src);
++	atomic_set(&__num_online_cpus, cpumask_weight(cpu_online_mask));
  }
+ 
+ void set_cpu_online(unsigned int cpu, bool online)
 -- 
-2.34.1
+2.30.2
 
