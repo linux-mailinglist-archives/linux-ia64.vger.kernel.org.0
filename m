@@ -2,79 +2,77 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from vger.kernel.org (vger.kernel.org [23.128.96.18])
-	by mail.lfdr.de (Postfix) with ESMTP id 668764A4126
-	for <lists+linux-ia64@lfdr.de>; Mon, 31 Jan 2022 12:02:25 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 108864A436C
+	for <lists+linux-ia64@lfdr.de>; Mon, 31 Jan 2022 12:21:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358747AbiAaLCX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 31 Jan 2022 06:02:23 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43396 "EHLO
-        lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1358758AbiAaLBT (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 31 Jan 2022 06:01:19 -0500
-Received: from mail-il1-x142.google.com (mail-il1-x142.google.com [IPv6:2607:f8b0:4864:20::142])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B6F0C0613A0
-        for <linux-ia64@vger.kernel.org>; Mon, 31 Jan 2022 03:00:08 -0800 (PST)
-Received: by mail-il1-x142.google.com with SMTP id u5so10994300ilq.9
-        for <linux-ia64@vger.kernel.org>; Mon, 31 Jan 2022 03:00:08 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to
-         :content-transfer-encoding;
-        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
-        b=Ozk//2swZ4n+9EW8l8AJE1MTLlpoaCXK3xzfpPFLIseBsOa2jBlUIXPufJKZWOZJb1
-         LZYSIA+qJrwb7cNfMphudC5bBa0wGV8S3gL6kVVbqGkOdt0B4XP1yUbpKkdrSgOk4SCw
-         v1C0S0LKRkjJnU7f896SEI1wlEalwFx9Rgq5irerJa96uqZolG/hVsfTboEhp5Wo262X
-         Bw5DjIfp6f3BMZuUcN/21CQmX+e0cBVKV6O17yhSY33CkiO9iN1/rQChZ0P/9curfp6q
-         4Ae69srjWBiOD2IQLksGh38ZmWapdFwCTJxNZE6Fdwc1T0xvGWym84r63rPu354BmJN+
-         Mxew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to:content-transfer-encoding;
-        bh=FANIUiWvB3mdY3zLX2DODg2pUIL5eGT5wlydl6jYk40=;
-        b=NjCxDeP5CI0xws8mgSqdudjzj8YqhTyYnSlI3addRrXpE3pk34feQbPX2enCNPWrFF
-         OXbv9UF/uvZokMbT2TbAq/N4VtbzCDCIBftbZHJROn/JAPgE6/ONXAGL0RQ49OobMT1o
-         Ba7VVo6gfdRyZJRVDTw25ZKMeth2U9C89q3dAeYIzfrSNCZg5c8ZGf/67OjH+kd+EWXq
-         X69CjbP70KhnuDtKcnOu85BTmV1b+X/wNVH+itGWE5cfgTBKZbU3uw0E2j18UGzS4XGT
-         RcPpeOpcKOFfEhRjVMChOwJdiDZBjvkjobNHz4qxFbS1UkDIj5XtVeeV8FPLtNqCKNUh
-         ZdnQ==
-X-Gm-Message-State: AOAM530ZPq1li6C5gNlZMxcU9hYEmC+M+lxUY9U0p0lSkdsK66vR4AQj
-        nMFEVclMXKzScCoHcm/zqIr6cNK96VQ7RZxBbLU=
-X-Google-Smtp-Source: ABdhPJwTER/p0YcvOwwJid91RzPvkEw8DmHtUlVRny5nV0kksgWcR6ScIqwhpLtpjii0MFHZVgmhnLw6wJn43CXNw30=
-X-Received: by 2002:a92:ca4f:: with SMTP id q15mr10723189ilo.181.1643626807913;
- Mon, 31 Jan 2022 03:00:07 -0800 (PST)
+        id S1359474AbiAaLV3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 31 Jan 2022 06:21:29 -0500
+Received: from foss.arm.com ([217.140.110.172]:47680 "EHLO foss.arm.com"
+        rhost-flags-OK-OK-OK-OK) by vger.kernel.org with ESMTP
+        id S1378380AbiAaLUG (ORCPT <rfc822;linux-ia64@vger.kernel.org>);
+        Mon, 31 Jan 2022 06:20:06 -0500
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 9BB62D6E;
+        Mon, 31 Jan 2022 03:20:04 -0800 (PST)
+Received: from FVFF7649Q05P (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E600C3F774;
+        Mon, 31 Jan 2022 03:20:02 -0800 (PST)
+Date:   Mon, 31 Jan 2022 11:19:57 +0000
+From:   Vincent Donnefort <vincent.donnefort@arm.com>
+To:     Yury Norov <yury.norov@gmail.com>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Yuan ZhaoXiong <yuanzhaoxiong@baidu.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] kernel/cpu.c: fix init_cpu_online
+Message-ID: <YffF3e+uUIDVO7hm@FVFF7649Q05P>
+References: <20220131014648.941629-1-yury.norov@gmail.com>
 MIME-Version: 1.0
-Reply-To: daniellakyle60@gmail.com
-Sender: drdanielmorris11111@gmail.com
-Received: by 2002:a05:6638:1248:0:0:0:0 with HTTP; Mon, 31 Jan 2022 03:00:07
- -0800 (PST)
-From:   Mrs daniell akyle <daniellakyle60@gmail.com>
-Date:   Mon, 31 Jan 2022 12:00:07 +0100
-X-Google-Sender-Auth: juhwXopT4FowK4J6T8rApuMl0w4
-Message-ID: <CAKFcj-OsHQc6b32Puiy4zbkpRh0TFP-Vu0BdoENoHiCXtxRwQQ@mail.gmail.com>
-Subject: Ahoj
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220131014648.941629-1-yury.norov@gmail.com>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Pozdravy
-Jmenuji se pan=C3=AD Daniella Kyleov=C3=A1, je mi 58 let
-Filip=C3=ADny. V sou=C4=8Dasn=C3=A9 dob=C4=9B jsem hospitalizov=C3=A1n na F=
-ilip=C3=ADn=C3=A1ch, kde jsem
-podstupuje l=C3=A9=C4=8Dbu akutn=C3=ADho karcinomu j=C3=ADcnu. jsem um=C3=
-=ADraj=C3=ADc=C3=AD,
-vdova, kter=C3=A1 se rozhodla darovat =C4=8D=C3=A1st sv=C3=A9ho majetku spo=
-lehliv=C3=A9 osob=C4=9B
-kter=C3=A1 tyto pen=C3=ADze pou=C5=BEije na pomoc chud=C3=BDm a m=C3=A9n=C4=
-=9B privilegovan=C3=BDm. Chci
-poskytnout dar ve v=C3=BD=C5=A1i 3 700 000 =C2=A3 na sirotky nebo charitati=
-vn=C3=AD organizace
-ve va=C5=A1=C3=AD oblasti. Zvl=C3=A1dne=C5=A1 to? Pokud jste ochotni tuto n=
-ab=C3=ADdku p=C5=99ijmout
-a ud=C4=9Blejte p=C5=99esn=C4=9B tak, jak v=C3=A1m =C5=99=C3=ADk=C3=A1m, pa=
-k se mi vra=C5=A5te pro dal=C5=A1=C3=AD vysv=C4=9Btlen=C3=AD.
-pozdravy
-Pan=C3=AD Daniella Kyleov=C3=A1
+Hi Yury,
+
+On Sun, Jan 30, 2022 at 05:46:48PM -0800, Yury Norov wrote:
+> cpu_online_mask has an associate counter of online cpus, which must be
+> initialized in init_cpu_online().
+> 
+> Fixes: 0c09ab96fc82010 (cpu/hotplug: Cache number of online CPUs)
+
+Aren't the increments/decrements from set_cpu_online() enough?
+
+I guess we could argue that this isn't a private function and the
+num_online_cpus should be updated here. But unless I missed something,
+init_cpu_online() is only called in ia64 arch, in the !SMP case. Is
+this the problem you're trying to tackle? If not, I'm not sure that warrants a
+"Fixes:" tag
+
+> Signed-off-by: Yury Norov <yury.norov@gmail.com>
+> ---
+>  kernel/cpu.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/kernel/cpu.c b/kernel/cpu.c
+> index 407a2568f35e..cd7605204d4d 100644
+> --- a/kernel/cpu.c
+> +++ b/kernel/cpu.c
+> @@ -2616,6 +2616,7 @@ void init_cpu_possible(const struct cpumask *src)
+>  void init_cpu_online(const struct cpumask *src)
+>  {
+>  	cpumask_copy(&__cpu_online_mask, src);
+> +	atomic_set(&__num_online_cpus, cpumask_weight(cpu_online_mask));
+>  }
+>  
+>  void set_cpu_online(unsigned int cpu, bool online)
+> -- 
+> 2.30.2
+> 
