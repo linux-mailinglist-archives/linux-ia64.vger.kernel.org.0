@@ -2,58 +2,160 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEAA14A6F61
-	for <lists+linux-ia64@lfdr.de>; Wed,  2 Feb 2022 12:02:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BA3D84A71CF
+	for <lists+linux-ia64@lfdr.de>; Wed,  2 Feb 2022 14:46:25 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343646AbiBBLCM (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 2 Feb 2022 06:02:12 -0500
-Received: from mail.profitfirm24.com.pl ([212.237.10.110]:58950 "EHLO
-        mail.profitfirm24.com.pl" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343630AbiBBLCL (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 2 Feb 2022 06:02:11 -0500
-Received: by mail.profitfirm24.com.pl (Postfix, from userid 1001)
-        id 36804A9FCD; Tue,  1 Feb 2022 09:17:53 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=profitfirm24.com.pl;
-        s=mail; t=1643707402;
-        bh=M1ZVeu3q6Upppe+FUx/3rgI7MKJXh389NZDbgCK1SX4=;
-        h=Date:From:To:Subject:From;
-        b=FDpBfvaBxJjDD+mCOIKU5RSoMduhRYLS+q2Bp8eM3n0zw8n+ewQvd0VUxIgePUXoR
-         e25bJOn4YHQ586TSc9+fgzDJHx+ZPgvaFiqJnzr7SR8UZ0akke73XLNVaKkb9K9rzN
-         x4QgGQchh7wZ7R0mls0XCYdeUcw0832OFVmhefODYGPlK6SncuUBg7G3hccsNSwW5f
-         FdgChwO+T1RtapUuiu5wDofhTdJSrJGmFbsFX1iKUBO0Qs16fswf3AyhnpjlA9MTLD
-         qc4MDcOxeSTuUWTZG4Iu18E5ih0NCEaXsH/9PLe7ydd/JdXWKbmncKmFEDp1G0/8wO
-         DKEpuZb4teOZw==
-Received: by profitfirm24.com.pl for <linux-ia64@vger.kernel.org>; Tue,  1 Feb 2022 09:17:20 GMT
-Message-ID: <20220201074652-0.1.b.2zun.0.63k0g2kkfq@profitfirm24.com.pl>
-Date:   Tue,  1 Feb 2022 09:17:20 GMT
-From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
-        <arkadiusz.sokolowski@profitfirm24.com.pl>
-To:     <linux-ia64@vger.kernel.org>
-Subject: Koszty instalacji fotowoltaicznej
-X-Mailer: mail.profitfirm24.com.pl
+        id S1344412AbiBBNp4 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 2 Feb 2022 08:45:56 -0500
+Received: from us-smtp-delivery-124.mimecast.com ([170.10.133.124]:47046 "EHLO
+        us-smtp-delivery-124.mimecast.com" rhost-flags-OK-OK-OK-OK)
+        by vger.kernel.org with ESMTP id S230494AbiBBNpz (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 2 Feb 2022 08:45:55 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1643809554;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=YxruncnGKSYEtQADjLUNkNWhCcGBbzpK2sbDwkeQUpo=;
+        b=RoxsWcT/93u1UTHWUfdPuRjCGwhDikGNumfAdBMKu6esMIdExq1J6zYN9PQ75UJZ1W+1ba
+        kw0spbYYiD546kTHSwmwpsazHbnGXf67tdHnZTLvFleXzVl9sSGoWLVMuXpEP5XHMcyFix
+        SOXpjgBRqM3yAph0odVCFHvzSFBh9Gs=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-644-IF8T5ZeSP8KrefKbPHFJXw-1; Wed, 02 Feb 2022 08:45:54 -0500
+X-MC-Unique: IF8T5ZeSP8KrefKbPHFJXw-1
+Received: by mail-ej1-f69.google.com with SMTP id 9-20020a170906218900b0065e2a9110b9so8158254eju.11
+        for <linux-ia64@vger.kernel.org>; Wed, 02 Feb 2022 05:45:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:message-id:date:mime-version:user-agent:subject
+         :content-language:to:cc:references:from:organization:in-reply-to
+         :content-transfer-encoding;
+        bh=YxruncnGKSYEtQADjLUNkNWhCcGBbzpK2sbDwkeQUpo=;
+        b=LhjZ5entYINm2oMrEH54yLo8OZrImR5taAk/fGuA+hM0m1Dwa8iWqSMNJ8/WvFgrx5
+         OS9gFGkVzNqm3Zs7P5ZuhwDPLw/igi2U4ps5GTtBJO38L1OjeyCJutNUzbYkFddYJvmo
+         jzWHVLw6lAYQa74Mn4UmwGvpaEdDcPA1UVw8qcTE8fJygTLPhLrD3WviCHXsUVWvM2aU
+         kVv00mnGUHaD7qus4fZ1ynawpbH6X/MEaPJaes5+bVqjx2c7S5tpcyMlXke1mqTl50D3
+         LKs6q6vQBwctEsDB8GNZV6eygHSfISbJStmL5RlDK80sgnSl3JTjiwlIQe74c6eVkMdA
+         qYzA==
+X-Gm-Message-State: AOAM532SsfMRegQflPhzsXr1crQ6BNOfyOZTJS30F0+LjZkYFV5E3N2I
+        qzW0aRhQvyWyM5DCvQUjHFaOw+IQHrmvLGkgwDsyM2DghSQFzxpmc1nMIBl4hehwvavGVm+C3Y/
+        MzuzOYXL7ICg49OWicQ1C/g==
+X-Received: by 2002:a05:6402:5248:: with SMTP id t8mr30084266edd.14.1643809552842;
+        Wed, 02 Feb 2022 05:45:52 -0800 (PST)
+X-Google-Smtp-Source: ABdhPJxqE4L2UK0676VaeKIuCkwGMt3tw/zzsCSLR83dbtSZbWUp25WGEt3s5690JhdDTieh82ha0w==
+X-Received: by 2002:a05:6402:5248:: with SMTP id t8mr30084241edd.14.1643809552570;
+        Wed, 02 Feb 2022 05:45:52 -0800 (PST)
+Received: from ?IPV6:2003:cb:c709:f800:a55c:e484:3cd9:3632? (p200300cbc709f800a55ce4843cd93632.dip0.t-ipconnect.de. [2003:cb:c709:f800:a55c:e484:3cd9:3632])
+        by smtp.gmail.com with ESMTPSA id z8sm15746580ejc.151.2022.02.02.05.45.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 02 Feb 2022 05:45:52 -0800 (PST)
+Message-ID: <c25ad11e-6700-3a11-1a44-f69b4a7fc9e2@redhat.com>
+Date:   Wed, 2 Feb 2022 14:45:50 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.4.0
+Subject: Re: [PATCH RFC v1] drivers/base/node: consolidate node device
+ subsystem initialization in node_dev_init()
+Content-Language: en-US
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, Andrew Morton <akpm@linux-foundation.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Michal Hocko <mhocko@suse.com>,
+        Oscar Salvador <osalvador@suse.de>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>, x86@kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org
+References: <20220128151540.164759-1-david@redhat.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+In-Reply-To: <20220128151540.164759-1-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On 28.01.22 16:15, David Hildenbrand wrote:
+> ... and call node_dev_init() after memory_dev_init() from driver_init(),
+> so before any of the existing arch/subsys calls. All online nodes should
+> be known at that point.
+> 
+> This is in line with memory_dev_init(), which initializes the memory
+> device subsystem and creates all memory block devices.
+> 
+> Similar to memory_dev_init(), panic() if anything goes wrong, we don't
+> want to continue with such basic initialization errors.
+> 
+> The important part is that node_dev_init() gets called after
+> memory_dev_init() and after cpu_dev_init(), but before any of the
+> relevant archs call register_cpu() to register the new cpu device under
+> the node device. The latter should be the case for the current users
+> of topology_init().
+> 
+> Cc: Andrew Morton <akpm@linux-foundation.org>
+> Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Cc: Michal Hocko <mhocko@suse.com>
+> Cc: Oscar Salvador <osalvador@suse.de>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+> Cc: Michael Ellerman <mpe@ellerman.id.au>
+> Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+> Cc: Paul Mackerras <paulus@samba.org>
+> Cc: Paul Walmsley <paul.walmsley@sifive.com>
+> Cc: Palmer Dabbelt <palmer@dabbelt.com>
+> Cc: Albert Ou <aou@eecs.berkeley.edu>
+> Cc: Heiko Carstens <hca@linux.ibm.com>
+> Cc: Vasily Gorbik <gor@linux.ibm.com>
+> Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+> Cc: Rich Felker <dalias@libc.org>
+> Cc: "David S. Miller" <davem@davemloft.net>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Ingo Molnar <mingo@redhat.com>
+> Cc: Borislav Petkov <bp@alien8.de>
+> Cc: Dave Hansen <dave.hansen@linux.intel.com>
+> Cc: "Rafael J. Wysocki" <rafael@kernel.org>
+> Cc: x86@kernel.org
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
+> Cc: linux-ia64@vger.kernel.org
+> Cc: linux-mips@vger.kernel.org
+> Cc: linuxppc-dev@lists.ozlabs.org
+> Cc: linux-riscv@lists.infradead.org
+> Cc: linux-s390@vger.kernel.org
+> Cc: linux-sh@vger.kernel.org
+> Cc: sparclinux@vger.kernel.org
+> Cc: linux-mm@kvack.org
+> Signed-off-by: David Hildenbrand <david@redhat.com>
 
-stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
- obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99. =20
+If there are no further comments, then I'll resend as !RFC with a
+slightly extended patch description, testing at least under arm64 and
+ppc64 as they are relatively easy to test for me.
 
-Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
-acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
-ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
+-- 
+Thanks,
 
-Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
-=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
-=2E
+David / dhildenb
 
-Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
-temacie?
-
-
-Pozdrawiam
-Arkadiusz Soko=C5=82owski
