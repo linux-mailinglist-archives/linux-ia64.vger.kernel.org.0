@@ -2,51 +2,51 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65FE44B1968
-	for <lists+linux-ia64@lfdr.de>; Fri, 11 Feb 2022 00:25:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84E204B1A2E
+	for <lists+linux-ia64@lfdr.de>; Fri, 11 Feb 2022 01:11:36 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345633AbiBJXZC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 10 Feb 2022 18:25:02 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:39846 "EHLO
+        id S1346167AbiBKALV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 10 Feb 2022 19:11:21 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:47548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345626AbiBJXZB (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 10 Feb 2022 18:25:01 -0500
-Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F009C5F59;
-        Thu, 10 Feb 2022 15:25:01 -0800 (PST)
-Received: by mail-io1-xd29.google.com with SMTP id n17so9423204iod.4;
-        Thu, 10 Feb 2022 15:25:01 -0800 (PST)
+        with ESMTP id S243963AbiBKALU (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 10 Feb 2022 19:11:20 -0500
+Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2584926FC;
+        Thu, 10 Feb 2022 16:11:21 -0800 (PST)
+Received: by mail-il1-x12a.google.com with SMTP id c12so5089696ilm.8;
+        Thu, 10 Feb 2022 16:11:21 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=from:to:subject:date:message-id:in-reply-to:references:mime-version
          :content-transfer-encoding;
-        bh=LzHqTGHmePwb1HFpWGG6zaHocU/Khr4mZgW/QCywhtg=;
-        b=KoLazyQAnXN19qSU6nxWkSGgxQn6EmVBtr3qzwTfLRB+aGELf8bGFJhozbakQx1iEk
-         PUxM6wzuTaKRHeTsIZprdOuj6sqTkkrYzDIMDi5E8i7nYXpUhdzxEBwdiYaAvlDeIx1t
-         96VWVZ+975D/8O5jcAhI/mVegz8gGrktTeM2drEHa2GwMOUrikKDaXM3igq7417lQ3Lj
-         Jlv8mrTTijUYUii2uunxvnpSZ4j+jz0TmvY27ElurL8V93UVXEPTvPxECxkFrNgnQ58g
-         Hz5kP7ojDYf5OqRMRQows6fd45mycpx9LVjVxidT4apDBoraMBdlb0hNqNhzz/hXHq3S
-         uPTw==
+        bh=4h1t/bTC+qDJEJPFRFVcOK5rGe+GH/iRxYkyQH+GgIE=;
+        b=ZbhAJACxr48oNEwePgKFllHTK19fvAQq+syugIWiNbjTIbpMhXabd524NdFk43VC0r
+         B2hb9BmF99mJk9SLhcktegNw7uf/aZput7dd0Caq9kW8BhlfTyrh9FLvqip34hJAYxU3
+         yJu6/fI770DnT1KmaXY2hB6gXMtWmcQIO+/NoeGJqB+FEUOjjrueHwo997wTI6Qa+u1e
+         dsTSd8IexTLJdmTz03InYWBbE5FetCdiNbfdUBuMl6uoDH/GyCJ9Qhd/tIcnOq5AYY+d
+         H0vKrvtzn6zHqEpnQBzqdN7cZHZ8BYNcBACZth46mq4/qK0PuxkQEQPP7ihi6PQFbdbL
+         B9mQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:from:to:subject:date:message-id:in-reply-to
          :references:mime-version:content-transfer-encoding;
-        bh=LzHqTGHmePwb1HFpWGG6zaHocU/Khr4mZgW/QCywhtg=;
-        b=2TI23dzxDGHKXONlvezeJa1UxDOjY1qKuRJNt3DTSURK8tvyvqwo41jgrZ1oOdRUrX
-         cXlitWvv5zi2GksCFT2uSjZ3sIeDVBs/LDe0YnIY76v6sfQhgXOEFnwSoVROSeSH1YUa
-         VNCxxNuepqeDBP3VAFnRv1lP/3hBW5j70l9fZi23DeM7Nr5nwkb9NEtEA5VYwbRiU9v1
-         b3N/ZJYgew28mmEzLu+E2o+O+P/OBKSogz1mBUxzalGz2bl6151MAmAAQ4i9RYNnqFTq
-         V/tbXkj4viRviboJs7YP9tuPrA39Z2WdHynNkLfwI0qkPWTmNFhoVE4JwtpS1tBnYNPk
-         vnRA==
-X-Gm-Message-State: AOAM530h3Kg2DMQiaFVPWRItpCgNzm94r92+wXYQGnNEvJKBWryIgCD4
-        oKVp/evGmKFOB+ED0RN6Xxl+MJC0xwQSOA==
-X-Google-Smtp-Source: ABdhPJzO7Wh2ZWhAjGAIU3578tz0nBbH5iZ7BL9c68JQSZumb6v58jDO8OJm/FlZeMxdi0nFwkVgBw==
-X-Received: by 2002:a6b:500a:: with SMTP id e10mr5030200iob.157.1644535501349;
-        Thu, 10 Feb 2022 15:25:01 -0800 (PST)
+        bh=4h1t/bTC+qDJEJPFRFVcOK5rGe+GH/iRxYkyQH+GgIE=;
+        b=KGBeVlX0Ps418O1UhTg9XwpVhFXaXMYTHLm7eGZsi0IhLSvsScgB7GTB9akiTXe9IF
+         8QIODYg7L4RR1fghX6Mo3jINoCAjxEXamiufs8nrse0zvxfAjzV4Touq5q4wrsNayu2M
+         R6pW+uLV0nB5Ln2k4Cpy578iAhplWc8szXNQhv8nALb5wZ7GSkeyMzj1TMihzLjw6NfE
+         R7RoCPgxJmUxYwZUImpkrgGULuY/h6bCOoqwmvq/YyTvPfdKxnMDOQPK8/VbvgZqTFuf
+         hQ75AqSQQGj9gXrwR7W57bMAXiQsIH2nj8Qusn+W/I8dkrr0FWjo2K7B3+QUo0XijjPs
+         MayQ==
+X-Gm-Message-State: AOAM531FqPf0sWkrSmimMtl7NTB5BRH0RbreHSFCPgZ/7G2O6a+Vrg6P
+        NyWxYdWeHSNCI/kxVlRa/tM=
+X-Google-Smtp-Source: ABdhPJxnKGWWX+h3tns0z9BdoPa/Tdtk5KLlu3v4Oxuh6/KxSgi5Su/RU6jC7/E8reyvrJ26b1xJ6Q==
+X-Received: by 2002:a05:6e02:1e08:: with SMTP id g8mr5702300ila.22.1644538280448;
+        Thu, 10 Feb 2022 16:11:20 -0800 (PST)
 Received: from localhost ([12.28.44.171])
-        by smtp.gmail.com with ESMTPSA id k10sm487246ilo.8.2022.02.10.15.25.00
+        by smtp.gmail.com with ESMTPSA id u26sm12191990ior.52.2022.02.10.16.11.19
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Feb 2022 15:25:00 -0800 (PST)
+        Thu, 10 Feb 2022 16:11:20 -0800 (PST)
 From:   Yury Norov <yury.norov@gmail.com>
 To:     Yury Norov <yury.norov@gmail.com>,
         Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
@@ -61,12 +61,10 @@ To:     Yury Norov <yury.norov@gmail.com>,
         Nicholas Piggin <npiggin@gmail.com>,
         Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>,
         Alexey Klimov <aklimov@redhat.com>,
-        linux-kernel@vger.kernel.org,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Yang Guang <yang.guang5@zte.com.cn>, linux-ia64@vger.kernel.org
-Subject: [PATCH 15/49] arch/ia64: replace cpumask_weight with cpumask_empty where appropriate
-Date:   Thu, 10 Feb 2022 14:48:59 -0800
-Message-Id: <20220210224933.379149-16-yury.norov@gmail.com>
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
+Subject: [PATCH 36/49] arch/ia64: replace cpumask_weight with cpumask_weight_eq in mm/tlb.c
+Date:   Thu, 10 Feb 2022 14:49:20 -0800
+Message-Id: <20220210224933.379149-37-yury.norov@gmail.com>
 X-Mailer: git-send-email 2.32.0
 In-Reply-To: <20220210224933.379149-1-yury.norov@gmail.com>
 References: <20220210224933.379149-1-yury.norov@gmail.com>
@@ -82,29 +80,29 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-setup_arch() calls cpumask_weight() to check if any bit of a given cpumask
-is set. We can do it more efficiently with cpumask_empty() because
-cpumask_empty() stops traversing the cpumask as soon as it finds first set
-bit, while cpumask_weight() counts all bits unconditionally.
+__flush_tlb_range() code calls cpumask_weight() to compare the
+weight of cpumask with a given number. We can do it more efficiently with
+cpumask_weight_eq because conditional cpumask_weight may stop traversing
+the cpumask earlier, as soon as condition is (or can't be) met.
 
 Signed-off-by: Yury Norov <yury.norov@gmail.com>
 ---
- arch/ia64/kernel/setup.c | 2 +-
+ arch/ia64/mm/tlb.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/ia64/kernel/setup.c b/arch/ia64/kernel/setup.c
-index 5010348fa21b..fd6301eafa9d 100644
---- a/arch/ia64/kernel/setup.c
-+++ b/arch/ia64/kernel/setup.c
-@@ -572,7 +572,7 @@ setup_arch (char **cmdline_p)
- #ifdef CONFIG_ACPI_HOTPLUG_CPU
- 	prefill_possible_map();
- #endif
--	per_cpu_scan_finalize((cpumask_weight(&early_cpu_possible_map) == 0 ?
-+	per_cpu_scan_finalize((cpumask_empty(&early_cpu_possible_map) ?
- 		32 : cpumask_weight(&early_cpu_possible_map)),
- 		additional_cpus > 0 ? additional_cpus : 0);
- #endif /* CONFIG_ACPI_NUMA */
+diff --git a/arch/ia64/mm/tlb.c b/arch/ia64/mm/tlb.c
+index 135b5135cace..a5bce13ab047 100644
+--- a/arch/ia64/mm/tlb.c
++++ b/arch/ia64/mm/tlb.c
+@@ -332,7 +332,7 @@ __flush_tlb_range (struct vm_area_struct *vma, unsigned long start,
+ 
+ 	preempt_disable();
+ #ifdef CONFIG_SMP
+-	if (mm != current->active_mm || cpumask_weight(mm_cpumask(mm)) != 1) {
++	if (mm != current->active_mm || !cpumask_weight_eq(mm_cpumask(mm), 1)) {
+ 		ia64_global_tlb_purge(mm, start, end, nbits);
+ 		preempt_enable();
+ 		return;
 -- 
 2.32.0
 
