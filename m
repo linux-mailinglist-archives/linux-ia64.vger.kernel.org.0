@@ -2,43 +2,58 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 329F74B0884
-	for <lists+linux-ia64@lfdr.de>; Thu, 10 Feb 2022 09:37:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id AC4D24B0A9B
+	for <lists+linux-ia64@lfdr.de>; Thu, 10 Feb 2022 11:31:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237584AbiBJIgy (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 10 Feb 2022 03:36:54 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:38458 "EHLO
+        id S239661AbiBJKat (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 10 Feb 2022 05:30:49 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:44066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233339AbiBJIgy (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 10 Feb 2022 03:36:54 -0500
-X-Greylist: delayed 338 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 10 Feb 2022 00:36:54 PST
-Received: from mail.trixen.pl (mail.trixen.pl [192.71.213.50])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2BBE220
-        for <linux-ia64@vger.kernel.org>; Thu, 10 Feb 2022 00:36:54 -0800 (PST)
-Received: by mail.trixen.pl (Postfix, from userid 1001)
-        id 53F5C40A30; Thu, 10 Feb 2022 09:31:03 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=trixen.pl; s=mail;
-        t=1644481875; bh=J50dbWEn9x62xyxY1PWPtYxMwNMcDFoILqXfzM3his0=;
-        h=Date:From:To:Subject:From;
-        b=q8U7ZJ1HDcjNFQc6hgMsxWBZ7wUWOkF0qCaHazJAoZjrRSwc20tWuezLkUdkNpW5n
-         L660JXQ0W8HuMpQ27/xGFYp19lwQqVctiibzgnEXK3c6ugT4NCGohnMRsDTcojZjuy
-         mUhxJgBDzTBguYy/FNB5y1dY+lM0uVkICZcO2JEpfDAfRiWPocPbokCSscx5ekmeBO
-         7ltJp51sEYmTHeji1q/DhO7B/5BWcvU0wL5oJ67ZC8TZofK4rwZ5bbgNLMae2/y8gA
-         1BhSunzR2OWbtLoh1a2de5zGryA7VlD/c9jUQ4koqX2eZHrIQ6s5NgawOxrYlDc4qz
-         WS0OZRuAUSI1g==
-Received: by mail.trixen.pl for <linux-ia64@vger.kernel.org>; Thu, 10 Feb 2022 08:30:57 GMT
-Message-ID: <20220210084500-0.1.t.1t0x.0.j0lkdc8gij@trixen.pl>
-Date:   Thu, 10 Feb 2022 08:30:57 GMT
-From:   =?UTF-8?Q? "Rados=C5=82aw_Grabowski" ?= 
-        <radoslaw.grabowski@trixen.pl>
-To:     <linux-ia64@vger.kernel.org>
-Subject: Monitorowanie samochodu
-X-Mailer: mail.trixen.pl
+        with ESMTP id S239658AbiBJKas (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 10 Feb 2022 05:30:48 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1F08B92;
+        Thu, 10 Feb 2022 02:30:49 -0800 (PST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4JvY1J0XpGz4xdh;
+        Thu, 10 Feb 2022 21:30:43 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+        s=201909; t=1644489045;
+        bh=/j80aUQlKa/S6QbooAK3y3Gg9NwGU+PKEkWBN3ktOAM=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=TCawh+Udct1RMjVH8ZU19XAOaHAEWi8UE1gSqYxtxWKCdRgozgSyMUWR+VA7h+4A3
+         Y2Gyi5C40KuLmrAQqF/6A+MsFAN+YhOqhEfvn2Y+2ycFiYtPbcbTshYBObJyP8KJpD
+         tNOxEYpjJyuyllbretPziOS745L4qVaZMOpvP4gCycccURrg7tABnvGHCU0WMDfdnc
+         pPjeHrx9ubrYDqQVG9HhvZVJg0KptHYyoMC5QExkKEF4mRtdrzhg24JzeaTF3mQcwc
+         2uscyDi9MUqhI1cZoTyihNTNMY8RpFcVwAawyAl3q5b1LQ+bP6NK6OGjQFoPNiLAgA
+         c4imi8H1U2f+A==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
+        Kees Cook <keescook@chromium.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 08/12] asm-generic: Refactor
+ dereference_[kernel]_function_descriptor()
+In-Reply-To: <93a2006a5d90292baf69cb1c34af5785da53efde.1634457599.git.christophe.leroy@csgroup.eu>
+References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
+ <93a2006a5d90292baf69cb1c34af5785da53efde.1634457599.git.christophe.leroy@csgroup.eu>
+Date:   Thu, 10 Feb 2022 21:30:43 +1100
+Message-ID: <8735kr814c.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
         T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -46,20 +61,34 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Christophe Leroy <christophe.leroy@csgroup.eu> writes:
+> diff --git a/kernel/extable.c b/kernel/extable.c
+> index b0ea5eb0c3b4..1ef13789bea9 100644
+> --- a/kernel/extable.c
+> +++ b/kernel/extable.c
+> @@ -159,12 +160,32 @@ int kernel_text_address(unsigned long addr)
+>  }
+>  
+>  /*
+> - * On some architectures (PPC64, IA64) function pointers
+> + * On some architectures (PPC64, IA64, PARISC) function pointers
+>   * are actually only tokens to some data that then holds the
+>   * real function address. As a result, to find if a function
+>   * pointer is part of the kernel text, we need to do some
+>   * special dereferencing first.
+>   */
+> +#ifdef CONFIG_HAVE_FUNCTION_DESCRIPTORS
+> +void *dereference_function_descriptor(void *ptr)
+> +{
+> +	func_desc_t *desc = ptr;
+> +	void *p;
+> +
+> +	if (!get_kernel_nofault(p, (void *)&desc->addr))
+> +		ptr = p;
+> +	return ptr;
+> +}
 
-Chcia=C5=82bym przedstawi=C4=87 rozwi=C4=85zanie, kt=C3=B3re poprzez wyko=
-rzystanie GPS monitoruje samochody w czasie rzeczywistym.=20
+This needs an EXPORT_SYMBOL_GPL(), otherwise the build breaks after
+patch 10 with CONFIG_LKDTM=m.
 
-Dzi=C4=99ki temu mog=C4=85 Pa=C5=84stwo odczytywa=C4=87 wszelkie warto=C5=
-=9Bci dotycz=C4=85ce np. zu=C5=BCycia paliwa czy obrot=C3=B3w silnika.
-
-System automatycznie generuje rozbudowane raporty i pozwala dokonywa=C4=87=
- istotnych analiz.
-
-Je=C5=BCeli interesuje Pa=C5=84stwa zwi=C4=99kszenie wydajno=C5=9Bci prac=
-y i kontrola wszelkich parametr=C3=B3w floty - prosz=C4=99 o kontakt.
-
-
-Pozdrawiam,
-Rados=C5=82aw Grabowski
+cheers
