@@ -2,41 +2,42 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 035E04B3178
-	for <lists+linux-ia64@lfdr.de>; Sat, 12 Feb 2022 00:44:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CCF954B318C
+	for <lists+linux-ia64@lfdr.de>; Sat, 12 Feb 2022 00:55:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240844AbiBKXny (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 11 Feb 2022 18:43:54 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:43340 "EHLO
+        id S244501AbiBKXzG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 11 Feb 2022 18:55:06 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:46954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233490AbiBKXny (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 11 Feb 2022 18:43:54 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F26FA5;
-        Fri, 11 Feb 2022 15:43:52 -0800 (PST)
+        with ESMTP id S1345542AbiBKXzG (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 11 Feb 2022 18:55:06 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 674F0D62;
+        Fri, 11 Feb 2022 15:55:04 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 09EEB619D7;
-        Fri, 11 Feb 2022 23:43:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8EDBC340E9;
-        Fri, 11 Feb 2022 23:43:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 06BB961991;
+        Fri, 11 Feb 2022 23:55:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B92C340E9;
+        Fri, 11 Feb 2022 23:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1644623031;
-        bh=V3+Yg4w3h8Gc6QUNzphw26pGQ5B8l7gPWtmWyyPF7Jg=;
+        s=k20201202; t=1644623703;
+        bh=rR5ZkKx0Xpu8arnGBP1p4my2GJbjV7RXt9OYTAfkjXA=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Ps9z+Xq8Y0npS0gKt2TQhJhfYsfkx4O3JUynEEFWH3fARJvLFqC2IP7MY+dIdjTd0
-         qhLRlYoJ8o1yLRd7TAnpnKMIYdQj/K5BhPnRJz2XZ6Agz4UWVuXaEBce96OT9v80Ur
-         bOe3aRgIEY+/OU83T+QFIkn0ozSicN0L7cEPSPXGNYuwfymGrJ8b387q8nfbRg2a7x
-         6HWQ5ZRZm7RxHqXmPJ6gNe5V8O2MfhB4SFeDTmELejuB1kr3aT6DGPwL8XmWTkNjrV
-         KhbgeEZMFBjFaIQE4lDhxnfaXh8Nnhi19Kl8Cn4IVQIWHLuq9nkIx9Ypbv2aR4MmSx
-         iX9C+E4vi8U7A==
-Message-ID: <55812c89-484d-6981-32f4-aaf20908f631@kernel.org>
-Date:   Fri, 11 Feb 2022 15:43:50 -0800
+        b=Rx3yNctuEW9GXddbvrWg8KiLYm8wej4EtyQzOkUmTK7/RaUBry3/e5faZF8cq2Jyb
+         ab/IGE/9fTmIvd2HD4GExHI6uRBbQZc77U60D6/o8C9fm5bInPqFWW4sBeXsqrMOzE
+         0MWYCQa8o6bsGRvxJPo1sRVdpE+OodqNxvHTPfd3xjDniwbHkOQkZMuZEA655n2fAM
+         lgezQoDgrSjBO/CIauSI8jhC9sEJbqBNolsObsnfiQDqqR/1vrDEALiZuD5UMw9BfM
+         +M3KSucWBmic/kadPMVb8Z7KQkV2RwfXeKWKVhDa9UEdcso/6V7aEItSHROELaNVIg
+         f1e7r39lsDWcw==
+Message-ID: <00f9c7a6-2d1d-f871-e9bc-00e2217f40f9@kernel.org>
+Date:   Fri, 11 Feb 2022 15:55:01 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
-Subject: Re: [PATCH 6/8] kernel/fork: Move task stack account to do_exit().
+Subject: Re: [PATCH 7/8] kernel/fork: Only cache the VMAP stack in
+ finish_task_switch().
 Content-Language: en-US
 To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
         linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
@@ -50,9 +51,9 @@ Cc:     Ben Segall <bsegall@google.com>,
         Thomas Gleixner <tglx@linutronix.de>,
         Vincent Guittot <vincent.guittot@linaro.org>
 References: <20220125152652.1963111-1-bigeasy@linutronix.de>
- <20220125152652.1963111-7-bigeasy@linutronix.de>
+ <20220125152652.1963111-8-bigeasy@linutronix.de>
 From:   Andy Lutomirski <luto@kernel.org>
-In-Reply-To: <20220125152652.1963111-7-bigeasy@linutronix.de>
+In-Reply-To: <20220125152652.1963111-8-bigeasy@linutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -66,13 +67,54 @@ List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
 On 1/25/22 07:26, Sebastian Andrzej Siewior wrote:
-> There is no need to perform the stack accounting of the outgoing task in
-> its final schedule() invocation which happens with disabled preemption.
-> The task is leaving, the resources will be freed and the accounting can
-> happen in do_exit() before the actual schedule invocation which
-> frees the stack memory.
+> The task stack could be deallocated later in delayed_put_task_struct().
+> For fork()/exec() kind of workloads (say a shell script executing
+> several commands) it is important that the stack is released in
+> finish_task_switch() so that in VMAP_STACK case it can be cached and
+> reused in the new task.
+> If the free/ caching is RCU-delayed then a new stack has to be allocated
+> because the cache is filled in batches of which only two stacks, out of
+> many, are recycled.
 > 
-> Move the accounting of the stack memory from release_task_stack() to
-> exit_task_stack_account() which then can be invoked from do_exit().
+> For PREEMPT_RT it would be good if the wake-up in vfree_atomic() could
+> be avoided in the scheduling path. Far worse are the other
+> free_thread_stack() implementations which invoke __free_pages()/
+> kmem_cache_free() with disabled preemption.
+> 
+> Introduce put_task_stack_sched() which is invoked from the
+> finish_task_switch() and only caches the VMAP stack. If the cache is
+> full or !CONFIG_VMAP_STACK is used than the stack is freed from
+> delayed_put_task_struct(). In the VMAP case this is another opportunity
+> to fill the cache.
+> 
+> The stack is finally released in delayed_put_task_struct() which means
+> that a valid stack reference can be held during its invocation. As such
+> there can be made no assumption whether the task_struct::stack pointer
+> can be freed if non-NULL.
+> Set the lowest bit of task_struct::stack if the stack was released via
+> put_task_stack_sched() and needs a final free in
+> delayed_put_task_struct(). If the bit is missing then a reference is
+> held and put_task_stack() will release it.
 
-Seems reasonable.
+I don't understand what this bit is for or why the logic needs to be 
+this complicated.  Can you set ->stack to NULL if and only if you freed 
+it early?
+
+> +static void free_thread_stack(struct task_struct *tsk, bool cache_only)
+
+This is messy.  Please clean it up for real:
+
+static bool try_release_thread_stack_to_cache(struct vm_struct *vm)
+{
+   for (...) try to put it in this slot;
+}
+
+And the callers can do things like:
+
+if (try_release_thread_stack_to_cache(...))
+   return;
+
+/* need to free for real */
+free it or delayed-free it.
+
+--Andy
