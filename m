@@ -2,49 +2,49 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE2664B1ABB
-	for <lists+linux-ia64@lfdr.de>; Fri, 11 Feb 2022 01:53:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F55E4B1AC5
+	for <lists+linux-ia64@lfdr.de>; Fri, 11 Feb 2022 01:55:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346519AbiBKAwB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 10 Feb 2022 19:52:01 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:40902 "EHLO
+        id S1346578AbiBKAyy (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 10 Feb 2022 19:54:54 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346528AbiBKAwB (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 10 Feb 2022 19:52:01 -0500
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FB3E5F8D
-        for <linux-ia64@vger.kernel.org>; Thu, 10 Feb 2022 16:52:01 -0800 (PST)
-Received: by mail-pl1-x62d.google.com with SMTP id u12so3319753plf.13
-        for <linux-ia64@vger.kernel.org>; Thu, 10 Feb 2022 16:52:01 -0800 (PST)
+        with ESMTP id S1345588AbiBKAyx (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 10 Feb 2022 19:54:53 -0500
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1ABA5F24
+        for <linux-ia64@vger.kernel.org>; Thu, 10 Feb 2022 16:54:54 -0800 (PST)
+Received: by mail-pf1-x430.google.com with SMTP id d187so13322573pfa.10
+        for <linux-ia64@vger.kernel.org>; Thu, 10 Feb 2022 16:54:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
          :content-disposition:in-reply-to;
-        bh=D3EjEoLgjS5BYa16RZ5JcaZGfnj2NCy9e6R/DsxWvD0=;
-        b=mYDb9T7V8vVpb4vvbK6zkA0h1yevImaISwFUxjrIIoz62k/wF/zDHu5zFn6qzE7kUp
-         87hdaz0kZHUo4I24hP9Ypim/bw0UCqkm9B/sqsnXEiXBwa22hYfKiyLvWUhlNNdLK62v
-         jkpZSMR3Qi6h9sWFPRK7ScuIfziA7yI6AE748=
+        bh=uzcyDJDNi5GmBv4U03eJWryB2XjhMP5736i1b/gjtS0=;
+        b=OJcJvg1lIs62N3GjVa8/LTlfS7upa/xr+/yqej93ZLvKvNvWRieu71wpl5TeXuyvcg
+         R6bQb60X5tmf18alMuGNwUqhlONmwHDA1MWkfgookl0SVxVUgxt0PFdERfjV9Qp+8wzS
+         BHxJC5W6t1DrtJBHsXc1qgwdpV2s1Efulp2PI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
          :mime-version:content-disposition:in-reply-to;
-        bh=D3EjEoLgjS5BYa16RZ5JcaZGfnj2NCy9e6R/DsxWvD0=;
-        b=EMcPMr9EBfH5DGYIa3fdyeLHhG+BXh/YfQjylMj3VVfwKlPeTj2LKIWO4CEGcw5v4V
-         fbYZyEeWYgMOwx7qzw5l2kBLG55EdP8bcOwiBM0In7sPwJ2nXkOOxT+MQmxMCTLQ5DQf
-         aRJ4Ioxx8Yg2KbosL0jiKgcnMynFb3J8IkD/iuWVnXUlc7Gu7Y8W6bFas7OouZOm7ACH
-         GsxIYjPU3JSwhnpoy+MbzmSQD3QKzkuirXipLGFjD/s4Kku8kVKW3ulNJ0j4T+naOhrx
-         EtipEqX+ywd2mtTLZ+eVpkslrH8W+jrzaIDqyHgpXtaRsdCvryP00SHi2KM6rpd0EoQz
-         C8EA==
-X-Gm-Message-State: AOAM531KOW7HNdGp7kKn10xkf4cQG8M8eQvxp0shSi15bpDjV1YIBCXC
-        nZq2lU8Z11yU9MogStbbNHAsNA==
-X-Google-Smtp-Source: ABdhPJw/vLSGOWe5ccZEegSZ0CyTgYC43nd3Y1R3YkYl+lBMWAImTOS4id0LQup7bw2RNv5XlqIpWQ==
-X-Received: by 2002:a17:90a:5206:: with SMTP id v6mr71812pjh.220.1644540721159;
-        Thu, 10 Feb 2022 16:52:01 -0800 (PST)
+        bh=uzcyDJDNi5GmBv4U03eJWryB2XjhMP5736i1b/gjtS0=;
+        b=lRHaqQq+jjVhiH1mfZ0i3CURr39EdmkwESlmA5NS+a5EiZYvTgSYMf8ycuf3EgZjf5
+         7bQ8VESFQv97WRbnlPezmVW3i8P4MtgnY+VPHfQd40IdEO/i54UeGe14W2M90QlGGX0u
+         /FsFlnqoWs9Ms8EJVj65WsICWBDtkTKpv9OhOdXj/NU9JHL59u71LxaMdTU3BvmCTc2o
+         JWMg+FigHJmH8b4hpsA3FvjHyWP45AZyFaMI2PVL4+O20z2w+scR+yvVW4MDUyf36fRq
+         zsgADALrO+1/8oZHfRVdTxtomGWQkvuUQ23AcpcmKTcRe4qPWphsxLLy/lZWrBSsHxmq
+         4ruQ==
+X-Gm-Message-State: AOAM533Al0f4rAqLiabC8BCUxR3LPm2TnJIqQPmScAGLFkRf8/7w6Mkb
+        8KWhsVoInJSTJt+/uW6Ci95BGQ==
+X-Google-Smtp-Source: ABdhPJy4Ogb4My/UrDG5DujzJYCV/hk5yDp0cjrcj7xH+goA5f18ojJcRJubslgwxb7Z2pArOua10A==
+X-Received: by 2002:a05:6a00:178d:: with SMTP id s13mr9977850pfg.47.1644540893586;
+        Thu, 10 Feb 2022 16:54:53 -0800 (PST)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id z22sm24478493pfe.42.2022.02.10.16.52.00
+        by smtp.gmail.com with ESMTPSA id x23sm24719940pfh.216.2022.02.10.16.54.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 10 Feb 2022 16:52:00 -0800 (PST)
-Date:   Thu, 10 Feb 2022 16:51:59 -0800
+        Thu, 10 Feb 2022 16:54:53 -0800 (PST)
+Date:   Thu, 10 Feb 2022 16:54:52 -0800
 From:   Kees Cook <keescook@chromium.org>
 To:     Christophe Leroy <christophe.leroy@csgroup.eu>
 Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
@@ -57,14 +57,14 @@ Cc:     Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
         linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
         linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 01/12] powerpc: Move and rename func_descr_t
-Message-ID: <202202101651.E6AACB3D4F@keescook>
+Subject: Re: [PATCH v3 04/12] powerpc: Prepare func_desc_t for refactorisation
+Message-ID: <202202101653.9128E58B84@keescook>
 References: <cover.1634457599.git.christophe.leroy@csgroup.eu>
- <637a9a11263afa216fdfa7fb470a54479c67c61c.1634457599.git.christophe.leroy@csgroup.eu>
+ <86c393ce0a6f603f94e6d2ceca08d535f654bb23.1634457599.git.christophe.leroy@csgroup.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <637a9a11263afa216fdfa7fb470a54479c67c61c.1634457599.git.christophe.leroy@csgroup.eu>
+In-Reply-To: <86c393ce0a6f603f94e6d2ceca08d535f654bb23.1634457599.git.christophe.leroy@csgroup.eu>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
@@ -75,26 +75,94 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sun, Oct 17, 2021 at 02:38:14PM +0200, Christophe Leroy wrote:
-> There are three architectures with function descriptors, try to
-> have common names for the address they contain in order to
-> refactor some functions into generic functions later.
+On Sun, Oct 17, 2021 at 02:38:17PM +0200, Christophe Leroy wrote:
+> In preparation of making func_desc_t generic, change the ELFv2
+> version to a struct containing 'addr' element.
 > 
-> powerpc has 'entry'
-> ia64 has 'ip'
-> parisc has 'addr'
-> 
-> Vote for 'addr' and update 'func_descr_t' accordingly.
-> 
-> Move it in asm/elf.h to have it at the same place on all
-> three architectures, remove the typedef which hides its real
-> type, and change it to a smoother name 'struct func_desc'.
+> This allows using single helpers common to ELFv1 and ELFv2.
 > 
 > Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+> ---
+>  arch/powerpc/kernel/module_64.c | 32 ++++++++++++++------------------
+>  1 file changed, 14 insertions(+), 18 deletions(-)
+> 
+> diff --git a/arch/powerpc/kernel/module_64.c b/arch/powerpc/kernel/module_64.c
+> index a89da0ee25e2..b687ef88c4c4 100644
+> --- a/arch/powerpc/kernel/module_64.c
+> +++ b/arch/powerpc/kernel/module_64.c
+> @@ -33,19 +33,13 @@
+>  #ifdef PPC64_ELF_ABI_v2
+>  
+>  /* An address is simply the address of the function. */
+> -typedef unsigned long func_desc_t;
+> +typedef struct {
+> +	unsigned long addr;
+> +} func_desc_t;
+>  
+>  static func_desc_t func_desc(unsigned long addr)
+>  {
+> -	return addr;
+> -}
+> -static unsigned long func_addr(unsigned long addr)
+> -{
+> -	return addr;
+> -}
+> -static unsigned long stub_func_addr(func_desc_t func)
+> -{
+> -	return func;
+> +	return (func_desc_t){addr};
 
-I like the name. :)
+There's only 1 element in the struct, so okay, but it hurt my eyes a
+little. I would have been happier with:
+
+	return (func_desc_t){ .addr = addr; };
+
+But of course that also looks bonkers because it starts with "return".
+So no matter what I do my eyes bug out. ;)
+
+So it's fine either way. :)
 
 Reviewed-by: Kees Cook <keescook@chromium.org>
+
+
+>  }
+>  
+>  /* PowerPC64 specific values for the Elf64_Sym st_other field.  */
+> @@ -70,14 +64,6 @@ static func_desc_t func_desc(unsigned long addr)
+>  {
+>  	return *(struct func_desc *)addr;
+>  }
+> -static unsigned long func_addr(unsigned long addr)
+> -{
+> -	return func_desc(addr).addr;
+> -}
+> -static unsigned long stub_func_addr(func_desc_t func)
+> -{
+> -	return func.addr;
+> -}
+>  static unsigned int local_entry_offset(const Elf64_Sym *sym)
+>  {
+>  	return 0;
+> @@ -93,6 +79,16 @@ void *dereference_module_function_descriptor(struct module *mod, void *ptr)
+>  }
+>  #endif
+>  
+> +static unsigned long func_addr(unsigned long addr)
+> +{
+> +	return func_desc(addr).addr;
+> +}
+> +
+> +static unsigned long stub_func_addr(func_desc_t func)
+> +{
+> +	return func.addr;
+> +}
+> +
+>  #define STUB_MAGIC 0x73747562 /* stub */
+>  
+>  /* Like PPC32, we need little trampolines to do > 24-bit jumps (into
+> -- 
+> 2.31.1
+> 
 
 -- 
 Kees Cook
