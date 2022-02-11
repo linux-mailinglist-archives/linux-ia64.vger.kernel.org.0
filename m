@@ -2,83 +2,83 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25D394B1FE8
-	for <lists+linux-ia64@lfdr.de>; Fri, 11 Feb 2022 09:07:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id F0E464B3174
+	for <lists+linux-ia64@lfdr.de>; Sat, 12 Feb 2022 00:43:01 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236297AbiBKIFx (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 11 Feb 2022 03:05:53 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:34518 "EHLO
+        id S1354267AbiBKXmo (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 11 Feb 2022 18:42:44 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232328AbiBKIFw (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 11 Feb 2022 03:05:52 -0500
-X-Greylist: delayed 1080 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 11 Feb 2022 00:05:50 PST
-Received: from gate.crashing.org (gate.crashing.org [63.228.1.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B2FC9D69;
-        Fri, 11 Feb 2022 00:05:50 -0800 (PST)
-Received: from gate.crashing.org (localhost.localdomain [127.0.0.1])
-        by gate.crashing.org (8.14.1/8.14.1) with ESMTP id 21B7dKQZ012095;
-        Fri, 11 Feb 2022 01:39:21 -0600
-Received: (from segher@localhost)
-        by gate.crashing.org (8.14.1/8.14.1/Submit) id 21B7dJjv012092;
-        Fri, 11 Feb 2022 01:39:19 -0600
-X-Authentication-Warning: gate.crashing.org: segher set sender to segher@kernel.crashing.org using -f
-Date:   Fri, 11 Feb 2022 01:39:19 -0600
-From:   Segher Boessenkool <segher@kernel.crashing.org>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-parisc@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Helge Deller <deller@gmx.de>, linux-kernel@vger.kernel.org,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        linux-mm@kvack.org, Paul Mackerras <paulus@samba.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v3 04/12] powerpc: Prepare func_desc_t for refactorisation
-Message-ID: <20220211073919.GW614@gate.crashing.org>
-References: <cover.1634457599.git.christophe.leroy@csgroup.eu> <86c393ce0a6f603f94e6d2ceca08d535f654bb23.1634457599.git.christophe.leroy@csgroup.eu> <202202101653.9128E58B84@keescook>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <202202101653.9128E58B84@keescook>
-User-Agent: Mutt/1.4.2.3i
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S235335AbiBKXmn (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 11 Feb 2022 18:42:43 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 845BDA5;
+        Fri, 11 Feb 2022 15:42:41 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1FA65618C1;
+        Fri, 11 Feb 2022 23:42:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFD2C340EB;
+        Fri, 11 Feb 2022 23:42:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1644622960;
+        bh=dotqGisqT6xom3+yh8EyRGKAr3ZPuPfXjlwiUjg95Ts=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=L3v8QvPp3JMZbdQ4ppy6JgyNZgaXGe5VSW78Ipfb6YsDzpX80460JbXGPlSBe+LC2
+         tZS1QlBPidxrH2gIImwt01t0tG99p/OMtHvgVqoSkvz6unRe8BJDa28tdqex3ga01+
+         iAHlNczc8ZWEzbMRP86WaIU06zb5xRberL88oV5WerAA2K8ZUaCcfYa4q80OJmDSl0
+         2LyhZ+C6ZpdiTjrm+LihYt6VVoHf257j1rWUsdGXn147bmqcNEFeCeO9Syz+ekHVLU
+         rvn3qb0Nxaa8TPc4pB61rrECoXKaAjL1Qfd5SLFPKZ/fcc1EE4lu10NmnFGv4NJXfd
+         vphpBbr28/uMQ==
+Message-ID: <8340d413-4951-5e62-ef5f-f396523edac7@kernel.org>
+Date:   Fri, 11 Feb 2022 15:42:38 -0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH 2/8] kernel/fork: Duplicate task_struct before stack
+ allocation.
+Content-Language: en-US
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
+Cc:     Ben Segall <bsegall@google.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vincent Guittot <vincent.guittot@linaro.org>
+References: <20220125152652.1963111-1-bigeasy@linutronix.de>
+ <20220125152652.1963111-3-bigeasy@linutronix.de>
+From:   Andy Lutomirski <luto@kernel.org>
+In-Reply-To: <20220125152652.1963111-3-bigeasy@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Feb 10, 2022 at 04:54:52PM -0800, Kees Cook wrote:
-> On Sun, Oct 17, 2021 at 02:38:17PM +0200, Christophe Leroy wrote:
-(edited:)
-> > +typedef struct {
-> > +	unsigned long addr;
-> > +} func_desc_t;
-> >  
-> >  static func_desc_t func_desc(unsigned long addr)
-> >  {
-> > +	return (func_desc_t){addr};
+On 1/25/22 07:26, Sebastian Andrzej Siewior wrote:
+> alloc_thread_stack_node() already populates the task_struct::stack
+> member except on IA64. The stack pointer is saved and populated again
+> because IA64 needs it and arch_dup_task_struct() overwrites it.
 
-> There's only 1 element in the struct, so okay, but it hurt my eyes a
-> little. I would have been happier with:
+I understand the problem, I think.
+
 > 
-> 	return (func_desc_t){ .addr = addr; };
+> Allocate thread's stack after task_struct has been duplicated as a
+> preparation.
 > 
-> But of course that also looks bonkers because it starts with "return".
-> So no matter what I do my eyes bug out. ;)
 
-The usual way to avoid convoluted constructs is to name more factors.
-So:
+But I don't understand this.  How does this patch relate to the problem?
 
-static func_desc_t func_desc(unsigned long addr)
-{
-	func_desc_t desc = {};
-	desc.addr = addr;
-	return desc;
-}
-
-
-Segher
+Also, you appear to be missing a change to the free_stack and free_tsk 
+code at the end of dup_task_struct().
