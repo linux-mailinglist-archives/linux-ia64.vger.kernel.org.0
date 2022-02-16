@@ -2,99 +2,101 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B5B24B8DB4
-	for <lists+linux-ia64@lfdr.de>; Wed, 16 Feb 2022 17:20:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 019014B9060
+	for <lists+linux-ia64@lfdr.de>; Wed, 16 Feb 2022 19:36:21 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233783AbiBPQUR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 16 Feb 2022 11:20:17 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55466 "EHLO
+        id S237694AbiBPSgc (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 16 Feb 2022 13:36:32 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236220AbiBPQUQ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 16 Feb 2022 11:20:16 -0500
-Received: from mail-pg1-x534.google.com (mail-pg1-x534.google.com [IPv6:2607:f8b0:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C41C2AE28C
-        for <linux-ia64@vger.kernel.org>; Wed, 16 Feb 2022 08:20:04 -0800 (PST)
-Received: by mail-pg1-x534.google.com with SMTP id q132so2560019pgq.7
-        for <linux-ia64@vger.kernel.org>; Wed, 16 Feb 2022 08:20:04 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=SUEK1OPatjz/xS89rOiQIJkojmQppC70TLq4uXsnOCU=;
-        b=awiYRJK7xVss9qUlz/+ZAsH80T6s71tCIdTOeiyrQ0x99UFr0wnuctr63kQIRgErZp
-         Pjfqzv1BqeebYXL4GcrP/MyMzdMDlGQjvfr6bbW2B//BH8jrUYt1XEZHs+OKMGfIVuiv
-         RJpsPjfFgg4A8/+DgzM1yTr8QymR2qoNgB2u0=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=SUEK1OPatjz/xS89rOiQIJkojmQppC70TLq4uXsnOCU=;
-        b=aawc9WblbE+TJa0kDWik24+41mwhTYwqed1DMbssYsRWdzX42IEnkZO8SiMafN565I
-         6Lgpl2PbKT6ahJbpNemioDd6TobHQEiCPL3EW9RUQdW+SO3FhCihmymPUjhFf8DxJaDb
-         yBJZ+jT9AREOPA5skrGna+ZD4PhGXgJ4tQvM5FDuQ2Shjsum5dxlGh6p8rNdFHhxpYRk
-         Y7qnxJNuTjBVnztWXXlDqdBCKVzhqgUy9V4drngLfqyadx3g/PTFf8qGbmWIIDYUGGVs
-         DYBwLDbiMkYVgjkpSHsqxBPq+zxcvVykXlZXjMSj4C2TDtSv1rze8bwgGlAT6eERZk9l
-         OO1Q==
-X-Gm-Message-State: AOAM533LBpW7ljcLus7xj20cMOT1McAuOG0a1Yh13/kBLQRHlLopeFoZ
-        GQhGGrdQWUTqIotASoTBgHZXphmzTNMuSQ==
-X-Google-Smtp-Source: ABdhPJwkMae/H/K70R+Ctzw/galxZ1wgyt9T2ZBccthHmsi3muEDVk9x1KPlstE3Ys6++5ijnUTmdw==
-X-Received: by 2002:a63:86:0:b0:36c:48e8:627e with SMTP id 128-20020a630086000000b0036c48e8627emr2940332pga.53.1645028403498;
-        Wed, 16 Feb 2022 08:20:03 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id x4sm1535073pjq.2.2022.02.16.08.20.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Feb 2022 08:20:03 -0800 (PST)
-Date:   Wed, 16 Feb 2022 08:20:02 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>, Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ia64@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 00/13] Fix LKDTM for PPC64/IA64/PARISC v4
-Message-ID: <202202160818.7C3862B@keescook>
-References: <cover.1644928018.git.christophe.leroy@csgroup.eu>
- <202202150807.D584917D34@keescook>
- <87y22bm25y.fsf@mpe.ellerman.id.au>
+        with ESMTP id S237690AbiBPSgb (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 16 Feb 2022 13:36:31 -0500
+X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 16 Feb 2022 10:36:19 PST
+Received: from mx2.smtp.larsendata.com (mx2.smtp.larsendata.com [91.221.196.228])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 846A92AB523
+        for <linux-ia64@vger.kernel.org>; Wed, 16 Feb 2022 10:36:19 -0800 (PST)
+Received: from mail01.mxhotel.dk (mail01.mxhotel.dk [91.221.196.236])
+        by mx2.smtp.larsendata.com (Halon) with ESMTPS
+        id 36dbd7e5-8f57-11ec-b2df-0050568cd888;
+        Wed, 16 Feb 2022 18:35:28 +0000 (UTC)
+Received: from ravnborg.org (80-162-45-141-cable.dk.customer.tdc.net [80.162.45.141])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        (Authenticated sender: sam@ravnborg.org)
+        by mail01.mxhotel.dk (Postfix) with ESMTPSA id 10F5F194B3E;
+        Wed, 16 Feb 2022 19:35:03 +0100 (CET)
+Date:   Wed, 16 Feb 2022 19:34:59 +0100
+X-Report-Abuse-To: abuse@mxhotel.dk
+From:   Sam Ravnborg <sam@ravnborg.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org, linux-api@vger.kernel.org, arnd@arndb.de,
+        linux-kernel@vger.kernel.org, viro@zeniv.linux.org.uk,
+        linux@armlinux.org.uk, will@kernel.org, guoren@kernel.org,
+        bcain@codeaurora.org, geert@linux-m68k.org, monstr@monstr.eu,
+        tsbogend@alpha.franken.de, nickhu@andestech.com,
+        green.hu@gmail.com, dinguyen@kernel.org, shorne@gmail.com,
+        deller@gmx.de, mpe@ellerman.id.au, peterz@infradead.org,
+        mingo@redhat.com, mark.rutland@arm.com, hca@linux.ibm.com,
+        dalias@libc.org, davem@davemloft.net, richard@nod.at,
+        x86@kernel.org, jcmvbkbc@gmail.com, ebiederm@xmission.com,
+        akpm@linux-foundation.org, ardb@kernel.org,
+        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org
+Subject: Re: [PATCH v2 15/18] sparc64: remove CONFIG_SET_FS support
+Message-ID: <Yg1D08+olCSGmnYU@ravnborg.org>
+References: <20220216131332.1489939-1-arnd@kernel.org>
+ <20220216131332.1489939-16-arnd@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <87y22bm25y.fsf@mpe.ellerman.id.au>
-X-Spam-Status: No, score=-2.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20220216131332.1489939-16-arnd@kernel.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Feb 16, 2022 at 11:22:33PM +1100, Michael Ellerman wrote:
-> Kees Cook <keescook@chromium.org> writes:
-> > On Tue, Feb 15, 2022 at 01:40:55PM +0100, Christophe Leroy wrote:
-> >> PPC64/IA64/PARISC have function descriptors. LKDTM doesn't work
-> >> on those three architectures because LKDTM messes up function
-> >> descriptors with functions.
-> >> 
-> >> This series does some cleanup in the three architectures and
-> >> refactors function descriptors so that it can then easily use it
-> >> in a generic way in LKDTM.
-> >
-> > Thanks for doing this! It looks good to me. :)
-> 
-> How should we merge this series, it's a bit all over the map.
-> 
-> I could put it in a topic branch?
+Hi Arnd.
 
-That's fine by me -- I had assumed it'd go via the ppc tree. But if
-you'd rather I take it as a topic branch I can do that too.
+On Wed, Feb 16, 2022 at 02:13:29PM +0100, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> sparc64 uses address space identifiers to differentiate between kernel
+> and user space, using ASI_P for kernel threads but ASI_AIUS for normal
+> user space, with the option of changing between them.
+> 
+> As nothing really changes the ASI any more, just hardcode ASI_AIUS
+> everywhere. Kernel threads are not allowed to access __user pointers
+> anyway.
+> 
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+>  arch/sparc/include/asm/processor_64.h   |  4 ----
+>  arch/sparc/include/asm/switch_to_64.h   |  4 +---
+>  arch/sparc/include/asm/thread_info_64.h |  4 +---
+>  arch/sparc/include/asm/uaccess_64.h     | 20 +-------------------
+>  arch/sparc/kernel/process_64.c          | 12 ------------
+>  arch/sparc/kernel/traps_64.c            |  2 --
+>  arch/sparc/lib/NGmemcpy.S               |  3 +--
+>  arch/sparc/mm/init_64.c                 |  7 ++++---
+>  8 files changed, 8 insertions(+), 48 deletions(-)
 
--- 
-Kees Cook
+I think you somehow missed the Kconfig change, and also the related
+sparc32 change which continue to have set_fs() after this patch.
+
+
+I did not manage to review the patch - as I am too unfamiliar with the
+code paths and the set_fs() removal changes.
+
+	Sam
