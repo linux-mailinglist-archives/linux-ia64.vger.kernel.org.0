@@ -2,72 +2,113 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 917D94BCF86
-	for <lists+linux-ia64@lfdr.de>; Sun, 20 Feb 2022 16:44:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A2D94BD02A
+	for <lists+linux-ia64@lfdr.de>; Sun, 20 Feb 2022 18:17:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239449AbiBTPil (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 20 Feb 2022 10:38:41 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:42090 "EHLO
+        id S242089AbiBTRMc (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 20 Feb 2022 12:12:32 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:36628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232319AbiBTPik (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 20 Feb 2022 10:38:40 -0500
-Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 401E041305
-        for <linux-ia64@vger.kernel.org>; Sun, 20 Feb 2022 07:38:17 -0800 (PST)
-Received: by mail-ed1-x530.google.com with SMTP id h15so7501411edv.7
-        for <linux-ia64@vger.kernel.org>; Sun, 20 Feb 2022 07:38:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=ymEpgIXl54yuSlZg88NLeYK1RJf0YDtYgXWD/9J1GQ0=;
-        b=degv64KeFtdi2zbjsMqCg99XUBwRsWWRsat8pVSE1dsJMyLEQebzW+u8gL6CBfEQQn
-         TR573CG7WA+9vnEdvbzyisLdqVfd2L7tW255YjXAv70Nz6z7oKmPah1XlxlqBd5nDgXH
-         ePUhHpcz6Nz3MIgpiiVSbZwwadbd4mnHSGmsNzIMifS2uWsr5SlJ5m2rsNUPByoI5zhb
-         SR83azGcCTW//SbmgQ0y+vLGSla0uKvjbMIVO2C3U/MToeM9d3wUPHwP8BDBVACmWkyb
-         mbrrj1iz1ehyoQ1IJSYmVaPjfehHwDHBxgq0J/uzM167cyMcPy58BK3LuVjr98uUFJPh
-         U0VQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=ymEpgIXl54yuSlZg88NLeYK1RJf0YDtYgXWD/9J1GQ0=;
-        b=QINWUd5HvS5OCHPQRY/0somFGFhzVIqkneHc7djWFx445ojgpVvnX6XgBthgFdrL4K
-         O7V/zEHDceyOmmGJikHhLKlbTPbdMCOrYqs6SOV1vRU+JxIieOb+cPR3eG0SE4HagvVi
-         G1ljrW/qKo24G41kwmVV+jwwJLnu10w0w1wCxrL/mAsPFpXJxqkwPuYJvwfEzotm0r/C
-         VRklNKAaXZv/XhP5qBdkFOknQzecPNyOwucxhmdunUdVAMabiqWSmR3yn+C4KkkkjkvJ
-         yr6zFdpVYCruzo/zsZiBqhexBP9+9MK2FUlRzZM30gUvVeu+zNXN9qY5pcIqM4rDvTH2
-         OWqA==
-X-Gm-Message-State: AOAM532u4GJMu+HwLA31Zlx3lB2JH+Xnc0CC2dwAVEIKx2CMbxAnDg7p
-        xtnpnmlDkD7FB/dw1+YXWFJBmuu57sqfxcdiTQc=
-X-Google-Smtp-Source: ABdhPJz0AN7o9No0fhs6xZEm8hzyX6WOZhNi8B3U8PCYdBi3itNU8MBgMEdAbbMqhnsTf7H9NACa5LH5MJlqKIgsin0=
-X-Received: by 2002:aa7:ce92:0:b0:40f:b89c:18fe with SMTP id
- y18-20020aa7ce92000000b0040fb89c18femr17517323edv.67.1645371495858; Sun, 20
- Feb 2022 07:38:15 -0800 (PST)
+        with ESMTP id S229545AbiBTRMc (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 20 Feb 2022 12:12:32 -0500
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EDB3D2B182;
+        Sun, 20 Feb 2022 09:12:09 -0800 (PST)
+Received: from ip4d144895.dynamic.kabel-deutschland.de ([77.20.72.149] helo=[192.168.66.200]); authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1nLpkk-000503-PB; Sun, 20 Feb 2022 18:12:06 +0100
+Message-ID: <a3edd529-c42d-3b09-135c-7e98a15b150f@leemhuis.info>
+Date:   Sun, 20 Feb 2022 18:12:06 +0100
 MIME-Version: 1.0
-Received: by 2002:a54:38c1:0:0:0:0:0 with HTTP; Sun, 20 Feb 2022 07:38:15
- -0800 (PST)
-Reply-To: fatibaro01@yahoo.com
-From:   Fatimah Baro <imanosose@gmail.com>
-Date:   Sun, 20 Feb 2022 16:38:15 +0100
-Message-ID: <CAFEyOE7M=ZUrSROmPGAE3yrv-g10xHU=UARo1h+trJF7vepfMA@mail.gmail.com>
-Subject: Business invitation
-To:     imanosose <imanosose@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=2.8 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Content-Language: en-BS
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: regression: Bug 215601 - gcc segv at startup on ia64
+To:     "Anthony Yznaga <anthony.yznaga"@oracle.com,
+        Kees Cook <keescook@chromium.org>
+Cc:     matoro_bugzilla_kernel@matoro.tk,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        linux-ia64@vger.kernel.org,
+        Linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1645377130;9576e647;
+X-HE-SMSGID: 1nLpkk-000503-PB
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Greetings from Burkina Faso,
-Please pardon me if my request offend your person; I need you to stand
-as my foreign partner for investment in your country. Please reply
-immediately if you are interested, so that I can give you more
-information.
-Fatimah Baro
+Hi, this is your Linux kernel regression tracker.
+
+I noticed a regression report in bugzilla.kernel.org that afaics nobody
+acted upon since it was reported about a week ago, that's why I'm hereby
+forwarding it to the lists and the relevant people. To quote
+https://bugzilla.kernel.org/show_bug.cgi?id=215601 :
+
+> On ia64, after 5f501d555653f8968011a1e65ebb121c8b43c144, the gcc
+> binary crashes with SIGSEGV at startup (i.e., during ELF loading).
+> Only gcc exhibits the crash (including g++, etc), other toolchain
+> components (such as ld, ldd, etc) do not, and neither does any other
+> binary from what I can tell.  I also haven't observed the issue on
+> any other architecture.
+> 
+> Reverting this commit resolves the issue up to and including git tip,
+> with no (visible) issues.
+> 
+> Hardware:  HP Integrity rx2800 i2 Kernel config attached.
+
+Could somebody take a look into this? Or was this discussed somewhere
+else already? Or even fixed?
+
+Anyway, to get this tracked:
+
+#regzbot introduced: 5f501d555653f8968011a1e65ebb121c8b43c144
+#regzbot from: matoro <matoro_bugzilla_kernel@matoro.tk>
+#regzbot title: gcc segv at startup on ia64
+#regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=215601
+
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+
+P.S.: As the Linux kernel's regression tracker I'm getting a lot of
+reports on my table. I can only look briefly into most of them and lack
+knowledge about most of the areas they concern. I thus unfortunately
+will sometimes get things wrong or miss something important. I hope
+that's not the case here; if you think it is, don't hesitate to tell me
+in a public reply, it's in everyone's interest to set the public record
+straight.
+
+-- 
+Additional information about regzbot:
+
+If you want to know more about regzbot, check out its web-interface, the
+getting start guide, and the references documentation:
+
+https://linux-regtracking.leemhuis.info/regzbot/
+https://gitlab.com/knurd42/regzbot/-/blob/main/docs/getting_started.md
+https://gitlab.com/knurd42/regzbot/-/blob/main/docs/reference.md
+
+The last two documents will explain how you can interact with regzbot
+yourself if your want to.
+
+Hint for reporters: when reporting a regression it's in your interest to
+CC the regression list and tell regzbot about the issue, as that ensures
+the regression makes it onto the radar of the Linux kernel's regression
+tracker -- that's in your interest, as it ensures your report won't fall
+through the cracks unnoticed.
+
+Hint for developers: you normally don't need to care about regzbot once
+it's involved. Fix the issue as you normally would, just remember to
+include 'Link:' tag in the patch descriptions pointing to all reports
+about the issue. This has been expected from developers even before
+regzbot showed up for reasons explained in
+'Documentation/process/submitting-patches.rst' and
+'Documentation/process/5.Posting.rst'.
