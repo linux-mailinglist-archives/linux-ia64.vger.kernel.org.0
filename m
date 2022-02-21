@@ -2,45 +2,37 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1639B4BD034
-	for <lists+linux-ia64@lfdr.de>; Sun, 20 Feb 2022 18:24:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 782B74BD64A
+	for <lists+linux-ia64@lfdr.de>; Mon, 21 Feb 2022 07:56:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242106AbiBTRUM (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 20 Feb 2022 12:20:12 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:53004 "EHLO
+        id S240902AbiBUGlg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 21 Feb 2022 01:41:36 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229545AbiBTRUL (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 20 Feb 2022 12:20:11 -0500
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [IPv6:2a01:488:42:1000:50ed:8234::])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28B43220FF;
-        Sun, 20 Feb 2022 09:19:50 -0800 (PST)
-Received: from ip4d144895.dynamic.kabel-deutschland.de ([77.20.72.149] helo=[192.168.66.200]); authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1nLpsB-0004DC-LH; Sun, 20 Feb 2022 18:19:47 +0100
-Message-ID: <823f70be-7661-0195-7c97-65673dc7c12a@leemhuis.info>
-Date:   Sun, 20 Feb 2022 18:19:46 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.5.0
-Subject: Re: regression: Bug 215601 - gcc segv at startup on ia64
-Content-Language: en-BS
-From:   Thorsten Leemhuis <regressions@leemhuis.info>
-To:     Kees Cook <keescook@chromium.org>,
-        Anthony Yznaga <anthony.yznaga@oracle.com>
-Cc:     matoro_bugzilla_kernel@matoro.tk,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        linux-ia64@vger.kernel.org,
-        Linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>
-References: <a3edd529-c42d-3b09-135c-7e98a15b150f@leemhuis.info>
-In-Reply-To: <a3edd529-c42d-3b09-135c-7e98a15b150f@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1645377590;e3e5a095;
-X-HE-SMSGID: 1nLpsB-0004DC-LH
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        with ESMTP id S1345514AbiBUGl1 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 21 Feb 2022 01:41:27 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2DCC045506;
+        Sun, 20 Feb 2022 22:40:21 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EF3F41476;
+        Sun, 20 Feb 2022 22:40:20 -0800 (PST)
+Received: from p8cg001049571a15.arm.com (unknown [10.163.49.67])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 649E53F70D;
+        Sun, 20 Feb 2022 22:40:18 -0800 (PST)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-mm@kvack.org, akpm@linux-foundation.org
+Cc:     linux-kernel@vger.kernel.org,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org
+Subject: [PATCH V2 28/30] ia64/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+Date:   Mon, 21 Feb 2022 12:08:37 +0530
+Message-Id: <1645425519-9034-29-git-send-email-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.7.4
+In-Reply-To: <1645425519-9034-1-git-send-email-anshuman.khandual@arm.com>
+References: <1645425519-9034-1-git-send-email-anshuman.khandual@arm.com>
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -49,46 +41,115 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-[reply to get Anthony on board, I screwed up when copy and pasting his
-email address when sending below mail; sorry for the noise!]
+This defines and exports a platform specific custom vm_get_page_prot() via
+subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
+macros can be dropped which are no longer needed.
 
-On 20.02.22 18:12, Thorsten Leemhuis wrote:
-> Hi, this is your Linux kernel regression tracker.
-> 
-> I noticed a regression report in bugzilla.kernel.org that afaics nobody
-> acted upon since it was reported about a week ago, that's why I'm hereby
-> forwarding it to the lists and the relevant people. To quote
-> https://bugzilla.kernel.org/show_bug.cgi?id=215601 :
-> 
->> On ia64, after 5f501d555653f8968011a1e65ebb121c8b43c144, the gcc
->> binary crashes with SIGSEGV at startup (i.e., during ELF loading).
->> Only gcc exhibits the crash (including g++, etc), other toolchain
->> components (such as ld, ldd, etc) do not, and neither does any other
->> binary from what I can tell.  I also haven't observed the issue on
->> any other architecture.
->>
->> Reverting this commit resolves the issue up to and including git tip,
->> with no (visible) issues.
->>
->> Hardware:  HP Integrity rx2800 i2 Kernel config attached.
-> 
-> Could somebody take a look into this? Or was this discussed somewhere
-> else already? Or even fixed?
-> 
-> Anyway, to get this tracked:
-> 
-> #regzbot introduced: 5f501d555653f8968011a1e65ebb121c8b43c144
-> #regzbot from: matoro <matoro_bugzilla_kernel@matoro.tk>
-> #regzbot title: gcc segv at startup on ia64
-> #regzbot link: https://bugzilla.kernel.org/show_bug.cgi?id=215601
-> 
-> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
-> 
-> P.S.: As the Linux kernel's regression tracker I'm getting a lot of
-> reports on my table. I can only look briefly into most of them and lack
-> knowledge about most of the areas they concern. I thus unfortunately
-> will sometimes get things wrong or miss something important. I hope
-> that's not the case here; if you think it is, don't hesitate to tell me
-> in a public reply, it's in everyone's interest to set the public record
-> straight.
-> 
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
+---
+ arch/ia64/Kconfig               |  1 +
+ arch/ia64/include/asm/pgtable.h | 17 --------------
+ arch/ia64/mm/init.c             | 41 ++++++++++++++++++++++++++++++++-
+ 3 files changed, 41 insertions(+), 18 deletions(-)
+
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index a7e01573abd8..0ab15e8d5783 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -11,6 +11,7 @@ config IA64
+ 	select ARCH_HAS_DMA_MARK_CLEAN
+ 	select ARCH_HAS_STRNCPY_FROM_USER
+ 	select ARCH_HAS_STRNLEN_USER
++	select ARCH_HAS_VM_GET_PAGE_PROT
+ 	select ARCH_MIGHT_HAVE_PC_PARPORT
+ 	select ARCH_MIGHT_HAVE_PC_SERIO
+ 	select ACPI
+diff --git a/arch/ia64/include/asm/pgtable.h b/arch/ia64/include/asm/pgtable.h
+index 9584b2c5f394..8154c78bba56 100644
+--- a/arch/ia64/include/asm/pgtable.h
++++ b/arch/ia64/include/asm/pgtable.h
+@@ -161,23 +161,6 @@
+  * attempts to write to the page.
+  */
+ 	/* xwr */
+-#define __P000	PAGE_NONE
+-#define __P001	PAGE_READONLY
+-#define __P010	PAGE_READONLY	/* write to priv pg -> copy & make writable */
+-#define __P011	PAGE_READONLY	/* ditto */
+-#define __P100	__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_X_RX)
+-#define __P101	__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RX)
+-#define __P110	PAGE_COPY_EXEC
+-#define __P111	PAGE_COPY_EXEC
+-
+-#define __S000	PAGE_NONE
+-#define __S001	PAGE_READONLY
+-#define __S010	PAGE_SHARED	/* we don't have (and don't need) write-only */
+-#define __S011	PAGE_SHARED
+-#define __S100	__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_X_RX)
+-#define __S101	__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RX)
+-#define __S110	__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RWX)
+-#define __S111	__pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RWX)
+ 
+ #define pgd_ERROR(e)	printk("%s:%d: bad pgd %016lx.\n", __FILE__, __LINE__, pgd_val(e))
+ #if CONFIG_PGTABLE_LEVELS == 4
+diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
+index 5d165607bf35..2a922883e30f 100644
+--- a/arch/ia64/mm/init.c
++++ b/arch/ia64/mm/init.c
+@@ -273,7 +273,7 @@ static int __init gate_vma_init(void)
+ 	gate_vma.vm_start = FIXADDR_USER_START;
+ 	gate_vma.vm_end = FIXADDR_USER_END;
+ 	gate_vma.vm_flags = VM_READ | VM_MAYREAD | VM_EXEC | VM_MAYEXEC;
+-	gate_vma.vm_page_prot = __P101;
++	gate_vma.vm_page_prot = __pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RX);
+ 
+ 	return 0;
+ }
+@@ -492,3 +492,42 @@ void arch_remove_memory(u64 start, u64 size, struct vmem_altmap *altmap)
+ 	__remove_pages(start_pfn, nr_pages, altmap);
+ }
+ #endif
++
++pgprot_t vm_get_page_prot(unsigned long vm_flags)
++{
++	switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
++	case VM_NONE:
++		return PAGE_NONE;
++	case VM_READ:
++	/* write to priv pg -> copy & make writable */
++	case VM_WRITE:
++	/* write to priv pg -> copy & make writable */
++	case VM_WRITE | VM_READ:
++		return PAGE_READONLY;
++	case VM_EXEC:
++		return __pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_X_RX);
++	case VM_EXEC | VM_READ:
++		return __pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RX);
++	case VM_EXEC | VM_WRITE:
++	case VM_EXEC | VM_WRITE | VM_READ:
++		return PAGE_COPY_EXEC;
++	case VM_SHARED:
++		return PAGE_NONE;
++	case VM_SHARED | VM_READ:
++		return PAGE_READONLY;
++	/* we don't have (and don't need) write-only */
++	case VM_SHARED | VM_WRITE:
++	case VM_SHARED | VM_WRITE | VM_READ:
++		return PAGE_SHARED;
++	case VM_SHARED | VM_EXEC:
++		return __pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_X_RX);
++	case VM_SHARED | VM_EXEC | VM_READ:
++		return __pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RX);
++	case VM_SHARED | VM_EXEC | VM_WRITE:
++	case VM_SHARED | VM_EXEC | VM_WRITE | VM_READ:
++		return __pgprot(__ACCESS_BITS | _PAGE_PL_3 | _PAGE_AR_RWX);
++	default:
++		BUILD_BUG();
++	}
++}
++EXPORT_SYMBOL(vm_get_page_prot);
+-- 
+2.25.1
+
