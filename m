@@ -2,37 +2,37 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34BAD4BEA8F
-	for <lists+linux-ia64@lfdr.de>; Mon, 21 Feb 2022 20:36:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 46A584BEB1C
+	for <lists+linux-ia64@lfdr.de>; Mon, 21 Feb 2022 20:37:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231924AbiBUSh0 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 21 Feb 2022 13:37:26 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55024 "EHLO
+        id S231616AbiBUSpN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 21 Feb 2022 13:45:13 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:59812 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231811AbiBUSgt (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 21 Feb 2022 13:36:49 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D29E9CC0;
-        Mon, 21 Feb 2022 10:36:03 -0800 (PST)
+        with ESMTP id S231920AbiBUSod (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 21 Feb 2022 13:44:33 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 18105D83;
+        Mon, 21 Feb 2022 10:44:09 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 683C3614E6;
-        Mon, 21 Feb 2022 18:36:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53425C340E9;
-        Mon, 21 Feb 2022 18:36:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AC54C61500;
+        Mon, 21 Feb 2022 18:44:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790CFC340E9;
+        Mon, 21 Feb 2022 18:44:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1645468562;
-        bh=LvyAU0uC90qJLSAUEoQzZgP182YjQz/6HjvAx3mw0hM=;
+        s=k20201202; t=1645469048;
+        bh=N8byXcetwAxj2jN//6lTgsMjjsQ2MQ95vI/QBrqz184=;
         h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=girqwU9uRq/0C1W6d0fbWt/68D3PbWeDGmjpYZ+ZkmeXDo8ekmyl4u4D9SFOsG6dQ
-         3DLx7VB/AdcR5H3DxpLeS9Sa9e23ACYXuXGwpTZ+VM+2O0rmnklZmHKTWufoHbOTCp
-         Y4PXK/W9496tcu6eFA4EUUFx0ooZepYoZGn9BaQq9juZKjUE97C5o2YxWsEevmRFoY
-         2DG4E9+nXd9R+W96X0PCvu6VvoiDMe6MeX+MiBp5kwe8cykLDyPCpFy5V3kU1edRdR
-         RHkh0zENPg2j0Zj2Ycl4yYacIHa8NTT59FtGMEjmYXGBP4YOPkUr+w8+czUeg4oXna
-         kY97sdrShS16w==
-Message-ID: <215dc5af-5e81-fb64-9f00-b1e9e8d08297@kernel.org>
-Date:   Mon, 21 Feb 2022 10:36:01 -0800
+        b=ctXUb7UMGVcyM9oo9+y6ws2gR30oQG6qUv10GaXvjtSSsCXCn6OWQU7E1EPTaaR23
+         vOGzjWYnnAtb7kEs7EtR3oIlS9YWjzSfZN2aIqC06likivvMFrDS1nWR/2eW5VfQdf
+         nYalfO1Pyzj+ZeZUgbynSncub4khwTBcf+lgFY43V6deCUHV2KlsrKR4GZxqDyD2oh
+         bZbGYxiyCu+Y//1R5xsrkP5AMnUUT3zTD4W8Vvg4Z3LNv3nZY5LxBq1UbByYJ60UTW
+         AkdpSXt6fkBLwW2EAkVKTjeOp0biGNZLb38dSsFFHxhMpriqabKGOB1pvzQqxH4eso
+         CzcaOT9alyRlQ==
+Message-ID: <6ac2e2c8-798a-2b52-43f4-a4d940b39e2d@kernel.org>
+Date:   Mon, 21 Feb 2022 10:44:06 -0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
  Thunderbird/91.5.0
@@ -78,9 +78,13 @@ On 2/17/22 02:23, Sebastian Andrzej Siewior wrote:
 >    stack is cached only. If it fails, or in the !VMAP case then the final
 >    free happens in delayed_put_task_struct(). This is also an oportunity
 >    to cache the stack.
+> 
+> Changes since v1:
+>    - Drop the bit marked und use addtional RCU head to free the stack in
+>    case that it can't be cached. Suggested by Andy Lutomirski.
 
-My first two tries to apply this series to something failed.  What's it 
-based on?
+Acked-by: Andy Lutomirski <luto@kernel.org>
 
-The rest of my review will be based on diffs, not real code, since I 
-failed to apply it.
+This version is much nicer.  Thanks!
+
+--Andy
