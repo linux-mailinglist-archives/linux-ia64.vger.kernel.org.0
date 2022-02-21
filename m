@@ -2,150 +2,85 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBA504BE81D
-	for <lists+linux-ia64@lfdr.de>; Mon, 21 Feb 2022 19:04:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 34BAD4BEA8F
+	for <lists+linux-ia64@lfdr.de>; Mon, 21 Feb 2022 20:36:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379041AbiBUPXc (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 21 Feb 2022 10:23:32 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:41512 "EHLO
+        id S231924AbiBUSh0 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 21 Feb 2022 13:37:26 -0500
+Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:55024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1379020AbiBUPXa (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 21 Feb 2022 10:23:30 -0500
-Received: from elvis.franken.de (elvis.franken.de [193.175.24.41])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 49D6C1DA7C;
-        Mon, 21 Feb 2022 07:23:07 -0800 (PST)
-Received: from uucp (helo=alpha)
-        by elvis.franken.de with local-bsmtp (Exim 3.36 #1)
-        id 1nMAWk-00025w-00; Mon, 21 Feb 2022 16:23:02 +0100
-Received: by alpha.franken.de (Postfix, from userid 1000)
-        id 22D4EC25F8; Mon, 21 Feb 2022 16:21:30 +0100 (CET)
-Date:   Mon, 21 Feb 2022 16:21:30 +0100
-From:   Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-To:     Arnd Bergmann <arnd@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Christoph Hellwig <hch@lst.de>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        Linux-MM <linux-mm@kvack.org>,
-        Linux API <linux-api@vger.kernel.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Al Viro <viro@zeniv.linux.org.uk>,
-        Russell King - ARM Linux <linux@armlinux.org.uk>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Brian Cain <bcain@codeaurora.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Nick Hu <nickhu@andestech.com>,
-        Greentime Hu <green.hu@gmail.com>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Stafford Horne <shorne@gmail.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Ingo Molnar <mingo@redhat.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Rich Felker <dalias@libc.org>,
-        David Miller <davem@davemloft.net>,
-        Richard Weinberger <richard@nod.at>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        "Eric W . Biederman" <ebiederm@xmission.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        alpha <linux-alpha@vger.kernel.org>,
-        "open list:SYNOPSYS ARC ARCHITECTURE" 
-        <linux-snps-arc@lists.infradead.org>, linux-csky@vger.kernel.org,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        linux-ia64@vger.kernel.org,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Openrisc <openrisc@lists.librecores.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        linux-s390 <linux-s390@vger.kernel.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        linux-um <linux-um@lists.infradead.org>,
-        "open list:TENSILICA XTENSA PORT (xtensa)" 
-        <linux-xtensa@linux-xtensa.org>
-Subject: Re: [PATCH v2 09/18] mips: use simpler access_ok()
-Message-ID: <20220221152130.GA17373@alpha.franken.de>
-References: <20220216131332.1489939-1-arnd@kernel.org>
- <20220216131332.1489939-10-arnd@kernel.org>
- <20220221132456.GA7139@alpha.franken.de>
- <CAK8P3a2usZWPDDDUcscwS0aVKsY6aLXFGFPqYNkm4hcDERim9w@mail.gmail.com>
+        with ESMTP id S231811AbiBUSgt (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 21 Feb 2022 13:36:49 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D29E9CC0;
+        Mon, 21 Feb 2022 10:36:03 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 683C3614E6;
+        Mon, 21 Feb 2022 18:36:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53425C340E9;
+        Mon, 21 Feb 2022 18:36:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1645468562;
+        bh=LvyAU0uC90qJLSAUEoQzZgP182YjQz/6HjvAx3mw0hM=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=girqwU9uRq/0C1W6d0fbWt/68D3PbWeDGmjpYZ+ZkmeXDo8ekmyl4u4D9SFOsG6dQ
+         3DLx7VB/AdcR5H3DxpLeS9Sa9e23ACYXuXGwpTZ+VM+2O0rmnklZmHKTWufoHbOTCp
+         Y4PXK/W9496tcu6eFA4EUUFx0ooZepYoZGn9BaQq9juZKjUE97C5o2YxWsEevmRFoY
+         2DG4E9+nXd9R+W96X0PCvu6VvoiDMe6MeX+MiBp5kwe8cykLDyPCpFy5V3kU1edRdR
+         RHkh0zENPg2j0Zj2Ycl4yYacIHa8NTT59FtGMEjmYXGBP4YOPkUr+w8+czUeg4oXna
+         kY97sdrShS16w==
+Message-ID: <215dc5af-5e81-fb64-9f00-b1e9e8d08297@kernel.org>
+Date:   Mon, 21 Feb 2022 10:36:01 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAK8P3a2usZWPDDDUcscwS0aVKsY6aLXFGFPqYNkm4hcDERim9w@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,T_SPF_HELO_PERMERROR autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.5.0
+Subject: Re: [PATCH v2 0/8] kernel/fork: Move thread stack free otu of the
+ scheduler path.
+Content-Language: en-US
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
+Cc:     Ben Segall <bsegall@google.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vincent Guittot <vincent.guittot@linaro.org>
+References: <20220217102406.3697941-1-bigeasy@linutronix.de>
+From:   Andy Lutomirski <luto@kernel.org>
+In-Reply-To: <20220217102406.3697941-1-bigeasy@linutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Feb 21, 2022 at 03:31:23PM +0100, Arnd Bergmann wrote:
-> On Mon, Feb 21, 2022 at 2:24 PM Thomas Bogendoerfer
-> <tsbogend@alpha.franken.de> wrote:
-> > On Wed, Feb 16, 2022 at 02:13:23PM +0100, Arnd Bergmann wrote:
-> > >
-> > > diff --git a/arch/mips/include/asm/uaccess.h b/arch/mips/include/asm/uaccess.h
-> > > index db9a8e002b62..d7c89dc3426c 100644
-> >
-> > this doesn't work. For every access above maximum implemented virtual address
-> > space of the CPU an address error will be issued, but not a TLB miss.
-> > And address error isn't able to handle this situation.
+On 2/17/22 02:23, Sebastian Andrzej Siewior wrote:
+> This is a follup-up on the patch
+>      sched: Delay task stack freeing on RT
+>      https://lkml.kernel.org/r/20210928122411.593486363@linutronix.de
 > 
-> Ah, so the __ex_table entry only catches TLB misses?
-
-no, but there is no __ex_table handling in address error hanlder (yet).
-
-> Does this mean it also traps for kernel memory accesses, or do those
-> work again?
-
-it will trap for every access.
-
-
-> If the addresses on mips64 are separate like on
-> sparc64 or s390, the entire access_ok() step could be replaced
-> by a fixup code in the exception handler. I suppose this depends on
-> CONFIG_EVA and you still need a limit check at least when EVA is
-> disabled.
-
-only EVA has seperate address spaces for kernel/user.
-
-> > Is there a reason to not also #define TASK_SIZE_MAX   __UA_LIMIT like
-> > for the 32bit case ?
-> >
+> It addresses the review feedback:
+> - Decouple stack accounting from its free invocation. The accounting
+>    happens in do_exit(), the final free call happens later.
 > 
-> For 32-bit, the __UA_LIMIT is a compile-time constant, so the check
-> ends up being trivial. On all other architectures, the same thing can
-> be done after the set_fs removal, so I was hoping it would work here
-> as well.
+> - Add put_task_stack_sched() to finish_task_switch(). Here the VMAP
+>    stack is cached only. If it fails, or in the !VMAP case then the final
+>    free happens in delayed_put_task_struct(). This is also an oportunity
+>    to cache the stack.
 
-ic
+My first two tries to apply this series to something failed.  What's it 
+based on?
 
-> I suspect doing the generic (size <= limit) && (addr <= (limit - size))
-> check on mips64 with the runtime limit ends up slightly slower
-> than the current code that checks a bit mask instead. If you like,
-> I'll update it this way, otherwise I'd need help in form of a patch
-> that changes the exception handling so __get_user/__put_user
-> also return -EFAULT for an address error.
-
-that's what the patch does. For aligned accesses the patch should
-do the right thing, but it breaks unaligned get_user/put_user.
-Checking if the trapping vaddr is between end of CPU VM space and
-TASK_MAX_SIZE before exception handling should do the trick. I'll
-send a patch, if this works.
-
-Thomas.
-
--- 
-Crap can work. Given enough thrust pigs will fly, but it's not necessarily a
-good idea.                                                [ RFC1925, 2.3 ]
+The rest of my review will be based on diffs, not real code, since I 
+failed to apply it.
