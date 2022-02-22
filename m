@@ -2,91 +2,78 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE1504BECD4
-	for <lists+linux-ia64@lfdr.de>; Mon, 21 Feb 2022 22:57:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 783674BF779
+	for <lists+linux-ia64@lfdr.de>; Tue, 22 Feb 2022 12:56:16 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231601AbiBUV5d (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 21 Feb 2022 16:57:33 -0500
-Received: from mxb-00190b01.gslb.pphosted.com ([23.128.96.19]:60094 "EHLO
+        id S231785AbiBVL4k (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 22 Feb 2022 06:56:40 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33482 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229743AbiBUV5d (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 21 Feb 2022 16:57:33 -0500
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2723522BD7;
-        Mon, 21 Feb 2022 13:57:09 -0800 (PST)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1nMGg2-001WCq-2J; Mon, 21 Feb 2022 22:57:02 +0100
-Received: from p57ae5149.dip0.t-ipconnect.de ([87.174.81.73] helo=[192.168.178.35])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1nMGg1-003rZT-Ra; Mon, 21 Feb 2022 22:57:02 +0100
-Message-ID: <4e42e754-d87e-5f6b-90db-39b4700ee0f1@physik.fu-berlin.de>
-Date:   Mon, 21 Feb 2022 22:57:01 +0100
+        with ESMTP id S230386AbiBVL4j (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 22 Feb 2022 06:56:39 -0500
+Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1FB1149959;
+        Tue, 22 Feb 2022 03:56:14 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1645530974; x=1677066974;
+  h=from:to:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RMCXOHq+3w+kl411y7PHFbp9gU8NfcCKtDPj1hWZWJo=;
+  b=QYj0RQ9eG+oGzBi+hjMy0kyfpzv4UtOxSEokg8QGiShBtxKvtAReJ4cE
+   80XGEIJkgLfZYfs8ZfeAmcPGjW3x1MoPijFcu2g+alPHmLhOpD7Sbe1ZB
+   rapjA5+sJinVm2bxlsSBAbNnpa6K5htOBfydU4GRFeSYPKFCF6iF/cND7
+   jN6hU+z9BE8IsfVGmhK0bxsmF7AtPBchXFKAWN1EQ9+t/9nuNn9hqXqUx
+   5e8JYPUUnNydM/LQXYOqrXKVdSquxq9xJqgo3fgUUkdjuGS66VfcumNE0
+   W7ewwnr43qqWPhuYdK8p8EF6zO42YfASx3P8/BK0hlImHV7tSWAFUSpOJ
+   w==;
+X-IronPort-AV: E=McAfee;i="6200,9189,10265"; a="276283510"
+X-IronPort-AV: E=Sophos;i="5.88,387,1635231600"; 
+   d="scan'208";a="276283510"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2022 03:56:14 -0800
+X-IronPort-AV: E=Sophos;i="5.88,387,1635231600"; 
+   d="scan'208";a="547713568"
+Received: from skatib-mobl1.ger.corp.intel.com (HELO ijarvine-MOBL2.ger.corp.intel.com) ([10.252.63.178])
+  by orsmga008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Feb 2022 03:56:11 -0800
+From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>,
+        linux-serial@vger.kernel.org, linux-ia64@vger.kernel.org,
+        Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-xtensa@linux-xtensa.org
+Subject: [PATCH 0/2] termbits.h cleanup
+Date:   Tue, 22 Feb 2022 13:56:02 +0200
+Message-Id: <20220222115604.7351-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: regression: Bug 215601 - gcc segv at startup on ia64
-Content-Language: en-US
-To:     Kees Cook <keescook@chromium.org>,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Anthony Yznaga <anthony.yznaga@oracle.com>
-Cc:     matoro_bugzilla_kernel@matoro.tk,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        linux-ia64@vger.kernel.org,
-        Linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>
-References: <a3edd529-c42d-3b09-135c-7e98a15b150f@leemhuis.info>
- <823f70be-7661-0195-7c97-65673dc7c12a@leemhuis.info>
- <03497313-A472-4152-BD28-41C35E4E824E@chromium.org>
- <94c3be49-0262-c613-e5f5-49b536985dde@physik.fu-berlin.de>
- <9A1F30F8-3DE2-4075-B103-81D891773246@chromium.org>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <9A1F30F8-3DE2-4075-B103-81D891773246@chromium.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 87.174.81.73
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Kees!
+Two simple cleanup patches to termbits.h. I prefer these to go
+in through tty-next as I've some other work based on them that
+I'll submit later.
 
-On 2/21/22 21:58, Kees Cook wrote:
->> I have applied this patch on top of 038101e6b2cd5c55f888f85db42ea2ad3aecb4b6 and it doesn't
->> fix the problem for me. Reverting 5f501d555653f8968011a1e65ebb121c8b43c144, however, fixes
->> the problem.
->>
->> FWIW, this problem doesn't just affect GCC but systemd keeps segfaulting with this change as well.
-> 
-> Very weird! Can you attached either of those binaries to bugzilla (or a URL I can fetch it from)? I can try to figure out where it is going weird...
+Ilpo Järvinen (2):
+  ia64: termbits.h is identical to asm-generic one
+  xtensa: termbits.h is identical to asm-generic one
 
-Here's the initrd of that particular machine:
-
-> https://people.debian.org/~glaubitz/initrd.img-5.17.0-rc5+
-
-You should be able to extract the binaries from this initrd image and the "mount" command,
-for example, should be one of the affected binaries.
-
-Adrian
+ arch/ia64/include/uapi/asm/termbits.h   | 209 ----------------------
+ arch/xtensa/include/uapi/asm/termbits.h | 221 ------------------------
+ 2 files changed, 430 deletions(-)
+ delete mode 100644 arch/ia64/include/uapi/asm/termbits.h
+ delete mode 100644 arch/xtensa/include/uapi/asm/termbits.h
 
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+2.30.2
 
