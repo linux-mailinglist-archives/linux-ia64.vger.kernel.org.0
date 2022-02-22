@@ -2,76 +2,123 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E15CC4BF9AF
-	for <lists+linux-ia64@lfdr.de>; Tue, 22 Feb 2022 14:43:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E1D7D4BFCD1
+	for <lists+linux-ia64@lfdr.de>; Tue, 22 Feb 2022 16:36:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229674AbiBVNn7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 22 Feb 2022 08:43:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44542 "EHLO
+        id S233545AbiBVPgP (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 22 Feb 2022 10:36:15 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232514AbiBVNn5 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 22 Feb 2022 08:43:57 -0500
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1898D11EF01;
-        Tue, 22 Feb 2022 05:43:31 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 8AF2CCE13DF;
-        Tue, 22 Feb 2022 13:43:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79F88C340F3;
-        Tue, 22 Feb 2022 13:43:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1645537408;
-        bh=V/2qJf6ZSP+uTte+Ubn4pjXBAwZwpHS/NoeabPxxVms=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=aVH2J2O49f9Cjfw5rYL2uMu1kLLhVC462OLd1wMAWEldVw7hJYnxiYXmbDw+/PG3F
-         +S709lSu2U86PEtO46A/Y/0DqKmSRe3kInlB7KlziSZ8DBgi87ZUaC8OyUO5cDtKrX
-         Yd8vTikmfFpxW+ZYJUT89bdnFCUJsAdcVPMC4Fvg=
-Date:   Tue, 22 Feb 2022 14:43:25 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Ilpo =?iso-8859-1?Q?J=E4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Cc:     Jiri Slaby <jirislaby@kernel.org>, linux-serial@vger.kernel.org,
-        linux-ia64@vger.kernel.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org
-Subject: Re: [PATCH 0/2] termbits.h cleanup
-Message-ID: <YhTofdw8JhkKAt8c@kroah.com>
-References: <20220222115604.7351-1-ilpo.jarvinen@linux.intel.com>
+        with ESMTP id S233535AbiBVPf7 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 22 Feb 2022 10:35:59 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:e::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C83E163D5E;
+        Tue, 22 Feb 2022 07:35:28 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=16nouNo24ejNp/bHBqFUpHpMmYYgIL88sf6fCnA5oxw=; b=Evl4OhdNJ9vFGI4KBDyMJ2uY4v
+        ahlgofRSzpQsvpw+qbnrer3aKbB3W7rQQSWiEtHPv1GOLM+A33NRlrQJtcbKPQZsq8ZJ0Ur1vnRRo
+        g3p2qbcU3jr70C8mOofs0g3hzUW4uVlAhWSisJaMMZC6wOX8A4tQ90Hk2vLNc+kmD6djArF9T8eoW
+        9u4suY2drGIZP4mp6SqQGG0Ti0UU5XC5RKqrHf1fSU30Q1huprZkGdvFxmCo5kR0DDj/lBC1BQkHm
+        KDzcPMMmVkYt9l5nGrPt5RR+4vvyTE3FSJuO351gMgi78pWHFgl6Edsr7ZHkmjhcz+ut06I1oIQyx
+        rYiE4tRw==;
+Received: from [2001:4bb8:198:f8fc:c22a:ebfc:be8d:63c2] (helo=localhost)
+        by bombadil.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nMXC9-00AGnS-1u; Tue, 22 Feb 2022 15:35:17 +0000
+From:   Christoph Hellwig <hch@lst.de>
+To:     iommu@lists.linux-foundation.org
+Cc:     x86@kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        xen-devel@lists.xenproject.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, tboot-devel@lists.sourceforge.net,
+        linux-pci@vger.kernel.org
+Subject: cleanup swiotlb initialization
+Date:   Tue, 22 Feb 2022 16:35:03 +0100
+Message-Id: <20220222153514.593231-1-hch@lst.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20220222115604.7351-1-ilpo.jarvinen@linux.intel.com>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Feb 22, 2022 at 01:56:02PM +0200, Ilpo Järvinen wrote:
-> Two simple cleanup patches to termbits.h. I prefer these to go
-> in through tty-next as I've some other work based on them that
-> I'll submit later.
-> 
-> Ilpo Järvinen (2):
->   ia64: termbits.h is identical to asm-generic one
->   xtensa: termbits.h is identical to asm-generic one
-> 
->  arch/ia64/include/uapi/asm/termbits.h   | 209 ----------------------
->  arch/xtensa/include/uapi/asm/termbits.h | 221 ------------------------
->  2 files changed, 430 deletions(-)
->  delete mode 100644 arch/ia64/include/uapi/asm/termbits.h
->  delete mode 100644 arch/xtensa/include/uapi/asm/termbits.h
-> 
-> -- 
-> 2.30.2
-> 
+Hi all,
 
-Sure, I'll be glad to take them, thanks!
+this series tries to clean up the swiotlb initialization, including
+that of swiotlb-xen.  To get there is also removes the x86 iommu table
+infrastructure that massively obsfucates the initialization path.
 
-greg k-h
+Git tree:
+
+    git://git.infradead.org/users/hch/misc.git swiotlb-init-cleanup
+
+Gitweb:
+
+    http://git.infradead.org/users/hch/misc.git/shortlog/refs/heads/swiotlb-init-cleanup
+
+Diffstat:
+ arch/ia64/include/asm/iommu_table.h      |    7 -
+ arch/x86/include/asm/iommu_table.h       |  102 -------------------
+ arch/x86/include/asm/swiotlb.h           |   30 -----
+ arch/x86/kernel/pci-iommu_table.c        |   77 --------------
+ arch/x86/kernel/pci-swiotlb.c            |   77 --------------
+ arch/x86/xen/pci-swiotlb-xen.c           |   96 ------------------
+ b/arch/arm/mm/init.c                     |    6 -
+ b/arch/arm/xen/mm.c                      |   23 ++--
+ b/arch/arm64/mm/init.c                   |    6 -
+ b/arch/ia64/mm/init.c                    |    4 
+ b/arch/mips/cavium-octeon/dma-octeon.c   |   15 --
+ b/arch/mips/loongson64/dma.c             |    2 
+ b/arch/mips/pci/pci-octeon.c             |    2 
+ b/arch/mips/sibyte/common/dma.c          |    2 
+ b/arch/powerpc/include/asm/svm.h         |    4 
+ b/arch/powerpc/include/asm/swiotlb.h     |    1 
+ b/arch/powerpc/mm/mem.c                  |    6 -
+ b/arch/powerpc/platforms/pseries/setup.c |    3 
+ b/arch/powerpc/platforms/pseries/svm.c   |   26 ----
+ b/arch/riscv/mm/init.c                   |    8 -
+ b/arch/s390/mm/init.c                    |    3 
+ b/arch/x86/include/asm/dma-mapping.h     |   12 --
+ b/arch/x86/include/asm/gart.h            |    5 
+ b/arch/x86/include/asm/iommu.h           |    8 +
+ b/arch/x86/include/asm/xen/page.h        |    5 
+ b/arch/x86/include/asm/xen/swiotlb-xen.h |    2 
+ b/arch/x86/kernel/Makefile               |    2 
+ b/arch/x86/kernel/amd_gart_64.c          |    5 
+ b/arch/x86/kernel/aperture_64.c          |   14 --
+ b/arch/x86/kernel/cpu/mshyperv.c         |    8 -
+ b/arch/x86/kernel/pci-dma.c              |  114 +++++++++++++++++----
+ b/arch/x86/kernel/tboot.c                |    1 
+ b/arch/x86/kernel/vmlinux.lds.S          |   12 --
+ b/arch/x86/mm/mem_encrypt_amd.c          |    3 
+ b/arch/x86/pci/sta2x11-fixup.c           |    2 
+ b/arch/x86/xen/Makefile                  |    2 
+ b/drivers/iommu/amd/init.c               |    6 -
+ b/drivers/iommu/amd/iommu.c              |    5 
+ b/drivers/iommu/intel/dmar.c             |    6 -
+ b/drivers/xen/swiotlb-xen.c              |  132 -------------------------
+ b/include/linux/dmar.h                   |    6 -
+ b/include/linux/swiotlb.h                |   22 ++--
+ b/include/trace/events/swiotlb.h         |   29 +----
+ b/include/xen/arm/page.h                 |    1 
+ b/include/xen/swiotlb-xen.h              |    8 +
+ b/kernel/dma/direct.h                    |    2 
+ b/kernel/dma/swiotlb.c                   |  163 +++++++++++++++----------------
+ 47 files changed, 258 insertions(+), 817 deletions(-)
