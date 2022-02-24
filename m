@@ -2,67 +2,47 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5E754C2E8B
-	for <lists+linux-ia64@lfdr.de>; Thu, 24 Feb 2022 15:38:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 512F34C30B9
+	for <lists+linux-ia64@lfdr.de>; Thu, 24 Feb 2022 17:00:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235569AbiBXOiT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 24 Feb 2022 09:38:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55696 "EHLO
+        id S236721AbiBXQAe (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 24 Feb 2022 11:00:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235570AbiBXOiS (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 24 Feb 2022 09:38:18 -0500
-X-Greylist: delayed 909 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 24 Feb 2022 06:37:44 PST
-Received: from matoro.tk (unknown [IPv6:2600:1700:4b10:9d80::2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 137329D0C2;
-        Thu, 24 Feb 2022 06:37:42 -0800 (PST)
-DKIM-Signature: a=rsa-sha256; bh=U1Serj9HWMW/oXYgmC1Rsp6t8gZrl/v31HBeiGDPdW4=;
- c=relaxed/relaxed; d=matoro.tk;
- h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
- i=@matoro.tk; s=20220111215046; t=1645712524; v=1; x=1646144524;
- b=OYghG0ZP+iuW2kkTQeOuixHFPq878+wQ3HhdKX/+sGY09GTDTQFDIubVowj2KCUAMa6hGg5z
- emJxwo7k7iwM+JXu+3yE3DQsx9HG4ZBJFjS7BSFq9MSKfoo49MhkWqwuAJEne4d1p2n+MK3w3H8
- nhuIW5JuvEJLWhiNLUwOESPgCTRpscLtEwNsfWc0aDp2LixMpHlSmIO3VnR7RTqooKC9CJ452ta
- UM/qxfqM6Nlt5xE5jAS8lL/ueEDBCRO0qXA1nFOqZlgmtbsnnC34+1V9rWsHe+kOSZvMMUBiJFB
- K4HJAmTDISfkfJWq4HoGTEVo0ctw8pdW/tc5RR+gFhe9y5izzW0GcfFP8gvPREsJRbIYTHEZveH
- NJIUWtL5448BOMyUyVZJd8eXKj7O6wIfQYM5zT+W6lbbIGrxx6rNVZYEZmPnkite3l2zZVqeykW
- dCiw9yfIpH+X2yA4GZY9Gcn3xQzZozeYYlW/Q97jERXi6XkljbaZD4a3xtRGCiHv3oNAuM+Dq7w
- wbitZLVe9+B/0pgWjr3tva2lqhvnaBM4DX13iSpzOlTQPjc59ofE0WA1pB734Psd/WzIez+xhhJ
- 5uI3scCkVBLSXtxRDzqLthxm5AUzUYmDZ28l+DVLASRcTR9KsEqNWlrE/Qss9Etj2UT9EQdVjTg
- RrbyoJjcB0U=
-Received: by matoro.tk (envelope-sender
- <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id f168343e; Thu, 24 Feb
- 2022 09:22:04 -0500
+        with ESMTP id S233796AbiBXQAc (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 24 Feb 2022 11:00:32 -0500
+Received: from verein.lst.de (verein.lst.de [213.95.11.211])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5A1E17924C;
+        Thu, 24 Feb 2022 07:59:40 -0800 (PST)
+Received: by verein.lst.de (Postfix, from userid 2407)
+        id 88B5268AFE; Thu, 24 Feb 2022 16:58:54 +0100 (CET)
+Date:   Thu, 24 Feb 2022 16:58:54 +0100
+From:   Christoph Hellwig <hch@lst.de>
+To:     Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Cc:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org,
+        x86@kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
+        Juergen Gross <jgross@suse.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        xen-devel@lists.xenproject.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, tboot-devel@lists.sourceforge.net,
+        linux-pci@vger.kernel.org
+Subject: Re: cleanup swiotlb initialization
+Message-ID: <20220224155854.GA30938@lst.de>
+References: <20220222153514.593231-1-hch@lst.de> <09cb4ad3-88e7-3744-b4b8-a6d745ecea9e@oracle.com>
 MIME-Version: 1.0
-Date:   Thu, 24 Feb 2022 09:22:04 -0500
-From:   matoro <matoro_mailinglist_kernel@matoro.tk>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Kees Cook <keescook@chromium.org>,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Anthony Yznaga <anthony.yznaga@oracle.com>,
-        matoro_bugzilla_kernel@matoro.tk,
-        Andrew Morton <akpm@linux-foundation.org>,
-        regressions@lists.linux.dev, linux-ia64@vger.kernel.org,
-        Linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>
-Subject: Re: regression: Bug 215601 - gcc segv at startup on ia64
-In-Reply-To: <7e3a93e7-1300-8460-30fb-789180a745eb@physik.fu-berlin.de>
-References: <a3edd529-c42d-3b09-135c-7e98a15b150f@leemhuis.info>
- <823f70be-7661-0195-7c97-65673dc7c12a@leemhuis.info>
- <03497313-A472-4152-BD28-41C35E4E824E@chromium.org>
- <94c3be49-0262-c613-e5f5-49b536985dde@physik.fu-berlin.de>
- <9A1F30F8-3DE2-4075-B103-81D891773246@chromium.org>
- <4e42e754-d87e-5f6b-90db-39b4700ee0f1@physik.fu-berlin.de>
- <202202232030.B408F0E895@keescook>
- <7e3a93e7-1300-8460-30fb-789180a745eb@physik.fu-berlin.de>
-Message-ID: <65ed8ab4fad779fadf572fb737dfb789@matoro.tk>
-X-Sender: matoro_mailinglist_kernel@matoro.tk
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <09cb4ad3-88e7-3744-b4b8-a6d745ecea9e@oracle.com>
+User-Agent: Mutt/1.5.17 (2007-11-01)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,38 +50,65 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Kees, I can provide live ssh access to my system exhibiting the 
-issue.  My system is a lot more stable due to using openrc rather than 
-systemd, for me GCC seems to be the only binary affected.  Would that be 
-helpful?
+Thanks.
 
-On 2022-02-24 04:33, John Paul Adrian Glaubitz wrote:
-> Hi Kees!
-> 
-> On 2/24/22 06:16, Kees Cook wrote:
->>> You should be able to extract the binaries from this initrd image and 
->>> the "mount" command,
->>> for example, should be one of the affected binaries.
->> 
->> In dmesg, do you see any of these reports?
->> 
->>                 pr_info("%d (%s): Uhuuh, elf segment at %px requested 
->> but the memory is mapped already\n",
->>                         task_pid_nr(current), current->comm, (void 
->> *)addr);
-> 
-> I'll check that.
-> 
->> I don't see anything out of order in the "mount" binary from the above
->> initrd. What does "readelf -lW" show for the GCC you're seeing 
->> failures
->> on?
-> 
-> I'm not 100% sure whether it's the mount binary that is affected. What
-> happens is that once init takes over,
-> I'm seeing multiple "Segmentation Fault" message on the console until
-> I'm dropped to the initrd shell.
-> 
-> I can check what dmesg says.
-> 
-> Adrian
+This looks really strange as early_amd_iommu_init should not interact much
+with the changes.  I'll see if I can find a AMD system to test on.
+
+On Wed, Feb 23, 2022 at 07:57:49PM -0500, Boris Ostrovsky wrote:
+> [   37.377313] BUG: unable to handle page fault for address: ffffc90042880018
+> [   37.378219] #PF: supervisor read access in kernel mode
+> [   37.378219] #PF: error_code(0x0000) - not-present page
+> [   37.378219] PGD 7c2f2ee067 P4D 7c2f2ee067 PUD 7bf019b067 PMD 105a30067 PTE 0
+> [   37.378219] Oops: 0000 [#1] PREEMPT SMP NOPTI
+> [   37.378219] CPU: 14 PID: 1 Comm: swapper/0 Not tainted 5.17.0-rc5swiotlb #9
+> [   37.378219] Hardware name: Oracle Corporation ORACLE SERVER E1-2c/ASY,Generic,SM,E1-2c, BIOS 49004900 12/23/2020
+> [   37.378219] RIP: e030:init_iommu_one+0x248/0x2f0
+> [   37.378219] Code: 48 89 43 68 48 85 c0 74 c4 be 00 20 00 00 48 89 df e8 ea ee ff ff 48 89 43 78 48 85 c0 74 ae c6 83 98 00 00 00 00 48 8b 43 38 <48> 8b 40 18 a8 01 74 07 83 8b a8 04 00 00 01 f6 83 a8 04 00 00 01
+> [   37.378219] RSP: e02b:ffffc9004044bd18 EFLAGS: 00010286
+> [   37.378219] RAX: ffffc90042880000 RBX: ffff888107260800 RCX: 0000000000000000
+> [   37.378219] RDX: 0000000080000000 RSI: ffffea00041cab80 RDI: 00000000ffffffff
+> [   37.378219] RBP: ffffc9004044bd38 R08: 0000000000000901 R09: ffffea00041cab00
+> [   37.378219] R10: 0000000000000002 R11: 0000000000000000 R12: ffffc90040435008
+> [   37.378219] R13: 0000000000080000 R14: 00000000efa00000 R15: 0000000000000000
+> [   37.378219] FS:  0000000000000000(0000) GS:ffff88fef4180000(0000) knlGS:0000000000000000
+> [   37.378219] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   37.378219] CR2: ffffc90042880018 CR3: 000000000260a000 CR4: 0000000000050660
+> [   37.378219] Call Trace:
+> [   37.378219]  <TASK>
+> [   37.378219]  early_amd_iommu_init+0x3c5/0x72d
+> [   37.378219]  ? iommu_setup+0x284/0x284
+> [   37.378219]  state_next+0x158/0x68f
+> [   37.378219]  ? iommu_setup+0x284/0x284
+> [   37.378219]  iommu_go_to_state+0x28/0x2d
+> [   37.378219]  amd_iommu_init+0x15/0x4b
+> [   37.378219]  ? iommu_setup+0x284/0x284
+> [   37.378219]  pci_iommu_init+0x12/0x37
+> [   37.378219]  do_one_initcall+0x48/0x210
+> [   37.378219]  kernel_init_freeable+0x229/0x28c
+> [   37.378219]  ? rest_init+0xe0/0xe0
+> [   37.963966]  kernel_init+0x1a/0x130
+> [   37.979415]  ret_from_fork+0x22/0x30
+> [   37.991436]  </TASK>
+> [   37.999465] Modules linked in:
+> [   38.007413] CR2: ffffc90042880018
+> [   38.019416] ---[ end trace 0000000000000000 ]---
+> [   38.023418] RIP: e030:init_iommu_one+0x248/0x2f0
+> [   38.023418] Code: 48 89 43 68 48 85 c0 74 c4 be 00 20 00 00 48 89 df e8 ea ee ff ff 48 89 43 78 48 85 c0 74 ae c6 83 98 00 00 00 00 48 8b 43 38 <48> 8b 40 18 a8 01 74 07 83 8b a8 04 00 00 01 f6 83 a8 04 00 00 01
+> [   38.023418] RSP: e02b:ffffc9004044bd18 EFLAGS: 00010286
+> [   38.023418] RAX: ffffc90042880000 RBX: ffff888107260800 RCX: 0000000000000000
+> [   38.155413] RDX: 0000000080000000 RSI: ffffea00041cab80 RDI: 00000000ffffffff
+> [   38.175965] Freeing initrd memory: 62640K
+> [   38.155413] RBP: ffffc9004044bd38 R08: 0000000000000901 R09: ffffea00041cab00
+> [   38.155413] R10: 0000000000000002 R11: 0000000000000000 R12: ffffc90040435008
+> [   38.155413] R13: 0000000000080000 R14: 00000000efa00000 R15: 0000000000000000
+> [   38.155413] FS:  0000000000000000(0000) GS:ffff88fef4180000(0000) knlGS:0000000000000000
+> [   38.287414] CS:  e030 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   38.309557] CR2: ffffc90042880018 CR3: 000000000260a000 CR4: 0000000000050660
+> [   38.332403] Kernel panic - not syncing: Fatal exception
+> [   38.351414] Rebooting in 20 seconds..
+>
+>
+>
+> -boris
+---end quoted text---
