@@ -2,97 +2,87 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E28E84C2831
-	for <lists+linux-ia64@lfdr.de>; Thu, 24 Feb 2022 10:36:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7994E4C291B
+	for <lists+linux-ia64@lfdr.de>; Thu, 24 Feb 2022 11:17:47 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232471AbiBXJeN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 24 Feb 2022 04:34:13 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50008 "EHLO
+        id S233244AbiBXKRf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 24 Feb 2022 05:17:35 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37638 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232836AbiBXJeL (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 24 Feb 2022 04:34:11 -0500
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8C6E27AA0B;
-        Thu, 24 Feb 2022 01:33:28 -0800 (PST)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1nNAUz-000i1n-8T; Thu, 24 Feb 2022 10:33:21 +0100
-Received: from dynamic-077-191-226-024.77.191.pool.telefonica.de ([77.191.226.24] helo=[192.168.1.9])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1nNAUz-003DW5-1K; Thu, 24 Feb 2022 10:33:21 +0100
-Message-ID: <7e3a93e7-1300-8460-30fb-789180a745eb@physik.fu-berlin.de>
-Date:   Thu, 24 Feb 2022 10:33:20 +0100
+        with ESMTP id S232471AbiBXKRf (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 24 Feb 2022 05:17:35 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 164E2B91D4;
+        Thu, 24 Feb 2022 02:17:02 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E30E4ED1;
+        Thu, 24 Feb 2022 02:17:01 -0800 (PST)
+Received: from [10.163.48.178] (unknown [10.163.48.178])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E609A3F70D;
+        Thu, 24 Feb 2022 02:16:54 -0800 (PST)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Subject: Re: [PATCH 10/11] swiotlb: merge swiotlb-xen initialization into
+ swiotlb
+To:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org
+Cc:     x86@kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        linux-arm-kernel@lists.infradead.org,
+        xen-devel@lists.xenproject.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-hyperv@vger.kernel.org, tboot-devel@lists.sourceforge.net,
+        linux-pci@vger.kernel.org
+References: <20220222153514.593231-1-hch@lst.de>
+ <20220222153514.593231-11-hch@lst.de>
+Message-ID: <e5564871-694e-58ea-a355-5d0c3ce5d025@arm.com>
+Date:   Thu, 24 Feb 2022 15:46:55 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: regression: Bug 215601 - gcc segv at startup on ia64
+In-Reply-To: <20220222153514.593231-11-hch@lst.de>
+Content-Type: text/plain; charset=utf-8
 Content-Language: en-US
-To:     Kees Cook <keescook@chromium.org>
-Cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
-        Anthony Yznaga <anthony.yznaga@oracle.com>,
-        matoro_bugzilla_kernel@matoro.tk,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        linux-ia64@vger.kernel.org,
-        Linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>
-References: <a3edd529-c42d-3b09-135c-7e98a15b150f@leemhuis.info>
- <823f70be-7661-0195-7c97-65673dc7c12a@leemhuis.info>
- <03497313-A472-4152-BD28-41C35E4E824E@chromium.org>
- <94c3be49-0262-c613-e5f5-49b536985dde@physik.fu-berlin.de>
- <9A1F30F8-3DE2-4075-B103-81D891773246@chromium.org>
- <4e42e754-d87e-5f6b-90db-39b4700ee0f1@physik.fu-berlin.de>
- <202202232030.B408F0E895@keescook>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <202202232030.B408F0E895@keescook>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 77.191.226.24
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Kees!
-
-On 2/24/22 06:16, Kees Cook wrote:
->> You should be able to extract the binaries from this initrd image and the "mount" command,
->> for example, should be one of the affected binaries.
+On 2/22/22 9:05 PM, Christoph Hellwig wrote:
+> Allow to pass a remap argument to the swiotlb initialization functions
+> to handle the Xen/x86 remap case.  ARM/ARM64 never did any remapping
+> from xen_swiotlb_fixup, so we don't even need that quirk.
 > 
-> In dmesg, do you see any of these reports?
-> 
->                 pr_info("%d (%s): Uhuuh, elf segment at %px requested but the memory is mapped already\n",
->                         task_pid_nr(current), current->comm, (void *)addr);
+> Signed-off-by: Christoph Hellwig <hch@lst.de>
+> ---
+>  arch/arm/xen/mm.c               |  23 +++---
+>  arch/x86/include/asm/xen/page.h |   5 --
+>  arch/x86/kernel/pci-dma.c       |  27 ++++---
+>  arch/x86/pci/sta2x11-fixup.c    |   2 +-
+>  drivers/xen/swiotlb-xen.c       | 128 +-------------------------------
+>  include/linux/swiotlb.h         |   7 +-
+>  include/xen/arm/page.h          |   1 -
+>  include/xen/swiotlb-xen.h       |   8 +-
+>  kernel/dma/swiotlb.c            | 120 +++++++++++++++---------------
+>  9 files changed, 102 insertions(+), 219 deletions(-)
 
-I'll check that.
+checkpatch.pl has some warnings here.
 
-> I don't see anything out of order in the "mount" binary from the above
-> initrd. What does "readelf -lW" show for the GCC you're seeing failures
-> on?
+ERROR: trailing whitespace
+#151: FILE: arch/x86/kernel/pci-dma.c:217:
++ $
 
-I'm not 100% sure whether it's the mount binary that is affected. What happens is that once init takes over,
-I'm seeing multiple "Segmentation Fault" message on the console until I'm dropped to the initrd shell.
+WARNING: please, no spaces at the start of a line
+#151: FILE: arch/x86/kernel/pci-dma.c:217:
++ $
 
-I can check what dmesg says.
-
-Adrian
-
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
-
+total: 1 errors, 1 warnings, 470 lines checked
