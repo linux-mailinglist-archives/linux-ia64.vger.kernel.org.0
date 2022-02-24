@@ -2,74 +2,104 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C883A4C233D
-	for <lists+linux-ia64@lfdr.de>; Thu, 24 Feb 2022 06:16:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id B7AA04C2452
+	for <lists+linux-ia64@lfdr.de>; Thu, 24 Feb 2022 08:06:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230096AbiBXFQh (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 24 Feb 2022 00:16:37 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41452 "EHLO
+        id S231440AbiBXHGi (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 24 Feb 2022 02:06:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229974AbiBXFQh (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 24 Feb 2022 00:16:37 -0500
-Received: from mail-pg1-x536.google.com (mail-pg1-x536.google.com [IPv6:2607:f8b0:4864:20::536])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 853E916EA9B
-        for <linux-ia64@vger.kernel.org>; Wed, 23 Feb 2022 21:16:07 -0800 (PST)
-Received: by mail-pg1-x536.google.com with SMTP id 195so818999pgc.6
-        for <linux-ia64@vger.kernel.org>; Wed, 23 Feb 2022 21:16:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=srYPL04OWay1dcY8e70dNGhHS9ZwVWkaxq0mw17kle0=;
-        b=E+AaIZP0v7bVUhbtnlfQdm0GewhlDSLyFsa4Gc9ttCYc4Wugq3ehabUEmagg6S/HG5
-         ZIBO/6RSxYufDXorILKqvIXx/WRBvOtOllmU7CIO+HDmGlm+E2pJTWQQR9ntIuP4IqTi
-         SE2nH8yGt6EOujARktNsaPIbSukKsuSizLpvc=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=srYPL04OWay1dcY8e70dNGhHS9ZwVWkaxq0mw17kle0=;
-        b=I0qy+U8+me696UtGxfiE1pp54WOuUMRG7LspGxrigFkt/pQ9Tazzwk01JIiFINOIST
-         nNMjZz8mzo8BQZtvuKuwkwgeOyHnyme2aCuSwhWr8gn8fQJHt80tIwD87NS5Kr4WvMLJ
-         LWPPv1EIRtZw4rLth0U6gfOxqq2mwE4EkTnAhtSElN/OlF4PezHy3oJdH9Y5PT0O6LXL
-         Iubg9cl7SN+Cpx1OOz2qVc3XiCLZ7pjurb41IKI2kvL2dQ3lQBpmC4fJAxW78pX1mWIF
-         IHvYcyC9+9n9yN1rQaLT8tYJ7BILZ11aRSQY4mEXUkdo7Todjrx/D55nZez6HkM4HhnZ
-         U4SA==
-X-Gm-Message-State: AOAM533lOvvbZfUH3PTHEP+IvgoFLDicRjXSCUS+fflWg3rTmiqaxjbX
-        +SgrUqPSsm2oWiuB/moeOabqCwDBsTzjeg==
-X-Google-Smtp-Source: ABdhPJyY08KTJaKQ5zKGQ1yFLiRI1Pv8/UxZIiAHPJqb0gnMTYA9nhd/ZhDBm4UZolLnsVTN1dDpkA==
-X-Received: by 2002:a05:6a00:23c6:b0:4cf:1e1e:ff4f with SMTP id g6-20020a056a0023c600b004cf1e1eff4fmr1200901pfc.80.1645679767050;
-        Wed, 23 Feb 2022 21:16:07 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id m11-20020a17090a3f8b00b001bc299e0aefsm4595800pjc.56.2022.02.23.21.16.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Feb 2022 21:16:06 -0800 (PST)
-Date:   Wed, 23 Feb 2022 21:16:05 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc:     Thorsten Leemhuis <regressions@leemhuis.info>,
-        Anthony Yznaga <anthony.yznaga@oracle.com>,
-        matoro_bugzilla_kernel@matoro.tk,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        linux-ia64@vger.kernel.org,
-        Linux-fsdevel <linux-fsdevel@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>
-Subject: Re: regression: Bug 215601 - gcc segv at startup on ia64
-Message-ID: <202202232030.B408F0E895@keescook>
-References: <a3edd529-c42d-3b09-135c-7e98a15b150f@leemhuis.info>
- <823f70be-7661-0195-7c97-65673dc7c12a@leemhuis.info>
- <03497313-A472-4152-BD28-41C35E4E824E@chromium.org>
- <94c3be49-0262-c613-e5f5-49b536985dde@physik.fu-berlin.de>
- <9A1F30F8-3DE2-4075-B103-81D891773246@chromium.org>
- <4e42e754-d87e-5f6b-90db-39b4700ee0f1@physik.fu-berlin.de>
+        with ESMTP id S229925AbiBXHGh (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 24 Feb 2022 02:06:37 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADD3F2649B0;
+        Wed, 23 Feb 2022 23:06:07 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E40CD61978;
+        Thu, 24 Feb 2022 07:06:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C7EC34100;
+        Thu, 24 Feb 2022 07:06:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1645686366;
+        bh=d3iTCnmjiWI2WfX8T3i0lRHp9N81t6Yh8Z7V7FwGN/U=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=d9kZ0BbVkyCyNqDMbIIl+9W1OVaOiHcqpofy9Tv0x+jjG5DysO9+U6Q2K4lcdfFyH
+         fai03dHJQzajxq5x8dD/JFbdF1zJckhozUk8lR9cVmlk5bBWd0W6ERB7Zbxdjefy3a
+         B8/SUsADYD0SQguWOueuCsugHgBSJ8wqUkSLkiLSqKWedW5ys5Z7/z6mU2vQUHnHJ6
+         T4vRyvf7dvKpTRGhlcWD3SzP2O+MDfjLinnJiEst0s0apfF0uwuaENIe6tuGMnmiQ2
+         f1b6FsJH1WZrXXQHaNQBk/Ix0arInQgA572KGEYojkJ/0uUcVIi+T6URqFtcgb3eKx
+         YzcfTkJH+KZ5w==
+Received: by mail-wr1-f41.google.com with SMTP id n14so1094215wrq.7;
+        Wed, 23 Feb 2022 23:06:06 -0800 (PST)
+X-Gm-Message-State: AOAM533IwfhdoMLynJ+bABIrvx9165dae9qEOAN49auVA5Wg4l9cRSuW
+        wg6wjh0haKlmXfi2cxR8wCiOxEwWbvnr+Ck444Y=
+X-Google-Smtp-Source: ABdhPJyN7vOmEPkorPTffJc1X7o++TFchfjh5Aum2nyP+tyYB62T97KqiFOhsVfqhaexAyBFN29agtP9qBPfezDsID0=
+X-Received: by 2002:adf:a446:0:b0:1ed:c41b:cf13 with SMTP id
+ e6-20020adfa446000000b001edc41bcf13mr1075883wra.407.1645686364180; Wed, 23
+ Feb 2022 23:06:04 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4e42e754-d87e-5f6b-90db-39b4700ee0f1@physik.fu-berlin.de>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+References: <20220216131332.1489939-1-arnd@kernel.org> <20220216131332.1489939-8-arnd@kernel.org>
+ <c6f461f1-1dd9-aec1-2c85-a3eda478a1be@kernel.org>
+In-Reply-To: <c6f461f1-1dd9-aec1-2c85-a3eda478a1be@kernel.org>
+From:   Arnd Bergmann <arnd@kernel.org>
+Date:   Thu, 24 Feb 2022 08:05:48 +0100
+X-Gmail-Original-Message-ID: <CAK8P3a34OBFhncvg32hO3qb1uH8cvwFb0ro1jEMT4bdOLrtfdw@mail.gmail.com>
+Message-ID: <CAK8P3a34OBFhncvg32hO3qb1uH8cvwFb0ro1jEMT4bdOLrtfdw@mail.gmail.com>
+Subject: Re: [PATCH v2 07/18] nios2: drop access_ok() check from __put_user()
+To:     Dinh Nguyen <dinguyen@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Christoph Hellwig <hch@lst.de>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        Linux-MM <linux-mm@kvack.org>,
+        Linux API <linux-api@vger.kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Russell King - ARM Linux <linux@armlinux.org.uk>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Brian Cain <bcain@codeaurora.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Nick Hu <nickhu@andestech.com>,
+        Greentime Hu <green.hu@gmail.com>,
+        Stafford Horne <shorne@gmail.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Rich Felker <dalias@libc.org>,
+        David Miller <davem@davemloft.net>,
+        Richard Weinberger <richard@nod.at>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        "Eric W . Biederman" <ebiederm@xmission.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        "open list:SYNOPSYS ARC ARCHITECTURE" 
+        <linux-snps-arc@lists.infradead.org>, linux-csky@vger.kernel.org,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        linux-ia64@vger.kernel.org,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Openrisc <openrisc@lists.librecores.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        linux-um <linux-um@lists.infradead.org>,
+        "open list:TENSILICA XTENSA PORT (xtensa)" 
+        <linux-xtensa@linux-xtensa.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -78,33 +108,21 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Feb 21, 2022 at 10:57:01PM +0100, John Paul Adrian Glaubitz wrote:
-> Hi Kees!
-> 
-> On 2/21/22 21:58, Kees Cook wrote:
-> >> I have applied this patch on top of 038101e6b2cd5c55f888f85db42ea2ad3aecb4b6 and it doesn't
-> >> fix the problem for me. Reverting 5f501d555653f8968011a1e65ebb121c8b43c144, however, fixes
-> >> the problem.
-> >>
-> >> FWIW, this problem doesn't just affect GCC but systemd keeps segfaulting with this change as well.
-> > 
-> > Very weird! Can you attached either of those binaries to bugzilla (or a URL I can fetch it from)? I can try to figure out where it is going weird...
-> 
-> Here's the initrd of that particular machine:
-> 
-> > https://people.debian.org/~glaubitz/initrd.img-5.17.0-rc5+
-> 
-> You should be able to extract the binaries from this initrd image and the "mount" command,
-> for example, should be one of the affected binaries.
+On Thu, Feb 24, 2022 at 12:30 AM Dinh Nguyen <dinguyen@kernel.org> wrote:
+> On 2/16/22 07:13, Arnd Bergmann wrote: From: Arnd Bergmann <arnd@arndb.de>
+> >
+> > Unlike other architectures, the nios2 version of __put_user() has an
+> > extra check for access_ok(), preventing it from being used to implement
+> > __put_kernel_nofault().
+> >
+> > Split up put_user() along the same lines as __get_user()/get_user()
+> >
+> > Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+>
+> Acked-by: Dinh Nguyen <dinguyen@kernel.org>
 
-In dmesg, do you see any of these reports?
+Thanks! Could you also have a look at patch 2 (uaccess: fix nios2 and
+microblaze get_user_8)? That one is actually more critical, and should
+be backported to stable kernels.
 
-                pr_info("%d (%s): Uhuuh, elf segment at %px requested but the memory is mapped already\n",
-                        task_pid_nr(current), current->comm, (void *)addr);
-
-I don't see anything out of order in the "mount" binary from the above
-initrd. What does "readelf -lW" show for the GCC you're seeing failures
-on?
-
--- 
-Kees Cook
+       Arnd
