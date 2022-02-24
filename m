@@ -2,124 +2,106 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D39FA4C29B8
-	for <lists+linux-ia64@lfdr.de>; Thu, 24 Feb 2022 11:41:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E754C2E8B
+	for <lists+linux-ia64@lfdr.de>; Thu, 24 Feb 2022 15:38:34 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233504AbiBXKmP (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 24 Feb 2022 05:42:15 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54294 "EHLO
+        id S235569AbiBXOiT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 24 Feb 2022 09:38:19 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230119AbiBXKmO (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 24 Feb 2022 05:42:14 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 37F4B45AEF;
-        Thu, 24 Feb 2022 02:41:44 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id DB6B0ED1;
-        Thu, 24 Feb 2022 02:41:43 -0800 (PST)
-Received: from [10.163.48.178] (unknown [10.163.48.178])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1BF8A3F70D;
-        Thu, 24 Feb 2022 02:41:36 -0800 (PST)
-From:   Anshuman Khandual <anshuman.khandual@arm.com>
-Subject: Re: [PATCH 05/11] swiotlb: pass a gfp_mask argument to
- swiotlb_init_late
-To:     Christoph Hellwig <hch@lst.de>, iommu@lists.linux-foundation.org
-Cc:     x86@kernel.org, Stefano Stabellini <sstabellini@kernel.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        linux-arm-kernel@lists.infradead.org,
-        xen-devel@lists.xenproject.org, linux-ia64@vger.kernel.org,
-        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-hyperv@vger.kernel.org, tboot-devel@lists.sourceforge.net,
-        linux-pci@vger.kernel.org
-References: <20220222153514.593231-1-hch@lst.de>
- <20220222153514.593231-6-hch@lst.de>
-Message-ID: <e3eb6441-129e-35fe-b07c-fea86908222c@arm.com>
-Date:   Thu, 24 Feb 2022 16:11:39 +0530
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        with ESMTP id S235570AbiBXOiS (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 24 Feb 2022 09:38:18 -0500
+X-Greylist: delayed 909 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 24 Feb 2022 06:37:44 PST
+Received: from matoro.tk (unknown [IPv6:2600:1700:4b10:9d80::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 137329D0C2;
+        Thu, 24 Feb 2022 06:37:42 -0800 (PST)
+DKIM-Signature: a=rsa-sha256; bh=U1Serj9HWMW/oXYgmC1Rsp6t8gZrl/v31HBeiGDPdW4=;
+ c=relaxed/relaxed; d=matoro.tk;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@matoro.tk; s=20220111215046; t=1645712524; v=1; x=1646144524;
+ b=OYghG0ZP+iuW2kkTQeOuixHFPq878+wQ3HhdKX/+sGY09GTDTQFDIubVowj2KCUAMa6hGg5z
+ emJxwo7k7iwM+JXu+3yE3DQsx9HG4ZBJFjS7BSFq9MSKfoo49MhkWqwuAJEne4d1p2n+MK3w3H8
+ nhuIW5JuvEJLWhiNLUwOESPgCTRpscLtEwNsfWc0aDp2LixMpHlSmIO3VnR7RTqooKC9CJ452ta
+ UM/qxfqM6Nlt5xE5jAS8lL/ueEDBCRO0qXA1nFOqZlgmtbsnnC34+1V9rWsHe+kOSZvMMUBiJFB
+ K4HJAmTDISfkfJWq4HoGTEVo0ctw8pdW/tc5RR+gFhe9y5izzW0GcfFP8gvPREsJRbIYTHEZveH
+ NJIUWtL5448BOMyUyVZJd8eXKj7O6wIfQYM5zT+W6lbbIGrxx6rNVZYEZmPnkite3l2zZVqeykW
+ dCiw9yfIpH+X2yA4GZY9Gcn3xQzZozeYYlW/Q97jERXi6XkljbaZD4a3xtRGCiHv3oNAuM+Dq7w
+ wbitZLVe9+B/0pgWjr3tva2lqhvnaBM4DX13iSpzOlTQPjc59ofE0WA1pB734Psd/WzIez+xhhJ
+ 5uI3scCkVBLSXtxRDzqLthxm5AUzUYmDZ28l+DVLASRcTR9KsEqNWlrE/Qss9Etj2UT9EQdVjTg
+ RrbyoJjcB0U=
+Received: by matoro.tk (envelope-sender
+ <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id f168343e; Thu, 24 Feb
+ 2022 09:22:04 -0500
 MIME-Version: 1.0
-In-Reply-To: <20220222153514.593231-6-hch@lst.de>
-Content-Type: text/plain; charset=utf-8
-Content-Language: en-US
+Date:   Thu, 24 Feb 2022 09:22:04 -0500
+From:   matoro <matoro_mailinglist_kernel@matoro.tk>
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Thorsten Leemhuis <regressions@leemhuis.info>,
+        Anthony Yznaga <anthony.yznaga@oracle.com>,
+        matoro_bugzilla_kernel@matoro.tk,
+        Andrew Morton <akpm@linux-foundation.org>,
+        regressions@lists.linux.dev, linux-ia64@vger.kernel.org,
+        Linux-fsdevel <linux-fsdevel@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>
+Subject: Re: regression: Bug 215601 - gcc segv at startup on ia64
+In-Reply-To: <7e3a93e7-1300-8460-30fb-789180a745eb@physik.fu-berlin.de>
+References: <a3edd529-c42d-3b09-135c-7e98a15b150f@leemhuis.info>
+ <823f70be-7661-0195-7c97-65673dc7c12a@leemhuis.info>
+ <03497313-A472-4152-BD28-41C35E4E824E@chromium.org>
+ <94c3be49-0262-c613-e5f5-49b536985dde@physik.fu-berlin.de>
+ <9A1F30F8-3DE2-4075-B103-81D891773246@chromium.org>
+ <4e42e754-d87e-5f6b-90db-39b4700ee0f1@physik.fu-berlin.de>
+ <202202232030.B408F0E895@keescook>
+ <7e3a93e7-1300-8460-30fb-789180a745eb@physik.fu-berlin.de>
+Message-ID: <65ed8ab4fad779fadf572fb737dfb789@matoro.tk>
+X-Sender: matoro_mailinglist_kernel@matoro.tk
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+Hi Kees, I can provide live ssh access to my system exhibiting the 
+issue.  My system is a lot more stable due to using openrc rather than 
+systemd, for me GCC seems to be the only binary affected.  Would that be 
+helpful?
 
-
-On 2/22/22 9:05 PM, Christoph Hellwig wrote:
-> Let the caller chose a zone to allocate from.
-
-This is being used later via xen_swiotlb_gfp() on arm platform.
-
+On 2022-02-24 04:33, John Paul Adrian Glaubitz wrote:
+> Hi Kees!
 > 
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/x86/pci/sta2x11-fixup.c | 2 +-
->  include/linux/swiotlb.h      | 2 +-
->  kernel/dma/swiotlb.c         | 4 ++--
->  3 files changed, 4 insertions(+), 4 deletions(-)
+> On 2/24/22 06:16, Kees Cook wrote:
+>>> You should be able to extract the binaries from this initrd image and 
+>>> the "mount" command,
+>>> for example, should be one of the affected binaries.
+>> 
+>> In dmesg, do you see any of these reports?
+>> 
+>>                 pr_info("%d (%s): Uhuuh, elf segment at %px requested 
+>> but the memory is mapped already\n",
+>>                         task_pid_nr(current), current->comm, (void 
+>> *)addr);
 > 
-> diff --git a/arch/x86/pci/sta2x11-fixup.c b/arch/x86/pci/sta2x11-fixup.c
-> index e0c039a75b2db..c7e6faf59a861 100644
-> --- a/arch/x86/pci/sta2x11-fixup.c
-> +++ b/arch/x86/pci/sta2x11-fixup.c
-> @@ -57,7 +57,7 @@ static void sta2x11_new_instance(struct pci_dev *pdev)
->  		int size = STA2X11_SWIOTLB_SIZE;
->  		/* First instance: register your own swiotlb area */
->  		dev_info(&pdev->dev, "Using SWIOTLB (size %i)\n", size);
-> -		if (swiotlb_init_late(size))
-> +		if (swiotlb_init_late(size, GFP_DMA))
->  			dev_emerg(&pdev->dev, "init swiotlb failed\n");
->  	}
->  	list_add(&instance->list, &sta2x11_instance_list);
-> diff --git a/include/linux/swiotlb.h b/include/linux/swiotlb.h
-> index b48b26bfa0edb..1befd6b2ccf5e 100644
-> --- a/include/linux/swiotlb.h
-> +++ b/include/linux/swiotlb.h
-> @@ -40,7 +40,7 @@ extern void swiotlb_init(int verbose);
->  int swiotlb_init_with_tbl(char *tlb, unsigned long nslabs, int verbose);
->  unsigned long swiotlb_size_or_default(void);
->  extern int swiotlb_late_init_with_tbl(char *tlb, unsigned long nslabs);
-> -int swiotlb_init_late(size_t size);
-> +int swiotlb_init_late(size_t size, gfp_t gfp_mask);
->  extern void __init swiotlb_update_mem_attributes(void);
->  
->  phys_addr_t swiotlb_tbl_map_single(struct device *hwdev, phys_addr_t phys,
-> diff --git a/kernel/dma/swiotlb.c b/kernel/dma/swiotlb.c
-> index 5f64b02fbb732..a653fcf1fe6c2 100644
-> --- a/kernel/dma/swiotlb.c
-> +++ b/kernel/dma/swiotlb.c
-> @@ -290,7 +290,7 @@ swiotlb_init(int verbose)
->   * initialize the swiotlb later using the slab allocator if needed.
->   * This should be just like above, but with some error catching.
->   */
-> -int swiotlb_init_late(size_t size)
-> +int swiotlb_init_late(size_t size, gfp_t gfp_mask)
->  {
->  	unsigned long nslabs = ALIGN(size >> IO_TLB_SHIFT, IO_TLB_SEGSIZE);
->  	unsigned long bytes;
-> @@ -309,7 +309,7 @@ int swiotlb_init_late(size_t size)
->  	bytes = nslabs << IO_TLB_SHIFT;
->  
->  	while ((SLABS_PER_PAGE << order) > IO_TLB_MIN_SLABS) {
-> -		vstart = (void *)__get_free_pages(GFP_DMA | __GFP_NOWARN,
-> +		vstart = (void *)__get_free_pages(gfp_mask | __GFP_NOWARN,
->  						  order);
->  		if (vstart)
->  			break;
+> I'll check that.
 > 
-
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+>> I don't see anything out of order in the "mount" binary from the above
+>> initrd. What does "readelf -lW" show for the GCC you're seeing 
+>> failures
+>> on?
+> 
+> I'm not 100% sure whether it's the mount binary that is affected. What
+> happens is that once init takes over,
+> I'm seeing multiple "Segmentation Fault" message on the console until
+> I'm dropped to the initrd shell.
+> 
+> I can check what dmesg says.
+> 
+> Adrian
