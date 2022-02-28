@@ -2,67 +2,69 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D18B74C7AB4
-	for <lists+linux-ia64@lfdr.de>; Mon, 28 Feb 2022 21:42:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 630274C7AF2
+	for <lists+linux-ia64@lfdr.de>; Mon, 28 Feb 2022 21:48:39 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229790AbiB1Uma (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 28 Feb 2022 15:42:30 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35970 "EHLO
+        id S229918AbiB1Uqz (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 28 Feb 2022 15:46:55 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229788AbiB1Um3 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 28 Feb 2022 15:42:29 -0500
-Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3666E1FCF7
-        for <linux-ia64@vger.kernel.org>; Mon, 28 Feb 2022 12:41:49 -0800 (PST)
-Received: by mail-pj1-x1033.google.com with SMTP id ev16-20020a17090aead000b001bc3835fea8so282404pjb.0
-        for <linux-ia64@vger.kernel.org>; Mon, 28 Feb 2022 12:41:49 -0800 (PST)
+        with ESMTP id S229920AbiB1Uqx (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 28 Feb 2022 15:46:53 -0500
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6353427B01
+        for <linux-ia64@vger.kernel.org>; Mon, 28 Feb 2022 12:46:11 -0800 (PST)
+Received: by mail-pj1-x102a.google.com with SMTP id cp23-20020a17090afb9700b001bbfe0fbe94so266862pjb.3
+        for <linux-ia64@vger.kernel.org>; Mon, 28 Feb 2022 12:46:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=chromium.org; s=google;
         h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:content-transfer-encoding:in-reply-to;
-        bh=wer/Oz2nOAI419q72n4sbW/GCj0W5Nx8xz2+Rlt0xdI=;
-        b=EPfWBDQTZQfFwTLJ9+iWGHrZjstF+IJdDCO2XmrpedQZl8eoQHqJA+/JViu23cwxXh
-         4cMj/vzH9luSjFoMSUEnTyFggS72ppUy5QkoOhB1ZLmlYGZVjojhreHYu2ecNsLh0VEG
-         gCNAXqAhIEMo9kYwHuvCozq3SDVVbHt3LuY2o=
+         :content-disposition:in-reply-to;
+        bh=L8JEIwHbnjfnbrHGB8HmORKlRcamD72tkThVNtNE5+Q=;
+        b=lcLDVxs4gvDGJ3MA+LlTyrgLXFoKqIzED2gFMdbiZxTKoxgSQMlaANWuHLUF0GV1xF
+         0sTgCIgahg/w9yHHKLxjqThKXd52M3zhIzrALVLlH0WZuNYjY7hjpi1WshuF8gN64VWI
+         lMtTCqa0TH7m/bdC4rLf9cZP9NnA44nIFyWXs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:content-transfer-encoding
-         :in-reply-to;
-        bh=wer/Oz2nOAI419q72n4sbW/GCj0W5Nx8xz2+Rlt0xdI=;
-        b=r3XN7pB8942pH8fZ7corwsI70f0CrPgmHfWNItAkE4dvHNlhaDzFCW4rBPhWHKFxvA
-         KQ80nwauuKWtWT0yV0RIT/P/G7uoRgNi+QD9Gpw53Cc6/Lv3ptZVu1Ne5/2RwxDH8r9I
-         YJS53fKEoWSrz8O9ofLR1f0B8lpxDI4NQjsSJGYqT3pfFhTDVRxXJXM/CjdoICkLxmmG
-         G06ac4NwG3RuF91HsKn41ykrC2oDVqnbMps/2Re1afBocN6WFTDVVRHeAtzA3l/GOtgG
-         7WCLtOWOD9FuUI+5ZOlEp94lxnKBOVYdh63wKaQkpvKhN4dIOHuaWQpkflXysjohjec0
-         IsvQ==
-X-Gm-Message-State: AOAM531v9MX8xI4ruE1hUu9YsCftmOyg6bilE/GK4x2/WR4p2DamIKQp
-        2UZY+CLJ81S1fN9zW1Jw1bx4Pg==
-X-Google-Smtp-Source: ABdhPJy3Ync6bess6WVePu+xmx/XAAZ+UJXR4GrnPlEoCAlv3kx6LFgNA1dRDLp+plPQLZbHhc+glA==
-X-Received: by 2002:a17:903:2482:b0:150:15ed:3cd3 with SMTP id p2-20020a170903248200b0015015ed3cd3mr21772341plw.147.1646080908566;
-        Mon, 28 Feb 2022 12:41:48 -0800 (PST)
+         :mime-version:content-disposition:in-reply-to;
+        bh=L8JEIwHbnjfnbrHGB8HmORKlRcamD72tkThVNtNE5+Q=;
+        b=EYAnqAcvgi/jFdkqXUupwTlVdhMYCl8gcBX7XZZ3BozyO8bvttKrGHmBAU4HxhhjIF
+         n5z/S199gWZ3Se7YyIFhv5fRAKkyTRtyakXkkq002vXsMan06Z2EbGoazMBHqr4QvxSX
+         2gpz37zatk9ejBFvpfcdOs3150M9+1/CH3BK2sAgHIDVjm1LXlKLGlR+NvU2m9UmzxEu
+         5rZBxA4p5diXI8c+d8xIjrWQNXo2PLLQ5SqJ1uOFdyIXFM53Cz0r3gRGtBu3nwOzUDZo
+         7Jbwtrh/svq9dMbKR+LHSVzuKo0zlY1nOC2BQnXUut2lpahFNsaCmxfqfDsXAyZs2sEz
+         Gxbg==
+X-Gm-Message-State: AOAM532Lm96W5V9ZndQKbdoEko7aJGBfP8ogtYmrVo6VJuIWcesJE1SW
+        9zbEpiCh0qEOG27nQK3HZzkL4w==
+X-Google-Smtp-Source: ABdhPJxwzHoZn8pFzNDQnpmFvA1UslmJRrpff/i6ocs8O6PtPqf/AReIoLelwIe0jA7xJtLLu9tJww==
+X-Received: by 2002:a17:902:9041:b0:14f:1c23:1eb1 with SMTP id w1-20020a170902904100b0014f1c231eb1mr21788975plz.173.1646081170908;
+        Mon, 28 Feb 2022 12:46:10 -0800 (PST)
 Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id t38-20020a056a0013a600b004e1a0c14000sm15037898pfg.209.2022.02.28.12.41.48
+        by smtp.gmail.com with ESMTPSA id me10-20020a17090b17ca00b001b9e6f62045sm208940pjb.41.2022.02.28.12.46.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Feb 2022 12:41:48 -0800 (PST)
-Date:   Mon, 28 Feb 2022 12:41:47 -0800
+        Mon, 28 Feb 2022 12:46:10 -0800 (PST)
+Date:   Mon, 28 Feb 2022 12:46:09 -0800
 From:   Kees Cook <keescook@chromium.org>
-To:     Magnus =?iso-8859-1?Q?Gro=DF?= <magnus.gross@rwth-aachen.de>
-Cc:     akpm@linux-foundation.org, anthony.yznaga@oracle.com,
-        glaubitz@physik.fu-berlin.de, linux-fsdevel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        matoro_bugzilla_kernel@matoro.tk,
-        matoro_mailinglist_kernel@matoro.tk, regressions@leemhuis.info,
-        regressions@lists.linux.dev, viro@zeniv.linux.org.uk
-Subject: Re: regression: Bug 215601 - gcc segv at startup on ia64
-Message-ID: <202202281240.8BCFBB47ED@keescook>
-References: <202202260344.63C15C3356@keescook>
- <Yhyn9cjDV8XfXLHm@fractal.localdomain>
+To:     matoro <matoro_mailinglist_kernel@matoro.tk>
+Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
+        Eric Biederman <ebiederm@xmission.com>,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        stable@vger.kernel.org,
+        Thorsten Leemhuis <regressions@leemhuis.info>,
+        Anthony Yznaga <anthony.yznaga@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        regressions@lists.linux.dev, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: Re: [PATCH] binfmt_elf: Avoid total_mapping_size for ET_EXEC
+Message-ID: <202202281245.DF46393@keescook>
+References: <20220228194613.1149432-1-keescook@chromium.org>
+ <5d44f028b2d739395c92e4b3036e2bbf@matoro.tk>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Yhyn9cjDV8XfXLHm@fractal.localdomain>
+In-Reply-To: <5d44f028b2d739395c92e4b3036e2bbf@matoro.tk>
 X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
@@ -73,24 +75,104 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Feb 28, 2022 at 11:46:13AM +0100, Magnus Groß wrote:
-> > When the kernel tries to map these with a combined allocation, it asks
-> > for a giant mmap of the file, but the file is, of course, not at all
-> > that large, and the mapping is rejected.
+On Mon, Feb 28, 2022 at 03:31:00PM -0500, matoro wrote:
+> On 2022-02-28 14:46, Kees Cook wrote:
+> > Partially revert commit 5f501d555653 ("binfmt_elf: reintroduce using
+> > MAP_FIXED_NOREPLACE").
+> > 
+> > At least ia64 has ET_EXEC PT_LOAD segments that are not virtual-address
+> > contiguous (but _are_ file-offset contiguous). This would result in
+> > giant mapping attempts to cover the entire span, including the virtual
+> > address range hole. Disable total_mapping_size for ET_EXEC, which
+> > reduces the MAP_FIXED_NOREPLACE coverage to only the first PT_LOAD:
+> > 
+> > $ readelf -lW /usr/bin/gcc
+> > ...
+> > Program Headers:
+> >   Type Offset   VirtAddr           PhysAddr           FileSiz  MemSiz
+> > ...
+> > ...
+> >   LOAD 0x000000 0x4000000000000000 0x4000000000000000 0x00b5a0 0x00b5a0
+> > ...
+> >   LOAD 0x00b5a0 0x600000000000b5a0 0x600000000000b5a0 0x0005ac 0x000710
+> > ...
+> > ...
+> >        ^^^^^^^^ ^^^^^^^^^^^^^^^^^^                    ^^^^^^^^ ^^^^^^^^
+> > 
+> > File offset range     : 0x000000-0x00bb4c
+> > 			0x00bb4c bytes
+> > 
+> > Virtual address range : 0x4000000000000000-0x600000000000bcb0
+> > 			0x200000000000bcb0 bytes
+> > 
+> > Ironically, this is the reverse of the problem that originally caused
+> > problems with ET_EXEC and MAP_FIXED_NOREPLACE: overlaps. This problem is
+> > with holes. Future work could restore full coverage if load_elf_binary()
+> > were to perform mappings in a separate phase from the loading (where
+> > it could resolve both overlaps and holes).
+> > 
+> > Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+> > Cc: Eric Biederman <ebiederm@xmission.com>
+> > Cc: linux-fsdevel@vger.kernel.org
+> > Cc: linux-mm@kvack.org
+> > Reported-by: matoro <matoro_mailinglist_kernel@matoro.tk>
+> > Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+> > Fixes: 5f501d555653 ("binfmt_elf: reintroduce using
+> > MAP_FIXED_NOREPLACE")
+> > Link:
+> > https://lore.kernel.org/r/a3edd529-c42d-3b09-135c-7e98a15b150f@leemhuis.info
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Kees Cook <keescook@chromium.org>
+> > ---
+> > matoro (or anyone else) can you please test this?
+> > ---
+> >  fs/binfmt_elf.c | 25 ++++++++++++++++++-------
+> >  1 file changed, 18 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+> > index 9bea703ed1c2..474b44032c65 100644
+> > --- a/fs/binfmt_elf.c
+> > +++ b/fs/binfmt_elf.c
+> > @@ -1136,14 +1136,25 @@ static int load_elf_binary(struct linux_binprm
+> > *bprm)
+> >  			 * is then page aligned.
+> >  			 */
+> >  			load_bias = ELF_PAGESTART(load_bias - vaddr);
+> > -		}
+> > 
+> > -		/*
+> > -		 * Calculate the entire size of the ELF mapping (total_size).
+> > -		 * (Note that first_pt_load is set to false later once the
+> > -		 * initial mapping is performed.)
+> > -		 */
+> > -		if (first_pt_load) {
+> > +			/*
+> > +			 * Calculate the entire size of the ELF mapping
+> > +			 * (total_size), used for the initial mapping,
+> > +			 * due to first_pt_load which is set to false later
+> > +			 * once the initial mapping is performed.
+> > +			 *
+> > +			 * Note that this is only sensible when the LOAD
+> > +			 * segments are contiguous (or overlapping). If
+> > +			 * used for LOADs that are far apart, this would
+> > +			 * cause the holes between LOADs to be mapped,
+> > +			 * running the risk of having the mapping fail,
+> > +			 * as it would be larger than the ELF file itself.
+> > +			 *
+> > +			 * As a result, only ET_DYN does this, since
+> > +			 * some ET_EXEC (e.g. ia64) may have virtual
+> > +			 * memory holes between LOADs.
+> > +			 *
+> > +			 */
+> >  			total_size = total_mapping_size(elf_phdata,
+> >  							elf_ex->e_phnum);
+> >  			if (!total_size) {
 > 
-> > So... I'm trying to think about how best to deal with this. If I or
-> > anyone else can't think of an elegant solution, I'll send a revert for
-> > the offending patch next week.
-> 
-> Shouldn't we just be able to patch total_mapping_size() again to instead
-> sum up all p_memsz fields, instead of comparing minimum and maximum
-> p_vaddr?
+> This does not apply for me, I'm looking around and can't find any reference
+> to the first_pt_load variable you're removing there?  What commit/tag are
+> you applying this on top of?
 
-I don't think so, and I need to have a "minimal change" to fix this so
-it's more obviously correct.
-
-And, apologies, I failed to Cc you on this patch:
-https://lore.kernel.org/linux-hardening/20220228194613.1149432-1-keescook@chromium.org/
+Ah, yeah, this is against linux-next. Let me send a backport, one sec...
 
 -- 
 Kees Cook
