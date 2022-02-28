@@ -2,209 +2,99 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6063E4C616F
-	for <lists+linux-ia64@lfdr.de>; Mon, 28 Feb 2022 03:53:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 42E344C674B
+	for <lists+linux-ia64@lfdr.de>; Mon, 28 Feb 2022 11:47:24 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230123AbiB1CyU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 27 Feb 2022 21:54:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56222 "EHLO
+        id S234882AbiB1KsA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 28 Feb 2022 05:48:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229552AbiB1CyU (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 27 Feb 2022 21:54:20 -0500
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam08on2132.outbound.protection.outlook.com [40.107.102.132])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CC5B140CE;
-        Sun, 27 Feb 2022 18:53:42 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Uxr/H+0VHYjtixcCNiJhNVsAkUTVHABVRiEjtjIlwufEjFxZ8Eh0ltsXlBE8Oqw2JxNZUNmgPXtOdjO502CC4IgYnJ6SLY0VEtialT9getwLzbPg7hcoWvgrwJhUaWT773wjlSGb+QSfqweOI31hR8H6HEtWz0lGqpetZF5GBQM4BF4mHGLHS7GuL9tSm7sFgNC76chJcMQHb3wPonQQw8lQ5ArllHB3jOY6CvmQl+Rj2QDQV3RS4xSarhc5s5BxT83HiHD+sFG6cnxcvfjfDzJEoZqUB5u8XKXfxs1zbDa9pe1ElQSZzHySpGgyZyZrLSNNBlNkpY0Ih7Q+hRb5ww==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cUQzgDhFXj39UwjsoncgNcIWa1l4ZcVYsMn1FkSIhVs=;
- b=KuABfYBu8dRbhpq/Ms8IkUlKlVTgZlgCCxlFYN0GSr+Cuo8MOH0L/PqrVUXDP07RxO1lgq9DbGDcho3sjJs5/1vu2/nfoU5fxB3j3WuePzpwfjtSJ4R2TYxoJ+GJvoVd6Qn3ognoByz/TtOoAsDllrz3LL1E/mhXUu11kUMghzkIxCmHhkFMGhr+fkqlS7nSKawXUhTTzulsdZIvshYviBGj72mhvdldLlbVkITesqF+zDsA17Tk/GLl48cx/pUrwzyiidxv9XKlJGmpTjphHdSPPR+r4c7VPEjdXw+gtIgZC3drdIIGE3WfMFTQhvvONb+YpgxyYXiFNiXsHqc40w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=cUQzgDhFXj39UwjsoncgNcIWa1l4ZcVYsMn1FkSIhVs=;
- b=WH4Au/u10QL2YXuccVwaVhYaL5TtX3pVeqdOhHKxnSrj11hBx5hD5Z+hK2LCyxc94YTU8yKBlXeH87ObgvZbNzbv9bQ2oUBpO6aHaOYHTrjtnORXb5vGmcWzyQNSVOVz6cd7enMYQQ9UnoE0TL8Z0MzrfUUXR5jdMltX4O+2eIs=
-Received: from MN0PR21MB3098.namprd21.prod.outlook.com (2603:10b6:208:376::14)
- by CY4PR21MB0135.namprd21.prod.outlook.com (2603:10b6:903:b2::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5061.1; Mon, 28 Feb
- 2022 02:53:39 +0000
-Received: from MN0PR21MB3098.namprd21.prod.outlook.com
- ([fe80::69f8:51be:b573:e70c]) by MN0PR21MB3098.namprd21.prod.outlook.com
- ([fe80::69f8:51be:b573:e70c%5]) with mapi id 15.20.5038.006; Mon, 28 Feb 2022
- 02:53:39 +0000
-From:   "Michael Kelley (LINUX)" <mikelley@microsoft.com>
-To:     Christoph Hellwig <hch@lst.de>,
-        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>
-CC:     "x86@kernel.org" <x86@kernel.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "tboot-devel@lists.sourceforge.net" 
-        <tboot-devel@lists.sourceforge.net>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: RE: [PATCH 08/11] swiotlb: make the swiotlb_init interface more
- useful
-Thread-Topic: [PATCH 08/11] swiotlb: make the swiotlb_init interface more
- useful
-Thread-Index: AQHYK+bNn5GdGBwbMEGdpROKeAVKTayoQv4A
-Date:   Mon, 28 Feb 2022 02:53:39 +0000
-Message-ID: <MN0PR21MB309816A344171B46735CA29CD7019@MN0PR21MB3098.namprd21.prod.outlook.com>
-References: <20220227143055.335596-1-hch@lst.de>
- <20220227143055.335596-9-hch@lst.de>
-In-Reply-To: <20220227143055.335596-9-hch@lst.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=54503504-d8f3-4c3e-a3cf-4bee18dc2a5e;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2022-02-28T02:46:33Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: ad617b86-9c9b-4e42-4228-08d9fa658626
-x-ms-traffictypediagnostic: CY4PR21MB0135:EE_
-x-ms-exchange-atpmessageproperties: SA|SL
-x-microsoft-antispam-prvs: <CY4PR21MB013561022727D491FE6CAF60D7019@CY4PR21MB0135.namprd21.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: jgY3to4oAxE+ZbyD313tm4v2LKB9wgdM/t4YKDWaNfCvbK0n+Fd3cojE1ClcO7QxvKMwF/uoufBShgtPGVTookIDiit+Fcjs/CtlqwsgEvEo4fQFnoFV3/1YS4VjkI5iooYW8QfBgPveg5sC6UkAgzma431tSutH7J7B68uasxC8IpKZDwgpaQX5tVtWURwLUEPdekPQr2Fy66CSy9uEX9PAbtyjH6gGRva4egr9bx+NLYcWuCOCML22RZDZxzp9K9zQ5/UkDPoltk/0sCiffwK8ZP6OlEXCZMpQfV4gN3xyZdTYp7QVBAi5MInJQJJ4sWsbbFwN2AE37HW3rspqojnINkB+YueoibYA3ftD2U53G3Slgid5Vp1pvUVdMjw8k5X2l0o4c8rvodEaqvG+1++Y6uMeDz80bhyq7YCQo60CGpic2JFXgSbbbfF1wat5FEGC65HXY9jGw4LDInsbJrVRIeKr9xXzDKrRCSMIf47Edu2KZWsiA0fbm11PsYTnx/zD1/aAF+151CIdXz5fN1MPp/jSDB5Id1ZPTFBmPhW1M1Yxo0hdW+9XTVVdv4QpjhCvSoQPUM9tSqm7o2EGSH6n5v4etwyhoHDEKV/qQb8EGMxnEi9CbZN05fN6wbR+A/LZSc0yJyquLD6rRcF4HI0XSOhLpot/uQWELl5MN11aEYRY3dUJA0iy/vi/JUuxc/UqJHsHKADReFFdoo+Pd0kYiIVT/vPx7ozfSALqTv4Y2v7AzQ3PVH0naZ4RIbMH
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR21MB3098.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(55016003)(316002)(7416002)(83380400001)(8936002)(76116006)(86362001)(122000001)(52536014)(4326008)(8676002)(38100700002)(33656002)(110136005)(66946007)(66476007)(66556008)(66446008)(64756008)(26005)(82960400001)(82950400001)(5660300002)(54906003)(186003)(8990500004)(6506007)(38070700005)(71200400001)(2906002)(9686003)(10290500003)(7696005)(508600001);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?bI3bCFBx6zsQOCHdRhVezvuntStzw2ubtckeFpHc6FRUctIevqiE7viqUUMk?=
- =?us-ascii?Q?XLAwGeVVeDMurGjR/Q+JYa67qMrcn7lnZVlho37bdx+OfmZoH6P4QRY3Uv6N?=
- =?us-ascii?Q?oC39s+hMI1aLvlgJRY5ac9p/kuzRmv5pARGW9VNE//6XeIuxjvpn0E1/GYlB?=
- =?us-ascii?Q?5baH/JwBHhbePMb5NrWTEp7Chv8J923oKbwVB5OPEAgm6Y26DilPQgidrXpS?=
- =?us-ascii?Q?Tp1WKWF0V3ZU/nwKfDl1TxK2wPxpBQ4TPs1M7VR+Mluv5E9p47N3LpCchXBQ?=
- =?us-ascii?Q?/kzdxwpGnjv21Wkdu8UBqkpH9QCEpokR3gEdzxYz4Lne//7IAZmHJNKBc0Wx?=
- =?us-ascii?Q?DrLES/rDF9pEuCqBAqvthSOhAYo8TmhIlmn4LzsEpAn2ooLfby2eN1AKFOji?=
- =?us-ascii?Q?4K9g0Jj7cghNPgPaSTXRo0i/hONGui2O8/w4Eoka0wSFuHuPoTRdh1hUOWoG?=
- =?us-ascii?Q?qc/rixUlG+ImhiFuwkAu8dtndrkox1HzC0uCB6MzwH9W4Lurb4C+WccM76Ea?=
- =?us-ascii?Q?MxBacIus5w6Zm3F0D9ThiZ936iL+6L5L0hcuIwL8MdcYvQgY+JLVcXjH8Gv2?=
- =?us-ascii?Q?Fme1GRcqgEyucZyj3wA9MDEpPMJUnXRoWC7lt+20EP6B6phcSHGEPcE0mLZV?=
- =?us-ascii?Q?if/QiOUNvHsh8vSRixEZUrVYl49ilI2c25b38VhZm+YNLfWhhwQncZDqhK9y?=
- =?us-ascii?Q?JrDj3APCrAMpwESWdu42hnAxYw/X94rtNXCR8pokyc0Ds/KmDb0wSnS7hP0Z?=
- =?us-ascii?Q?h8vspIlXxjMwVlWXJd9hHLjYFw5MFLuE/JFVqV/6AnSzLU87pFaeKvoIWu+P?=
- =?us-ascii?Q?On6/qewv3P5ZehLY1lb+GuW8IU9MeLjAO+m5JSDvi+rIoOCL/wJMG6vT0K2+?=
- =?us-ascii?Q?U4iLRx0tEgym7IdSDKMj6vZajYd5aYBrF99ikT5pC0aOIyTMIkf/CN2MJP98?=
- =?us-ascii?Q?PCE3vEkdsi+HN1akosWx6vQEDbzWW6gN4DBu0MZsmpymyQrz8CImXdIJ5lwC?=
- =?us-ascii?Q?JR0xBIXPGb1/IqsYZVVr0fQgCcrwlYqMMuf0wr8hJ0eHjwot++uNuCnZrYV/?=
- =?us-ascii?Q?TMREqnmp436YIFK/j3m4WsI3PmwtIYYkQGgsJ+QKjSgGVyy9+YXcaStaOLAs?=
- =?us-ascii?Q?7/S+J4H5UK3YDA+qm+DQUBZU/aYzGc+xKm/k0NP8Uc8OS7fYw7+EzvxHoXsQ?=
- =?us-ascii?Q?2CGWTIy7L19LFU01lANImKIxPVvgkd2ydXpJGU0AAVFSTA2KiyrVvuJogK9s?=
- =?us-ascii?Q?4px/EQJ+fTByINM4KtL7WrD27DdUfxzh4YWpkn5tQEVtBIZ6nISzva4fL1Za?=
- =?us-ascii?Q?WSF5t2PChgd8tFGSv3ov5hr971K7PMrLu5SL2LCrE2U5e/lpBM7TCzkVtrfT?=
- =?us-ascii?Q?YkPp7KphcWAzEL7INpnql/Awh4O1m92TDMNyXIuE02TDoObTdIXvVgkXITno?=
- =?us-ascii?Q?65STsxtjRIAoPjVKKuyymTczT0L5OWO2F/X3HMuBMIwD2Fuv8S8qnw=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S231217AbiB1KsA (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 28 Feb 2022 05:48:00 -0500
+X-Greylist: delayed 62 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Feb 2022 02:47:20 PST
+Received: from mail-out-2a.itc.rwth-aachen.de (mail-out-2a.itc.rwth-aachen.de [IPv6:2a00:8a60:1:e501::5:45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDC995B88E;
+        Mon, 28 Feb 2022 02:47:20 -0800 (PST)
+X-IPAS-Result: =?us-ascii?q?A2AcBQBcpxxi/6QagoZaHgEBCxIMQIspkHkhhBSaQwsBA?=
+ =?us-ascii?q?QEBAQEBAQEIAUEEAQGFBwKEECc4EwECBAEBAQEDAgMBAQEBAQEDAQEGAQEBA?=
+ =?us-ascii?q?QEBBQSBHIUvRoZDAQEBAgEjVgUWGgImAhI3EAYOIIVfrleBMYEBiFSBJwkBg?=
+ =?us-ascii?q?QYshzOHEYJQhA8wPoEFAYQMgkuCZQSUR4FwgWB+kiVVgmFGjVycYgeCEVRmo?=
+ =?us-ascii?q?BuWQwKRYIcXjzumTAIEAgQFAhaBeIF+Mz6DOVAXAg+ON446gSwCBgsBAQMJg?=
+ =?us-ascii?q?jqQUwEB?=
+IronPort-Data: A9a23:Ct1+J6rSGyfF9vGdYIms0fXQchleBmJCZRIvgKrLsJaIsI4StFCzt
+ garIBnQMvbYNzT3L9x1bIyw9E8B75KEnIdmHgdtrSFmRSkU+ePIVI+TRqvS04J+DeWeFh49v
+ 5VGAjXkBJppJpMJjk71atANlVEliefQAOOU5NfsYkidfyc9IMsaoU8lyrZRbrJA24DjWVvX4
+ 4yq+aUzBXf8s9JKGjNMg068gE431BjCkGtwUosWPK0jUPf2zhH5PbpHTU2DByKQrrp8QoZWc
+ 93+IISRpQs1yT9wUI//wuajGqE9auW60QCm0hK6UkU56/RIjnRaPq0TbJLwZarL4tmEt4gZ9
+ TlDiXC/YQV3I4Ltw88MaiECPTB6Y+5o17bbEEHq5KR/z2WeG5ft6+9xEEE7LcgDpqN+R3tR6
+ fxdITxLYh3ra+CemennDLA33oJ5co+yYt93VnJIlFk1Cd4jSJ/FXr6M6sVfxywYnN9SHbPXb
+ sEZZDwpYBmojxhnYQ9OUc5hzI9EgFGnfS9Vi13EoZEJ2DLsjw02wJaqFcX8L4niqcJ92xzwS
+ nj912f0DwoRM9uc4TGF6HWph/LK2yThV+o6Hb6g89ZugVuO1ikdDwAQWVKnoP6/zEmkVLp3I
+ koI+i0ovO4j5kqiQdDVWAexq3qJ+BUbXrJ4HOkz9QuM1rj8+waIHWkHCDBcLdYrrss3Q3om2
+ zehm9LvGCwqvqaZRGyQ8p+Koj6ofysYN2kPYWkDVwRty93ippwjyxPGEIpLDqG4lJv2FCv2z
+ jTMqzIx750XjMgWx+C48ErBjjaEuJfEVEg26x/RU2bj6Rl2DKagbpCv81/s5+tPPoedSlC2v
+ 3UencWaxOUHEZaXk2qRQ40lGbi14OyCBzjVgFpuGZYl9i+xzH2uZ4Zd5Bl7LVtuKMFCZTyBS
+ FXethlc/4RSO32xRat6boexFsUxi6nmG9ONfurZYcBDeYNwcwmc1CVvflKLmWTsllU8160yJ
+ /+zb8e2Cl4IBKJm0nyyRuEAwfks3C942GC7eHzg5w64zbqTdDuOFfIMdkGRcuB85a/CrAi9H
+ 8tjCvZmAi53CIXWChQ7O6ZKRbzWBRDX3azLlvE=
+IronPort-HdrOrdr: A9a23:OoMEaKNht6N59sBcTsSjsMiBIKoaSvp037Eqv3ofdfVwSL37qy
+ nOpoV56faaslwssR0b9OxofZPwJE80lqQU3WByB9aftWDd0QPCEGgL1/qH/9SKIUPDH4BmuZ
+ uJJMNFebvN5A9B/KHH3DU=
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="5.90,142,1643670000"; 
+   d="scan'208";a="3011478"
+Received: from rwthex-s4-a.rwth-ad.de ([134.130.26.164])
+  by mail-in-2a.itc.rwth-aachen.de with ESMTP; 28 Feb 2022 11:46:15 +0100
+Received: from localhost (2a02:908:1069:2f00:f9fe:b87e:4b4b:c4ea) by
+ rwthex-s4-a.rwth-ad.de (2a00:8a60:1:e500::26:164) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.15; Mon, 28 Feb 2022 11:46:14 +0100
+Date:   Mon, 28 Feb 2022 11:46:13 +0100
+From:   Magnus =?utf-8?B?R3Jvw58=?= <magnus.gross@rwth-aachen.de>
+To:     <keescook@chromium.org>
+CC:     <akpm@linux-foundation.org>, <anthony.yznaga@oracle.com>,
+        <glaubitz@physik.fu-berlin.de>, <linux-fsdevel@vger.kernel.org>,
+        <linux-ia64@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <matoro_bugzilla_kernel@matoro.tk>,
+        <matoro_mailinglist_kernel@matoro.tk>, <regressions@leemhuis.info>,
+        <regressions@lists.linux.dev>, <viro@zeniv.linux.org.uk>
+Subject: Re: regression: Bug 215601 - gcc segv at startup on ia64
+Message-ID: <Yhyn9cjDV8XfXLHm@fractal.localdomain>
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR21MB3098.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ad617b86-9c9b-4e42-4228-08d9fa658626
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Feb 2022 02:53:39.7488
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: q9m4+4xhejZm5i6EYSB7ZZnkSKhosXtmzoGei3eyArUh57G0m5VTfc7xylx9wwvd4b9gPdNNpH4yjn7LuEGVnmYpGWDjM4GJQEejazXlEMc=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY4PR21MB0135
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Disposition: inline
+In-Reply-To: <202202260344.63C15C3356@keescook>
+X-Originating-IP: [2a02:908:1069:2f00:f9fe:b87e:4b4b:c4ea]
+X-ClientProxiedBy: rwthex-s1-a.rwth-ad.de (2a00:8a60:1:e500::26:152) To
+ rwthex-s4-a.rwth-ad.de (2a00:8a60:1:e500::26:164)
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Christoph Hellwig <hch@lst.de> Sent: Sunday, February 27, 2022 6:31 A=
-M
->=20
-> Pass a bool to pass if swiotlb needs to be enabled based on the
-> addressing needs and replace the verbose argument with a set of
-> flags, including one to force enable bounce buffering.
->=20
-> Note that this patch removes the possibility to force xen-swiotlb
-> use using swiotlb=3Dforce on the command line on x86 (arm and arm64
-> never supported that), but this interface will be restored shortly.
->=20
-> Signed-off-by: Christoph Hellwig <hch@lst.de>
-> ---
->  arch/arm/mm/init.c                     |  6 +----
->  arch/arm64/mm/init.c                   |  6 +----
->  arch/ia64/mm/init.c                    |  4 +--
->  arch/mips/cavium-octeon/dma-octeon.c   |  2 +-
->  arch/mips/loongson64/dma.c             |  2 +-
->  arch/mips/sibyte/common/dma.c          |  2 +-
->  arch/powerpc/include/asm/swiotlb.h     |  1 +
->  arch/powerpc/mm/mem.c                  |  3 ++-
->  arch/powerpc/platforms/pseries/setup.c |  3 ---
->  arch/riscv/mm/init.c                   |  8 +-----
->  arch/s390/mm/init.c                    |  3 +--
->  arch/x86/kernel/cpu/mshyperv.c         |  8 ------
->  arch/x86/kernel/pci-dma.c              | 15 ++++++-----
->  arch/x86/mm/mem_encrypt_amd.c          |  3 ---
->  drivers/xen/swiotlb-xen.c              |  4 +--
->  include/linux/swiotlb.h                | 15 ++++++-----
->  include/trace/events/swiotlb.h         | 29 ++++++++-------------
->  kernel/dma/swiotlb.c                   | 35 ++++++++++++++------------
->  18 files changed, 56 insertions(+), 93 deletions(-)
+> When the kernel tries to map these with a combined allocation, it asks
+> for a giant mmap of the file, but the file is, of course, not at all
+> that large, and the mapping is rejected.
 
-[snip]
+> So... I'm trying to think about how best to deal with this. If I or
+> anyone else can't think of an elegant solution, I'll send a revert for
+> the offending patch next week.
 
->=20
-> diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyper=
-v.c
-> index 5a99f993e6392..568274917f1cd 100644
-> --- a/arch/x86/kernel/cpu/mshyperv.c
-> +++ b/arch/x86/kernel/cpu/mshyperv.c
-> @@ -336,14 +336,6 @@ static void __init ms_hyperv_init_platform(void)
->  			swiotlb_unencrypted_base =3D ms_hyperv.shared_gpa_boundary;
->  #endif
->  		}
-> -
-> -#ifdef CONFIG_SWIOTLB
-> -		/*
-> -		 * Enable swiotlb force mode in Isolation VM to
-> -		 * use swiotlb bounce buffer for dma transaction.
-> -		 */
-> -		swiotlb_force =3D SWIOTLB_FORCE;
-> -#endif
+Shouldn't we just be able to patch total_mapping_size() again to instead
+sum up all p_memsz fields, instead of comparing minimum and maximum
+p_vaddr?
 
-With this code removed, it's not clear to me what forces the use of the
-swiotlb in a Hyper-V isolated VM.  The code in pci_swiotlb_detect_4g() does=
-n't
-catch this case because cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)
-returns "false" in a Hyper-V guest.  In the Hyper-V guest, it's only
-cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) that returns "true".  I'm
-looking more closely at the meaning of the CC_ATTR_* values, and it may
-be that Hyper-V should also return "true" for CC_ATTR_MEM_ENCRYPT,
-but I don't think CC_ATTR_HOST_MEM_ENCRYPT should return "true".
+Runtime complexity would be the same as we are iterating through all
+segments already anyway. And I would also argue that is the behaviour
+that one wanted to see in that function anyway.
 
-Michael
+If you agree with this, I can post a patch, but I would need to know
+what tree to base it on to avoid merge conflicts with the just merged
+patch from Alexey.
 
-
-
+--
+Magnus
