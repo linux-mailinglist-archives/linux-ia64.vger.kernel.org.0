@@ -2,229 +2,163 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B601C4C726C
-	for <lists+linux-ia64@lfdr.de>; Mon, 28 Feb 2022 18:21:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AA5D4C78E9
+	for <lists+linux-ia64@lfdr.de>; Mon, 28 Feb 2022 20:49:28 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233313AbiB1RWB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 28 Feb 2022 12:22:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58858 "EHLO
+        id S229749AbiB1Ts1 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 28 Feb 2022 14:48:27 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233202AbiB1RWB (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 28 Feb 2022 12:22:01 -0500
-Received: from NAM02-BN1-obe.outbound.protection.outlook.com (mail-bn1nam07on2124.outbound.protection.outlook.com [40.107.212.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFD377F6CD;
-        Mon, 28 Feb 2022 09:21:21 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=WGROcgBaEOXb7LR3FSSNEbts4Yq/gvHTx+QKUuXbAAY5UqWvNzfG7p7f8KZ/E4oIY2Rg3W/6thQHYo5rve1gDrELKt8iS2YFLRoH9fR/9AjQ2lsrgmn9iDX80UAjlSXOSPjssDUT8bTtfta610/KrIXF2KrxowYbVA72b+NZKjemn6I3Q8qTA8pRTtF8REV/JBSss17jNVGtO1VcQKJc/r0HVJUDodOMK67YsY8jVlw4hKBUGKXamkEqnLxEDesq1hYllQrmCfk3QY6HyBfqf6cbFPKkF3CKIzRlGdswgVbTtwwpkjOaxMQW3IwFnOYSnAGrVG3h0f1J30AqcmDstw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=RpdUqKZ7g1q/KewkZ6ChsRglmfEx00uxvbcobvCdGfU=;
- b=LJMs1KTZ7v/9xPQzWqwE99HpshKHrcrSRvv/ORlRAYjEQ4QMFbz9SSuQz569NU3uSyxbw7qgL8vThmNVrmL+iOoOZ5Q05OOgLdlnVnuyY6rt8CO3+nJ7pO6RhgJs5YRQ6hsBnmgzIr9q4dr/DnKFZ7cId8sNR8mK1kPz+NjJsYmsHCLHbZjW/S2w4xeNV0MBOZwP1OY9w/Pm5csoksYWBXZLx9aLCD2H2wSEQ/aNiJomsEF0PFRWEmgnxrcWHd9g/6DyV5ZH6ZfvKyrunrSO9n+PYyWpqMNlu9SlmdfaxECG9OT8XX/tiZEog93mBNempxlHZOzdJ/YJEFwMvv/XAw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=microsoft.com; dmarc=pass action=none
- header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=RpdUqKZ7g1q/KewkZ6ChsRglmfEx00uxvbcobvCdGfU=;
- b=g9nhUzwY7Vv8E+CpoSKp6JTM3px3JlWNs6F2X8reB07guIM/x41SwxKlqSwheS10FFvB/Fkeq7/rfh8dcoeOfoUnWfG+L0jxfKfrdqdCGm4VlN8iNabrsfcnlk6IAdWKRQX46VsBv09YurvywJ/Jr7kAhgjG5GLHzKCGlZRnNLY=
-Received: from MN0PR21MB3098.namprd21.prod.outlook.com (2603:10b6:208:376::14)
- by MW4PR21MB1969.namprd21.prod.outlook.com (2603:10b6:303:7c::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5061.0; Mon, 28 Feb
- 2022 17:21:09 +0000
-Received: from MN0PR21MB3098.namprd21.prod.outlook.com
- ([fe80::69f8:51be:b573:e70c]) by MN0PR21MB3098.namprd21.prod.outlook.com
- ([fe80::69f8:51be:b573:e70c%5]) with mapi id 15.20.5038.006; Mon, 28 Feb 2022
- 17:21:08 +0000
-From:   "Michael Kelley (LINUX)" <mikelley@microsoft.com>
-To:     Christoph Hellwig <hch@lst.de>
-CC:     "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>,
-        "x86@kernel.org" <x86@kernel.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Joerg Roedel <joro@8bytes.org>,
-        David Woodhouse <dwmw2@infradead.org>,
-        Lu Baolu <baolu.lu@linux.intel.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        "linux-arm-kernel@lists.infradead.org" 
-        <linux-arm-kernel@lists.infradead.org>,
-        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
-        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
-        "tboot-devel@lists.sourceforge.net" 
-        <tboot-devel@lists.sourceforge.net>,
-        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
-Subject: RE: [PATCH 08/11] swiotlb: make the swiotlb_init interface more
- useful
-Thread-Topic: [PATCH 08/11] swiotlb: make the swiotlb_init interface more
- useful
-Thread-Index: AQHYK+bNn5GdGBwbMEGdpROKeAVKTayoQv4AgACScQCAAGA5YA==
-Date:   Mon, 28 Feb 2022 17:21:08 +0000
-Message-ID: <MN0PR21MB3098608AE81E444CC3C25B3ED7019@MN0PR21MB3098.namprd21.prod.outlook.com>
-References: <20220227143055.335596-1-hch@lst.de>
- <20220227143055.335596-9-hch@lst.de>
- <MN0PR21MB309816A344171B46735CA29CD7019@MN0PR21MB3098.namprd21.prod.outlook.com>
- <20220228113042.GA10570@lst.de>
-In-Reply-To: <20220228113042.GA10570@lst.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=09ca4065-c6d1-484e-9620-c278d7ad8315;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2022-02-28T17:15:06Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=microsoft.com;
-x-ms-publictraffictype: Email
-x-ms-office365-filtering-correlation-id: cddbc668-5c1a-4f83-a223-08d9fadeb5d5
-x-ms-traffictypediagnostic: MW4PR21MB1969:EE_
-x-ms-exchange-atpmessageproperties: SA|SL
-x-microsoft-antispam-prvs: <MW4PR21MB196937E190D2B2302E542BC1D7019@MW4PR21MB1969.namprd21.prod.outlook.com>
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: cWMWzCjniKzqFntSWVtxFr6flL5hbkfMuMWEOfWBvp+rRvG3wx0D3BFme7Yx0KkfWddAX+K0TAjZSoBLG/dbCYqG3J4kOuPfduhdVzscxUWeqlC9sCMkCqC0xiejdz/6IT7f6bapZMAliRvF/vblVA6B2YlRczt5t0sEpaYdr5dazTyWOvIE0KVPw6YW5F/PgZj0YMXKWHad3ywMAD+hHR365wls4O+zcl6VWG7NacfeMBxfTB8Nr+2PhySwoukGk4rzlf6C0OODAj+PoceUmzz6B7ak2FDpI7Hs5qR06yzJdm5EDKWHL9m1v4FwEXi2xJ/kA+nFuVK2YrDBsI0KqQMtV8rp674JXYCFZU3QkL+HedGlbfTYi6d23jn2awU57YHtSy2fQoFZ82WoWOwjEKbhX+lbrpEX9ApOdwVw3S9RUm8hmMDB7RemARCNdIBOnPMRt0n+s1AlgosPl75ZvR59aChrKGJeUPiNSc+5cIffAEKtK70UsCmch8KzNHauzAEuGBCVhe0ad4OAnA/wrjzHa1QNqWU9BBO4zAHWz8/RUx4OtzPqv/q5jZnEDIkvcnrTA1e7sVhEtlDrhAaLXEi9iT5mOAdUaZ+CVshr3g3WBcOUxb8jf1BuTEQoYZCCQEhQLQl2I2x/lcQA04gwYJi3joTUh36T1bkrZdCas1OWQuHFQaDuBk6Tz/A4k+zU15fg6Dh8oVWnyCzEwn1IPkzGbyQPt6KEI4s9I4Vmx0F5qReR6C3txeazzxnncn3L
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR21MB3098.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(6916009)(10290500003)(55016003)(33656002)(2906002)(508600001)(54906003)(316002)(82950400001)(86362001)(82960400001)(38070700005)(122000001)(38100700002)(52536014)(76116006)(66946007)(66476007)(66556008)(4326008)(8676002)(66446008)(7696005)(71200400001)(6506007)(64756008)(7416002)(186003)(26005)(5660300002)(9686003)(8936002)(83380400001)(8990500004);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?29qyXTMF81O5S1nx5r+Osp6BQ3ZTLcxu2nBcQagislDsBPG7/Ek1jr6Fh3OJ?=
- =?us-ascii?Q?opz233MPZ2LLUS/xrAR5i+eVc/zjCgiVy/ZZuf3InciYY0kMjj7+5VaO5h5F?=
- =?us-ascii?Q?oRKXGdgstHJssPfSfK2WsKYRNeeviAEFXbmxNfv8bknITEhFH5B4d6jwze4c?=
- =?us-ascii?Q?RWXCGfZNF2gKSkuPcpodmLO0n7bQLJyVr8jAXN+XgCdkV91EVzAAYIUz0Uq2?=
- =?us-ascii?Q?yditzag1mxkeDvx+u3/cN7VJT5I5A5f3wl1WsBcvf6OqUpeRsXsL6w5wps06?=
- =?us-ascii?Q?OeyG5v7grFT6+P+mzpPMYT8SNHnzVUa38NYQWN0X4cFU8K6DyNlWpfpn6zUs?=
- =?us-ascii?Q?MXl9+qxlaYoLCV/Gu/olCdfTvRPkm7Eodi56SkhrywkJLBm2oajaleIuYWgZ?=
- =?us-ascii?Q?8WKC+RGUtlMJg5ivA9cB9olJOCkKlh0E+ruPUFdqZO7Wie3Blz9B5aS4egQk?=
- =?us-ascii?Q?ScpyHViNGJli/C8ys0QP2FW8viCgMAzumWEv4zYc2T7kAwrHxo/a/4w8BCUI?=
- =?us-ascii?Q?S9oSQ8iyUaIrjgFXvC/u/FYkaC+gUt2VBaD38jQfKSKwzADe4iDFJUul2VKU?=
- =?us-ascii?Q?XPLpG/26A6X9zUSa3f2pelG03Q52x2t1kHF6BdmAa6JwPo+bCpqzos58Cdnt?=
- =?us-ascii?Q?126Bg+eFBH6hjPcb3bLc8a4jpbrDeMqMk24DcSPLXYQAe2FrIsduyuGRILDq?=
- =?us-ascii?Q?csTj3oIiSQBfTDJnZll226+FPShkzEpQO1d9rZoxX6n5EpKXblNnTktM+xNN?=
- =?us-ascii?Q?17jXiNYZvs95XMpBYvwqVO6k2OnWdtynypvighqRkDlYRiVWEtcBFdmh1B+8?=
- =?us-ascii?Q?DateI3ggNJxMadDyoNzi/IPwpllwUb7Z381uWK5pgamFLgNUq/0jkKwO0/Wx?=
- =?us-ascii?Q?4mvc5QLQIYLHk7w5Z0Ol56+UsMsGe2eYhrmQ26YoCie5TsFOgvuZYIR/HGqH?=
- =?us-ascii?Q?uDNRa+N9vvPIFo9AZJ7Kp172LlVuDohqcCLzE4HokxuVqpG+6qsemCNBOc/S?=
- =?us-ascii?Q?I5HfA3HwA4LUdCpal4akyxUQz4U//cM6fGRRxFdD66OqmWagCtftMRQV6mkP?=
- =?us-ascii?Q?CMbTal9ZvFOLnTE4bdkS1Y3QgAu7h/tEOq/8pWCANPRmkC/nqavd5Yd6J/MA?=
- =?us-ascii?Q?R5R1P67ITW3DpSXyMGg3AA1wzK5psIK3gkl32DnEjiXmj1WkSEHvNYX6ht5K?=
- =?us-ascii?Q?GPB75YGdMVG7gmxMyCTereGHRheCMA4L0Tsuzz0FkN5brsFZXMNcqQB+h0Jd?=
- =?us-ascii?Q?EFzYZm7uPyaqVuh5aH5HtujJZvEMFrXRhSlYRHvK33rdvCM8j2gqMtVcEbB7?=
- =?us-ascii?Q?W1XkihGMneb+CyMh/KOmYFkqY0Srp/mX97+xBeFPHuMTveuzO7Sg540IMVwp?=
- =?us-ascii?Q?hO/qc1LYfKsSvK1g829RchZje/CiVbp7/4/gEZIYVsOwba0W7dYzYwLPhANY?=
- =?us-ascii?Q?UGF1iEfHAQVHD03WfHcq/MLTHnpj0HHw1yEp6mPS7avfnTkrVuX5dg=3D=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S229719AbiB1TsK (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 28 Feb 2022 14:48:10 -0500
+Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B3C5EFFB5
+        for <linux-ia64@vger.kernel.org>; Mon, 28 Feb 2022 11:46:20 -0800 (PST)
+Received: by mail-pj1-x1032.google.com with SMTP id g7-20020a17090a708700b001bb78857ccdso114618pjk.1
+        for <linux-ia64@vger.kernel.org>; Mon, 28 Feb 2022 11:46:20 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tR+AhlIqjS9XYnLOtynP2EhZ/OV9mCnZ9eIc3MUdC24=;
+        b=EEqg7pUkySZVbQvZfJGIVuw0lXwGWG+go3YvVrAhLQgLhiQhNzDWgCAEyKKhK7DPsx
+         H1LWnVGxrPGJ5ZGzxfs/DLiWdoAxZu1P28f0+C1qdVWmaheFrUNc+ZjxCmcoA8AqfTkH
+         r9Wsbvj+psRVE1ujQo6yM8ftEYCR7mER0tJ+8=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=tR+AhlIqjS9XYnLOtynP2EhZ/OV9mCnZ9eIc3MUdC24=;
+        b=mx1QrMsAcjX3N9hycwz5an1alDyJ5n54YzNouOTnhiiDR8GgA33U0+IbwSfj7jxYU0
+         EbjtzNPvg9nyGqWRIarBkKERbbaTfrCSlQN+YWwATOAo3+5MRZ7D4pgktDki0zVnG2IB
+         XMc1717YB2hyT8kP2gDLNGllTx3imW12R+hMjsf4KJkMR6yrTNsSFo86/MTZY8jIeU2c
+         wGtHfYH34ftgkyUS3g1zDrZiZ3J4k0GhlHT5zFp8wkYSKWQU2NwjSJrZ5qKi+rlAuysv
+         OX72xIjs4ePT1o8ijvhXctwKcD4v50NWuOw2jtnOpI7zZRZp25wOLBB6NQHk/CF683AW
+         vovw==
+X-Gm-Message-State: AOAM5300/4shLOKAYY7L3nAHHdJYCr9KHKX29t3/lMq2L3sWujbogpi3
+        TIreN3Etd/h89PWICHSBFOyPmw==
+X-Google-Smtp-Source: ABdhPJz8yuUY3QLjcjfiLAIH3SgbY2+JCxtn3vQ51x519MkGnccf2G5leuKh/e98pxMWfX9wrbgW2g==
+X-Received: by 2002:a17:90a:6688:b0:1bc:5492:6373 with SMTP id m8-20020a17090a668800b001bc54926373mr18053297pjj.161.1646077576522;
+        Mon, 28 Feb 2022 11:46:16 -0800 (PST)
+Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
+        by smtp.gmail.com with ESMTPSA id v10-20020a056a00148a00b004e0f420dd90sm14288692pfu.40.2022.02.28.11.46.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Feb 2022 11:46:16 -0800 (PST)
+From:   Kees Cook <keescook@chromium.org>
+To:     matoro <matoro_mailinglist_kernel@matoro.tk>
+Cc:     Kees Cook <keescook@chromium.org>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Eric Biederman <ebiederm@xmission.com>,
+        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        stable@vger.kernel.org,
+        Thorsten Leemhuis <regressions@leemhuis.info>,
+        Anthony Yznaga <anthony.yznaga@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        regressions@lists.linux.dev, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
+Subject: [PATCH] binfmt_elf: Avoid total_mapping_size for ET_EXEC
+Date:   Mon, 28 Feb 2022 11:46:13 -0800
+Message-Id: <20220228194613.1149432-1-keescook@chromium.org>
+X-Mailer: git-send-email 2.32.0
 MIME-Version: 1.0
-X-OriginatorOrg: microsoft.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR21MB3098.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: cddbc668-5c1a-4f83-a223-08d9fadeb5d5
-X-MS-Exchange-CrossTenant-originalarrivaltime: 28 Feb 2022 17:21:08.7946
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vzOn32YAvsUYVAMMexjkwRxJ/GCrUPaTSyZyITipNC05D/kQ57R5+nXhVEq9s2CnE36lzOIxTlRer+N0f7Wm6ohAO+aiDJeeTp61TqSz2jo=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR21MB1969
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3328; h=from:subject; bh=l5ScQA97desVa/cbVIp0ld/aMpV+dI3qivoNgmUT4HY=; b=owEBbQKS/ZANAwAKAYly9N/cbcAmAcsmYgBiHSaEHNpWviXuAR7FBfgnykVicWqBdDFz4Mm5Oxru Wk8kzj2JAjMEAAEKAB0WIQSlw/aPIp3WD3I+bhOJcvTf3G3AJgUCYh0mhAAKCRCJcvTf3G3AJvL6D/ 4/8Opfekx+etBVTmmg6BBaHAHA8L48+PvyAvXuTrQcBwmTx6u2kHTlNm05KEHD78I3pPl6WFdLidNX hdHtV9YD4pJtlDXWQYpaKFFRSPyMb1Q+Zr3T3Pcw2ONhm72yKR+w2EWSmncLYr9WVuBMr/sMMYY5y0 d4fUjZ0olF55wDUFE+2rN2CcIU4e8HjqVoo+2yvOLqPh8YDdw86l3Z0q9Vj5iq+gH6eLvU5WxEG/eZ cjgfLahNoXjCP0/dlPZeGn4vO8xP36bTR3heewwP2OUFH6FokRxzK85fJXQuhjeTP9WhSdxUtHSezM tHCWIEPOOULFM4ONKAHuXgfjk4aOsipHcg+5sWqeuzU6H3aQb40AiEIR/X7ToKo74ys1wDl1ZYvu2v c07D7+PJ59abndEeaJhxsqJUfYh2JY7ggnaUD/qTMlV+h+6oYiQ2xfc6fp0mcaO4qduMYvC30ATa4G rBzu0m3FByxUJKRnhZnkt6cNIIovqdDVjUbCt0fboRZUO0OOPjAJDGrGqPeArViNIyUJHYJyU87fIC o6/z5yPlNufXyH4ki0eM09QNq+3oIB+MFcUlvE1VrtB4qJYmqVYosQg35kBCPgpeFH9s9ZaIiEZb6q q00aBsO4vT+xKC6RAmJH89G7YBiDGotMkgw0F44f/jTcOCP3obE29Gyc86/A==
+X-Developer-Key: i=keescook@chromium.org; a=openpgp; fpr=A5C3F68F229DD60F723E6E138972F4DFDC6DC026
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Christoph Hellwig <hch@lst.de> Sent: Monday, February 28, 2022 3:31 A=
-M
->=20
-> On Mon, Feb 28, 2022 at 02:53:39AM +0000, Michael Kelley (LINUX) wrote:
-> > From: Christoph Hellwig <hch@lst.de> Sent: Sunday, February 27, 2022 6:=
-31 AM
-> > >
-> > > Pass a bool to pass if swiotlb needs to be enabled based on the
-> > > addressing needs and replace the verbose argument with a set of
-> > > flags, including one to force enable bounce buffering.
-> > >
-> > > Note that this patch removes the possibility to force xen-swiotlb
-> > > use using swiotlb=3Dforce on the command line on x86 (arm and arm64
-> > > never supported that), but this interface will be restored shortly.
-> > >
-> > > Signed-off-by: Christoph Hellwig <hch@lst.de>
-> > > ---
-> > >  arch/arm/mm/init.c                     |  6 +----
-> > >  arch/arm64/mm/init.c                   |  6 +----
-> > >  arch/ia64/mm/init.c                    |  4 +--
-> > >  arch/mips/cavium-octeon/dma-octeon.c   |  2 +-
-> > >  arch/mips/loongson64/dma.c             |  2 +-
-> > >  arch/mips/sibyte/common/dma.c          |  2 +-
-> > >  arch/powerpc/include/asm/swiotlb.h     |  1 +
-> > >  arch/powerpc/mm/mem.c                  |  3 ++-
-> > >  arch/powerpc/platforms/pseries/setup.c |  3 ---
-> > >  arch/riscv/mm/init.c                   |  8 +-----
-> > >  arch/s390/mm/init.c                    |  3 +--
-> > >  arch/x86/kernel/cpu/mshyperv.c         |  8 ------
-> > >  arch/x86/kernel/pci-dma.c              | 15 ++++++-----
-> > >  arch/x86/mm/mem_encrypt_amd.c          |  3 ---
-> > >  drivers/xen/swiotlb-xen.c              |  4 +--
-> > >  include/linux/swiotlb.h                | 15 ++++++-----
-> > >  include/trace/events/swiotlb.h         | 29 ++++++++-------------
-> > >  kernel/dma/swiotlb.c                   | 35 ++++++++++++++----------=
---
-> > >  18 files changed, 56 insertions(+), 93 deletions(-)
-> >
-> > [snip]
-> >
-> > >
-> > > diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/msh=
-yperv.c
-> > > index 5a99f993e6392..568274917f1cd 100644
-> > > --- a/arch/x86/kernel/cpu/mshyperv.c
-> > > +++ b/arch/x86/kernel/cpu/mshyperv.c
-> > > @@ -336,14 +336,6 @@ static void __init ms_hyperv_init_platform(void)
-> > >  			swiotlb_unencrypted_base =3D
-> ms_hyperv.shared_gpa_boundary;
-> > >  #endif
-> > >  		}
-> > > -
-> > > -#ifdef CONFIG_SWIOTLB
-> > > -		/*
-> > > -		 * Enable swiotlb force mode in Isolation VM to
-> > > -		 * use swiotlb bounce buffer for dma transaction.
-> > > -		 */
-> > > -		swiotlb_force =3D SWIOTLB_FORCE;
-> > > -#endif
-> >
-> > With this code removed, it's not clear to me what forces the use of the
-> > swiotlb in a Hyper-V isolated VM.  The code in pci_swiotlb_detect_4g() =
-doesn't
-> > catch this case because cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT)
-> > returns "false" in a Hyper-V guest.  In the Hyper-V guest, it's only
-> > cc_platform_has(CC_ATTR_GUEST_MEM_ENCRYPT) that returns "true".  I'm
-> > looking more closely at the meaning of the CC_ATTR_* values, and it may
-> > be that Hyper-V should also return "true" for CC_ATTR_MEM_ENCRYPT,
-> > but I don't think CC_ATTR_HOST_MEM_ENCRYPT should return "true".
->=20
-> Ok, I assumed that CC_ATTR_HOST_MEM_ENCRYPT returned true in this case.
-> I guess we just need to check for CC_ATTR_GUEST_MEM_ENCRYPT as well
-> there?
+Partially revert commit 5f501d555653 ("binfmt_elf: reintroduce using
+MAP_FIXED_NOREPLACE").
 
-I'm unsure.
+At least ia64 has ET_EXEC PT_LOAD segments that are not virtual-address
+contiguous (but _are_ file-offset contiguous). This would result in
+giant mapping attempts to cover the entire span, including the virtual
+address range hole. Disable total_mapping_size for ET_EXEC, which
+reduces the MAP_FIXED_NOREPLACE coverage to only the first PT_LOAD:
 
-The comments for CC_ATTR_HOST_MEM_ENCRYPT indicates that it is for
-SME.   The comments for both CC_ATTR_MEM_ENCRYPT and
-CC_ATTR_GUEST_MEM_ENCRYPT mention SEV and SEV-ES (and presumably
-SEV-SNP).   But I haven't looked at the details of the core SNP patches fro=
-m
-the AMD folks.   I'd say that they need to weigh in on the right approach
-here that will work for both SME and the various SEV flavors, and then
-hopefully the Hyper-V case will fit in.
+$ readelf -lW /usr/bin/gcc
+...
+Program Headers:
+  Type Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   ...
+...
+  LOAD 0x000000 0x4000000000000000 0x4000000000000000 0x00b5a0 0x00b5a0 ...
+  LOAD 0x00b5a0 0x600000000000b5a0 0x600000000000b5a0 0x0005ac 0x000710 ...
+...
+       ^^^^^^^^ ^^^^^^^^^^^^^^^^^^                    ^^^^^^^^ ^^^^^^^^
 
-Michael
+File offset range     : 0x000000-0x00bb4c
+			0x00bb4c bytes
+
+Virtual address range : 0x4000000000000000-0x600000000000bcb0
+			0x200000000000bcb0 bytes
+
+Ironically, this is the reverse of the problem that originally caused
+problems with ET_EXEC and MAP_FIXED_NOREPLACE: overlaps. This problem is
+with holes. Future work could restore full coverage if load_elf_binary()
+were to perform mappings in a separate phase from the loading (where
+it could resolve both overlaps and holes).
+
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-mm@kvack.org
+Reported-by: matoro <matoro_mailinglist_kernel@matoro.tk>
+Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Fixes: 5f501d555653 ("binfmt_elf: reintroduce using MAP_FIXED_NOREPLACE")
+Link: https://lore.kernel.org/r/a3edd529-c42d-3b09-135c-7e98a15b150f@leemhuis.info
+Cc: stable@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+---
+matoro (or anyone else) can you please test this?
+---
+ fs/binfmt_elf.c | 25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
+
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index 9bea703ed1c2..474b44032c65 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -1136,14 +1136,25 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 			 * is then page aligned.
+ 			 */
+ 			load_bias = ELF_PAGESTART(load_bias - vaddr);
+-		}
+ 
+-		/*
+-		 * Calculate the entire size of the ELF mapping (total_size).
+-		 * (Note that first_pt_load is set to false later once the
+-		 * initial mapping is performed.)
+-		 */
+-		if (first_pt_load) {
++			/*
++			 * Calculate the entire size of the ELF mapping
++			 * (total_size), used for the initial mapping,
++			 * due to first_pt_load which is set to false later
++			 * once the initial mapping is performed.
++			 *
++			 * Note that this is only sensible when the LOAD
++			 * segments are contiguous (or overlapping). If
++			 * used for LOADs that are far apart, this would
++			 * cause the holes between LOADs to be mapped,
++			 * running the risk of having the mapping fail,
++			 * as it would be larger than the ELF file itself.
++			 *
++			 * As a result, only ET_DYN does this, since
++			 * some ET_EXEC (e.g. ia64) may have virtual
++			 * memory holes between LOADs.
++			 *
++			 */
+ 			total_size = total_mapping_size(elf_phdata,
+ 							elf_ex->e_phnum);
+ 			if (!total_size) {
+-- 
+2.32.0
+
