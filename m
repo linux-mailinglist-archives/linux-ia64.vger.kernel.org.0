@@ -2,164 +2,189 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53D334C8BBE
-	for <lists+linux-ia64@lfdr.de>; Tue,  1 Mar 2022 13:36:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4C9894C8D29
+	for <lists+linux-ia64@lfdr.de>; Tue,  1 Mar 2022 15:00:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232465AbiCAMhS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 1 Mar 2022 07:37:18 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33290 "EHLO
+        id S232047AbiCAOBZ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 1 Mar 2022 09:01:25 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232437AbiCAMhR (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 1 Mar 2022 07:37:17 -0500
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 983B697BBF;
-        Tue,  1 Mar 2022 04:36:36 -0800 (PST)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.94)
-          with esmtps (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1nP1jk-003IcG-9v; Tue, 01 Mar 2022 13:36:16 +0100
-Received: from suse-laptop.physik.fu-berlin.de ([160.45.32.140])
-          by inpost2.zedat.fu-berlin.de (Exim 4.94)
-          with esmtpsa (TLS1.2)
-          tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1nP1jk-001HI7-3q; Tue, 01 Mar 2022 13:36:16 +0100
-Message-ID: <49182d0d-708b-4029-da5f-bc18603440a6@physik.fu-berlin.de>
-Date:   Tue, 1 Mar 2022 13:36:15 +0100
+        with ESMTP id S229607AbiCAOBY (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 1 Mar 2022 09:01:24 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D928290CD0;
+        Tue,  1 Mar 2022 06:00:43 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 74A126152D;
+        Tue,  1 Mar 2022 14:00:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8EF5C340F7;
+        Tue,  1 Mar 2022 14:00:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1646143242;
+        bh=OCDdNe18bifA05pJN6Z3cL5GH76Vx+vSN/tAl+9N2NY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=BXoUaM8AeIN8f71PC8fIcrdCRd3XA5bTRsNaI55YrB3n8AdYcHHNQ5PfFONmNJdx9
+         3/CPcWQI6xI4q3njZfKJ//7qUb0OLv2P2whtuS8vVnMjqGPoCVcBgHyuiPi2wNTcJ+
+         KSByydI8JzRxlo4gWWoVzIU41cydpMN+5Nu46TbYtJPRxdtzH4yMR64LlBcFEmPqIp
+         3wzu1lY8fiIAXNFPydAfWfshcQxjaRgRJyXZ322mrYl9USFIgjN6ICC0+WR+CyrjeE
+         Jxihmtaod4/dKtcpNMu61/NIh4k/DY+2ax2xbrEVmUuihjdGPL4LSD/jeHzVTjPcDD
+         a2kZEW+hgrGpQ==
+Received: by mail-vk1-f179.google.com with SMTP id k15so6861271vkn.13;
+        Tue, 01 Mar 2022 06:00:42 -0800 (PST)
+X-Gm-Message-State: AOAM532svOJnKNVCpOs0IlDGjZXcO4evCD1SPI7pm5Nj7EyslyoRbkPD
+        vJdwhXeldF8Otfh+pRp8enOgJ/Ks45erGexiw6s=
+X-Google-Smtp-Source: ABdhPJwoZPlQG03sWsMv2LaiAVeC86gQ0+wyv+RzPw7RH1ttQNeeKqagstcZB00XUabb5ygCz6Zjo4KWbVCaIqQUo1I=
+X-Received: by 2002:a05:6122:887:b0:332:699e:7e67 with SMTP id
+ 7-20020a056122088700b00332699e7e67mr10404475vkf.35.1646143241667; Tue, 01 Mar
+ 2022 06:00:41 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.6.1
-Subject: Re: [PATCH 5.16 v2] binfmt_elf: Avoid total_mapping_size for ET_EXEC
-Content-Language: en-US
-To:     Kees Cook <keescook@chromium.org>,
-        matoro <matoro_mailinglist_kernel@matoro.tk>
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Eric Biederman <ebiederm@xmission.com>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        stable@vger.kernel.org,
-        =?UTF-8?Q?Magnus_Gro=c3=9f?= <magnus.gross@rwth-aachen.de>,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Anthony Yznaga <anthony.yznaga@oracle.com>,
+References: <1646045273-9343-1-git-send-email-anshuman.khandual@arm.com> <1646045273-9343-20-git-send-email-anshuman.khandual@arm.com>
+In-Reply-To: <1646045273-9343-20-git-send-email-anshuman.khandual@arm.com>
+From:   Guo Ren <guoren@kernel.org>
+Date:   Tue, 1 Mar 2022 22:00:30 +0800
+X-Gmail-Original-Message-ID: <CAJF2gTRSE-=-rDkMTD8D-bNw5inb4Yb_8S-AzXAuAthn9PCJmA@mail.gmail.com>
+Message-ID: <CAJF2gTRSE-=-rDkMTD8D-bNw5inb4Yb_8S-AzXAuAthn9PCJmA@mail.gmail.com>
+Subject: Re: [PATCH V3 19/30] csky/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+To:     Anshuman Khandual <anshuman.khandual@arm.com>
+Cc:     Linux-MM <linux-mm@kvack.org>,
         Andrew Morton <akpm@linux-foundation.org>,
-        regressions@lists.linux.dev, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-References: <20220228205518.1265798-1-keescook@chromium.org>
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-In-Reply-To: <20220228205518.1265798-1-keescook@chromium.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 160.45.32.140
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Christoph Hellwig <hch@infradead.org>,
+        linuxppc-dev <linuxppc-dev@lists.ozlabs.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-m68k@lists.linux-m68k.org,
+        linux-s390 <linux-s390@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        linux-alpha@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        openrisc@lists.librecores.org, linux-um@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-arch <linux-arch@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hello!
+Acked-by: Guo Ren <guoren@kernel.org>
 
-On 2/28/22 21:55, Kees Cook wrote:
-> Partially revert commit 5f501d555653 ("binfmt_elf: reintroduce using
-> MAP_FIXED_NOREPLACE").
-> 
-> At least ia64 has ET_EXEC PT_LOAD segments that are not virtual-address
-> contiguous (but _are_ file-offset contiguous). This would result in
-> giant mapping attempts to cover the entire span, including the virtual
-> address range hole. Disable total_mapping_size for ET_EXEC, which
-> reduces the MAP_FIXED_NOREPLACE coverage to only the first PT_LOAD:
-> 
-> $ readelf -lW /usr/bin/gcc
-> ...
-> Program Headers:
->   Type Offset   VirtAddr           PhysAddr           FileSiz  MemSiz   ...
-> ...
->   LOAD 0x000000 0x4000000000000000 0x4000000000000000 0x00b5a0 0x00b5a0 ...
->   LOAD 0x00b5a0 0x600000000000b5a0 0x600000000000b5a0 0x0005ac 0x000710 ...
-> ...
->        ^^^^^^^^ ^^^^^^^^^^^^^^^^^^                    ^^^^^^^^ ^^^^^^^^
-> 
-> File offset range     : 0x000000-0x00bb4c
-> 			0x00bb4c bytes
-> 
-> Virtual address range : 0x4000000000000000-0x600000000000bcb0
-> 			0x200000000000bcb0 bytes
-> 
-> Ironically, this is the reverse of the problem that originally caused
-> problems with ET_EXEC and MAP_FIXED_NOREPLACE: overlaps. This problem is
-> with holes. Future work could restore full coverage if load_elf_binary()
-> were to perform mappings in a separate phase from the loading (where
-> it could resolve both overlaps and holes).
-> 
-> Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-> Cc: Eric Biederman <ebiederm@xmission.com>
-> Cc: linux-fsdevel@vger.kernel.org
-> Cc: linux-mm@kvack.org
-> Reported-by: matoro <matoro_mailinglist_kernel@matoro.tk>
-> Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> Fixes: 5f501d555653 ("binfmt_elf: reintroduce using MAP_FIXED_NOREPLACE")
-> Link: https://lore.kernel.org/r/a3edd529-c42d-3b09-135c-7e98a15b150f@leemhuis.info
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Kees Cook <keescook@chromium.org>
+On Mon, Feb 28, 2022 at 7:10 PM Anshuman Khandual
+<anshuman.khandual@arm.com> wrote:
+>
+> This defines and exports a platform specific custom vm_get_page_prot() via
+> subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
+> macros can be dropped which are no longer needed.
+>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Cc: linux-csky@vger.kernel.org
+> Cc: linux-kernel@vger.kernel.org
+> Signed-off-by: Anshuman Khandual <anshuman.khandual@arm.com>
 > ---
-> Here's the v5.16 backport.
-> ---
->  fs/binfmt_elf.c | 25 ++++++++++++++++++-------
->  1 file changed, 18 insertions(+), 7 deletions(-)
-> 
-> diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-> index f8c7f26f1fbb..911a9e7044f4 100644
-> --- a/fs/binfmt_elf.c
-> +++ b/fs/binfmt_elf.c
-> @@ -1135,14 +1135,25 @@ static int load_elf_binary(struct linux_binprm *bprm)
->  			 * is then page aligned.
->  			 */
->  			load_bias = ELF_PAGESTART(load_bias - vaddr);
-> -		}
->  
-> -		/*
-> -		 * Calculate the entire size of the ELF mapping (total_size).
-> -		 * (Note that load_addr_set is set to true later once the
-> -		 * initial mapping is performed.)
-> -		 */
-> -		if (!load_addr_set) {
-> +			/*
-> +			 * Calculate the entire size of the ELF mapping
-> +			 * (total_size), used for the initial mapping,
-> +			 * due to first_pt_load which is set to false later
-> +			 * once the initial mapping is performed.
-> +			 *
-> +			 * Note that this is only sensible when the LOAD
-> +			 * segments are contiguous (or overlapping). If
-> +			 * used for LOADs that are far apart, this would
-> +			 * cause the holes between LOADs to be mapped,
-> +			 * running the risk of having the mapping fail,
-> +			 * as it would be larger than the ELF file itself.
-> +			 *
-> +			 * As a result, only ET_DYN does this, since
-> +			 * some ET_EXEC (e.g. ia64) may have virtual
-> +			 * memory holes between LOADs.
-> +			 *
-> +			 */
->  			total_size = total_mapping_size(elf_phdata,
->  							elf_ex->e_phnum);
->  			if (!total_size) {
+>  arch/csky/Kconfig               |  1 +
+>  arch/csky/include/asm/pgtable.h | 18 ------------------
+>  arch/csky/mm/init.c             | 32 ++++++++++++++++++++++++++++++++
+>  3 files changed, 33 insertions(+), 18 deletions(-)
+>
+> diff --git a/arch/csky/Kconfig b/arch/csky/Kconfig
+> index 132f43f12dd8..209dac5686dd 100644
+> --- a/arch/csky/Kconfig
+> +++ b/arch/csky/Kconfig
+> @@ -6,6 +6,7 @@ config CSKY
+>         select ARCH_HAS_GCOV_PROFILE_ALL
+>         select ARCH_HAS_SYNC_DMA_FOR_CPU
+>         select ARCH_HAS_SYNC_DMA_FOR_DEVICE
+> +       select ARCH_HAS_VM_GET_PAGE_PROT
+>         select ARCH_USE_BUILTIN_BSWAP
+>         select ARCH_USE_QUEUED_RWLOCKS
+>         select ARCH_WANT_FRAME_POINTERS if !CPU_CK610 && $(cc-option,-mbacktrace)
+> diff --git a/arch/csky/include/asm/pgtable.h b/arch/csky/include/asm/pgtable.h
+> index 151607ed5158..2c6b1cfb1cce 100644
+> --- a/arch/csky/include/asm/pgtable.h
+> +++ b/arch/csky/include/asm/pgtable.h
+> @@ -76,24 +76,6 @@
+>  #define MAX_SWAPFILES_CHECK() \
+>                 BUILD_BUG_ON(MAX_SWAPFILES_SHIFT != 5)
+>
+> -#define __P000 PAGE_NONE
+> -#define __P001 PAGE_READ
+> -#define __P010 PAGE_READ
+> -#define __P011 PAGE_READ
+> -#define __P100 PAGE_READ
+> -#define __P101 PAGE_READ
+> -#define __P110 PAGE_READ
+> -#define __P111 PAGE_READ
+> -
+> -#define __S000 PAGE_NONE
+> -#define __S001 PAGE_READ
+> -#define __S010 PAGE_WRITE
+> -#define __S011 PAGE_WRITE
+> -#define __S100 PAGE_READ
+> -#define __S101 PAGE_READ
+> -#define __S110 PAGE_WRITE
+> -#define __S111 PAGE_WRITE
+> -
+>  extern unsigned long empty_zero_page[PAGE_SIZE / sizeof(unsigned long)];
+>  #define ZERO_PAGE(vaddr)       (virt_to_page(empty_zero_page))
+>
+> diff --git a/arch/csky/mm/init.c b/arch/csky/mm/init.c
+> index bf2004aa811a..f9babbed17d4 100644
+> --- a/arch/csky/mm/init.c
+> +++ b/arch/csky/mm/init.c
+> @@ -197,3 +197,35 @@ void __init fixaddr_init(void)
+>         vaddr = __fix_to_virt(__end_of_fixed_addresses - 1) & PMD_MASK;
+>         fixrange_init(vaddr, vaddr + PMD_SIZE, swapper_pg_dir);
+>  }
+> +
+> +pgprot_t vm_get_page_prot(unsigned long vm_flags)
+> +{
+> +       switch (vm_flags & (VM_READ | VM_WRITE | VM_EXEC | VM_SHARED)) {
+> +       case VM_NONE:
+> +               return PAGE_NONE;
+> +       case VM_READ:
+> +       case VM_WRITE:
+> +       case VM_WRITE | VM_READ:
+> +       case VM_EXEC:
+> +       case VM_EXEC | VM_READ:
+> +       case VM_EXEC | VM_WRITE:
+> +       case VM_EXEC | VM_WRITE | VM_READ:
+> +               return PAGE_READ;
+> +       case VM_SHARED:
+> +               return PAGE_NONE;
+> +       case VM_SHARED | VM_READ:
+> +               return PAGE_READ;
+> +       case VM_SHARED | VM_WRITE:
+> +       case VM_SHARED | VM_WRITE | VM_READ:
+> +               return PAGE_WRITE;
+> +       case VM_SHARED | VM_EXEC:
+> +       case VM_SHARED | VM_EXEC | VM_READ:
+> +               return PAGE_READ;
+> +       case VM_SHARED | VM_EXEC | VM_WRITE:
+> +       case VM_SHARED | VM_EXEC | VM_WRITE | VM_READ:
+> +               return PAGE_WRITE;
+> +       default:
+> +               BUILD_BUG();
+> +       }
+> +}
+> +EXPORT_SYMBOL(vm_get_page_prot);
+> --
+> 2.25.1
+>
 
-I can confirm that this patch fixes the issue for me.
-
-Tested-By: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-
-Thanks,
-Adrian
 
 -- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer - glaubitz@debian.org
-`. `'   Freie Universitaet Berlin - glaubitz@physik.fu-berlin.de
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+Best Regards
+ Guo Ren
 
+ML: https://lore.kernel.org/linux-csky/
