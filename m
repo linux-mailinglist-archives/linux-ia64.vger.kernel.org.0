@@ -2,176 +2,149 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF0774C7DCF
-	for <lists+linux-ia64@lfdr.de>; Mon, 28 Feb 2022 23:53:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C6CA4C7EF6
+	for <lists+linux-ia64@lfdr.de>; Tue,  1 Mar 2022 01:00:55 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231468AbiB1WyJ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 28 Feb 2022 17:54:09 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37186 "EHLO
+        id S229663AbiCAABb (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 28 Feb 2022 19:01:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231221AbiB1WyH (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 28 Feb 2022 17:54:07 -0500
-Received: from mail-pf1-x429.google.com (mail-pf1-x429.google.com [IPv6:2607:f8b0:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B438F1A8
-        for <linux-ia64@vger.kernel.org>; Mon, 28 Feb 2022 14:53:26 -0800 (PST)
-Received: by mail-pf1-x429.google.com with SMTP id a5so11565713pfv.9
-        for <linux-ia64@vger.kernel.org>; Mon, 28 Feb 2022 14:53:26 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=zibmIXYjhxaupOk9s0xWr7duCuTjugvyvgKLHyYpgFE=;
-        b=iCpxXt6G0aThtvRUcLNU8SriL190rIC2M+2t85Gz/EPinufDECNpaCnslsRSQAk3ep
-         MPSStIzbBpIxl3lRd+df6HbZ3lim+gftRnXLHB8sidpRHKV2QhZoSgXk99khZDcvuzcT
-         Spee0qr8TUPt+3I4rqnlZ4mG/KhdXvQrBaZQM=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=zibmIXYjhxaupOk9s0xWr7duCuTjugvyvgKLHyYpgFE=;
-        b=QLazsz+4K1LLkFtxF82kxwgLbjUJEBYmpGJOssrnyFSNBXBmBnbXqkDOCXPVK0tgVU
-         zxAX1dyjgBo+AmDa3t/Vsv3FVbatQrSqFiW/oDSs0QaU5zR0jdpgGBB7+aiS/o39asYp
-         bGNTm6nUubsqh31Ac8zSti3466fGLgGNUb6vf39wMxElqKbEA5FB7vPIO+cNyXgfs3/k
-         YLKjwy6HByZ6zeagnVidZQBN/QxOyMWeg/Lac2ZK9NgHZ+Q452fZUBWGQN0AiW1lIifr
-         0DFjMdumIIN5C2kQS12XnyOdrJPhdsahd1dZ5Nb26DYarHXQE7CJyUj+CDD0UaFyTa72
-         97Uw==
-X-Gm-Message-State: AOAM532i1IxHh3NTM/wxQIo5bN71WzTyoP6ozPF39yXhKckk17oeaHl2
-        RgmALl4IoioPyBaDi/0PjBy4wA==
-X-Google-Smtp-Source: ABdhPJzHZGv/HnLcdSxWcXgVP/q5WimYbT2Car4mVv68atOJnIPOjOQrAQTFGQxx45g0YLdkIV/MsA==
-X-Received: by 2002:a65:6210:0:b0:374:ba5:aacc with SMTP id d16-20020a656210000000b003740ba5aaccmr18921903pgv.8.1646088806198;
-        Mon, 28 Feb 2022 14:53:26 -0800 (PST)
-Received: from www.outflux.net (smtp.outflux.net. [198.145.64.163])
-        by smtp.gmail.com with ESMTPSA id f9-20020a056a00228900b004f3ba7d177csm14943547pfe.54.2022.02.28.14.53.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Feb 2022 14:53:25 -0800 (PST)
-Date:   Mon, 28 Feb 2022 14:53:25 -0800
-From:   Kees Cook <keescook@chromium.org>
-To:     matoro <matoro_mailinglist_kernel@matoro.tk>
-Cc:     Alexander Viro <viro@zeniv.linux.org.uk>,
-        Eric Biederman <ebiederm@xmission.com>,
-        linux-fsdevel@vger.kernel.org, linux-mm@kvack.org,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        stable@vger.kernel.org,
-        Magnus =?iso-8859-1?Q?Gro=DF?= <magnus.gross@rwth-aachen.de>,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        Anthony Yznaga <anthony.yznaga@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        regressions@lists.linux.dev, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 5.16 v2] binfmt_elf: Avoid total_mapping_size for ET_EXEC
-Message-ID: <202202281452.93E321A39@keescook>
-References: <20220228205518.1265798-1-keescook@chromium.org>
- <ce8af9c13bcea9230c7689f3c1e0e2cd@matoro.tk>
+        with ESMTP id S229634AbiCAABa (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 28 Feb 2022 19:01:30 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EA30638798;
+        Mon, 28 Feb 2022 16:00:50 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7F9BAD6E;
+        Mon, 28 Feb 2022 16:00:50 -0800 (PST)
+Received: from [10.163.50.231] (unknown [10.163.50.231])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D52833F66F;
+        Mon, 28 Feb 2022 16:00:43 -0800 (PST)
+Subject: Re: [PATCH V3 09/30] arm/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+To:     "Russell King (Oracle)" <linux@armlinux.org.uk>
+Cc:     linux-mm@kvack.org, akpm@linux-foundation.org,
+        linux-kernel@vger.kernel.org, geert@linux-m68k.org,
+        Christoph Hellwig <hch@infradead.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        linux-arm-kernel@lists.infradead.org, sparclinux@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-s390@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-alpha@vger.kernel.org, linux-sh@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linux-parisc@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-um@lists.infradead.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-arch@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
+References: <1646045273-9343-1-git-send-email-anshuman.khandual@arm.com>
+ <1646045273-9343-10-git-send-email-anshuman.khandual@arm.com>
+ <Yhyqjo/4bozJB6j5@shell.armlinux.org.uk>
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+Message-ID: <542fa048-131e-240b-cc3a-fd4fff7ce4ba@arm.com>
+Date:   Tue, 1 Mar 2022 05:30:41 +0530
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
+ Thunderbird/68.10.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ce8af9c13bcea9230c7689f3c1e0e2cd@matoro.tk>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <Yhyqjo/4bozJB6j5@shell.armlinux.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,SUSPICIOUS_RECIPS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Feb 28, 2022 at 05:14:26PM -0500, matoro wrote:
-> On 2022-02-28 15:55, Kees Cook wrote:
-> > Partially revert commit 5f501d555653 ("binfmt_elf: reintroduce using
-> > MAP_FIXED_NOREPLACE").
-> > 
-> > At least ia64 has ET_EXEC PT_LOAD segments that are not virtual-address
-> > contiguous (but _are_ file-offset contiguous). This would result in
-> > giant mapping attempts to cover the entire span, including the virtual
-> > address range hole. Disable total_mapping_size for ET_EXEC, which
-> > reduces the MAP_FIXED_NOREPLACE coverage to only the first PT_LOAD:
-> > 
-> > $ readelf -lW /usr/bin/gcc
-> > ...
-> > Program Headers:
-> >   Type Offset   VirtAddr           PhysAddr           FileSiz  MemSiz
-> > ...
-> > ...
-> >   LOAD 0x000000 0x4000000000000000 0x4000000000000000 0x00b5a0 0x00b5a0
-> > ...
-> >   LOAD 0x00b5a0 0x600000000000b5a0 0x600000000000b5a0 0x0005ac 0x000710
-> > ...
-> > ...
-> >        ^^^^^^^^ ^^^^^^^^^^^^^^^^^^                    ^^^^^^^^ ^^^^^^^^
-> > 
-> > File offset range     : 0x000000-0x00bb4c
-> > 			0x00bb4c bytes
-> > 
-> > Virtual address range : 0x4000000000000000-0x600000000000bcb0
-> > 			0x200000000000bcb0 bytes
-> > 
-> > Ironically, this is the reverse of the problem that originally caused
-> > problems with ET_EXEC and MAP_FIXED_NOREPLACE: overlaps. This problem is
-> > with holes. Future work could restore full coverage if load_elf_binary()
-> > were to perform mappings in a separate phase from the loading (where
-> > it could resolve both overlaps and holes).
-> > 
-> > Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-> > Cc: Eric Biederman <ebiederm@xmission.com>
-> > Cc: linux-fsdevel@vger.kernel.org
-> > Cc: linux-mm@kvack.org
-> > Reported-by: matoro <matoro_mailinglist_kernel@matoro.tk>
-> > Reported-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-> > Fixes: 5f501d555653 ("binfmt_elf: reintroduce using
-> > MAP_FIXED_NOREPLACE")
-> > Link:
-> > https://lore.kernel.org/r/a3edd529-c42d-3b09-135c-7e98a15b150f@leemhuis.info
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Kees Cook <keescook@chromium.org>
-> > ---
-> > Here's the v5.16 backport.
-> > ---
-> >  fs/binfmt_elf.c | 25 ++++++++++++++++++-------
-> >  1 file changed, 18 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-> > index f8c7f26f1fbb..911a9e7044f4 100644
-> > --- a/fs/binfmt_elf.c
-> > +++ b/fs/binfmt_elf.c
-> > @@ -1135,14 +1135,25 @@ static int load_elf_binary(struct linux_binprm
-> > *bprm)
-> >  			 * is then page aligned.
-> >  			 */
-> >  			load_bias = ELF_PAGESTART(load_bias - vaddr);
-> > -		}
-> > 
-> > -		/*
-> > -		 * Calculate the entire size of the ELF mapping (total_size).
-> > -		 * (Note that load_addr_set is set to true later once the
-> > -		 * initial mapping is performed.)
-> > -		 */
-> > -		if (!load_addr_set) {
-> > +			/*
-> > +			 * Calculate the entire size of the ELF mapping
-> > +			 * (total_size), used for the initial mapping,
-> > +			 * due to first_pt_load which is set to false later
-> > +			 * once the initial mapping is performed.
-> > +			 *
-> > +			 * Note that this is only sensible when the LOAD
-> > +			 * segments are contiguous (or overlapping). If
-> > +			 * used for LOADs that are far apart, this would
-> > +			 * cause the holes between LOADs to be mapped,
-> > +			 * running the risk of having the mapping fail,
-> > +			 * as it would be larger than the ELF file itself.
-> > +			 *
-> > +			 * As a result, only ET_DYN does this, since
-> > +			 * some ET_EXEC (e.g. ia64) may have virtual
-> > +			 * memory holes between LOADs.
-> > +			 *
-> > +			 */
-> >  			total_size = total_mapping_size(elf_phdata,
-> >  							elf_ex->e_phnum);
-> >  			if (!total_size) {
+
+
+On 2/28/22 4:27 PM, Russell King (Oracle) wrote:
+> On Mon, Feb 28, 2022 at 04:17:32PM +0530, Anshuman Khandual wrote:
+>> This defines and exports a platform specific custom vm_get_page_prot() via
+>> subscribing ARCH_HAS_VM_GET_PAGE_PROT. Subsequently all __SXXX and __PXXX
+>> macros can be dropped which are no longer needed.
 > 
-> This does the trick!  Thank you so much!!
+> What I would really like to know is why having to run _code_ to work out
+> what the page protections need to be is better than looking it up in a
+> table.
+> 
+> Not only is this more expensive in terms of CPU cycles, it also brings
+> additional code size with it.
+> 
+> I'm struggling to see what the benefit is.
+> 
 
-Excellent; thank you for testing! I'll send this to Linus shortly.
+Currently vm_get_page_prot() is also being _run_ to fetch required page
+protection values. Although that is being run in the core MM and from a
+platform perspective __SXXX, __PXXX are just being exported for a table.
+Looking it up in a table (and applying more constructs there after) is
+not much different than a clean switch case statement in terms of CPU
+usage. So this is not more expensive in terms of CPU cycles.
 
--- 
-Kees Cook
+--------------------------
+pgprot_t protection_map[16] __ro_after_init = {
+        __P000, __P001, __P010, __P011, __P100, __P101, __P110, __P111,
+        __S000, __S001, __S010, __S011, __S100, __S101, __S110, __S111
+};
+
+#ifndef CONFIG_ARCH_HAS_FILTER_PGPROT
+static inline pgprot_t arch_filter_pgprot(pgprot_t prot)
+{
+        return prot;
+}
+#endif
+
+pgprot_t vm_get_page_prot(unsigned long vm_flags)
+{
+        pgprot_t ret = __pgprot(pgprot_val(protection_map[vm_flags &
+                                (VM_READ|VM_WRITE|VM_EXEC|VM_SHARED)]) |
+                        pgprot_val(arch_vm_get_page_prot(vm_flags)));
+
+        return arch_filter_pgprot(ret);
+}
+EXPORT_SYMBOL(vm_get_page_prot)
+----------------------------
+
+There will be a single vm_get_page_prot() instance on a given platform
+just like before. So this also does not bring any additional code size
+with it.
+
+As mentioned earlier on a previous version.
+
+Remove multiple 'core MM <--> platform' abstraction layers to map
+vm_flags access permission combination into page protection.
+
+From the cover letter ......
+
+----------
+Currently there are multiple layers of abstraction i.e __SXXX/__PXXX macros
+, protection_map[], arch_vm_get_page_prot() and arch_filter_pgprot() built
+between the platform and generic MM, finally defining vm_get_page_prot().
+
+Hence this series proposes to drop all these abstraction levels and instead
+just move the responsibility of defining vm_get_page_prot() to the platform
+itself making it clean and simple.
+----------
+
+Benefits
+
+1. For platforms using arch_vm_get_page_prot() and/or arch_filter_pgprot()
+
+	- A simplified vm_get_page_prot()
+	- Dropped arch_vm_get_page_prot() and arch_filter_pgprot()
+	- Dropped __SXXX, __PXXX macros
+
+2. For platforms which just exported __SXXX, __PXXX
+
+	- A simplified vm_get_page_prot()
+	- Dropped __SXXX, __PXXX macros
+
+3. For core MM
+
+	- Dropped a complex vm_get_page_prot() with multiple layers
+ 	  of abstraction i.e __SXXX/__PXXX macros, protection_map[],
+	  arch_vm_get_page_prot(), arch_filter_pgprot() etc.
+
+- Anshuman
