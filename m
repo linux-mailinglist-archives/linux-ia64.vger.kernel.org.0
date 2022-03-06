@@ -2,75 +2,195 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 848944CE9CE
-	for <lists+linux-ia64@lfdr.de>; Sun,  6 Mar 2022 07:51:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 224B54CEC55
+	for <lists+linux-ia64@lfdr.de>; Sun,  6 Mar 2022 18:01:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231689AbiCFGwe (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 6 Mar 2022 01:52:34 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34460 "EHLO
+        id S233026AbiCFRCY (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 6 Mar 2022 12:02:24 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233086AbiCFGv7 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 6 Mar 2022 01:51:59 -0500
-Received: from mail-ed1-x534.google.com (mail-ed1-x534.google.com [IPv6:2a00:1450:4864:20::534])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6D5270906
-        for <linux-ia64@vger.kernel.org>; Sat,  5 Mar 2022 22:51:01 -0800 (PST)
-Received: by mail-ed1-x534.google.com with SMTP id c19so6052231ede.8
-        for <linux-ia64@vger.kernel.org>; Sat, 05 Mar 2022 22:51:01 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:sender:from:date:message-id:subject:to;
-        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
-        b=KDgAx1nMZI4VA0728iAuqALj69hyn7X0WLLUiz2m+OH09NDtWJqkn0K0IjhaqXccDL
-         nYA9IS56U+BvEYDp5ZuYOTDJ28DkbGQXOo4nCoFRXwOq8btCUGBKve+nLdvXGAtQGfZd
-         8/3HmQyIohZytZNIAaZ2YSJ+VGfF2cuAbX+92kqJIy7dPjcCYPV+qxcIVHj5OJkNioe8
-         RnnPJV63I7FofbcYlKCR7cawwHR+Gyj/OksLFoNh7LOBENUnMHRRrWfgS+R5N0DbQgRd
-         FM7OvtlHYW5haJ9bCovh/xFv8pj40s/F/HFWyLhlvxnDTkjGlvvz7xTkeBicCtgptiHh
-         fIkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:sender:from:date
-         :message-id:subject:to;
-        bh=VaaSLAJ+hgNGNq49WyPsh3ndDLo+mnrYcswrOHpJSv8=;
-        b=FkzYkI80fxJ0ZGz87fzixn8ybXJvCOMZCO1/sPpPIewEIL0unm9FnE9g3pAXI5FEzr
-         OBLSJXUPj04ATV+JzqyRML59C9U6UauHVXGmtOLgzVLUuIDj8AaVdQ+sTixWfhLxnQOb
-         1rRWlfFr619szGpNsOk4BKEPr++l15wiLFVph+dDdGVDZr6y9ifRoNHld6l8UEomL7Wp
-         nsodLdpiNscwSQ5JymDqFH9RoIseqQreMYEgsEGOyx+1HQsZK9A43ljzrzvRQBpT6Sbk
-         2SNapCMiX30wZX1uZPCYzYdxg2WNvrldAf2nP318wNjFPmBgZCbePcpxc0nRs7rn9Ed4
-         LTsw==
-X-Gm-Message-State: AOAM531+35koRScmFf+9iFyLmeZJZrETEnw4dyjdiQ56R3tPdniA0+Np
-        4VvJoZdHtsUY53AN/xoq4Bb7kp/w+B8xDsl+C1UvKg+U/yY=
-X-Google-Smtp-Source: ABdhPJzq04i8VJyC6uwySEx5tzgrtxCg/XL0hqdBTWFWm66/zQAuy3m2ubrZV75jrYUP9jvmG0PdhfRUhLuebg8/B7w=
-X-Received: by 2002:a2e:94c7:0:b0:247:de4e:e9bc with SMTP id
- r7-20020a2e94c7000000b00247de4ee9bcmr2397951ljh.397.1646549448778; Sat, 05
- Mar 2022 22:50:48 -0800 (PST)
+        with ESMTP id S231218AbiCFRCX (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 6 Mar 2022 12:02:23 -0500
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2095.outbound.protection.outlook.com [40.107.243.95])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECE0D5C35A;
+        Sun,  6 Mar 2022 09:01:30 -0800 (PST)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=aYMnlDLnCoTlQ0m0bfddJAdHUnc0KWQe1gNc/5nZKL+bOXXO4x7IJ1Lzo+J6+5g8yJ/7f/khf5gDmSHC3r6uVNI6yUbP+r7KIRg+vmQCwXSaUy/kzR0sBUqFktRUy5XozVHzpsBMSv+xL6L3QYy5Ez1WZbfMeyhauU7+GRQtQrlr1hZ3s4kXtehlcDyyAN9+DNVjZOeGZtUEJF6rmp+0wXOUZ+TpIHh+trpkGXUyavel/aFtOLAnYnUqvPBl+BTYXLagteOJRdfOWFjhMQBV9jXmIZXLSU/NH1otendfS4WhEhUsrNn2bE/Ff24dUXkK4zTQeQF/m6gxbd6HJV83Uw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uOLUEoNUTj3NHP00m/Xck2wpfIX+AoQV3lb6Af/zENw=;
+ b=i3leWI6ml4/sGDaUguV3EF6vrimkBHk+Ntf1hC6+tgEKdh9FfyKFDUXdJt6Mc6gGp62eSHewYa7JVjUk8SvDwVHpEDEJ02+GCEZ0HYUchH0KRQWbJx0Rj+6UtmjU0eOkQy+UfMkJGpb9m7Q1cOLruPHt5WO+i5+vSmGpqXXlcjVkhXbQ881cgusbgrdC7/f5hsjoipWeLbR2EaFHv6bhOEvnODmaYKNpPvPw+30cFQ286SWDNabAI/gh+D0Ph11kloM9/mYb13PuKVkrwBYIShD4Yz+kYX74dJZnPRPzARS6GhaYcti+twRFwS5MRjz00Vkm0SiRhgJK/Us9iJ27zw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uOLUEoNUTj3NHP00m/Xck2wpfIX+AoQV3lb6Af/zENw=;
+ b=iJCGNxdF3Fo0JwCRGxSWD8hV5azsE8sqYRXKmv+oOMtnpDVDrsqx6f3tT+jCO/MhFWdWUjGKeM4YxMCgxFi4ZNUAwkizBqYblPXhhdgSVxh6YazT1NVkCNrv8hdTV6XMVczk0C5pVdjD2fmIsOE0uwX/CRXIZjW/1ZFY12LBio8=
+Received: from MN0PR21MB3098.namprd21.prod.outlook.com (2603:10b6:208:376::14)
+ by BYAPR21MB1365.namprd21.prod.outlook.com (2603:10b6:a03:10c::33) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5081.4; Sun, 6 Mar
+ 2022 17:01:28 +0000
+Received: from MN0PR21MB3098.namprd21.prod.outlook.com
+ ([fe80::a0b3:c840:b085:5d7b]) by MN0PR21MB3098.namprd21.prod.outlook.com
+ ([fe80::a0b3:c840:b085:5d7b%8]) with mapi id 15.20.5061.008; Sun, 6 Mar 2022
+ 17:01:27 +0000
+From:   "Michael Kelley (LINUX)" <mikelley@microsoft.com>
+To:     Dongli Zhang <dongli.zhang@oracle.com>,
+        Christoph Hellwig <hch@lst.de>,
+        "iommu@lists.linux-foundation.org" <iommu@lists.linux-foundation.org>
+CC:     "x86@kernel.org" <x86@kernel.org>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Konrad Rzeszutek Wilk <konrad.wilk@oracle.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Joerg Roedel <joro@8bytes.org>,
+        David Woodhouse <dwmw2@infradead.org>,
+        Lu Baolu <baolu.lu@linux.intel.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>,
+        "xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+        "tboot-devel@lists.sourceforge.net" 
+        <tboot-devel@lists.sourceforge.net>,
+        "linux-pci@vger.kernel.org" <linux-pci@vger.kernel.org>
+Subject: RE: [PATCH 10/12] swiotlb: add a SWIOTLB_ANY flag to lift the low
+ memory restriction
+Thread-Topic: [PATCH 10/12] swiotlb: add a SWIOTLB_ANY flag to lift the low
+ memory restriction
+Thread-Index: AQHYLVq0uSlYkDWbKUeZ67gbcRgpDayviVjwgAAHDgCAAwkZ0A==
+Date:   Sun, 6 Mar 2022 17:01:27 +0000
+Message-ID: <MN0PR21MB3098558B83B5A520FFCCE6D1D7079@MN0PR21MB3098.namprd21.prod.outlook.com>
+References: <20220301105311.885699-1-hch@lst.de>
+ <20220301105311.885699-11-hch@lst.de>
+ <MN0PR21MB3098F7AFC85BE5D83B0E64E5D7059@MN0PR21MB3098.namprd21.prod.outlook.com>
+ <556312e4-da86-b980-475c-1cfd7818ffdc@oracle.com>
+In-Reply-To: <556312e4-da86-b980-475c-1cfd7818ffdc@oracle.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+msip_labels: MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=433969a6-4cde-4cdd-a529-34a7717de2f8;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2022-03-06T16:49:10Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-office365-filtering-correlation-id: 7d1051ce-a5a5-44e0-5274-08d9ff92f44c
+x-ms-traffictypediagnostic: BYAPR21MB1365:EE_
+x-ms-exchange-atpmessageproperties: SA|SL
+x-microsoft-antispam-prvs: <BYAPR21MB13659872C94F06366112C6F1D7079@BYAPR21MB1365.namprd21.prod.outlook.com>
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info: sKKeFCLNvMjnyHGD9VaKYbwd5Pg9weElV4ETq1Pqmqqn32mZiekTXGmrD/vwB/odF3nTejr2LIYwdMHnQecOFII8b3qUpO2cBVumdJCLy5ngI66nhqP55bgBzK6QgqSSTt93iceFbEkbcuG+asHps2xQeJDpL6taKFhFHfB2DBmjELCWMGSlOhqgRPXv67/d6rkkNSL2/ggsmbdBvEbbH0tgF0kNJ/ctZy8onH62M/KB8qv8FIQmk4+dgUJ2T936HgwGihBH6mUhop0z+Hf9zeFasO7mEkJcV5CNxOTmhER+vVzVE1GFkmiz6gqZctQp8nXHkLjPSuWwB3UNzdOddSXlb7gNxaW8zzc/mGdgWJBErOr7tVA4NEEcveqXJ/UKRP6OvcGON9var2DtSXuZkxQG7cpAv0hxWKfHJ3kj/GBpubxjKySlYu6DkwwiuyJekUyEajpyjC4XBVRcoqRNK3V+GxNeagAlTAkeTMDLa3EMVDs+gxrg8itYEIXzlvByy6E/82xoV5cWC1EN7BZIpiLu5MoBXt0Gouy1z9OzWwTcJo6hX+15tRw83DQ0UrqNt5PVBorphcJ9+2EeL8kCMw1RNXfzw5hMeu11i1GKnbO0I4sdrCvlEXLMCSGum0oSXeYpoNmG6IuURedIR+YjwCIibQMGVELKWEc8bH4Oumfnxw1DwjTr/kJkp0YfcnCg8JSGRzgqrHxjVe/97258itAcqQMemqR8Gm24NZ7adN95x9aBW8eb8KxIR0aOGb//MUtUbLbJQHr3mheMTFV5uTMLfCgqJ/UlUe+EX+r8WS+5uWnoRR08ItokhtRpcZPL4UM9+1xcnW2jgzA5MlPO4A==
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR21MB3098.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230001)(4636009)(366004)(6506007)(8936002)(71200400001)(508600001)(7696005)(5660300002)(26005)(53546011)(83380400001)(7416002)(55016003)(52536014)(86362001)(8990500004)(186003)(66556008)(64756008)(66946007)(76116006)(110136005)(4326008)(66446008)(33656002)(38070700005)(9686003)(316002)(2906002)(10290500003)(66476007)(82960400001)(82950400001)(122000001)(966005)(8676002)(54906003)(38100700002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?xwcnoc49++k/XhQTp+2xSDHA9y6nJz1z6k0O1G26LmO5odDj/mcyDy67UKpQ?=
+ =?us-ascii?Q?atsCmhOUT1CNoCRvsRb8FJ15c9CcTSJjscmwn5zBVkuYykgc5hTEkO5ubS5Q?=
+ =?us-ascii?Q?G538yKWNDx5PH93yx3TryuzdyH5nS43Ye0o0AEufYshObFIybN8nC+m68cH5?=
+ =?us-ascii?Q?C2slQIIBhjp2nUMG6wFxsLo1bskfI4bPX3H+PCHw6O4X2XbmnIiap7/GBTS+?=
+ =?us-ascii?Q?/DOAOc3fS/Ydm1bbmXFypF4miLfReMO5WJ9mqWN39GuQo7nF2QCCA9B56pjh?=
+ =?us-ascii?Q?N9iV2ducIHefTDbAC/Ylt5O1k/mwFoLRlSsk0BXY5vx94mzelBOmrV2f5gEH?=
+ =?us-ascii?Q?QpxJ50Xz3f9v/GLa6QuIJBDyU6Z5w+1mWtASBeZakgsenBrHs6vpLc+nAuWs?=
+ =?us-ascii?Q?zD8WOsuZveyljsCkxzUdhaw4FOWu/e83hI+Jn0/iY4lUL6/9IvoGqrBCsNbM?=
+ =?us-ascii?Q?2IiH4PRXYfUiiNcjiaAqjEZZuMLapJ/Xl0RFMLOdNX0xlfI4AGE0qQd87A0Q?=
+ =?us-ascii?Q?/FG/my6ddA8Rld9tKAMbMZrmWHNp67KoM15gYAdYVHDUdkFG3HRBh70ySdqJ?=
+ =?us-ascii?Q?E345gse/QkZqtt90wGCVdGQZTsmqC682iQlOeNdd03LiEsobH1KrAi9GShyz?=
+ =?us-ascii?Q?BNag8SVzmr+RcOJ+przr77WaIgb/OHw89MiITVdJZ6l2XAPb7ffb31/9kjsc?=
+ =?us-ascii?Q?PLI/ebYE69W0zxOhyTK6A+zKj004ROzHjd7avlxfjlFN3w+1o+/uTpT8sChW?=
+ =?us-ascii?Q?SLHRjLsTq2Vtld8UDs7E12yswQyfbSTv4qZFrFEKXR88gqZnvcM/5+UULPiQ?=
+ =?us-ascii?Q?dbYUkCFtQ0Hzf/7Qr7eAQTXBDqNLfZyYcvR0B94CO+y9RhOD5LltrpwI+er8?=
+ =?us-ascii?Q?6QE07Qi0W5gizDqrWeAl+dfOUgqo/YerLnvRffG/DEvo0P4pSuD4xtFyqyP0?=
+ =?us-ascii?Q?9rC1GvF/aky2xcQhqdJZ5gTIvcDEvY//3x+zyfvX7OoNBQx/BAVHd43tE2ZJ?=
+ =?us-ascii?Q?dwUyBphT15DI8gmCDgHtX5lDMsdkgaNQDZantDHFJzs1sgV3eqQ4vC1rcjKb?=
+ =?us-ascii?Q?qx18JiDUikv/LWeabdhyicg83Uhx0/TfItI6XW9uy8dfCHCnkpbibYA3Cn2X?=
+ =?us-ascii?Q?6ulK98fJukbpLv7k3CuiwCnBe7xZIF5gIIyS2z0QlWrfxUbQqZ3N/zjsJ3VH?=
+ =?us-ascii?Q?o1mF4oWflEKfjAgZ7DV6d/irZ4u9qVNSQ6ovp5EYG4ivC3Zala8A8OSNadOR?=
+ =?us-ascii?Q?70KPAhcVq/HShpqT2avpnIdshnYUio277Oscxj5eHYDwXwCSZ0dfEzHfQkU8?=
+ =?us-ascii?Q?QDSuuvI1DzoXS055cIJI6z1QUuXBlB2s1v2PxaxikB2CS1vYlAs5pSjpE+uP?=
+ =?us-ascii?Q?H/hpqt+CxLOBq3GA/bAjCLWUFW7xufRy1i2eDyLv6Y6tl5/MG0snzjjR0EgH?=
+ =?us-ascii?Q?/tz+aVekbQq8cN/mYRDSOSTFpMha6iN7LO3GwYE9oLufTZm6Xmnt/A=3D=3D?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Reply-To: mrs.susanelwoodhara17@gmail.com
-Sender: mrs.arawyann@gmail.com
-Received: by 2002:ab3:7d89:0:0:0:0:0 with HTTP; Sat, 5 Mar 2022 22:50:48 -0800 (PST)
-From:   Mrs Susan Elwood Hara <mrs.susanelwoodhara17@gmail.com>
-Date:   Sun, 6 Mar 2022 06:50:48 +0000
-X-Google-Sender-Auth: NOWRSnt_sskMD3s295a30bcHvEs
-Message-ID: <CACppo47TD9J4Sy+vaJu1wXHqd88WqFwMNn6OdkY1khwXu3TuFw@mail.gmail.com>
-Subject: GOD BLESS YOU AS YOU REPLY URGENTLY
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        SUBJ_ALL_CAPS,T_HK_NAME_FM_MR_MRS,T_SCC_BODY_TEXT_LINE,UNDISC_MONEY
-        autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: MN0PR21MB3098.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7d1051ce-a5a5-44e0-5274-08d9ff92f44c
+X-MS-Exchange-CrossTenant-originalarrivaltime: 06 Mar 2022 17:01:27.7736
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 2Q0P5BfbqyMvCZd1dvCYqFGw3KLmQ/5chX9kG4KyKK7Eoffm0WWVL9/U+9PkReHFRC8UhPbPgRfmtnQ6VwnAaX7dxPg1zbseOeLON1XtiHI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR21MB1365
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-GOD BLESS YOU AS YOU REPLY URGENTLY
+From: Dongli Zhang <dongli.zhang@oracle.com> Sent: Friday, March 4, 2022 10=
+:28 AM
+>=20
+> Hi Michael,
+>=20
+> On 3/4/22 10:12 AM, Michael Kelley (LINUX) wrote:
+> > From: Christoph Hellwig <hch@lst.de> Sent: Tuesday, March 1, 2022 2:53 =
+AM
+> >>
+> >> Power SVM wants to allocate a swiotlb buffer that is not restricted to=
+ low memory for
+> >> the trusted hypervisor scheme.  Consolidate the support for this into =
+the swiotlb_init
+> >> interface by adding a new flag.
+> >
+> > Hyper-V Isolated VMs want to do the same thing of not restricting the s=
+wiotlb
+> > buffer to low memory.  That's what Tianyu Lan's patch set[1] is proposi=
+ng.
+> > Hyper-V synthetic devices have no DMA addressing limitations, and the
+> > likelihood of using a PCI pass-thru device with addressing limitations =
+in an
+> > Isolated VM seems vanishingly small.
+> >
+> > So could use of the SWIOTLB_ANY flag be generalized?  Let Hyper-V init
+> > code set the flag before swiotlb_init() is called.  Or provide a CONFIG
+> > variable that Hyper-V Isolated VMs could set.
+>=20
+> I used to send 64-bit swiotlb, while at that time people thought it was t=
+he same
+> as Restricted DMA patchset.
+>=20
+> https://lore.kernel.org/all/20210203233709.19819-1-dongli.zhang@oracle.co=
+m/
+>=20
+> However, I do not think Restricted DMA patchset is going to supports 64-b=
+it (or
+> high memory) DMA. Is this what you are looking for?
 
- Hello Dear,
-Greetings, I am contacting you regarding an important information i
-have for you please reply to confirm your email address and for more
-details Thanks
-Regards
-Mrs Susan Elwood Hara.
+Yes, it looks like your patchset would do what we want for Hyper-V Isolated
+VMs, but it is a more complex solution than is needed.  My assertion is tha=
+t
+in some environments, such as Hyper-V Isolated VMs, we're willing to assume
+all devices are 64-bit DMA capable, and to stop carrying the legacy baggage=
+.
+Bounce buffering is used for a different scenario (memory encryption), and
+the bounce buffers can be allocated in high memory.   There's no need for a
+2nd swiotlb buffer.
+
+Michael
