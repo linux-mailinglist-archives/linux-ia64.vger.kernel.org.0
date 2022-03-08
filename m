@@ -2,48 +2,62 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F0794D16E6
-	for <lists+linux-ia64@lfdr.de>; Tue,  8 Mar 2022 13:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DD8C4D1A87
+	for <lists+linux-ia64@lfdr.de>; Tue,  8 Mar 2022 15:28:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238354AbiCHMLm (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 8 Mar 2022 07:11:42 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50620 "EHLO
+        id S235866AbiCHO3n (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 8 Mar 2022 09:29:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234137AbiCHMLm (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 8 Mar 2022 07:11:42 -0500
-Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B8D3ED14;
-        Tue,  8 Mar 2022 04:10:45 -0800 (PST)
-Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.ozlabs.org (Postfix) with ESMTPSA id 4KCZ0d4W2hz4xvG;
-        Tue,  8 Mar 2022 23:10:41 +1100 (AEDT)
-From:   Michael Ellerman <patch-notifications@ellerman.id.au>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Helge Deller <deller@gmx.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Mackerras <paulus@samba.org>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Kees Cook <keescook@chromium.org>,
-        Arnd Bergmann <arnd@arndb.de>
-Cc:     linuxppc-dev@lists.ozlabs.org, linux-parisc@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org
-In-Reply-To: <cover.1644928018.git.christophe.leroy@csgroup.eu>
-References: <cover.1644928018.git.christophe.leroy@csgroup.eu>
-Subject: Re: [PATCH v4 00/13] Fix LKDTM for PPC64/IA64/PARISC v4
-Message-Id: <164674125384.3322453.12551849351633372798.b4-ty@ellerman.id.au>
-Date:   Tue, 08 Mar 2022 23:07:33 +1100
+        with ESMTP id S237203AbiCHO3m (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 8 Mar 2022 09:29:42 -0500
+Received: from mail-wr1-x444.google.com (mail-wr1-x444.google.com [IPv6:2a00:1450:4864:20::444])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA6E31EC76
+        for <linux-ia64@vger.kernel.org>; Tue,  8 Mar 2022 06:28:44 -0800 (PST)
+Received: by mail-wr1-x444.google.com with SMTP id b5so28882910wrr.2
+        for <linux-ia64@vger.kernel.org>; Tue, 08 Mar 2022 06:28:44 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=mime-version:sender:from:date:message-id:subject:to;
+        bh=+xCzDXKpurcBEhZ8+xr/1+qLsXYFBobYcsOzCn7TcBU=;
+        b=qVkxwgK1b+28wfo7AE+m0D/9E55CAaNHjVfggvzz4y1jrFEcqF+CAdv7IM+KHyJAsy
+         kWCN5Ez/mP7h9h6bpxp6/TAEaV328gRxK778qVwrRxvxR4tr/l1RPCTDR82iQTPn5Wax
+         TuZA87kQltJfQLsmP6fuZKQ4pIZQdhPxY8QrrnSjm8fSJ2AHt2tzEL1IA3nq4God2ic6
+         tPmcjhh+nE10IgFYtUr+FVpp8W0kskWdPNSjKh3Oe6HsfmAo/TeQKi+EB4jfdFsCBF0e
+         TEurA9G1+D3aT7wDN9rqiSJk5jriFub1oW7GvWnCc4W5i0HJjijUpIjbRko/xul1waJf
+         G8Pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
+         :to;
+        bh=+xCzDXKpurcBEhZ8+xr/1+qLsXYFBobYcsOzCn7TcBU=;
+        b=GIg/kFOvOlnSvludQcezxhbZzsxXTTMI+n7w2D6Zlvq2MzZuaSBM8MZT3ZNGLAj0KM
+         Kh5Nzs9Kv+QftEwmWE/ExWOg10OISzJ3HeLhdIr1qVQUsc4lt8x9vxHXfwc34X6kvlQv
+         +1Tbo2grBWK5TcgUJnQt1djroVChqiuObZIOV80DbtTOGDoVTAOhK71S2tRSxzYRre4T
+         /pdT0sJFM2k7A2wcWQMyNHkOxm3fdOyqo3ixGawdNOqYtf2WK7F4YHA7R9WumlziyF9o
+         oH+iLpvgXS0gDzfMjO6BXr10NLdzlFl7teBdQj+KixbCuSbdSPTrqivKRbqnQFLmhVT0
+         Blxw==
+X-Gm-Message-State: AOAM533Kw3G8RPXALUKxmhLHHP3uCI2nF/lUBnSKUgsXudXaSrGd4l53
+        5WNBWjXJgtrncDWH6JVaFkRs9C1ZPcF3tq24yac=
+X-Google-Smtp-Source: ABdhPJyN362TV5q1ThoYoFsjE56SEqE3pAvo+m8K0LdM8BraKLObiWoLsRgnZNl8B6Cr2p9ZNZLFOSA4UBHJcsFsV94=
+X-Received: by 2002:adf:eb86:0:b0:1e6:8c92:af6b with SMTP id
+ t6-20020adfeb86000000b001e68c92af6bmr12495967wrn.116.1646749723258; Tue, 08
+ Mar 2022 06:28:43 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Sender: abiodunboluwatife2017@gmail.com
+Received: by 2002:a05:600c:502c:0:0:0:0 with HTTP; Tue, 8 Mar 2022 06:28:41
+ -0800 (PST)
+From:   Lisa Williams <lw23675851@gmail.com>
+Date:   Tue, 8 Mar 2022 14:28:41 +0000
+X-Google-Sender-Auth: V9xPcfHWoWwaPZchQ2Y842fPtP0
+Message-ID: <CADqw2PJ6dps8sfkNJTY6MXZohie2=6P_cMwuASuV1SNoGXNDuw@mail.gmail.com>
+Subject: My name is Lisa Williams
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.0 required=5.0 tests=BAYES_20,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,44 +65,11 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, 15 Feb 2022 13:40:55 +0100, Christophe Leroy wrote:
-> PPC64/IA64/PARISC have function descriptors. LKDTM doesn't work
-> on those three architectures because LKDTM messes up function
-> descriptors with functions.
-> 
-> This series does some cleanup in the three architectures and
-> refactors function descriptors so that it can then easily use it
-> in a generic way in LKDTM.
-> 
-> [...]
+Hi Dear,
 
-Applied to powerpc/next.
+My name is Lisa  Williams, I am from the United States of America, Its
+my pleasure to contact you for new and special friendship, I will be
+glad to see your reply for us to know each other better.
 
-[01/13] powerpc: Fix 'sparse' checking on PPC64le
-        https://git.kernel.org/powerpc/c/81df21de8fb45d3a55d41da9c7f5724797d51ce6
-[02/13] powerpc: Move and rename func_descr_t
-        https://git.kernel.org/powerpc/c/5b23cb8cc6b0aab0535253cc2aa362572bab7072
-[03/13] powerpc: Use 'struct func_desc' instead of 'struct ppc64_opd_entry'
-        https://git.kernel.org/powerpc/c/d3e32b997a4ca2e7be71cb770bcb2c000ee20b36
-[04/13] powerpc: Remove 'struct ppc64_opd_entry'
-        https://git.kernel.org/powerpc/c/0a9c5ae279c963149df9a84588281d3d607f7a1f
-[05/13] powerpc: Prepare func_desc_t for refactorisation
-        https://git.kernel.org/powerpc/c/2fd986377d546bedaf27e36554dc9090d272f15d
-[06/13] ia64: Rename 'ip' to 'addr' in 'struct fdesc'
-        https://git.kernel.org/powerpc/c/41a88b45479da873bfc5d29ba1a545a780c5329a
-[07/13] asm-generic: Define CONFIG_HAVE_FUNCTION_DESCRIPTORS
-        https://git.kernel.org/powerpc/c/a257cacc38718c83cee003487e03197f237f5c3f
-[08/13] asm-generic: Define 'func_desc_t' to commonly describe function descriptors
-        https://git.kernel.org/powerpc/c/0dc690e4ef5b901e9d4b53520854fbd5c749e09d
-[09/13] asm-generic: Refactor dereference_[kernel]_function_descriptor()
-        https://git.kernel.org/powerpc/c/e1478d8eaf27704db17a44dee4c53696ed01fc9c
-[10/13] lkdtm: Force do_nothing() out of line
-        https://git.kernel.org/powerpc/c/69b420ed8fd3917ac7073256b4929aa246b6fe31
-[11/13] lkdtm: Really write into kernel text in WRITE_KERN
-        https://git.kernel.org/powerpc/c/b64913394f123e819bffabc79a0e48f98e78dc5d
-[12/13] lkdtm: Fix execute_[user]_location()
-        https://git.kernel.org/powerpc/c/72a86433049dcfe918886645ac3d19c1eaaa67ab
-[13/13] lkdtm: Add a test for function descriptors protection
-        https://git.kernel.org/powerpc/c/5e5a6c5441654d1b9e576ce4ca8a1759e701079e
-
-cheers
+Yours
+Lisa
