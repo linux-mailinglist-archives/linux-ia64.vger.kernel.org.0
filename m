@@ -2,65 +2,102 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0671C4EABDF
-	for <lists+linux-ia64@lfdr.de>; Tue, 29 Mar 2022 13:03:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BFD64EAD2A
+	for <lists+linux-ia64@lfdr.de>; Tue, 29 Mar 2022 14:30:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235240AbiC2LFZ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 29 Mar 2022 07:05:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52270 "EHLO
+        id S236244AbiC2Mcj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 29 Mar 2022 08:32:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231437AbiC2LFZ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 29 Mar 2022 07:05:25 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33F071A82E;
-        Tue, 29 Mar 2022 04:03:39 -0700 (PDT)
-Received: from dggpemm500024.china.huawei.com (unknown [172.30.72.55])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4KSRWF10D9z1GD1m;
-        Tue, 29 Mar 2022 19:03:21 +0800 (CST)
-Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500024.china.huawei.com (7.185.36.203) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2308.21; Tue, 29 Mar 2022 19:03:37 +0800
-Received: from [10.174.178.120] (10.174.178.120) by
- dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256) id
- 15.1.2308.21; Tue, 29 Mar 2022 19:03:35 +0800
-Message-ID: <4136ec1c-51a9-3874-9bf3-c81cd88e868a@huawei.com>
-Date:   Tue, 29 Mar 2022 19:03:35 +0800
+        with ESMTP id S236308AbiC2Mch (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 29 Mar 2022 08:32:37 -0400
+Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02F8A5F25F
+        for <linux-ia64@vger.kernel.org>; Tue, 29 Mar 2022 05:30:53 -0700 (PDT)
+Received: by mail-ej1-x62c.google.com with SMTP id yy13so34827782ejb.2
+        for <linux-ia64@vger.kernel.org>; Tue, 29 Mar 2022 05:30:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bgdev-pl.20210112.gappssmtp.com; s=20210112;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc:content-transfer-encoding;
+        bh=nRQGNy0JNeG8yPE1QXXWKqsK/KgT2iVgd9NOSAmnpao=;
+        b=rghn0NZ7veo+c7F9TgovwmfTphDZN1nzJMzcXj5lds+VNPPlWVx4s9Km9UFuESnj9C
+         0j6zPwG/Xf6D92JpGQDO2SsY514Cc3dispUkIKCGzRnO4C9HS7T9TWQ6L1NWItI9HoVR
+         Wk/smMInsq69ioZO8yNZDu546rixqBUH1Q7RKjgyI+USlKpBx73H+Jxrz2inmb2EkToU
+         H2vf7Sa/pckmLcWFoAxiMBDzr7UgHBsB2Q8hra4/Kl5ny0G8cLhgWaE+yEkyTutDGHt1
+         d/7ehdh+gvbKH2tMg6SF+fI/PRBhqZLpgBB/Oz9YxV+MxEClGvdSUz2pl20OT0F+Mpvd
+         d2oQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=nRQGNy0JNeG8yPE1QXXWKqsK/KgT2iVgd9NOSAmnpao=;
+        b=8BKiRPFhamIfH/AxWl31xYnvsyCl1iBUADyVP0tPfEDDd6bbQPxrEoJUCuvtbgHQu7
+         wXz6+VLbD3srZ8QADwvJQkhZ0VCg+F03it0y5QJ1xZeCpQaFIsKcZ8WSP8keQ9twRPKf
+         Dz9EccjqgoXyWqt868brdLWJqLphUoyqX52zVq7klA0sVC2qY8hztKJ9eNzfHmIHbX5U
+         MFW7o1C+szHVOay1fGljFx7O3cqWzHI7zRG6cWHMAfz1k19LHA0kL1FEVa7VteDh8yS+
+         /D7OS41ANm9RphRPNyETPfOfOm2cHuUkTuSKRgNDsVMDj6/niEJrCIMm/IbrSVE3Zgz4
+         1F7Q==
+X-Gm-Message-State: AOAM531+qizeU00BPApyCWE3VqYVcLy5oVyuCf214yrC+3d5vvW7H4l5
+        7a92C5df76WjTu4kSTsX+teLf20FBxIgoj/fxM0b8w==
+X-Google-Smtp-Source: ABdhPJyPZNX8y3gOGfSZgg3AGAll74j9kjPNXJs0DTpnrEh1/wBVEgROdTkgglF1+DGDwH7nabIubcnQbpp8LiNpfow=
+X-Received: by 2002:a17:907:d2a:b0:6e0:963c:97d9 with SMTP id
+ gn42-20020a1709070d2a00b006e0963c97d9mr28430774ejc.736.1648557051475; Tue, 29
+ Mar 2022 05:30:51 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH 0/9] introduce mirrored memory support for arm64
-To:     <ardb@kernel.org>
-CC:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <corbet@lwn.net>, <tglx@linutronix.de>,
-        <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-        <x86@kernel.org>, <hpa@zyccr.com>, <dvhart@infradead.org>,
-        <andy@infradead.org>, <rppt@kernel.org>, <paulmck@kernel.org>,
-        <peterz@infradead.org>, <jroedel@suse.de>,
-        <songmuchun@bytedance.com>, <macro@orcam.me.uk>,
-        <frederic@kernel.org>, <W_Armin@gmx.de>, <john.garry@huawei.com>,
-        <seanjc@google.com>, <tsbogend@alpha.franken.de>,
-        <anshuman.khandual@arm.com>, <chenhuacai@kernel.org>,
-        <david@redhat.com>, <gpiccoli@igalia.com>, <mark.rutland@arm.com>,
-        <wangkefeng.wang@huawei.com>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>
-References: <20220326064632.131637-1-mawupeng1@huawei.com>
- <CAMj1kXEwzJE8V-tqJJwZ-RqHB3atKJvoRZ8C6_EVM7caNbttxw@mail.gmail.com>
-From:   mawupeng <mawupeng1@huawei.com>
-In-Reply-To: <CAMj1kXEwzJE8V-tqJJwZ-RqHB3atKJvoRZ8C6_EVM7caNbttxw@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.120]
-X-ClientProxiedBy: dggeme706-chm.china.huawei.com (10.1.199.102) To
- dggpemm500014.china.huawei.com (7.185.36.153)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+References: <20220326165909.506926-1-benni@stuerz.xyz> <20220326165909.506926-9-benni@stuerz.xyz>
+In-Reply-To: <20220326165909.506926-9-benni@stuerz.xyz>
+From:   Bartosz Golaszewski <brgl@bgdev.pl>
+Date:   Tue, 29 Mar 2022 14:30:40 +0200
+Message-ID: <CAMRc=Md5qTnP1ZYak4f3hyqmaOR6jT_KL=rNr5cwAOcZ22yXfg@mail.gmail.com>
+Subject: Re: [PATCH 09/22] gpio-winbond: Use C99 initializers
+To:     =?UTF-8?Q?Benjamin_St=C3=BCrz?= <benni@stuerz.xyz>
+Cc:     Andrew Lunn <andrew@lunn.ch>,
+        Sebastian Hesselbarth <sebastian.hesselbarth@gmail.com>,
+        Gregory Clement <gregory.clement@bootlin.com>,
+        Russell King <linux@armlinux.org.uk>, linux@simtec.co.uk,
+        Krzysztof Kozlowski <krzk@kernel.org>, alim.akhtar@samsung.com,
+        Thomas Gleixner <tglx@linutronix.de>, mingo@redhat.com,
+        Borislav Petkov <bp@alien8.de>, dave.hansen@linux.intel.com,
+        hpa@zytor.com, robert.moore@intel.com,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>, lenb@kernel.org,
+        3chas3@gmail.com, laforge@gnumonks.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Tony Luck <tony.luck@intel.com>,
+        James Morse <james.morse@arm.com>,
+        Robert Richter <rric@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        mike.marciniszyn@cornelisnetworks.com,
+        dennis.dalessandro@cornelisnetworks.com, jgg@ziepe.ca,
+        pali@kernel.org, Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        isdn@linux-pingi.de,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        fbarrat@linux.ibm.com, ajd@linux.ibm.com,
+        "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, nico@fluxnic.net,
+        loic.poulain@linaro.org, kvalo@kernel.org, pkshih@realtek.com,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-samsung-soc@vger.kernel.org, linux-ia64@vger.kernel.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        devel@acpica.org, linux-atm-general@lists.sourceforge.net,
+        netdev <netdev@vger.kernel.org>, linux-edac@vger.kernel.org,
+        "open list:GPIO SUBSYSTEM" <linux-gpio@vger.kernel.org>,
+        linux-rdma@vger.kernel.org,
+        Linux Input <linux-input@vger.kernel.org>,
+        linuxppc-dev@lists.ozlabs.org,
+        Linux Media Mailing List <linux-media@vger.kernel.org>,
+        wcn36xx@lists.infradead.org, linux-wireless@vger.kernel.org,
+        linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -68,122 +105,83 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-
-
-在 2022/3/29 16:26, Ard Biesheuvel 写道:
-> On Sat, 26 Mar 2022 at 07:27, Wupeng Ma <mawupeng1@huawei.com> wrote:
->>
->> From: Ma Wupeng <mawupeng1@huawei.com>
->>
->> Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
->> introduced mirrored memory support for x86. This support rely on UEFI to
->> report mirrored memory address ranges.  See UEFI 2.5 spec pages 157-158:
->>
->>    http://www.uefi.org/sites/default/files/resources/UEFI%202_5.pdf
->>
->> Arm64 can support this too. So mirrored memory support is added to support
->> arm64.
->>
-> 
-> What is the point of this if the kernel itself is not loaded in
-> EFI_MORE_RELIABLE memory? On x86, this is handled by the decompressor,
-> but that does not exist on arm64.
-
-Do you mean this is x86, commit c05cd79750fb
-("x86/boot/KASLR: Prefer mirrored memory regions for the kernel physical address").
-This scenario is not considered.
-
->  
-> The problem here is that UEFI defines this as a memory *attribute*
-> rather than a memory *type*, which means you cannot allocate
-> EFI_MORE_RELIABLE memory easily: you have to iterate over the memory
-> map and look for regions with the desired attribute, and allocate
-> those pages explicitly. I'd prefer to implement this in the
-> bootloader, and only add minimal logic to the stub to respect the
-> placement of the kernel by the loader if the loader signals it to do
-> so (there are other reasons for this - I will cc you on a patch
-> shortly that implements this)
-
-Thanks for your incoming patch.
-
-> 
-> This also means that the fake_mem stuff is not going to work: the
-> memory map observed by the stub comes straight from the firmware, and
-> if the stub needs to be involved in placing (or respecting the
-> placement by the loader of) the kernel image, it needs to observe
-> those EFI_MORE_RELIABLE regions too. If you don't have access to a
-> machine that actually exposes EFI_MORE_RELIABLE memory, I suggest you
-> prototype it in QEMU/edk2 instead.
-
-You are right fake_mem stuff is not going to work. But, efi_fake_mem is
-used for testing mirrored features and will not be used in production
-environment. This test features can fake memory's attribute values.
-
-The reason why efi_fake_mem support is put first is that memory's attribute
-is reported by BIOS which is hard to simulate. With this support, any arm64
-machines with efi support can easily test mirrored features.
-
-> 
-> In fact, we have been trying very hard not to touch the firmware
-> provided memory map at all on ARM, rather than use it as a scratchpad
-> for all kinds of annotations. This means, for instance, that kexec is
-> idempotent - the next kernel should not be affected by modifications
-> to the memory map applied by the previous kernel.
-
-Yes, you're absolutely right. Efi_fake_mem is incompatible with kdump which
-will use kexec. But we can remove specify cmdline(efi_fake_mem=xx) by
-modofing /etc/sysconfig/kdump. Efi_fake_mem is only used for testing and
-will not be used in production environment.
-
-> 
-> In summary, implementing kernelcore=mirror for arm64 is fine with me,
-> but there are some issues we need to address first.
+On Sat, Mar 26, 2022 at 6:00 PM Benjamin St=C3=BCrz <benni@stuerz.xyz> wrot=
+e:
 >
-Can you be clear what the issues are?
+> This replaces comments with C99's designated
+> initializers because the kernel supports them now.
+>
+> Signed-off-by: Benjamin St=C3=BCrz <benni@stuerz.xyz>
+> ---
+>  drivers/gpio/gpio-winbond.c | 12 ++++++------
+>  1 file changed, 6 insertions(+), 6 deletions(-)
+>
+> diff --git a/drivers/gpio/gpio-winbond.c b/drivers/gpio/gpio-winbond.c
+> index 7f8f5b02e31d..0b637fdb407c 100644
+> --- a/drivers/gpio/gpio-winbond.c
+> +++ b/drivers/gpio/gpio-winbond.c
+> @@ -249,7 +249,7 @@ struct winbond_gpio_info {
+>  };
+>
+>  static const struct winbond_gpio_info winbond_gpio_infos[6] =3D {
+> -       { /* 0 */
+> +       [0] =3D {
+>                 .dev =3D WB_SIO_DEV_GPIO12,
+>                 .enablereg =3D WB_SIO_GPIO12_REG_ENABLE,
+>                 .enablebit =3D WB_SIO_GPIO12_ENABLE_1,
+> @@ -266,7 +266,7 @@ static const struct winbond_gpio_info winbond_gpio_in=
+fos[6] =3D {
+>                         .warnonly =3D true
+>                 }
+>         },
+> -       { /* 1 */
+> +       [1] =3D {
+>                 .dev =3D WB_SIO_DEV_GPIO12,
+>                 .enablereg =3D WB_SIO_GPIO12_REG_ENABLE,
+>                 .enablebit =3D WB_SIO_GPIO12_ENABLE_2,
+> @@ -277,7 +277,7 @@ static const struct winbond_gpio_info winbond_gpio_in=
+fos[6] =3D {
+>                 .datareg =3D WB_SIO_GPIO12_REG_DATA2
+>                 /* special conflict handling so doesn't use conflict data=
+ */
+>         },
+> -       { /* 2 */
+> +       [2] =3D {
+>                 .dev =3D WB_SIO_DEV_GPIO34,
+>                 .enablereg =3D WB_SIO_GPIO34_REG_ENABLE,
+>                 .enablebit =3D WB_SIO_GPIO34_ENABLE_3,
+> @@ -294,7 +294,7 @@ static const struct winbond_gpio_info winbond_gpio_in=
+fos[6] =3D {
+>                         .warnonly =3D true
+>                 }
+>         },
+> -       { /* 3 */
+> +       [3] =3D {
+>                 .dev =3D WB_SIO_DEV_GPIO34,
+>                 .enablereg =3D WB_SIO_GPIO34_REG_ENABLE,
+>                 .enablebit =3D WB_SIO_GPIO34_ENABLE_4,
+> @@ -311,7 +311,7 @@ static const struct winbond_gpio_info winbond_gpio_in=
+fos[6] =3D {
+>                         .warnonly =3D true
+>                 }
+>         },
+> -       { /* 4 */
+> +       [4] =3D {
+>                 .dev =3D WB_SIO_DEV_WDGPIO56,
+>                 .enablereg =3D WB_SIO_WDGPIO56_REG_ENABLE,
+>                 .enablebit =3D WB_SIO_WDGPIO56_ENABLE_5,
+> @@ -328,7 +328,7 @@ static const struct winbond_gpio_info winbond_gpio_in=
+fos[6] =3D {
+>                         .warnonly =3D true
+>                 }
+>         },
+> -       { /* 5 */
+> +       [5] =3D {
+>                 .dev =3D WB_SIO_DEV_WDGPIO56,
+>                 .enablereg =3D WB_SIO_WDGPIO56_REG_ENABLE,
+>                 .enablebit =3D WB_SIO_WDGPIO56_ENABLE_6,
+> --
+> 2.35.1
+>
 
-The main purpose of this patchset is to introduce mirrored support for
-arm64 and we have already fixed the problems we had which is shown in
-patch #5 to patch #7 and try to bring total isolation in patch #8 which
-will disable mirror feature if kernelcore is not specified.
-
-Thanks for reviewing.
-
-> 
-> 
-> 
->> Patch #1-#2 introduce efi_fake_mem support for arm64.
->> Patch #3-#4 introduce mirrored memory support form arm64.
->> Patch #5-#7 fix some bugs for arm64 if memory reliable is enabled.
->> Patch #8 disable mirror feature if kernelcore is not specified.
->> Patch #9 remove some redundant code in ia64 efi_init.
->>
->> Ma Wupeng (9):
->>    efi: Make efi_print_memmap() public
->>    arm64: efi: Add fake memory support
->>    efi: Make efi_find_mirror() public
->>    arm64/mirror: arm64 enabling - find mirrored memory ranges
->>    mm: Ratelimited mirrored memory related warning messages
->>    mm: Demote warning message in vmemmap_verify() to debug level
->>    mm: Calc the right pfn if page size is not 4K
->>    efi: Disable mirror feature if kernelcore is not specified
->>    ia64/efi: Code simplification in efi_init
->>
->>   .../admin-guide/kernel-parameters.txt         |  4 +-
->>   arch/arm64/kernel/setup.c                     |  3 ++
->>   arch/ia64/kernel/efi.c                        | 37 +-----------------
->>   arch/x86/include/asm/efi.h                    |  5 ---
->>   arch/x86/platform/efi/efi.c                   | 39 -------------------
->>   drivers/firmware/efi/Kconfig                  |  2 +-
->>   drivers/firmware/efi/efi.c                    | 26 +++++++++++++
->>   drivers/firmware/efi/memmap.c                 | 16 ++++++++
->>   include/linux/efi.h                           |  4 ++
->>   include/linux/mm.h                            |  2 +
->>   mm/memblock.c                                 |  4 +-
->>   mm/page_alloc.c                               |  4 +-
->>   mm/sparse-vmemmap.c                           |  2 +-
->>   13 files changed, 60 insertions(+), 88 deletions(-)
->>
->> --
->> 2.18.0.huawei.25
->>
-> .
+Acked-by: Bartosz Golaszewski <brgl@bgdev.pl>
