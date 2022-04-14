@@ -2,136 +2,172 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AD20500B04
-	for <lists+linux-ia64@lfdr.de>; Thu, 14 Apr 2022 12:22:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CC15500BF9
+	for <lists+linux-ia64@lfdr.de>; Thu, 14 Apr 2022 13:19:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241737AbiDNKZL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 14 Apr 2022 06:25:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47012 "EHLO
+        id S242605AbiDNLWL (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 14 Apr 2022 07:22:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55236 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229626AbiDNKZJ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 14 Apr 2022 06:25:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2F5776677;
-        Thu, 14 Apr 2022 03:22:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C12461E59;
-        Thu, 14 Apr 2022 10:22:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B63C385B2;
-        Thu, 14 Apr 2022 10:22:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1649931764;
-        bh=UP2ZdlXMZjXTQwi2bJVC42wnwXESiNxV1SL51CcDxJ4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=OwL4J0kxyO6/5LiiQ7Fj4OWwPgPnYkCayAcCWbenxuYiR+T0tK5VcfU6yj7iPNDe8
-         1ji7CgCJiaVHoDuF9HKf/Oh0Xs9Q+p4eukEtKLVZ5bCHMWQR4q0vVaGtbI/aiYsbPb
-         qq4vw4cKxN4d6J5QrHuR2MOkRKjKMY4wCsQo0HEaqPz5X8wKNWnS3gW9ZNezd/eZFM
-         Qbox1JvOQvUUyMNH0L7kr3XAhc2hBdDlLiTM3Vv9rovjsyaTLZhQ2to83DIcBiAdoM
-         DKwPiibbJbfioGbgjHs4mPbEivr+cLG9G+DY6H7g9y9E/ADZc8f3TtxI/ysKmUKTRK
-         g6Tjh7RJXoMdg==
-Received: by mail-oa1-f50.google.com with SMTP id 586e51a60fabf-dacc470e03so4805887fac.5;
-        Thu, 14 Apr 2022 03:22:44 -0700 (PDT)
-X-Gm-Message-State: AOAM533vkO99tEOYGZYmsC9jH+/jJpuMfJnbZiCA2PqQbYcWjPeszpBs
-        TE1Kz03nhmD1veQdeUynbvIvwIdtNr3YjzAzgwU=
-X-Google-Smtp-Source: ABdhPJwuW/8OUefFVmTgDz0hNVBCeNt8JTQEdxC3MramBRSaVXc+L6rpKEN0PLTlAXUWxqPUmRp0FgtWen5kuG48Mns=
-X-Received: by 2002:a05:6870:eaa5:b0:da:b3f:2b45 with SMTP id
- s37-20020a056870eaa500b000da0b3f2b45mr1308766oap.228.1649931763538; Thu, 14
- Apr 2022 03:22:43 -0700 (PDT)
+        with ESMTP id S242597AbiDNLWJ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 14 Apr 2022 07:22:09 -0400
+Received: from mail-yb1-f172.google.com (mail-yb1-f172.google.com [209.85.219.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8A841FCE5;
+        Thu, 14 Apr 2022 04:19:44 -0700 (PDT)
+Received: by mail-yb1-f172.google.com with SMTP id j2so8883136ybu.0;
+        Thu, 14 Apr 2022 04:19:44 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=dY83H0aPEfDTdUo23MndvBRZZwuNuwRYnVKAWx3MFcc=;
+        b=hTLRdySs3CnpaoymfFiM0y+PetDtOzg8joG6JeTvcOymw/WDpAF5uzwknJ8t0LRBVT
+         I+kcuzIn9LHA4QMYkgS/A+mCY0jUBayfLSo+EgS2HECKTepTptyEdA7DCjIuMujFBvth
+         h6DI7Mv4D2wnOc7xe0cCa2NOPDRYjH4MvwDAHO9Eoe9QPeFLUBmvjLWEduB1VwuQ4qML
+         xRJUP6xAKE1Ydo/qwllNsbCj3Q9D5xUUiUe4zDWillfZfEUHsV4efvowMqqlArMOJnh+
+         8kOex9vW9o7n0FVP+InF2nbmwQo0UHWvtMfQiGghY5VpaPT3mgullEHZfsNRWODIqQnA
+         P5gA==
+X-Gm-Message-State: AOAM530oo9GlqneVIjgHSjGfNsZkw70uXNGYqI9O/wtyNwppNCSte/dV
+        ssEsNqqPvNRMFPyjXj4KDxjmR06F+u8Wu2REZEE=
+X-Google-Smtp-Source: ABdhPJyXV07maZap62IutTg/mwVDj/CfiQiLME5IwIFkAJnTY85PIrUap0WcF7eity1wAkpRDD0UVobPG71n48VtbjA=
+X-Received: by 2002:a05:6902:187:b0:63d:9c95:edca with SMTP id
+ t7-20020a056902018700b0063d9c95edcamr1246534ybh.81.1649935183962; Thu, 14 Apr
+ 2022 04:19:43 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220414101314.1250667-1-mawupeng1@huawei.com>
-In-Reply-To: <20220414101314.1250667-1-mawupeng1@huawei.com>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 14 Apr 2022 12:22:31 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
-Message-ID: <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
-Subject: Re: [PATCH v2 0/9] introduce mirrored memory support for arm64
-To:     Wupeng Ma <mawupeng1@huawei.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
+References: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
+ <20220411233832.391817-4-dmitry.osipenko@collabora.com> <CAJZ5v0gf1J+yPW14TAdLGLGfO+-2s=r0DDP7d+Rgop3=dB0gaQ@mail.gmail.com>
+ <af51d9d0-26ba-fc66-05f1-d92ef7172730@collabora.com>
+In-Reply-To: <af51d9d0-26ba-fc66-05f1-d92ef7172730@collabora.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Thu, 14 Apr 2022 13:19:32 +0200
+Message-ID: <CAJZ5v0jFQi1x1Fnfk04n+HTTirz19-_xW2NgJtpOYyPgVh3Afw@mail.gmail.com>
+Subject: Re: [PATCH v7 03/20] reboot: Print error message if restart handler
+ has duplicated priority
+To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
         Thomas Gleixner <tglx@linutronix.de>,
         Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>,
-        X86 ML <x86@kernel.org>, hpa@zyccr.com,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Joerg Roedel <jroedel@suse.de>, songmuchun@bytedance.com,
-        macro@orcam.me.uk, Frederic Weisbecker <frederic@kernel.org>,
-        W_Armin@gmx.de, John Garry <john.garry@huawei.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        chenhuacai@kernel.org, David Hildenbrand <david@redhat.com>,
-        gpiccoli@igalia.com, Mark Rutland <mark.rutland@arm.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
         Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-ia64@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Linux Memory Management List <linux-mm@kvack.org>
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        xen-devel@lists.xenproject.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, 14 Apr 2022 at 11:54, Wupeng Ma <mawupeng1@huawei.com> wrote:
+On Thu, Apr 14, 2022 at 12:24 AM Dmitry Osipenko
+<dmitry.osipenko@collabora.com> wrote:
 >
-> From: Ma Wupeng <mawupeng1@huawei.com>
+> On 4/13/22 21:48, Rafael J. Wysocki wrote:
+> > On Tue, Apr 12, 2022 at 1:39 AM Dmitry Osipenko
+> > <dmitry.osipenko@collabora.com> wrote:
+> >>
+> >> Add sanity check which ensures that there are no two restart handlers
+> >> registered using the same priority. This requirement will become mandatory
+> >> once all drivers will be converted to the new API and such errors will be
+> >> fixed.
+> >>
+> >> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> >
+> > The first two patches in the series are fine with me and there's only
+> > one minor nit regarding this one (below).
+> >
+> >> ---
+> >>  kernel/reboot.c | 15 +++++++++++++++
+> >>  1 file changed, 15 insertions(+)
+> >>
+> >> diff --git a/kernel/reboot.c b/kernel/reboot.c
+> >> index ed4e6dfb7d44..acdae4e95061 100644
+> >> --- a/kernel/reboot.c
+> >> +++ b/kernel/reboot.c
+> >> @@ -182,6 +182,21 @@ static ATOMIC_NOTIFIER_HEAD(restart_handler_list);
+> >>   */
+> >>  int register_restart_handler(struct notifier_block *nb)
+> >>  {
+> >> +       int ret;
+> >> +
+> >> +       ret = atomic_notifier_chain_register_unique_prio(&restart_handler_list, nb);
+> >> +       if (ret != -EBUSY)
+> >> +               return ret;
+> >> +
+> >> +       /*
+> >> +        * Handler must have unique priority. Otherwise call order is
+> >> +        * determined by registration order, which is unreliable.
+> >> +        *
+> >> +        * This requirement will become mandatory once all drivers
+> >> +        * will be converted to use new sys-off API.
+> >> +        */
+> >> +       pr_err("failed to register restart handler using unique priority\n");
+> >
+> > I would use pr_info() here, because this is not a substantial error AFAICS.
 >
-> Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
-> introduced mirrored memory support for x86. This support rely on UEFI to
-> report mirrored memory address ranges.  See UEFI 2.5 spec pages 157-158:
->
->   http://www.uefi.org/sites/default/files/resources/UEFI%202_5.pdf
->
-> Memory mirroring is a technique used to separate memory into two separate
-> channels, usually on a memory device, like a server. In memory mirroring,
-> one channel is copied to another to create redundancy. This method makes
-> input/output (I/O) registers and memory appear with more than one address
-> range because the same physical byte is accessible at more than one
-> address. Using memory mirroring, higher memory reliability and a higher
-> level of memory consolidation are possible.
->
-> Arm64 can support this too. So mirrored memory support is added to support
-> arm64.
->
-> Efi_fake_mem is used for testing mirrored features and will not be used in
-> production environment. This test features can fake memory's attribute
-> values.
->
-> The reason why efi_fake_mem support is put first is that memory's attribute
-> is reported by BIOS which is hard to simulate. With this support, any arm64
-> machines with efi support can easily test mirrored features.
->
-> The main purpose of this patchset is to introduce mirrored support for
-> arm64 and we have already fixed the problems we had which is shown in
-> patch #5 to patch #7 and try to bring total isolation in patch #8 which
-> will disable mirror feature if kernelcore is not specified.
->
-> In order to test this support in arm64:
-> - patch this patchset
-> - add efi_fake_mem=8G@0:0x10000 in kernel parameter to simulate mirrored
->   memroy between phy addr 0-8G.
-> - add kernelcore=mirror in kernel parameter
-> - start you kernel
->
+> It's indeed not a substantial error so far, but it will become
+> substantial later on once only unique priorities will be allowed. The
+> pr_warn() could be a good compromise here, pr_info() is too mild, IMO.
 
-As I explained before:
+Well, I'm still unconvinced about requiring all of the users of this
+interface to use unique priorities.
 
-- NAK to EFI fake_mem support on arm64
-- NAK to the whole series until you come up with a proposal on how to
-locate the static kernel image itself into more reliable memory, as
-there is really no point to any of this otherwise.
+Arguably, there are some of them who don't really care about the
+ordering, so could there be an option for them to specify the lack of
+care by, say, passing 0 as the priority that would be regarded as a
+special case?
+
+IOW, if you pass 0, you'll be run along the others who've also passed
+0, but if you pass anything different from 0, it must be unique.  What
+do you think?
