@@ -2,157 +2,140 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A9565001D6
-	for <lists+linux-ia64@lfdr.de>; Thu, 14 Apr 2022 00:24:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DDDF500A71
+	for <lists+linux-ia64@lfdr.de>; Thu, 14 Apr 2022 11:54:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232009AbiDMW0Y (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 13 Apr 2022 18:26:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43848 "EHLO
+        id S238026AbiDNJ47 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 14 Apr 2022 05:56:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230070AbiDMW0X (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 13 Apr 2022 18:26:23 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09BA220BC0;
-        Wed, 13 Apr 2022 15:24:01 -0700 (PDT)
-Received: from [IPV6:2a00:5f00:102:0:10b3:10ff:fe5d:4ec1] (unknown [IPv6:2a00:5f00:102:0:10b3:10ff:fe5d:4ec1])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-        (No client certificate requested)
-        (Authenticated sender: dmitry.osipenko)
-        by bhuna.collabora.co.uk (Postfix) with ESMTPSA id 16B2A1F47620;
-        Wed, 13 Apr 2022 23:23:55 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1649888639;
-        bh=EkR5aP9YXjDV++4Mm3vdM0ntQFHoUFn8du5hNEWzcVU=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=j1A1c0tVlfMHwkO7ph7+BXecjl3zjCSCuFY4mjDRsMmEMUiSRn2BdhdRX28bqNwRd
-         0kArRjhlR3IJGzxnsIsIV55CLgmFFI2NSRANmlAgGh9kCXVIhjheVEf98HAY8hRICr
-         de+NRfs0/E1u09npw7AvIBnHJ1RV4t8z84ccFmlq2rh+QRMZrOxIOsnFLQ8+zt1Kd4
-         qKUl7Umpny+Mkmr77FYSLFjlQUix00R1aWWELoW4IA9Fdi4ygNsJKyHTTDcHL21FER
-         5mHsl6TGS0ii5K5AIMCobu3OluHXcov5Vb4ZmIfOFm8YTbDv+QPwuKnXvhZ8Xql3Cd
-         iLKh0vklwzMtQ==
-Message-ID: <af51d9d0-26ba-fc66-05f1-d92ef7172730@collabora.com>
-Date:   Thu, 14 Apr 2022 01:23:52 +0300
+        with ESMTP id S233679AbiDNJ45 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 14 Apr 2022 05:56:57 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88F86CEA;
+        Thu, 14 Apr 2022 02:54:30 -0700 (PDT)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.54])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4KfF9Z22C9zFpvV;
+        Thu, 14 Apr 2022 17:52:02 +0800 (CST)
+Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 14 Apr 2022 17:54:28 +0800
+Received: from localhost.localdomain (10.175.112.125) by
+ dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 14 Apr 2022 17:54:26 +0800
+From:   Wupeng Ma <mawupeng1@huawei.com>
+To:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, <corbet@lwn.net>
+CC:     <ardb@kernel.org>, <tglx@linutronix.de>, <mingo@redhat.com>,
+        <bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
+        <hpa@zyccr.com>, <dvhart@infradead.org>, <andy@infradead.org>,
+        <rppt@kernel.org>, <paulmck@kernel.org>, <peterz@infradead.org>,
+        <jroedel@suse.de>, <songmuchun@bytedance.com>, <macro@orcam.me.uk>,
+        <frederic@kernel.org>, <W_Armin@gmx.de>, <john.garry@huawei.com>,
+        <seanjc@google.com>, <tsbogend@alpha.franken.de>,
+        <anshuman.khandual@arm.com>, <chenhuacai@kernel.org>,
+        <david@redhat.com>, <gpiccoli@igalia.com>, <mark.rutland@arm.com>,
+        <wangkefeng.wang@huawei.com>, <mawupeng1@huawei.com>,
+        <linux-doc@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>
+Subject: [PATCH v2 0/9] introduce mirrored memory support for arm64
+Date:   Thu, 14 Apr 2022 18:13:05 +0800
+Message-ID: <20220414101314.1250667-1-mawupeng1@huawei.com>
+X-Mailer: git-send-email 2.18.0.huawei.25
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.7.0
-Subject: Re: [PATCH v7 03/20] reboot: Print error message if restart handler
- has duplicated priority
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-References: <20220411233832.391817-1-dmitry.osipenko@collabora.com>
- <20220411233832.391817-4-dmitry.osipenko@collabora.com>
- <CAJZ5v0gf1J+yPW14TAdLGLGfO+-2s=r0DDP7d+Rgop3=dB0gaQ@mail.gmail.com>
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <CAJZ5v0gf1J+yPW14TAdLGLGfO+-2s=r0DDP7d+Rgop3=dB0gaQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.175.112.125]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500014.china.huawei.com (7.185.36.153)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 4/13/22 21:48, Rafael J. Wysocki wrote:
-> On Tue, Apr 12, 2022 at 1:39 AM Dmitry Osipenko
-> <dmitry.osipenko@collabora.com> wrote:
->>
->> Add sanity check which ensures that there are no two restart handlers
->> registered using the same priority. This requirement will become mandatory
->> once all drivers will be converted to the new API and such errors will be
->> fixed.
->>
->> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
-> 
-> The first two patches in the series are fine with me and there's only
-> one minor nit regarding this one (below).
-> 
->> ---
->>  kernel/reboot.c | 15 +++++++++++++++
->>  1 file changed, 15 insertions(+)
->>
->> diff --git a/kernel/reboot.c b/kernel/reboot.c
->> index ed4e6dfb7d44..acdae4e95061 100644
->> --- a/kernel/reboot.c
->> +++ b/kernel/reboot.c
->> @@ -182,6 +182,21 @@ static ATOMIC_NOTIFIER_HEAD(restart_handler_list);
->>   */
->>  int register_restart_handler(struct notifier_block *nb)
->>  {
->> +       int ret;
->> +
->> +       ret = atomic_notifier_chain_register_unique_prio(&restart_handler_list, nb);
->> +       if (ret != -EBUSY)
->> +               return ret;
->> +
->> +       /*
->> +        * Handler must have unique priority. Otherwise call order is
->> +        * determined by registration order, which is unreliable.
->> +        *
->> +        * This requirement will become mandatory once all drivers
->> +        * will be converted to use new sys-off API.
->> +        */
->> +       pr_err("failed to register restart handler using unique priority\n");
-> 
-> I would use pr_info() here, because this is not a substantial error AFAICS.
+From: Ma Wupeng <mawupeng1@huawei.com>
 
-It's indeed not a substantial error so far, but it will become
-substantial later on once only unique priorities will be allowed. The
-pr_warn() could be a good compromise here, pr_info() is too mild, IMO.
+Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
+introduced mirrored memory support for x86. This support rely on UEFI to
+report mirrored memory address ranges.  See UEFI 2.5 spec pages 157-158:
+
+  http://www.uefi.org/sites/default/files/resources/UEFI%202_5.pdf
+
+Memory mirroring is a technique used to separate memory into two separate
+channels, usually on a memory device, like a server. In memory mirroring,
+one channel is copied to another to create redundancy. This method makes
+input/output (I/O) registers and memory appear with more than one address
+range because the same physical byte is accessible at more than one
+address. Using memory mirroring, higher memory reliability and a higher
+level of memory consolidation are possible.
+
+Arm64 can support this too. So mirrored memory support is added to support
+arm64.
+
+Efi_fake_mem is used for testing mirrored features and will not be used in
+production environment. This test features can fake memory's attribute
+values.
+
+The reason why efi_fake_mem support is put first is that memory's attribute
+is reported by BIOS which is hard to simulate. With this support, any arm64
+machines with efi support can easily test mirrored features.
+
+The main purpose of this patchset is to introduce mirrored support for
+arm64 and we have already fixed the problems we had which is shown in
+patch #5 to patch #7 and try to bring total isolation in patch #8 which
+will disable mirror feature if kernelcore is not specified.
+
+In order to test this support in arm64:
+- patch this patchset
+- add efi_fake_mem=8G@0:0x10000 in kernel parameter to simulate mirrored
+  memroy between phy addr 0-8G.
+- add kernelcore=mirror in kernel parameter
+- start you kernel
+
+Patch #1-#2 introduce efi_fake_mem support for arm64.
+Patch #3-#4 introduce mirrored memory support form arm64.
+Patch #5-#7 fix some bugs for arm64 if memory reliable is enabled.
+Patch #8 disable mirror feature if kernelPHYS_PFNcore is not specified.
+Patch #9 remove some redundant code in ia64 efi_init.
+
+Changelog since v1:
+- update changelog in cover letter
+- use PHYS_PFN in patch #7 
+
+Ma Wupeng (9):
+  efi: Make efi_print_memmap() public
+  arm64: efi: Add fake memory support
+  efi: Make efi_find_mirror() public
+  arm64/mirror: arm64 enabling - find mirrored memory ranges
+  mm: Ratelimited mirrored memory related warning messages
+  mm: Demote warning message in vmemmap_verify() to debug level
+  mm: Calc the right pfn if page size is not 4K
+  efi: Disable mirror feature if kernelcore is not specified
+  ia64/efi: Code simplification in efi_init
+
+ .../admin-guide/kernel-parameters.txt         |  4 +-
+ arch/arm64/kernel/setup.c                     |  3 ++
+ arch/ia64/kernel/efi.c                        | 37 +-----------------
+ arch/x86/include/asm/efi.h                    |  5 ---
+ arch/x86/platform/efi/efi.c                   | 39 -------------------
+ drivers/firmware/efi/Kconfig                  |  2 +-
+ drivers/firmware/efi/efi.c                    | 26 +++++++++++++
+ drivers/firmware/efi/memmap.c                 | 16 ++++++++
+ include/linux/efi.h                           |  4 ++
+ include/linux/mm.h                            |  2 +
+ mm/memblock.c                                 |  4 +-
+ mm/page_alloc.c                               |  4 +-
+ mm/sparse-vmemmap.c                           |  2 +-
+ 13 files changed, 60 insertions(+), 88 deletions(-)
+
+-- 
+2.18.0.huawei.25
+
