@@ -2,94 +2,148 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 061C2502EF7
-	for <lists+linux-ia64@lfdr.de>; Fri, 15 Apr 2022 21:09:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79D96503406
+	for <lists+linux-ia64@lfdr.de>; Sat, 16 Apr 2022 07:49:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242645AbiDOTLj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 15 Apr 2022 15:11:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47546 "EHLO
+        id S229551AbiDPCT0 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 15 Apr 2022 22:19:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348551AbiDOTLX (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 15 Apr 2022 15:11:23 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6DB7DBD1D;
-        Fri, 15 Apr 2022 12:08:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 70AC9B82EF1;
-        Fri, 15 Apr 2022 19:08:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05DE7C385A5;
-        Fri, 15 Apr 2022 19:08:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650049724;
-        bh=dvZpqVTi0jdBV+n0QdZhgd89O8shNTR194n0OIslFEI=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vo9SN5UB5HN+TQ8PDoWan0KcngRkeZPACjXnATfZw2QPo8YV8IFEsKTgTqaUHb4Wq
-         buYSTHLuV8dWUQ+yssZu4Cu0uOcBv0mjwVsDVHIh1maofvqLvYAAAy1RVEFK9yCXo+
-         dPGdBtMn+DALp8LeFcJxFbSsAfDVa+Yze68PW2g0l28eXMzTI2kK5VoUBifIrHOtwZ
-         1WOf86Z5OYIWDhVv4bhoKtsirQ9OaUxjNMN4e/90dC6L7vUMwinM6ndR4799Tqlo2s
-         Geiv9PhbOsZgFOoijb1U7+dWqsYEaovac2mSFv5v7ZmqCiWLmIaVi+7wvIiA7CI4f6
-         lLjJ23uF8IhFQ==
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Chas Williams <3chas3@gmail.com>,
-        "David S . Miller" <davem@davemloft.net>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>
-Cc:     linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
-        linux-atm-general@lists.sourceforge.net, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 7/7] alpha: remove unused __SLOW_DOWN_IO and SLOW_DOWN_IO definitions
-Date:   Fri, 15 Apr 2022 14:08:17 -0500
-Message-Id: <20220415190817.842864-8-helgaas@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220415190817.842864-1-helgaas@kernel.org>
-References: <20220415190817.842864-1-helgaas@kernel.org>
+        with ESMTP id S229454AbiDPCTA (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 15 Apr 2022 22:19:00 -0400
+Received: from szxga03-in.huawei.com (szxga03-in.huawei.com [45.249.212.189])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A45A93C72F;
+        Fri, 15 Apr 2022 19:16:24 -0700 (PDT)
+Received: from dggpemm500021.china.huawei.com (unknown [172.30.72.55])
+        by szxga03-in.huawei.com (SkyGuard) with ESMTP id 4KgFtl21SZzCr3Z;
+        Sat, 16 Apr 2022 09:27:43 +0800 (CST)
+Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
+ dggpemm500021.china.huawei.com (7.185.36.109) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Sat, 16 Apr 2022 09:32:04 +0800
+Received: from [10.174.178.120] (10.174.178.120) by
+ dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Sat, 16 Apr 2022 09:32:02 +0800
+Message-ID: <6de859df-e1c3-e9aa-4530-3b61b9c69a28@huawei.com>
+Date:   Sat, 16 Apr 2022 09:32:01 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH v2 0/9] introduce mirrored memory support for arm64
+To:     <ardb@kernel.org>
+CC:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, <corbet@lwn.net>, <tglx@linutronix.de>,
+        <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+        <x86@kernel.org>, <hpa@zyccr.com>, <dvhart@infradead.org>,
+        <andy@infradead.org>, <rppt@kernel.org>, <paulmck@kernel.org>,
+        <peterz@infradead.org>, <jroedel@suse.de>,
+        <songmuchun@bytedance.com>, <macro@orcam.me.uk>,
+        <frederic@kernel.org>, <W_Armin@gmx.de>, <john.garry@huawei.com>,
+        <seanjc@google.com>, <tsbogend@alpha.franken.de>,
+        <anshuman.khandual@arm.com>, <chenhuacai@kernel.org>,
+        <david@redhat.com>, <gpiccoli@igalia.com>, <mark.rutland@arm.com>,
+        <wangkefeng.wang@huawei.com>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>
+References: <20220414101314.1250667-1-mawupeng1@huawei.com>
+ <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
+From:   mawupeng <mawupeng1@huawei.com>
+In-Reply-To: <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Originating-IP: [10.174.178.120]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ dggpemm500014.china.huawei.com (7.185.36.153)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-8.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Bjorn Helgaas <bhelgaas@google.com>
 
-Remove unused __SLOW_DOWN_IO and SLOW_DOWN_IO definitions.
 
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
----
- arch/alpha/include/asm/io.h | 4 ----
- 1 file changed, 4 deletions(-)
+在 2022/4/14 18:22, Ard Biesheuvel 写道:
+> On Thu, 14 Apr 2022 at 11:54, Wupeng Ma <mawupeng1@huawei.com> wrote:
+>>
+>> From: Ma Wupeng <mawupeng1@huawei.com>
+>>
+>> Commit b05b9f5f9dcf ("x86, mirror: x86 enabling - find mirrored memory ranges")
+>> introduced mirrored memory support for x86. This support rely on UEFI to
+>> report mirrored memory address ranges.  See UEFI 2.5 spec pages 157-158:
+>>
+>>    http://www.uefi.org/sites/default/files/resources/UEFI%202_5.pdf
+>>
+>> Memory mirroring is a technique used to separate memory into two separate
+>> channels, usually on a memory device, like a server. In memory mirroring,
+>> one channel is copied to another to create redundancy. This method makes
+>> input/output (I/O) registers and memory appear with more than one address
+>> range because the same physical byte is accessible at more than one
+>> address. Using memory mirroring, higher memory reliability and a higher
+>> level of memory consolidation are possible.
+>>
+>> Arm64 can support this too. So mirrored memory support is added to support
+>> arm64.
+>>
+>> Efi_fake_mem is used for testing mirrored features and will not be used in
+>> production environment. This test features can fake memory's attribute
+>> values.
+>>
+>> The reason why efi_fake_mem support is put first is that memory's attribute
+>> is reported by BIOS which is hard to simulate. With this support, any arm64
+>> machines with efi support can easily test mirrored features.
+>>
+>> The main purpose of this patchset is to introduce mirrored support for
+>> arm64 and we have already fixed the problems we had which is shown in
+>> patch #5 to patch #7 and try to bring total isolation in patch #8 which
+>> will disable mirror feature if kernelcore is not specified.
+>>
+>> In order to test this support in arm64:
+>> - patch this patchset
+>> - add efi_fake_mem=8G@0:0x10000 in kernel parameter to simulate mirrored
+>>    memroy between phy addr 0-8G.
+>> - add kernelcore=mirror in kernel parameter
+>> - start you kernel
+>>
+> 
+> As I explained before:
+> 
+> - NAK to EFI fake_mem support on arm64
 
-diff --git a/arch/alpha/include/asm/io.h b/arch/alpha/include/asm/io.h
-index c9cb554fbe54..338dd24400bd 100644
---- a/arch/alpha/include/asm/io.h
-+++ b/arch/alpha/include/asm/io.h
-@@ -14,10 +14,6 @@
-    the implementation we have here matches that interface.  */
- #include <asm-generic/iomap.h>
- 
--/* We don't use IO slowdowns on the Alpha, but.. */
--#define __SLOW_DOWN_IO	do { } while (0)
--#define SLOW_DOWN_IO	do { } while (0)
--
- /*
-  * Virtual -> physical identity mapping starts at this offset
-  */
--- 
-2.25.1
+fake_mem support on arm64 will be removed in subsequent version.
+
+> - NAK to the whole series until you come up with a proposal on how to
+> locate the static kernel image itself into more reliable memory, as
+> there is really no point to any of this otherwise.
+
+Sorry I am not familiar with this, as you metioned before,
+
+ > you have to iterate over the memory map and look for regions with
+ > the desired attribute, and allocate those pages explicitly.
+
+Do you mean this is x86, commit c05cd79750fb
+("x86/boot/KASLR: Prefer mirrored memory regions for the kernel physical address").
+I will do some research.
+
+ > I'd prefer to implement this in the bootloader, and only add minimal
+ > logic to the stub to respect the placement of the kernel by the loader
+ > if the loader signals it to do so.
+
+Does this bootloader refer to grub and then add minimal logic to arm64-stub.c?
+
+What is the loader signal?
+System exists mirrored memory reported by uefi?
+
+Thanks for reviewing, sorry for my ignorance on this.
+
+> .
+
+
 
