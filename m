@@ -2,83 +2,60 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9E07509304
-	for <lists+linux-ia64@lfdr.de>; Thu, 21 Apr 2022 00:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 247E650BF33
+	for <lists+linux-ia64@lfdr.de>; Fri, 22 Apr 2022 20:01:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1382930AbiDTWmv (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 20 Apr 2022 18:42:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46452 "EHLO
+        id S230476AbiDVSBq (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 22 Apr 2022 14:01:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1383065AbiDTWmg (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 20 Apr 2022 18:42:36 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1939C2BE5;
-        Wed, 20 Apr 2022 15:39:47 -0700 (PDT)
+        with ESMTP id S233469AbiDVR63 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 22 Apr 2022 13:58:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F09ADE1CC5;
+        Fri, 22 Apr 2022 10:55:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CA471B821C7;
-        Wed, 20 Apr 2022 22:39:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CFB3C385A0;
-        Wed, 20 Apr 2022 22:39:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9CA260C4F;
+        Fri, 22 Apr 2022 17:48:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE67C385A0;
+        Fri, 22 Apr 2022 17:48:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1650494384;
-        bh=aOWblUPe/xTg2PyxTWlH8msgIf3I/JIiGnioyKq1k9o=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=sLGsVw8iJKIhDw1u+O84d+80f6CufGKkzbWTtkBFUOSaLA20JCvoQbxns38zq4At1
-         TYhoFPR679gcwj8P4yiPPuUP0XCTtaV/xzMyb36BDYDNrLDMiUZaFgcUhDsT7+KmyE
-         hKPSrLrPO7MYLAthlU4lMSHgeaHdyfoKHIs9cLQGh4OVupBYxgMH//159jpRXbDZXq
-         iv0Cu8P/915WVO+C2YQlkX9sQ7EODIRaGwrY0InscJCM+f+QdOLEAuNpMMsO8RDqR0
-         zRx2gFdKnjVuwAY1cMXHGfGfqkfoCXD5JjrmfpYzZmTaOscHiAN92G6n2C0aiTvaiZ
-         8/jvgCEYDeRbA==
-Received: by mail-oi1-f174.google.com with SMTP id z2so3720050oic.6;
-        Wed, 20 Apr 2022 15:39:44 -0700 (PDT)
-X-Gm-Message-State: AOAM533fzQOp4ZGR4sO13P07MFo8KTUxKaSXd4QYr/rIzC3KbclERKIR
-        +PgpGbgwpNQUG0y4P8LMiVVx8/8ljdtKzJYMWBU=
-X-Google-Smtp-Source: ABdhPJxZceLkzkgqQi9EwcZrYEUaymGtXEIUQiolsWwk3vI0ao36aw7Bq1YFbzNnKRMN7QZZzGSJVrbK043bNAiuq5Y=
-X-Received: by 2002:a05:6808:e8d:b0:322:bac0:2943 with SMTP id
- k13-20020a0568080e8d00b00322bac02943mr2876683oil.126.1650494383711; Wed, 20
- Apr 2022 15:39:43 -0700 (PDT)
+        s=k20201202; t=1650649710;
+        bh=5eG88j23VfpqEXG5LElKEOANPUif8PLVVEOgW3NWPM8=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=JFxldeSwtEKgk9Lc8kRCQDX6OUJaNJqjczwvWjMV4j3OqtctIRIdLWhgVFbHcrF3q
+         6RV2w/ktTedzqZubriC/58H3Vdm9JiPVMTZntT5U6PsWNK7vp6Lf1pJVILEyJGxmS+
+         qbW6cqz9aSs5BypgxKnfiub0ZMs/SwHrot2cRn1CQZuR4f0sF4Z4oMH0Z+a459fUj/
+         AqyDYdPlcTk4kUXYFN7XRqxWUhAFDdRXCLT5AegHPef/SkanQTZdABcipo326XcIeu
+         cDK0+ZCKSi/1Lz6pPb+mOUQxdS1svIyOTdYSc7OWhpV+sUpJYcDte2V/RzhDmTOY++
+         fOwXTN8nCbK0w==
+Date:   Fri, 22 Apr 2022 10:48:28 -0700
+From:   Jakub Kicinski <kuba@kernel.org>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Chas Williams <3chas3@gmail.com>,
+        "David S . Miller" <davem@davemloft.net>,
+        Paolo Abeni <pabeni@redhat.com>, linux-alpha@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-sh@vger.kernel.org, linux-atm-general@lists.sourceforge.net,
+        netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Bjorn Helgaas <bhelgaas@google.com>
+Subject: Re: [PATCH 0/7] Remove unused SLOW_DOWN_IO
+Message-ID: <20220422104828.75c726d0@kernel.org>
+In-Reply-To: <20220415190817.842864-1-helgaas@kernel.org>
+References: <20220415190817.842864-1-helgaas@kernel.org>
 MIME-Version: 1.0
-References: <20220414101314.1250667-1-mawupeng1@huawei.com>
- <20220414101314.1250667-8-mawupeng1@huawei.com> <672ff459-81bd-38ef-882d-e718992d295c@arm.com>
- <CAMj1kXFnEhJ4Qu50Ads9psY6kmT3ddw5Za+6-YqUM+eYj1Oafw@mail.gmail.com> <20220420152749.d41097e7d53ccd6a2a2aea5f@linux-foundation.org>
-In-Reply-To: <20220420152749.d41097e7d53ccd6a2a2aea5f@linux-foundation.org>
-From:   Ard Biesheuvel <ardb@kernel.org>
-Date:   Thu, 21 Apr 2022 00:39:32 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXFkso9i8OqHOA_XMu90mrSsSqR1uSmcUTxnD0SxStuTpw@mail.gmail.com>
-Message-ID: <CAMj1kXFkso9i8OqHOA_XMu90mrSsSqR1uSmcUTxnD0SxStuTpw@mail.gmail.com>
-Subject: Re: [PATCH v2 7/9] mm: Calc the right pfn if page size is not 4K
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
-        Wupeng Ma <mawupeng1@huawei.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        X86 ML <x86@kernel.org>, hpa@zyccr.com,
-        Darren Hart <dvhart@infradead.org>,
-        Andy Shevchenko <andy@infradead.org>,
-        Mike Rapoport <rppt@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Joerg Roedel <jroedel@suse.de>, songmuchun@bytedance.com,
-        macro@orcam.me.uk, Frederic Weisbecker <frederic@kernel.org>,
-        W_Armin@gmx.de, John Garry <john.garry@huawei.com>,
-        Sean Christopherson <seanjc@google.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        chenhuacai@kernel.org, David Hildenbrand <david@redhat.com>,
-        gpiccoli@igalia.com, Mark Rutland <mark.rutland@arm.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux ARM <linux-arm-kernel@lists.infradead.org>,
-        linux-efi <linux-efi@vger.kernel.org>,
-        linux-ia64@vger.kernel.org, platform-driver-x86@vger.kernel.org,
-        Linux Memory Management List <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -88,46 +65,18 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, 21 Apr 2022 at 00:27, Andrew Morton <akpm@linux-foundation.org> wrote:
->
-> On Tue, 19 Apr 2022 20:29:27 +0200 Ard Biesheuvel <ardb@kernel.org> wrote:
->
-> > > > --- a/mm/page_alloc.c
-> > > > +++ b/mm/page_alloc.c
-> > > > @@ -7870,7 +7870,7 @@ static void __init find_zone_movable_pfns_for_nodes(void)
-> > > >
-> > > >                       usable_startpfn = memblock_region_memory_base_pfn(r);
-> > > >
-> > > > -                     if (usable_startpfn < 0x100000) {
-> > > > +                     if (usable_startpfn < PHYS_PFN(SZ_4G)) {
-> > > >                               mem_below_4gb_not_mirrored = true;
-> > > >                               continue;
-> > > >                       }
-> > >
-> > > Regardless PFN value should never be encoded directly.
-> > >
-> > > Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-> >
-> > Acked-by: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > Andrew, can you please take this one through the -mm tree? The rest of
-> > the series needs a bit more work, but is an obvious fix and there is
-> > no point in holding it up.
->
-> Sure.
->
-> I'm not seeing any description of the runtime effects of this
-> shortcoming.  I tentatively queued the fix for 5.18, without a
-> cc:stable for backporting.  But that might not be the best decision?
->
+On Fri, 15 Apr 2022 14:08:10 -0500 Bjorn Helgaas wrote:
+> From: Bjorn Helgaas <bhelgaas@google.com>
+> 
+> Only alpha, ia64, powerpc, and sh define SLOW_DOWN_IO, and there are no
+> actual uses of it.  The few references to it are in situations that are
+> themselves unused.  Remove them all.
+> 
+> It should be safe to apply these independently and in any order.  The only
+> place SLOW_DOWN_IO is used at all is the lmc_var.h definition of DELAY,
+> which is itself never used.
 
-As far as I can tell, mirrored memory is only used on x86 today, where
-pages are always 4k.
-
-However, the whole notion of memory below 4 GB being special is a
-x86-ism, and so this logic does not appear to extrapolate to other
-architectures anyway, and probably needs more work.
-
-So definitely not a backportable fix, but just an incremental
-improvement, so either 5.18 or 5.19 should be fine afaict (and no
-cc:stable)
+Hi Bojrn! Would you mind reposting just patches 1 and 3 for networking?
+LMC got removed in net-next (commit a5b116a0fa90 ("net: wan: remove the
+lanmedia (lmc) driver")) so the entire series fails to apply and therefore 
+defeats all of our patch handling scripts :S
