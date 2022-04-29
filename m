@@ -2,60 +2,122 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C483A511260
-	for <lists+linux-ia64@lfdr.de>; Wed, 27 Apr 2022 09:28:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 780F251409F
+	for <lists+linux-ia64@lfdr.de>; Fri, 29 Apr 2022 04:44:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234208AbiD0Hbc (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 27 Apr 2022 03:31:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45710 "EHLO
+        id S234502AbiD2Crr (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 28 Apr 2022 22:47:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32956 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234795AbiD0Hbb (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 27 Apr 2022 03:31:31 -0400
-Received: from mail.fixingbiz.pl (mail.fixingbiz.pl [217.61.22.139])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70D046E4EC
-        for <linux-ia64@vger.kernel.org>; Wed, 27 Apr 2022 00:28:21 -0700 (PDT)
-Received: by mail.fixingbiz.pl (Postfix, from userid 1001)
-        id 53BC1A4D3C; Wed, 27 Apr 2022 08:28:12 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=fixingbiz.pl; s=mail;
-        t=1651044499; bh=FDuFY3XQoq0gMX1b2gxgT7Py2p4Sxl0PJZYZ4NVaPho=;
-        h=Date:From:To:Subject:From;
-        b=J1PtJEZXJLkObDcxf8S6OC7sqgJ1N/0rLmOMfopFg6UHONU1vIuKvuzWNrwN9dMaR
-         F9n++y96yWPEbmcQ8jitHgMwP5Eo/CpYyy4uPpwF7NlXGpA0eavSJjHGcjvpzA1MB4
-         PzGKnvUJlnECEUF+s+ldopXkRV94HtrexaMqd0F+ck4KgAlisTn+43fM86yliQXbqk
-         yqzXFbNr//N9H1E+UMcJBDc/Up0+X8Doi8RQ6/hJsTeTqqnCtI5sWwVyzu77QdNHr8
-         WpFJQd10tHdqVSJttF05VI2EdLnBhvXaNfd3XxB1n/Cb9aaXFX3Tt9dtsBT0sLAPVA
-         nP1r9VKLS2pqQ==
-Received: by mail.fixingbiz.pl for <linux-ia64@vger.kernel.org>; Wed, 27 Apr 2022 07:28:09 GMT
-Message-ID: <20220427073002-0.1.22.ahv2.0.c8l7r0pa7t@fixingbiz.pl>
-Date:   Wed, 27 Apr 2022 07:28:09 GMT
-From:   =?UTF-8?Q? "Przemys=C5=82aw_Wr=C3=B3blewski" ?= 
-        <przemyslaw.wroblewski@fixingbiz.pl>
-To:     <linux-ia64@vger.kernel.org>
-Subject: Wycena paneli fotowoltaicznych
-X-Mailer: mail.fixingbiz.pl
+        with ESMTP id S231529AbiD2Crr (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 28 Apr 2022 22:47:47 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDC78BAB8D;
+        Thu, 28 Apr 2022 19:44:29 -0700 (PDT)
+Received: from kwepemi100018.china.huawei.com (unknown [172.30.72.55])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4KqGyC1wT8zfb6t;
+        Fri, 29 Apr 2022 10:43:31 +0800 (CST)
+Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
+ kwepemi100018.china.huawei.com (7.221.188.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 29 Apr 2022 10:44:27 +0800
+Received: from localhost.localdomain (10.175.112.125) by
+ kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Fri, 29 Apr 2022 10:44:26 +0800
+From:   Peng Liu <liupeng256@huawei.com>
+To:     <mike.kravetz@oracle.com>, <david@redhat.com>,
+        <akpm@linux-foundation.org>, <yaozhenguo1@gmail.com>,
+        <baolin.wang@linux.alibaba.com>, <songmuchun@bytedance.com>,
+        <liuyuntao10@huawei.com>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <wangkefeng.wang@huawei.com>,
+        <dave@stgolabs.net>, <liupeng256@huawei.com>,
+        <wangborong@cdjrlc.com>, <linux-ia64@vger.kernel.org>,
+        <adobriyan@gmail.com>
+Subject: [PATCH v4] mm: Using for_each_online_node and node_online instead of open coding
+Date:   Fri, 29 Apr 2022 03:02:18 +0000
+Message-ID: <20220429030218.644635-1-liupeng256@huawei.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20220413032915.251254-4-liupeng256@huawei.com>
+References: <20220413032915.251254-4-liupeng256@huawei.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.175.112.125]
+X-ClientProxiedBy: dggems706-chm.china.huawei.com (10.3.19.183) To
+ kwepemm600017.china.huawei.com (7.193.23.234)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Use more generic functions to deal with issues related to online
+nodes. The changes will make the code simplified.
 
-dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
-irm=C4=85.
+Signed-off-by: Peng Liu <liupeng256@huawei.com>
+Suggested-by: Davidlohr Bueso <dave@stgolabs.net>
+Suggested-by: Andrew Morton <akpm@linux-foundation.org>
+---
+v4:
+ Clean up all the related issues in one patch as suggested by Andrew.
 
-=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
-ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
+ arch/ia64/kernel/uncached.c | 2 +-
+ mm/hugetlb.c                | 4 ++--
+ mm/page_ext.c               | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
-Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
-ropozycji?
+diff --git a/arch/ia64/kernel/uncached.c b/arch/ia64/kernel/uncached.c
+index 816803636a75..a0fec82c56b8 100644
+--- a/arch/ia64/kernel/uncached.c
++++ b/arch/ia64/kernel/uncached.c
+@@ -261,7 +261,7 @@ static int __init uncached_init(void)
+ {
+ 	int nid;
+ 
+-	for_each_node_state(nid, N_ONLINE) {
++	for_each_online_node(nid) {
+ 		uncached_pools[nid].pool = gen_pool_create(PAGE_SHIFT, nid);
+ 		mutex_init(&uncached_pools[nid].add_chunk_mutex);
+ 	}
+diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+index 30e1099fd99a..0e5a7764efaa 100644
+--- a/mm/hugetlb.c
++++ b/mm/hugetlb.c
+@@ -6951,7 +6951,7 @@ void __init hugetlb_cma_reserve(int order)
+ 		if (hugetlb_cma_size_in_node[nid] == 0)
+ 			continue;
+ 
+-		if (!node_state(nid, N_ONLINE)) {
++		if (!node_online(nid)) {
+ 			pr_warn("hugetlb_cma: invalid node %d specified\n", nid);
+ 			hugetlb_cma_size -= hugetlb_cma_size_in_node[nid];
+ 			hugetlb_cma_size_in_node[nid] = 0;
+@@ -6990,7 +6990,7 @@ void __init hugetlb_cma_reserve(int order)
+ 	}
+ 
+ 	reserved = 0;
+-	for_each_node_state(nid, N_ONLINE) {
++	for_each_online_node(nid) {
+ 		int res;
+ 		char name[CMA_MAX_NAME];
+ 
+diff --git a/mm/page_ext.c b/mm/page_ext.c
+index 2e66d934d63f..3dc715d7ac29 100644
+--- a/mm/page_ext.c
++++ b/mm/page_ext.c
+@@ -320,7 +320,7 @@ static int __meminit online_page_ext(unsigned long start_pfn,
+ 		 * online__pages(), and start_pfn should exist.
+ 		 */
+ 		nid = pfn_to_nid(start_pfn);
+-		VM_BUG_ON(!node_state(nid, N_ONLINE));
++		VM_BUG_ON(!node_online(nid));
+ 	}
+ 
+ 	for (pfn = start; !fail && pfn < end; pfn += PAGES_PER_SECTION)
+-- 
+2.25.1
 
-
-Pozdrawiam,
-Przemys=C5=82aw Wr=C3=B3blewski
