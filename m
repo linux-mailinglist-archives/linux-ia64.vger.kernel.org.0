@@ -2,171 +2,200 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4967E515523
-	for <lists+linux-ia64@lfdr.de>; Fri, 29 Apr 2022 22:03:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 785C251574F
+	for <lists+linux-ia64@lfdr.de>; Fri, 29 Apr 2022 23:48:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380499AbiD2UHB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 29 Apr 2022 16:07:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43580 "EHLO
+        id S239377AbiD2VwQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 29 Apr 2022 17:52:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380515AbiD2UG7 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 29 Apr 2022 16:06:59 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00930CA0F3;
-        Fri, 29 Apr 2022 13:03:39 -0700 (PDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 23THsqDN037937;
-        Fri, 29 Apr 2022 20:02:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : in-reply-to : references : mime-version :
- content-type : content-transfer-encoding; s=pp1;
- bh=14eJcFY+2G1yPd/GPynKoYcbLehqc8WKf4Xd1nmgPxU=;
- b=i8go9k8/O3TYt6fhXSbXc27xMdIzhzvaC0NWFMMWqXENVJ7AxYr46+Er8PWlkeAJLDyO
- ZO2ercMXLNiCXhSbdix64mLCtXG1ATrcK3C7cPoWv+57fROkaLPV/Wsg6AZ6CUqZ38Rt
- 2X4Oe/j8mipmxDsexu+lrmePaxDow2VjXDJ4JutZxUtoDtx/JZlyZgpXO+2+NPgMPu2n
- gD45clSxRToDqp/c4IyEP5tDz9T+ttRU0kderKIh4qqOMRksSt4l1UE1DxhZQWWWyaWj
- q931e9Hw0/OtZe02quNLpOSyFRLVIGLVL1Y/Hc6Jlg1XeztQiZL5G5n4MsIfLFRcRLeb 1A== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fqvaq9hfk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 29 Apr 2022 20:02:25 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 23TJj4ja031851;
-        Fri, 29 Apr 2022 20:02:24 GMT
-Received: from ppma01fra.de.ibm.com (46.49.7a9f.ip4.static.sl-reverse.com [159.122.73.70])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3fqvaq9hen-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 29 Apr 2022 20:02:24 +0000
-Received: from pps.filterd (ppma01fra.de.ibm.com [127.0.0.1])
-        by ppma01fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 23TJwbLB009239;
-        Fri, 29 Apr 2022 20:02:21 GMT
-Received: from b06cxnps4075.portsmouth.uk.ibm.com (d06relay12.portsmouth.uk.ibm.com [9.149.109.197])
-        by ppma01fra.de.ibm.com with ESMTP id 3fm938yk3v-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Fri, 29 Apr 2022 20:02:21 +0000
-Received: from d06av25.portsmouth.uk.ibm.com (d06av25.portsmouth.uk.ibm.com [9.149.105.61])
-        by b06cxnps4075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 23TK2INw16646532
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Fri, 29 Apr 2022 20:02:18 GMT
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id F0AD411C052;
-        Fri, 29 Apr 2022 20:02:17 +0000 (GMT)
-Received: from d06av25.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id B0C3D11C04A;
-        Fri, 29 Apr 2022 20:02:16 +0000 (GMT)
-Received: from thinkpad (unknown [9.171.14.38])
-        by d06av25.portsmouth.uk.ibm.com (Postfix) with SMTP;
-        Fri, 29 Apr 2022 20:02:16 +0000 (GMT)
-Date:   Fri, 29 Apr 2022 22:02:14 +0200
-From:   Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-To:     Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc:     akpm@linux-foundation.org, mike.kravetz@oracle.com,
-        catalin.marinas@arm.com, will@kernel.org,
-        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH 3/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
- unmapping
-Message-ID: <20220429220214.4cfc5539@thinkpad>
-In-Reply-To: <c91e04ebb792ef7b72966edea8bd6fa2dfa5bfa7.1651216964.git.baolin.wang@linux.alibaba.com>
-References: <cover.1651216964.git.baolin.wang@linux.alibaba.com>
-        <c91e04ebb792ef7b72966edea8bd6fa2dfa5bfa7.1651216964.git.baolin.wang@linux.alibaba.com>
-X-Mailer: Claws Mail 4.0.0 (GTK+ 3.24.31; x86_64-redhat-linux-gnu)
+        with ESMTP id S238812AbiD2VwQ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 29 Apr 2022 17:52:16 -0400
+Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 403B7DB2D3;
+        Fri, 29 Apr 2022 14:48:57 -0700 (PDT)
+Received: from in02.mta.xmission.com ([166.70.13.52]:49628)
+        by out01.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1nkYTv-007O8s-O2; Fri, 29 Apr 2022 15:48:55 -0600
+Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:36464 helo=localhost.localdomain)
+        by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1nkYTt-007RIp-EJ; Fri, 29 Apr 2022 15:48:55 -0600
+From:   "Eric W. Biederman" <ebiederm@xmission.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     rjw@rjwysocki.net, Oleg Nesterov <oleg@redhat.com>,
+        mingo@kernel.org, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, rostedt@goodmis.org, mgorman@suse.de,
+        bigeasy@linutronix.de, Will Deacon <will@kernel.org>,
+        tj@kernel.org, linux-pm@vger.kernel.org,
+        Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org,
+        "Eric W. Biederman" <ebiederm@xmission.com>
+Date:   Fri, 29 Apr 2022 16:48:26 -0500
+Message-Id: <20220429214837.386518-1-ebiederm@xmission.com>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
+References: <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: n2vn77eQpm8aX1Cpvjq3u5xP5rzhtMFB
-X-Proofpoint-GUID: EUMNoVhafVgUobVSsm-XN0dmOW2Sxm3c
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.858,Hydra:6.0.486,FMLib:17.11.64.514
- definitions=2022-04-29_09,2022-04-28_01,2022-02-23_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0
- lowpriorityscore=0 phishscore=0 spamscore=0 mlxlogscore=999 clxscore=1011
- impostorscore=0 priorityscore=1501 suspectscore=0 mlxscore=0 bulkscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2202240000 definitions=main-2204290107
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-XM-SPF: eid=1nkYTt-007RIp-EJ;;;mid=<20220429214837.386518-1-ebiederm@xmission.com>;;;hst=in02.mta.xmission.com;;;ip=68.227.174.4;;;frm=ebiederm@xmission.com;;;spf=softfail
+X-XM-AID: U2FsdGVkX18QHwhDIVhRddYvW2NsQFv/0UjlGxd6VNQ=
+X-SA-Exim-Connect-IP: 68.227.174.4
+X-SA-Exim-Mail-From: ebiederm@xmission.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=2 Fuz2=38 
+X-Spam-Combo: ***;linux-kernel@vger.kernel.org
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 1635 ms - load_scoreonly_sql: 0.06 (0.0%),
+        signal_user_changed: 11 (0.7%), b_tie_ro: 10 (0.6%), parse: 1.15
+        (0.1%), extract_message_metadata: 13 (0.8%), get_uri_detail_list: 2.5
+        (0.2%), tests_pri_-1000: 14 (0.9%), tests_pri_-950: 1.38 (0.1%),
+        tests_pri_-900: 1.16 (0.1%), tests_pri_-90: 168 (10.2%), check_bayes:
+        166 (10.1%), b_tokenize: 13 (0.8%), b_tok_get_all: 9 (0.5%),
+        b_comp_prob: 2.8 (0.2%), b_tok_touch_all: 138 (8.4%), b_finish: 1.03
+        (0.1%), tests_pri_0: 1398 (85.5%), check_dkim_signature: 0.71 (0.0%),
+        check_dkim_adsp: 3.0 (0.2%), poll_dns_idle: 1.03 (0.1%), tests_pri_10:
+        3.6 (0.2%), tests_pri_500: 20 (1.2%), rewrite_mail: 0.00 (0.0%)
+Subject: [PATCH v2 01/12] signal: Rename send_signal send_signal_locked
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, 29 Apr 2022 16:14:43 +0800
-Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
+Rename send_signal send_signal_locked and make to make
+it usable outside of signal.c.
 
-> On some architectures (like ARM64), it can support CONT-PTE/PMD size
-> hugetlb, which means it can support not only PMD/PUD size hugetlb:
-> 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
-> size specified.
-> 
-> When unmapping a hugetlb page, we will get the relevant page table
-> entry by huge_pte_offset() only once to nuke it. This is correct
-> for PMD or PUD size hugetlb, since they always contain only one
-> pmd entry or pud entry in the page table.
-> 
-> However this is incorrect for CONT-PTE and CONT-PMD size hugetlb,
-> since they can contain several continuous pte or pmd entry with
-> same page table attributes, so we will nuke only one pte or pmd
-> entry for this CONT-PTE/PMD size hugetlb page.
-> 
-> And now we only use try_to_unmap() to unmap a poisoned hugetlb page,
-> which means now we will unmap only one pte entry for a CONT-PTE or
-> CONT-PMD size poisoned hugetlb page, and we can still access other
-> subpages of a CONT-PTE or CONT-PMD size poisoned hugetlb page,
-> which will cause serious issues possibly.
-> 
-> So we should change to use huge_ptep_clear_flush() to nuke the
-> hugetlb page table to fix this issue, which already considered
-> CONT-PTE and CONT-PMD size hugetlb.
-> 
-> Note we've already used set_huge_swap_pte_at() to set a poisoned
-> swap entry for a poisoned hugetlb page.
-> 
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> ---
->  mm/rmap.c | 34 +++++++++++++++++-----------------
->  1 file changed, 17 insertions(+), 17 deletions(-)
-> 
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 7cf2408..1e168d7 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1564,28 +1564,28 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->  					break;
->  				}
->  			}
-> +			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
+Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
+---
+ include/linux/signal.h |  2 ++
+ kernel/signal.c        | 24 ++++++++++++------------
+ 2 files changed, 14 insertions(+), 12 deletions(-)
 
-Unlike in your patch 2/3, I do not see that this (huge) pteval would later
-be used again with set_huge_pte_at() instead of set_pte_at(). Not sure if
-this (huge) pteval could end up at a set_pte_at() later, but if yes, then
-this would be broken on s390, and you'd need to use set_huge_pte_at()
-instead of set_pte_at() like in your patch 2/3.
+diff --git a/include/linux/signal.h b/include/linux/signal.h
+index a6db6f2ae113..55605bdf5ce9 100644
+--- a/include/linux/signal.h
++++ b/include/linux/signal.h
+@@ -283,6 +283,8 @@ extern int do_send_sig_info(int sig, struct kernel_siginfo *info,
+ extern int group_send_sig_info(int sig, struct kernel_siginfo *info,
+ 			       struct task_struct *p, enum pid_type type);
+ extern int __group_send_sig_info(int, struct kernel_siginfo *, struct task_struct *);
++extern int send_signal_locked(int sig, struct kernel_siginfo *info,
++			      struct task_struct *p, enum pid_type type);
+ extern int sigprocmask(int, sigset_t *, sigset_t *);
+ extern void set_current_blocked(sigset_t *);
+ extern void __set_current_blocked(const sigset_t *);
+diff --git a/kernel/signal.c b/kernel/signal.c
+index 30cd1ca43bcd..b0403197b0ad 100644
+--- a/kernel/signal.c
++++ b/kernel/signal.c
+@@ -1071,8 +1071,8 @@ static inline bool legacy_queue(struct sigpending *signals, int sig)
+ 	return (sig < SIGRTMIN) && sigismember(&signals->signal, sig);
+ }
+ 
+-static int __send_signal(int sig, struct kernel_siginfo *info, struct task_struct *t,
+-			enum pid_type type, bool force)
++static int __send_signal_locked(int sig, struct kernel_siginfo *info,
++				struct task_struct *t, enum pid_type type, bool force)
+ {
+ 	struct sigpending *pending;
+ 	struct sigqueue *q;
+@@ -1212,8 +1212,8 @@ static inline bool has_si_pid_and_uid(struct kernel_siginfo *info)
+ 	return ret;
+ }
+ 
+-static int send_signal(int sig, struct kernel_siginfo *info, struct task_struct *t,
+-			enum pid_type type)
++int send_signal_locked(int sig, struct kernel_siginfo *info,
++		       struct task_struct *t, enum pid_type type)
+ {
+ 	/* Should SIGKILL or SIGSTOP be received by a pid namespace init? */
+ 	bool force = false;
+@@ -1245,7 +1245,7 @@ static int send_signal(int sig, struct kernel_siginfo *info, struct task_struct
+ 			force = true;
+ 		}
+ 	}
+-	return __send_signal(sig, info, t, type, force);
++	return __send_signal_locked(sig, info, t, type, force);
+ }
+ 
+ static void print_fatal_signal(int signr)
+@@ -1284,7 +1284,7 @@ __setup("print-fatal-signals=", setup_print_fatal_signals);
+ int
+ __group_send_sig_info(int sig, struct kernel_siginfo *info, struct task_struct *p)
+ {
+-	return send_signal(sig, info, p, PIDTYPE_TGID);
++	return send_signal_locked(sig, info, p, PIDTYPE_TGID);
+ }
+ 
+ int do_send_sig_info(int sig, struct kernel_siginfo *info, struct task_struct *p,
+@@ -1294,7 +1294,7 @@ int do_send_sig_info(int sig, struct kernel_siginfo *info, struct task_struct *p
+ 	int ret = -ESRCH;
+ 
+ 	if (lock_task_sighand(p, &flags)) {
+-		ret = send_signal(sig, info, p, type);
++		ret = send_signal_locked(sig, info, p, type);
+ 		unlock_task_sighand(p, &flags);
+ 	}
+ 
+@@ -1347,7 +1347,7 @@ force_sig_info_to_task(struct kernel_siginfo *info, struct task_struct *t,
+ 	if (action->sa.sa_handler == SIG_DFL &&
+ 	    (!t->ptrace || (handler == HANDLER_EXIT)))
+ 		t->signal->flags &= ~SIGNAL_UNKILLABLE;
+-	ret = send_signal(sig, info, t, PIDTYPE_PID);
++	ret = send_signal_locked(sig, info, t, PIDTYPE_PID);
+ 	spin_unlock_irqrestore(&t->sighand->siglock, flags);
+ 
+ 	return ret;
+@@ -1567,7 +1567,7 @@ int kill_pid_usb_asyncio(int sig, int errno, sigval_t addr,
+ 
+ 	if (sig) {
+ 		if (lock_task_sighand(p, &flags)) {
+-			ret = __send_signal(sig, &info, p, PIDTYPE_TGID, false);
++			ret = __send_signal_locked(sig, &info, p, PIDTYPE_TGID, false);
+ 			unlock_task_sighand(p, &flags);
+ 		} else
+ 			ret = -ESRCH;
+@@ -2103,7 +2103,7 @@ bool do_notify_parent(struct task_struct *tsk, int sig)
+ 	 * parent's namespaces.
+ 	 */
+ 	if (valid_signal(sig) && sig)
+-		__send_signal(sig, &info, tsk->parent, PIDTYPE_TGID, false);
++		__send_signal_locked(sig, &info, tsk->parent, PIDTYPE_TGID, false);
+ 	__wake_up_parent(tsk, tsk->parent);
+ 	spin_unlock_irqrestore(&psig->siglock, flags);
+ 
+@@ -2601,7 +2601,7 @@ static int ptrace_signal(int signr, kernel_siginfo_t *info, enum pid_type type)
+ 	/* If the (new) signal is now blocked, requeue it.  */
+ 	if (sigismember(&current->blocked, signr) ||
+ 	    fatal_signal_pending(current)) {
+-		send_signal(signr, info, current, type);
++		send_signal_locked(signr, info, current, type);
+ 		signr = 0;
+ 	}
+ 
+@@ -4793,7 +4793,7 @@ void kdb_send_sig(struct task_struct *t, int sig)
+ 			   "the deadlock.\n");
+ 		return;
+ 	}
+-	ret = send_signal(sig, SEND_SIG_PRIV, t, PIDTYPE_PID);
++	ret = send_signal_locked(sig, SEND_SIG_PRIV, t, PIDTYPE_PID);
+ 	spin_unlock(&t->sighand->siglock);
+ 	if (ret)
+ 		kdb_printf("Fail to deliver Signal %d to process %d.\n",
+-- 
+2.35.3
 
-Please note that huge_ptep_get functions do not return valid PTEs on s390,
-and such PTEs must never be set directly with set_pte_at(), but only with
-set_huge_pte_at().
-
-Background is that, for hugetlb pages, we are of course not really dealing
-with PTEs at this level, but rather PMDs or PUDs, depending on hugetlb size.
-On s390, the layout is quite different for PTEs and PMDs / PUDs, and
-unfortunately the hugetlb code is not properly reflecting this by using
-PMD or PUD types, like the THP code does.
-
-So, as work-around, on s390, the huge_ptep_xxx functions will return
-only fake PTEs, which must be converted again to a proper PMD or PUD,
-before writing them to the page table, which is what happens in
-set_huge_pte_at(), but not in set_pte_at().
