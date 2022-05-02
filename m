@@ -2,73 +2,64 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D78975168B6
-	for <lists+linux-ia64@lfdr.de>; Mon,  2 May 2022 00:40:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45848516B6B
+	for <lists+linux-ia64@lfdr.de>; Mon,  2 May 2022 09:50:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355854AbiEAWoJ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 1 May 2022 18:44:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60460 "EHLO
+        id S240881AbiEBHyR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 2 May 2022 03:54:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234297AbiEAWoH (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 1 May 2022 18:44:07 -0400
-Received: from angie.orcam.me.uk (angie.orcam.me.uk [IPv6:2001:4190:8020::34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 94C3C14023;
-        Sun,  1 May 2022 15:40:40 -0700 (PDT)
-Received: by angie.orcam.me.uk (Postfix, from userid 500)
-        id 2E01592009C; Mon,  2 May 2022 00:40:39 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by angie.orcam.me.uk (Postfix) with ESMTP id 2645D92009B;
-        Sun,  1 May 2022 23:40:39 +0100 (BST)
-Date:   Sun, 1 May 2022 23:40:39 +0100 (BST)
-From:   "Maciej W. Rozycki" <macro@orcam.me.uk>
-To:     Niklas Schnelle <schnelle@linux.ibm.com>
-cc:     Arnd Bergmann <arnd@arndb.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
-        "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
-        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
-        "open list:IA64 (Itanium) PLATFORM" <linux-ia64@vger.kernel.org>,
-        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
-        "open list:MIPS" <linux-mips@vger.kernel.org>,
-        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
-        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" 
-        <linuxppc-dev@lists.ozlabs.org>,
-        "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
-        "open list:SUPERH" <linux-sh@vger.kernel.org>,
-        "open list:SPARC + UltraSPARC (sparc/sparc64)" 
-        <sparclinux@vger.kernel.org>
-Subject: Re: [RFC v2 01/39] Kconfig: introduce HAS_IOPORT option and select
- it as necessary
-In-Reply-To: <20220429135108.2781579-2-schnelle@linux.ibm.com>
-Message-ID: <alpine.DEB.2.21.2205012335020.9383@angie.orcam.me.uk>
-References: <20220429135108.2781579-1-schnelle@linux.ibm.com> <20220429135108.2781579-2-schnelle@linux.ibm.com>
-User-Agent: Alpine 2.21 (DEB 202 2017-01-01)
+        with ESMTP id S231542AbiEBHyQ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 2 May 2022 03:54:16 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 229042B253;
+        Mon,  2 May 2022 00:50:48 -0700 (PDT)
+Date:   Mon, 2 May 2022 09:50:44 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1651477846;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=9YTwBIK9lAkbWBv23hCp719JHcqmc8JMf0hCdSYBc0c=;
+        b=2M/sPU3//pAEsdX2cONt1/QyGpv7JUbznaFo3TL8EJYTKMi46YrGDl3WPIqBcwfCkHLBcp
+        h42onsWI74tqZHpKXhtQxejKNdHatf0qwYrxCbwJ0373XSjpxnQY3IDFBO7kcms/g+tP7p
+        pozCCrHyhYHHtBN8lYx4jD4N4vuVk60XqLqHTW2nH2BhG5SI6zTuRkaio4snddKj0FmbLY
+        YNfLb49+1LRvo3Kg0P5oc4PPCrfN5BsoE1pRqZiZRfSCt6/yA4gVvyJVOhvpdrHFYR6r18
+        cXXunTFGvBryM5xbKBRTif551R6v2RuvnKiU00cgzBgsRA97uVOyda/LJd53pg==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1651477846;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=9YTwBIK9lAkbWBv23hCp719JHcqmc8JMf0hCdSYBc0c=;
+        b=iKhJ9axWwZeRIT1UBVN+1JD11D9mG69F1hukRvMjdZiumE3VqDBinhkuZlzlhWxP3X35Ig
+        O6Z7BX4CmlFo0NBQ==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net,
+        Oleg Nesterov <oleg@redhat.com>, mingo@kernel.org,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, mgorman@suse.de,
+        Will Deacon <will@kernel.org>, tj@kernel.org,
+        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org
+Subject: Re: [PATCH v2 01/12] signal: Rename send_signal send_signal_locked
+Message-ID: <Ym+NVG2kxgkaN3lb@linutronix.de>
+References: <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
+ <20220429214837.386518-1-ebiederm@xmission.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20220429214837.386518-1-ebiederm@xmission.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,31 +67,13 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, 29 Apr 2022, Niklas Schnelle wrote:
+On 2022-04-29 16:48:26 [-0500], Eric W. Biederman wrote:
+> Rename send_signal send_signal_locked and make to make
 
-> We introduce a new HAS_IOPORT Kconfig option to indicate support for
-> I/O Port access. In a future patch HAS_IOPORT=n will disable compilation
-> of the I/O accessor functions inb()/outb() and friends on architectures
-> which can not meaningfully support legacy I/O spaces such as s390 or
-> where such support is optional. The "depends on" relations on HAS_IOPORT
-> in drivers as well as ifdefs for HAS_IOPORT specific sections will be
-> added in subsequent patches on a per subsystem basis.
-[...]
-> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-> index de3b32a507d2..4c55df08d6f1 100644
-> --- a/arch/mips/Kconfig
-> +++ b/arch/mips/Kconfig
-> @@ -47,6 +47,7 @@ config MIPS
->  	select GENERIC_SMP_IDLE_THREAD
->  	select GENERIC_TIME_VSYSCALL
->  	select GUP_GET_PTE_LOW_HIGH if CPU_MIPS32 && PHYS_ADDR_T_64BIT
-> +	select HAS_IOPORT
->  	select HAVE_ARCH_COMPILER_H
->  	select HAVE_ARCH_JUMP_LABEL
->  	select HAVE_ARCH_KGDB if MIPS_FP_SUPPORT
+s@to make@@
 
- NAK, not all MIPS systems have the port I/O space, and we have it already 
-handled via the NO_IOPORT_MAP option.  We'll need to have HAS_IOPORT set 
-to !NO_IOPORT_MAP (or vice versa) for the MIPS architecture.
+> it usable outside of signal.c.
+> 
+> Signed-off-by: "Eric W. Biederman" <ebiederm@xmission.com>
 
-  Maciej
+Sebastian
