@@ -2,43 +2,43 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B43EE5171B6
-	for <lists+linux-ia64@lfdr.de>; Mon,  2 May 2022 16:38:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4DD85172FE
+	for <lists+linux-ia64@lfdr.de>; Mon,  2 May 2022 17:40:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237747AbiEBOlf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 2 May 2022 10:41:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47602 "EHLO
+        id S1385932AbiEBPnW (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 2 May 2022 11:43:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50296 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237898AbiEBOld (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 2 May 2022 10:41:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D9510BCA5
-        for <linux-ia64@vger.kernel.org>; Mon,  2 May 2022 07:38:03 -0700 (PDT)
+        with ESMTP id S1385916AbiEBPnS (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 2 May 2022 11:43:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 23E3113DF0
+        for <linux-ia64@vger.kernel.org>; Mon,  2 May 2022 08:39:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1651502283;
+        s=mimecast20190719; t=1651505988;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=wVoPR7+BaUM00iEkwlBxjF0xXPgmMZX2vpPWycEtV78=;
-        b=FutPPGjQRFbgjnqVvcdcRT5J1HIWD+QSK9yX1Kyc29PRJzI8BsfIVtEAwmTYwRilTGXn5r
-        N9bbWQQzNo3LJtOhfOd4xJaWopdS5qtzvtPBp6UoPjRjKSd8CDp91yeq1vMl0x7cSdTe3Q
-        6a1fh/a4ceFTgvnqcwz/HZ7PaBSEy5Q=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=gLdcGhcmAyanfeuj2//xQhxqED3kPZibx0ll8qOzya8=;
+        b=GUefdHRqTmyW8xH/2BGyZyBeheWm+xf7TdEnvDXelUGansAXzFya/k3DbxKMD1IUHy2EZE
+        0Q8QycDORoSHEvbzbqHvpvbCVzZd0SS6pjhTyXqjsCqoloxb4+QvxO7tFB0f44vf9Y6mZf
+        KNKzgf14vaTDDfpXRfYl33nwQixsXCc=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-152-MmWCcKafP32gX5GLYtBFzw-1; Mon, 02 May 2022 10:37:59 -0400
-X-MC-Unique: MmWCcKafP32gX5GLYtBFzw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+ us-mta-277-G0ULXuoRPiGOwDLnPT3Xkg-1; Mon, 02 May 2022 11:39:43 -0400
+X-MC-Unique: G0ULXuoRPiGOwDLnPT3Xkg-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3E91C3806707;
-        Mon,  2 May 2022 14:37:58 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id DB58B185A7A4;
+        Mon,  2 May 2022 15:39:41 +0000 (UTC)
 Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.192.34])
-        by smtp.corp.redhat.com (Postfix) with SMTP id DBB8540869CE;
-        Mon,  2 May 2022 14:37:52 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with SMTP id B1D342166B41;
+        Mon,  2 May 2022 15:39:36 +0000 (UTC)
 Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Mon,  2 May 2022 16:37:57 +0200 (CEST)
-Date:   Mon, 2 May 2022 16:37:51 +0200
+        oleg@redhat.com; Mon,  2 May 2022 17:39:41 +0200 (CEST)
+Date:   Mon, 2 May 2022 17:39:35 +0200
 From:   Oleg Nesterov <oleg@redhat.com>
 To:     "Eric W. Biederman" <ebiederm@xmission.com>
 Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
@@ -52,19 +52,17 @@ Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
         linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
         Max Filippov <jcmvbkbc@gmail.com>,
         linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org,
-        stable@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [PATCH v2 06/12] ptrace: Reimplement PTRACE_KILL by always
- sending SIGKILL
-Message-ID: <20220502143750.GC17276@redhat.com>
+        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org
+Subject: Re: [PATCH v2 07/12] ptrace: Don't change __state
+Message-ID: <20220502153934.GD17276@redhat.com>
 References: <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
- <20220429214837.386518-6-ebiederm@xmission.com>
+ <20220429214837.386518-7-ebiederm@xmission.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220429214837.386518-6-ebiederm@xmission.com>
+In-Reply-To: <20220429214837.386518-7-ebiederm@xmission.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.84 on 10.11.54.1
+X-Scanned-By: MIMEDefang 2.78 on 10.11.54.6
 X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
         SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
@@ -77,37 +75,52 @@ X-Mailing-List: linux-ia64@vger.kernel.org
 
 On 04/29, Eric W. Biederman wrote:
 >
-> Call send_sig_info in PTRACE_KILL instead of ptrace_resume.  Calling
-> ptrace_resume is not safe to call if the task has not been stopped
-> with ptrace_freeze_traced.
+> Stop playing with tsk->__state to remove TASK_WAKEKILL while a ptrace
+> command is executing.
 
-Oh, I was never, never able to understand why do we have PTRACE_KILL
-and what should it actually do.
+Eric, I'll read this patch and the rest of this series tomorrow.
+Somehow I failed to force myself to read yet another version after
+weekend ;)
 
-I suggested many times to simply remove it but OK, we probably can't
-do this.
+plus I don't really understand this one...
 
-> --- a/kernel/ptrace.c
-> +++ b/kernel/ptrace.c
-> @@ -1238,7 +1238,7 @@ int ptrace_request(struct task_struct *child, long request,
->  	case PTRACE_KILL:
->  		if (child->exit_state)	/* already dead */
->  			return 0;
-> -		return ptrace_resume(child, request, SIGKILL);
-> +		return send_sig_info(SIGKILL, SEND_SIG_NOINFO, child);
+>  #define TASK_KILLABLE			(TASK_WAKEKILL | TASK_UNINTERRUPTIBLE)
+>  #define TASK_STOPPED			(TASK_WAKEKILL | __TASK_STOPPED)
+> -#define TASK_TRACED			(TASK_WAKEKILL | __TASK_TRACED)
+> +#define TASK_TRACED			__TASK_TRACED
+...
+>  static inline void signal_wake_up(struct task_struct *t, bool resume)
+>  {
+> -	signal_wake_up_state(t, resume ? TASK_WAKEKILL : 0);
+> +	unsigned int state = 0;
+> +	if (resume) {
+> +		state = TASK_WAKEKILL;
+> +		if (!(t->jobctl & JOBCTL_PTRACE_FROZEN))
+> +			state |= __TASK_TRACED;
+> +	}
+> +	signal_wake_up_state(t, state);
 
-Note that currently ptrace(PTRACE_KILL) can never fail (yes, yes, it
-is unsafe), but send_sig_info() can. If we do not remove PTRACE_KILL,
-then I'd suggest
+Can't understand why is this better than the previous version which removed
+TASK_WAKEKILL if resume... Looks a bit strange to me. But again, I didn't
+look at the next patches yet.
 
-	case PTRACE_KILL:
-		if (!child->exit_state)
-			send_sig_info(SIGKILL);
-		return 0;
+> @@ -2209,11 +2209,8 @@ static int ptrace_stop(int exit_code, int why, int clear_code,
+>  		spin_lock_irq(&current->sighand->siglock);
+>  	}
+>
+> -	/*
+> -	 * schedule() will not sleep if there is a pending signal that
+> -	 * can awaken the task.
+> -	 */
+> -	set_special_state(TASK_TRACED);
+> +	if (!__fatal_signal_pending(current))
+> +		set_special_state(TASK_TRACED);
 
-to make this change a bit more compatible.
+This is where I stuck. This probably makes sense, but what does it buy
+for this particular patch?
 
-Also, please remove the note about PTRACE_KILL in set_task_blockstep().
+And if we check __fatal_signal_pending(), why can't ptrace_stop() simply
+return ?
 
 Oleg.
 
