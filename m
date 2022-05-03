@@ -2,28 +2,28 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC6BC518D38
-	for <lists+linux-ia64@lfdr.de>; Tue,  3 May 2022 21:37:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE6F2518F33
+	for <lists+linux-ia64@lfdr.de>; Tue,  3 May 2022 22:45:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239627AbiECTlA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 3 May 2022 15:41:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36016 "EHLO
+        id S240972AbiECUtI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 3 May 2022 16:49:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229480AbiECTk7 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 3 May 2022 15:40:59 -0400
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B9924597;
-        Tue,  3 May 2022 12:37:26 -0700 (PDT)
-Received: from in01.mta.xmission.com ([166.70.13.51]:56078)
-        by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        with ESMTP id S240649AbiECUtA (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 3 May 2022 16:49:00 -0400
+Received: from out02.mta.xmission.com (out02.mta.xmission.com [166.70.13.232])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA16D1F63C;
+        Tue,  3 May 2022 13:45:26 -0700 (PDT)
+Received: from in01.mta.xmission.com ([166.70.13.51]:52522)
+        by out02.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <ebiederm@xmission.com>)
-        id 1nlyKo-00AaEh-5z; Tue, 03 May 2022 13:37:22 -0600
-Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:36796 helo=email.froward.int.ebiederm.org.xmission.com)
+        id 1nlzOb-001SXn-HG; Tue, 03 May 2022 14:45:21 -0600
+Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:36806 helo=email.froward.int.ebiederm.org.xmission.com)
         by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
         (Exim 4.93)
         (envelope-from <ebiederm@xmission.com>)
-        id 1nlyKn-007Sew-2a; Tue, 03 May 2022 13:37:21 -0600
+        id 1nlzOa-007kUJ-7I; Tue, 03 May 2022 14:45:21 -0600
 From:   "Eric W. Biederman" <ebiederm@xmission.com>
 To:     Oleg Nesterov <oleg@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
@@ -37,42 +37,42 @@ Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
         linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
         Max Filippov <jcmvbkbc@gmail.com>,
         linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org,
-        stable@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>
+        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org
 References: <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
-        <20220429214837.386518-6-ebiederm@xmission.com>
-        <20220502143750.GC17276@redhat.com>
-Date:   Tue, 03 May 2022 14:36:55 -0500
-In-Reply-To: <20220502143750.GC17276@redhat.com> (Oleg Nesterov's message of
-        "Mon, 2 May 2022 16:37:51 +0200")
-Message-ID: <87y1zio1bc.fsf@email.froward.int.ebiederm.org>
+        <20220429214837.386518-7-ebiederm@xmission.com>
+        <20220502153934.GD17276@redhat.com>
+        <87levjrixl.fsf@email.froward.int.ebiederm.org>
+        <20220503134149.GA22999@redhat.com>
+Date:   Tue, 03 May 2022 15:45:12 -0500
+In-Reply-To: <20220503134149.GA22999@redhat.com> (Oleg Nesterov's message of
+        "Tue, 3 May 2022 15:41:50 +0200")
+Message-ID: <877d72l50n.fsf@email.froward.int.ebiederm.org>
 User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
 Content-Type: text/plain
-X-XM-SPF: eid=1nlyKn-007Sew-2a;;;mid=<87y1zio1bc.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.174.4;;;frm=ebiederm@xmission.com;;;spf=softfail
-X-XM-AID: U2FsdGVkX1+j7nUi9NCECp7X522Zs1J0RePdyckNPD8=
+X-XM-SPF: eid=1nlzOa-007kUJ-7I;;;mid=<877d72l50n.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.174.4;;;frm=ebiederm@xmission.com;;;spf=softfail
+X-XM-AID: U2FsdGVkX1+K90jOThekRaxBKv8mFsc3iJu9WxQHMpU=
 X-SA-Exim-Connect-IP: 68.227.174.4
 X-SA-Exim-Mail-From: ebiederm@xmission.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
-X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-DCC: XMission; sa08 1397; Body=1 Fuz1=1 Fuz2=1 
 X-Spam-Combo: ***;Oleg Nesterov <oleg@redhat.com>
 X-Spam-Relay-Country: 
-X-Spam-Timing: total 521 ms - load_scoreonly_sql: 0.06 (0.0%),
-        signal_user_changed: 10 (1.9%), b_tie_ro: 8 (1.5%), parse: 1.09 (0.2%),
-         extract_message_metadata: 13 (2.4%), get_uri_detail_list: 1.50 (0.3%),
-         tests_pri_-1000: 7 (1.3%), tests_pri_-950: 1.44 (0.3%),
-        tests_pri_-900: 1.23 (0.2%), tests_pri_-90: 193 (37.1%), check_bayes:
-        183 (35.1%), b_tokenize: 8 (1.6%), b_tok_get_all: 8 (1.6%),
-        b_comp_prob: 2.7 (0.5%), b_tok_touch_all: 159 (30.5%), b_finish: 1.09
-        (0.2%), tests_pri_0: 280 (53.8%), check_dkim_signature: 1.08 (0.2%),
-        check_dkim_adsp: 3.2 (0.6%), poll_dns_idle: 0.90 (0.2%), tests_pri_10:
-        2.4 (0.5%), tests_pri_500: 9 (1.6%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH v2 06/12] ptrace: Reimplement PTRACE_KILL by always
- sending SIGKILL
+X-Spam-Timing: total 702 ms - load_scoreonly_sql: 0.09 (0.0%),
+        signal_user_changed: 15 (2.1%), b_tie_ro: 12 (1.8%), parse: 1.64
+        (0.2%), extract_message_metadata: 9 (1.3%), get_uri_detail_list: 4.9
+        (0.7%), tests_pri_-1000: 6 (0.8%), tests_pri_-950: 1.41 (0.2%),
+        tests_pri_-900: 1.32 (0.2%), tests_pri_-90: 89 (12.7%), check_bayes:
+        87 (12.4%), b_tokenize: 12 (1.8%), b_tok_get_all: 12 (1.7%),
+        b_comp_prob: 3.6 (0.5%), b_tok_touch_all: 54 (7.7%), b_finish: 1.27
+        (0.2%), tests_pri_0: 555 (79.1%), check_dkim_signature: 0.58 (0.1%),
+        check_dkim_adsp: 3.5 (0.5%), poll_dns_idle: 1.60 (0.2%), tests_pri_10:
+        2.4 (0.3%), tests_pri_500: 9 (1.3%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH v2 07/12] ptrace: Don't change __state
 X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
 X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 Precedence: bulk
@@ -81,60 +81,133 @@ X-Mailing-List: linux-ia64@vger.kernel.org
 
 Oleg Nesterov <oleg@redhat.com> writes:
 
-> On 04/29, Eric W. Biederman wrote:
+> On 05/02, Eric W. Biederman wrote:
 >>
->> Call send_sig_info in PTRACE_KILL instead of ptrace_resume.  Calling
->> ptrace_resume is not safe to call if the task has not been stopped
->> with ptrace_freeze_traced.
+>> Oleg Nesterov <oleg@redhat.com> writes:
+>>
+>> >>  #define TASK_KILLABLE			(TASK_WAKEKILL | TASK_UNINTERRUPTIBLE)
+>> >>  #define TASK_STOPPED			(TASK_WAKEKILL | __TASK_STOPPED)
+>> >> -#define TASK_TRACED			(TASK_WAKEKILL | __TASK_TRACED)
+>> >> +#define TASK_TRACED			__TASK_TRACED
+>> > ...
+>> >>  static inline void signal_wake_up(struct task_struct *t, bool resume)
+>> >>  {
+>> >> -	signal_wake_up_state(t, resume ? TASK_WAKEKILL : 0);
+>> >> +	unsigned int state = 0;
+>> >> +	if (resume) {
+>> >> +		state = TASK_WAKEKILL;
+>> >> +		if (!(t->jobctl & JOBCTL_PTRACE_FROZEN))
+>> >> +			state |= __TASK_TRACED;
+>> >> +	}
+>> >> +	signal_wake_up_state(t, state);
+>> >
+>> > Can't understand why is this better than the previous version which removed
+>> > TASK_WAKEKILL if resume... Looks a bit strange to me. But again, I didn't
+>> > look at the next patches yet.
+>>
+>> The goal is to replace the existing mechanism with an equivalent one,
+>> so that we don't have to be clever and deal with it being slightly
+>> different in one case.
+>>
+>> The difference is how does signal_pending_state affect how schedule will
+>> sleep in ptrace_stop.
 >
-> Oh, I was never, never able to understand why do we have PTRACE_KILL
-> and what should it actually do.
+> But why is it bad if the tracee doesn't sleep in schedule ? If it races
+> with SIGKILL. I still can't understand this.
 >
-> I suggested many times to simply remove it but OK, we probably can't
-> do this.
-
-I thought I remembered you suggesting fixing it in some other way.
-
-I took at quick look in codesearch.debian.net and PTRACE_KILL is
-definitely in use. I find uses in gcc-10, firefox-esr_91.8,
-llvm_toolchain, qtwebengine.  At which point I stopped looking.
+> Yes, wait_task_inactive() can fail, so you need to remove WARN_ON_ONCE()
+> in 11/12.
 
 
->> --- a/kernel/ptrace.c
->> +++ b/kernel/ptrace.c
->> @@ -1238,7 +1238,7 @@ int ptrace_request(struct task_struct *child, long request,
->>  	case PTRACE_KILL:
->>  		if (child->exit_state)	/* already dead */
->>  			return 0;
->> -		return ptrace_resume(child, request, SIGKILL);
->> +		return send_sig_info(SIGKILL, SEND_SIG_NOINFO, child);
 >
-> Note that currently ptrace(PTRACE_KILL) can never fail (yes, yes, it
-> is unsafe), but send_sig_info() can. If we do not remove PTRACE_KILL,
-> then I'd suggest
+> Why is removing TASK_WAKEKILL from TASK_TRACED and complicating
+> *signal_wake_up() better?
+
+Not changing __state is better because it removes special cases
+from the scheduler that only apply to ptrace.
+
+
+> And even if we need to ensure the tracee will always block after
+> ptrace_freeze_traced(), we can change signal_pending_state() to
+> return false if JOBCTL_PTRACE_FROZEN. Much simpler, imo. But still
+> looks unnecessary to me.
+
+We still need to change signal_wake_up in that case.  Possibly
+signal_wake_up_state.  The choice is for fatal signals is TASK_WAKEKILL
+suppressed or is TASK_TRACED added.
+
+With removing TASK_WAKEKILL the resulting code behaves in a very obvious
+minimally special case way.  Yes there is a special case in
+signal_wake_up but that is the entirety of the special case and it is
+easy to read and see what it does.
+
+>> Peter's plans to fix PREEMPT_RT or the freezer wait_task_inactive needs
+>> to cope with the final being changed by something else. (TASK_FROZEN in
+>> the freezer case).  I can only see that happening by removing the
+>> dependency on the final state in wait_task_inactive.  Which we can't do
+>> if we depend on wait_task_inactive failing if the process is in the
+>> wrong state.
 >
-> 	case PTRACE_KILL:
-> 		if (!child->exit_state)
-> 			send_sig_info(SIGKILL);
-> 		return 0;
+> OK, I guess this is what I do not understand. Could you spell please?
 >
-> to make this change a bit more compatible.
+> And speaking of RT, wait_task_inactive() still can fail because
+> cgroup_enter_frozen() takes css_set_lock? And it is called under
+> preempt_disable() ? I don't understand the plan :/
+
+Let me describe his freezer change as that is much easier to get to the
+final result.  RT has more problems as it turns all spin locks into
+sleeping locks.  When a task is frozen it turns it's sleeping state into
+TASK_FROZEN.  That is TASK_STOPPED and TASK_TRACED become TASK_FROZEN.
+If this races with ptrace_check_attach the wait_task_inactive fail as
+the process state has changed.  This makes the freezer userspace
+visible.
+
+For ordinary tasks the freezer thaws them just by giving them a spurious
+wake-up.  After which they check their conditions and go back to sleep
+on their on.  For TASK_STOPPED and TASK_TRACED (which can't handle
+spurious wake-ups) the __state value is recovered from task->jobctl.
+
+For RT cgroup_enter_frozen needs fixes that no one has proposed yet.
+The problem is that for "preempt_disable()" before
+"read_unlock(&tasklist_lock)" is not something that can reasonably be
+removed.  It would cause a performance regression.
+
+So my plan is to get the things as far as the Peter's freezer change
+working.  That cleans up the code and makes it much closer for
+ptrace working in PTREMPT_RT.  That makes the problems left for
+the PREEMPT_RT folks much smaller.
 
 
-Quite.  The only failure I can find from send_sig_info is if
-lock_task_sighand fails and PTRACE_KILL is deliberately ignoring errors
-when the target task has exited.
+>> At a practical level I think it also has an impact on patch:
+>> "10/12 ptrace: Only return signr from ptrace_stop if it was provided".
+>
+> I didn't look at JOBCTL_PTRACE_SIGNR yet. But this looks minor to me,
+> I mean, I am not sure it worth the trouble.
 
- 	case PTRACE_KILL:
- 		send_sig_info(SIGKILL);
- 		return 0;
+The immediate problem the JOBCTL_PTRACE_SIGNR patch solves is:
+- stopping in ptrace_report_syscall.
+- Not having PT_TRACESYSGOOD set.
+- The tracee being killed with a fatal signal
+- The tracee sending SIGTRAP to itself.
 
-I think that should suffice.
+The larger problem solved by the JOBCTL_PTRACE_SIGNR patch is that
+it removes the need for current->ptrace test from ptrace_stop.  Which
+in turn is part of what is needed for wait_task_inactive to be
+guaranteed a stop in ptrace_stop.
 
 
-> Also, please remove the note about PTRACE_KILL in
-> set_task_blockstep().
-
-Good catch, thank you.
+Thinking about it.  I think a reasonable case can be made that it
+is weird if not dangerous to play with the task fields (ptrace_message,
+last_siginfo, and exit_code) without task_is_traced being true.
+So I will adjust my patch to check that.  The difference in behavior
+is explicit enough we can think about it easily.
 
 Eric
+
+
+
+
+
+
+
+
