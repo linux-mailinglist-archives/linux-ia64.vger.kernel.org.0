@@ -2,155 +2,144 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0FF0517BE8
-	for <lists+linux-ia64@lfdr.de>; Tue,  3 May 2022 04:23:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 639455181D9
+	for <lists+linux-ia64@lfdr.de>; Tue,  3 May 2022 11:59:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229992AbiECCWm (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 2 May 2022 22:22:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54676 "EHLO
+        id S233693AbiECKCh (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 3 May 2022 06:02:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229882AbiECCWl (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 2 May 2022 22:22:41 -0400
-Received: from out30-43.freemail.mail.aliyun.com (out30-43.freemail.mail.aliyun.com [115.124.30.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EECEA23BF6;
-        Mon,  2 May 2022 19:19:08 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R181e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04426;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=31;SR=0;TI=SMTPD_---0VC4Od8S_1651544341;
-Received: from 30.39.210.51(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0VC4Od8S_1651544341)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 03 May 2022 10:19:03 +0800
-Message-ID: <48a05075-a323-e7f1-9e99-6c0d106eb2cb@linux.alibaba.com>
-Date:   Tue, 3 May 2022 10:19:46 +0800
+        with ESMTP id S230482AbiECKCg (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 3 May 2022 06:02:36 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DF4436144;
+        Tue,  3 May 2022 02:59:04 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D7B1EB81A99;
+        Tue,  3 May 2022 09:59:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F1BDC385B3;
+        Tue,  3 May 2022 09:59:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651571941;
+        bh=WVwFOkcs0sk/AMUmXJiSEkXOMbWN6ztZIQQGzqt52AM=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=XtQoNbbEFZdYp4LpIJJEhHEAGMGZu00Cp2IQTv9OCYdBCz3V9yn9A9suUqlU8clee
+         +U/x/KqJZsWZVtekrVzB9pop5aKtxswiuVdNBaQpCVckVhZOBu+YAq02mF/8snLy4K
+         m3HHKSR8WDrFbBPJTsxZ2VaNNhrxQoep1GrSC4Iuz4TImEnKdtnUQcxSiYDiYygORo
+         pZxuUnaH/0ZIRXpxCcEPxw/3XfGSj9cWfIYa6PInV/dRQdpYY+fnSBFcp/E3XajZM8
+         lu2MnJ3uOkmXZVulO8s50sDVOQsyabzAhLticAB6tVfKshVxfAbHvwyzJfL5uSBOzQ
+         UZPswvkYpDIjA==
+Received: by mail-oi1-f173.google.com with SMTP id s131so17689713oie.1;
+        Tue, 03 May 2022 02:59:01 -0700 (PDT)
+X-Gm-Message-State: AOAM531E11NE06SxipYM2vbCPHKHdZsVnKjQrQedyi0aAM0TiYR/7rWo
+        ywmtrbUmd7xtSW9L+MY9bpBrD7eXEb04hK6/MpU=
+X-Google-Smtp-Source: ABdhPJzZLw8ilzQbV1pL4k8nZiRUjWAyZqXRQGFBAJdJypcgmo+eQk7OAOpjcIo6rkTWfD85Nr8vlqeh1Vobo6YGtI4=
+X-Received: by 2002:a05:6808:1141:b0:325:cd92:ef8d with SMTP id
+ u1-20020a056808114100b00325cd92ef8dmr1465875oiu.228.1651571940719; Tue, 03
+ May 2022 02:59:00 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH 3/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
- unmapping
-To:     Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc:     akpm@linux-foundation.org, mike.kravetz@oracle.com,
-        catalin.marinas@arm.com, will@kernel.org,
-        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org
-References: <cover.1651216964.git.baolin.wang@linux.alibaba.com>
- <c91e04ebb792ef7b72966edea8bd6fa2dfa5bfa7.1651216964.git.baolin.wang@linux.alibaba.com>
- <20220429220214.4cfc5539@thinkpad>
- <bcb4a3b0-4fcd-af3a-2a2c-fd662d9eaba9@linux.alibaba.com>
- <20220502160232.589a6111@thinkpad>
-From:   Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20220502160232.589a6111@thinkpad>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-11.5 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
+ <20220419070150.254377-1-mawupeng1@huawei.com>
+In-Reply-To: <20220419070150.254377-1-mawupeng1@huawei.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Tue, 3 May 2022 11:58:49 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHr2RdYSPor1st1ZnL=O42c8N6e=bNG+eFhatfefWLUrw@mail.gmail.com>
+Message-ID: <CAMj1kXHr2RdYSPor1st1ZnL=O42c8N6e=bNG+eFhatfefWLUrw@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Add support to relocate kernel image to mirrored region
+To:     Wupeng Ma <mawupeng1@huawei.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        X86 ML <x86@kernel.org>, Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Joerg Roedel <jroedel@suse.de>, songmuchun@bytedance.com,
+        macro@orcam.me.uk, Frederic Weisbecker <frederic@kernel.org>,
+        W_Armin@gmx.de, John Garry <john.garry@huawei.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        chenhuacai@kernel.org, David Hildenbrand <david@redhat.com>,
+        gpiccoli@igalia.com, Mark Rutland <mark.rutland@arm.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        Linux Memory Management List <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+On Tue, 19 Apr 2022 at 08:43, Wupeng Ma <mawupeng1@huawei.com> wrote:
+>
+> From: Ma Wupeng <mawupeng1@huawei.com>
+>
+> Now system image will perfer to be located to mirrored regions both KASLR
+> on and off.
+>
 
+Hello Ma Wupeng,
 
-On 5/2/2022 10:02 PM, Gerald Schaefer wrote:
-> On Sat, 30 Apr 2022 11:22:33 +0800
-> Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
-> 
->>
->>
->> On 4/30/2022 4:02 AM, Gerald Schaefer wrote:
->>> On Fri, 29 Apr 2022 16:14:43 +0800
->>> Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
->>>
->>>> On some architectures (like ARM64), it can support CONT-PTE/PMD size
->>>> hugetlb, which means it can support not only PMD/PUD size hugetlb:
->>>> 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
->>>> size specified.
->>>>
->>>> When unmapping a hugetlb page, we will get the relevant page table
->>>> entry by huge_pte_offset() only once to nuke it. This is correct
->>>> for PMD or PUD size hugetlb, since they always contain only one
->>>> pmd entry or pud entry in the page table.
->>>>
->>>> However this is incorrect for CONT-PTE and CONT-PMD size hugetlb,
->>>> since they can contain several continuous pte or pmd entry with
->>>> same page table attributes, so we will nuke only one pte or pmd
->>>> entry for this CONT-PTE/PMD size hugetlb page.
->>>>
->>>> And now we only use try_to_unmap() to unmap a poisoned hugetlb page,
->>>> which means now we will unmap only one pte entry for a CONT-PTE or
->>>> CONT-PMD size poisoned hugetlb page, and we can still access other
->>>> subpages of a CONT-PTE or CONT-PMD size poisoned hugetlb page,
->>>> which will cause serious issues possibly.
->>>>
->>>> So we should change to use huge_ptep_clear_flush() to nuke the
->>>> hugetlb page table to fix this issue, which already considered
->>>> CONT-PTE and CONT-PMD size hugetlb.
->>>>
->>>> Note we've already used set_huge_swap_pte_at() to set a poisoned
->>>> swap entry for a poisoned hugetlb page.
->>>>
->>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>> ---
->>>>    mm/rmap.c | 34 +++++++++++++++++-----------------
->>>>    1 file changed, 17 insertions(+), 17 deletions(-)
->>>>
->>>> diff --git a/mm/rmap.c b/mm/rmap.c
->>>> index 7cf2408..1e168d7 100644
->>>> --- a/mm/rmap.c
->>>> +++ b/mm/rmap.c
->>>> @@ -1564,28 +1564,28 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>>>    					break;
->>>>    				}
->>>>    			}
->>>> +			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
->>>
->>> Unlike in your patch 2/3, I do not see that this (huge) pteval would later
->>> be used again with set_huge_pte_at() instead of set_pte_at(). Not sure if
->>> this (huge) pteval could end up at a set_pte_at() later, but if yes, then
->>> this would be broken on s390, and you'd need to use set_huge_pte_at()
->>> instead of set_pte_at() like in your patch 2/3.
->>
->> IIUC, As I said in the commit message, we will only unmap a poisoned
->> hugetlb page by try_to_unmap(), and the poisoned hugetlb page will be
->> remapped with a poisoned entry by set_huge_swap_pte_at() in
->> try_to_unmap_one(). So I think no need change to use set_huge_pte_at()
->> instead of set_pte_at() for other cases, since the hugetlb page will not
->> hit other cases.
->>
->> if (PageHWPoison(subpage) && !(flags & TTU_IGNORE_HWPOISON)) {
->> 	pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
->> 	if (folio_test_hugetlb(folio)) {
->> 		hugetlb_count_sub(folio_nr_pages(folio), mm);
->> 		set_huge_swap_pte_at(mm, address, pvmw.pte, pteval,
->> 				     vma_mmu_pagesize(vma));
->> 	} else {
->> 		dec_mm_counter(mm, mm_counter(&folio->page));
->> 		set_pte_at(mm, address, pvmw.pte, pteval);
->> 	}
->>
->> }
-> 
-> OK, but wouldn't the pteval be overwritten here with
-> pteval = swp_entry_to_pte(make_hwpoison_entry(subpage))?
-> IOW, what sense does it make to save the returned pteval from
-> huge_ptep_clear_flush(), when it is never being used anywhere?
+I wonder if we could simplify this as follows:
+- ignore the non-KASLR case for now, and rely on the bootloader to
+load the image into mirrored memory if it exists;
+- simplify the KASLR case to the below.
 
-Please see previous code, we'll use the original pte value to check if 
-it is uffd-wp armed, and if need to mark it dirty though the hugetlbfs 
-is set noop_dirty_folio().
+I think this is reasonable, because it means we take mirrored memory
+into account when we decide to move the image anyway, but expect the
+boot chain to take care of this if there is no need to move the image.
 
-pte_install_uffd_wp_if_needed(vma, address, pvmw.pte, pteval);
+-------------8<------------------
+--- a/drivers/firmware/efi/libstub/randomalloc.c
++++ b/drivers/firmware/efi/libstub/randomalloc.c
+@@ -56,6 +56,7 @@ efi_status_t efi_random_alloc(unsigned long size,
+                              unsigned long random_seed)
+ {
+        unsigned long map_size, desc_size, total_slots = 0, target_slot;
++       unsigned long total_mirrored_slots = 0;
+        unsigned long buff_size;
+        efi_status_t status;
+        efi_memory_desc_t *memory_map;
+@@ -86,8 +87,14 @@ efi_status_t efi_random_alloc(unsigned long size,
+                slots = get_entry_num_slots(md, size, ilog2(align));
+                MD_NUM_SLOTS(md) = slots;
+                total_slots += slots;
++               if (md->attribute & EFI_MEMORY_MORE_RELIABLE)
++                       total_mirrored_slots += slots;
+        }
 
-/* Set the dirty flag on the folio now the pte is gone. */
-if (pte_dirty(pteval))
-	folio_mark_dirty(folio);
++       /* only consider mirrored slots for randomization if any exist */
++       if (total_mirrored_slots > 0)
++               total_slots = total_mirrored_slots;
++
+        /* find a random number between 0 and total_slots */
+        target_slot = (total_slots * (u64)(random_seed & U32_MAX)) >> 32;
+
+@@ -107,6 +114,10 @@ efi_status_t efi_random_alloc(unsigned long size,
+                efi_physical_addr_t target;
+                unsigned long pages;
+
++               if (total_mirrored_slots > 0 &&
++                   !(md->attribute & EFI_MEMORY_MORE_RELIABLE))
++                       continue;
++
+                if (target_slot >= MD_NUM_SLOTS(md)) {
+                        target_slot -= MD_NUM_SLOTS(md);
+                        continue;
