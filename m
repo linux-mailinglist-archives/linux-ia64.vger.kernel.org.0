@@ -2,178 +2,144 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A9B7518586
-	for <lists+linux-ia64@lfdr.de>; Tue,  3 May 2022 15:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD9CE51881F
+	for <lists+linux-ia64@lfdr.de>; Tue,  3 May 2022 17:17:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236230AbiECNgl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 3 May 2022 09:36:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54534 "EHLO
+        id S238008AbiECPVP (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 3 May 2022 11:21:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236224AbiECNgj (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 3 May 2022 09:36:39 -0400
-Received: from out30-57.freemail.mail.aliyun.com (out30-57.freemail.mail.aliyun.com [115.124.30.57])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1183136B47;
-        Tue,  3 May 2022 06:33:02 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=31;SR=0;TI=SMTPD_---0VC793pK_1651584773;
-Received: from 30.39.210.51(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0VC793pK_1651584773)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Tue, 03 May 2022 21:32:55 +0800
-Message-ID: <8cd231f3-9c8f-ca70-75e7-3dd1ed47258d@linux.alibaba.com>
-Date:   Tue, 3 May 2022 21:33:38 +0800
+        with ESMTP id S237990AbiECPVO (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 3 May 2022 11:21:14 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2F1B43A5D1
+        for <linux-ia64@vger.kernel.org>; Tue,  3 May 2022 08:17:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1651591061;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=jtQ9B5IdhnfCEt2aG9WPbx5ZitVQKl3Yo50OcP90VbM=;
+        b=IRUg9AlkY8b+9yjh40s8tzvc3VUTp3EIGBDUqwDNiFyl0lSN8FZ0VmSWv/EWeX+uJTJcAl
+        /FNvVK4jOZrZpv6/JsrC6iooEWQr9/v4MyiikTfP67PK7IVGxQXcyr5as/1SYALH3OKZ1B
+        wUvxaZ44cu4TcFC+aswN3ytOyQ3kfIw=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-616-T_k4BQPuPx2pU21-jOK9CA-1; Tue, 03 May 2022 09:42:59 -0400
+X-MC-Unique: T_k4BQPuPx2pU21-jOK9CA-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9BCEF3D36FE7;
+        Tue,  3 May 2022 13:41:58 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.194.243])
+        by smtp.corp.redhat.com (Postfix) with SMTP id AD5E915376BB;
+        Tue,  3 May 2022 13:41:53 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+        oleg@redhat.com; Tue,  3 May 2022 15:41:56 +0200 (CEST)
+Date:   Tue, 3 May 2022 15:41:50 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, mgorman@suse.de, bigeasy@linutronix.de,
+        Will Deacon <will@kernel.org>, tj@kernel.org,
+        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org
+Subject: Re: [PATCH v2 07/12] ptrace: Don't change __state
+Message-ID: <20220503134149.GA22999@redhat.com>
+References: <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
+ <20220429214837.386518-7-ebiederm@xmission.com>
+ <20220502153934.GD17276@redhat.com>
+ <87levjrixl.fsf@email.froward.int.ebiederm.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH 3/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
- unmapping
-To:     Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Cc:     akpm@linux-foundation.org, mike.kravetz@oracle.com,
-        catalin.marinas@arm.com, will@kernel.org,
-        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org
-References: <cover.1651216964.git.baolin.wang@linux.alibaba.com>
- <c91e04ebb792ef7b72966edea8bd6fa2dfa5bfa7.1651216964.git.baolin.wang@linux.alibaba.com>
- <20220429220214.4cfc5539@thinkpad>
- <bcb4a3b0-4fcd-af3a-2a2c-fd662d9eaba9@linux.alibaba.com>
- <20220502160232.589a6111@thinkpad>
- <48a05075-a323-e7f1-9e99-6c0d106eb2cb@linux.alibaba.com>
- <20220503120343.6264e126@thinkpad>
-From:   Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <20220503120343.6264e126@thinkpad>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-12.8 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <87levjrixl.fsf@email.froward.int.ebiederm.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+On 05/02, Eric W. Biederman wrote:
+>
+> Oleg Nesterov <oleg@redhat.com> writes:
+>
+> >>  #define TASK_KILLABLE			(TASK_WAKEKILL | TASK_UNINTERRUPTIBLE)
+> >>  #define TASK_STOPPED			(TASK_WAKEKILL | __TASK_STOPPED)
+> >> -#define TASK_TRACED			(TASK_WAKEKILL | __TASK_TRACED)
+> >> +#define TASK_TRACED			__TASK_TRACED
+> > ...
+> >>  static inline void signal_wake_up(struct task_struct *t, bool resume)
+> >>  {
+> >> -	signal_wake_up_state(t, resume ? TASK_WAKEKILL : 0);
+> >> +	unsigned int state = 0;
+> >> +	if (resume) {
+> >> +		state = TASK_WAKEKILL;
+> >> +		if (!(t->jobctl & JOBCTL_PTRACE_FROZEN))
+> >> +			state |= __TASK_TRACED;
+> >> +	}
+> >> +	signal_wake_up_state(t, state);
+> >
+> > Can't understand why is this better than the previous version which removed
+> > TASK_WAKEKILL if resume... Looks a bit strange to me. But again, I didn't
+> > look at the next patches yet.
+>
+> The goal is to replace the existing mechanism with an equivalent one,
+> so that we don't have to be clever and deal with it being slightly
+> different in one case.
+>
+> The difference is how does signal_pending_state affect how schedule will
+> sleep in ptrace_stop.
+
+But why is it bad if the tracee doesn't sleep in schedule ? If it races
+with SIGKILL. I still can't understand this.
+
+Yes, wait_task_inactive() can fail, so you need to remove WARN_ON_ONCE()
+in 11/12.
+
+Why is removing TASK_WAKEKILL from TASK_TRACED and complicating
+*signal_wake_up() better?
+
+And even if we need to ensure the tracee will always block after
+ptrace_freeze_traced(), we can change signal_pending_state() to
+return false if JOBCTL_PTRACE_FROZEN. Much simpler, imo. But still
+looks unnecessary to me.
 
 
-On 5/3/2022 6:03 PM, Gerald Schaefer wrote:
-> On Tue, 3 May 2022 10:19:46 +0800
-> Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
-> 
->>
->>
->> On 5/2/2022 10:02 PM, Gerald Schaefer wrote:
->>> On Sat, 30 Apr 2022 11:22:33 +0800
->>> Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
->>>
->>>>
->>>>
->>>> On 4/30/2022 4:02 AM, Gerald Schaefer wrote:
->>>>> On Fri, 29 Apr 2022 16:14:43 +0800
->>>>> Baolin Wang <baolin.wang@linux.alibaba.com> wrote:
->>>>>
->>>>>> On some architectures (like ARM64), it can support CONT-PTE/PMD size
->>>>>> hugetlb, which means it can support not only PMD/PUD size hugetlb:
->>>>>> 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
->>>>>> size specified.
->>>>>>
->>>>>> When unmapping a hugetlb page, we will get the relevant page table
->>>>>> entry by huge_pte_offset() only once to nuke it. This is correct
->>>>>> for PMD or PUD size hugetlb, since they always contain only one
->>>>>> pmd entry or pud entry in the page table.
->>>>>>
->>>>>> However this is incorrect for CONT-PTE and CONT-PMD size hugetlb,
->>>>>> since they can contain several continuous pte or pmd entry with
->>>>>> same page table attributes, so we will nuke only one pte or pmd
->>>>>> entry for this CONT-PTE/PMD size hugetlb page.
->>>>>>
->>>>>> And now we only use try_to_unmap() to unmap a poisoned hugetlb page,
->>>>>> which means now we will unmap only one pte entry for a CONT-PTE or
->>>>>> CONT-PMD size poisoned hugetlb page, and we can still access other
->>>>>> subpages of a CONT-PTE or CONT-PMD size poisoned hugetlb page,
->>>>>> which will cause serious issues possibly.
->>>>>>
->>>>>> So we should change to use huge_ptep_clear_flush() to nuke the
->>>>>> hugetlb page table to fix this issue, which already considered
->>>>>> CONT-PTE and CONT-PMD size hugetlb.
->>>>>>
->>>>>> Note we've already used set_huge_swap_pte_at() to set a poisoned
->>>>>> swap entry for a poisoned hugetlb page.
->>>>>>
->>>>>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
->>>>>> ---
->>>>>>     mm/rmap.c | 34 +++++++++++++++++-----------------
->>>>>>     1 file changed, 17 insertions(+), 17 deletions(-)
->>>>>>
->>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
->>>>>> index 7cf2408..1e168d7 100644
->>>>>> --- a/mm/rmap.c
->>>>>> +++ b/mm/rmap.c
->>>>>> @@ -1564,28 +1564,28 @@ static bool try_to_unmap_one(struct folio *folio, struct vm_area_struct *vma,
->>>>>>     					break;
->>>>>>     				}
->>>>>>     			}
->>>>>> +			pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
->>>>>
->>>>> Unlike in your patch 2/3, I do not see that this (huge) pteval would later
->>>>> be used again with set_huge_pte_at() instead of set_pte_at(). Not sure if
->>>>> this (huge) pteval could end up at a set_pte_at() later, but if yes, then
->>>>> this would be broken on s390, and you'd need to use set_huge_pte_at()
->>>>> instead of set_pte_at() like in your patch 2/3.
->>>>
->>>> IIUC, As I said in the commit message, we will only unmap a poisoned
->>>> hugetlb page by try_to_unmap(), and the poisoned hugetlb page will be
->>>> remapped with a poisoned entry by set_huge_swap_pte_at() in
->>>> try_to_unmap_one(). So I think no need change to use set_huge_pte_at()
->>>> instead of set_pte_at() for other cases, since the hugetlb page will not
->>>> hit other cases.
->>>>
->>>> if (PageHWPoison(subpage) && !(flags & TTU_IGNORE_HWPOISON)) {
->>>> 	pteval = swp_entry_to_pte(make_hwpoison_entry(subpage));
->>>> 	if (folio_test_hugetlb(folio)) {
->>>> 		hugetlb_count_sub(folio_nr_pages(folio), mm);
->>>> 		set_huge_swap_pte_at(mm, address, pvmw.pte, pteval,
->>>> 				     vma_mmu_pagesize(vma));
->>>> 	} else {
->>>> 		dec_mm_counter(mm, mm_counter(&folio->page));
->>>> 		set_pte_at(mm, address, pvmw.pte, pteval);
->>>> 	}
->>>>
->>>> }
->>>
->>> OK, but wouldn't the pteval be overwritten here with
->>> pteval = swp_entry_to_pte(make_hwpoison_entry(subpage))?
->>> IOW, what sense does it make to save the returned pteval from
->>> huge_ptep_clear_flush(), when it is never being used anywhere?
->>
->> Please see previous code, we'll use the original pte value to check if
->> it is uffd-wp armed, and if need to mark it dirty though the hugetlbfs
->> is set noop_dirty_folio().
->>
->> pte_install_uffd_wp_if_needed(vma, address, pvmw.pte, pteval);
-> 
-> Uh, ok, that wouldn't work on s390, but we also don't have
-> CONFIG_PTE_MARKER_UFFD_WP / HAVE_ARCH_USERFAULTFD_WP set, so
-> I guess we will be fine (for now).
 
-OK.
+> Peter's plans to fix PREEMPT_RT or the freezer wait_task_inactive needs
+> to cope with the final being changed by something else. (TASK_FROZEN in
+> the freezer case).  I can only see that happening by removing the
+> dependency on the final state in wait_task_inactive.  Which we can't do
+> if we depend on wait_task_inactive failing if the process is in the
+> wrong state.
 
-> 
-> Still, I find it a bit unsettling that pte_install_uffd_wp_if_needed()
-> would work on a potential hugetlb *pte, directly de-referencing it
-> instead of using huge_ptep_get().
-> 
-> The !pte_none(*pte) check at the beginning would be broken in the
-> hugetlb case for s390 (not sure about other archs, but I think s390
-> might be the only exception strictly requiring huge_ptep_get()
-> for de-referencing hugetlb *pte pointers).
+OK, I guess this is what I do not understand. Could you spell please?
 
-Right, I think so too. I'll look at the uffd code in detail, seems need 
-another patch to fix the hugetlb for uffd. Thanks for your comments.
+And speaking of RT, wait_task_inactive() still can fail because
+cgroup_enter_frozen() takes css_set_lock? And it is called under
+preempt_disable() ? I don't understand the plan :/
+
+> At a practical level I think it also has an impact on patch:
+> "10/12 ptrace: Only return signr from ptrace_stop if it was provided".
+
+I didn't look at JOBCTL_PTRACE_SIGNR yet. But this looks minor to me,
+I mean, I am not sure it worth the trouble.
+
+Oleg.
+
