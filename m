@@ -2,197 +2,94 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B54D151A1AF
-	for <lists+linux-ia64@lfdr.de>; Wed,  4 May 2022 16:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0125651A5D0
+	for <lists+linux-ia64@lfdr.de>; Wed,  4 May 2022 18:44:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350887AbiEDOGa (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 4 May 2022 10:06:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53032 "EHLO
+        id S1353427AbiEDQsa convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Wed, 4 May 2022 12:48:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349009AbiEDOGa (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 4 May 2022 10:06:30 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 719BE28992
-        for <linux-ia64@vger.kernel.org>; Wed,  4 May 2022 07:02:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1651672973;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=NWK4ZOfJVM6RjQ4Lfcqx7f0iXv4BQ56O8KCQMl4QeHw=;
-        b=N6bhV6ZsMNjmbBg2d7n7X8tw2fXEZMAMq8Lrfyt7UIQ+qUiRHeesRwXad8KMUFvNxCinbQ
-        mu8Tm6xSr1kPy7daZxyOLjCf+fDomL2KF4ijPOKpgIRJ1D5xwZcCW7ILOsZU+bkLPGRkWa
-        ib/tY4vZzaCI8EDZ35gf1nozvmUG7QU=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-671-lLC0nUZAP4mgPBTEv5ytUg-1; Wed, 04 May 2022 10:02:47 -0400
-X-MC-Unique: lLC0nUZAP4mgPBTEv5ytUg-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 1EF9D1C3E988;
-        Wed,  4 May 2022 14:02:46 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.192.152])
-        by smtp.corp.redhat.com (Postfix) with SMTP id CDC8BC52C8A;
-        Wed,  4 May 2022 14:02:40 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Wed,  4 May 2022 16:02:44 +0200 (CEST)
-Date:   Wed, 4 May 2022 16:02:38 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, mgorman@suse.de, bigeasy@linutronix.de,
-        Will Deacon <will@kernel.org>, tj@kernel.org,
-        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org
-Subject: Re: [PATCH v2 07/12] ptrace: Don't change __state
-Message-ID: <20220504140210.GA24581@redhat.com>
-References: <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
- <20220429214837.386518-7-ebiederm@xmission.com>
- <20220502153934.GD17276@redhat.com>
- <87levjrixl.fsf@email.froward.int.ebiederm.org>
- <20220503134149.GA22999@redhat.com>
- <877d72l50n.fsf@email.froward.int.ebiederm.org>
+        with ESMTP id S1343692AbiEDQs1 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 4 May 2022 12:48:27 -0400
+X-Greylist: delayed 1448 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 04 May 2022 09:44:48 PDT
+Received: from mail.megasoftsol.com (mail.megasoftsol.com [43.231.250.141])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA7E246B03
+        for <linux-ia64@vger.kernel.org>; Wed,  4 May 2022 09:44:48 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.megasoftsol.com (Postfix) with ESMTP id 1A485907414
+        for <linux-ia64@vger.kernel.org>; Wed,  4 May 2022 21:38:50 +0530 (IST)
+Received: from mail.megasoftsol.com ([127.0.0.1])
+        by localhost (mail.megasoftsol.com [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id HMipyZN3ECN1 for <linux-ia64@vger.kernel.org>;
+        Wed,  4 May 2022 21:38:49 +0530 (IST)
+Received: from localhost (localhost [127.0.0.1])
+        by mail.megasoftsol.com (Postfix) with ESMTP id 62CA890740F
+        for <linux-ia64@vger.kernel.org>; Wed,  4 May 2022 21:38:49 +0530 (IST)
+X-Virus-Scanned: amavisd-new at megasoftsol.com
+Received: from mail.megasoftsol.com ([127.0.0.1])
+        by localhost (mail.megasoftsol.com [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id s9-itYRxCTdw for <linux-ia64@vger.kernel.org>;
+        Wed,  4 May 2022 21:38:49 +0530 (IST)
+Received: from johnlewis.com (unknown [20.97.211.134])
+        (Authenticated sender: admin)
+        by mail.megasoftsol.com (Postfix) with ESMTPSA id 83267907403
+        for <linux-ia64@vger.kernel.org>; Wed,  4 May 2022 21:38:48 +0530 (IST)
+Reply-To: robert_turner@johnlewis-trades.com
+From:   John Lewis & Partnersip <robert.turner44@johnlewis.com>
+To:     linux-ia64@vger.kernel.org
+Subject: 5/04/2022 Product Inquiry (JL)
+Date:   04 May 2022 16:11:16 +0000
+Message-ID: <20220504123943.94C3197B98BACE18@johnlewis.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <877d72l50n.fsf@email.froward.int.ebiederm.org>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.85 on 10.11.54.8
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain;
+        charset="utf-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=4.1 required=5.0 tests=ADVANCE_FEE_3_NEW,BAYES_50,
+        RCVD_IN_MSPIKE_H2,SPF_FAIL,SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 05/03, Eric W. Biederman wrote:
->
-> Oleg Nesterov <oleg@redhat.com> writes:
->
-> > But why is it bad if the tracee doesn't sleep in schedule ? If it races
-> > with SIGKILL. I still can't understand this.
-> >
-> > Yes, wait_task_inactive() can fail, so you need to remove WARN_ON_ONCE()
-> > in 11/12.
->
-> >
-> > Why is removing TASK_WAKEKILL from TASK_TRACED and complicating
-> > *signal_wake_up() better?
->
-> Not changing __state is better because it removes special cases
-> from the scheduler that only apply to ptrace.
-
-Hmm. But I didn't argue with that? I like the idea of JOBCTL_TASK_FROZEN.
-
-I meant, I do not think that removing KILLABLE from TASK_TRACED (not
-from __state) and complicating *signal_wake_up() (I mean, compared
-to your previous version) is a good idea.
-
-And. At least in context of this series it is fine if the JOBCTL_TASK_FROZEN
-tracee do not block in schedule(), just you need to remove WARN_ON_ONCE()
-around wait_task_inactive().
-
-> > And even if we need to ensure the tracee will always block after
-> > ptrace_freeze_traced(), we can change signal_pending_state() to
-> > return false if JOBCTL_PTRACE_FROZEN. Much simpler, imo. But still
-> > looks unnecessary to me.
->
-> We still need to change signal_wake_up in that case.  Possibly
-> signal_wake_up_state.
-
-Of course. See above.
-
-> >> if we depend on wait_task_inactive failing if the process is in the
-> >> wrong state.
-> >
-> > OK, I guess this is what I do not understand. Could you spell please?
-> >
-> > And speaking of RT, wait_task_inactive() still can fail because
-> > cgroup_enter_frozen() takes css_set_lock? And it is called under
-> > preempt_disable() ? I don't understand the plan :/
->
-> Let me describe his freezer change as that is much easier to get to the
-> final result.  RT has more problems as it turns all spin locks into
-> sleeping locks.  When a task is frozen
-
-[...snip...]
-
-Oh, thanks Eric, but I understand this part. But I still can't understand
-why is it that critical to block in schedule... OK, I need to think about
-it. Lets assume this is really necessary.
-
-Anyway. I'd suggest to not change TASK_TRACED in this series and not
-complicate signal_wake_up() more than you did in your previous version:
-
-	static inline void signal_wake_up(struct task_struct *t, bool resume)
-	{
-		bool wakekill = resume && !(t->jobctl & JOBCTL_DELAY_WAKEKILL);
-		signal_wake_up_state(t, wakekill ? TASK_WAKEKILL : 0);
-	}
-
-JOBCTL_PTRACE_FROZEN is fine.
-
-ptrace_check_attach() can do
-
-	if (!ret && !ignore_state &&
-	    /*
-	     * This can only fail if the frozen tracee races with
-	     * SIGKILL and enters schedule() with fatal_signal_pending
-	     */
-	    !wait_task_inactive(child, __TASK_TRACED))
-		ret = -ESRCH;
-
-	return ret;
-
-
-Now. If/when we really need to ensure that the frozen tracee always
-blocks and wait_task_inactive() never fails, we can just do
-
-	- add the fatal_signal_pending() check into ptrace_stop()
-	  (like this patch does)
-
-	- say, change signal_pending_state:
-
-	static inline int signal_pending_state(unsigned int state, struct task_struct *p)
-	{
-		if (!(state & (TASK_INTERRUPTIBLE | TASK_WAKEKILL)))
-			return 0;
-		if (!signal_pending(p))
-			return 0;
-		if (p->jobctl & JOBCTL_TASK_FROZEN)
-			return 0;
-		return (state & TASK_INTERRUPTIBLE) || __fatal_signal_pending(p);
-	}
-
-in a separate patch which should carefully document the need for this
-change.
-
-> > I didn't look at JOBCTL_PTRACE_SIGNR yet. But this looks minor to me,
-> > I mean, I am not sure it worth the trouble.
->
-> The immediate problem the JOBCTL_PTRACE_SIGNR patch solves is:
-> - stopping in ptrace_report_syscall.
-> - Not having PT_TRACESYSGOOD set.
-> - The tracee being killed with a fatal signal
-        ^^^^^^
-        tracer ?
-> - The tracee sending SIGTRAP to itself.
-
-Oh, but this is clear. But do we really care? If the tracer exits
-unexpectedly, the tracee can have a lot more problems, I don't think
-that this particular one is that important.
-
-Oleg.
-
+Dear linux-ia64
+ 
+ 
+The famous brand John Lewis & Partners, is UK's largest multi-
+channel retailer with over 126 shops and multiple expansion in 
+Africa furnished by European/Asian/American products. We are 
+sourcing new products to attract new customers and also retain 
+our existing ones, create new partnerships with companies dealing 
+with different kinds of goods globally.
+ 
+Your company's products are of interest to our market as we have 
+an amazing market for your products.
+ 
+Provide us your current catalog through email to review more. We 
+hope to be able to order with you and start a long-term friendly, 
+respectable and solid business partnership. Please we would 
+appreciate it if you could send us your stock availability via 
+email if any.
+ 
+ 
+Our payment terms are 15 days net in Europe, 30 days Net in UK 
+and 30 days net in Asia/USA as we have operated with over 5297 
+suppliers around the globe for the past 50 years now. For 
+immediate response Send your reply to "robert_turner@johnlewis-
+trades.com" for us to be able to treat with care and urgency.
+ 
+ 
+ 
+Best Regards
+ 
+ 
+Rob Turner
+Head Of Procurement Operations
+John Lewis & Partners.
+robert_turner@johnlewis-trades.com
+Tel: +44-7451-274090
+WhatsApp: +447497483925
+www.johnlewis.com
+REGISTERED OFFICE: 171 VICTORIA STREET, LONDON SW1E 5NN
