@@ -2,71 +2,88 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2DD751C3F3
-	for <lists+linux-ia64@lfdr.de>; Thu,  5 May 2022 17:28:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BA2E51C4E9
+	for <lists+linux-ia64@lfdr.de>; Thu,  5 May 2022 18:11:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1381347AbiEEPb6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 5 May 2022 11:31:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56258 "EHLO
+        id S244619AbiEEQO3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 5 May 2022 12:14:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1381331AbiEEPb5 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 5 May 2022 11:31:57 -0400
-Received: from us-smtp-delivery-74.mimecast.com (us-smtp-delivery-74.mimecast.com [170.10.129.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5C3EA5BE7F
-        for <linux-ia64@vger.kernel.org>; Thu,  5 May 2022 08:28:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1651764497;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=z8QO9rJ6Ts0Rv2clyS7GURk3RsnaSaH+6/9cSSyBhyU=;
-        b=bcG5IsC7IayqxTw4K1EPr6Ap+Dcj0bxvmyvNrnpZEqXr/hWjkWAsqJMC9vnlzXq31wPoJT
-        naHIoybMRT/MQB7SJKne2JDv1tCZ59VaKdH5eH1bz6fURz6SmIoMRweQp9Nv8pyC+W1Jmb
-        MpzHU97ZVZfamxXk/AIyC1G/sfdygx4=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-561-xGvgZpQGM86kqzNUweA2yQ-1; Thu, 05 May 2022 11:28:13 -0400
-X-MC-Unique: xGvgZpQGM86kqzNUweA2yQ-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S1382328AbiEEQOU (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 5 May 2022 12:14:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF701D0FC;
+        Thu,  5 May 2022 09:10:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3ADD885A5A8;
-        Thu,  5 May 2022 15:28:12 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.192.3])
-        by smtp.corp.redhat.com (Postfix) with SMTP id 1A398463EDE;
-        Thu,  5 May 2022 15:28:06 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Thu,  5 May 2022 17:28:11 +0200 (CEST)
-Date:   Thu, 5 May 2022 17:28:03 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, mgorman@suse.de, bigeasy@linutronix.de,
-        Will Deacon <will@kernel.org>, tj@kernel.org,
-        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org
-Subject: Re: [PATCH v3 08/11] ptrace: Admit ptrace_stop can generate spuriuos
- SIGTRAPs
-Message-ID: <20220505152801.GC13929@redhat.com>
-References: <87k0b0apne.fsf_-_@email.froward.int.ebiederm.org>
- <20220504224058.476193-8-ebiederm@xmission.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8B22161E38;
+        Thu,  5 May 2022 16:10:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE18C385A8;
+        Thu,  5 May 2022 16:10:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1651767031;
+        bh=y1bm/ePw6qN7M+uAMLXPbjzr3hDC7iN+2T5U5hZp75c=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:From;
+        b=V+TiGeXpnpx8QAPISZ/tFZ1vgqt07jnZ/e8UGsZFjYbSOIbxjOaFyb/UjHBhqn5hx
+         Z64n0P5wnIuaGgxiRpF7HUD9ziSD/Vy04koyZ+3OiNayjnxjzS0fZIDvEf4IlnjJDh
+         ZFqZNchd+Rmh0D+frE/gcDMj07LtCQDi4bliOoYzYtwBViRsBNVzjXBMPmC2/Yp3+O
+         avJDoEKTBRLhRLGuv5dd4ZPPntedsmPSHGr9oDetkDU8rgxRb4BichpG/ijCid5diK
+         e/q4W6AYEDDk6fNQ6Z+JXpgOmkNdUU12Kp4sKoGZvuLv591DrEpNAjn9EHl9SCvfts
+         lHbL5gffrnaQA==
+Date:   Thu, 5 May 2022 11:10:28 -0500
+From:   Bjorn Helgaas <helgaas@kernel.org>
+To:     Arnd Bergmann <arnd@kernel.org>
+Cc:     Niklas Schnelle <schnelle@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        "open list:IA64 (Itanium) PLATFORM" <linux-ia64@vger.kernel.org>,
+        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
+        "open list:MIPS" <linux-mips@vger.kernel.org>,
+        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" 
+        <linuxppc-dev@lists.ozlabs.org>,
+        "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
+        "open list:SUPERH" <linux-sh@vger.kernel.org>,
+        "open list:SPARC + UltraSPARC (sparc/sparc64)" 
+        <sparclinux@vger.kernel.org>
+Subject: Re: [RFC v2 01/39] Kconfig: introduce HAS_IOPORT option and select
+ it as necessary
+Message-ID: <20220505161028.GA492600@bhelgaas>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220504224058.476193-8-ebiederm@xmission.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.85 on 10.11.54.10
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+In-Reply-To: <CAK8P3a0sJgMSpZB_Butx2gO0hapYZy-Dm_QH-hG5rOaq_ZgsXg@mail.gmail.com>
+X-Spam-Status: No, score=-7.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,18 +91,50 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 05/04, Eric W. Biederman wrote:
->
-> -static int ptrace_stop(int exit_code, int why, int clear_code,
-> -			unsigned long message, kernel_siginfo_t *info)
-> +static int ptrace_stop(int exit_code, int why, unsigned long message,
-> +		       kernel_siginfo_t *info)
+On Wed, May 04, 2022 at 11:31:28PM +0200, Arnd Bergmann wrote:
+> On Wed, May 4, 2022 at 11:08 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > On Fri, Apr 29, 2022 at 03:49:59PM +0200, Niklas Schnelle wrote:
+> > > We introduce a new HAS_IOPORT Kconfig option to indicate support for
+> > > I/O Port access. In a future patch HAS_IOPORT=n will disable compilation
+> > > of the I/O accessor functions inb()/outb() and friends on architectures
+> > > which can not meaningfully support legacy I/O spaces such as s390 or
+> > > where such support is optional.
+> >
+> > So you plan to drop inb()/outb() on architectures where I/O port space
+> > is optional?  So even platforms that have I/O port space may not be
+> > able to use it?
+> >
+> > This feels like a lot of work where the main benefit is to keep
+> > Kconfig from offering drivers that aren't of interest on s390.
+> >
+> > Granted, there may be issues where inb()/outb() does the wrong thing
+> > such as dereferencing null pointers when I/O port space isn't
+> > implemented.  I think that's a defect in inb()/outb() and could be
+> > fixed there.
+> 
+> The current implementation in asm-generic/io.h implements inb()/outb()
+> using readb()/writeb() with a fixed architecture specific offset.
+> 
+> There are three possible things that can happen here:
+> 
+> a) there is a host bridge driver that maps its I/O ports to this window,
+>     and everything works
+> b) the address range is reserved and accessible but no host bridge
+>    driver has mapped its registers there, so an access causes a
+>    page fault
+> c) the architecture does not define an offset, and accessing low I/O
+>     ports ends up as a NULL pointer dereference
+> 
+> The main goal is to avoid c), which is what happens on s390, but
+> can also happen elsewhere. Catching b) would be nice as well,
+> but is much harder to do from generic code as you'd need an
+> architecture specific inline asm statement to insert a ex_table
+> fixup, or a runtime conditional on each access.
 
-Forgot to mention... but in general I like this change.
+Or s390 could implement its own inb().
 
-In particular, I like the fact it kills the ugly "int clear_code" arg
-which looks as if it solves the problems with the exiting tracer, but
-actually it doesn't. And we do not really care, imo.
+I'm hearing that generic powerpc kernels have to run both on machines
+that have I/O port space and those that don't.  That makes me think
+s390 could do something similar.
 
-Oleg.
-
+Bjorn
