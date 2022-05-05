@@ -2,43 +2,43 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5A9A51C31F
-	for <lists+linux-ia64@lfdr.de>; Thu,  5 May 2022 16:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3376051C33C
+	for <lists+linux-ia64@lfdr.de>; Thu,  5 May 2022 17:02:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380901AbiEEPBR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 5 May 2022 11:01:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50600 "EHLO
+        id S1379405AbiEEPFv (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 5 May 2022 11:05:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55342 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380889AbiEEPBQ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 5 May 2022 11:01:16 -0400
+        with ESMTP id S233555AbiEEPFu (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 5 May 2022 11:05:50 -0400
 Received: from us-smtp-delivery-74.mimecast.com (us-smtp-delivery-74.mimecast.com [170.10.129.74])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 088AD2F384
-        for <linux-ia64@vger.kernel.org>; Thu,  5 May 2022 07:57:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 73A11222BD
+        for <linux-ia64@vger.kernel.org>; Thu,  5 May 2022 08:02:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1651762656;
+        s=mimecast20190719; t=1651762930;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=edMoOIi5W5h5BTuQ+OG7p8B5wBOMsVB1tjxMAlGSHpw=;
-        b=GgF2wvqJZ3WuUdokNPJMZsCfHlNeGEg75Ac/Fsy7KGUES4kQhqylfCMlZAzB47uj5KgqqX
-        ImOcjeVT2UrIKhCTwZIDn7Xpn76xCY5sKknzrcaEBD64S3SO5IIFcKnQr+N9VWqD9USKoi
-        gRYJ5iWsu+1IKqDAg16W1l5440LH05g=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=I3fL/x7Xenik54basEds0J2F7uKxunsCuMprnbYoyPM=;
+        b=ftrxzLjUgNKqDOrhShOjSQeCS3r8uqfQgIiOrLmMvJ0zIlvrIunLde8+6sKwN6ueXNze7b
+        4HEfeKcO07XFPo1etP7fgkJZeZ+UIo6ofa9dkWiw+F+vAruYWsIdBrx1ICn8XP3YmjBABo
+        yHTIxrRi9DJDz67M1oUnfwQJ7qWk5yU=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-187-7XIzuTHxPNix0eEXnTrTjw-1; Thu, 05 May 2022 10:57:31 -0400
-X-MC-Unique: 7XIzuTHxPNix0eEXnTrTjw-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
+ us-mta-517-_OCgwZHFOa-R75Os49XEVg-1; Thu, 05 May 2022 11:02:09 -0400
+X-MC-Unique: _OCgwZHFOa-R75Os49XEVg-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id A339C1E7DCD6;
-        Thu,  5 May 2022 14:57:30 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id CEADA1014A69;
+        Thu,  5 May 2022 15:02:06 +0000 (UTC)
 Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.192.3])
-        by smtp.corp.redhat.com (Postfix) with SMTP id E03E840CF8F5;
-        Thu,  5 May 2022 14:57:24 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with SMTP id AD2C49E94;
+        Thu,  5 May 2022 15:02:01 +0000 (UTC)
 Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Thu,  5 May 2022 16:57:28 +0200 (CEST)
-Date:   Thu, 5 May 2022 16:57:22 +0200
+        oleg@redhat.com; Thu,  5 May 2022 17:02:05 +0200 (CEST)
+Date:   Thu, 5 May 2022 17:01:59 +0200
 From:   Oleg Nesterov <oleg@redhat.com>
 To:     "Eric W. Biederman" <ebiederm@xmission.com>
 Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
@@ -55,7 +55,7 @@ Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
         Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org
 Subject: Re: [PATCH v3 08/11] ptrace: Admit ptrace_stop can generate spuriuos
  SIGTRAPs
-Message-ID: <20220505145721.GA13929@redhat.com>
+Message-ID: <20220505150158.GB13929@redhat.com>
 References: <87k0b0apne.fsf_-_@email.froward.int.ebiederm.org>
  <20220504224058.476193-8-ebiederm@xmission.com>
 MIME-Version: 1.0
@@ -63,10 +63,10 @@ Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20220504224058.476193-8-ebiederm@xmission.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.84 on 10.11.54.1
+X-Scanned-By: MIMEDefang 2.79 on 10.11.54.5
 X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,101 +76,42 @@ X-Mailing-List: linux-ia64@vger.kernel.org
 
 On 05/04, Eric W. Biederman wrote:
 >
-> -static int ptrace_stop(int exit_code, int why, int clear_code,
-> -			unsigned long message, kernel_siginfo_t *info)
-> +static int ptrace_stop(int exit_code, int why, unsigned long message,
-> +		       kernel_siginfo_t *info)
->  	__releases(&current->sighand->siglock)
->  	__acquires(&current->sighand->siglock)
->  {
-> @@ -2259,54 +2259,33 @@ static int ptrace_stop(int exit_code, int why, int clear_code,
->  
->  	spin_unlock_irq(&current->sighand->siglock);
->  	read_lock(&tasklist_lock);
-> -	if (likely(current->ptrace)) {
-> -		/*
-> -		 * Notify parents of the stop.
-> -		 *
-> -		 * While ptraced, there are two parents - the ptracer and
-> -		 * the real_parent of the group_leader.  The ptracer should
-> -		 * know about every stop while the real parent is only
-> -		 * interested in the completion of group stop.  The states
-> -		 * for the two don't interact with each other.  Notify
-> -		 * separately unless they're gonna be duplicates.
-> -		 */
-> +	/*
-> +	 * Notify parents of the stop.
-> +	 *
-> +	 * While ptraced, there are two parents - the ptracer and
-> +	 * the real_parent of the group_leader.  The ptracer should
-> +	 * know about every stop while the real parent is only
-> +	 * interested in the completion of group stop.  The states
-> +	 * for the two don't interact with each other.  Notify
-> +	 * separately unless they're gonna be duplicates.
-> +	 */
-> +	if (current->ptrace)
->  		do_notify_parent_cldstop(current, true, why);
-> -		if (gstop_done && ptrace_reparented(current))
-> -			do_notify_parent_cldstop(current, false, why);
-> +	if (gstop_done && (!current->ptrace || ptrace_reparented(current)))
-> +		do_notify_parent_cldstop(current, false, why);
->  
-> -		/*
-> -		 * Don't want to allow preemption here, because
-> -		 * sys_ptrace() needs this task to be inactive.
-> -		 *
-> -		 * XXX: implement read_unlock_no_resched().
-> -		 */
-> -		preempt_disable();
-> -		read_unlock(&tasklist_lock);
-> -		cgroup_enter_frozen();
-> -		preempt_enable_no_resched();
-> -		freezable_schedule();
-> -		cgroup_leave_frozen(true);
-> -	} else {
-> -		/*
-> -		 * By the time we got the lock, our tracer went away.
-> -		 * Don't drop the lock yet, another tracer may come.
-> -		 *
-> -		 * If @gstop_done, the ptracer went away between group stop
-> -		 * completion and here.  During detach, it would have set
-> -		 * JOBCTL_STOP_PENDING on us and we'll re-enter
-> -		 * TASK_STOPPED in do_signal_stop() on return, so notifying
-> -		 * the real parent of the group stop completion is enough.
-> -		 */
-> -		if (gstop_done)
-> -			do_notify_parent_cldstop(current, false, why);
-> -
-> -		/* tasklist protects us from ptrace_freeze_traced() */
-> -		__set_current_state(TASK_RUNNING);
-> -		read_code = false;
-> -		if (clear_code)
-> -			exit_code = 0;
-> -		read_unlock(&tasklist_lock);
+> With the removal of the incomplete detection of the tracer going away
+> in ptrace_stop, ptrace_stop always sleeps in schedule after
+> ptrace_freeze_traced succeeds.  Modify ptrace_check_attach to
+> warn if wait_task_inactive fails.
+
+Oh. Again, I don't understand the changelog. If we forget about RT,
+ptrace_stop() will always sleep if ptrace_freeze_traced() succeeds.
+may_ptrace_stop() has gone.
+
+IOW. Lets forget about RT
+
+> --- a/kernel/ptrace.c
+> +++ b/kernel/ptrace.c
+> @@ -266,17 +266,9 @@ static int ptrace_check_attach(struct task_struct *child, bool ignore_state)
+>  	}
+>  	read_unlock(&tasklist_lock);
+>
+> -	if (!ret && !ignore_state) {
+> -		if (!wait_task_inactive(child, __TASK_TRACED)) {
+> -			/*
+> -			 * This can only happen if may_ptrace_stop() fails and
+> -			 * ptrace_stop() changes ->state back to TASK_RUNNING,
+> -			 * so we should not worry about leaking __TASK_TRACED.
+> -			 */
+> -			WARN_ON(READ_ONCE(child->__state) == __TASK_TRACED);
+> -			ret = -ESRCH;
+> -		}
 > -	}
-> +	/*
-> +	 * Don't want to allow preemption here, because
-> +	 * sys_ptrace() needs this task to be inactive.
-> +	 *
-> +	 * XXX: implement read_unlock_no_resched().
-> +	 */
-> +	preempt_disable();
-> +	read_unlock(&tasklist_lock);
-> +	cgroup_enter_frozen();
-> +	preempt_enable_no_resched();
-> +	freezable_schedule();
+> +	if (!ret && !ignore_state &&
+> +	    WARN_ON_ONCE(!wait_task_inactive(child, __TASK_TRACED)))
+> +		ret = -ESRCH;
+>
+>  	return ret;
+>  }
 
-I must have missed something.
-
-So the tracee calls ptrace_notify() but debugger goes away before the
-ptrace_notify() takes siglock. After that the no longer traced task
-will sleep in TASK_TRACED ?
-
-Looks like ptrace_stop() needs to check current->ptrace before it does
-set_special_state(TASK_TRACED) with siglock held? Then we can rely on
-ptrace_unlink() which will wake the tracee up even if debugger exits.
-
-No?
+Why do you think this change would be wrong without any other changes?
 
 Oleg.
 
