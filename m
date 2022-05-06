@@ -2,156 +2,101 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 049CE51CEA1
-	for <lists+linux-ia64@lfdr.de>; Fri,  6 May 2022 04:16:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6AB951CF2B
+	for <lists+linux-ia64@lfdr.de>; Fri,  6 May 2022 05:02:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1388144AbiEFBqJ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 5 May 2022 21:46:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33700 "EHLO
+        id S1388418AbiEFDFY (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 5 May 2022 23:05:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1388169AbiEFBps (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 5 May 2022 21:45:48 -0400
-Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 250715E759;
-        Thu,  5 May 2022 18:41:39 -0700 (PDT)
-Received: from kwepemi100020.china.huawei.com (unknown [172.30.72.56])
-        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4KvYDJ36N6z1JBs2;
-        Fri,  6 May 2022 09:40:32 +0800 (CST)
-Received: from kwepemm600017.china.huawei.com (7.193.23.234) by
- kwepemi100020.china.huawei.com (7.221.188.48) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 6 May 2022 09:41:37 +0800
-Received: from localhost.localdomain (10.175.112.125) by
- kwepemm600017.china.huawei.com (7.193.23.234) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Fri, 6 May 2022 09:41:35 +0800
-From:   Peng Liu <liupeng256@huawei.com>
-To:     <bhelgaas@google.com>, <tglx@linutronix.de>, <mingo@redhat.com>,
-        <bp@alien8.de>, <dave.hansen@linux.intel.com>, <x86@kernel.org>,
-        <hpa@zytor.com>, <lorenzo.pieralisi@arm.com>,
-        <guohanjun@huawei.com>, <sudeep.holla@arm.com>,
-        <rafael@kernel.org>, <lenb@kernel.org>,
-        <akpm@linux-foundation.org>, <logang@deltatee.com>,
-        <martin.oliveira@eideticom.com>, <thunder.leizhen@huawei.com>,
-        <axboe@kernel.dk>, <kch@nvidia.com>, <ming.lei@redhat.com>,
-        <shinichiro.kawasaki@wdc.com>, <mcgrof@kernel.org>,
-        <jiangguoqing@kylinos.cn>, <jpittman@redhat.com>,
-        <dave@stgolabs.net>, <liupeng256@huawei.com>,
-        <wangkefeng.wang@huawei.com>, <linux-block@vger.kernel.org>,
-        <linux-ia64@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-pci@vger.kernel.org>, <linux-acpi@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <linux-mm@kvack.org>
-Subject: [PATCH 2/2] null_blk: fix wrong use of nr_online_nodes
-Date:   Fri, 6 May 2022 01:58:01 +0000
-Message-ID: <20220506015801.757918-3-liupeng256@huawei.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20220506015801.757918-1-liupeng256@huawei.com>
-References: <20220506015801.757918-1-liupeng256@huawei.com>
+        with ESMTP id S234102AbiEFDFV (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 5 May 2022 23:05:21 -0400
+Received: from out30-44.freemail.mail.aliyun.com (out30-44.freemail.mail.aliyun.com [115.124.30.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D56F563BCD;
+        Thu,  5 May 2022 20:01:37 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04400;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=30;SR=0;TI=SMTPD_---0VCQ-60L_1651806089;
+Received: from 30.32.96.193(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0VCQ-60L_1651806089)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Fri, 06 May 2022 11:01:31 +0800
+Message-ID: <6c8a5b23-e470-63ca-cc82-f8b5ff1bafaf@linux.alibaba.com>
+Date:   Fri, 6 May 2022 11:02:12 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [10.175.112.125]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- kwepemm600017.china.huawei.com (7.193.23.234)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 1/3] mm: change huge_ptep_clear_flush() to return the
+ original pte
+To:     Mike Kravetz <mike.kravetz@oracle.com>, akpm@linux-foundation.org,
+        catalin.marinas@arm.com, will@kernel.org
+Cc:     tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
+        paulus@samba.org, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, arnd@arndb.de,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org
+References: <cover.1651216964.git.baolin.wang@linux.alibaba.com>
+ <a9038435d408cd7b9defe143537de668dfdf03be.1651216964.git.baolin.wang@linux.alibaba.com>
+ <495c4ebe-a5b4-afb6-4cb0-956c1b18d0cc@oracle.com>
+From:   Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <495c4ebe-a5b4-afb6-4cb0-956c1b18d0cc@oracle.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-12.4 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Certain systems are designed to have sparse/discontiguous nodes,
-a valid node may be greater than nr_online_nodes. So, the use of
-"nid >= nr_online_nodes" to judge if a node is online is wrong.
 
-Node id is a basic parameter of the system, a user-configured node
-must be checked as early as possible. Otherwise, it may cause panic
-when calling some vulnerable functions such as node_online which
-will cause panic if a very big node is received.
 
-Check g_home_node once users config it, and use node_available to
-make node-checking compatible with sparse/discontiguous nodes.
+On 5/6/2022 7:15 AM, Mike Kravetz wrote:
+> On 4/29/22 01:14, Baolin Wang wrote:
+>> It is incorrect to use ptep_clear_flush() to nuke a hugetlb page
+>> table when unmapping or migrating a hugetlb page, and will change
+>> to use huge_ptep_clear_flush() instead in the following patches.
+>>
+>> So this is a preparation patch, which changes the huge_ptep_clear_flush()
+>> to return the original pte to help to nuke a hugetlb page table.
+>>
+>> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+>> ---
+>>   arch/arm64/include/asm/hugetlb.h   |  4 ++--
+>>   arch/arm64/mm/hugetlbpage.c        | 12 +++++-------
+>>   arch/ia64/include/asm/hugetlb.h    |  4 ++--
+>>   arch/mips/include/asm/hugetlb.h    |  9 ++++++---
+>>   arch/parisc/include/asm/hugetlb.h  |  4 ++--
+>>   arch/powerpc/include/asm/hugetlb.h |  9 ++++++---
+>>   arch/s390/include/asm/hugetlb.h    |  6 +++---
+>>   arch/sh/include/asm/hugetlb.h      |  4 ++--
+>>   arch/sparc/include/asm/hugetlb.h   |  4 ++--
+>>   include/asm-generic/hugetlb.h      |  4 ++--
+>>   10 files changed, 32 insertions(+), 28 deletions(-)
+> 
+> The above changes look straight forward.
+> Happy that you Cc'ed impacted arch maintainers so they can at least
+> have a look.
+> 
+> The only user of huge_ptep_clear_flush() today is hugetlb_cow/wp() in
+> mm/hugetlb.c.  Any reason why you did not change that code?  At least
 
-Fixes: 7ff684a683d7 ("null_blk: prevent crash from bad home_node value")
-Signed-off-by: Peng Liu <liupeng256@huawei.com>
-Suggested-by: Davidlohr Bueso <dave@stgolabs.net>
----
- drivers/block/null_blk/main.c | 45 ++++++++++++++++++++++-------------
- 1 file changed, 28 insertions(+), 17 deletions(-)
+Cause we did not use the return value of huge_ptep_clear_flush() in 
+mm/hugetlb.c.
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index 05b1120e6623..995348d6e7e7 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -97,7 +97,33 @@ module_param_named(poll_queues, g_poll_queues, int, 0444);
- MODULE_PARM_DESC(poll_queues, "Number of IOPOLL submission queues");
- 
- static int g_home_node = NUMA_NO_NODE;
--module_param_named(home_node, g_home_node, int, 0444);
-+
-+static int null_param_store_val(const char *str, int *val, int min, int max)
-+{
-+	int ret, new_val;
-+
-+	ret = kstrtoint(str, 10, &new_val);
-+	if (ret)
-+		return -EINVAL;
-+
-+	if (new_val < min || new_val > max)
-+		return -EINVAL;
-+
-+	*val = new_val;
-+	return 0;
-+}
-+
-+static int null_set_home_node(const char *str, const struct kernel_param *kp)
-+{
-+	return null_param_store_val(str, &g_home_node, 0, MAX_NUMNODES - 1);
-+}
-+
-+static const struct kernel_param_ops null_home_node_param_ops = {
-+	.set	= null_set_home_node,
-+	.get	= param_get_int,
-+};
-+
-+device_param_cb(home_node, &null_home_node_param_ops, &g_home_node, 0444);
- MODULE_PARM_DESC(home_node, "Home node for the device");
- 
- #ifdef CONFIG_BLK_DEV_NULL_BLK_FAULT_INJECTION
-@@ -120,21 +146,6 @@ MODULE_PARM_DESC(init_hctx, "Fault injection to fail hctx init. init_hctx=<inter
- 
- static int g_queue_mode = NULL_Q_MQ;
- 
--static int null_param_store_val(const char *str, int *val, int min, int max)
--{
--	int ret, new_val;
--
--	ret = kstrtoint(str, 10, &new_val);
--	if (ret)
--		return -EINVAL;
--
--	if (new_val < min || new_val > max)
--		return -EINVAL;
--
--	*val = new_val;
--	return 0;
--}
--
- static int null_set_queue_mode(const char *str, const struct kernel_param *kp)
- {
- 	return null_param_store_val(str, &g_queue_mode, NULL_Q_BIO, NULL_Q_MQ);
-@@ -2107,7 +2118,7 @@ static int __init null_init(void)
- 		g_max_sectors = BLK_DEF_MAX_SECTORS;
- 	}
- 
--	if (g_home_node != NUMA_NO_NODE && g_home_node >= nr_online_nodes) {
-+	if (!node_available(g_home_node)) {
- 		pr_err("invalid home_node value\n");
- 		g_home_node = NUMA_NO_NODE;
- 	}
--- 
-2.25.1
+> cast the return of huge_ptep_clear_flush() to void with a comment?
 
+Sure. Will add an explicit casting in next version.
+
+> Not absolutely necessary.
+> 
+> Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
+
+Thanks.
