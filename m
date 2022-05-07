@@ -2,159 +2,179 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E0E951E181
-	for <lists+linux-ia64@lfdr.de>; Fri,  6 May 2022 23:59:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E38B51E2A4
+	for <lists+linux-ia64@lfdr.de>; Sat,  7 May 2022 02:10:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1387830AbiEFWDA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 6 May 2022 18:03:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50052 "EHLO
+        id S1445025AbiEGAOl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 6 May 2022 20:14:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1350991AbiEFWDA (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 6 May 2022 18:03:00 -0400
-Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12BF8255AC;
-        Fri,  6 May 2022 14:59:16 -0700 (PDT)
-Received: from in02.mta.xmission.com ([166.70.13.52]:41340)
-        by out01.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1nn5yh-008b7d-Gi; Fri, 06 May 2022 15:59:11 -0600
-Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:37292 helo=email.froward.int.ebiederm.org.xmission.com)
-        by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1nn5yg-00Aw1E-9W; Fri, 06 May 2022 15:59:11 -0600
-From:   "Eric W. Biederman" <ebiederm@xmission.com>
-To:     Kees Cook <keescook@chromium.org>
-Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, oleg@redhat.com,
-        mingo@kernel.org, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, rostedt@goodmis.org, mgorman@suse.de,
-        bigeasy@linutronix.de, Will Deacon <will@kernel.org>,
-        tj@kernel.org, linux-pm@vger.kernel.org,
-        Peter Zijlstra <peterz@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Jann Horn <jannh@google.com>,
-        linux-ia64@vger.kernel.org, Robert O'Callahan <roc@pernos.co>,
-        Kyle Huey <khuey@pernos.co>
-References: <20220421150248.667412396@infradead.org>
-        <20220421150654.817117821@infradead.org>
-        <87czhap9dy.fsf@email.froward.int.ebiederm.org>
-        <878rrrh32q.fsf_-_@email.froward.int.ebiederm.org>
-        <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
-        <87k0b0apne.fsf_-_@email.froward.int.ebiederm.org>
-        <87a6bv6dl6.fsf_-_@email.froward.int.ebiederm.org>
-        <202205061348.927E94729E@keescook>
-Date:   Fri, 06 May 2022 16:59:03 -0500
-In-Reply-To: <202205061348.927E94729E@keescook> (Kees Cook's message of "Fri,
-        6 May 2022 14:26:36 -0700")
-Message-ID: <87h762z5js.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+        with ESMTP id S235557AbiEGAOg (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 6 May 2022 20:14:36 -0400
+X-Greylist: delayed 538 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 06 May 2022 17:10:50 PDT
+Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com [66.111.4.230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46FB8193D5;
+        Fri,  6 May 2022 17:10:48 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 08A20581367;
+        Fri,  6 May 2022 20:01:49 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Fri, 06 May 2022 20:01:49 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:from:from
+        :in-reply-to:in-reply-to:message-id:mime-version:references
+        :reply-to:sender:subject:subject:to:to:x-me-proxy:x-me-proxy
+        :x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1651881709; x=
+        1651888909; bh=hJxEFAuP3W0ocRuq9vLXjN5OlZEUnHk8AMHl1pdwrIw=; b=C
+        xRLkEfhUbEyE90JzCIIfMF0OZav1zcZBYtpgecP8ApnTN4fdlBb3TWucKtiiLVnd
+        phR+z33NIKiN5vvoQl4oIZhk8c/stiSlc7YKhqnLniKgN7mh6i4gdLlpwMgXN8Jx
+        e7Ktbm6oij1Rve4npuV/JXnd7tlkfyM/0Bz3txW/0SUizxpE/JN1o4B4fiIigl5B
+        ODk4g+2AMO40GC7n/7n0pEgUnXqDIMz17cgAN6FmIv1e9zegzqwaJ0I+kStibxBe
+        g4XBZSsTbqspbyCFDBCsvGdO+loAMO92OKfZTh/4kTG2uqmiuWrZjJm45yvGLmba
+        KNmSVM+dKifWafpBnnHDw==
+X-ME-Sender: <xms:4rZ1Ytzfx8dyKZqHQrV2iYrMdgRUVRPJ5uUwNS7astnHeUoPA5JP-Q>
+    <xme:4rZ1YtQUABIDxMMBtegJM8AXkRrr-tzXbMdH0cN7W3yw1nTwwmuUilavkeuJbaLH-
+    jiXIcpKb_V12BfL3wo>
+X-ME-Received: <xmr:4rZ1YnWuj7-Y-n3U8_P9SrVRCen9EuBDcbjR5eG7oX-EXFUmoFKaghxcC96Gl5aI4_7s5rHGeJqG5FVCSZIPe5G--o2Z8oFtO20>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeeggddviecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefujgfkfhggtgesthdtredttddtvdenucfhrhhomhephfhinhhnucfv
+    hhgrihhnuceofhhthhgrihhnsehlihhnuhigqdhmieekkhdrohhrgheqnecuggftrfgrth
+    htvghrnhepfeeiheejvdetgfeitddutefhkeeilefhveehgfdvtdekkedvkeehffdtkeev
+    vdeunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehfthhhrghinheslhhinhhugidqmheikehk
+    rdhorhhg
+X-ME-Proxy: <xmx:4rZ1YvjRqTV1kqzGfEZqExc-y3C87C0PjwUsUwS-om8USnmpQPRsXQ>
+    <xmx:4rZ1YvD61kgrS-YFzaAD5iTYUCb5iH6iosfkwZGmHVIza5eNfoZf5Q>
+    <xmx:4rZ1YoIUIx-XKteSS56qWnxoAmafmX5tikXV710a88-2E5zTPDOJsg>
+    <xmx:7bZ1Yh30nOThnpoXJeJtrRg9vb4kwFxuUl_bN4rVDjV8z-IxFV2paA>
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 6 May 2022 20:01:37 -0400 (EDT)
+Date:   Sat, 7 May 2022 10:01:39 +1000 (AEST)
+From:   Finn Thain <fthain@linux-m68k.org>
+To:     Niklas Schnelle <schnelle@linux.ibm.com>
+cc:     Bjorn Helgaas <helgaas@kernel.org>,
+        Arnd Bergmann <arnd@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-arch <linux-arch@vger.kernel.org>,
+        linux-pci <linux-pci@vger.kernel.org>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>,
+        "open list:ALPHA PORT" <linux-alpha@vger.kernel.org>,
+        "moderated list:ARM PORT" <linux-arm-kernel@lists.infradead.org>,
+        "open list:IA64 (Itanium) PLATFORM" <linux-ia64@vger.kernel.org>,
+        "open list:M68K ARCHITECTURE" <linux-m68k@lists.linux-m68k.org>,
+        "open list:MIPS" <linux-mips@vger.kernel.org>,
+        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
+        "open list:LINUX FOR POWERPC (32-BIT AND 64-BIT)" 
+        <linuxppc-dev@lists.ozlabs.org>,
+        "open list:RISC-V ARCHITECTURE" <linux-riscv@lists.infradead.org>,
+        "open list:SUPERH" <linux-sh@vger.kernel.org>,
+        "open list:SPARC + UltraSPARC (sparc/sparc64)" 
+        <sparclinux@vger.kernel.org>
+Subject: Re: [RFC v2 01/39] Kconfig: introduce HAS_IOPORT option and select
+ it as necessary
+In-Reply-To: <105ccec439f709846e82b69cb854ac825d7a6a49.camel@linux.ibm.com>
+Message-ID: <7dfa7578-039-e132-c573-ad89bd3215@linux-m68k.org>
+References: <20220505195342.GA509942@bhelgaas>  <22bec167-241f-2cbe-829f-a3f65e40e71@linux-m68k.org> <105ccec439f709846e82b69cb854ac825d7a6a49.camel@linux.ibm.com>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1nn5yg-00Aw1E-9W;;;mid=<87h762z5js.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.174.4;;;frm=ebiederm@xmission.com;;;spf=softfail
-X-XM-AID: U2FsdGVkX1/VPXqGxLyk6k3FEwGJyXklghMod61nqrE=
-X-SA-Exim-Connect-IP: 68.227.174.4
-X-SA-Exim-Mail-From: ebiederm@xmission.com
+Content-Type: text/plain; charset=US-ASCII
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
-X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: **;Kees Cook <keescook@chromium.org>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 506 ms - load_scoreonly_sql: 0.04 (0.0%),
-        signal_user_changed: 11 (2.2%), b_tie_ro: 10 (1.9%), parse: 1.00
-        (0.2%), extract_message_metadata: 12 (2.5%), get_uri_detail_list: 1.90
-        (0.4%), tests_pri_-1000: 14 (2.7%), tests_pri_-950: 1.30 (0.3%),
-        tests_pri_-900: 1.15 (0.2%), tests_pri_-90: 74 (14.6%), check_bayes:
-        73 (14.4%), b_tokenize: 10 (1.9%), b_tok_get_all: 12 (2.4%),
-        b_comp_prob: 4.2 (0.8%), b_tok_touch_all: 43 (8.5%), b_finish: 0.91
-        (0.2%), tests_pri_0: 360 (71.2%), check_dkim_signature: 0.58 (0.1%),
-        check_dkim_adsp: 2.6 (0.5%), poll_dns_idle: 0.43 (0.1%), tests_pri_10:
-        2.6 (0.5%), tests_pri_500: 25 (5.0%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH v4 0/12] ptrace: cleaning up ptrace_stop
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Kees Cook <keescook@chromium.org> writes:
 
-> On Thu, May 05, 2022 at 01:25:57PM -0500, Eric W. Biederman wrote:
->> The states TASK_STOPPED and TASK_TRACE are special in they can not
->> handle spurious wake-ups.  This plus actively depending upon and
->> changing the value of tsk->__state causes problems for PREEMPT_RT and
->> Peter's freezer rewrite.
->> 
->> There are a lot of details we have to get right to sort out the
->> technical challenges and this is my parred back version of the changes
->> that contains just those problems I see good solutions to that I believe
->> are ready.
->> 
->> A couple of issues have been pointed but I think this parred back set of
->> changes is still on the right track.  The biggest change in v4 is the
->> split of "ptrace: Admit ptrace_stop can generate spuriuos SIGTRAPs" into
->> two patches because the dependency I thought exited between two
->> different changes did not exist.  The rest of the changes are minor
->> tweaks to "ptrace: Admit ptrace_stop can generate spuriuos SIGTRAPs";
->> removing an always true branch, and adding an early  test to see if the
->> ptracer had gone, before TASK_TRAPPING was set.
->> 
->> This set of changes should support Peter's freezer rewrite, and with the
->> addition of changing wait_task_inactive(TASK_TRACED) to be
->> wait_task_inactive(0) in ptrace_check_attach I don't think there are any
->> races or issues to be concerned about from the ptrace side.
->> 
->> More work is needed to support PREEMPT_RT, but these changes get things
->> closer.
->> 
->> This set of changes continues to look like it will provide a firm
->> foundation for solving the PREEMPT_RT and freezer challenges.
->
-> One of the more sensitive projects to changes around ptrace is rr
-> (Robert and Kyle added to CC). I ran rr's selftests before/after this
-> series and saw no changes. My failures remained the same; I assume
-> they're due to missing CPU features (pkeys) or build configs (bpf), etc:
->
-> 99% tests passed, 19 tests failed out of 2777
->
-> Total Test time (real) = 773.40 sec
->
-> The following tests FAILED:
->          42 - bpf_map (Failed)
->          43 - bpf_map-no-syscallbuf (Failed)
->         414 - netfilter (Failed)
->         415 - netfilter-no-syscallbuf (Failed)
->         454 - x86/pkeys (Failed)
->         455 - x86/pkeys-no-syscallbuf (Failed)
->         1152 - ttyname (Failed)
->         1153 - ttyname-no-syscallbuf (Failed)
->         1430 - bpf_map-32 (Failed)
->         1431 - bpf_map-32-no-syscallbuf (Failed)
->         1502 - detach_sigkill-32 (Failed)
->         1802 - netfilter-32 (Failed)
->         1803 - netfilter-32-no-syscallbuf (Failed)
->         1842 - x86/pkeys-32 (Failed)
->         1843 - x86/pkeys-32-no-syscallbuf (Failed)
->         2316 - crash_in_function-32 (Failed)
->         2317 - crash_in_function-32-no-syscallbuf (Failed)
->         2540 - ttyname-32 (Failed)
->         2541 - ttyname-32-no-syscallbuf (Failed)
->
-> So, I guess:
->
-> Tested-by: Kees Cook <keescook@chromium.org>
->
-> :)
+On Fri, 6 May 2022, Niklas Schnelle wrote:
 
-Thank you.  I was thinking it would be good to add the rr folks to the
-discussion.
+> On Fri, 2022-05-06 at 19:12 +1000, Finn Thain wrote:
+> > 
+> > On Thu, 5 May 2022, Bjorn Helgaas wrote:
+> > 
+> > > On Thu, May 05, 2022 at 07:39:42PM +0200, Arnd Bergmann wrote:
+> > > > On Thu, May 5, 2022 at 6:10 PM Bjorn Helgaas <helgaas@kernel.org> wrote:
+> > > > > On Wed, May 04, 2022 at 11:31:28PM +0200, Arnd Bergmann wrote:
+> > > > > > The main goal is to avoid c), which is what happens on s390, 
+> > > > > > but can also happen elsewhere. Catching b) would be nice as 
+> > > > > > well, but is much harder to do from generic code as you'd need 
+> > > > > > an architecture specific inline asm statement to insert a 
+> > > > > > ex_table fixup, or a runtime conditional on each access.
+> > > > > 
+> > > > > Or s390 could implement its own inb().
+> > > > > 
+> > > > > I'm hearing that generic powerpc kernels have to run both on 
+> > > > > machines that have I/O port space and those that don't.  That 
+> > > > > makes me think s390 could do something similar.
+> > > > 
+> > > > No, this is actually the current situation, and it makes 
+> > > > absolutely no sense. s390 has no way of implementing inb()/outb() 
+> > > > because there are no instructions for it and it cannot tunnel them 
+> > > > through a virtual address mapping like on most of the other 
+> > > > architectures. (it has special instructions for accessing memory 
+> > > > space, which is not the same as a pointer dereference here).
+> > > > 
+> > > > The existing implementation gets flagged as a NULL pointer 
+> > > > dereference by a compiler warning because it effectively is.
+> > > 
+> > > I think s390 currently uses the inb() in asm-generic/io.h, i.e., 
+> > > "__raw_readb(PCI_IOBASE + addr)".  I understand that's a NULL 
+> > > pointer dereference because the default PCI_IOBASE is 0.
+> > > 
+> > > I mooted a s390 inb() implementation like "return ~0" because that's 
+> > > what happens on most arches when there's no device to respond to the 
+> > > inb().
+> > > 
+> > > The HAS_IOPORT dependencies are fairly ugly IMHO, and they clutter 
+> > > drivers that use I/O ports in some cases but not others.  But maybe 
+> > > it's the most practical way.
+> > > 
+> > 
+> > Do you mean, "the most practical way to avoid a compiler warning on 
+> > s390"? What about "#pragma GCC diagnostic ignored"?
+> 
+> This actually happens with clang.
 
-Eric
+That suggests a clang bug to me. If you believe GCC should behave like 
+clang, then I guess the pragma above really is the one you want. If you 
+somehow feel that the kernel should cater to gcc and clang even where they 
+disagree then you would have to use "#pragma clang diagnostic ignored".
 
+> Apart from that, I think this would also fall under the same argument as 
+> the original patch Linus unpulled. We would just paint over someting 
+> that we know at compile time won't work:
+> 
+> https://lore.kernel.org/lkml/CAHk-=wg80je=K7madF4e7WrRNp37e3qh6y10Svhdc7O8SZ_-8g@mail.gmail.com/
+> 
+
+I wasn't advocating adding any warnings.
+
+If you know at compile time that a driver won't work, the usual solution 
+is scripts/config -d CONFIG_SOME_UNDESIRED_DRIVER. Why is that no 
+longer appropriate for drivers that use IO ports?
