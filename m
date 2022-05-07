@@ -2,55 +2,66 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D558551E391
-	for <lists+linux-ia64@lfdr.de>; Sat,  7 May 2022 04:32:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 190EA51E60A
+	for <lists+linux-ia64@lfdr.de>; Sat,  7 May 2022 11:28:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1445360AbiEGCge (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 6 May 2022 22:36:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38894 "EHLO
+        id S1388610AbiEGJcQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 7 May 2022 05:32:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1445366AbiEGCgc (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 6 May 2022 22:36:32 -0400
-Received: from out30-44.freemail.mail.aliyun.com (out30-44.freemail.mail.aliyun.com [115.124.30.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BE8A69CE1;
-        Fri,  6 May 2022 19:32:45 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R121e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e04407;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=30;SR=0;TI=SMTPD_---0VCUh82p_1651890757;
-Received: from 30.236.9.83(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0VCUh82p_1651890757)
-          by smtp.aliyun-inc.com(127.0.0.1);
-          Sat, 07 May 2022 10:32:39 +0800
-Message-ID: <e8b56f7d-ad95-7938-21a5-55caedbbb354@linux.alibaba.com>
-Date:   Sat, 7 May 2022 10:33:20 +0800
+        with ESMTP id S245217AbiEGJcP (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 7 May 2022 05:32:15 -0400
+Received: from szxga08-in.huawei.com (szxga08-in.huawei.com [45.249.212.255])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1F1A55343;
+        Sat,  7 May 2022 02:28:28 -0700 (PDT)
+Received: from dggpemm500020.china.huawei.com (unknown [172.30.72.57])
+        by szxga08-in.huawei.com (SkyGuard) with ESMTP id 4KwMXR5vqtz1JBtC;
+        Sat,  7 May 2022 17:27:19 +0800 (CST)
+Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
+ dggpemm500020.china.huawei.com (7.185.36.49) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Sat, 7 May 2022 17:28:26 +0800
+Received: from [10.174.178.120] (10.174.178.120) by
+ dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Sat, 7 May 2022 17:28:25 +0800
+Message-ID: <c65d22b4-f654-21aa-bd5f-d4f8b0939a25@huawei.com>
+Date:   Sat, 7 May 2022 17:28:24 +0800
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.1
-Subject: Re: [PATCH 2/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
- migration
-To:     Mike Kravetz <mike.kravetz@oracle.com>, akpm@linux-foundation.org,
-        catalin.marinas@arm.com, will@kernel.org
-Cc:     tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org
-References: <cover.1651216964.git.baolin.wang@linux.alibaba.com>
- <11b92502b3df0e0bba6a1dc71476d79cab6c79ba.1651216964.git.baolin.wang@linux.alibaba.com>
- <5cab0eca-9630-a7c6-4f5d-5cb45ff82c83@oracle.com>
- <21b11024-e893-8c11-9b98-ab1d13413b61@linux.alibaba.com>
- <85bd80b4-b4fd-0d3f-a2e5-149559f2f387@oracle.com>
-From:   Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <85bd80b4-b4fd-0d3f-a2e5-149559f2f387@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ Thunderbird/91.8.0
+Subject: Re: [PATCH 0/2] Add support to relocate kernel image to mirrored
+ region
+To:     <ardb@kernel.org>
+CC:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, <corbet@lwn.net>, <tglx@linutronix.de>,
+        <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+        <x86@kernel.org>, <dvhart@infradead.org>, <andy@infradead.org>,
+        <rppt@kernel.org>, <paulmck@kernel.org>, <peterz@infradead.org>,
+        <jroedel@suse.de>, <songmuchun@bytedance.com>, <macro@orcam.me.uk>,
+        <frederic@kernel.org>, <W_Armin@gmx.de>, <john.garry@huawei.com>,
+        <seanjc@google.com>, <tsbogend@alpha.franken.de>,
+        <anshuman.khandual@arm.com>, <chenhuacai@kernel.org>,
+        <david@redhat.com>, <gpiccoli@igalia.com>, <mark.rutland@arm.com>,
+        <wangkefeng.wang@huawei.com>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>,
+        <mawupeng1@huawei.com>
+References: <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
+ <20220419070150.254377-1-mawupeng1@huawei.com>
+ <CAMj1kXHr2RdYSPor1st1ZnL=O42c8N6e=bNG+eFhatfefWLUrw@mail.gmail.com>
+From:   mawupeng <mawupeng1@huawei.com>
+In-Reply-To: <CAMj1kXHr2RdYSPor1st1ZnL=O42c8N6e=bNG+eFhatfefWLUrw@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-13.0 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
+X-Originating-IP: [10.174.178.120]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500014.china.huawei.com (7.185.36.153)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.5 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,131 +71,84 @@ X-Mailing-List: linux-ia64@vger.kernel.org
 
 
 
-On 5/7/2022 1:56 AM, Mike Kravetz wrote:
-> On 5/5/22 20:39, Baolin Wang wrote:
+在 2022/5/3 17:58, Ard Biesheuvel 写道:
+> On Tue, 19 Apr 2022 at 08:43, Wupeng Ma <mawupeng1@huawei.com> wrote:
 >>
->> On 5/6/2022 7:53 AM, Mike Kravetz wrote:
->>> On 4/29/22 01:14, Baolin Wang wrote:
->>>> On some architectures (like ARM64), it can support CONT-PTE/PMD size
->>>> hugetlb, which means it can support not only PMD/PUD size hugetlb:
->>>> 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
->>>> size specified.
->>> <snip>
->>>> diff --git a/mm/rmap.c b/mm/rmap.c
->>>> index 6fdd198..7cf2408 100644
->>>> --- a/mm/rmap.c
->>>> +++ b/mm/rmap.c
->>>> @@ -1924,13 +1924,15 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>>                        break;
->>>>                    }
->>>>                }
->>>> +
->>>> +            /* Nuke the hugetlb page table entry */
->>>> +            pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
->>>>            } else {
->>>>                flush_cache_page(vma, address, pte_pfn(*pvmw.pte));
->>>> +            /* Nuke the page table entry. */
->>>> +            pteval = ptep_clear_flush(vma, address, pvmw.pte);
->>>>            }
->>>>    
->>>
->>> On arm64 with CONT-PTE/PMD the returned pteval will have dirty or young set
->>> if ANY of the PTE/PMDs had dirty or young set.
+>> From: Ma Wupeng <mawupeng1@huawei.com>
 >>
->> Right.
->>
->>>
->>>> -        /* Nuke the page table entry. */
->>>> -        pteval = ptep_clear_flush(vma, address, pvmw.pte);
->>>> -
->>>>            /* Set the dirty flag on the folio now the pte is gone. */
->>>>            if (pte_dirty(pteval))
->>>>                folio_mark_dirty(folio);
->>>> @@ -2015,7 +2017,10 @@ static bool try_to_migrate_one(struct folio *folio, struct vm_area_struct *vma,
->>>>                pte_t swp_pte;
->>>>                  if (arch_unmap_one(mm, vma, address, pteval) < 0) {
->>>> -                set_pte_at(mm, address, pvmw.pte, pteval);
->>>> +                if (folio_test_hugetlb(folio))
->>>> +                    set_huge_pte_at(mm, address, pvmw.pte, pteval);
->>>
->>> And, we will use that pteval for ALL the PTE/PMDs here.  So, we would set
->>> the dirty or young bit in ALL PTE/PMDs.
->>>
->>> Could that cause any issues?  May be more of a question for the arm64 people.
->>
->> I don't think this will cause any issues. Since the hugetlb can not be split, and we should not lose the the dirty or young state if any subpages were set. Meanwhile we already did like this in hugetlb.c:
->>
->> pte = huge_ptep_get_and_clear(mm, address, ptep);
->> tlb_remove_huge_tlb_entry(h, tlb, ptep, address);
->> if (huge_pte_dirty(pte))
->>      set_page_dirty(page);
+>> Now system image will perfer to be located to mirrored regions both KASLR
+>> on and off.
 >>
 > 
-> Agree that it 'should not' cause issues.  It just seems inconsistent.
-> This is not a problem specifically with your patch, just the handling of
-> CONT-PTE/PMD entries.
+> Hello Ma Wupeng,
 > 
-> There does not appear to be an arm64 specific version of huge_ptep_get()
-> that takes CONT-PTE/PMD into account.  So, huge_ptep_get() would only
-> return the one specific value.  It would not take into account the dirty
-> or young bits of CONT-PTE/PMDs like your new version of
-> huge_ptep_get_and_clear.  Is that correct?  Or, am I missing something.
+> I wonder if we could simplify this as follows:
+> - ignore the non-KASLR case for now, and rely on the bootloader  > load the image into mirrored memory if it exists;
 
-Yes, you are right.
+In grub, memory for static image is allocated via the following path:
+
+grub_cmd_linux
+   kernel = grub_malloc(filelen)
+   kernel_alloc_addr = grub_efi_allocate_any_pages (kernel_alloc_pages)
+   grub_memcpy (kernel_addr, kernel, grub_min(filelen, kernel_size))
+    grub_loader_set (grub_linux_boot, grub_linux_unload, 0)
+
+Can we get memory from mirrored region by the following steps:
+1. get memory map by calling grub_efi_get_memory_map()
+2. iter all memory map to find a suitable mirrored memory area
+3. locate kernel image to this area
+
+So, if kaslr is not enabled
+  - grub will load kernel into mirrored region
+else
+  - arm64-stub.c will relocate kernel image to mirrored region
+
+Is this feasible?
+
+> - simplify the KASLR case to the below.
+
+Yes, we can certainly do this. I will remove my code and use yours.
 
 > 
-> If I am correct, then code like the following may not work:
+> I think this is reasonable, because it means we take mirrored memory
+> into account when we decide to move the image anyway, but expect the
+> boot chain to take care of this if there is no need to move the image.
 > 
-> static int gather_hugetlb_stats(pte_t *pte, unsigned long hmask,
->                  unsigned long addr, unsigned long end, struct mm_walk *walk)
-> {
->          pte_t huge_pte = huge_ptep_get(pte);
->          struct numa_maps *md;
->          struct page *page;
+> -------------8<------------------
+> --- a/drivers/firmware/efi/libstub/randomalloc.c
+> +++ b/drivers/firmware/efi/libstub/randomalloc.c
+> @@ -56,6 +56,7 @@ efi_status_t efi_random_alloc(unsigned long size,
+>                                unsigned long random_seed)
+>   {
+>          unsigned long map_size, desc_size, total_slots = 0, target_slot;
+> +       unsigned long total_mirrored_slots = 0;
+>          unsigned long buff_size;
+>          efi_status_t status;
+>          efi_memory_desc_t *memory_map;
+> @@ -86,8 +87,14 @@ efi_status_t efi_random_alloc(unsigned long size,
+>                  slots = get_entry_num_slots(md, size, ilog2(align));
+>                  MD_NUM_SLOTS(md) = slots;
+>                  total_slots += slots;
+> +               if (md->attribute & EFI_MEMORY_MORE_RELIABLE)
+> +                       total_mirrored_slots += slots;
+>          }
 > 
->          if (!pte_present(huge_pte))
->                  return 0;
+> +       /* only consider mirrored slots for randomization if any exist */
+> +       if (total_mirrored_slots > 0)
+> +               total_slots = total_mirrored_slots;
+> +
+>          /* find a random number between 0 and total_slots */
+>          target_slot = (total_slots * (u64)(random_seed & U32_MAX)) >> 32;
 > 
->          page = pte_page(huge_pte);
+> @@ -107,6 +114,10 @@ efi_status_t efi_random_alloc(unsigned long size,
+>                  efi_physical_addr_t target;
+>                  unsigned long pages;
 > 
->          md = walk->private;
->          gather_stats(page, md, pte_dirty(huge_pte), 1);
->          return 0;
-> }
-
-Right, this is inconsistent with current huge_ptep_get() interface like 
-you said. So I think we can define an ARCH-specific huge_ptep_get() 
-interface for arm64, and some sample code like below. How do you think?
-
-+pte_t huge_ptep_get(pte_t *ptep, unsigned long size)
-+{
-+       int ncontig;
-+       pte_t orig_pte = ptep_get(ptep);
-+
-+       if (!pte_cont(orig_pte))
-+               return orig_pte;
-+
-+       switch (size) {
-+       case CONT_PMD_SIZE:
-+               ncontig = CONT_PMDS;
-+               break;
-+       case CONT_PTE_SIZE:
-+               ncontig = CONT_PTES;
-+               break;
-+       default:
-+               WARN_ON_ONCE(1);
-+               return orig_pte;
-+       }
-+
-+       for (i = 0; i < ncontig; i++, ptep++) {
-+               pte_t pte = ptep_get(ptep);
-+
-+               if (pte_dirty(pte))
-+                       orig_pte = pte_mkdirty(orig_pte);
-+
-+               if (pte_young(pte))
-+                       orig_pte = pte_mkyong(orig_pte);
-+       }
-+
-+       return orig_pte;
-+}
+> +               if (total_mirrored_slots > 0 &&
+> +                   !(md->attribute & EFI_MEMORY_MORE_RELIABLE))
+> +                       continue;
+> +
+>                  if (target_slot >= MD_NUM_SLOTS(md)) {
+>                          target_slot -= MD_NUM_SLOTS(md);
+>                          continue;
+> .
