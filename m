@@ -2,117 +2,60 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62F7951EDCC
-	for <lists+linux-ia64@lfdr.de>; Sun,  8 May 2022 15:32:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10ADA51EE10
+	for <lists+linux-ia64@lfdr.de>; Sun,  8 May 2022 16:35:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233558AbiEHNfu (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 8 May 2022 09:35:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59786 "EHLO
+        id S234085AbiEHOjQ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Sun, 8 May 2022 10:39:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232405AbiEHNft (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 8 May 2022 09:35:49 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1F4B101CF
-        for <linux-ia64@vger.kernel.org>; Sun,  8 May 2022 06:31:57 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id i1so11589492plg.7
-        for <linux-ia64@vger.kernel.org>; Sun, 08 May 2022 06:31:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=PmPqsk4Ds+rkfpu3nL2hTmPZ4zZI7ndI1Rv+jcAXn+g=;
-        b=SyLOThmLnXTk6qRKX1oo9DRLScsXkpBQJcjqc2ZX8BklsBr9Jd5/4XzS5R0rdBNn64
-         Gj08t8HnQPHGWv/6lK5azajHcMs4BDXMAWO/si9Vg++doIk4TwR6gjg96i/2Ieo239U+
-         GD/hhn1ajJzQO2Fu00Id46ibFUBWFedLdoweGjfehLyxDpd+kx2jhOMeAvgK4hJi70uy
-         2Sxen0AzDNegfxiv3X3keWQqOByVGhCLH68rwxiyhvd4lp5cQorNpjcRm00TCUGhYcZj
-         TpQMhfYAi5LQjolnYmnz+/jetR/+obipzK9Rq4yk9iPkemX0aPQqHJMSY4KTNlniPFzy
-         Gz1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=PmPqsk4Ds+rkfpu3nL2hTmPZ4zZI7ndI1Rv+jcAXn+g=;
-        b=Ls/FJxSWyKidlHX9B1JIwRWqw4AhuLU3+uV/Dk/dXtJyvqBc80OFFtg3GeK/KH/I7d
-         fvAsGELYWZ7gKtfIaf+oX8vXbK2ZcGrAYy3TSZ+P4li+fiSJnBcMTgOeKlpIUUtMvPjC
-         3/0exqJNDW3vdXQNlOmMXtcasRKl4HA3EB3mnP2FPmFSvbgBTMY5o5UTJxfUsFk8J7IS
-         KT9IYR83kqMqCtMYqPD1YKm2AnbLkJJWgYzX6mlLBlZjzryLK87erIBOK2n8uAuXs98t
-         vgCM00TgXuTtO8a4qSxcsLifA/P4y27MZvhT8YZwVlXL7q6UABe445Nzvf4RoDiXu78z
-         mWIA==
-X-Gm-Message-State: AOAM530ZN8R211aN4loI+kbMQloeNSBYX9HeCHx6GXrSfY7k5tp2bqOg
-        ayZASgQy8FAYyE5BidElxm7JZA==
-X-Google-Smtp-Source: ABdhPJxahffH9rcJXLYibIJ0tdGcqVx0aeXH5wYUXoWTVBpSrJpN/ltMk318QQF+PAogtyB3/7uLhQ==
-X-Received: by 2002:a17:90b:4c88:b0:1dc:60c2:25b2 with SMTP id my8-20020a17090b4c8800b001dc60c225b2mr21748033pjb.133.1652016717528;
-        Sun, 08 May 2022 06:31:57 -0700 (PDT)
-Received: from localhost ([139.177.225.234])
-        by smtp.gmail.com with ESMTPSA id cj25-20020a056a00299900b0050dc76281e1sm6590444pfb.187.2022.05.08.06.31.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 May 2022 06:31:57 -0700 (PDT)
-Date:   Sun, 8 May 2022 21:31:54 +0800
-From:   Muchun Song <songmuchun@bytedance.com>
-To:     Baolin Wang <baolin.wang@linux.alibaba.com>
-Cc:     akpm@linux-foundation.org, mike.kravetz@oracle.com,
-        catalin.marinas@arm.com, will@kernel.org,
-        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
-        paulus@samba.org, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, arnd@arndb.de,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH v2 2/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue
- when migration
-Message-ID: <YnfGSu8tPzTt9ozL@FVFYT0MHHV2J.usts.net>
-References: <cover.1652002221.git.baolin.wang@linux.alibaba.com>
- <1ec8a987be1a5400e077260a300d0079564b1472.1652002221.git.baolin.wang@linux.alibaba.com>
+        with ESMTP id S233944AbiEHOi5 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 8 May 2022 10:38:57 -0400
+X-Greylist: delayed 350 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 08 May 2022 07:35:05 PDT
+Received: from ns1.incdtp.ro (incdtp.ro [89.44.234.162])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E92B6389
+        for <linux-ia64@vger.kernel.org>; Sun,  8 May 2022 07:35:05 -0700 (PDT)
+Received: from localhost (localhost.localdomain [127.0.0.1])
+        by ns1.incdtp.ro (Postfix) with ESMTP id 0F68F8C145F;
+        Sun,  8 May 2022 17:25:58 +0300 (EEST)
+X-Virus-Scanned: Debian amavisd-new at ns1.incdtp.ro
+Received: from ns1.incdtp.ro ([127.0.0.1])
+        by localhost (ns1.incdtp.ro [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id vSeGNkGm3q3a; Sun,  8 May 2022 17:25:57 +0300 (EEST)
+Received: from [10.244.0.4] (unknown [192.121.16.221])
+        (Authenticated sender: teodor.sarbu@incdtp.ro)
+        by ns1.incdtp.ro (Postfix) with ESMTPSA id A250E8C1AD3;
+        Sun,  8 May 2022 17:25:32 +0300 (EEST)
+Content-Type: text/plain; charset="iso-8859-1"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1ec8a987be1a5400e077260a300d0079564b1472.1652002221.git.baolin.wang@linux.alibaba.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+Content-Description: Mail message body
+Subject: Re:Did you get my last mail?
+To:     Recipients <xSantix@incdtp.ro>
+From:   "Christakis Santi" <xSantix@incdtp.ro>
+Date:   Sun, 08 May 2022 22:21:00 +0800
+Reply-To: Christikassantis@outlook.com
+Message-Id: <20220508142558.0F68F8C145F@ns1.incdtp.ro>
+X-Spam-Status: No, score=4.9 required=5.0 tests=BAYES_60,
+        FREEMAIL_FORGED_REPLYTO,RCVD_IN_VALIDITY_RPBL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sun, May 08, 2022 at 05:36:40PM +0800, Baolin Wang wrote:
-> On some architectures (like ARM64), it can support CONT-PTE/PMD size
-> hugetlb, which means it can support not only PMD/PUD size hugetlb:
-> 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
-> size specified.
-> 
-> When migrating a hugetlb page, we will get the relevant page table
-> entry by huge_pte_offset() only once to nuke it and remap it with
-> a migration pte entry. This is correct for PMD or PUD size hugetlb,
-> since they always contain only one pmd entry or pud entry in the
-> page table.
-> 
-> However this is incorrect for CONT-PTE and CONT-PMD size hugetlb,
-> since they can contain several continuous pte or pmd entry with
-> same page table attributes. So we will nuke or remap only one pte
-> or pmd entry for this CONT-PTE/PMD size hugetlb page, which is
-> not expected for hugetlb migration. The problem is we can still
-> continue to modify the subpages' data of a hugetlb page during
-> migrating a hugetlb page, which can cause a serious data consistent
-> issue, since we did not nuke the page table entry and set a
-> migration pte for the subpages of a hugetlb page.
-> 
-> To fix this issue, we should change to use huge_ptep_clear_flush()
-> to nuke a hugetlb page table, and remap it with set_huge_pte_at()
-> and set_huge_swap_pte_at() when migrating a hugetlb page, which
-> already considered the CONT-PTE or CONT-PMD size hugetlb.
-> 
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
+Hello
 
-This looks fine to me.
+I sent you a business proposal. have you seen it?
 
-Reviewed-by: Muchun Song <songmuchun@bytedance.com>
 
-Thanks.
+awaiting your response.
+
+
+Regards
+Christakis Santi.
+
+
+Board of Directors of RCB Bank Ltd
