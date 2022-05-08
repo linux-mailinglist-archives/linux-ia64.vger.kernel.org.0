@@ -2,67 +2,56 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4DE351EB4B
-	for <lists+linux-ia64@lfdr.de>; Sun,  8 May 2022 05:35:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC97151EC68
+	for <lists+linux-ia64@lfdr.de>; Sun,  8 May 2022 11:19:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230233AbiEHDj1 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 7 May 2022 23:39:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37786 "EHLO
+        id S231994AbiEHJXE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 8 May 2022 05:23:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230048AbiEHDj0 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 7 May 2022 23:39:26 -0400
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1CA0B5F4F;
-        Sat,  7 May 2022 20:35:38 -0700 (PDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id js14so8236775qvb.12;
-        Sat, 07 May 2022 20:35:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=FxE4XGjmI8HG99YFnDDGRLArlyf58TuZbfYeq8IqEUI=;
-        b=bbgICBSZWrjAQcZYAXA9zbbNY2KUX+3qeGALBg7ivtS6tUcMlxSdm8NpJ63Y+KyMV9
-         JlFk/pJGB1BmJYN/iqzPn7ueSRBgMLRJKiIB5RaXXVlumFoKDowcBMlf5ebLwy/gZd8b
-         SXz7klpZIItw/UzTjkwvfCea7ZnNUpTVM+bdxFGK4Fv6rK/PVgEEzrQAmE4k3VqsRtfj
-         30OdQo30SJxM1aWgYTk8i1up08nfVJCCKRVECDpXYaapwmQY7T9QDWrVuHqhjYp5WM4M
-         DFoMnZNbjMEiPupH/cS20g6hGgT8DEY2bJBbWvUoM0RqjdJ4eUiXvci4gIPDb6/PNG1n
-         u0pA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=FxE4XGjmI8HG99YFnDDGRLArlyf58TuZbfYeq8IqEUI=;
-        b=Tuo6xPEYXEYezORdHiiumj0KuMPB50OaSWg4gHmNJI37Y1WPdlHpS3wPXYMVQTiGuA
-         59DcZ0wOyAtuSM6xioNxmSFix8630nFmoA/OY4wwRbgD9pIN7/64yPydmfJNYG4Uor+1
-         9VRUI+1UwycVyfHBzdXm81oySghl8vfjNNSFLJQzrA46AacURJ7zzTkR5JPvZf7L4occ
-         QEBXpxubqJFCdZwsACh0SpoD0CGTvso79sNeRHzax8/kqtwuNc98iK6fMSezF9fsKMhI
-         ZSRlBk8K85d9jpp1K9TJ2CInfyVueQ2E9tO77zfaUUaNT+RDtUvfSotsHZPBf3ptyDMi
-         2F/g==
-X-Gm-Message-State: AOAM530HibnX/JCgZeksrThZwvGQUShj7bKeGZBjncRnw1IIpD4t5lAf
-        UhbRoU6516cMp+p2FEufsxQ=
-X-Google-Smtp-Source: ABdhPJzc6oMswYoHHjVB4iP2lxH5pbHY832BCcQzgTr77rQRZJ1hv68wot+Vh5HxSfLmoFwZLBIlvg==
-X-Received: by 2002:a05:6214:19c2:b0:45a:8d3e:8efc with SMTP id j2-20020a05621419c200b0045a8d3e8efcmr8471733qvc.30.1651980937156;
-        Sat, 07 May 2022 20:35:37 -0700 (PDT)
-Received: from localhost ([98.242.65.50])
-        by smtp.gmail.com with ESMTPSA id a1-20020a376601000000b0069fc13ce1d3sm4828397qkc.4.2022.05.07.20.35.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 07 May 2022 20:35:36 -0700 (PDT)
-Date:   Sat, 7 May 2022 20:35:35 -0700
-From:   Yury Norov <yury.norov@gmail.com>
-To:     Jason Wang <wangborong@cdjrlc.com>
-Cc:     akpm@linux-foundation.org, Julia.Lawall@inria.fr,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Fenghua Yu <fenghua.yu@intel.com>
-Subject: Re: [PATCH] arch/ia64: no need to initialise statics to 0
-Message-ID: <Ync6h0QsjZa1jMFX@yury-laptop>
-References: <20220508022628.96501-1-wangborong@cdjrlc.com>
+        with ESMTP id S230000AbiEHJXD (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 8 May 2022 05:23:03 -0400
+Received: from out30-42.freemail.mail.aliyun.com (out30-42.freemail.mail.aliyun.com [115.124.30.42])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20191E015;
+        Sun,  8 May 2022 02:19:09 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=e01e01424;MF=baolin.wang@linux.alibaba.com;NM=1;PH=DS;RN=30;SR=0;TI=SMTPD_---0VCZtzMG_1652001541;
+Received: from 30.15.195.77(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0VCZtzMG_1652001541)
+          by smtp.aliyun-inc.com(127.0.0.1);
+          Sun, 08 May 2022 17:19:03 +0800
+Message-ID: <1fad03a6-98cf-1b0e-e012-82dc6466c7d2@linux.alibaba.com>
+Date:   Sun, 8 May 2022 17:19:43 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220508022628.96501-1-wangborong@cdjrlc.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Subject: Re: [PATCH 2/3] mm: rmap: Fix CONT-PTE/PMD size hugetlb issue when
+ migration
+From:   Baolin Wang <baolin.wang@linux.alibaba.com>
+To:     Mike Kravetz <mike.kravetz@oracle.com>, akpm@linux-foundation.org,
+        catalin.marinas@arm.com, will@kernel.org
+Cc:     tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
+        deller@gmx.de, mpe@ellerman.id.au, benh@kernel.crashing.org,
+        paulus@samba.org, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, arnd@arndb.de,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-mm@kvack.org
+References: <cover.1651216964.git.baolin.wang@linux.alibaba.com>
+ <11b92502b3df0e0bba6a1dc71476d79cab6c79ba.1651216964.git.baolin.wang@linux.alibaba.com>
+ <5cab0eca-9630-a7c6-4f5d-5cb45ff82c83@oracle.com>
+ <21b11024-e893-8c11-9b98-ab1d13413b61@linux.alibaba.com>
+ <85bd80b4-b4fd-0d3f-a2e5-149559f2f387@oracle.com>
+ <e8b56f7d-ad95-7938-21a5-55caedbbb354@linux.alibaba.com>
+In-Reply-To: <e8b56f7d-ad95-7938-21a5-55caedbbb354@linux.alibaba.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-11.4 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -70,60 +59,116 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-+ Fenghua Yu <fenghua.yu@intel.com>
 
-On Sun, May 08, 2022 at 10:26:28AM +0800, Jason Wang wrote:
-> Static variables do not need to be initialised to 0, because compiler
-> will initialise all uninitialised statics to 0. Thus, remove the
-> unneeded initializations.
+
+On 5/7/2022 10:33 AM, Baolin Wang wrote:
 > 
-> Signed-off-by: Jason Wang <wangborong@cdjrlc.com>
-
-Not sure why checkpatch picked me to be a reviewer for this.
-Nevertheless...
-
-> ---
->  arch/ia64/mm/tlb.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/ia64/mm/tlb.c b/arch/ia64/mm/tlb.c
-> index 7a2d608fba74..854e90c4e7eb 100644
-> --- a/arch/ia64/mm/tlb.c
-> +++ b/arch/ia64/mm/tlb.c
-> @@ -84,7 +84,7 @@ wrap_mmu_context (struct mm_struct *mm)
->  		flush_bit = xchg(&ia64_ctx.flushmap[i], 0);
->  		ia64_ctx.bitmap[i] ^= flush_bit;
->  	}
-> - 
-> +
+> On 5/7/2022 1:56 AM, Mike Kravetz wrote:
+>> On 5/5/22 20:39, Baolin Wang wrote:
+>>>
+>>> On 5/6/2022 7:53 AM, Mike Kravetz wrote:
+>>>> On 4/29/22 01:14, Baolin Wang wrote:
+>>>>> On some architectures (like ARM64), it can support CONT-PTE/PMD size
+>>>>> hugetlb, which means it can support not only PMD/PUD size hugetlb:
+>>>>> 2M and 1G, but also CONT-PTE/PMD size: 64K and 32M if a 4K page
+>>>>> size specified.
+>>>> <snip>
+>>>>> diff --git a/mm/rmap.c b/mm/rmap.c
+>>>>> index 6fdd198..7cf2408 100644
+>>>>> --- a/mm/rmap.c
+>>>>> +++ b/mm/rmap.c
+>>>>> @@ -1924,13 +1924,15 @@ static bool try_to_migrate_one(struct folio 
+>>>>> *folio, struct vm_area_struct *vma,
+>>>>>                        break;
+>>>>>                    }
+>>>>>                }
+>>>>> +
+>>>>> +            /* Nuke the hugetlb page table entry */
+>>>>> +            pteval = huge_ptep_clear_flush(vma, address, pvmw.pte);
+>>>>>            } else {
+>>>>>                flush_cache_page(vma, address, pte_pfn(*pvmw.pte));
+>>>>> +            /* Nuke the page table entry. */
+>>>>> +            pteval = ptep_clear_flush(vma, address, pvmw.pte);
+>>>>>            }
+>>>>
+>>>> On arm64 with CONT-PTE/PMD the returned pteval will have dirty or 
+>>>> young set
+>>>> if ANY of the PTE/PMDs had dirty or young set.
+>>>
+>>> Right.
+>>>
+>>>>
+>>>>> -        /* Nuke the page table entry. */
+>>>>> -        pteval = ptep_clear_flush(vma, address, pvmw.pte);
+>>>>> -
+>>>>>            /* Set the dirty flag on the folio now the pte is gone. */
+>>>>>            if (pte_dirty(pteval))
+>>>>>                folio_mark_dirty(folio);
+>>>>> @@ -2015,7 +2017,10 @@ static bool try_to_migrate_one(struct folio 
+>>>>> *folio, struct vm_area_struct *vma,
+>>>>>                pte_t swp_pte;
+>>>>>                  if (arch_unmap_one(mm, vma, address, pteval) < 0) {
+>>>>> -                set_pte_at(mm, address, pvmw.pte, pteval);
+>>>>> +                if (folio_test_hugetlb(folio))
+>>>>> +                    set_huge_pte_at(mm, address, pvmw.pte, pteval);
+>>>>
+>>>> And, we will use that pteval for ALL the PTE/PMDs here.  So, we 
+>>>> would set
+>>>> the dirty or young bit in ALL PTE/PMDs.
+>>>>
+>>>> Could that cause any issues?  May be more of a question for the 
+>>>> arm64 people.
+>>>
+>>> I don't think this will cause any issues. Since the hugetlb can not 
+>>> be split, and we should not lose the the dirty or young state if any 
+>>> subpages were set. Meanwhile we already did like this in hugetlb.c:
+>>>
+>>> pte = huge_ptep_get_and_clear(mm, address, ptep);
+>>> tlb_remove_huge_tlb_entry(h, tlb, ptep, address);
+>>> if (huge_pte_dirty(pte))
+>>>      set_page_dirty(page);
+>>>
+>>
+>> Agree that it 'should not' cause issues.  It just seems inconsistent.
+>> This is not a problem specifically with your patch, just the handling of
+>> CONT-PTE/PMD entries.
+>>
+>> There does not appear to be an arm64 specific version of huge_ptep_get()
+>> that takes CONT-PTE/PMD into account.  So, huge_ptep_get() would only
+>> return the one specific value.  It would not take into account the dirty
+>> or young bits of CONT-PTE/PMDs like your new version of
+>> huge_ptep_get_and_clear.  Is that correct?  Or, am I missing something.
+> 
+> Yes, you are right.
+> 
+>>
+>> If I am correct, then code like the following may not work:
+>>
+>> static int gather_hugetlb_stats(pte_t *pte, unsigned long hmask,
+>>                  unsigned long addr, unsigned long end, struct mm_walk 
+>> *walk)
+>> {
+>>          pte_t huge_pte = huge_ptep_get(pte);
+>>          struct numa_maps *md;
+>>          struct page *page;
+>>
+>>          if (!pte_present(huge_pte))
+>>                  return 0;
+>>
+>>          page = pte_page(huge_pte);
+>>
+>>          md = walk->private;
+>>          gather_stats(page, md, pte_dirty(huge_pte), 1);
+>>          return 0;
+>> }
+> 
+> Right, this is inconsistent with current huge_ptep_get() interface like 
+> you said. So I think we can define an ARCH-specific huge_ptep_get() 
+> interface for arm64, and some sample code like below. How do you think?
 
-This one is unrelated to the patch description. Can you split the
-patch, or add a couple words about this cleanup?
+After some investigation, I send out a RFC patch set[1] to address this 
+issue. We can talk about this issue in that thread. Thanks.
 
->  	/* use offset at 300 to skip daemons */
->  	ia64_ctx.next = find_next_zero_bit(ia64_ctx.bitmap,
->  				ia64_ctx.max_ctx, 300);
-> @@ -144,7 +144,7 @@ static inline void up_spin(struct spinaphore *ss)
->  static struct spinaphore ptcg_sem;
->  static u16 nptcg = 1;
->  static int need_ptcg_sem = 1;
-> -static int toolatetochangeptcgsem = 0;
-> +static int toolatetochangeptcgsem;
-
-There are at least 460 global static variables initialized explicitly.
-
-yury:linux$ git grep "^static" | grep "= 0;" | wc -l
-460
-
-Are you going to fix them all? If not why this one is so special?
-
-Before applying this, let's ask Fenghua - maybe it was his intention
-to underline that the variable is initialized as 0.  
-
-Thanks,
-Yury
-
->  /*
->   * Kernel parameter "nptcg=" overrides max number of concurrent global TLB
-> -- 
-> 2.35.1
+[1] 
+https://lore.kernel.org/all/cover.1651998586.git.baolin.wang@linux.alibaba.com/
