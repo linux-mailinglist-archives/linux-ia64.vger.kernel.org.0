@@ -2,66 +2,56 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEE4F51F37D
+	by mail.lfdr.de (Postfix) with ESMTP id 62AB951F37C
 	for <lists+linux-ia64@lfdr.de>; Mon,  9 May 2022 06:28:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230027AbiEIEZu (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 9 May 2022 00:25:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55424 "EHLO
+        id S229608AbiEIE0y (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 9 May 2022 00:26:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234220AbiEIERT (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 9 May 2022 00:17:19 -0400
-Received: from mail-pj1-x1034.google.com (mail-pj1-x1034.google.com [IPv6:2607:f8b0:4864:20::1034])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D391A11922A;
-        Sun,  8 May 2022 21:13:25 -0700 (PDT)
-Received: by mail-pj1-x1034.google.com with SMTP id cq17-20020a17090af99100b001dc0386cd8fso11719142pjb.5;
-        Sun, 08 May 2022 21:13:25 -0700 (PDT)
+        with ESMTP id S234349AbiEIER2 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 9 May 2022 00:17:28 -0400
+Received: from mail-pj1-x102c.google.com (mail-pj1-x102c.google.com [IPv6:2607:f8b0:4864:20::102c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34FD088F66;
+        Sun,  8 May 2022 21:13:36 -0700 (PDT)
+Received: by mail-pj1-x102c.google.com with SMTP id j10-20020a17090a94ca00b001dd2131159aso762638pjw.0;
+        Sun, 08 May 2022 21:13:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=i4ZmSEZyae107M7woQKre9aBPoaep2udL6cDHmolvx4=;
-        b=EelE4Sk2rLVbk1vLK9xnYcqXSyseWXVcrB40eFirQUnctT0lgrGQBnNU9A2L6k+bb7
-         OjDg+CYdzVjkdzqvx5z0D/d1zRh6WjH0+7K8OQrg1yKK/yaIsti73fDLvugPzgRgE98p
-         Po61z8180HgTwzAO1H7b46taafqDlg2GeN2Z8lI+6hpgcfQhlQV2ivduSA92N8HYX79q
-         6qN07SFMZpwKLDRQr2aKIJiRfiaTUsp0HBUDbIAPm+s4S8xU32heA+KWOUxMF3xvaVvn
-         fTGg+jDPKbodCq8Vtpj2sSfKIvQXG4tMqXOx/iBl9keMTJkMEduWgBvuxY1EFLa/QuB1
-         Egqg==
+        h=from:to:cc:subject:date:message-id:in-reply-to:references
+         :mime-version:content-transfer-encoding;
+        bh=yvzilvcidt0cy/+jVulM8s/ugqFP0eQunNYQSTfNZQQ=;
+        b=VZlRW/We3EYhQtPGSwiA+/E8SQ9csMkZggbJQP8bDq93RAzZfEkKLiToa0CrYo2R6b
+         Bw9GHO8xdQXPauGeSSZShZ6AcW0osz6zXk11mNUkJ7Zr22PeMHXZRYXR1A0AUoKsFmIG
+         WRcIwZLmoMapXgqfsjRadkRfgdZ994AOY3pKiQ/LhphFBkKpGHvzrqGyFFNzacgFcgv9
+         uv40xCxir9ojG5hLanVpmtkP3lz5d+JtaVNDHwrsuyWt1ZCckRsmgry7staku/ADL/Bd
+         515bJtdiGHxIpP1ShGIxCTpusBl39fvK2BUfdMfgXmJOsqCL5A1sEiJGAp9grbq7gYln
+         faZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
-         :content-transfer-encoding;
-        bh=i4ZmSEZyae107M7woQKre9aBPoaep2udL6cDHmolvx4=;
-        b=ULAP5IHq7nPoYoWagFHgca4TVzdX6PcHk8CSjbkKR2uql9cD4ftNojc6sDAtfNhzfZ
-         gs/DPPBF5eSecSP3E4ww3H44ebF++e4mmUXt3x5NkFLak2WpbRH3wtZtd8GW9OWLSWd0
-         UWzdHQP1nMXIxwvrGBoGFowdggGALWfO0jFPLtC0/Y2+D4jK1EvCVQhlBIJ5rHYhxRjq
-         ZiOq91IbI6Zwh9dfRLzZ3KiprRZZnVRDBcp6kzibUtK9HuJELV32pavYPlvcKevQkpR3
-         Sbm2ew4AaFuVPdMMzxOeqQaXYi23P0R7wmDGgfZJxQrOoYycYttrYaX6evgudR7cUa/k
-         oKqA==
-X-Gm-Message-State: AOAM533s9h/53jyabYEWfvDRyFjQ2Ea7mZpZr1UXzprsOKkXkJjsRPe4
-        9OjfTEYK5H2IfIkBAq3rnZgdH70RPRsx
-X-Google-Smtp-Source: ABdhPJwA12GMNtxipiY1QrrqNCB1QXJ3EJmQp3Iv9uD5xQEH9BSDFsZL5vlxX/0LpgkUo1SfW2hNOg==
-X-Received: by 2002:a17:903:1211:b0:15e:8208:8cc0 with SMTP id l17-20020a170903121100b0015e82088cc0mr14708514plh.52.1652069600512;
-        Sun, 08 May 2022 21:13:20 -0700 (PDT)
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+         :references:mime-version:content-transfer-encoding;
+        bh=yvzilvcidt0cy/+jVulM8s/ugqFP0eQunNYQSTfNZQQ=;
+        b=FmzlQAfzplFU6tEFtYamjR9pXEChRGC/yKJRkpZprGAJygwRPKe58iG13nFPRtD3/B
+         ASTwy7SQv2HSCTEewVuhpGt/89E6oRdn+f9HPp362+0YVd332TDAH8NHGye/BQDCYYFJ
+         eNIEa0xb59t/CDdf2nIzj5a68OCz0oaJiCJywV0u+jnygAHgUht2g1sYFdnIhY2Zf2jQ
+         pNaaP0HQiZRB3ckrsUz7LbebgcQMsW43uMkNJLruLxXKYQNol4dR6Cl8XaXcl73xYAro
+         IPPqoY/5DigP05TlXArx4d4F9XrUa1Thah/laOlcAXkjCGrDAHf/XjS8DilR5xv71OVT
+         KZbw==
+X-Gm-Message-State: AOAM5324V8Wl7PLeBcYjfdiHbUjTqBwrZPXi681uEvIbGPNyTHvDTHEr
+        5eMST2xlL3OXdGNuVFmZ4hVRWSloQg==
+X-Google-Smtp-Source: ABdhPJznFnzsSty9FB+peqx2+50gFD+ELmjTouVakza/raAO/f8MAY9hh3Kmuhr15ajevdFC9iJDXA==
+X-Received: by 2002:a17:902:d487:b0:15e:a0a4:69e3 with SMTP id c7-20020a170902d48700b0015ea0a469e3mr14746513plg.155.1652069613718;
+        Sun, 08 May 2022 21:13:33 -0700 (PDT)
 Received: from piliu.users.ipa.redhat.com ([209.132.188.80])
-        by smtp.gmail.com with ESMTPSA id m19-20020a17090a7f9300b001cd60246575sm11478545pjl.17.2022.05.08.21.13.11
+        by smtp.gmail.com with ESMTPSA id m19-20020a17090a7f9300b001cd60246575sm11478545pjl.17.2022.05.08.21.13.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 08 May 2022 21:13:20 -0700 (PDT)
+        Sun, 08 May 2022 21:13:33 -0700 (PDT)
 From:   Pingfan Liu <kernelfans@gmail.com>
-To:     linux-ia64@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-kernel@vger.kernel.org
+To:     linux-ia64@vger.kernel.org, linux-arm-kernel@lists.infradead.org
 Cc:     Pingfan Liu <kernelfans@gmail.com>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Valentin Schneider <valentin.schneider@arm.com>,
-        Vincent Donnefort <vincent.donnefort@arm.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        YueHaibing <yuehaibing@huawei.com>,
-        Baokun Li <libaokun1@huawei.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        kexec@lists.infradead.org,
         Geert Uytterhoeven <geert@linux-m68k.org>,
+        Peter Zijlstra <peterz@infradead.org>,
         Kees Cook <keescook@chromium.org>,
         Jens Axboe <axboe@kernel.dk>,
         Russell King <linux@armlinux.org.uk>,
@@ -73,11 +63,13 @@ Cc:     Pingfan Liu <kernelfans@gmail.com>,
         Will Deacon <will@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Peter Collingbourne <pcc@google.com>,
-        Marc Zyngier <maz@kernel.org>
-Subject: [PATCHv3 0/2] cpu/hotplug: Keep cpu hotplug disabled until the rebooting cpu is stable
-Date:   Mon,  9 May 2022 12:13:03 +0800
-Message-Id: <20220509041305.15056-1-kernelfans@gmail.com>
+        Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org
+Subject: [PATCHv3 2/2] arm/arm64/ia64: kexec: fix the primary cpu passed to smp_shutdown_nonboot_cpus()
+Date:   Mon,  9 May 2022 12:13:05 +0800
+Message-Id: <20220509041305.15056-3-kernelfans@gmail.com>
 X-Mailer: git-send-email 2.31.1
+In-Reply-To: <20220509041305.15056-1-kernelfans@gmail.com>
+References: <20220509041305.15056-1-kernelfans@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -90,32 +82,15 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-For the arches (arm/arm64/ia64/riscv), which relies on the cpu hot-removing
-mechanism to implement "kexec -e", it is important to make sure that the
-rebooting happens on a valid online cpu. And this logic should have been
-guaranteed in migrate_to_reboot_cpu().
+kernel_kexec()->migrate_to_reboot_cpu() has already pinned the reboot
+thread on a valid online cpu, either reboot_cpu or the first online cpu.
 
-But the current code has either contradict (resolved by [2/2]) or
-redundancy (resolved by [1/2]) about the logic.
+So machine_shutdown() should pass smp_processor_id() of the pinned
+thread as the primary cpu to smp_shutdown_nonboot_cpus().
 
-V2 -> V3:
-Taking in [2/2], which also has problem with the valid rebooting
-cpu. (I had sent three patches for different arches. But maybe it is
-better to collapse them into one and collect acks from different arches'
-maintainers )
-
-Cc: Eric Biederman <ebiederm@xmission.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Valentin Schneider <valentin.schneider@arm.com>
-Cc: Vincent Donnefort <vincent.donnefort@arm.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: YueHaibing <yuehaibing@huawei.com>
-Cc: Baokun Li <libaokun1@huawei.com>
-Cc: Randy Dunlap <rdunlap@infradead.org>
-Cc: Valentin Schneider <valentin.schneider@arm.com>
-Cc: kexec@lists.infradead.org
+Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
 Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Kees Cook <keescook@chromium.org>
 Cc: Jens Axboe <axboe@kernel.dk>
 To: linux-ia64@vger.kernel.org
@@ -127,24 +102,56 @@ Cc: Lee Jones <lee.jones@linaro.org>
 Cc: Catalin Marinas <catalin.marinas@arm.com>
 Cc: Will Deacon <will@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
 Cc: Peter Collingbourne <pcc@google.com>
 Cc: Marc Zyngier <maz@kernel.org>
 To: linux-arm-kernel@lists.infradead.org
-To: linux-kernel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+---
+ arch/arm/kernel/reboot.c    | 2 +-
+ arch/arm64/kernel/process.c | 2 +-
+ arch/ia64/kernel/process.c  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-Pingfan Liu (2):
-  cpu/hotplug: Keep cpu hotplug disabled until the rebooting cpu is
-    stable
-  arm/arm64/ia64: kexec: fix the primary cpu passed to
-    smp_shutdown_nonboot_cpus()
-
- arch/arm/kernel/reboot.c    |  2 +-
- arch/arm64/kernel/process.c |  2 +-
- arch/ia64/kernel/process.c  |  2 +-
- kernel/cpu.c                | 16 ++++++++++------
- kernel/kexec_core.c         | 10 ++++------
- 5 files changed, 17 insertions(+), 15 deletions(-)
-
+diff --git a/arch/arm/kernel/reboot.c b/arch/arm/kernel/reboot.c
+index 3044fcb8d073..898405682e08 100644
+--- a/arch/arm/kernel/reboot.c
++++ b/arch/arm/kernel/reboot.c
+@@ -91,7 +91,7 @@ void soft_restart(unsigned long addr)
+  */
+ void machine_shutdown(void)
+ {
+-	smp_shutdown_nonboot_cpus(reboot_cpu);
++	smp_shutdown_nonboot_cpus(smp_processor_id());
+ }
+ 
+ /*
+diff --git a/arch/arm64/kernel/process.c b/arch/arm64/kernel/process.c
+index 7fa97df55e3a..e5c130582cc6 100644
+--- a/arch/arm64/kernel/process.c
++++ b/arch/arm64/kernel/process.c
+@@ -86,7 +86,7 @@ void arch_cpu_idle_dead(void)
+  */
+ void machine_shutdown(void)
+ {
+-	smp_shutdown_nonboot_cpus(reboot_cpu);
++	smp_shutdown_nonboot_cpus(smp_processor_id());
+ }
+ 
+ /*
+diff --git a/arch/ia64/kernel/process.c b/arch/ia64/kernel/process.c
+index d7a256bd9d6b..ae732e35e7da 100644
+--- a/arch/ia64/kernel/process.c
++++ b/arch/ia64/kernel/process.c
+@@ -575,7 +575,7 @@ cpu_halt (void)
+ 
+ void machine_shutdown(void)
+ {
+-	smp_shutdown_nonboot_cpus(reboot_cpu);
++	smp_shutdown_nonboot_cpus(smp_processor_id());
+ 
+ #ifdef CONFIG_KEXEC
+ 	kexec_disable_iosapic();
 -- 
 2.31.1
 
