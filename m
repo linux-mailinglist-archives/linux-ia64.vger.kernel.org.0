@@ -2,41 +2,74 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F24D5211A0
-	for <lists+linux-ia64@lfdr.de>; Tue, 10 May 2022 12:01:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E69CA52160F
+	for <lists+linux-ia64@lfdr.de>; Tue, 10 May 2022 14:55:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238192AbiEJKFl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 10 May 2022 06:05:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35444 "EHLO
+        id S242136AbiEJM7L (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 10 May 2022 08:59:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239433AbiEJKFj (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 10 May 2022 06:05:39 -0400
-Received: from mail.meizu.com (unknown [14.29.68.187])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91FE18565C;
-        Tue, 10 May 2022 03:01:40 -0700 (PDT)
-Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail04.meizu.com
- (172.16.1.16) with Microsoft SMTP Server (TLS) id 14.3.487.0; Tue, 10 May
- 2022 18:01:39 +0800
-Received: from meizu.meizu.com (172.16.137.70) by IT-EXMB-1-125.meizu.com
- (172.16.1.125) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Tue, 10 May
- 2022 18:01:38 +0800
-From:   Haowen Bai <baihaowen@meizu.com>
-To:     <will@kernel.org>, <peterz@infradead.org>,
-        <daniel.thompson@linaro.org>, <bristot@redhat.com>
-CC:     <linux-ia64@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        Haowen Bai <baihaowen@meizu.com>
-Subject: [PATCH] ia64: mca: Drop redundant spinlock initialization
-Date:   Tue, 10 May 2022 18:01:37 +0800
-Message-ID: <1652176897-4754-1-git-send-email-baihaowen@meizu.com>
-X-Mailer: git-send-email 2.7.4
+        with ESMTP id S242113AbiEJM7J (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 10 May 2022 08:59:09 -0400
+X-Greylist: delayed 315 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 10 May 2022 05:54:36 PDT
+Received: from mout.web.de (mout.web.de [212.227.15.4])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B16512B09C5;
+        Tue, 10 May 2022 05:54:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+        s=dbaedf251592; t=1652187274;
+        bh=3SEveaMj4jZCnJ5APQibQymks8/uOLuj8e/GbWas2KM=;
+        h=X-UI-Sender-Class:Date:To:Cc:From:Subject;
+        b=SBNtqWtVRzHMduAvz9KrxuD+zx4/QfELVFeQ0D5WxgqhwnG+VV0d8MCkRUcLy3nvW
+         x2X1O0O9HS6rskAWVt+yncCuDQmlSEFdfeYWwUZv+TOOv9jOx/103WS/OctHtefPWa
+         pFdQnMBbFCONGxLckExrhP6UTIZ7qz63iWlAmRXk=
+X-UI-Sender-Class: c548c8c5-30a9-4db5-a2e7-cb6cb037b8f9
+Received: from [192.168.178.22] ([87.155.228.41]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MIc7N-1ncaui288r-00EJWJ; Tue, 10
+ May 2022 14:48:57 +0200
+Message-ID: <b199d9f9-e3ae-df51-87b9-51202269d484@web.de>
+Date:   Tue, 10 May 2022 14:48:56 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Originating-IP: [172.16.137.70]
-X-ClientProxiedBy: IT-EXMB-1-126.meizu.com (172.16.1.126) To
- IT-EXMB-1-125.meizu.com (172.16.1.125)
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.1
+Content-Language: en-US
+To:     linux-ia64@vger.kernel.org
+Cc:     keescook@chromium.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, debian-ia64 <debian-ia64@lists.debian.org>,
+        Pedro Miguel Justo <pmsjt@texair.net>,
+        Sergei Trofimovich <slyich@gmail.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Anatoly Pugachev <matorola@gmail.com>,
+        Anton Borisov <anton.borisov@gmail.com>
+From:   Frank Scheiner <frank.scheiner@web.de>
+Subject: [ia64] Linux 5.17 (Debian) - Hardened Usercopy: kernel BUG at
+ mm/usercopy.c:100
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:YMIOBBmOBAJ4PxtJ1uHxMIIQn8NjniDeiaH5CjgBAH5oeh/PZtr
+ LV9mfPL/pvOUnAIZxE11BOJJR5CzHqOwEDIuKR/GS/x098OBhV9Sf+xoVgef8+d/Kh1rsyc
+ onwaCEwOfBwc90RcSCrGqJ2n8zBaOHVfrq/EwVPEeA34Y8GKS6q9tqFgDx5x6I+eTv92Rq2
+ 4at9QRjWTy0KflgLK1aqw==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:SlCnFZznTqw=:qOluRGBlFmFx+Ae6Zl/WKm
+ ivVX4uhT90Fvu2FGBEkWbSEIKpaeiYfOvKAyFHs3Q7awVFB9KjUFfm0EEKZTTXJsB3dXsTFP5
+ 0S4ISoibnaxq9buC3PhSA0wwewVmSwnXsxH7za46YSAPkgAwVRcoNxMi896MEtp6FuIRxxkVR
+ cM0zSlDpgO7bvuODc7r6I6u69HHPbJs9hniUQv1IAeICMMZgiEnB2f3oUxeq9VcK96sF1xHXa
+ utpLVDhYI6/1yQ0lzJ1Kd7ULTcHo/NaAPjepmHKr0vKDgNWnRx7kUpLFER0LFWM4epUJNo4hl
+ 4GIKJRa4lcV8e7XpnPZ18n0Gp70VzrFDspKPl4g5DBSteUh+ckJKHlAe03JIgu82XZo5xmRG9
+ ICk19NxLdxgDSaf7COcRp4mHoMDzbfB8HwJ6f6yPsyGn6kxJ4ZtviV5AVmjyoQGPFTQuwjqZC
+ OeTNtPP90DtzG/FUh23lbKQ8uY3QtZp2OzFlwvyqRRp8JfXOmzgWDs+MW6rvUsLGGC/3uumj4
+ POZJzYmCKmHN9ge3F7J5y2/Ar/D+unkM7C1fUwf15LarbxmnGUf5j6mDnh6koQWCmSq910hYp
+ pmvHGsCdgPXgGJB91Jd099Gp9ZsqdXyAX8xPa3gsuZzxWOwhdQKORZaAvQcHxxuThz7kbZYHi
+ s2FjTCm9Jm62Vdbou8Dzn/twdjiO0Slhh8DOMCvaBcJ9mBt3nJWqdtGJcuBYAYi6TNXqABCes
+ hOlnFdCsWoe5aNpfbu0cL32DRqojLzF9Z+OsyYTJRNN/0faPdlgjMonkgznN1Dw2fcpGCGCw/
+ A3ofJEHKWYkbZyyYM4ld9P0arURp0h4Couee1b3ZYPKKqsCuRQia7L6xOA69VnnjdNykyTF/P
+ dxyCbBCvTW8Vxtw9K8FOUB8m/U7QDtqkYYb9+n/joB8oeryn7zWaNxVE+xru682dAv6x6quvR
+ Kc26snyPiL8x+CplVr6Wt92/PfGURXiFCH4E+kT8Pg6/BBd8BIvlPm4/O76LR4N9Iu1i44vvq
+ uoeexULBLq47WHNLcOFsR4U8dMRyhAUm4oRN09dGA7k92cAlq8d10aZ0cSZ71Aaz2uqyyL+I9
+ EXpp04mCV0dgHVP/t1QIICYiTF64S5n/uNy76aefSu48JjmgYV5Fs3Tbw==
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -44,26 +77,53 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-mlogbuf_rlock has declared and initialized by DEFINE_SPINLOCK,
-so we don't need to spin_lock_init again, drop it.
+Dear all,
 
-Signed-off-by: Haowen Bai <baihaowen@meizu.com>
----
- arch/ia64/kernel/mca.c | 1 -
- 1 file changed, 1 deletion(-)
+"hardened usercopy" does not work correctly on ia64. And deactivating it
+with `hardened_usercopy=3Doff` in the kernel commandline seems to make no
+real difference for specific Itanium 2 CPUs, namely:
 
-diff --git a/arch/ia64/kernel/mca.c b/arch/ia64/kernel/mca.c
-index e628a88607bb..c62a66710ad6 100644
---- a/arch/ia64/kernel/mca.c
-+++ b/arch/ia64/kernel/mca.c
-@@ -290,7 +290,6 @@ static void ia64_mlogbuf_finish(int wait)
- {
- 	BREAK_LOGLEVEL(console_loglevel);
- 
--	spin_lock_init(&mlogbuf_rlock);
- 	ia64_mlogbuf_dump();
- 	printk(KERN_EMERG "mlogbuf_finish: printing switched to urgent mode, "
- 		"MCA/INIT might be dodgy or fail.\n");
--- 
-2.7.4
+* Madison (in rx4640 with zx1)
+* Montvale (in rx2660, rx3600 and rx6600 with zx2)
 
+...which can't successfully complete kernel boot with and w/o
+`hardened_usercopy=3Doff`.
+
+If "hardened usercopy" is deactivated in the kernel configuration
+instead it seems to allow Montvales to complete kernel boot successfully.
+
+@Pedro: Please correct me if I understood you wrongly here.
+
+* Montecitos (in rx2620 with zx1 and rx2660 with zx2) instead seem to
+work much better (both kernel boot and userland operation) with
+`hardened_usercopy=3Doff`. They don't work w/o `hardened_usercopy=3Doff`,
+though (rx2620 needs to be checked, true for rx2660).
+
+* Tukwilas (in rx2800 i2) seem to be not affected by this bug at all.
+
+****
+
+I compiled the stack traces of the machines I tested on [1].
+
+[1]: https://pastebin.com/raw/AKfZrjWi
+
+Please also see the originating "Re: rx2660 + debian" thread on Debian's
+ia64 mailing list ([2]), and specifically [3] where Pedro and Sergei
+start to dissect this problem. [4] shows that usercopy problems already
+seem to exist in Linux 4.19 (for Montvales in rx2660 with zx2)!
+
+[2]: https://lists.debian.org/debian-ia64/2022/04/threads.html
+
+[3]: https://lists.debian.org/debian-ia64/2022/04/msg00021.html
+
+[4]: https://lists.debian.org/debian-ia64/2022/04/msg00022.html
+
+****
+
+If you need more information, please let me know.
+
+I haven't yet created a bug report on "bugzilla.kernel.org" for this.
+Does this need any more information than what I just wrote above?
+
+Cheers,
+Frank
