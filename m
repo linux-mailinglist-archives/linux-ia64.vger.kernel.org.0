@@ -2,120 +2,164 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E27A522002
-	for <lists+linux-ia64@lfdr.de>; Tue, 10 May 2022 17:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D2BC5223BB
+	for <lists+linux-ia64@lfdr.de>; Tue, 10 May 2022 20:16:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239097AbiEJPxG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 10 May 2022 11:53:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60640 "EHLO
+        id S1345148AbiEJSUM convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Tue, 10 May 2022 14:20:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347256AbiEJPwK (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 10 May 2022 11:52:10 -0400
-Received: from mail-qt1-x831.google.com (mail-qt1-x831.google.com [IPv6:2607:f8b0:4864:20::831])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0D192714B;
-        Tue, 10 May 2022 08:48:11 -0700 (PDT)
-Received: by mail-qt1-x831.google.com with SMTP id t11so13819459qto.11;
-        Tue, 10 May 2022 08:48:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=from:to:cc:subject:date:message-id:in-reply-to:references
-         :mime-version:content-transfer-encoding;
-        bh=CjDUHdg8cFM7kS83KS618TD4uElmyA10hO9dwUkMOD8=;
-        b=kDJXbyhvj9QHNsY+CIMDYKuJitt2teWm52OsKOARN0n+1y8rud7V9QCrw+t5SilKMW
-         GiOGonHD5UEWBztXu0e0Aq9uO8CwbFcQWvj3h+50zrc48Nk7ZmHaeUd02+YNlyyiAgHI
-         93xyHdhWG2wY+nmXl3uAODcwvjJBBwb2IPAeM20M5xl5n1KAOBxxjoZLAsHL4RlaFerN
-         RBGK7Av2Mm5Bt/BhTlM/4IuOY/jXEa/geNIfM3VixAJ4FMZNKLxBP2ITXgEyFRk9kYH8
-         B1fdPa1WJe4S81tVdkaotLAL1V78RY57u9MPfPHbX0Y9Jxz8Z35PlhZFzcLXoBKmfIl6
-         VmCg==
+        with ESMTP id S1348854AbiEJST0 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 10 May 2022 14:19:26 -0400
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 190252A975A;
+        Tue, 10 May 2022 11:14:24 -0700 (PDT)
+Received: by mail-yb1-f174.google.com with SMTP id m128so32191961ybm.5;
+        Tue, 10 May 2022 11:14:24 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
-         :references:mime-version:content-transfer-encoding;
-        bh=CjDUHdg8cFM7kS83KS618TD4uElmyA10hO9dwUkMOD8=;
-        b=ZwT0EYPb9LjnXtkXdFrA81/CKHeZAz8AMqUCo0f4KmOP3DN7oXIno6nXyS3TN39LSL
-         Am0e5Q+ihXyAaDjsAEZFnqCTG1A2/Cn5LGG6UkoYqhbcUhqFXO8bOuy2ejhVPegz/YMP
-         kkGyURe0X5LAGCYABIhfFYvK/gIRzo3pENAJWyPIW4y3ldS+f9cZkKNtJGM9T8O3AOMD
-         Y3gjT5rOX85oKWonMSoMX8sN+JTwtaagFKzusP81bb7bQ7SwIXMXUTLPpkYSZl6ENdHi
-         bPnPkswGxhskYmnnMEPKEsA7vbpdlTO2k5olaVqRB+zCIxLi+MLn183b/UPo4PT6LgZ9
-         4+zg==
-X-Gm-Message-State: AOAM533azuItoJHKhNZ/G0+THq3wlwoLp9ms6zvZeooNPsIH1vHPPPRj
-        pKtj1JTsGYQ2DQgM38NO7bs=
-X-Google-Smtp-Source: ABdhPJwrojQGWx5ySvoO7WtsNRq8OASz8gqW8BN6clOG1VkXmIodWaR5f99J4mVoKuQ9QKI3tDi2rg==
-X-Received: by 2002:a05:622a:342:b0:2f3:dd79:2463 with SMTP id r2-20020a05622a034200b002f3dd792463mr7817047qtw.468.1652197691097;
-        Tue, 10 May 2022 08:48:11 -0700 (PDT)
-Received: from localhost ([98.242.65.84])
-        by smtp.gmail.com with ESMTPSA id x11-20020a05620a01eb00b0069fc13ce230sm2735416qkn.97.2022.05.10.08.48.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 10 May 2022 08:48:10 -0700 (PDT)
-From:   Yury Norov <yury.norov@gmail.com>
-To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Joe Perches <joe@perches.com>,
-        Julia Lawall <Julia.Lawall@inria.fr>,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Nicolas Palix <nicolas.palix@imag.fr>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-        Matti Vaittinen <Matti.Vaittinen@fi.rohmeurope.com>,
-        linux-kernel@vger.kernel.org
-Cc:     Yury Norov <yury.norov@gmail.com>, Ingo Molnar <mingo@kernel.org>,
-        Valentin Schneider <vschneid@redhat.com>,
-        linux-ia64@vger.kernel.org
-Subject: [PATCH 12/22] ia64: cleanup remove_siblinginfo()
-Date:   Tue, 10 May 2022 08:47:40 -0700
-Message-Id: <20220510154750.212913-13-yury.norov@gmail.com>
-X-Mailer: git-send-email 2.32.0
-In-Reply-To: <20220510154750.212913-1-yury.norov@gmail.com>
-References: <20220510154750.212913-1-yury.norov@gmail.com>
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=qpqXrLDWUEHd+BUtmgMjhwAa3QcGPruT6uNMBEv9rjU=;
+        b=sE0t+MrA2XaCL45MizPmFfYKh+U7rCzOjLv98vxpalwZsq4dz5KZYWa5EvT7z4Dj/J
+         72cDF6NlgQd5iWSoHTtTXxceYUf04R6uRHcOV8jsHXPlhwwbDMcx1IMyPtxOrsKhDggi
+         wuvB1W8gNO5ex306dapgVyE0ASFzoomTxg7L9zcB+drqohTFQe1hR9PsfiRaJ27pJr9l
+         H9JvOI63+Ooq4kqdLZBUXUvsOeixRzwIj1hEV+GcQckk7SAXqz9jSivd5ellFLiPqFs8
+         5bJ2n96C8IUu5Z4Fpv4clNCpiCIoJ0o2C6AAumEzIviiNN9HcMufo4dJXUAXqyc/StxF
+         2E1g==
+X-Gm-Message-State: AOAM531+oHyPotUKmUfvdnQsDixTSyf4gFm2u1Db2FoFEqVUEzAdkJOx
+        yFppIfJjpin5xoQr9N1U5JMJQ0EWlcJyxNaNJzA=
+X-Google-Smtp-Source: ABdhPJy/3C7Xf5XL6o3yFhMZ917Dv3JWEaRfPbmjw9NKhK3//cChodJMWe9FmxWaGm5UEgRYGP1Nqk2NauJUMOpu3kk=
+X-Received: by 2002:a25:e792:0:b0:645:7ddb:b5eb with SMTP id
+ e140-20020a25e792000000b006457ddbb5ebmr19781278ybh.482.1652206451725; Tue, 10
+ May 2022 11:14:11 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <20220509233235.995021-1-dmitry.osipenko@collabora.com> <20220509233235.995021-2-dmitry.osipenko@collabora.com>
+In-Reply-To: <20220509233235.995021-2-dmitry.osipenko@collabora.com>
+From:   "Rafael J. Wysocki" <rafael@kernel.org>
+Date:   Tue, 10 May 2022 20:14:00 +0200
+Message-ID: <CAJZ5v0gApRhc9+jZLxgNXC2B2tmz450=8+mFZUjTFF1iU7C-gw@mail.gmail.com>
+Subject: Re: [PATCH v8 01/27] notifier: Add atomic_notifier_call_chain_is_empty()
+To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "the arch/x86 maintainers" <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        xen-devel@lists.xenproject.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-remove_siblinginfo() initialises variable 'last', but never uses it.
-Drop unneeded code.
+On Tue, May 10, 2022 at 1:33 AM Dmitry Osipenko
+<dmitry.osipenko@collabora.com> wrote:
+>
+> Add atomic_notifier_call_chain_is_empty() that returns true if given
+> atomic call chain is empty.
 
-CC: Ingo Molnar <mingo@kernel.org>
-CC: Peter Zijlstra <peterz@infradead.org>
-CC: Valentin Schneider <vschneid@redhat.com>
-CC: linux-ia64@vger.kernel.org
-CC: linux-kernel@vger.kernel.org
-Signed-off-by: Yury Norov <yury.norov@gmail.com>
----
- arch/ia64/kernel/smpboot.c | 4 ----
- 1 file changed, 4 deletions(-)
+It would be good to mention a use case for it.
 
-diff --git a/arch/ia64/kernel/smpboot.c b/arch/ia64/kernel/smpboot.c
-index d10f780c13b9..d0e935cf2093 100644
---- a/arch/ia64/kernel/smpboot.c
-+++ b/arch/ia64/kernel/smpboot.c
-@@ -576,8 +576,6 @@ clear_cpu_sibling_map(int cpu)
- static void
- remove_siblinginfo(int cpu)
- {
--	int last = 0;
--
- 	if (cpu_data(cpu)->threads_per_core == 1 &&
- 	    cpu_data(cpu)->cores_per_socket == 1) {
- 		cpumask_clear_cpu(cpu, &cpu_core_map[cpu]);
-@@ -585,8 +583,6 @@ remove_siblinginfo(int cpu)
- 		return;
- 	}
- 
--	last = (cpumask_weight(&cpu_core_map[cpu]) == 1 ? 1 : 0);
--
- 	/* remove it from all sibling map's */
- 	clear_cpu_sibling_map(cpu);
- }
--- 
-2.32.0
-
+> Reviewed-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> ---
+>  include/linux/notifier.h |  2 ++
+>  kernel/notifier.c        | 13 +++++++++++++
+>  2 files changed, 15 insertions(+)
+>
+> diff --git a/include/linux/notifier.h b/include/linux/notifier.h
+> index 87069b8459af..95e2440037de 100644
+> --- a/include/linux/notifier.h
+> +++ b/include/linux/notifier.h
+> @@ -173,6 +173,8 @@ extern int blocking_notifier_call_chain_robust(struct blocking_notifier_head *nh
+>  extern int raw_notifier_call_chain_robust(struct raw_notifier_head *nh,
+>                 unsigned long val_up, unsigned long val_down, void *v);
+>
+> +extern bool atomic_notifier_call_chain_is_empty(struct atomic_notifier_head *nh);
+> +
+>  #define NOTIFY_DONE            0x0000          /* Don't care */
+>  #define NOTIFY_OK              0x0001          /* Suits me */
+>  #define NOTIFY_STOP_MASK       0x8000          /* Don't call further */
+> diff --git a/kernel/notifier.c b/kernel/notifier.c
+> index ba005ebf4730..aaf5b56452a6 100644
+> --- a/kernel/notifier.c
+> +++ b/kernel/notifier.c
+> @@ -204,6 +204,19 @@ int atomic_notifier_call_chain(struct atomic_notifier_head *nh,
+>  EXPORT_SYMBOL_GPL(atomic_notifier_call_chain);
+>  NOKPROBE_SYMBOL(atomic_notifier_call_chain);
+>
+> +/**
+> + *     atomicnotifier_call_chain_is_empty - Check whether notifier chain is empty
+> + *     @nh: Pointer to head of the blocking notifier chain
+> + *
+> + *     Checks whether notifier chain is empty.
+> + *
+> + *     Returns true is notifier chain is empty, false otherwise.
+> + */
+> +bool atomic_notifier_call_chain_is_empty(struct atomic_notifier_head *nh)
+> +{
+> +       return !rcu_access_pointer(nh->head);
+> +}
+> +
+>  /*
+>   *     Blocking notifier chain routines.  All access to the chain is
+>   *     synchronized by an rwsem.
+> --
+> 2.35.1
+>
