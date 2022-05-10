@@ -2,43 +2,44 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D32C521172
-	for <lists+linux-ia64@lfdr.de>; Tue, 10 May 2022 11:51:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F24D5211A0
+	for <lists+linux-ia64@lfdr.de>; Tue, 10 May 2022 12:01:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232105AbiEJJzO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 10 May 2022 05:55:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56334 "EHLO
+        id S238192AbiEJKFl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 10 May 2022 06:05:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239323AbiEJJzN (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 10 May 2022 05:55:13 -0400
-Received: from mail.meizu.com (edge07.meizu.com [112.91.151.210])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3699728E13;
-        Tue, 10 May 2022 02:51:13 -0700 (PDT)
-Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail11.meizu.com
- (172.16.1.15) with Microsoft SMTP Server (TLS) id 14.3.487.0; Tue, 10 May
- 2022 17:51:11 +0800
+        with ESMTP id S239433AbiEJKFj (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 10 May 2022 06:05:39 -0400
+Received: from mail.meizu.com (unknown [14.29.68.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91FE18565C;
+        Tue, 10 May 2022 03:01:40 -0700 (PDT)
+Received: from IT-EXMB-1-125.meizu.com (172.16.1.125) by mz-mail04.meizu.com
+ (172.16.1.16) with Microsoft SMTP Server (TLS) id 14.3.487.0; Tue, 10 May
+ 2022 18:01:39 +0800
 Received: from meizu.meizu.com (172.16.137.70) by IT-EXMB-1-125.meizu.com
  (172.16.1.125) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2308.14; Tue, 10 May
- 2022 17:51:11 +0800
+ 2022 18:01:38 +0800
 From:   Haowen Bai <baihaowen@meizu.com>
-CC:     Haowen Bai <baihaowen@meizu.com>, <linux-ia64@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
+To:     <will@kernel.org>, <peterz@infradead.org>,
+        <daniel.thompson@linaro.org>, <bristot@redhat.com>
+CC:     <linux-ia64@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        Haowen Bai <baihaowen@meizu.com>
 Subject: [PATCH] ia64: mca: Drop redundant spinlock initialization
-Date:   Tue, 10 May 2022 17:51:09 +0800
-Message-ID: <1652176269-4165-1-git-send-email-baihaowen@meizu.com>
+Date:   Tue, 10 May 2022 18:01:37 +0800
+Message-ID: <1652176897-4754-1-git-send-email-baihaowen@meizu.com>
 X-Mailer: git-send-email 2.7.4
 MIME-Version: 1.0
 Content-Type: text/plain
 X-Originating-IP: [172.16.137.70]
 X-ClientProxiedBy: IT-EXMB-1-126.meizu.com (172.16.1.126) To
  IT-EXMB-1-125.meizu.com (172.16.1.125)
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_SOFTFAIL,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
