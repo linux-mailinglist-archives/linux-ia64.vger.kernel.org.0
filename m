@@ -2,125 +2,137 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 29A35523E4B
-	for <lists+linux-ia64@lfdr.de>; Wed, 11 May 2022 22:03:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77E0C5242FD
+	for <lists+linux-ia64@lfdr.de>; Thu, 12 May 2022 05:06:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347516AbiEKUDm (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 11 May 2022 16:03:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36600 "EHLO
+        id S243950AbiELDGi (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 11 May 2022 23:06:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347496AbiEKUDl (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 11 May 2022 16:03:41 -0400
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 392072311F3;
-        Wed, 11 May 2022 13:03:34 -0700 (PDT)
-Received: from in02.mta.xmission.com ([166.70.13.52]:40998)
-        by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1nosYV-00G91D-6r; Wed, 11 May 2022 14:03:31 -0600
-Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:37876 helo=email.froward.int.ebiederm.org.xmission.com)
-        by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1nosYT-003AbW-14; Wed, 11 May 2022 14:03:30 -0600
-From:   "Eric W. Biederman" <ebiederm@xmission.com>
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, mgorman@suse.de, bigeasy@linutronix.de,
-        Will Deacon <will@kernel.org>, tj@kernel.org,
-        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Jann Horn <jannh@google.com>,
-        Kees Cook <keescook@chromium.org>, linux-ia64@vger.kernel.org
-References: <20220421150248.667412396@infradead.org>
-        <20220421150654.817117821@infradead.org>
-        <87czhap9dy.fsf@email.froward.int.ebiederm.org>
-        <878rrrh32q.fsf_-_@email.froward.int.ebiederm.org>
-        <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
-        <87k0b0apne.fsf_-_@email.froward.int.ebiederm.org>
-        <87a6bv6dl6.fsf_-_@email.froward.int.ebiederm.org>
-        <20220510141119.GA23277@redhat.com>
-        <87lev9xy3n.fsf@email.froward.int.ebiederm.org>
-Date:   Wed, 11 May 2022 15:00:12 -0500
-In-Reply-To: <87lev9xy3n.fsf@email.froward.int.ebiederm.org> (Eric
-        W. Biederman's message of "Tue, 10 May 2022 09:26:36 -0500")
-Message-ID: <87zgjnsuur.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+        with ESMTP id S244622AbiELDGg (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 11 May 2022 23:06:36 -0400
+Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21CD437A9F
+        for <linux-ia64@vger.kernel.org>; Wed, 11 May 2022 20:06:36 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id n18so3654896plg.5
+        for <linux-ia64@vger.kernel.org>; Wed, 11 May 2022 20:06:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=q3LXYtg8ORAB5uik5Rjyr3/UH71sa9rEUO3WBOMkdVU=;
+        b=C0mVnW5JgPlXhJECR44/UGE9jXccGtfJv3MlhLbc0hNz+D0xl/7xWgwuK9N0QC2PQT
+         p/uEJmCRH3J5U3sPHjdg0/rVqbm3A9KFkIRqkpkuKPXblJaOo9HknUeHjA6bgtasSJKq
+         Jcw8NGfwEGy/KzGjbTBWAayh3yBU72ufAnzhLXsUkNfgzrqQPA0Qnp+UgQYVF3UPd+4h
+         FiNJ/Buq1TtGCdDFO46zm6GkewkuNS6YYiVi3rmCnZwGqn7r0hqM9574sd3VbvGN5n+n
+         3N0uJ3bBojCB/I7UqlXPgHiyy64ecohWddN0lDd1dX1/ca9BjQY2hS4WCD0ibWU/Cbpv
+         2DYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:from:to:cc:subject:date:message-id:mime-version
+         :content-transfer-encoding;
+        bh=q3LXYtg8ORAB5uik5Rjyr3/UH71sa9rEUO3WBOMkdVU=;
+        b=BPEoYwjDHhtOwmdOnyJmOyjbzjMms/jjew9gdVpX490G6wBK0p5wAdnr41vHA4owJB
+         S7hTwQUP+VfXBA2gLNcWP8orq8U/OfAI7g2HL6WpXXzpm7vIJwIFFF/5RPP78ZuI5rvZ
+         nTlif5vCj+fWJlSFAZ8AhGcYg2JmGKejTlt2dFBzhPktCjXw+HWkgE4N++StQe0MBvUl
+         JyOvtK7kTEnlEmwPtWGgJTiN4w2usZ2W2QIV3pTHWuyW7HZbENQ4wo0vQZD/M3MlZrgB
+         PktmK+ce07za4sjiCO9lhqdQQnxpf+FqQEFKc374qUWSkKnCSOpkYKo+mD3wWyJ7Ol61
+         DwUQ==
+X-Gm-Message-State: AOAM5303sqwcV3FOlakdEWprJDbzCEwFWqnoH7py1Jfxw/tRQhf2EC/5
+        rRPpyzbGQD8zumOT6VVLC3U7o0Elxg==
+X-Google-Smtp-Source: ABdhPJzSDvbkoRVDLCCgjydodd9Q9J7F42xQBw5F3TLbBv+zEF/cBpxaXThnznWvvl1zamBJDHaz6g==
+X-Received: by 2002:a17:903:292:b0:15f:171:e794 with SMTP id j18-20020a170903029200b0015f0171e794mr21024775plr.107.1652324795402;
+        Wed, 11 May 2022 20:06:35 -0700 (PDT)
+Received: from piliu.users.ipa.redhat.com ([209.132.188.80])
+        by smtp.gmail.com with ESMTPSA id e13-20020aa7980d000000b0050dc762815bsm2488162pfl.53.2022.05.11.20.06.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 May 2022 20:06:34 -0700 (PDT)
+From:   Pingfan Liu <kernelfans@gmail.com>
+To:     linux-ia64@vger.kernel.org
+Cc:     Pingfan Liu <kernelfans@gmail.com>,
+        Eric Biederman <ebiederm@xmission.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vincent Donnefort <vincent.donnefort@arm.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        YueHaibing <yuehaibing@huawei.com>,
+        Baokun Li <libaokun1@huawei.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        Valentin Schneider <valentin.schneider@arm.com>,
+        kexec@lists.infradead.org,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        Russell King <linux@armlinux.org.uk>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCHv4 0/2] cpu/hotplug: Keep cpu hotplug disabled until the rebooting cpu is stable
+Date:   Thu, 12 May 2022 11:06:17 +0800
+Message-Id: <20220512030619.13426-1-kernelfans@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1nosYT-003AbW-14;;;mid=<87zgjnsuur.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.174.4;;;frm=ebiederm@xmission.com;;;spf=softfail
-X-XM-AID: U2FsdGVkX18ah17+fWlXXydck23OvW2XhGaBfirtO18=
-X-SA-Exim-Connect-IP: 68.227.174.4
-X-SA-Exim-Mail-From: ebiederm@xmission.com
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
-X-Spam-DCC: XMission; sa08 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: **;Oleg Nesterov <oleg@redhat.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 1554 ms - load_scoreonly_sql: 0.07 (0.0%),
-        signal_user_changed: 15 (0.9%), b_tie_ro: 13 (0.8%), parse: 1.08
-        (0.1%), extract_message_metadata: 13 (0.8%), get_uri_detail_list: 1.15
-        (0.1%), tests_pri_-1000: 11 (0.7%), tests_pri_-950: 1.42 (0.1%),
-        tests_pri_-900: 1.18 (0.1%), tests_pri_-90: 92 (5.9%), check_bayes: 90
-        (5.8%), b_tokenize: 6 (0.4%), b_tok_get_all: 9 (0.6%), b_comp_prob:
-        2.3 (0.1%), b_tok_touch_all: 67 (4.3%), b_finish: 1.31 (0.1%),
-        tests_pri_0: 294 (18.9%), check_dkim_signature: 0.54 (0.0%),
-        check_dkim_adsp: 3.6 (0.2%), poll_dns_idle: 1106 (71.2%),
-        tests_pri_10: 2.7 (0.2%), tests_pri_500: 1120 (72.1%), rewrite_mail:
-        0.00 (0.0%)
-Subject: Re: [PATCH v4 0/12] ptrace: cleaning up ptrace_stop
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-"Eric W. Biederman" <ebiederm@xmission.com> writes:
+For the architectures (arm/arm64/ia64/riscv), which relies on the cpu
+hot-removing mechanism to implement "kexec -e", it is important to
+ensure that the rebooting happens on a valid online cpu. And this logic
+should have been guaranteed in migrate_to_reboot_cpu().
 
-> Oleg Nesterov <oleg@redhat.com> writes:
->
->> On 05/05, Eric W. Biederman wrote:
->>>
->>> Eric W. Biederman (11):
->>>       signal: Rename send_signal send_signal_locked
->>>       signal: Replace __group_send_sig_info with send_signal_locked
->>>       ptrace/um: Replace PT_DTRACE with TIF_SINGLESTEP
->>>       ptrace/xtensa: Replace PT_SINGLESTEP with TIF_SINGLESTEP
->>>       ptrace: Remove arch_ptrace_attach
->>>       signal: Use lockdep_assert_held instead of assert_spin_locked
->>>       ptrace: Reimplement PTRACE_KILL by always sending SIGKILL
->>>       ptrace: Document that wait_task_inactive can't fail
->>>       ptrace: Admit ptrace_stop can generate spuriuos SIGTRAPs
->>>       ptrace: Don't change __state
->>>       ptrace: Always take siglock in ptrace_resume
->>>
->>> Peter Zijlstra (1):
->>>       sched,signal,ptrace: Rework TASK_TRACED, TASK_STOPPED state
->>
->> OK, lgtm.
->>
->> Reviewed-by: Oleg Nesterov <oleg@redhat.com>
->>
->>
->> I still dislike you removed TASK_WAKEKILL from TASK_TRACED, but I can't
->> find a good argument against it ;) and yes, this is subjective.
->
-> Does anyone else have any comments on this patchset?
->
-> If not I am going to apply this to a branch and get it into linux-next.
+But the current code has either contradict (resolved by [2/2]) or
+redundancy (resolved by [1/2]) about the logic.
 
-Thank you all.
 
-I have pushed this to my ptrace_stop-cleanup-for-v5.19 branch
-and placed the branch in linux-next.
+V3 -> V4:
+Fix the cpu hotplug enable before kexec-rebooting in powerpc.
+Improve commit log and the code's note.
 
-Eric
+V2 -> V3:
+Taking in [2/2], which also has problem with the valid rebooting
+cpu. (I had sent three patches for different arches. But maybe it is
+better to collapse them into one and collect acks from different arches'
+maintainers )
+
+Cc: Eric Biederman <ebiederm@xmission.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Vincent Donnefort <vincent.donnefort@arm.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: YueHaibing <yuehaibing@huawei.com>
+Cc: Baokun Li <libaokun1@huawei.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Valentin Schneider <valentin.schneider@arm.com>
+Cc: kexec@lists.infradead.org
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Jens Axboe <axboe@kernel.dk>
+To: linux-ia64@vger.kernel.org
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Guenter Roeck <linux@roeck-us.net>
+
+Pingfan Liu (2):
+  cpu/hotplug: Keep cpu hotplug disabled until the rebooting cpu is
+    stable
+  cpu/hotplug: Remove the input parameter primary_cpu of
+    smp_shutdown_nonboot_cpus()
+
+ arch/arm/kernel/reboot.c          |  2 +-
+ arch/arm64/kernel/process.c       |  2 +-
+ arch/ia64/kernel/process.c        |  2 +-
+ arch/powerpc/kexec/core_64.c      |  1 +
+ arch/riscv/kernel/machine_kexec.c |  2 +-
+ include/linux/cpu.h               |  4 ++--
+ kernel/cpu.c                      | 14 +++++++-------
+ kernel/kexec_core.c               | 11 +++++------
+ 8 files changed, 19 insertions(+), 19 deletions(-)
+
+-- 
+2.31.1
+
