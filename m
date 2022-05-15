@@ -2,72 +2,100 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E38E0525CD1
-	for <lists+linux-ia64@lfdr.de>; Fri, 13 May 2022 10:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2693A5276C9
+	for <lists+linux-ia64@lfdr.de>; Sun, 15 May 2022 12:03:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378069AbiEMIHR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 13 May 2022 04:07:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39876 "EHLO
+        id S236196AbiEOKDZ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 15 May 2022 06:03:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1378034AbiEMIGy (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 13 May 2022 04:06:54 -0400
-Received: from mail.coredeal.pl (mail.coredeal.pl [51.75.73.133])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D9D05044B
-        for <linux-ia64@vger.kernel.org>; Fri, 13 May 2022 01:06:49 -0700 (PDT)
-Received: by mail.coredeal.pl (Postfix, from userid 1002)
-        id C2B2EA4B45; Fri, 13 May 2022 08:06:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=coredeal.pl; s=mail;
-        t=1652429207; bh=9KGuIG62LgzC9aYmjKxzocuYLRCVghXg6v9Q1q2LHec=;
-        h=Date:From:To:Subject:From;
-        b=duz2v18uAe5LNMgl+7A8T60EF1E1DfmPl+WEqt8Qmu6Lrun7HXEtUUGhiADemjOQk
-         xWkk87jNDAKX747GtxPxN1O7JO0HMs3ut2YkNEJ3cZGa94/hTHW/r67FmwbTP0my0e
-         N7Sp3/ubtfN1v4cbMb01odoeQ5lcFbsZ0Nx3SAurTDSU3kHqGXPaDC9VVQPCn7dZJF
-         h6qwy3t5jO9r0z4E/yl9ejQoYKJzr/1CEzPxMc2OGlP9vJvn5SOXKJ1+Wh7a+MqrZh
-         Oo7Izoy26W+aWcI3bldE2MasEUCG55mfueBDKGnLnmmW78ald88ML7aGLwlVzNcCz6
-         aKTOJfsGa+GBw==
-Received: by mail.coredeal.pl for <linux-ia64@vger.kernel.org>; Fri, 13 May 2022 08:05:55 GMT
-Message-ID: <20220513064500-0.1.33.o04e.0.kzbjpskqbc@coredeal.pl>
-Date:   Fri, 13 May 2022 08:05:55 GMT
-From:   "Krzysztof Maj" <krzysztof.maj@coredeal.pl>
-To:     <linux-ia64@vger.kernel.org>
-Subject: Biznesowy angielski
-X-Mailer: mail.coredeal.pl
+        with ESMTP id S236193AbiEOKDZ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 15 May 2022 06:03:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E73D3D1E2;
+        Sun, 15 May 2022 03:03:21 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED4A160EF4;
+        Sun, 15 May 2022 10:03:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EC45C385B8;
+        Sun, 15 May 2022 10:03:17 +0000 (UTC)
+Date:   Sun, 15 May 2022 11:03:13 +0100
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Pingfan Liu <kernelfans@gmail.com>
+Cc:     linux-ia64@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Kees Cook <keescook@chromium.org>,
+        Jens Axboe <axboe@kernel.dk>,
+        Russell King <linux@armlinux.org.uk>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        Lee Jones <lee.jones@linaro.org>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Peter Collingbourne <pcc@google.com>,
+        Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCHv4 2/2] cpu/hotplug: Remove the input parameter
+ primary_cpu of smp_shutdown_nonboot_cpus()
+Message-ID: <YoDP4aYg7vdUg4sO@arm.com>
+References: <20220512030619.13426-1-kernelfans@gmail.com>
+ <20220512030619.13426-3-kernelfans@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220512030619.13426-3-kernelfans@gmail.com>
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dzie=C5=84 dobry,=20
+On Thu, May 12, 2022 at 11:06:19AM +0800, Pingfan Liu wrote:
+> For all call sites of smp_shutdown_nonboot_cpus(),
+> 
+> $git grep smp_shutdown_nonboot_cpus -- arch | grep -v \*
+> arch/arm/kernel/reboot.c:94:    smp_shutdown_nonboot_cpus(reboot_cpu);
+> arch/arm64/kernel/process.c:89: smp_shutdown_nonboot_cpus(reboot_cpu);
+> arch/ia64/kernel/process.c:578: smp_shutdown_nonboot_cpus(reboot_cpu);
+> arch/riscv/kernel/machine_kexec.c:135:  smp_shutdown_nonboot_cpus(smp_processor_id());
+> 
+> As it shows, the input parameter seems a little arbitrary.
+> 
+> Since kernel_kexec()->migrate_to_reboot_cpu() has already pinned the
+> rebooting thread on the selected CPU and the CPU hotplug keeps disabled
+> before smp_shutdown_nonboot_cpus(). Let smp_shutdown_nonboot_cpus()
+> deduce the rebooting CPU by smp_processor_id(), instead of passing the
+> parameter primary_cpu to it.
+> 
+> As a result, all call sites look consistent.
+> 
+> Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+> Cc: Thomas Gleixner <tglx@linutronix.de>
+> Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+> Cc: Peter Zijlstra <peterz@infradead.org>
+> Cc: Kees Cook <keescook@chromium.org>
+> Cc: Jens Axboe <axboe@kernel.dk>
+> To: linux-ia64@vger.kernel.org
+> Cc: Russell King <linux@armlinux.org.uk>
+> Cc: Guenter Roeck <linux@roeck-us.net>
+> Cc: Arnd Bergmann <arnd@arndb.de>
+> Cc: Wolfram Sang <wsa+renesas@sang-engineering.com>
+> Cc: Lee Jones <lee.jones@linaro.org>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Peter Collingbourne <pcc@google.com>
+> Cc: Marc Zyngier <maz@kernel.org>
+> To: linux-arm-kernel@lists.infradead.org
+> Cc: linux-kernel@vger.kernel.org
 
-czy rozwa=C5=BCali Pa=C5=84stwo rozw=C3=B3j kwalifikacji j=C4=99zykowych =
-swoich pracownik=C3=B3w?
+For arm64:
 
-Opracowali=C5=9Bmy kursy j=C4=99zykowe dla r=C3=B3=C5=BCnych bran=C5=BC, =
-w kt=C3=B3rych koncentrujemy si=C4=99 na podniesieniu poziomu s=C5=82owni=
-ctwa i jako=C5=9Bci komunikacji wykorzystuj=C4=85c autorsk=C4=85 metod=C4=
-=99, stworzon=C4=85 specjalnie dla wymagaj=C4=85cego biznesu.=20
-
-Niestandardowy kurs on-line, dopasowany do profilu firmy i obszar=C3=B3w =
-=C5=9Bwiadczonych us=C5=82ug, w szybkim czasie przyniesie efekty, kt=C3=B3=
-re zwi=C4=99ksz=C4=85 komfort i jako=C5=9B=C4=87 pracy, rozwijaj=C4=85c m=
-o=C5=BCliwo=C5=9Bci biznesowe.=20
-
-Zdalne szkolenie j=C4=99zykowe to m.in. zaj=C4=99cia z native speakerami,=
- kt=C3=B3re w szybkim czasie naucz=C4=85 pracownik=C3=B3w rozmawia=C4=87 =
-za pomoc=C4=85 jasnego i zwi=C4=99z=C5=82ego j=C4=99zyka Business English=
-=2E
-
-Czy m=C3=B3g=C5=82bym przedstawi=C4=87 wi=C4=99cej szczeg=C3=B3=C5=82=C3=B3=
-w i opowiedzie=C4=87 jak dzia=C5=82amy?=20
-
-
-Pozdrawiam
-Krzysztof Maj
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
