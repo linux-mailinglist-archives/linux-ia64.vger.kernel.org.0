@@ -2,155 +2,143 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E57C452F5EF
-	for <lists+linux-ia64@lfdr.de>; Sat, 21 May 2022 01:02:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16F3452FEB3
+	for <lists+linux-ia64@lfdr.de>; Sat, 21 May 2022 20:09:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230504AbiETXCO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 20 May 2022 19:02:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51880 "EHLO
+        id S245203AbiEUSI7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 21 May 2022 14:08:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240765AbiETXCN (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 20 May 2022 19:02:13 -0400
-Received: from mail-lf1-x12d.google.com (mail-lf1-x12d.google.com [IPv6:2a00:1450:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48D66190D35
-        for <linux-ia64@vger.kernel.org>; Fri, 20 May 2022 16:02:12 -0700 (PDT)
-Received: by mail-lf1-x12d.google.com with SMTP id v8so14741667lfd.8
-        for <linux-ia64@vger.kernel.org>; Fri, 20 May 2022 16:02:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=+HsuQmVX1S4/poujuFgWOoQhM5djyPUzLhLRMnoVmU0=;
-        b=WSpYMVc/Q7WW7i0Fu/ChH1mchkvzMg6Mes0wXDmuC6zGVDOfUJQAViLFA2BaYaFBah
-         k6QsRec5MtSCjtc+dBuR9CtFl6XLttX0gbCESKpVkiMHL96chB+r4ZA2ZOQzAK7CLjfs
-         fTmIMYFaK6diUvnDNDbkpv3yK9R7TWvcybT+k=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=+HsuQmVX1S4/poujuFgWOoQhM5djyPUzLhLRMnoVmU0=;
-        b=FW1eYbAcisx6igPSBuJPIoR0mXWOKObUvYbYcukmo8jiDvQ/jdAJQpk7lp/qRXW6Va
-         QPyaJUPdE5G+CqHc+zKxUGUzz+rQUAePcVoA68goWL8+1NalgtsO82ltWY6krHSlp+Ik
-         kjjReVq6x8hpbf2kVbw5tVE8BLKGnHx9ob4tverYmz3ItYV4ch2Zjq2AX5nYUCSLNmKQ
-         9IRbW2S2JAGyfNV4dZinCyyMBFArguIC/1f7KxBIZvT9yMZtvfCwrKqrHZp3q7iMJ6Io
-         bSUvZGa3WM8Fks5eOE6ok4QPlOqQAnTfQY5wDquf4HaGYfNiy10AE38YkdLtNBWlNsEM
-         uXdg==
-X-Gm-Message-State: AOAM533HFvyptmcqJaPfbkGXIvxNrVpDFuQlgUUXNzTfv8OmGSBFhjyv
-        52St+MFeGxQmlfHTFTDE0WUdWVnowGIiqqu9Oqk=
-X-Google-Smtp-Source: ABdhPJyKN/Zs33J90XAdL9h/OPx+o7ksefk80o/rc9fAGVSm0cYAzwe/dcOfX5BA9HG9cKhAZyaNOg==
-X-Received: by 2002:a19:6005:0:b0:477:bb1a:b2eb with SMTP id u5-20020a196005000000b00477bb1ab2ebmr8494970lfb.335.1653087730393;
-        Fri, 20 May 2022 16:02:10 -0700 (PDT)
-Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com. [209.85.208.177])
-        by smtp.gmail.com with ESMTPSA id c11-20020a056512104b00b00477ce466e59sm545465lfb.153.2022.05.20.16.02.07
-        for <linux-ia64@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 20 May 2022 16:02:08 -0700 (PDT)
-Received: by mail-lj1-f177.google.com with SMTP id i23so11140806ljb.4
-        for <linux-ia64@vger.kernel.org>; Fri, 20 May 2022 16:02:07 -0700 (PDT)
-X-Received: by 2002:a5d:5009:0:b0:20d:846:f4da with SMTP id
- e9-20020a5d5009000000b0020d0846f4damr10145504wrt.301.1653087716219; Fri, 20
- May 2022 16:01:56 -0700 (PDT)
+        with ESMTP id S232108AbiEUSI6 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 21 May 2022 14:08:58 -0400
+X-Greylist: delayed 90 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 21 May 2022 11:08:54 PDT
+Received: from CHN02-BJS-obe.outbound.protection.partner.outlook.cn (mail-bjschn02hn2224.outbound.protection.partner.outlook.cn [139.219.17.224])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCC9262233;
+        Sat, 21 May 2022 11:08:54 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=MLvL4atHnsi45D3ykgl5AMG/Ce/zIvxw9uBJQGsDrkvJ6B4a8i7f5oBgul8C+T0xy58aU1+mQB8Z/kO2veOmaM8kQvBVZajhN7szpUuTUNNMMf9q6tZsNd8xF9qTtGr+2QCLx2pmU/DQLQ9k0A+z/l/MYFD4taFWzSbotEl3tE+TV7jkhNDb/XHwo72ikeoWNFhD5YXXi3t8xHex5jspfmrLyw17v7b3E7UwUD8bvxLiL3GndBynF3kR/Itg1yJJi7br1DyBSgycvTgjtdqCaGzCVqYLmRdZtNQ+61VKFUV383yfJ2lv8Fs2Dn1OELyLQeuVqakh1Y4V1271nX3o7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3z5uhVUtqN5OyplYkKXQ17d4OAmlRJ8nVcEl3nfclrI=;
+ b=eXSmA57GcvUX9LZBDWcU9QxHpumXmNRs9Hrtl7eqhgKKNk0XkJNt8siu0OISzT8AgPCTrEY+939gAFca0wyUHOQZTvbYXi1jvdG6Y1hcJDQIinBglZcJ1Vbtx48NzMdlF5PQ+5fEYmL5VcItkHFrK4lBP08mK843cY75AxAHINdNFQ2+MYxgX0R1sYau03ZTOVDcDXwPg0tXoaUij2px1J0YElKIVC6mrSsKE6V9DdWaIeQ6+FmJhCr1lJO8j4KeL9QUl3INktsZ6EJOnIwBg/9AcGeIgsLnRSxTDPDSBZPZPZH85pnoBIterVYXQMo73Y8Lo8TD6Ut5LaHTALm2Fg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=gientech.com; dmarc=pass action=none header.from=gientech.com;
+ dkim=pass header.d=gientech.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gientech.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3z5uhVUtqN5OyplYkKXQ17d4OAmlRJ8nVcEl3nfclrI=;
+ b=KvPHzddAtK7g0KZdLd2LX6Tcv8/SIjBg+3e6bbiSPIzbKkcJsdOM4CvdWakCCeFLmEhDffL34hjIaOOUyqsH7UvqjbMvjxRsLt4CHNbA/YnsX9F6WuPtljqKmD3EkL8t1Xrsr3NahdLkKBBdqCwKkl/3O7RZaMKsKGZtKnuJc5j6t8pzWkiNkJdlC9pHPo9Hrse8LpKBPIOBGyk0S0i9QOfiE7brH9vK4jY42DFGgs51PNzZh832UDdAvEhNm7TPlz3Irnm050EvSu5aauamvFhY5Gn9clBubbHW7AHjUBb0prHiNcH9yMRWgG/AAX5xdRm+LHQTXhOvInjeA8fbdw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=gientech.com;
+Received: from SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn (10.43.106.85) by
+ SH0PR01MB0635.CHNPR01.prod.partner.outlook.cn (10.43.108.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.5273.14; Sat, 21 May 2022 18:06:24 +0000
+Received: from SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn ([10.43.106.85])
+ by SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn ([10.43.106.85]) with mapi
+ id 15.20.5273.019; Sat, 21 May 2022 18:06:24 +0000
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Content-Description: Mail message body
+Subject: RE..
+To:     Recipients <tianjiao.yang@gientech.com>
+From:   "J Wu" <tianjiao.yang@gientech.com>
+Date:   Sun, 15 May 2022 12:39:16 +0000
+Reply-To: contact@jimmywu.online
+X-ClientProxiedBy: SH2PR01CA041.CHNPR01.prod.partner.outlook.cn (10.41.247.51)
+ To SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn (10.43.106.85)
+Message-ID: <SH0PR01MB07295AE7A19E635A0EA490398ACC9@SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn>
 MIME-Version: 1.0
-References: <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
- <20220518225355.784371-3-ebiederm@xmission.com> <CAD=FV=UFK7h0oHGJ23y37ShO+z4vt9ubGE9E4m=jMECgNAAHgA@mail.gmail.com>
- <8735h52ief.fsf@email.froward.int.ebiederm.org>
-In-Reply-To: <8735h52ief.fsf@email.froward.int.ebiederm.org>
-From:   Doug Anderson <dianders@chromium.org>
-Date:   Fri, 20 May 2022 16:01:43 -0700
-X-Gmail-Original-Message-ID: <CAD=FV=UxzB=jZuNtg--BFfKm_=7_Bex7G5fbjkV6Vf_tJQ+dTw@mail.gmail.com>
-Message-ID: <CAD=FV=UxzB=jZuNtg--BFfKm_=7_Bex7G5fbjkV6Vf_tJQ+dTw@mail.gmail.com>
-Subject: Re: [PATCH 03/16] kdb: Use real_parent when displaying a list of processes
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     LKML <linux-kernel@vger.kernel.org>,
-        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
-        Oleg Nesterov <oleg@redhat.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mel Gorman <mgorman@suse.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Will Deacon <will@kernel.org>, Tejun Heo <tj@kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org,
-        Robert OCallahan <roc@pernos.co>, Kyle Huey <khuey@pernos.co>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Jason Wessel <jason.wessel@windriver.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Douglas Miller <dougmill@linux.vnet.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-Office365-Filtering-Correlation-Id: a3457e84-16e0-4e18-63ca-08da366ff932
+X-MS-TrafficTypeDiagnostic: SH0PR01MB0635:EE_
+X-Microsoft-Antispam-PRVS: <SH0PR01MB0635C4409807CB2CC2766A6C8AD29@SH0PR01MB0635.CHNPR01.prod.partner.outlook.cn>
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: =?iso-8859-1?Q?Lvi2mOIbN2xtoVlyn/sAL6+0oh1fEReVo9gVA0iMK6+fjRnHonlcTaGqKO?=
+ =?iso-8859-1?Q?3p4tyS0EYDTu+jS3t1KUFX1GFhxeypbl4ZbPE7pjkxSMoakiAF7xlRsm2x?=
+ =?iso-8859-1?Q?t+04ZZS/GvFw47mFRTdyPfuAPP2gZUW/2sPOz1cGwUgxPi68Yk65cMy7x/?=
+ =?iso-8859-1?Q?eMxJTvCdyq4Y7B45GVgsVOTo+TXZzBgwUGNhkzZ/fw6/vVCZOZor2zG4vk?=
+ =?iso-8859-1?Q?yQmcw6aByvEQgMSY7voFM6vFkPxOiEbIY4uCjTFPYIo5A7sqBghtFYGM4q?=
+ =?iso-8859-1?Q?f4gxT0ayfl4puK2Wa1NpA4Rxu4NIcE49s+ylMAiT/MzpgdojPiSk+S2iRn?=
+ =?iso-8859-1?Q?XrG8Fb9CVFLQd2mz5Leo/bupNvwoxOuRqWhcx733Z8d8JLf7SKB7tPE+Dt?=
+ =?iso-8859-1?Q?jRb22rEiSnEhGq4jiL59PF4mm4Nl66VsQykif5pnwg870Na+QbL5DCgc9a?=
+ =?iso-8859-1?Q?G9aGR2LQKMEetRAmqtxjkFWWgca1CFV4pV8/AmsfYY5c7P2ov4+stsk6Uz?=
+ =?iso-8859-1?Q?KA94l0O96boBLTYfHLdZweRwgOXAJrhEK0V7Jk58MMlj9rUxwGei+xof+G?=
+ =?iso-8859-1?Q?5fHkrz30RlPnWR3qIf6z/Wn84FsYvPviyFqypUmqzLOSq/r298OloFgceF?=
+ =?iso-8859-1?Q?WKfGioZP+1wnmarQ3S43E2oPmWeChG97hc0m5IbuTfY+dCYkHzOjG3s2gL?=
+ =?iso-8859-1?Q?k4he2x5B1BttWycvTYcdCAE4g/fpHkUd1zcj2n2mvfSx4CY+I9hogRPQVB?=
+ =?iso-8859-1?Q?6M7THbnsjXFk/9ou9JXAGNxjodj1h0d5fJXpqRCsiGgTVUsoY0xs+9XXlB?=
+ =?iso-8859-1?Q?NPrak+Z7AVOY8vDZ3EW0X3xX878bsOgEmZID32Kz2J0qS0po9J1KhDyzWT?=
+ =?iso-8859-1?Q?mbhhRoRaVp1zP/wiqzyJDsu454PrITUcK6Q+OgxGXr7lcAdbfOe0tCAYz4?=
+ =?iso-8859-1?Q?we/lfDmKvpr4e6vGTYAARl9lt1OozIsxwbE5kwhmy/AAGUK8LLXkgGssVV?=
+ =?iso-8859-1?Q?rWMixvpwQRD4EUJ267PW0EJS64/o6pFU+0v12PAxUwxOpPvk672B2Lp9Xm?=
+ =?iso-8859-1?Q?Gw=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:5;SRV:;IPV:NLI;SFV:SPM;H:SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:OSPM;SFS:(13230001)(366004)(7696005)(9686003)(4270600006)(26005)(3480700007)(52116002)(38350700002)(38100700002)(2906002)(7366002)(7406005)(33656002)(6200100001)(7416002)(40180700001)(8936002)(19618925003)(55016003)(558084003)(86362001)(40160700002)(6862004)(8676002)(66476007)(66556008)(7116003)(508600001)(6666004)(66946007)(186003)(62346012);DIR:OUT;SFP:1501;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?K9GHf+QLc81TNV8hLjfOiWi5Zp9S2ugnM++UTn5G/MRwIy8+duWBMgExKe?=
+ =?iso-8859-1?Q?qDUokNpQaaGfmntVqVwklAbK6kJmltCeueozt0Brsh1fMBaGPaI8VECvEk?=
+ =?iso-8859-1?Q?6BBC+xuq7ynHOHYR9fDJhLUEb+OiojRyKS2YWmV5TDiQvdgvjID03PyasO?=
+ =?iso-8859-1?Q?qIF15s6jLbeWsTH7oxmR9IJ3CcWQgQMI/GmUpOHyQKilqNyKkxtOovZ0ph?=
+ =?iso-8859-1?Q?166LCF7tAqIF67XaawKoXZMADFhs8yaVjc/YSOM6Z7nl2XfKIptSKZJN2d?=
+ =?iso-8859-1?Q?pyDTT8tx2/R2xtxaqb/ZI5UanP5syh1vV+XTOJcEbegXtoaA6sYxLayKdG?=
+ =?iso-8859-1?Q?gSq6kktskFO+cY/ugo+eNJ287Oa+NjAiGWDMvnuV9uKSuaiJNZfM4y0JnF?=
+ =?iso-8859-1?Q?fxF5RRoxb2b3cMp+g5TlqoNU4hlntixtZcWxmOndBTq8hzfeciViFFFoad?=
+ =?iso-8859-1?Q?hNcIfbcb4c/BfG5I0gal6ZTsyuUmwbVB1r3djsyP/HEI51YvDbYq5acTdG?=
+ =?iso-8859-1?Q?FYO6Zc4UKuQoAiOhT4ay6l9/upzGo9lUCWE6P3EkdD0wDQBZsV4VlVqtvN?=
+ =?iso-8859-1?Q?O509LN8vz2pgHpVKP+sfXHPMqk/j+eND4g2SOgLeaXOTUPQcX9DqDu9y/P?=
+ =?iso-8859-1?Q?2UcutMDTl4SEUww3CU1ti4dzwLsGP08kyWv88m7K0Yk0cmmuMNkRU8Q3oi?=
+ =?iso-8859-1?Q?lgTCYKdBsCjS5VuNRxzswqGkjwUsVMzCxRLWBfdKhNtEuspkqUhVyCeUL5?=
+ =?iso-8859-1?Q?FDexNIwMT6LtuGR/vBipc06KdE4CxFsKXiPcFssdZBEKRRs4clsyo6IxXz?=
+ =?iso-8859-1?Q?cZQ/WMz39c+HWnpwMSoAtU6wdmFGncBf8GjCHgJnkJqmWHlnm2xYxg1BTM?=
+ =?iso-8859-1?Q?75qmkWiiJUc4fJbPtCSNwHHT25eAilEri/dm+Z8jeQiI6yD+dDee8LzmKb?=
+ =?iso-8859-1?Q?RZfyahv3Tu5Whj8RDbI/tgHcYGb7q/7AsMgrN8evPGSjM3QskgiYg1Od2Y?=
+ =?iso-8859-1?Q?Y935jucxlfeaz4i4i7WLtzn5ZgG2TVGstpNJzdoUO9QKEkF8wYSimW+7j9?=
+ =?iso-8859-1?Q?Azouo+1ICISDibIylTG2ECmP7eVuY7jOCN9VG7amJCqMR9Sc8jcau8nFsE?=
+ =?iso-8859-1?Q?7vOqgkjlNsQ3IjRuqnbUBlSKZggbTFmMxPnRlkW3moIa01YovssQWRwzV9?=
+ =?iso-8859-1?Q?9kKzSxPsn4p/GoiZLFvJfJsDq0xx9Ty/aIB0YOT9Tdc78LEVycITWP9TAx?=
+ =?iso-8859-1?Q?p9S+3yyqvJigNpaZqzU8SQcbtTww1HgUUdUD9XMIXT1d6jG/YcCjstO+Qg?=
+ =?iso-8859-1?Q?ZsSXo50iepwAwlSjoEqB1TJQ5L4qjL4AHD5Mtxa7ihhj9oJEHct4wr1RKm?=
+ =?iso-8859-1?Q?fZzYUwAj89tsIMHYlTbpcKIf3urCabb1kJl1M551EKmp/XbV5eYY03gX3J?=
+ =?iso-8859-1?Q?frD8xsuW+9NmanjzJbxv2DgKN19S30D3X7IAt2cYL1zIFXtkaPExrGRUfm?=
+ =?iso-8859-1?Q?wRXK/G4ED0T3FjltFAhcvouf5wgCu0SmILxzsQQ2y1454cszwCOwO7AWmY?=
+ =?iso-8859-1?Q?b/OrGjIyFlJcb8SvXVX0goRY+e0GyCXcI0P7akYbBhFVM/hVDgZ4s6+MsN?=
+ =?iso-8859-1?Q?UWuGx+FN6jxfTNHTyCTfXGyYiMtwQy0QBJxjOmt2RHeRAm+bkUkoAL3rmU?=
+ =?iso-8859-1?Q?h2+Jr2nJZTJ7K3uGTjPnKe3M/UL85xiBts8RyWcRCOEBrDjgJJo8Al4/SR?=
+ =?iso-8859-1?Q?alYTWVUQ3r8V36DvCMFruj20I=3D?=
+X-OriginatorOrg: gientech.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a3457e84-16e0-4e18-63ca-08da366ff932
+X-MS-Exchange-CrossTenant-AuthSource: SH0PR01MB0729.CHNPR01.prod.partner.outlook.cn
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2022 12:39:37.7539
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 89592e53-6f9d-4b93-82b1-9f8da689f1b4
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 5Gb+ie0ayQs7p608ELSOdHPVldU8gmKUrG+jU8eLthI2ELCjrBiXSlZa+yATNSecx5b0YJRsXNdt0wTuZZVSyMMEy42YWoCFvivc42+jJ3o=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SH0PR01MB0635
+X-Spam-Status: Yes, score=7.4 required=5.0 tests=BAYES_50,DATE_IN_PAST_96_XX,
+        DKIM_INVALID,DKIM_SIGNED,NIXSPAM_IXHASH,SPF_HELO_PASS,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.4895]
+        *  3.0 NIXSPAM_IXHASH http://www.nixspam.org/
+        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
+        *  3.4 DATE_IN_PAST_96_XX Date: is 96 hours or more before Received:
+        *      date
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.1 DKIM_INVALID DKIM or DK signature exists, but is not valid
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: *******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi,
-
-On Thu, May 19, 2022 at 4:49 PM Eric W. Biederman <ebiederm@xmission.com> wrote:
->
-> Doug Anderson <dianders@chromium.org> writes:
->
-> > Hi,
-> >
-> > On Wed, May 18, 2022 at 3:54 PM Eric W. Biederman <ebiederm@xmission.com> wrote:
-> >>
-> >> kdb has a bug that when using the ps command to display a list of
-> >> processes, if a process is being debugged the debugger as the parent
-> >> process.
-> >>
-> >> This is silly, and I expect it never comes up in ptractice.  As there
-> >> is very little point in using gdb and kdb simultaneously.  Update the
-> >> code to use real_parent so that it is clear kdb does not want to
-> >> display a debugger as the parent of a process.
-> >
-> > So I would tend to defer to Daniel, but I'm not convinced that the
-> > behavior you describe for kdb today _is_ actually silly.
-> >
-> > If I was in kdb and I was listing processes, I might actually want to
-> > see that a process's parent was set to gdb. Presumably that would tell
-> > me extra information that might be relevant to my debug session.
-> >
-> > Personally, I'd rather add an extra piece of information into the list
-> > showing the real parent if it's not the same as the parent. Then
-> > you're not throwing away information.
->
-> The name of the field is confusing for anyone who isn't intimate with
-> the implementation details.  The function getppid returns
-> tsk->real_parent->tgid.
->
-> If kdb wants information of what the tracer is that is fine, but I
-> recommend putting that information in another field.
->
-> Given that the original description says give the information that ps
-> gives my sense is that kdb is currently wrong.  Especially as it does
-> not give you the actual parentage anywhere.
->
-> I can certainly be convinced, but I do want some clarity.  It looks very
-> attractive to rename task->parent to task->ptracer and leave the field
-> NULL when there is no tracer.
-
-Fair enough. You can consider my objection rescinded.
-
-Presumably, though, you're hoping for an Ack for your patch and you
-plan to take it with the rest of the series. That's going to need to
-come from Daniel anyway as he is the actual maintainer. I'm just the
-peanut gallery. ;-)
-
--Doug
+Can we do this together
