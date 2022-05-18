@@ -2,350 +2,149 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BC4452BE1B
-	for <lists+linux-ia64@lfdr.de>; Wed, 18 May 2022 17:26:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 859E152C69E
+	for <lists+linux-ia64@lfdr.de>; Thu, 19 May 2022 00:50:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238918AbiEROqe convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Wed, 18 May 2022 10:46:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33910 "EHLO
+        id S229546AbiERWuO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 18 May 2022 18:50:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238819AbiEROqa (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 18 May 2022 10:46:30 -0400
-Received: from mail-yb1-f170.google.com (mail-yb1-f170.google.com [209.85.219.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A97AD60055;
-        Wed, 18 May 2022 07:46:27 -0700 (PDT)
-Received: by mail-yb1-f170.google.com with SMTP id p139so4027713ybc.11;
-        Wed, 18 May 2022 07:46:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc:content-transfer-encoding;
-        bh=3SGArFKDihyEBXlF8/XNeAemrWMKKpCb4khL75HityU=;
-        b=HrXu/4Fqb4W++p3J0fMDguI6mvmaCrke9hjmQ1eoi/2R98qPueBWcsLRSm5BqSo/BF
-         QJOXQDhgbaFRgyHI4yhPOWKp4hP0A6/DXgg9OXVIr3nnwz0fAII5PlTpZtyto/8Vf532
-         7QjMFr1ufUSuUa7gXJ3688wxdRBeKybAfBPyAB6N/DDuzkxhgEAAvSeIweuHJYM0MCk7
-         qkLCFHarG8VuOivefQvE8VSZoxG+EiOeFrMw70rtuC1F8SGY/JwXsrqhM5ZaJ5NtjnrS
-         c4fdD2RTI3GYKSE5x1ZOa135V9jz8pIdRi1j7Hz1qU+eb2Tpz9tdo95qsTPEHRHW7gvx
-         EBRQ==
-X-Gm-Message-State: AOAM531kJ23JIubbfkweBw7gzmgI2ZBCygEQBsuHBdNrKkginRuRra9p
-        fx1jV5hCTZqyznsm6x/iiBywQpbbySFlK8i6YpA=
-X-Google-Smtp-Source: ABdhPJzrRXyFkOYYP+knWo30LGdADGmZZVDFFkLi378Dx+GKoFEryYPjgFz2aAoFwQStjD/27f3Wowem4YVwVmdPLVU=
-X-Received: by 2002:a25:d687:0:b0:64e:3a41:8d5 with SMTP id
- n129-20020a25d687000000b0064e3a4108d5mr3149496ybg.622.1652885186733; Wed, 18
- May 2022 07:46:26 -0700 (PDT)
-MIME-Version: 1.0
-References: <20220509233235.995021-1-dmitry.osipenko@collabora.com>
-In-Reply-To: <20220509233235.995021-1-dmitry.osipenko@collabora.com>
-From:   "Rafael J. Wysocki" <rafael@kernel.org>
-Date:   Wed, 18 May 2022 16:46:15 +0200
-Message-ID: <CAJZ5v0jhWs-8ChHddebTZcaH6kA05sLEMsXM9Op7kHWAQDxeYA@mail.gmail.com>
-Subject: Re: [PATCH v8 00/27] Introduce power-off+restart call chain API
-To:     Dmitry Osipenko <dmitry.osipenko@collabora.com>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
+        with ESMTP id S229520AbiERWuO (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 18 May 2022 18:50:14 -0400
+Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4F40149147;
+        Wed, 18 May 2022 15:50:12 -0700 (PDT)
+Received: from in01.mta.xmission.com ([166.70.13.51]:57012)
+        by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1nrSUR-00CkAs-9I; Wed, 18 May 2022 16:49:59 -0600
+Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:38714 helo=email.froward.int.ebiederm.org.xmission.com)
+        by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1nrSUQ-002Y4a-2G; Wed, 18 May 2022 16:49:58 -0600
+From:   "Eric W. Biederman" <ebiederm@xmission.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     rjw@rjwysocki.net, oleg@redhat.com, mingo@kernel.org,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, mgorman@suse.de, bigeasy@linutronix.de,
+        Will Deacon <will@kernel.org>, tj@kernel.org,
+        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-xtensa@linux-xtensa.org, Jann Horn <jannh@google.com>,
+        Kees Cook <keescook@chromium.org>, linux-ia64@vger.kernel.org,
+        Robert O'Callahan <roc@pernos.co>, Kyle Huey <khuey@pernos.co>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Jason Wessel <jason.wessel@windriver.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Douglas Miller <dougmill@linux.vnet.ibm.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "the arch/x86 maintainers" <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+        Paul Mackerras <paulus@samba.org>
+References: <20220421150248.667412396@infradead.org>
+        <20220421150654.817117821@infradead.org>
+        <87czhap9dy.fsf@email.froward.int.ebiederm.org>
+        <878rrrh32q.fsf_-_@email.froward.int.ebiederm.org>
+        <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
+        <87k0b0apne.fsf_-_@email.froward.int.ebiederm.org>
+        <87a6bv6dl6.fsf_-_@email.froward.int.ebiederm.org>
+Date:   Wed, 18 May 2022 17:49:50 -0500
+In-Reply-To: <87a6bv6dl6.fsf_-_@email.froward.int.ebiederm.org> (Eric
+        W. Biederman's message of "Thu, 05 May 2022 13:25:57 -0500")
+Message-ID: <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+MIME-Version: 1.0
+Content-Type: text/plain
+X-XM-SPF: eid=1nrSUQ-002Y4a-2G;;;mid=<871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.174.4;;;frm=ebiederm@xmission.com;;;spf=softfail
+X-XM-AID: U2FsdGVkX18+P8DhIXiW3QQ2kaItdAgP/dwjAcwP+HQ=
+X-SA-Exim-Connect-IP: 68.227.174.4
+X-SA-Exim-Mail-From: ebiederm@xmission.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
+X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: *****;linux-kernel@vger.kernel.org
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 589 ms - load_scoreonly_sql: 0.13 (0.0%),
+        signal_user_changed: 12 (2.0%), b_tie_ro: 10 (1.7%), parse: 1.11
+        (0.2%), extract_message_metadata: 3.8 (0.7%), get_uri_detail_list:
+        1.71 (0.3%), tests_pri_-1000: 5 (0.9%), tests_pri_-950: 1.28 (0.2%),
+        tests_pri_-900: 1.12 (0.2%), tests_pri_-90: 91 (15.4%), check_bayes:
+        89 (15.1%), b_tokenize: 11 (1.9%), b_tok_get_all: 10 (1.8%),
+        b_comp_prob: 3.1 (0.5%), b_tok_touch_all: 61 (10.3%), b_finish: 1.04
+        (0.2%), tests_pri_0: 456 (77.4%), check_dkim_signature: 0.53 (0.1%),
+        check_dkim_adsp: 2.9 (0.5%), poll_dns_idle: 0.64 (0.1%), tests_pri_10:
+        2.1 (0.3%), tests_pri_500: 7 (1.2%), rewrite_mail: 0.00 (0.0%)
+Subject: [PATCH 00/16] ptrace: cleanups and calling do_cldstop with only
+ siglock
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, May 10, 2022 at 1:33 AM Dmitry Osipenko
-<dmitry.osipenko@collabora.com> wrote:
->
-> Problem
-> -------
->
-> SoC devices require power-off call chaining functionality from kernel.
-> We have a widely used restart chaining provided by restart notifier API,
-> but nothing for power-off.
->
-> Solution
-> --------
->
-> Introduce new API that provides call chains support for all restart and
-> power-off modes. The new API is designed with simplicity and extensibility
-> in mind.
->
-> This is a third attempt to introduce the new API. First was made by
-> Guenter Roeck back in 2014, second was made by Thierry Reding in 2017.
-> In fact the work didn't stop and recently arm_pm_restart() was removed
-> from v5.14 kernel, which was a part of preparatory work started by
-> Guenter Roeck.
->
-> Adoption plan
-> -------------
->
-> This patchset introduces the new API. It also converts multiple drivers
-> and arch code to the new API to demonstrate how it all looks in practice,
-> removing the pm_power_off_prepare global variable.
->
-> The plan is:
->
-> 1. Merge the new API and convert arch code to use do_kernel_power_off().
->    For now the new API will co-exist with the older API.
->
-> 2. Convert all drivers and platform code to the new API.
->
-> 3. Remove obsoleted pm_power_off and pm_power_off_prepare variables.
->
-> Results
-> -------
->
-> 1. Devices can be powered off properly.
->
-> 2. Global variables are removed from drivers.
->
-> 3. Global pm_power_off and pm_power_off_prepare callback variables are
-> removed once all users are converted to the new API. The latter callback
-> is removed by patch #24 of this series.
->
-> 4. Ambiguous call chain ordering is prohibited for non-default priorities.
->
-> Changelog:
->
-> v8: - Reworked sys-off handler like was suggested by Rafael Wysocki in
->       the comments to v7.
->
->     - The struct sys-off handler now is private to kernel/reboot.c and
->       new API is simplified.
->
->     - There is a single sys-off API function for all handler types.
->       Users shall pass the required sys-off mode type (restart, power-off
->       and etc).
->
->     - There is single struct sys_off_data callback argument for all
->       handler modes.
->
->     - User's callback now must return NOTIFY_DONE or NOTIFY_STOP.
->
->     - The default priority level is zero now.
->
->     - Multiple handlers now allowed to be registered at the default
->       priority level.
->
->     - Power-off call chain is atomic now, like the restart chain.
->
->     - kernel/reboot.c changes are split up into several logical patches.
->
->     - Added r-b from Michał Mirosław to unmodified patches from v7.
->
->     - Added acks that were missing in v7 by accident.
 
-The v8 looks much better than the previous versions to me.
+For ptrace_stop to work on PREEMT_RT no spinlocks can be taken once
+ptrace_freeze_traced has completed successfully.  Which fundamentally
+means the lock dance of dropping siglock and grabbing tasklist_lock does
+not work on PREEMPT_RT.  So I have worked through what is necessary so
+that tasklist_lock does not need to be grabbed in ptrace_stop after
+siglock is dropped.
 
-I actually don't really have any comments on it except for the minor
-remark regarding patch [1/27] sent separately.
+I have explored several alternate ways of getting there and along the
+way I found a lot of small bug fixes/cleanups that don't necessarily
+contribute to the final result but that or worthwhile on their own.  So
+I have included those changes in this set of changes just so they don't
+get lost.
 
-Please just send an update of that one patch and I will queue up the
-series for 5.19.
+In addition I had a conversation with Thomas Gleixner recently that
+emphasized for me the need to reduce the hold times of tasklist_lock,
+and that made me realize that in principle it is possible.
+https://lkml.kernel.org/r/87mtfmhap2.fsf@email.froward.int.ebiederm.org
 
-However, I'm going to send a pull request with it in the second half
-of the merge window, after the majority of the other changes in the
-subsystems touched by it have been integrated.
+Which is a long way of saying that not taking tasklist_lock in
+ptrace_stop is good not just for PREMPT_RT but also for improving the
+scalability of the kernel in general.
 
-> v7: - Rebased on a recent linux-next. Dropped the recently removed
->       NDS32 architecture. Only SH and x86 arches left un-acked.
->
->     - Added acks from Thomas Bogendoerfer and Krzysztof Kozlowski
->       to the MIPS and memory/emif patches respectively.
->
->     - Made couple minor cosmetic improvements to the new API.
->
->     - A month ago I joined Collabora and continuing to work on this series
->       on the company's time, so changed my email address to collabora.com
->
-> v6: - Rebased on a recent linux-next.
->
->     - Made minor couple cosmetic changes.
->
-> v5: - Dropped patches which cleaned up notifier/reboot headers, as was
->       requested by Rafael Wysocki.
->
->     - Dropped WARN_ON() from the code, as was requested by Rafael Wysocki.
->       Replaced it with pr_err() appropriately.
->
->     - Dropped *_notifier_has_unique_priority() functions and added
->       *_notifier_chain_register_unique_prio() instead, as was suggested
->       by Michał Mirosław and Rafael Wysocki.
->
->     - Dropped export of blocking_notifier_call_chain_is_empty() symbol,
->       as was suggested by Rafael Wysocki.
->
->     - Michał Mirosław suggested that will be better to split up patch
->       that adds the new API to ease reviewing, but Rafael Wysocki asked
->       not add more patches, so I kept it as a single patch.
->
->     - Added temporary "weak" stub for pm_power_off() which fixes linkage
->       failure once symbol is removed from arch/* code. Previously I missed
->       this problem because was only compile-testing object files.
->
-> v4: - Made a very minor improvement to doc comments, clarifying couple
->       default values.
->
->     - Corrected list of emails recipient by adding Linus, Sebastian,
->       Philipp and more NDS people. Removed bouncing emails.
->
->     - Added acks that were given to v3.
->
-> v3: - Renamed power_handler to sys_off_handler as was suggested by
->       Rafael Wysocki.
->
->     - Improved doc-comments as was suggested by Rafael Wysocki. Added more
->       doc-comments.
->
->     - Implemented full set of 180 patches which convert whole kernel in
->       accordance to the plan, see link [1] above. Slightly adjusted API to
->       better suit for the remaining converted drivers.
->
->       * Added unregister_sys_off_handler() that is handy for a couple old
->         platform drivers.
->
->       * Dropped devm_register_trivial_restart_handler(), 'simple' variant
->         is enough to have.
->
->     - Improved "Add atomic/blocking_notifier_has_unique_priority()" patch,
->       as was suggested by Andy Shevchenko. Also replaced down_write() with
->       down_read() and factored out common notifier_has_unique_priority().
->
->     - Added stop_chain field to struct restart_data and reboot_prep_data
->       after discovering couple drivers wanting that feature.
->
->     - Added acks that were given to v2.
->
-> v2: - Replaced standalone power-off call chain demo-API with the combined
->       power-off+restart API because this is what drivers want. It's a more
->       comprehensive solution.
->
->     - Converted multiple drivers and arch code to the new API. Suggested by
->       Andy Shevchenko. I skimmed through the rest of drivers, verifying that
->       new API suits them. The rest of the drivers will be converted once we
->       will settle on the new API, otherwise will be too many patches here.
->
->     - v2 API doesn't expose notifier to users and require handlers to
->       have unique priority. Suggested by Guenter Roeck.
->
->     - v2 API has power-off chaining disabled by default and require
->       drivers to explicitly opt-in to the chaining. This preserves old
->       behaviour for existing drivers once they are converted to the new
->       API.
->
-> Dmitry Osipenko (27):
->   notifier: Add atomic_notifier_call_chain_is_empty()
->   notifier: Add blocking/atomic_notifier_chain_register_unique_prio()
->   kernel/reboot: Introduce sys-off handler API
->   kernel/reboot: Wrap legacy power-off callbacks into sys-off handlers
->   kernel/reboot: Add do_kernel_power_off()
->   kernel/reboot: Add stub for pm_power_off
->   kernel/reboot: Add kernel_can_power_off()
->   kernel/reboot: Add register_platform_power_off()
->   ARM: Use do_kernel_power_off()
->   csky: Use do_kernel_power_off()
->   riscv: Use do_kernel_power_off()
->   arm64: Use do_kernel_power_off()
->   parisc: Use do_kernel_power_off()
->   xen/x86: Use do_kernel_power_off()
->   powerpc: Use do_kernel_power_off()
->   m68k: Switch to new sys-off handler API
->   sh: Use do_kernel_power_off()
->   x86: Use do_kernel_power_off()
->   ia64: Use do_kernel_power_off()
->   mips: Use do_kernel_power_off()
->   memory: emif: Use kernel_can_power_off()
->   ACPI: power: Switch to sys-off handler API
->   regulator: pfuze100: Use devm_register_sys_off_handler()
->   reboot: Remove pm_power_off_prepare()
->   soc/tegra: pmc: Use sys-off handler API to power off Nexus 7 properly
->   kernel/reboot: Add devm_register_power_off_handler()
->   kernel/reboot: Add devm_register_restart_handler()
->
->  arch/arm/kernel/reboot.c               |   4 +-
->  arch/arm64/kernel/process.c            |   3 +-
->  arch/csky/kernel/power.c               |   6 +-
->  arch/ia64/kernel/process.c             |   4 +-
->  arch/m68k/emu/natfeat.c                |   3 +-
->  arch/m68k/include/asm/machdep.h        |   1 -
->  arch/m68k/kernel/process.c             |   5 +-
->  arch/m68k/kernel/setup_mm.c            |   1 -
->  arch/m68k/kernel/setup_no.c            |   1 -
->  arch/m68k/mac/config.c                 |   4 +-
->  arch/mips/kernel/reset.c               |   3 +-
->  arch/parisc/kernel/process.c           |   4 +-
->  arch/powerpc/kernel/setup-common.c     |   4 +-
->  arch/powerpc/xmon/xmon.c               |   3 +-
->  arch/riscv/kernel/reset.c              |  12 +-
->  arch/sh/kernel/reboot.c                |   3 +-
->  arch/x86/kernel/reboot.c               |   4 +-
->  arch/x86/xen/enlighten_pv.c            |   4 +-
->  drivers/acpi/sleep.c                   |  16 +-
->  drivers/memory/emif.c                  |   2 +-
->  drivers/regulator/pfuze100-regulator.c |  42 ++-
->  drivers/soc/tegra/pmc.c                |  87 +++++--
->  include/linux/notifier.h               |   7 +
->  include/linux/pm.h                     |   1 -
->  include/linux/reboot.h                 |  91 +++++++
->  kernel/notifier.c                      | 101 +++++--
->  kernel/reboot.c                        | 347 ++++++++++++++++++++++++-
->  27 files changed, 639 insertions(+), 124 deletions(-)
->
-> --
-> 2.35.1
->
+After this set of changes only cgroup_enter_frozen should remain a
+stumbling block for PREEMPT_RT in the ptrace_stop path.
+
+Eric W. Biederman (16):
+      signal/alpha: Remove unused definition of TASK_REAL_PARENT
+      signal/ia64: Remove unused definition of IA64_TASK_REAL_PARENT_OFFSET
+      kdb: Use real_parent when displaying a list of processes
+      powerpc/xmon:  Use real_parent when displaying a list of processes
+      ptrace: Remove dead code from __ptrace_detach
+      ptrace: Remove unnecessary locking in ptrace_(get|set)siginfo
+      signal: Wake up the designated parent
+      ptrace: Only populate last_siginfo from ptrace
+      ptrace: In ptrace_setsiginfo deal with invalid si_signo
+      ptrace: In ptrace_signal look at what the debugger did with siginfo
+      ptrace: Use si_sino as the signal number to resume with
+      ptrace: Stop protecting ptrace_set_signr with tasklist_lock
+      ptrace: Document why ptrace_setoptions does not need a lock
+      signal: Protect parent child relationships by childs siglock
+      ptrace: Use siglock instead of tasklist_lock in ptrace_check_attach
+      signal: Always call do_notify_parent_cldstop with siglock held
+
+ arch/alpha/kernel/asm-offsets.c |   1 -
+ arch/ia64/kernel/asm-offsets.c  |   1 -
+ arch/powerpc/xmon/xmon.c        |   2 +-
+ kernel/debug/kdb/kdb_main.c     |   2 +-
+ kernel/exit.c                   |  23 +++-
+ kernel/fork.c                   |  12 +-
+ kernel/ptrace.c                 | 132 ++++++++----------
+ kernel/signal.c                 | 296 ++++++++++++++++++++++++++--------------
+ 8 files changed, 279 insertions(+), 190 deletions(-)
+
+Eric
