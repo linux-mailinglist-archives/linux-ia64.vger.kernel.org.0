@@ -2,67 +2,96 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C70F052C725
-	for <lists+linux-ia64@lfdr.de>; Thu, 19 May 2022 01:01:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBC2F52CBDC
+	for <lists+linux-ia64@lfdr.de>; Thu, 19 May 2022 08:19:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230325AbiERW6M (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 18 May 2022 18:58:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46472 "EHLO
+        id S234288AbiESGTq (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 19 May 2022 02:19:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231173AbiERW5V (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 18 May 2022 18:57:21 -0400
-Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9585152B31
-        for <linux-ia64@vger.kernel.org>; Wed, 18 May 2022 15:57:06 -0700 (PDT)
-Received: by mail-ot1-x331.google.com with SMTP id a22-20020a9d3e16000000b00606aeb12ab6so2383827otd.7
-        for <linux-ia64@vger.kernel.org>; Wed, 18 May 2022 15:57:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=mZ3wqB4NmL7z6lpFr/h15h1rYqsZKafJnUpMVahbEPg=;
-        b=ovbcf3BPb/ZrA/FpQ+ZjErGDIEZ9sF3fYOxqsE4Z0xdiTlYY9UY36hS3ty6MLllddq
-         FdZzNc2PcFHW5cwKZ0FlQqx6F8uTY06Ab/cmT+eL89dkm6I4fHT5v6DDGzwY+fqIjM8b
-         RjeYQt93Ckr4p0lPVWY342OwWKznH6xDl4nV36uj7bwrBPcHFh3ePzF5GNEmu/mQBhIV
-         GwWDekgJIDWSV60014hyLdzt2NtjUStY8MI6SiwBWMH8LEBnRGkE0W6Db0zUE9IYWmDQ
-         Ifd6nbhkESdcIbQrjo3sdEfmdPtb1VAIHCw/LAZv1DOtvQwqLYnhML4dVDmuoYeMmVFn
-         q7TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=mZ3wqB4NmL7z6lpFr/h15h1rYqsZKafJnUpMVahbEPg=;
-        b=TdNn0WhMxT/p0vvS5ynTiu1fOTD0AI0K4LEhgR/bnfm/E1ZzxDsWbxVzMYrdDFYE1f
-         YveHiE1LUEWXk8sEa7ENJ9RNBtQ6iw6Pgk4Ffpl2bMITSUknPo0qIwsP2ihs4UOEPexv
-         6HXvOph2L7lw176HR4L+S18dXm0XEgrn1zIly3p4l/nlfBxKzpFqlRSYFIq4leLptUZs
-         f4SYtmiJhW6Iiz09HUsQJNerwl9+Suz+9c6X6zZRU7FAQTySOi5WmykvRwCjUL+qVFM+
-         7hS9pOMd6nu9IWKTgSb5rZ909Ajjz8+S8vtwitpbC7YAFUI0RhcpP2AV1PkhQJuML9dd
-         7qXw==
-X-Gm-Message-State: AOAM533INXd0Fx8YJO+Ux2IFpR4PAw40Uzstu5iywD+ayY0dVMl6qmj7
-        nxTuzR7yVnjjMqlYLtWBtNmUKOeSD+6JgzDx7ZM4m0oUcpCgrbIi823cjG+x
-X-Google-Smtp-Source: ABdhPJyyLDAg+sVdsLTxwEXiZ5avjedwK/uWMP/Y3UWcChEjwDE+iXuY4kOycHY8vIqM/rcV0hLTcVdg0IN0RAQYgBc=
-X-Received: by 2002:a5b:f87:0:b0:64a:9aa6:e181 with SMTP id
- q7-20020a5b0f87000000b0064a9aa6e181mr1852277ybh.157.1652914614913; Wed, 18
- May 2022 15:56:54 -0700 (PDT)
+        with ESMTP id S229654AbiESGTp (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 19 May 2022 02:19:45 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA09ABD8;
+        Wed, 18 May 2022 23:19:44 -0700 (PDT)
+Date:   Thu, 19 May 2022 08:19:40 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1652941182;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=p4RweUPS77rmO8bK1cUfMLMF5vHfob7E/RdPJYYlKAM=;
+        b=K5e/9lbnTYDWbIk601eMIjjzqfkio58vfeiTKarUFKwIb/hEM6KA3V1dLV8bv/aJvfSaf0
+        ULtbgdi9vLosfwtQ5ZR0DdwCIuU7bXOdSxBEXC6wqqHjAxG/5nzqXGfom+lrTsbMKca5Hp
+        pKtnvDEMRWTANMMAM8wNTIXlybkuP6p9JsIMRyVkum3UTEsjDCovVgzxqMcxLfFaBvqEzQ
+        kJojumUlnRMKb1KdqE+NsJ8txHtZP0ZboUTXtygKLWPwEQpWfEFFv6Z0xm1Lcu9vUGy9dH
+        nFh0OV8Nw3WaXnKW+sb9gndLPwi22A1tMkmzTz/GIl35hD1VTUbwRpbNsTGC7Q==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1652941182;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=p4RweUPS77rmO8bK1cUfMLMF5vHfob7E/RdPJYYlKAM=;
+        b=mgux4xHBBI/r7rgHoEmCsd4Y5P8NBE9oThfftcXoCCrZKi4XTl7LBGeEj9ESywM0jNaYh7
+        x3nHuMOC1ru0KpBg==
+From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To:     Kyle Huey <khuey@pernos.co>
+Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
+        LKML <linux-kernel@vger.kernel.org>, rjw@rjwysocki.net,
+        oleg@redhat.com, mingo@kernel.org, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, rostedt@goodmis.org, mgorman@suse.de,
+        Will Deacon <will@kernel.org>, tj@kernel.org,
+        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-xtensa@linux-xtensa.org, Jann Horn <jannh@google.com>,
+        Kees Cook <keescook@chromium.org>, linux-ia64@vger.kernel.org,
+        Robert O'Callahan <roc@pernos.co>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Jason Wessel <jason.wessel@windriver.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Douglas Miller <dougmill@linux.vnet.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH 00/16] ptrace: cleanups and calling do_cldstop with only
+ siglock
+Message-ID: <YoXhfGGPKnT/YFC1@linutronix.de>
+References: <20220421150248.667412396@infradead.org>
+ <20220421150654.817117821@infradead.org>
+ <87czhap9dy.fsf@email.froward.int.ebiederm.org>
+ <878rrrh32q.fsf_-_@email.froward.int.ebiederm.org>
+ <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
+ <87k0b0apne.fsf_-_@email.froward.int.ebiederm.org>
+ <87a6bv6dl6.fsf_-_@email.froward.int.ebiederm.org>
+ <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
+ <CALWUPBdFDLuT7JaNGSJ_UXbHf8y9uKdC-SkAqzd=FQC0MX4nNQ@mail.gmail.com>
 MIME-Version: 1.0
-Received: by 2002:a05:7000:7143:0:0:0:0 with HTTP; Wed, 18 May 2022 15:56:53
- -0700 (PDT)
-Reply-To: tonywenn@asia.com
-From:   Tony Wen <weboutloock4@gmail.com>
-Date:   Thu, 19 May 2022 06:56:53 +0800
-Message-ID: <CAE2_YrD=5bo8j9+ah-xptEBBV-HEC4=Gb0SRHf996phiopc3WQ@mail.gmail.com>
-Subject: engage
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.4 required=5.0 tests=BAYES_40,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <CALWUPBdFDLuT7JaNGSJ_UXbHf8y9uKdC-SkAqzd=FQC0MX4nNQ@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Can I engage your services?
+On 2022-05-18 20:26:05 [-0700], Kyle Huey wrote:
+> Is there a git branch somewhere I can pull to test this? It doesn't apply
+> cleanly to Linus's tip.
+
+https://kernel.googlesource.com/pub/scm/linux/kernel/git/ebiederm/user-namespace.git ptrace_stop-cleanup-for-v5.19
+
+> - Kyle
+
+Sebastian
