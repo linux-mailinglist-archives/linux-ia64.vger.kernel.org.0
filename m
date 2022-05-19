@@ -2,161 +2,116 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DB2E952D12D
-	for <lists+linux-ia64@lfdr.de>; Thu, 19 May 2022 13:09:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4092552DC52
+	for <lists+linux-ia64@lfdr.de>; Thu, 19 May 2022 20:06:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237305AbiESLJ1 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 19 May 2022 07:09:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40542 "EHLO
+        id S243151AbiESSGQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 19 May 2022 14:06:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237168AbiESLJY (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 19 May 2022 07:09:24 -0400
-Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD0DFB0429;
-        Thu, 19 May 2022 04:09:22 -0700 (PDT)
-Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.55])
-        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4L3nCd4PfdzjWwl;
-        Thu, 19 May 2022 19:08:29 +0800 (CST)
-Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
- dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 19 May 2022 19:09:20 +0800
-Received: from [10.174.178.120] (10.174.178.120) by
- dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2375.24; Thu, 19 May 2022 19:09:19 +0800
-Message-ID: <7058b8d8-c0cb-108e-0db9-2fdf5fb154cf@huawei.com>
-Date:   Thu, 19 May 2022 19:09:18 +0800
+        with ESMTP id S243647AbiESSGF (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 19 May 2022 14:06:05 -0400
+Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D235BC27;
+        Thu, 19 May 2022 11:05:57 -0700 (PDT)
+Received: from in02.mta.xmission.com ([166.70.13.52]:38982)
+        by out01.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1nrkWs-003AjH-EX; Thu, 19 May 2022 12:05:42 -0600
+Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:38810 helo=email.froward.int.ebiederm.org.xmission.com)
+        by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1nrkWr-006fmJ-Ca; Thu, 19 May 2022 12:05:41 -0600
+From:   "Eric W. Biederman" <ebiederm@xmission.com>
+To:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc:     Kyle Huey <khuey@pernos.co>, LKML <linux-kernel@vger.kernel.org>,
+        rjw@rjwysocki.net, oleg@redhat.com, mingo@kernel.org,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, mgorman@suse.de,
+        Will Deacon <will@kernel.org>, tj@kernel.org,
+        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-xtensa@linux-xtensa.org, Jann Horn <jannh@google.com>,
+        Kees Cook <keescook@chromium.org>, linux-ia64@vger.kernel.org,
+        Robert O'Callahan <roc@pernos.co>,
+        Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Jason Wessel <jason.wessel@windriver.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Douglas Miller <dougmill@linux.vnet.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>
+References: <20220421150248.667412396@infradead.org>
+        <20220421150654.817117821@infradead.org>
+        <87czhap9dy.fsf@email.froward.int.ebiederm.org>
+        <878rrrh32q.fsf_-_@email.froward.int.ebiederm.org>
+        <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
+        <87k0b0apne.fsf_-_@email.froward.int.ebiederm.org>
+        <87a6bv6dl6.fsf_-_@email.froward.int.ebiederm.org>
+        <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
+        <CALWUPBdFDLuT7JaNGSJ_UXbHf8y9uKdC-SkAqzd=FQC0MX4nNQ@mail.gmail.com>
+        <YoXhfGGPKnT/YFC1@linutronix.de>
+Date:   Thu, 19 May 2022 13:05:32 -0500
+In-Reply-To: <YoXhfGGPKnT/YFC1@linutronix.de> (Sebastian Andrzej Siewior's
+        message of "Thu, 19 May 2022 08:19:40 +0200")
+Message-ID: <8735h54cur.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.8.0
-Subject: Re: [PATCH 0/2] Add support to relocate kernel image to mirrored
- region
-To:     <ardb@kernel.org>
-CC:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
-        <will@kernel.org>, <corbet@lwn.net>, <tglx@linutronix.de>,
-        <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
-        <x86@kernel.org>, <dvhart@infradead.org>, <andy@infradead.org>,
-        <rppt@kernel.org>, <paulmck@kernel.org>, <peterz@infradead.org>,
-        <jroedel@suse.de>, <songmuchun@bytedance.com>, <macro@orcam.me.uk>,
-        <frederic@kernel.org>, <W_Armin@gmx.de>, <john.garry@huawei.com>,
-        <seanjc@google.com>, <tsbogend@alpha.franken.de>,
-        <anshuman.khandual@arm.com>, <chenhuacai@kernel.org>,
-        <david@redhat.com>, <gpiccoli@igalia.com>, <mark.rutland@arm.com>,
-        <wangkefeng.wang@huawei.com>, <linux-doc@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
-        <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>,
-        <mawupeng1@huawei.com>
-References: <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
- <20220419070150.254377-1-mawupeng1@huawei.com>
- <CAMj1kXHr2RdYSPor1st1ZnL=O42c8N6e=bNG+eFhatfefWLUrw@mail.gmail.com>
- <c65d22b4-f654-21aa-bd5f-d4f8b0939a25@huawei.com>
-From:   mawupeng <mawupeng1@huawei.com>
-In-Reply-To: <c65d22b4-f654-21aa-bd5f-d4f8b0939a25@huawei.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Originating-IP: [10.174.178.120]
-X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
- dggpemm500014.china.huawei.com (7.185.36.153)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-XM-SPF: eid=1nrkWr-006fmJ-Ca;;;mid=<8735h54cur.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.174.4;;;frm=ebiederm@xmission.com;;;spf=softfail
+X-XM-AID: U2FsdGVkX1+x0Ao64wqfn/lCXR2nCKOYfMdcIblQPOs=
+X-SA-Exim-Connect-IP: 68.227.174.4
+X-SA-Exim-Mail-From: ebiederm@xmission.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-DCC: XMission; sa04 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: *****;Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 383 ms - load_scoreonly_sql: 0.05 (0.0%),
+        signal_user_changed: 14 (3.5%), b_tie_ro: 12 (3.1%), parse: 1.52
+        (0.4%), extract_message_metadata: 22 (5.8%), get_uri_detail_list: 1.44
+        (0.4%), tests_pri_-1000: 32 (8.5%), tests_pri_-950: 1.47 (0.4%),
+        tests_pri_-900: 1.30 (0.3%), tests_pri_-90: 103 (26.8%), check_bayes:
+        101 (26.3%), b_tokenize: 10 (2.6%), b_tok_get_all: 9 (2.2%),
+        b_comp_prob: 2.6 (0.7%), b_tok_touch_all: 75 (19.7%), b_finish: 1.19
+        (0.3%), tests_pri_0: 194 (50.7%), check_dkim_signature: 0.62 (0.2%),
+        check_dkim_adsp: 3.3 (0.9%), poll_dns_idle: 1.19 (0.3%), tests_pri_10:
+        2.1 (0.5%), tests_pri_500: 7 (1.8%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH 00/16] ptrace: cleanups and calling do_cldstop with only
+ siglock
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+Sebastian Andrzej Siewior <bigeasy@linutronix.de> writes:
+
+> On 2022-05-18 20:26:05 [-0700], Kyle Huey wrote:
+>> Is there a git branch somewhere I can pull to test this? It doesn't apply
+>> cleanly to Linus's tip.
+>
+> https://kernel.googlesource.com/pub/scm/linux/kernel/git/ebiederm/user-namespace.git ptrace_stop-cleanup-for-v5.19
+
+Yes that is the branch this all applies to.
+
+This is my second round of cleanups this cycle for this code.
+I just keep finding little things that deserve to be changed,
+when I am working on the more substantial issues.
+
+Eric
 
 
-在 2022/5/7 17:28, mawupeng 写道:
-> 
-> 
-> 在 2022/5/3 17:58, Ard Biesheuvel 写道:
->> On Tue, 19 Apr 2022 at 08:43, Wupeng Ma <mawupeng1@huawei.com> wrote:
->>>
->>> From: Ma Wupeng <mawupeng1@huawei.com>
->>>
->>> Now system image will perfer to be located to mirrored regions both KASLR
->>> on and off.
->>>
->>
->> Hello Ma Wupeng,
->>
->> I wonder if we could simplify this as follows:
->> - ignore the non-KASLR case for now, and rely on the bootloader  > load the image into mirrored memory if it exists;
-> 
-> In grub, memory for static image is allocated via the following path:
-> 
-> grub_cmd_linux
->    kernel = grub_malloc(filelen)
->    kernel_alloc_addr = grub_efi_allocate_any_pages (kernel_alloc_pages)
->    grub_memcpy (kernel_addr, kernel, grub_min(filelen, kernel_size))
->     grub_loader_set (grub_linux_boot, grub_linux_unload, 0)
-> 
-> Can we get memory from mirrored region by the following steps:
-> 1. get memory map by calling grub_efi_get_memory_map()
-> 2. iter all memory map to find a suitable mirrored memory area
-> 3. locate kernel image to this area
-> 
-> So, if kaslr is not enabled
->   - grub will load kernel into mirrored region
-> else
->   - arm64-stub.c will relocate kernel image to mirrored region
-> 
-> Is this feasible?
 
-Is this a feasible proposal to relocate the static kernel image itself
-into more reliable memory?
-
-> 
->> - simplify the KASLR case to the below.
-> 
-> Yes, we can certainly do this. I will remove my code and use yours.
-> 
->>
->> I think this is reasonable, because it means we take mirrored memory
->> into account when we decide to move the image anyway, but expect the
->> boot chain to take care of this if there is no need to move the image.
->>
->> -------------8<------------------
->> --- a/drivers/firmware/efi/libstub/randomalloc.c
->> +++ b/drivers/firmware/efi/libstub/randomalloc.c
->> @@ -56,6 +56,7 @@ efi_status_t efi_random_alloc(unsigned long size,
->>                                unsigned long random_seed)
->>   {
->>          unsigned long map_size, desc_size, total_slots = 0, target_slot;
->> +       unsigned long total_mirrored_slots = 0;
->>          unsigned long buff_size;
->>          efi_status_t status;
->>          efi_memory_desc_t *memory_map;
->> @@ -86,8 +87,14 @@ efi_status_t efi_random_alloc(unsigned long size,
->>                  slots = get_entry_num_slots(md, size, ilog2(align));
->>                  MD_NUM_SLOTS(md) = slots;
->>                  total_slots += slots;
->> +               if (md->attribute & EFI_MEMORY_MORE_RELIABLE)
->> +                       total_mirrored_slots += slots;
->>          }
->>
->> +       /* only consider mirrored slots for randomization if any exist */
->> +       if (total_mirrored_slots > 0)
->> +               total_slots = total_mirrored_slots;
->> +
->>          /* find a random number between 0 and total_slots */
->>          target_slot = (total_slots * (u64)(random_seed & U32_MAX)) >> 32;
->>
->> @@ -107,6 +114,10 @@ efi_status_t efi_random_alloc(unsigned long size,
->>                  efi_physical_addr_t target;
->>                  unsigned long pages;
->>
->> +               if (total_mirrored_slots > 0 &&
->> +                   !(md->attribute & EFI_MEMORY_MORE_RELIABLE))
->> +                       continue;
->> +
->>                  if (target_slot >= MD_NUM_SLOTS(md)) {
->>                          target_slot -= MD_NUM_SLOTS(md);
->>                          continue;
->> .
