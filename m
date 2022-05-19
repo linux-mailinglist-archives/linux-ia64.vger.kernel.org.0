@@ -2,54 +2,49 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBC2F52CBDC
-	for <lists+linux-ia64@lfdr.de>; Thu, 19 May 2022 08:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A9A952CDA1
+	for <lists+linux-ia64@lfdr.de>; Thu, 19 May 2022 09:57:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234288AbiESGTq (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 19 May 2022 02:19:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54344 "EHLO
+        id S234068AbiESH5Q (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 19 May 2022 03:57:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229654AbiESGTp (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 19 May 2022 02:19:45 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA09ABD8;
-        Wed, 18 May 2022 23:19:44 -0700 (PDT)
-Date:   Thu, 19 May 2022 08:19:40 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1652941182;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=p4RweUPS77rmO8bK1cUfMLMF5vHfob7E/RdPJYYlKAM=;
-        b=K5e/9lbnTYDWbIk601eMIjjzqfkio58vfeiTKarUFKwIb/hEM6KA3V1dLV8bv/aJvfSaf0
-        ULtbgdi9vLosfwtQ5ZR0DdwCIuU7bXOdSxBEXC6wqqHjAxG/5nzqXGfom+lrTsbMKca5Hp
-        pKtnvDEMRWTANMMAM8wNTIXlybkuP6p9JsIMRyVkum3UTEsjDCovVgzxqMcxLfFaBvqEzQ
-        kJojumUlnRMKb1KdqE+NsJ8txHtZP0ZboUTXtygKLWPwEQpWfEFFv6Z0xm1Lcu9vUGy9dH
-        nFh0OV8Nw3WaXnKW+sb9gndLPwi22A1tMkmzTz/GIl35hD1VTUbwRpbNsTGC7Q==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1652941182;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=p4RweUPS77rmO8bK1cUfMLMF5vHfob7E/RdPJYYlKAM=;
-        b=mgux4xHBBI/r7rgHoEmCsd4Y5P8NBE9oThfftcXoCCrZKi4XTl7LBGeEj9ESywM0jNaYh7
-        x3nHuMOC1ru0KpBg==
-From:   Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To:     Kyle Huey <khuey@pernos.co>
-Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
-        LKML <linux-kernel@vger.kernel.org>, rjw@rjwysocki.net,
-        oleg@redhat.com, mingo@kernel.org, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, rostedt@goodmis.org, mgorman@suse.de,
+        with ESMTP id S234871AbiESH5L (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 19 May 2022 03:57:11 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A8D137A14;
+        Thu, 19 May 2022 00:57:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=tgepYw5nexzkSdGrWECyn2GcidGFnnV2G28XjZEYgZo=; b=AznSJfdbbB2IVJ1vyPGXWTsPnG
+        EJU7TfcGzrf5gXo3OUfHJnEUhbcY5hUaZx9n1ZuCBBHDi6BNVAo2CaDKd5D+Php3PKFrPYXspKkNg
+        ZSmeNgQEPblVBcdFgnZ9y48NesV8yJByzXeoOCalqgo2G1jwceZcPxb0O1ZLD0WIEb6PpDEZ5QLef
+        rH/9XEHG/kgYVy0HiRpbuimpV4xJigf3ChbN9XZ5FMSF9aOLTWXKMPlaE+JJzIQjr8ADcd27SWf0P
+        Wr4eIaffunA8GGRzMLl7SGDjMKGuTCFQYEvRxIE1Y///sGtCfFR1dla+TRE/jXlaUwmbmP0B5NF18
+        WhvnTGzQ==;
+Received: from j217100.upc-j.chello.nl ([24.132.217.100] helo=worktop.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nrb19-00CXmu-MV; Thu, 19 May 2022 07:56:19 +0000
+Received: by worktop.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 453D8980E0B; Thu, 19 May 2022 09:56:19 +0200 (CEST)
+Date:   Thu, 19 May 2022 09:56:19 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net,
+        Oleg Nesterov <oleg@redhat.com>, mingo@kernel.org,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, mgorman@suse.de, bigeasy@linutronix.de,
         Will Deacon <will@kernel.org>, tj@kernel.org,
-        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
+        linux-pm@vger.kernel.org, Richard Weinberger <richard@nod.at>,
         Anton Ivanov <anton.ivanov@cambridgegreys.com>,
         Johannes Berg <johannes@sipsolutions.net>,
         linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
         Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Jann Horn <jannh@google.com>,
-        Kees Cook <keescook@chromium.org>, linux-ia64@vger.kernel.org,
-        Robert O'Callahan <roc@pernos.co>,
+        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org,
+        Robert OCallahan <roc@pernos.co>, Kyle Huey <khuey@pernos.co>,
         Richard Henderson <rth@twiddle.net>,
         Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
@@ -60,25 +55,18 @@ Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH 00/16] ptrace: cleanups and calling do_cldstop with only
- siglock
-Message-ID: <YoXhfGGPKnT/YFC1@linutronix.de>
-References: <20220421150248.667412396@infradead.org>
- <20220421150654.817117821@infradead.org>
- <87czhap9dy.fsf@email.froward.int.ebiederm.org>
- <878rrrh32q.fsf_-_@email.froward.int.ebiederm.org>
- <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org>
- <87k0b0apne.fsf_-_@email.froward.int.ebiederm.org>
- <87a6bv6dl6.fsf_-_@email.froward.int.ebiederm.org>
- <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
- <CALWUPBdFDLuT7JaNGSJ_UXbHf8y9uKdC-SkAqzd=FQC0MX4nNQ@mail.gmail.com>
+Subject: Re: [PATCH 03/16] kdb: Use real_parent when displaying a list of
+ processes
+Message-ID: <20220519075619.GE2578@worktop.programming.kicks-ass.net>
+References: <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
+ <20220518225355.784371-3-ebiederm@xmission.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CALWUPBdFDLuT7JaNGSJ_UXbHf8y9uKdC-SkAqzd=FQC0MX4nNQ@mail.gmail.com>
+In-Reply-To: <20220518225355.784371-3-ebiederm@xmission.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -86,12 +74,12 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 2022-05-18 20:26:05 [-0700], Kyle Huey wrote:
-> Is there a git branch somewhere I can pull to test this? It doesn't apply
-> cleanly to Linus's tip.
+On Wed, May 18, 2022 at 05:53:42PM -0500, Eric W. Biederman wrote:
+> kdb has a bug that when using the ps command to display a list of
+> processes, if a process is being debugged the debugger as the parent
+> process.
+> 
+> This is silly, and I expect it never comes up in ptractice.  As there
+                                                   ^^^^^^^^^
 
-https://kernel.googlesource.com/pub/scm/linux/kernel/git/ebiederm/user-namespace.git ptrace_stop-cleanup-for-v5.19
-
-> - Kyle
-
-Sebastian
+Lol, love the new word :-)
