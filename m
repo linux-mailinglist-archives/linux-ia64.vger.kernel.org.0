@@ -2,36 +2,76 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 377C452DC5E
-	for <lists+linux-ia64@lfdr.de>; Thu, 19 May 2022 20:07:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6869552DEC6
+	for <lists+linux-ia64@lfdr.de>; Thu, 19 May 2022 22:52:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241146AbiESSGg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 19 May 2022 14:06:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59420 "EHLO
+        id S239017AbiESUww (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 19 May 2022 16:52:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243655AbiESSGf (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 19 May 2022 14:06:35 -0400
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0830F644CB;
-        Thu, 19 May 2022 11:06:32 -0700 (PDT)
-Received: from in02.mta.xmission.com ([166.70.13.52]:42124)
-        by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1nrkXf-00EPB8-BY; Thu, 19 May 2022 12:06:31 -0600
-Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:38814 helo=email.froward.int.ebiederm.org.xmission.com)
-        by in02.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1nrkXe-006g2j-DA; Thu, 19 May 2022 12:06:30 -0600
-From:   "Eric W. Biederman" <ebiederm@xmission.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net,
-        Oleg Nesterov <oleg@redhat.com>, mingo@kernel.org,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, mgorman@suse.de, bigeasy@linutronix.de,
-        Will Deacon <will@kernel.org>, tj@kernel.org,
-        linux-pm@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+        with ESMTP id S234953AbiESUwv (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 19 May 2022 16:52:51 -0400
+Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ECD102BE3
+        for <linux-ia64@vger.kernel.org>; Thu, 19 May 2022 13:52:48 -0700 (PDT)
+Received: by mail-lf1-x130.google.com with SMTP id y32so11122481lfa.6
+        for <linux-ia64@vger.kernel.org>; Thu, 19 May 2022 13:52:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=w7n9soc+YeiEuDs+/wVe5880ZbNB6SfvRzmD9yZCDg0=;
+        b=DBEkcJxwMHgrSW6HcJcRibGMLRAHktxTfe210zz70+cSSKn6ZpUgiva+kk1wpf11Zn
+         AEG+Mgw1hd0KW2hE0Q1vG6WOtJs0wkwyzpBg39QhS4doVKGMJsExBp8t3Mh2Q11oNnXz
+         Uj83mLI19GvO9WWx9wIiJ6kgKwKQLuX9IR+/Q=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=w7n9soc+YeiEuDs+/wVe5880ZbNB6SfvRzmD9yZCDg0=;
+        b=paCPLGGDoHGmQxBMV6z31si8Ub4j8l3OXDS2mN4LujESkEgeRRBlvoHk40rTJ13xf9
+         rIPic5VDq6UHHvzjXaadNA0mY4qWRCTF5Nn4dv+WwGrUaTGCzqCWW2IcyLlsk5My92SF
+         2QtYt4owzZqCnXXrAsGSBlqpM3iVDVJs1EoyjQhCT67zx88nXKxwTB0+UYahYwYb6lAU
+         PRuvAggCcEJFWe8wEvOx+faIlFPmOsLmdyZQuEVEVZQQA7Vag+ir5U++0QdH49h8D3Nh
+         IG+D9EsHDKdwEjPwhP0MD4Cyl3yw5wvs4JCVVe5OTrcP3dNLfQSK3iyxta+yENEQCMCm
+         Rv1Q==
+X-Gm-Message-State: AOAM532VEPj5xzUXeMTpMLjcjv3gNtQabo1FDcQvnVGaqvoJYI/tN6aS
+        2PcuMctgdCYmmmqEbjIPBnXE0+I/FllGGYXV
+X-Google-Smtp-Source: ABdhPJzQ5ADTnp59uqU4+nI55hPw3SjbZ0Xsz5Fu+7YFpt8NuOdoMnLLdx5oGY9sB+gJDhv8Nphb+w==
+X-Received: by 2002:a05:6512:1393:b0:474:12f6:decc with SMTP id p19-20020a056512139300b0047412f6deccmr4569277lfa.62.1652993567064;
+        Thu, 19 May 2022 13:52:47 -0700 (PDT)
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com. [209.85.208.169])
+        by smtp.gmail.com with ESMTPSA id k17-20020a2e8891000000b00253d84812edsm41199lji.2.2022.05.19.13.52.45
+        for <linux-ia64@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 May 2022 13:52:45 -0700 (PDT)
+Received: by mail-lj1-f169.google.com with SMTP id g16so7610781lja.3
+        for <linux-ia64@vger.kernel.org>; Thu, 19 May 2022 13:52:45 -0700 (PDT)
+X-Received: by 2002:a05:6000:2c1:b0:20c:5e37:3ed1 with SMTP id
+ o1-20020a05600002c100b0020c5e373ed1mr5575002wry.342.1652993554192; Thu, 19
+ May 2022 13:52:34 -0700 (PDT)
+MIME-Version: 1.0
+References: <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org> <20220518225355.784371-3-ebiederm@xmission.com>
+In-Reply-To: <20220518225355.784371-3-ebiederm@xmission.com>
+From:   Doug Anderson <dianders@chromium.org>
+Date:   Thu, 19 May 2022 13:52:22 -0700
+X-Gmail-Original-Message-ID: <CAD=FV=UFK7h0oHGJ23y37ShO+z4vt9ubGE9E4m=jMECgNAAHgA@mail.gmail.com>
+Message-ID: <CAD=FV=UFK7h0oHGJ23y37ShO+z4vt9ubGE9E4m=jMECgNAAHgA@mail.gmail.com>
+Subject: Re: [PATCH 03/16] kdb: Use real_parent when displaying a list of processes
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        "Rafael J. Wysocki" <rjw@rjwysocki.net>,
+        Oleg Nesterov <oleg@redhat.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mel Gorman <mgorman@suse.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Will Deacon <will@kernel.org>, Tejun Heo <tj@kernel.org>,
+        Linux PM <linux-pm@vger.kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
         Anton Ivanov <anton.ivanov@cambridgegreys.com>,
         Johannes Berg <johannes@sipsolutions.net>,
         linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
@@ -44,64 +84,43 @@ Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net,
         Matt Turner <mattst88@gmail.com>,
         Jason Wessel <jason.wessel@windriver.com>,
         Daniel Thompson <daniel.thompson@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
         Douglas Miller <dougmill@linux.vnet.ibm.com>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>
-References: <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
-        <20220518225355.784371-3-ebiederm@xmission.com>
-        <20220519075619.GE2578@worktop.programming.kicks-ass.net>
-Date:   Thu, 19 May 2022 13:06:22 -0500
-In-Reply-To: <20220519075619.GE2578@worktop.programming.kicks-ass.net> (Peter
-        Zijlstra's message of "Thu, 19 May 2022 09:56:19 +0200")
-Message-ID: <87wneh2y8x.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1nrkXe-006g2j-DA;;;mid=<87wneh2y8x.fsf@email.froward.int.ebiederm.org>;;;hst=in02.mta.xmission.com;;;ip=68.227.174.4;;;frm=ebiederm@xmission.com;;;spf=softfail
-X-XM-AID: U2FsdGVkX19pQDaLrMLAmG2KN+ovoqyefv1ateYU328=
-X-SA-Exim-Connect-IP: 68.227.174.4
-X-SA-Exim-Mail-From: ebiederm@xmission.com
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
-X-Spam-DCC: XMission; sa07 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ****;Peter Zijlstra <peterz@infradead.org>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 349 ms - load_scoreonly_sql: 0.04 (0.0%),
-        signal_user_changed: 12 (3.4%), b_tie_ro: 10 (3.0%), parse: 0.97
-        (0.3%), extract_message_metadata: 11 (3.3%), get_uri_detail_list: 0.60
-        (0.2%), tests_pri_-1000: 17 (4.8%), tests_pri_-950: 1.23 (0.4%),
-        tests_pri_-900: 1.04 (0.3%), tests_pri_-90: 83 (23.8%), check_bayes:
-        82 (23.3%), b_tokenize: 8 (2.2%), b_tok_get_all: 8 (2.4%),
-        b_comp_prob: 2.4 (0.7%), b_tok_touch_all: 60 (17.1%), b_finish: 0.90
-        (0.3%), tests_pri_0: 203 (58.1%), check_dkim_signature: 1.34 (0.4%),
-        check_dkim_adsp: 6 (1.7%), poll_dns_idle: 0.90 (0.3%), tests_pri_10:
-        3.0 (0.9%), tests_pri_500: 14 (3.9%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH 03/16] kdb: Use real_parent when displaying a list of
- processes
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in02.mta.xmission.com)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Peter Zijlstra <peterz@infradead.org> writes:
+Hi,
 
-> On Wed, May 18, 2022 at 05:53:42PM -0500, Eric W. Biederman wrote:
->> kdb has a bug that when using the ps command to display a list of
->> processes, if a process is being debugged the debugger as the parent
->> process.
->> 
->> This is silly, and I expect it never comes up in ptractice.  As there
->                                                    ^^^^^^^^^
+On Wed, May 18, 2022 at 3:54 PM Eric W. Biederman <ebiederm@xmission.com> wrote:
 >
-> Lol, love the new word :-)
+> kdb has a bug that when using the ps command to display a list of
+> processes, if a process is being debugged the debugger as the parent
+> process.
+>
+> This is silly, and I expect it never comes up in ptractice.  As there
+> is very little point in using gdb and kdb simultaneously.  Update the
+> code to use real_parent so that it is clear kdb does not want to
+> display a debugger as the parent of a process.
 
-It wasn't intentional but now I just might have to keep it.
+So I would tend to defer to Daniel, but I'm not convinced that the
+behavior you describe for kdb today _is_ actually silly.
 
-Eric
+If I was in kdb and I was listing processes, I might actually want to
+see that a process's parent was set to gdb. Presumably that would tell
+me extra information that might be relevant to my debug session.
 
+Personally, I'd rather add an extra piece of information into the list
+showing the real parent if it's not the same as the parent. Then
+you're not throwing away information.
+
+-Doug
