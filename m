@@ -2,135 +2,161 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C7B252D0ED
-	for <lists+linux-ia64@lfdr.de>; Thu, 19 May 2022 12:57:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB2E952D12D
+	for <lists+linux-ia64@lfdr.de>; Thu, 19 May 2022 13:09:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237049AbiESK5l (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 19 May 2022 06:57:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41448 "EHLO
+        id S237305AbiESLJ1 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 19 May 2022 07:09:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236134AbiESK5k (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 19 May 2022 06:57:40 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CE10AF31D;
-        Thu, 19 May 2022 03:57:39 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: dmitry.osipenko)
-        with ESMTPSA id A064E1F41C26
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1652957857;
-        bh=n5xuyUTKwTtfK1E3KUXlguxQHbXpNAqOc2gndpqI8jA=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=JodT7xtJhuDdpRliWmuR69V68cdLgMXYC8d7buT+z/skOa4D3K2ioz+upZrBg2HUI
-         fFJ9Rn8C3zYLSF4itEkiZf4lAf9mhOFGsXHiH+NvNHs2flmyQC/4D/NcGC8PSQsOSO
-         GcqoxRa4TTV0C4aYYrl2y+kEE4aiAR0BuXE3s+rTbSRmruSUiKG/62QN94HtkxPd8h
-         5hZsoL+SJmGw8nEPAF5+YZtOZrPZ6NRg8hcTQlgW4L/qyI+I5dRn80ayHZZC1Hf8GO
-         mkG9ultCG+PShiWcqnTz48Dvqc3PWYvBoJFQUeF+LqJAZWbjIhdXyvsG+uqjGWPers
-         YX5xODM5B4tmA==
-Message-ID: <43133a4d-8bad-93ba-c376-21d30d039b15@collabora.com>
-Date:   Thu, 19 May 2022 13:57:31 +0300
+        with ESMTP id S237168AbiESLJY (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 19 May 2022 07:09:24 -0400
+Received: from szxga02-in.huawei.com (szxga02-in.huawei.com [45.249.212.188])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD0DFB0429;
+        Thu, 19 May 2022 04:09:22 -0700 (PDT)
+Received: from dggpemm500023.china.huawei.com (unknown [172.30.72.55])
+        by szxga02-in.huawei.com (SkyGuard) with ESMTP id 4L3nCd4PfdzjWwl;
+        Thu, 19 May 2022 19:08:29 +0800 (CST)
+Received: from dggpemm500014.china.huawei.com (7.185.36.153) by
+ dggpemm500023.china.huawei.com (7.185.36.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 19 May 2022 19:09:20 +0800
+Received: from [10.174.178.120] (10.174.178.120) by
+ dggpemm500014.china.huawei.com (7.185.36.153) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Thu, 19 May 2022 19:09:19 +0800
+Message-ID: <7058b8d8-c0cb-108e-0db9-2fdf5fb154cf@huawei.com>
+Date:   Thu, 19 May 2022 19:09:18 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v8 00/27] Introduce power-off+restart call chain API
-Content-Language: en-US
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        linux-parisc@vger.kernel.org, linux-riscv@lists.infradead.org,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-References: <20220509233235.995021-1-dmitry.osipenko@collabora.com>
- <CAJZ5v0jhWs-8ChHddebTZcaH6kA05sLEMsXM9Op7kHWAQDxeYA@mail.gmail.com>
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <CAJZ5v0jhWs-8ChHddebTZcaH6kA05sLEMsXM9Op7kHWAQDxeYA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=unavailable
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
+ Thunderbird/91.8.0
+Subject: Re: [PATCH 0/2] Add support to relocate kernel image to mirrored
+ region
+To:     <ardb@kernel.org>
+CC:     <akpm@linux-foundation.org>, <catalin.marinas@arm.com>,
+        <will@kernel.org>, <corbet@lwn.net>, <tglx@linutronix.de>,
+        <mingo@redhat.com>, <bp@alien8.de>, <dave.hansen@linux.intel.com>,
+        <x86@kernel.org>, <dvhart@infradead.org>, <andy@infradead.org>,
+        <rppt@kernel.org>, <paulmck@kernel.org>, <peterz@infradead.org>,
+        <jroedel@suse.de>, <songmuchun@bytedance.com>, <macro@orcam.me.uk>,
+        <frederic@kernel.org>, <W_Armin@gmx.de>, <john.garry@huawei.com>,
+        <seanjc@google.com>, <tsbogend@alpha.franken.de>,
+        <anshuman.khandual@arm.com>, <chenhuacai@kernel.org>,
+        <david@redhat.com>, <gpiccoli@igalia.com>, <mark.rutland@arm.com>,
+        <wangkefeng.wang@huawei.com>, <linux-doc@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-efi@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+        <platform-driver-x86@vger.kernel.org>, <linux-mm@kvack.org>,
+        <mawupeng1@huawei.com>
+References: <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
+ <20220419070150.254377-1-mawupeng1@huawei.com>
+ <CAMj1kXHr2RdYSPor1st1ZnL=O42c8N6e=bNG+eFhatfefWLUrw@mail.gmail.com>
+ <c65d22b4-f654-21aa-bd5f-d4f8b0939a25@huawei.com>
+From:   mawupeng <mawupeng1@huawei.com>
+In-Reply-To: <c65d22b4-f654-21aa-bd5f-d4f8b0939a25@huawei.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.174.178.120]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ dggpemm500014.china.huawei.com (7.185.36.153)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 5/18/22 17:46, Rafael J. Wysocki wrote:
-> On Tue, May 10, 2022 at 1:33 AM Dmitry Osipenko
-> <dmitry.osipenko@collabora.com> wrote:
-...
->> Introduce new API that provides call chains support for all restart and
->> power-off modes. The new API is designed with simplicity and extensibility
->> in mind.
-...
-> The v8 looks much better than the previous versions to me.
+
+
+在 2022/5/7 17:28, mawupeng 写道:
 > 
-> I actually don't really have any comments on it except for the minor
-> remark regarding patch [1/27] sent separately.
 > 
-> Please just send an update of that one patch and I will queue up the
-> series for 5.19.
+> 在 2022/5/3 17:58, Ard Biesheuvel 写道:
+>> On Tue, 19 Apr 2022 at 08:43, Wupeng Ma <mawupeng1@huawei.com> wrote:
+>>>
+>>> From: Ma Wupeng <mawupeng1@huawei.com>
+>>>
+>>> Now system image will perfer to be located to mirrored regions both KASLR
+>>> on and off.
+>>>
+>>
+>> Hello Ma Wupeng,
+>>
+>> I wonder if we could simplify this as follows:
+>> - ignore the non-KASLR case for now, and rely on the bootloader  > load the image into mirrored memory if it exists;
 > 
-> However, I'm going to send a pull request with it in the second half
-> of the merge window, after the majority of the other changes in the
-> subsystems touched by it have been integrated.
+> In grub, memory for static image is allocated via the following path:
+> 
+> grub_cmd_linux
+>    kernel = grub_malloc(filelen)
+>    kernel_alloc_addr = grub_efi_allocate_any_pages (kernel_alloc_pages)
+>    grub_memcpy (kernel_addr, kernel, grub_min(filelen, kernel_size))
+>     grub_loader_set (grub_linux_boot, grub_linux_unload, 0)
+> 
+> Can we get memory from mirrored region by the following steps:
+> 1. get memory map by calling grub_efi_get_memory_map()
+> 2. iter all memory map to find a suitable mirrored memory area
+> 3. locate kernel image to this area
+> 
+> So, if kaslr is not enabled
+>   - grub will load kernel into mirrored region
+> else
+>   - arm64-stub.c will relocate kernel image to mirrored region
+> 
+> Is this feasible?
 
-Thanks, Rafael. I sent out the updated [1/27] patch to you.
+Is this a feasible proposal to relocate the static kernel image itself
+into more reliable memory?
 
-For the reference, the updated patch can be found here as well:
-
-https://lore.kernel.org/all/20220519105015.1195955-1-dmitry.osipenko@collabora.com/T/#u
-
--- 
-Best regards,
-Dmitry
+> 
+>> - simplify the KASLR case to the below.
+> 
+> Yes, we can certainly do this. I will remove my code and use yours.
+> 
+>>
+>> I think this is reasonable, because it means we take mirrored memory
+>> into account when we decide to move the image anyway, but expect the
+>> boot chain to take care of this if there is no need to move the image.
+>>
+>> -------------8<------------------
+>> --- a/drivers/firmware/efi/libstub/randomalloc.c
+>> +++ b/drivers/firmware/efi/libstub/randomalloc.c
+>> @@ -56,6 +56,7 @@ efi_status_t efi_random_alloc(unsigned long size,
+>>                                unsigned long random_seed)
+>>   {
+>>          unsigned long map_size, desc_size, total_slots = 0, target_slot;
+>> +       unsigned long total_mirrored_slots = 0;
+>>          unsigned long buff_size;
+>>          efi_status_t status;
+>>          efi_memory_desc_t *memory_map;
+>> @@ -86,8 +87,14 @@ efi_status_t efi_random_alloc(unsigned long size,
+>>                  slots = get_entry_num_slots(md, size, ilog2(align));
+>>                  MD_NUM_SLOTS(md) = slots;
+>>                  total_slots += slots;
+>> +               if (md->attribute & EFI_MEMORY_MORE_RELIABLE)
+>> +                       total_mirrored_slots += slots;
+>>          }
+>>
+>> +       /* only consider mirrored slots for randomization if any exist */
+>> +       if (total_mirrored_slots > 0)
+>> +               total_slots = total_mirrored_slots;
+>> +
+>>          /* find a random number between 0 and total_slots */
+>>          target_slot = (total_slots * (u64)(random_seed & U32_MAX)) >> 32;
+>>
+>> @@ -107,6 +114,10 @@ efi_status_t efi_random_alloc(unsigned long size,
+>>                  efi_physical_addr_t target;
+>>                  unsigned long pages;
+>>
+>> +               if (total_mirrored_slots > 0 &&
+>> +                   !(md->attribute & EFI_MEMORY_MORE_RELIABLE))
+>> +                       continue;
+>> +
+>>                  if (target_slot >= MD_NUM_SLOTS(md)) {
+>>                          target_slot -= MD_NUM_SLOTS(md);
+>>                          continue;
+>> .
