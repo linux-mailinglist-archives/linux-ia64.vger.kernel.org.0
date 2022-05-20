@@ -2,86 +2,86 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA12752E453
-	for <lists+linux-ia64@lfdr.de>; Fri, 20 May 2022 07:26:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85F4352E55B
+	for <lists+linux-ia64@lfdr.de>; Fri, 20 May 2022 08:52:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345583AbiETFYO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 20 May 2022 01:24:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38244 "EHLO
+        id S233098AbiETGwW (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 20 May 2022 02:52:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44476 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345578AbiETFYO (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 20 May 2022 01:24:14 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98DEC14AF75
-        for <linux-ia64@vger.kernel.org>; Thu, 19 May 2022 22:24:12 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id l14so7095508pjk.2
-        for <linux-ia64@vger.kernel.org>; Thu, 19 May 2022 22:24:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=pernos.co; s=google;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=ugR0diJyK9tyJS/g6851PslJmHEat2mXN1zC2extgo4=;
-        b=LGNkWIjJcigvMa3VriU6XF8R3RykYP3qK/iTGBwESiA802CoenEuBBG+Y/h+WaLtvX
-         dKWVHhaYx4cGD+RP6oobuCLYaQMsogtMd1fOrpL1irJtp4nq+EugoK8ac2cI88jAZw5O
-         BSiCI1FZBkRQevVJ5J1NhMccZfC0EheXeKUY8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=ugR0diJyK9tyJS/g6851PslJmHEat2mXN1zC2extgo4=;
-        b=g0NzzVptZzr1THhg3H1QMqB3LHqfapn0ZuEcBSpr42EfAxncE0ZfXwzZ85bC4vn4qb
-         /KWiAtVaRoGCpd37guOv5e5/D6JAHDwjX2t1MCkRFd1/mJMpKV7QMEBQbxSRvaAu3I0F
-         /LetTWYertFmc3++hEQOb2gNT4DFfBjgpGAyJkc0VGItwKmj9Qo0ihgpeLe0JLwEcfFH
-         tBUBQHuFaMr9GIp3PoEs8x00mmBqLcHHubHE17aRSJdxgjnXshpQf9HCZUv6nry9UeP8
-         0bf2YYf7Uw2dlHup1d654ryk/Edyj67I/mPA/ApkC9F7Aik2EgYHiJaRke7sGAw/SJfj
-         MirA==
-X-Gm-Message-State: AOAM530qHfJwysCEq/YRU/CFzFV/UYoKLc1fui9MIWtNDpm7LKUvy1XO
-        GLdAnWeYxFPPH3FIMHRQgJZWwJB7WQFub2/DoK+PLw==
-X-Google-Smtp-Source: ABdhPJweQLRt0zQYOkMLmENDxsjQRrDWuz6sx2VP4M/s/7GGjhpww45oRGtvs6MOfvUJ9JibGnhOfUlcwT5Ret4dCKw=
-X-Received: by 2002:a17:90b:384d:b0:1df:f014:54e1 with SMTP id
- nl13-20020a17090b384d00b001dff01454e1mr3543295pjb.107.1653024252060; Thu, 19
- May 2022 22:24:12 -0700 (PDT)
+        with ESMTP id S239485AbiETGwV (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 20 May 2022 02:52:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75792562F9;
+        Thu, 19 May 2022 23:52:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1987961DAD;
+        Fri, 20 May 2022 06:52:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77A1BC3411B;
+        Fri, 20 May 2022 06:52:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1653029539;
+        bh=sgNd0vtqp83N2s1CaS4qcYCZ1Em1yEUBxHGWRZy2GF4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=QJBTW/RwnaTwqYXJN8e7engo5uBawXCQTvmCdGvUS74l9X8TDS1QOyLsWI5uKXyLl
+         z4mcTAEHIllWYWzAWLvEqFQSVWA32pMZOO5rV0hQ76pRqnCkjg+uHjPRlQhFvoL3pk
+         S/APCr1bAALi9XnsrfiRcp5eTRBKjNuEkQjPgzSmc4cr82m2Yn2166lyMu8gdFNv+V
+         9OQycaz9hf0jXTvYhYsi7Fap6X1mFAoahOANs7pZPkc4DkbDp15FLM1CMmm+YQalNU
+         pIhNUBmoXl8vZ5ih7RzVCxqVn9MrEkNHQcn0ctt+y/zyJkvn1B8ldM3OjofP7BiqGf
+         PPytbnwyBdBzA==
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-f1d2ea701dso9333010fac.10;
+        Thu, 19 May 2022 23:52:19 -0700 (PDT)
+X-Gm-Message-State: AOAM533X3U4X/Fhw25PbbXfwFzto6i+qGsW8RxrTfTPiqX6yA2792NVz
+        ga7asyjjoMNMeHEZ1KKb5h/eNHRt80EwpBmRW1Y=
+X-Google-Smtp-Source: ABdhPJyUGKjChdSOGekyhnWuYeiWn9PaC4+0BZipYBFb+HJq3aKZ3nWX3el0jnXK/bPQXUK7A1ce3Km9EF5ppdRDfgo=
+X-Received: by 2002:a05:6870:f112:b0:f1:f1e9:e8f1 with SMTP id
+ k18-20020a056870f11200b000f1f1e9e8f1mr3897703oac.126.1653029538554; Thu, 19
+ May 2022 23:52:18 -0700 (PDT)
 MIME-Version: 1.0
-References: <20220421150248.667412396@infradead.org> <20220421150654.817117821@infradead.org>
- <87czhap9dy.fsf@email.froward.int.ebiederm.org> <878rrrh32q.fsf_-_@email.froward.int.ebiederm.org>
- <87k0b7v9yk.fsf_-_@email.froward.int.ebiederm.org> <87k0b0apne.fsf_-_@email.froward.int.ebiederm.org>
- <87a6bv6dl6.fsf_-_@email.froward.int.ebiederm.org> <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
- <CALWUPBdFDLuT7JaNGSJ_UXbHf8y9uKdC-SkAqzd=FQC0MX4nNQ@mail.gmail.com>
- <YoXhfGGPKnT/YFC1@linutronix.de> <8735h54cur.fsf@email.froward.int.ebiederm.org>
-In-Reply-To: <8735h54cur.fsf@email.froward.int.ebiederm.org>
-From:   Kyle Huey <khuey@pernos.co>
-Date:   Thu, 19 May 2022 22:24:00 -0700
-Message-ID: <CALWUPBdPO0ccBpFjQ-Lb5GsD=DcBw8ZyVwYVhLdpSeCcu2BSEg@mail.gmail.com>
-Subject: Re: [PATCH 00/16] ptrace: cleanups and calling do_cldstop with only siglock
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        LKML <linux-kernel@vger.kernel.org>, rjw@rjwysocki.net,
-        oleg@redhat.com, mingo@kernel.org, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, rostedt@goodmis.org, mgorman@suse.de,
-        Will Deacon <will@kernel.org>, tj@kernel.org,
-        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Jann Horn <jannh@google.com>,
-        Kees Cook <keescook@chromium.org>, linux-ia64@vger.kernel.org,
-        "Robert O'Callahan" <roc@pernos.co>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Jason Wessel <jason.wessel@windriver.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Douglas Miller <dougmill@linux.vnet.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>
+References: <CAMj1kXGSStDgj9ABmUaTLnBmpQFksh3wx4tx=mJohum4GQe3Gg@mail.gmail.com>
+ <20220419070150.254377-1-mawupeng1@huawei.com> <CAMj1kXHr2RdYSPor1st1ZnL=O42c8N6e=bNG+eFhatfefWLUrw@mail.gmail.com>
+ <c65d22b4-f654-21aa-bd5f-d4f8b0939a25@huawei.com> <7058b8d8-c0cb-108e-0db9-2fdf5fb154cf@huawei.com>
+In-Reply-To: <7058b8d8-c0cb-108e-0db9-2fdf5fb154cf@huawei.com>
+From:   Ard Biesheuvel <ardb@kernel.org>
+Date:   Fri, 20 May 2022 08:52:07 +0200
+X-Gmail-Original-Message-ID: <CAMj1kXHnL12j6FPGtEeSQB2-kHzoVF+LJMUF9YBq43Yi1UntDg@mail.gmail.com>
+Message-ID: <CAMj1kXHnL12j6FPGtEeSQB2-kHzoVF+LJMUF9YBq43Yi1UntDg@mail.gmail.com>
+Subject: Re: [PATCH 0/2] Add support to relocate kernel image to mirrored region
+To:     mawupeng <mawupeng1@huawei.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        X86 ML <x86@kernel.org>, Darren Hart <dvhart@infradead.org>,
+        Andy Shevchenko <andy@infradead.org>,
+        Mike Rapoport <rppt@kernel.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Joerg Roedel <jroedel@suse.de>, songmuchun@bytedance.com,
+        macro@orcam.me.uk, Frederic Weisbecker <frederic@kernel.org>,
+        W_Armin@gmx.de, John Garry <john.garry@huawei.com>,
+        Sean Christopherson <seanjc@google.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        chenhuacai@kernel.org, David Hildenbrand <david@redhat.com>,
+        gpiccoli@igalia.com, Mark Rutland <mark.rutland@arm.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux ARM <linux-arm-kernel@lists.infradead.org>,
+        linux-efi <linux-efi@vger.kernel.org>,
+        linux-ia64@vger.kernel.org, platform-driver-x86@vger.kernel.org,
+        Linux Memory Management List <linux-mm@kvack.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-7.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -89,93 +89,65 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, May 19, 2022 at 11:05 AM Eric W. Biederman
-<ebiederm@xmission.com> wrote:
+On Thu, 19 May 2022 at 13:09, mawupeng <mawupeng1@huawei.com> wrote:
 >
-> Sebastian Andrzej Siewior <bigeasy@linutronix.de> writes:
 >
-> > On 2022-05-18 20:26:05 [-0700], Kyle Huey wrote:
-> >> Is there a git branch somewhere I can pull to test this? It doesn't apply
-> >> cleanly to Linus's tip.
+>
+> =E5=9C=A8 2022/5/7 17:28, mawupeng =E5=86=99=E9=81=93:
 > >
-> > https://kernel.googlesource.com/pub/scm/linux/kernel/git/ebiederm/user-namespace.git ptrace_stop-cleanup-for-v5.19
+> >
+> > =E5=9C=A8 2022/5/3 17:58, Ard Biesheuvel =E5=86=99=E9=81=93:
+> >> On Tue, 19 Apr 2022 at 08:43, Wupeng Ma <mawupeng1@huawei.com> wrote:
+> >>>
+> >>> From: Ma Wupeng <mawupeng1@huawei.com>
+> >>>
+> >>> Now system image will perfer to be located to mirrored regions both K=
+ASLR
+> >>> on and off.
+> >>>
+> >>
+> >> Hello Ma Wupeng,
+> >>
+> >> I wonder if we could simplify this as follows:
+> >> - ignore the non-KASLR case for now, and rely on the bootloader  > loa=
+d the image into mirrored memory if it exists;
+> >
+> > In grub, memory for static image is allocated via the following path:
+> >
+> > grub_cmd_linux
+> >    kernel =3D grub_malloc(filelen)
+> >    kernel_alloc_addr =3D grub_efi_allocate_any_pages (kernel_alloc_page=
+s)
+> >    grub_memcpy (kernel_addr, kernel, grub_min(filelen, kernel_size))
+> >     grub_loader_set (grub_linux_boot, grub_linux_unload, 0)
+> >
+> > Can we get memory from mirrored region by the following steps:
+> > 1. get memory map by calling grub_efi_get_memory_map()
+> > 2. iter all memory map to find a suitable mirrored memory area
+> > 3. locate kernel image to this area
+> >
+> > So, if kaslr is not enabled
+> >   - grub will load kernel into mirrored region
+> > else
+> >   - arm64-stub.c will relocate kernel image to mirrored region
+> >
+> > Is this feasible?
 >
-> Yes that is the branch this all applies to.
+> Is this a feasible proposal to relocate the static kernel image itself
+> into more reliable memory?
 >
-> This is my second round of cleanups this cycle for this code.
-> I just keep finding little things that deserve to be changed,
-> when I am working on the more substantial issues.
->
-> Eric
 
-When running the rr test suite, I see hangs like this
+I'm not sure, it all depends on the firmware.
 
-[  812.151505] watchdog: BUG: soft lockup - CPU#3 stuck for 548s!
-[condvar_stress-:12152]
-[  812.151529] Modules linked in: snd_hda_codec_realtek
-snd_hda_codec_generic ledtrig_audio rfcomm cmac algif_hash
-algif_skcipher af_alg bnep dm_crypt intel_rapl_msr mei_hdcp
-snd_hda_codec_
-hdmi intel_rapl_common snd_hda_intel x86_pkg_temp_thermal
-snd_intel_dspcfg snd_intel_sdw_acpi nls_iso8859_1 intel_powerclamp
-snd_hda_codec coretemp snd_hda_core snd_hwdep snd_pcm rtl8723be
-btcoexist snd_seq_midi snd_seq_midi_event rtl8723_common kvm_intel
-rtl_pci snd_rawmidi rtlwifi btusb btrtl btbcm snd_seq kvm mac80211
-btintel btmtk snd_seq_device rapl bluetooth snd_timer i
-ntel_cstate hp_wmi cfg80211 serio_raw snd platform_profile
-ecdh_generic mei_me sparse_keymap efi_pstore wmi_bmof ee1004 joydev
-input_leds ecc libarc4 soundcore mei acpi_pad mac_hid sch_fq_c
-odel ipmi_devintf ipmi_msghandler msr vhost_vsock
-vmw_vsock_virtio_transport_common vsock vhost_net vhost vhost_iotlb
-tap vhci_hcd usbip_core parport_pc ppdev lp parport ip_tables x_tables
-autofs4 btrfs blake2b_generic xor raid6_pq zstd_compress
-[  812.151570]  libcrc32c hid_generic usbhid hid i915 drm_buddy
-i2c_algo_bit ttm drm_dp_helper cec rc_core crct10dif_pclmul
-drm_kms_helper crc32_pclmul syscopyarea ghash_clmulni_intel sysfi
-llrect sysimgblt fb_sys_fops aesni_intel crypto_simd cryptd r8169
-psmouse drm i2c_i801 realtek ahci i2c_smbus xhci_pci libahci
-xhci_pci_renesas wmi video
-[  812.151584] CPU: 3 PID: 12152 Comm: condvar_stress- Tainted: G
-    I  L    5.18.0-rc1+ #2
-[  812.151586] Hardware name: HP 750-280st/2B4B, BIOS A0.11 02/24/2016
-[  812.151587] RIP: 0010:_raw_spin_unlock_irq+0x15/0x40
-[  812.151591] Code: df e8 3f 1f 4a ff 90 5b 5d c3 66 66 2e 0f 1f 84
-00 00 00 00 00 0f 1f 44 00 00 55 48 89 e5 c6 07 00 0f 1f 00 fb 0f 1f
-44 00 00 <bf> 01 00 00 00 e8 41 95 46 ff 65 8b 05 9
-a c1 9a 5f 85 c0 74 02 5d
-[  812.151593] RSP: 0018:ffffa863c246bd70 EFLAGS: 00000246
-[  812.151594] RAX: ffff8bc0913f6400 RBX: ffff8bc0913f6400 RCX: 0000000000000000
-[  812.151595] RDX: 0000000000000002 RSI: 00000000000a0013 RDI: ffff8bc089b63180
-[  812.151596] RBP: ffffa863c246bd70 R08: ffff8bc0811d6b40 R09: ffff8bc089b63180
-[  812.151597] R10: 0000000000000000 R11: 0000000000000004 R12: ffff8bc0913f6400
-[  812.151597] R13: ffff8bc089b63180 R14: ffff8bc0913f6400 R15: ffffa863c246be68
-[  812.151598] FS:  00007f612dda5700(0000) GS:ffff8bc7e24c0000(0000)
-knlGS:0000000000000000
-[  812.151599] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  812.151600] CR2: 000055e70715692e CR3: 000000010b4e8005 CR4: 00000000003706e4
-[  812.151601] Call Trace:
-[  812.151602]  <TASK>
-[  812.151604]  do_signal_stop+0x228/0x260
-[  812.151606]  get_signal+0x43a/0x8e0
-[  812.151608]  arch_do_signal_or_restart+0x37/0x7d0
-[  812.151610]  ? __this_cpu_preempt_check+0x13/0x20
-[  812.151612]  ? __perf_event_task_sched_in+0x81/0x230
-[  812.151616]  ? __this_cpu_preempt_check+0x13/0x20
-[  812.151617]  exit_to_user_mode_prepare+0x130/0x1a0
-[  812.151620]  syscall_exit_to_user_mode+0x26/0x40
-[  812.151621]  ret_from_fork+0x15/0x30
-[  812.151623] RIP: 0033:0x7f612dfcd125
-[  812.151625] Code: 48 85 ff 74 3d 48 85 f6 74 38 48 83 ee 10 48 89
-4e 08 48 89 3e 48 89 d7 4c 89 c2 4d 89 c8 4c 8b 54 24 08 b8 38 00 00
-00 0f 05 <48> 85 c0 7c 13 74 01 c3 31 ed 58 5f ff d
-0 48 89 c7 b8 3c 00 00 00
-[  812.151626] RSP: 002b:00007f612dda4fb0 EFLAGS: 00000246 ORIG_RAX:
-0000000000000038
-[  812.151628] RAX: 0000000000000000 RBX: 00007f612dda5700 RCX: ffffffffffffffff
-[  812.151628] RDX: 00007f612dda59d0 RSI: 00007f612dda4fb0 RDI: 00000000003d0f00
-[  812.151629] RBP: 00007ffd59ad20b0 R08: 00007f612dda5700 R09: 00007f612dda5700
-[  812.151630] R10: 00007f612dda59d0 R11: 0000000000000246 R12: 00007ffd59ad20ae
-[  812.151631] R13: 00007ffd59ad20af R14: 00007ffd59ad20b0 R15: 00007f612dda4fc0
-[  812.151632]  </TASK>
+When GRUB calls LoadImage(), the firmware will reallocate the image
+and unpack it there. So it is really the firmware's job to ensure that
+the image is loaded into a suitable location.
 
-- Kyle
+I have some code here that implements a EFI based decompressor, and
+which loads the kernel image into mirrored memory if it exists,
+without the need to move it again. It could trivially be modified to
+deal with non-randomized loads as well.
+
+But the bottom line is that UEFI should expose the ability to target
+mirrored memory, hacking around it like this is not a sustainable
+approach.
