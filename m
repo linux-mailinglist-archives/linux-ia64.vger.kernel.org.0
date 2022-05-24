@@ -2,82 +2,108 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D822532EE9
-	for <lists+linux-ia64@lfdr.de>; Tue, 24 May 2022 18:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E809533246
+	for <lists+linux-ia64@lfdr.de>; Tue, 24 May 2022 22:16:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239546AbiEXQ2m (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 24 May 2022 12:28:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51714 "EHLO
+        id S241465AbiEXUQx (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 24 May 2022 16:16:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239356AbiEXQ2k (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 24 May 2022 12:28:40 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D4FAF33349
-        for <linux-ia64@vger.kernel.org>; Tue, 24 May 2022 09:28:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1653409717;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=tgYm45Tc+Uo0q6+4gAt4ZLxsiwtWeg9L52KfwWzhmrE=;
-        b=M/Iz09lwc/egElvMOOCoOJYOWOWJAZb7iXtwYH9aRy50yqA+0xL+DqTIzmSdVHpMLXV/TX
-        /3764f8SBA1am+nzFzX1LShez4Zw6jyX0du8ooRQviVFjqcKiE1K7UOe/oj/3p13X9gVig
-        78TAXuh04AkBxq6NK6sJpTp+DviUgso=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-327-kuqjvOxXMMqGfl-AezKgcQ-1; Tue, 24 May 2022 12:28:33 -0400
-X-MC-Unique: kuqjvOxXMMqGfl-AezKgcQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D4DE3180074C;
-        Tue, 24 May 2022 16:28:30 +0000 (UTC)
-Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.195.109])
-        by smtp.corp.redhat.com (Postfix) with SMTP id 5ABA6404E4A2;
-        Tue, 24 May 2022 16:28:11 +0000 (UTC)
-Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Tue, 24 May 2022 18:28:30 +0200 (CEST)
-Date:   Tue, 24 May 2022 18:28:09 +0200
-From:   Oleg Nesterov <oleg@redhat.com>
-To:     "Eric W. Biederman" <ebiederm@xmission.com>
-Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, mgorman@suse.de, bigeasy@linutronix.de,
-        Will Deacon <will@kernel.org>, tj@kernel.org,
-        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org,
-        Robert OCallahan <roc@pernos.co>, Kyle Huey <khuey@pernos.co>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Jason Wessel <jason.wessel@windriver.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Douglas Miller <dougmill@linux.vnet.ibm.com>,
+        with ESMTP id S231410AbiEXUQx (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 24 May 2022 16:16:53 -0400
+Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEFDB2317B;
+        Tue, 24 May 2022 13:16:51 -0700 (PDT)
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+        (Authenticated sender: dmitry.osipenko)
+        with ESMTPSA id F2E871F447A6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1653423409;
+        bh=zYjjoQPSRD28QTzcQmCkF+0zDUTSRxsuI5oi8F0+rRQ=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=fWA1AifiGfpu5zAody+hWBW74K5h5PJY4o9syShHoFUvcDbGztdgO0rxpFXKrmy2Y
+         v+m0QvVaF2TMOM3FrIQn4vCIIUWVeH9erQlS971HHUB5axW0nhIjNhf2t83dRltpj5
+         F+MJuBOytIM400P1utntTu0dMtY0yhe0QZvOmzJR1Di7UCyoNz6N/1CjkNfHCg26JH
+         3c5z3Ze+AYN7fowyq3Sq6g1iqMrOvzo1fQihDQtpwVaXvHM7BJiRY1axu6Kqy3ixZu
+         ZneM8hZeXSfA/wa0YX+aUD23BvnxfaiuWymTABWNglyXpsDZsuQOqKpz07ThIMgq+Y
+         y0ERqGVUsfdJQ==
+Message-ID: <72eceb0c-8654-6c63-f1c4-c9374f99dfb3@collabora.com>
+Date:   Tue, 24 May 2022 23:16:41 +0300
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Subject: Re: [PATCH v8 07/27] kernel/reboot: Add kernel_can_power_off()
+Content-Language: en-US
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+Cc:     Thierry Reding <thierry.reding@gmail.com>,
+        Jonathan Hunter <jonathanh@nvidia.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Joshua Thompson <funaho@jurai.org>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sebastian Reichel <sre@kernel.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Philipp Zabel <p.zabel@pengutronix.de>,
+        Greentime Hu <green.hu@gmail.com>,
+        Vincent Chen <deanbo422@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Helge Deller <deller@gmx.de>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH 07/16] signal: Wake up the designated parent
-Message-ID: <20220524162808.GF14347@redhat.com>
-References: <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
- <20220518225355.784371-7-ebiederm@xmission.com>
- <20220524132553.GD14347@redhat.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220524132553.GD14347@redhat.com>
-User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.84 on 10.11.54.2
-X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        Paul Mackerras <paulus@samba.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        the arch/x86 maintainers <x86@kernel.org>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Juergen Gross <jgross@suse.com>,
+        Stefano Stabellini <sstabellini@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Santosh Shilimkar <ssantosh@kernel.org>,
+        Krzysztof Kozlowski <krzk@kernel.org>,
+        Liam Girdwood <lgirdwood@gmail.com>,
+        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
+        Lee Jones <lee.jones@linaro.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
+        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        linux-csky@vger.kernel.org,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
+        Parisc List <linux-parisc@vger.kernel.org>,
+        linux-riscv <linux-riscv@lists.infradead.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        xen-devel@lists.xenproject.org,
+        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
+        Linux PM list <linux-pm@vger.kernel.org>,
+        linux-tegra <linux-tegra@vger.kernel.org>,
+        Linux-Renesas <linux-renesas-soc@vger.kernel.org>
+References: <20220509233235.995021-1-dmitry.osipenko@collabora.com>
+ <20220509233235.995021-8-dmitry.osipenko@collabora.com>
+ <CAMuHMdVGjeFe=Z_1Kr9ZaNZ7HUVH1usvubEB31WUQf0fg8E1kA@mail.gmail.com>
+ <c4914e14-1882-55a1-bcbd-a905852b45a3@collabora.com>
+ <CAMuHMdWBWWVeegvLQQzT8CRL5z38AhXigaNjzw8p0NwQ1B4DPQ@mail.gmail.com>
+From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
+In-Reply-To: <CAMuHMdWBWWVeegvLQQzT8CRL5z38AhXigaNjzw8p0NwQ1B4DPQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,25 +111,73 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 05/24, Oleg Nesterov wrote:
->
-> I fail to understand this patch...
->
-> On 05/18, Eric W. Biederman wrote:
-> >
-> > Today if a process is ptraced only the ptracer will ever be woken up in
-> > wait
->
-> and why is this wrong?
->
-> > Fixes: 75b95953a569 ("job control: Add @for_ptrace to do_notify_parent_cldstop()")
->
-> how does this change fix 75b95953a569?
+On 5/24/22 18:03, Geert Uytterhoeven wrote:
+> Hi Dmitry,
+> 
+> On Tue, May 24, 2022 at 3:41 PM Dmitry Osipenko
+> <dmitry.osipenko@collabora.com> wrote:
+>> On 5/24/22 16:14, Geert Uytterhoeven wrote:
+>>> On Tue, May 10, 2022 at 1:33 AM Dmitry Osipenko
+>>> <dmitry.osipenko@collabora.com> wrote:
+>>>> Add kernel_can_power_off() helper that replaces open-coded checks of
+>>>> the global pm_power_off variable. This is a necessary step towards
+>>>> supporting chained power-off handlers.
+>>>>
+>>>> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+>>>
+>>> Thanks for your patch, which is now commit 0e2110d2e910e44c
+>>> ("kernel/reboot: Add kernel_can_power_off()") in pm/linux-next.
+>>>
+>>> This causes the "poweroff" command (Debian nfsroot) to no longer
+>>> cleanly halt the system on arm32 systems, but fail with a panic
+>>> instead:
+>>>
+>>> -reboot: System halted
+>>> +reboot: Power down
+>>> +Kernel panic - not syncing: Attempted to kill init! exitcode=0x00000000
+>>> +CPU: 0 PID: 1 Comm: systemd-shutdow Not tainted
+>>> 5.18.0-rc7-shmobile-00007-g0e2110d2e910 #1274
+>>> +Hardware name: Generic R-Car Gen2 (Flattened Device Tree)
+>>> + unwind_backtrace from show_stack+0x10/0x14
+>>> + show_stack from dump_stack_lvl+0x40/0x4c
+>>> + dump_stack_lvl from panic+0xf4/0x330
+>>> + panic from do_exit+0x1c8/0x8e4
+>>> + do_exit from __do_sys_reboot+0x174/0x1fc
+>>> + __do_sys_reboot from ret_fast_syscall+0x0/0x54
+>>> +Exception stack(0xf0815fa8 to 0xf0815ff0)
+>>> +5fa0:                   004e6954 00000000 fee1dead 28121969 4321fedc f0d94600
+>>> +5fc0: 004e6954 00000000 00000000 00000058 befa0c78 00000000 befa0c10 004e56f8
+>>> +5fe0: 00000058 befa0b6c b6ec8d45 b6e4a746
+>>> +---[ end Kernel panic - not syncing: Attempted to kill init!
+>>> exitcode=0x00000000 ]---
+>>>
+>>> On arm64, "poweroff" causes a clean "reboot: Power down" before/after.
+>>>
+>>> On both arm32 and arm64, the same handlers are registered:
+>>>   - SYS_OFF_MODE_POWER_OFF_PREPARE: legacy_pm_power_off_prepare
+>>>   - SYS_OFF_MODE_POWER_OFF: legacy_pm_power_off
+>>>
+>>> On both arm32 and arm64, legacy_pm_power_off_prepare() is called.
+>>> On both arm32 and arm64, legacy_pm_power_off() does not seem to
+>>> be called.
+>>>
+>>> On arm32, both pm_power_off_prepare and pm_power_off are NULL.
+>>> On arm64, pm_power_off_prepare is NULL, and
+>>> pm_power_off is psci_sys_poweroff.
+>>>
+>>> Do you have a clue?
+>>> Thanks!
+>>
+>> Thank you, Geert! I see the problem, the kernel_can_power_off() checks whether power-off handler is registered, but it's always registered because legacy_pm_power_off is registered unconditionally. So it causes trouble for platforms that don't have power-off handler installed at all. All platforms that I tested have a power-off handler, so now wonder that I didn't notice this before.
+>>
+>> This change should fix the problem, please give it a try:
+> 
+> Thank you, that fixes the problem for me!
+> 
+> Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
 
-OK, I guess you mean the 2nd do_notify_parent_cldstop() in ptrace_stop(),
-the problematic case is current->ptrace == T. Right?
+Great! I'll send the proper patch soon.
 
-I dislike this patch anyway, but let me think more about it.
-
-Oleg.
-
+-- 
+Best regards,
+Dmitry
