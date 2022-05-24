@@ -2,43 +2,43 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52555532D6D
-	for <lists+linux-ia64@lfdr.de>; Tue, 24 May 2022 17:28:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D822532EE9
+	for <lists+linux-ia64@lfdr.de>; Tue, 24 May 2022 18:28:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237220AbiEXP1y (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 24 May 2022 11:27:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50384 "EHLO
+        id S239546AbiEXQ2m (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 24 May 2022 12:28:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51714 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238893AbiEXP1x (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 24 May 2022 11:27:53 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id A20885F8F6
-        for <linux-ia64@vger.kernel.org>; Tue, 24 May 2022 08:27:52 -0700 (PDT)
+        with ESMTP id S239356AbiEXQ2k (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 24 May 2022 12:28:40 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id D4FAF33349
+        for <linux-ia64@vger.kernel.org>; Tue, 24 May 2022 09:28:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1653406071;
+        s=mimecast20190719; t=1653409717;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
          in-reply-to:in-reply-to:references:references;
-        bh=0dpLkRs1d/f4IvFC0kcR0J1iYghGd/WbywlFV5pQCIw=;
-        b=XSoqQbo3LQcmHjASKhd4LYUypVlHDr9Am0nrkARSh8Y/b4rveNyxAFsYTYlYzeGwiGKMvV
-        lB/lH/OCUldTgYqp4wltkmebBEI24mIPwL2VlYg4V4K1OP2b+WaGqg+tRGvBuzzE4Kw9mj
-        cWmMKy8HX7p+4OPUch6Z8G9JPzYI3qs=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+        bh=tgYm45Tc+Uo0q6+4gAt4ZLxsiwtWeg9L52KfwWzhmrE=;
+        b=M/Iz09lwc/egElvMOOCoOJYOWOWJAZb7iXtwYH9aRy50yqA+0xL+DqTIzmSdVHpMLXV/TX
+        /3764f8SBA1am+nzFzX1LShez4Zw6jyX0du8ooRQviVFjqcKiE1K7UOe/oj/3p13X9gVig
+        78TAXuh04AkBxq6NK6sJpTp+DviUgso=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-586-StCUA6iqOkemmeQYbKoalw-1; Tue, 24 May 2022 11:27:48 -0400
-X-MC-Unique: StCUA6iqOkemmeQYbKoalw-1
-Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+ us-mta-327-kuqjvOxXMMqGfl-AezKgcQ-1; Tue, 24 May 2022 12:28:33 -0400
+X-MC-Unique: kuqjvOxXMMqGfl-AezKgcQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
         (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D2ABC3810D25;
-        Tue, 24 May 2022 15:27:46 +0000 (UTC)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id D4DE3180074C;
+        Tue, 24 May 2022 16:28:30 +0000 (UTC)
 Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.195.109])
-        by smtp.corp.redhat.com (Postfix) with SMTP id EB1312166B29;
-        Tue, 24 May 2022 15:27:26 +0000 (UTC)
+        by smtp.corp.redhat.com (Postfix) with SMTP id 5ABA6404E4A2;
+        Tue, 24 May 2022 16:28:11 +0000 (UTC)
 Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
-        oleg@redhat.com; Tue, 24 May 2022 17:27:46 +0200 (CEST)
-Date:   Tue, 24 May 2022 17:27:25 +0200
+        oleg@redhat.com; Tue, 24 May 2022 18:28:30 +0200 (CEST)
+Date:   Tue, 24 May 2022 18:28:09 +0200
 From:   Oleg Nesterov <oleg@redhat.com>
 To:     "Eric W. Biederman" <ebiederm@xmission.com>
 Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
@@ -64,19 +64,20 @@ Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
         Michael Ellerman <mpe@ellerman.id.au>,
         Benjamin Herrenschmidt <benh@kernel.crashing.org>,
         Paul Mackerras <paulus@samba.org>
-Subject: Re: [PATCH 08/16] ptrace: Only populate last_siginfo from ptrace
-Message-ID: <20220524152725.GE14347@redhat.com>
+Subject: Re: [PATCH 07/16] signal: Wake up the designated parent
+Message-ID: <20220524162808.GF14347@redhat.com>
 References: <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
- <20220518225355.784371-8-ebiederm@xmission.com>
+ <20220518225355.784371-7-ebiederm@xmission.com>
+ <20220524132553.GD14347@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220518225355.784371-8-ebiederm@xmission.com>
+In-Reply-To: <20220524132553.GD14347@redhat.com>
 User-Agent: Mutt/1.5.24 (2015-08-30)
-X-Scanned-By: MIMEDefang 2.78 on 10.11.54.6
+X-Scanned-By: MIMEDefang 2.84 on 10.11.54.2
 X-Spam-Status: No, score=-3.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -84,24 +85,25 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 05/18, Eric W. Biederman wrote:
+On 05/24, Oleg Nesterov wrote:
 >
-> The code in ptrace_signal to populate siginfo if the signal number
-> changed is buggy.  If the tracer contined the tracee using
-> ptrace_detach it is guaranteed to use the real_parent (or possibly a
-> new tracer) but definitely not the origional tracer to populate si_pid
-> and si_uid.
+> I fail to understand this patch...
+>
+> On 05/18, Eric W. Biederman wrote:
+> >
+> > Today if a process is ptraced only the ptracer will ever be woken up in
+> > wait
+>
+> and why is this wrong?
+>
+> > Fixes: 75b95953a569 ("job control: Add @for_ptrace to do_notify_parent_cldstop()")
+>
+> how does this change fix 75b95953a569?
 
-I guess nobody cares. As the comment says
+OK, I guess you mean the 2nd do_notify_parent_cldstop() in ptrace_stop(),
+the problematic case is current->ptrace == T. Right?
 
-	 If the debugger wanted something
-	 specific in the siginfo structure then it should
-	 have updated *info via PTRACE_SETSIGINFO.
-
-otherwise I don't think si_pid/si_uid have any value.
-
-However the patch looks fine to me, just the word "buggy" looks a bit
-too strong imo.
+I dislike this patch anyway, but let me think more about it.
 
 Oleg.
 
