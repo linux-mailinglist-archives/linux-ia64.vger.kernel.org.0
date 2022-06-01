@@ -2,279 +2,128 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A12775398A3
-	for <lists+linux-ia64@lfdr.de>; Tue, 31 May 2022 23:25:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83B8B53A47F
+	for <lists+linux-ia64@lfdr.de>; Wed,  1 Jun 2022 14:00:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347966AbiEaVZG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 31 May 2022 17:25:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51214 "EHLO
+        id S242752AbiFAMAU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 1 Jun 2022 08:00:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347989AbiEaVZC (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 31 May 2022 17:25:02 -0400
-Received: from bhuna.collabora.co.uk (bhuna.collabora.co.uk [46.235.227.227])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFD149CF26;
-        Tue, 31 May 2022 14:25:00 -0700 (PDT)
-Received: from [127.0.0.1] (localhost [127.0.0.1])
-        (Authenticated sender: dmitry.osipenko)
-        with ESMTPSA id 4C9F21F43F0B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1654032299;
-        bh=dWPjJiUcTEsCTwSVeYSxHnF1/ruJ13+dt9/M97DHXpY=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=iw1cl93DawB1wUr9b6KkZdHCFs5+L/GBohLHlROEAOks05zME/v6MXMPk6D7ui5Yi
-         RNRHdZFdzCLwhRjjb38P9M6JexB3Wbp2yKOPr5eeU8sVg/8ntyHzURiHlZSY6J8Cm9
-         q6oV/gJyO14M2ElVzYwoEuvi7LeAOBJpJO7JVAQIQbIk2iZISrAGCD8WEks6N0mo8W
-         PABIM3KRc5wMYvZgEpozGR6zO7yQLUE2dke3U5CmMfjFhmLTkzt3Ddgs0XBxEfDRJn
-         c+JlwyAdHThzhqLupTWaB45a5dOVfxT+a6WiHu8uAbSXS41ExvvXWl05U0ZRpjuSZP
-         ldNnEXKzwDRFg==
-Message-ID: <a41c323a-5d69-0ff1-d0da-38eb55e1e4db@collabora.com>
-Date:   Wed, 1 Jun 2022 00:24:49 +0300
+        with ESMTP id S237306AbiFAMAR (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 1 Jun 2022 08:00:17 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20E18EA5;
+        Wed,  1 Jun 2022 05:00:16 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id f21so3227442ejh.11;
+        Wed, 01 Jun 2022 05:00:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=date:from:to:cc:subject:message-id:references:mime-version
+         :content-disposition:content-transfer-encoding:in-reply-to;
+        bh=UL5PH5i+xuc8loEy0ATOPtr6G7svIoI4YSCb5ptBF3g=;
+        b=ATdhMQpSXZWzXWLgUPNrpleqYwKgREEnQCofQlEELE9GqvuT/+Vyc5EhnKa48tRJ8K
+         JdSkqVCvr/+dwwelxUkpLeS7BgWyDXRjUW9sDeLaTDs4BgvGMYQocBcQxKO+wjzTggfO
+         PllPOu8sMS78tRO/kPY/1Q16PQj25jt7we+DqYIojCxzPMWRJosQMEHuu5NfSKNpG60Z
+         5ub2RVJbsolsY1Q7LeJUXKFzGLN/hrDlxdYUpHN4ZfDOvFReLqEMePnlMkXag/qA2vSm
+         eMEtDfoYFh6BabE0pmDYfx6+V8dBdY0LoodgY1iU+SNIviDjfm+5YXKHJbiF7CJ5vyMP
+         jS5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
+         :mime-version:content-disposition:content-transfer-encoding
+         :in-reply-to;
+        bh=UL5PH5i+xuc8loEy0ATOPtr6G7svIoI4YSCb5ptBF3g=;
+        b=h/TzRiMpXpUMQ8aI2WkSY0E/giO5T9/0xD9AOFtb23S1uP+4WQukGmOJXWD0KwxI3x
+         XxiweriDPzMudj1SjVIROyrwj+/IvWaNXcdDGcLcDmcPqubfD770l7RijoeOJAGGfz2C
+         51zJXYMTiF65qPzDDBIuXou31oEHQe6jpKaDK3x7LPU+Wl6qws2DCkzu0GiVjtdOz3Ev
+         Q6FDarbxcQEfX9Lh5hX0cf0RRoA/mOUAEghBHjZjUQM1wQAdcDdKabP8GyM9Jsf4E9TX
+         XMP0D1sklybRlfvFVs/w278YS5PfpZmNWu3XWdeW/gvCX5VusUWc24+xa/ZwB2ck+ywI
+         RLdg==
+X-Gm-Message-State: AOAM533fAwE6M9iZarsvbom0aGM60o/7IjWDIjn7NrbdcTspLxWFEdpG
+        G09lr5sFcfrp/eK1oAB8hZI=
+X-Google-Smtp-Source: ABdhPJyNXEn8aIfSas+HfoTrWtTtH/NVy/28V6xdWptELRxLACgmc0IFaUXuYNbLmh57/Kxnd3yJ/w==
+X-Received: by 2002:a17:907:971e:b0:6fe:b652:7d51 with SMTP id jg30-20020a170907971e00b006feb6527d51mr50437482ejc.356.1654084814668;
+        Wed, 01 Jun 2022 05:00:14 -0700 (PDT)
+Received: from mail (239.125-180-91.adsl-dyn.isp.belgacom.be. [91.180.125.239])
+        by smtp.gmail.com with ESMTPSA id r7-20020aa7d147000000b0042dd792b3e8sm879353edo.50.2022.06.01.05.00.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 01 Jun 2022 05:00:14 -0700 (PDT)
+Date:   Wed, 1 Jun 2022 14:00:13 +0200
+From:   Luc Van Oostenryck <luc.vanoostenryck@gmail.com>
+To:     Toke =?utf-8?Q?H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>
+Cc:     kernel test robot <lkp@intel.com>, kbuild-all@lists.01.org,
+        linux-kernel@vger.kernel.org,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        linux-ia64@vger.kernel.org
+Subject: Re: kernel/bpf/devmap.c:1030:40: sparse: sparse: cast removes
+ address space '__rcu' of expression
+Message-ID: <20220601120013.bq5a3ynbkc3hngm5@mail>
+References: <202205222029.xpW3PM1y-lkp@intel.com>
+ <87y1yspmmh.fsf@toke.dk>
+ <20220601003834.ilvx2pik672yxuxt@mail>
+ <87h7547k8c.fsf@toke.dk>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-Subject: Re: [PATCH v8 16/27] m68k: Switch to new sys-off handler API
-Content-Language: en-US
-To:     Geert Uytterhoeven <geert@linux-m68k.org>
-Cc:     Thierry Reding <thierry.reding@gmail.com>,
-        Jonathan Hunter <jonathanh@nvidia.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Greg Ungerer <gerg@linux-m68k.org>,
-        Joshua Thompson <funaho@jurai.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sebastian Reichel <sre@kernel.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        Greentime Hu <green.hu@gmail.com>,
-        Vincent Chen <deanbo422@gmail.com>,
-        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        the arch/x86 maintainers <x86@kernel.org>,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        Juergen Gross <jgross@suse.com>,
-        Stefano Stabellini <sstabellini@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>,
-        Santosh Shilimkar <ssantosh@kernel.org>,
-        Krzysztof Kozlowski <krzk@kernel.org>,
-        Liam Girdwood <lgirdwood@gmail.com>,
-        Mark Brown <broonie@kernel.org>, Pavel Machek <pavel@ucw.cz>,
-        Lee Jones <lee.jones@linaro.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        =?UTF-8?B?TWljaGHFgiBNaXJvc8WCYXc=?= <mirq-linux@rere.qmqm.pl>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        linux-csky@vger.kernel.org,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        "open list:BROADCOM NVRAM DRIVER" <linux-mips@vger.kernel.org>,
-        Parisc List <linux-parisc@vger.kernel.org>,
-        linux-riscv <linux-riscv@lists.infradead.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        xen-devel@lists.xenproject.org,
-        ACPI Devel Maling List <linux-acpi@vger.kernel.org>,
-        Linux PM list <linux-pm@vger.kernel.org>,
-        linux-tegra <linux-tegra@vger.kernel.org>
-References: <20220509233235.995021-1-dmitry.osipenko@collabora.com>
- <20220509233235.995021-17-dmitry.osipenko@collabora.com>
- <CAMuHMdUFqf58F31EAGnhp_cu9k-G4Sx1cmwx-PGb3mU+6bjRnQ@mail.gmail.com>
-From:   Dmitry Osipenko <dmitry.osipenko@collabora.com>
-In-Reply-To: <CAMuHMdUFqf58F31EAGnhp_cu9k-G4Sx1cmwx-PGb3mU+6bjRnQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,UNPARSEABLE_RELAY autolearn=unavailable
-        autolearn_force=no version=3.4.6
+In-Reply-To: <87h7547k8c.fsf@toke.dk>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 5/31/22 22:04, Geert Uytterhoeven wrote:
-> Hi Dmitry,
+On Wed, Jun 01, 2022 at 12:26:27PM +0200, Toke H¯iland-J¯rgensen wrote:
+> Luc Van Oostenryck <luc.vanoostenryck@gmail.com> writes:
 > 
-> On Tue, May 10, 2022 at 1:34 AM Dmitry Osipenko
-> <dmitry.osipenko@collabora.com> wrote:
->> Kernel now supports chained power-off handlers. Use
->> register_power_off_handler() that registers power-off handlers and
->> do_kernel_power_off() that invokes chained power-off handlers. Legacy
->> pm_power_off() will be removed once all drivers will be converted to
->> the new sys-off API.
->>
->> Normally arch code should adopt only the do_kernel_power_off() at first,
->> but m68k is a special case because it uses pm_power_off() "inside out",
->> i.e. pm_power_off() invokes machine_power_off() [in fact it does nothing],
->> while it's machine_power_off() that should invoke the pm_power_off(), and
->> thus, we can't convert platforms to the new API separately. There are only
->> two platforms changed here, so it's not a big deal.
->>
->> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
->> Reviewed-by: Micha≈Ç Miros≈Çaw <mirq-linux@rere.qmqm.pl>
->> Signed-off-by: Dmitry Osipenko <dmitry.osipenko@collabora.com>
+> > On Mon, May 23, 2022 at 12:30:14PM +0200, Toke H¯iland-J¯rgensen wrote:
+> >> kernel test robot <lkp@intel.com> writes:
+> >> 
+> >> > tree:   https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git master
+> >> > head:   eaea45fc0e7b6ae439526b4a41d91230c8517336
+> >> > commit: 782347b6bcad07ddb574422e01e22c92e05928c8 xdp: Add proper __rcu annotations to redirect map entries
+> >> > date:   11 months ago
+> >> > config: ia64-randconfig-s031-20220522 (https://download.01.org/0day-ci/archive/20220522/202205222029.xpW3PM1y-lkp@intel.com/config)
+> >> > compiler: ia64-linux-gcc (GCC) 11.3.0
+> >> 
+> >> Hmm, so this is ia64-only? Some kind of macro breakage? Paul, any ideas?
+> >
+> > Hi,
+> >
+> > It's surely IA64's cmpxchg() which contains lines like:
+> > 	_r_ = ia64_cmpxchg8_##sem((__u64 *) ptr, new, _o_); 
 > 
-> Thanks for your patch, which is now commit f0f7e5265b3b37b0
-> ("m68k: Switch to new sys-off handler API") upstream.
-> 
->> --- a/arch/m68k/emu/natfeat.c
->> +++ b/arch/m68k/emu/natfeat.c
->> @@ -15,6 +15,7 @@
->>  #include <linux/string.h>
->>  #include <linux/kernel.h>
->>  #include <linux/module.h>
->> +#include <linux/reboot.h>
->>  #include <linux/io.h>
->>  #include <asm/machdep.h>
->>  #include <asm/natfeat.h>
->> @@ -90,5 +91,5 @@ void __init nf_init(void)
->>         pr_info("NatFeats found (%s, %lu.%lu)\n", buf, version >> 16,
->>                 version & 0xffff);
->>
->> -       mach_power_off = nf_poweroff;
->> +       register_platform_power_off(nf_poweroff);
-> 
-> Unfortunately nothing is registered, as this is called very early
-> (from setup_arch(), before the memory allocator is available.
-> Hence register_sys_off_handler() fails with -ENOMEM, and poweroff
-> stops working.
-> 
-> Possible solutions:
->   - As at most one handler can be registered,
->     register_platform_power_off() could use a static struct sys_off_handler
->     instance,
->   - Keep mach_power_off, and call register_platform_power_off() later.
-> 
-> Anything else?
-> Thanks!
-> 
->> --- a/arch/m68k/mac/config.c
->> +++ b/arch/m68k/mac/config.c
->> @@ -12,6 +12,7 @@
->>
->>  #include <linux/errno.h>
->>  #include <linux/module.h>
->> +#include <linux/reboot.h>
->>  #include <linux/types.h>
->>  #include <linux/mm.h>
->>  #include <linux/tty.h>
->> @@ -140,7 +141,6 @@ void __init config_mac(void)
->>         mach_hwclk = mac_hwclk;
->>         mach_reset = mac_reset;
->>         mach_halt = mac_poweroff;
->> -       mach_power_off = mac_poweroff;
->>  #if IS_ENABLED(CONFIG_INPUT_M68K_BEEP)
->>         mach_beep = mac_mksound;
->>  #endif
->> @@ -160,6 +160,8 @@ void __init config_mac(void)
->>
->>         if (macintosh_config->ident == MAC_MODEL_IICI)
->>                 mach_l2_flush = via_l2_flush;
->> +
->> +       register_platform_power_off(mac_poweroff);
->>  }
-> 
-> This must have the same problem.
+> Oh, right. Hmm, well, if the cmpxchg does an internal cast that
+> complicates things a bit. My immediate thought was to move the
+> unrcu_pointer() inside the calls to cmpxchg(), like:
+ 
+> But that seems to confuse sparse because these are ptr-to-ptr
+> constructs:
 
-The static variant should be better, IMO. I'm not sure whether other platforms won't face the same problem once they will start using register_platform_power_off(). I'll send the fix, thank you for the testing!
+Yes, that can't work because it applies on the wrong level (same difference as
+between "int const ** ptr" and "int * const * ptr").
 
---- >8 ---
+I've taken a quick look and the problem is really to be solved in IA64's
+macros for cmpxchg() and friends. Two things need to be done:
+1) avoid casts like the "(__u64 *) ptr" here above (ideally no cast would
+   be needed but a "(__u64 __force *) ptr" would be pefectly acceptable in
+   such macros.
+2) the value returned by these macros must match the type of the pointer
+   and the old/new values. For example, on x86 such macros are written as:
+	({
+		__typeof__ (*(ptr)) __ret = (arg);
+		switch (sizeof(*(ptr))) { 
+		case ...
+			... use ptr without dropping the address space ..
 
-diff --git a/kernel/reboot.c b/kernel/reboot.c
-index a091145ee710..4fea05d387dc 100644
---- a/kernel/reboot.c
-+++ b/kernel/reboot.c
-@@ -315,6 +315,37 @@ static int sys_off_notify(struct notifier_block *nb,
- 	return handler->sys_off_cb(&data);
- }
- 
-+static struct sys_off_handler platform_sys_off_handler;
-+
-+static struct sys_off_handler *alloc_sys_off_handler(int priority)
-+{
-+	struct sys_off_handler *handler;
-+
-+	/*
-+	 * Platforms like m68k can't allocate sys_off handler dynamically
-+	 * at the early boot time.
-+	 */
-+	if (priority == SYS_OFF_PRIO_PLATFORM) {
-+		handler = &platform_sys_off_handler;
-+		if (handler->cb_data)
-+			return ERR_PTR(-EBUSY);
-+	} else {
-+		handler = kzalloc(sizeof(*handler), GFP_KERNEL);
-+		if (!handler)
-+			return ERR_PTR(-ENOMEM);
-+	}
-+
-+	return handler;
-+}
-+
-+static void free_sys_off_handler(struct sys_off_handler *handler)
-+{
-+	if (handler == &platform_sys_off_handler)
-+		memset(handler, 0, sizeof(*handler));
-+	else
-+		kfree(handler);
-+}
-+
- /**
-  *	register_sys_off_handler - Register sys-off handler
-  *	@mode: Sys-off mode
-@@ -345,9 +376,9 @@ register_sys_off_handler(enum sys_off_mode mode,
- 	struct sys_off_handler *handler;
- 	int err;
- 
--	handler = kzalloc(sizeof(*handler), GFP_KERNEL);
--	if (!handler)
--		return ERR_PTR(-ENOMEM);
-+	handler = alloc_sys_off_handler(priority);
-+	if (IS_ERR(handler))
-+		return handler;
- 
- 	switch (mode) {
- 	case SYS_OFF_MODE_POWER_OFF_PREPARE:
-@@ -364,7 +395,7 @@ register_sys_off_handler(enum sys_off_mode mode,
- 		break;
- 
- 	default:
--		kfree(handler);
-+		free_sys_off_handler(handler);
- 		return ERR_PTR(-EINVAL);
- 	}
- 
-@@ -391,7 +422,7 @@ register_sys_off_handler(enum sys_off_mode mode,
- 	}
- 
- 	if (err) {
--		kfree(handler);
-+		free_sys_off_handler(handler);
- 		return ERR_PTR(err);
- 	}
- 
-@@ -422,7 +453,7 @@ void unregister_sys_off_handler(struct sys_off_handler *handler)
- 	/* sanity check, shall never happen */
- 	WARN_ON(err);
- 
--	kfree(handler);
-+	free_sys_off_handler(handler);
- }
- EXPORT_SYMBOL_GPL(unregister_sys_off_handler);
- 
+		__ret;
+	)}
+
+See, for example, arch/x86/include/asm/cmpxchg.h
+
+-- Luc
