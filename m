@@ -2,149 +2,162 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CD8253F149
-	for <lists+linux-ia64@lfdr.de>; Mon,  6 Jun 2022 23:00:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 519BE53F1F8
+	for <lists+linux-ia64@lfdr.de>; Tue,  7 Jun 2022 00:11:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234841AbiFFU7z (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 6 Jun 2022 16:59:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41672 "EHLO
+        id S231979AbiFFWLI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 6 Jun 2022 18:11:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230140AbiFFU7t (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 6 Jun 2022 16:59:49 -0400
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CF469419D;
-        Mon,  6 Jun 2022 13:48:58 -0700 (PDT)
-Received: by mail-qk1-x732.google.com with SMTP id 68so3359620qkk.9;
-        Mon, 06 Jun 2022 13:48:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=g2dcvEx5ujIfq/vGwsQoEKMbkEYSqcC+pGjcA0dBu1c=;
-        b=f7b0v5dv8hmLnBlzL8WyYq5cOW64Y5WX7Dmpl69JKaPauL++ld78WKF8ntff7E3FD9
-         /EFPnKoGaHbNkPIgpiRh5FlgefHuwLc1yxNkOW+bHut9SVnVZCbu/JkykiPElo5zPWjp
-         nCuHLbsnuv21eFXD2iNnywm2Hbn427FK25GFy6T1JFuumczjXmgtp3nChf3HO/XhNBhM
-         NXjSU4JD0/Av3t8AAMTU1yL794U7NXS8pa6qxIcfy7ouTJCp/SF65MboQcoKMXA5+/fk
-         R0q5tIVK+/ksEV405xlxflOCs1qdnp/FFVTP6I8k8VtwErnFZfCokgUB0civbDGx+Ib2
-         7GIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=g2dcvEx5ujIfq/vGwsQoEKMbkEYSqcC+pGjcA0dBu1c=;
-        b=IT4u7CmoWi6HX3yhfCZqnTHklKmxYH70Mp+prygtX+X6iGXyqlLSeFvgwYgtWeyCIe
-         zukDYBHOhQpWQ1q4hlEkCBpFtMsevyKSdhfgx7Z+rthrdfpneV1EgNvq6t8I6Rgldw0i
-         jcclSJPD3P8m6fnA8vXzh3wBBCb1TJ6obXLFPH0KtRlEjFuc6gEJo5qI4Q0H6hCxpGTL
-         msZiPybmC9OmoG/4Ze8naFtdxZLmus0O6Ss3HsawvXDIX9t9LOKyQPjgY0S4qtLOT//E
-         cTkdZR/ZoWNoUrPTtdl0YBCwQJcifH8LmS00KuogVNBk0PGGz4c4JRxPrN6uVO7WeJus
-         b3pA==
-X-Gm-Message-State: AOAM5324/lN02Hp6ppOB50edRazNGpcO8OmeBT+t9dHI8l47wpIwyJVC
-        aez+24OtinCucnef5Re+mzw=
-X-Google-Smtp-Source: ABdhPJy6iWrSjhT1+WPfkKbI1gHvATNgUCtpwq8y3JhsiD76yT4Gvelb8RZZw4VB5N3/itiqM6ja8g==
-X-Received: by 2002:a05:620a:14ad:b0:6a6:b8ab:9c3f with SMTP id x13-20020a05620a14ad00b006a6b8ab9c3fmr5227234qkj.410.1654548537353;
-        Mon, 06 Jun 2022 13:48:57 -0700 (PDT)
-Received: from localhost ([2601:4c1:c100:1230:be9c:b2d9:3353:7a73])
-        by smtp.gmail.com with ESMTPSA id bm32-20020a05620a19a000b006a6d20386f6sm900223qkb.42.2022.06.06.13.48.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Jun 2022 13:48:56 -0700 (PDT)
-Date:   Mon, 6 Jun 2022 13:48:50 -0700
-From:   Yury Norov <yury.norov@gmail.com>
-To:     Alexander Lobakin <alexandr.lobakin@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        with ESMTP id S231521AbiFFWLI (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 6 Jun 2022 18:11:08 -0400
+Received: from out01.mta.xmission.com (out01.mta.xmission.com [166.70.13.231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 326D96129D;
+        Mon,  6 Jun 2022 15:11:05 -0700 (PDT)
+Received: from in01.mta.xmission.com ([166.70.13.51]:48510)
+        by out01.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1nyKvz-004XaN-Qz; Mon, 06 Jun 2022 16:10:51 -0600
+Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:53402 helo=email.froward.int.ebiederm.org.xmission.com)
+        by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.93)
+        (envelope-from <ebiederm@xmission.com>)
+        id 1nyKvy-008VN9-IW; Mon, 06 Jun 2022 16:10:51 -0600
+From:   "Eric W. Biederman" <ebiederm@xmission.com>
+To:     Oleg Nesterov <oleg@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, mgorman@suse.de, bigeasy@linutronix.de,
+        Will Deacon <will@kernel.org>, tj@kernel.org,
+        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org,
+        Robert OCallahan <roc@pernos.co>, Kyle Huey <khuey@pernos.co>,
         Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
-        Brian Cain <bcain@quicinc.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 4/6] bitops: unify non-atomic bitops prototypes across
- architectures
-Message-ID: <Yp5oMmzNlq+Ut4So@yury-laptop>
-References: <20220606114908.962562-1-alexandr.lobakin@intel.com>
- <20220606114908.962562-5-alexandr.lobakin@intel.com>
+        Jason Wessel <jason.wessel@windriver.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Douglas Miller <dougmill@linux.vnet.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>
+References: <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
+        <20220518225355.784371-7-ebiederm@xmission.com>
+        <20220524132553.GD14347@redhat.com>
+        <20220524162808.GF14347@redhat.com> <20220525142845.GA2687@redhat.com>
+Date:   Mon, 06 Jun 2022 17:10:02 -0500
+In-Reply-To: <20220525142845.GA2687@redhat.com> (Oleg Nesterov's message of
+        "Wed, 25 May 2022 16:28:46 +0200")
+Message-ID: <87a6ap30lh.fsf@email.froward.int.ebiederm.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220606114908.962562-5-alexandr.lobakin@intel.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-XM-SPF: eid=1nyKvy-008VN9-IW;;;mid=<87a6ap30lh.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.174.4;;;frm=ebiederm@xmission.com;;;spf=softfail
+X-XM-AID: U2FsdGVkX1+3n228nDtWW1iPO1xW1EOl4V38qn2RLFc=
+X-SA-Exim-Connect-IP: 68.227.174.4
+X-SA-Exim-Mail-From: ebiederm@xmission.com
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-DCC: XMission; sa06 1397; Body=1 Fuz1=1 Fuz2=1 
+X-Spam-Combo: ***;Oleg Nesterov <oleg@redhat.com>
+X-Spam-Relay-Country: 
+X-Spam-Timing: total 680 ms - load_scoreonly_sql: 0.04 (0.0%),
+        signal_user_changed: 10 (1.5%), b_tie_ro: 9 (1.3%), parse: 0.95 (0.1%),
+         extract_message_metadata: 3.3 (0.5%), get_uri_detail_list: 1.48
+        (0.2%), tests_pri_-1000: 5 (0.8%), tests_pri_-950: 1.20 (0.2%),
+        tests_pri_-900: 1.06 (0.2%), tests_pri_-90: 345 (50.8%), check_bayes:
+        344 (50.6%), b_tokenize: 10 (1.5%), b_tok_get_all: 11 (1.5%),
+        b_comp_prob: 2.8 (0.4%), b_tok_touch_all: 316 (46.5%), b_finish: 0.90
+        (0.1%), tests_pri_0: 296 (43.5%), check_dkim_signature: 0.52 (0.1%),
+        check_dkim_adsp: 2.8 (0.4%), poll_dns_idle: 0.99 (0.1%), tests_pri_10:
+        2.1 (0.3%), tests_pri_500: 7 (1.0%), rewrite_mail: 0.00 (0.0%)
+Subject: Re: [PATCH 07/16] signal: Wake up the designated parent
+X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
+X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Jun 06, 2022 at 01:49:05PM +0200, Alexander Lobakin wrote:
-> Currently, there is a mess with the prototypes of the non-atomic
-> bitops across the different architectures:
-> 
-> ret	bool, int, unsigned long
-> nr	int, long, unsigned int, unsigned long
-> addr	volatile unsigned long *, volatile void *
-> 
-> Thankfully, it doesn't provoke any bugs, but can sometimes make
-> the compiler angry when it's not handy at all.
-> Adjust all the prototypes to the following standard:
-> 
-> ret	bool				retval can be only 0 or 1
-> nr	unsigned long			native; signed makes no sense
-> addr	volatile unsigned long *	bitmaps are arrays of ulongs
-> 
-> Finally, add some static assertions in order to prevent people from
-> making a mess in this room again.
-> I also used the %__always_inline attribute consistently they always
-> get resolved to the actual operations.
-> 
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Alexander Lobakin <alexandr.lobakin@intel.com>
-> ---
+Oleg Nesterov <oleg@redhat.com> writes:
 
-Reviewed-by: Yury Norov <yury.norov@gmail.com>
+> On 05/24, Oleg Nesterov wrote:
+>>
+>> On 05/24, Oleg Nesterov wrote:
+>> >
+>> > I fail to understand this patch...
+>> >
+>> > On 05/18, Eric W. Biederman wrote:
+>> > >
+>> > > Today if a process is ptraced only the ptracer will ever be woken up in
+>> > > wait
+>> >
+>> > and why is this wrong?
+>> >
+>> > > Fixes: 75b95953a569 ("job control: Add @for_ptrace to do_notify_parent_cldstop()")
+>> >
+>> > how does this change fix 75b95953a569?
+>>
+>> OK, I guess you mean the 2nd do_notify_parent_cldstop() in ptrace_stop(),
+>> the problematic case is current->ptrace == T. Right?
+>>
+>> I dislike this patch anyway, but let me think more about it.
+>
+> OK, now that I understand the problem, the patch doesn't look bad to me,
+> although I'd ask to make the changelog more clear.
 
-[...]
+I will see what I can do.
 
-> diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-> index 7aaed501f768..5520ac9b1c24 100644
-> --- a/include/linux/bitops.h
-> +++ b/include/linux/bitops.h
-> @@ -26,12 +26,25 @@ extern unsigned int __sw_hweight16(unsigned int w);
->  extern unsigned int __sw_hweight32(unsigned int w);
->  extern unsigned long __sw_hweight64(__u64 w);
->  
-> +#include <asm-generic/bitops/generic-non-atomic.h>
-> +
->  /*
->   * Include this here because some architectures need generic_ffs/fls in
->   * scope
->   */
->  #include <asm/bitops.h>
->  
-> +/* Check that the bitops prototypes are sane */
-> +#define __check_bitop_pr(name)	static_assert(__same_type(name, gen_##name))
-> +__check_bitop_pr(__set_bit);
-> +__check_bitop_pr(__clear_bit);
-> +__check_bitop_pr(__change_bit);
-> +__check_bitop_pr(__test_and_set_bit);
-> +__check_bitop_pr(__test_and_clear_bit);
-> +__check_bitop_pr(__test_and_change_bit);
-> +__check_bitop_pr(test_bit);
-> +#undef __check_bitop_pr
+> After this change __wake_up_parent() can't accept any "parent" from
+> p->parent thread group, but all callers look fine except
+> ptrace_detach().
 
-This one is amazing trick! And the series is good overall. Do you want me to
-take it in bitmap tree, when it's ready, or you'll move it somehow else?
+Having looked at it a little more I think the change was too
+restrictive.  For the !ptrace_reparented case there are possibly
+two threads of the parent process that wait_consider_task will
+allow to wait even with __WNOTHREAD specified.  It is desirable
+to wake them both up.
 
-Thanks,
-Yury
+Which if I have had enough sleep reduces this patch to just:
+
+diff --git a/kernel/exit.c b/kernel/exit.c
+index f072959fcab7..c8156366b722 100644
+--- a/kernel/exit.c
++++ b/kernel/exit.c
+@@ -1431,8 +1431,10 @@ static int child_wait_callback(wait_queue_entry_t *wait, unsigned mode,
+        if (!eligible_pid(wo, p))
+                return 0;
+ 
+-       if ((wo->wo_flags & __WNOTHREAD) && wait->private != p->parent)
+-               return 0;
++       if ((wo->wo_flags & __WNOTHREAD) &&
++           (wait->private != p->parent) &&
++           (wait->private != p->real_parent))
++                       return 0;
+ 
+        return default_wake_function(wait, mode, sync, key);
+ }
+
+
+I think that solves the issue without missing wake-ups without adding
+any more.
+
+For the same set of reasons it looks like the __wake_up_parent in
+__ptrace_detach is just simply dead code.  I don't think there is a case
+where when !ptrace_reparented the thread that is the real_parent can
+sleep in do_wait when the thread that was calling ptrace could not.
+
+That needs a very close look to confirm. 
+
+Eric
+
