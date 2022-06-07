@@ -2,143 +2,131 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2B0D540050
-	for <lists+linux-ia64@lfdr.de>; Tue,  7 Jun 2022 15:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C493354025E
+	for <lists+linux-ia64@lfdr.de>; Tue,  7 Jun 2022 17:27:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244878AbiFGNoC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 7 Jun 2022 09:44:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45664 "EHLO
+        id S245205AbiFGP1Y (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 7 Jun 2022 11:27:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241604AbiFGNn7 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 7 Jun 2022 09:43:59 -0400
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2FBAAE253
-        for <linux-ia64@vger.kernel.org>; Tue,  7 Jun 2022 06:43:57 -0700 (PDT)
-Received: by mail-wr1-x42b.google.com with SMTP id s1so1143459wra.9
-        for <linux-ia64@vger.kernel.org>; Tue, 07 Jun 2022 06:43:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to:user-agent;
-        bh=x4IJbeSPwqHNNzv96I29/orNZTpYQPQuyaBORkJUAzg=;
-        b=XlTRtdAks6FyNUJd2ckhu1c5pagq2qIDjS5WoYMfF8F/GzNkTOGIRee+NWovA3egqG
-         FLKHASNpirn/UlLG3ZAyDRDYJRzLIoqPa2VOSQsO/pnUIRKTo2FatbwU5AN+8a98G+bI
-         rILYCsPCDfbhcAaQTDUz6Z0bpVEwrjjd678IOahbAX1ktBr2VBSVvT4Q22Zq/oJ0gIvB
-         gLFBcHndCp7mXuXnrTrJ5ol0TaqYaNK1yM+q+L+MLEFH7U9tjlgO9MMK7/IQqfI6vNk3
-         XKf5sJfrUYjASIsJfQuT+NOtyQD4MTgpt1oQl38IcOdgvDLq5htBD62P6yCDZtdjrpI/
-         Nk9Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to:user-agent;
-        bh=x4IJbeSPwqHNNzv96I29/orNZTpYQPQuyaBORkJUAzg=;
-        b=3/67SL9UIj0FWvuWOA3jW3xtyjPglORFR+Ow+Ib0UFZ+FCCTJY47+hojsegeqk5uq0
-         JAiiZ4DnYwhudZr2Jb9jqhek9leeuJoOWrmy4K/jYbqfjBpAovbOyy5D8K21hh/JObT0
-         2ynLS/027XLj+2KXLaTrOYbgadiDNO7X0XdhfRqBNfAyGQS57fo4An4m/YQVDqJNy6X+
-         pCoEhKZsK3hg915jOwkhPOXE6BLIUKLyJbndDmALjjIBCJY+EGP0e+HZXlIcOGvyNdAc
-         UUCXDWILEiGw3jltxBEoQkv/2pakth6j7MOS1OVuDm5qyR8fQ7NDX/PHh598PfM0XFAk
-         ajng==
-X-Gm-Message-State: AOAM532fy0jkFhvnePiuRD07LXWlkWF8zR2IAvsXpWXLB945Z+OfKxrj
-        m6fqrrEG+Crb24nzi6Rm44lw8A==
-X-Google-Smtp-Source: ABdhPJzV/rczdwKiQFWRaJo7rMbHUKT0bXbfMPoGXdv8T0Fj/pZ6hEfQLyACkUiu9UuxvjPxgKjstQ==
-X-Received: by 2002:adf:eb42:0:b0:20f:ebc5:cb0f with SMTP id u2-20020adfeb42000000b0020febc5cb0fmr27945814wrn.355.1654609436139;
-        Tue, 07 Jun 2022 06:43:56 -0700 (PDT)
-Received: from elver.google.com ([2a00:79e0:9c:201:cd40:f1bd:cd2c:953c])
-        by smtp.gmail.com with ESMTPSA id k2-20020a5d5182000000b0020c5253d8fcsm17787769wrv.72.2022.06.07.06.43.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Jun 2022 06:43:55 -0700 (PDT)
-Date:   Tue, 7 Jun 2022 15:43:49 +0200
-From:   Marco Elver <elver@google.com>
-To:     Alexander Lobakin <alexandr.lobakin@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Yury Norov <yury.norov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        with ESMTP id S236718AbiFGP1X (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 7 Jun 2022 11:27:23 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 7D24226115
+        for <linux-ia64@vger.kernel.org>; Tue,  7 Jun 2022 08:27:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1654615641;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=j2QP74kmyLRjPfaslomjwazE8bxfaKWf8AzgM5WImZE=;
+        b=Qb5E61w59zV9G/TmQFwbovG/ywua/V1Qzp8CFyjQo5YF6JO1i80fp2aFATTv9p4x8Gssab
+        vuCy129PtOKQnWxi0kH/gi2BasAGXsoUBIRC0HTk8b7pD9b9xvpXFTSOneu8XFC/Lbud8Z
+        a7mB4OYNrMOAgfLBsQRfQWU2kxgsK0g=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-470-ppflYsfZM8qOHDXTPBRCHg-1; Tue, 07 Jun 2022 11:27:20 -0400
+X-MC-Unique: ppflYsfZM8qOHDXTPBRCHg-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 911C3968EEB;
+        Tue,  7 Jun 2022 15:27:18 +0000 (UTC)
+Received: from dhcp-27-174.brq.redhat.com (unknown [10.40.192.101])
+        by smtp.corp.redhat.com (Postfix) with SMTP id DF67DC27E92;
+        Tue,  7 Jun 2022 15:26:58 +0000 (UTC)
+Received: by dhcp-27-174.brq.redhat.com (nbSMTP-1.00) for uid 1000
+        oleg@redhat.com; Tue,  7 Jun 2022 17:27:15 +0200 (CEST)
+Date:   Tue, 7 Jun 2022 17:26:54 +0200
+From:   Oleg Nesterov <oleg@redhat.com>
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, mgorman@suse.de, bigeasy@linutronix.de,
+        Will Deacon <will@kernel.org>, tj@kernel.org,
+        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org,
+        Robert OCallahan <roc@pernos.co>, Kyle Huey <khuey@pernos.co>,
         Richard Henderson <rth@twiddle.net>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
         Matt Turner <mattst88@gmail.com>,
-        Brian Cain <bcain@quicinc.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Borislav Petkov <bp@suse.de>, Tony Luck <tony.luck@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/6] bitops: define gen_test_bit() the same way as the
- rest of functions
-Message-ID: <Yp9WFREfdfkho0hm@elver.google.com>
-References: <20220606114908.962562-1-alexandr.lobakin@intel.com>
- <20220606114908.962562-4-alexandr.lobakin@intel.com>
+        Jason Wessel <jason.wessel@windriver.com>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Douglas Anderson <dianders@chromium.org>,
+        Douglas Miller <dougmill@linux.vnet.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        Paul Mackerras <paulus@samba.org>
+Subject: Re: [PATCH 07/16] signal: Wake up the designated parent
+Message-ID: <20220607152627.GA10192@redhat.com>
+References: <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
+ <20220518225355.784371-7-ebiederm@xmission.com>
+ <20220524132553.GD14347@redhat.com>
+ <20220524162808.GF14347@redhat.com>
+ <20220525142845.GA2687@redhat.com>
+ <87a6ap30lh.fsf@email.froward.int.ebiederm.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220606114908.962562-4-alexandr.lobakin@intel.com>
-User-Agent: Mutt/2.1.4 (2021-12-11)
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <87a6ap30lh.fsf@email.froward.int.ebiederm.org>
+User-Agent: Mutt/1.5.24 (2015-08-30)
+X-Scanned-By: MIMEDefang 2.85 on 10.11.54.8
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Jun 06, 2022 at 01:49PM +0200, Alexander Lobakin wrote:
-> Currently, the generic test_bit() function is defined as a one-liner
-> and in case with constant bitmaps the compiler is unable to optimize
-> it to a constant. At the same time, gen_test_and_*_bit() are being
-> optimized pretty good.
-> Define gen_test_bit() the same way as they are defined.
-> 
-> Signed-off-by: Alexander Lobakin <alexandr.lobakin@intel.com>
-> ---
->  include/asm-generic/bitops/generic-non-atomic.h | 6 +++++-
->  1 file changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/include/asm-generic/bitops/generic-non-atomic.h b/include/asm-generic/bitops/generic-non-atomic.h
-> index 7a60adfa6e7d..202d8a3b40e1 100644
-> --- a/include/asm-generic/bitops/generic-non-atomic.h
-> +++ b/include/asm-generic/bitops/generic-non-atomic.h
-> @@ -118,7 +118,11 @@ gen___test_and_change_bit(unsigned int nr, volatile unsigned long *addr)
->  static __always_inline int
->  gen_test_bit(unsigned int nr, const volatile unsigned long *addr)
->  {
-> -	return 1UL & (addr[BIT_WORD(nr)] >> (nr & (BITS_PER_LONG-1)));
-> +	const unsigned long *p = (const unsigned long *)addr + BIT_WORD(nr);
-> +	unsigned long mask = BIT_MASK(nr);
-> +	unsigned long val = *p;
-> +
-> +	return !!(val & mask);
+On 06/06, Eric W. Biederman wrote:
+>
+> Which if I have had enough sleep reduces this patch to just:
+>
+> diff --git a/kernel/exit.c b/kernel/exit.c
+> index f072959fcab7..c8156366b722 100644
+> --- a/kernel/exit.c
+> +++ b/kernel/exit.c
+> @@ -1431,8 +1431,10 @@ static int child_wait_callback(wait_queue_entry_t *wait, unsigned mode,
+>         if (!eligible_pid(wo, p))
+>                 return 0;
+>
+> -       if ((wo->wo_flags & __WNOTHREAD) && wait->private != p->parent)
+> -               return 0;
+> +       if ((wo->wo_flags & __WNOTHREAD) &&
+> +           (wait->private != p->parent) &&
+> +           (wait->private != p->real_parent))
+> +                       return 0;
+>
+>         return default_wake_function(wait, mode, sync, key);
+>  }
+>
+>
+> I think that solves the issue without missing wake-ups without adding
+> any more.
 
-Unfortunately this makes the dereference of 'addr' non-volatile, and
-effectively weakens test_bit() to the point where I'd no longer consider
-it atomic. Per atomic_bitops.txt, test_bit() is atomic.
+Agreed, and looks much simpler.
 
-The generic version has been using a volatile access to make it atomic
-(akin to generic READ_ONCE() casting to volatile). The volatile is also
-the reason the compiler can't optimize much, because volatile forces a
-real memory access.
+> For the same set of reasons it looks like the __wake_up_parent in
+> __ptrace_detach is just simply dead code.  I don't think there is a case
+> where when !ptrace_reparented the thread that is the real_parent can
+> sleep in do_wait when the thread that was calling ptrace could not.
 
-Yes, confusingly, test_bit() lives in non-atomic.h, and this had caused
-confusion before, but the decision was made that moving it will cause
-headaches for ppc so it was left alone:
-https://lore.kernel.org/all/87a78xgu8o.fsf@dja-thinkpad.axtens.net/T/#u
+Yes... this doesn't really differ from the case when one thread reaps
+a natural child and another thread sleep in do_wait().
 
-As for how to make test_bit() more compiler-optimization friendly, I'm
-guessing that test_bit() needs some special casing where even the
-generic arch_test_bit() is different from the gen_test_bit().
-gen_test_bit() should probably assert that whatever it is called with
-can actually be evaluated at compile-time so it is never accidentally
-used otherwise.
+> That needs a very close look to confirm.
 
-I would also propose adding a comment close to the deref that test_bit()
-is atomic and the deref needs to remain volatile, so future people will
-not try to do the same optimization.
+Yes.
 
-Thanks,
--- Marco
+Oleg.
+
