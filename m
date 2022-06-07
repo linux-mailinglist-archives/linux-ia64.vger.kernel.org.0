@@ -2,124 +2,67 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A86F53F205
-	for <lists+linux-ia64@lfdr.de>; Tue,  7 Jun 2022 00:16:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B652953F818
+	for <lists+linux-ia64@lfdr.de>; Tue,  7 Jun 2022 10:23:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233471AbiFFWQU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 6 Jun 2022 18:16:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50416 "EHLO
+        id S232029AbiFGIXR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 7 Jun 2022 04:23:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231176AbiFFWQU (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 6 Jun 2022 18:16:20 -0400
-Received: from out03.mta.xmission.com (out03.mta.xmission.com [166.70.13.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D9352AE1;
-        Mon,  6 Jun 2022 15:16:19 -0700 (PDT)
-Received: from in01.mta.xmission.com ([166.70.13.51]:56556)
-        by out03.mta.xmission.com with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1nyL18-00Dr2R-6X; Mon, 06 Jun 2022 16:16:10 -0600
-Received: from ip68-227-174-4.om.om.cox.net ([68.227.174.4]:53752 helo=email.froward.int.ebiederm.org.xmission.com)
-        by in01.mta.xmission.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-        (Exim 4.93)
-        (envelope-from <ebiederm@xmission.com>)
-        id 1nyL17-008WKx-AS; Mon, 06 Jun 2022 16:16:09 -0600
-From:   "Eric W. Biederman" <ebiederm@xmission.com>
-To:     Oleg Nesterov <oleg@redhat.com>
-Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net, mingo@kernel.org,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        rostedt@goodmis.org, mgorman@suse.de, bigeasy@linutronix.de,
-        Will Deacon <will@kernel.org>, tj@kernel.org,
-        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org,
-        Robert OCallahan <roc@pernos.co>, Kyle Huey <khuey@pernos.co>,
-        Richard Henderson <rth@twiddle.net>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Jason Wessel <jason.wessel@windriver.com>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Douglas Anderson <dianders@chromium.org>,
-        Douglas Miller <dougmill@linux.vnet.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
-        Paul Mackerras <paulus@samba.org>
-References: <871qwq5ucx.fsf_-_@email.froward.int.ebiederm.org>
-        <20220518225355.784371-8-ebiederm@xmission.com>
-        <20220524152725.GE14347@redhat.com>
-Date:   Mon, 06 Jun 2022 17:16:01 -0500
-In-Reply-To: <20220524152725.GE14347@redhat.com> (Oleg Nesterov's message of
-        "Tue, 24 May 2022 17:27:25 +0200")
-Message-ID: <87pmjl1lr2.fsf@email.froward.int.ebiederm.org>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/27.1 (gnu/linux)
+        with ESMTP id S232102AbiFGIXM (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 7 Jun 2022 04:23:12 -0400
+X-Greylist: delayed 806 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 07 Jun 2022 01:23:10 PDT
+Received: from mail.forindustry.pl (mail.forindustry.pl [37.187.225.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19D701057B
+        for <linux-ia64@vger.kernel.org>; Tue,  7 Jun 2022 01:23:09 -0700 (PDT)
+Received: by mail.forindustry.pl (Postfix, from userid 1002)
+        id 7DD41A2988; Tue,  7 Jun 2022 08:06:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=forindustry.pl;
+        s=mail; t=1654589251;
+        bh=Vw5jk5D1DE7WK/GNf/MxRQNyAyPYcC0rMJLibxKTj58=;
+        h=Date:From:To:Subject:From;
+        b=Nhm84HsE6VI1mQmWR69DyfSRy1bsSXELRDedfXRWMrD+KHeTR+fatzWGEVw1ywncb
+         geLwZE0pYzb/hcOllLfENPl1YhfokkI0fLffEc9WHZj5LnlKqQIJDu5mKevP1PRX4E
+         GNKdTsYSVaBemu3ChbM2x8Mf+j3DE7jvx3dmyljXhFkT5ByQeUDaIrXWQWrx1mSNX0
+         9dTGcqML884d0juxzzlMUWWQx2zG99qnTnvqaOnXpey6lkShNitc6f2mrsT3Sqrkli
+         ZZ1Oe+Iy+KlBbZRGjduUZkXSnDJMoR+zGptoCYlB1OakQSwC6/Kzk+Sx9W7l9oApMY
+         ObEWyrmkmgfXg==
+Received: by mail.forindustry.pl for <linux-ia64@vger.kernel.org>; Tue,  7 Jun 2022 08:05:52 GMT
+Message-ID: <20220607064500-0.1.3o.odgk.0.bfld32sy0n@forindustry.pl>
+Date:   Tue,  7 Jun 2022 08:05:52 GMT
+From:   =?UTF-8?Q? "Arkadiusz_Soko=C5=82owski" ?= 
+        <arkadiusz.sokolowski@forindustry.pl>
+To:     <linux-ia64@vger.kernel.org>
+Subject: Koszty instalacji fotowoltaicznej
+X-Mailer: mail.forindustry.pl
 MIME-Version: 1.0
-Content-Type: text/plain
-X-XM-SPF: eid=1nyL17-008WKx-AS;;;mid=<87pmjl1lr2.fsf@email.froward.int.ebiederm.org>;;;hst=in01.mta.xmission.com;;;ip=68.227.174.4;;;frm=ebiederm@xmission.com;;;spf=softfail
-X-XM-AID: U2FsdGVkX1+XLuQrB0IHmo0lv55ADS0tXNzKSUteaDM=
-X-SA-Exim-Connect-IP: 68.227.174.4
-X-SA-Exim-Mail-From: ebiederm@xmission.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-X-Spam-Status: No, score=-2.6 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
-X-Spam-DCC: XMission; sa04 1397; Body=1 Fuz1=1 Fuz2=1 
-X-Spam-Combo: ****;Oleg Nesterov <oleg@redhat.com>
-X-Spam-Relay-Country: 
-X-Spam-Timing: total 309 ms - load_scoreonly_sql: 0.06 (0.0%),
-        signal_user_changed: 11 (3.7%), b_tie_ro: 10 (3.2%), parse: 0.95
-        (0.3%), extract_message_metadata: 2.9 (0.9%), get_uri_detail_list:
-        0.92 (0.3%), tests_pri_-1000: 5 (1.7%), tests_pri_-950: 1.15 (0.4%),
-        tests_pri_-900: 1.03 (0.3%), tests_pri_-90: 64 (20.6%), check_bayes:
-        62 (20.1%), b_tokenize: 9 (2.8%), b_tok_get_all: 8 (2.6%),
-        b_comp_prob: 2.4 (0.8%), b_tok_touch_all: 39 (12.7%), b_finish: 0.94
-        (0.3%), tests_pri_0: 206 (66.7%), check_dkim_signature: 0.53 (0.2%),
-        check_dkim_adsp: 2.8 (0.9%), poll_dns_idle: 0.96 (0.3%), tests_pri_10:
-        2.1 (0.7%), tests_pri_500: 7 (2.1%), rewrite_mail: 0.00 (0.0%)
-Subject: Re: [PATCH 08/16] ptrace: Only populate last_siginfo from ptrace
-X-SA-Exim-Version: 4.2.1 (built Sat, 08 Feb 2020 21:53:50 +0000)
-X-SA-Exim-Scanned: Yes (on in01.mta.xmission.com)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Oleg Nesterov <oleg@redhat.com> writes:
+Dzie=C5=84 dobry,
 
-> On 05/18, Eric W. Biederman wrote:
->>
->> The code in ptrace_signal to populate siginfo if the signal number
->> changed is buggy.  If the tracer contined the tracee using
->> ptrace_detach it is guaranteed to use the real_parent (or possibly a
->> new tracer) but definitely not the origional tracer to populate si_pid
->> and si_uid.
->
-> I guess nobody cares. As the comment says
->
-> 	 If the debugger wanted something
-> 	 specific in the siginfo structure then it should
-> 	 have updated *info via PTRACE_SETSIGINFO.
->
-> otherwise I don't think si_pid/si_uid have any value.
+stworzyli=C5=9Bmy specjaln=C4=85 ofert=C4=99 dla firm, na kompleksow=C4=85=
+ obs=C5=82ug=C4=99 inwestycji w fotowoltaik=C4=99.
 
-No one has complained so it is clearly no one cares.  So it is
-definitely not a regression.  Or even anything that needs to be
-backported.
+Specjalizujemy si=C4=99 w zakresie doboru, monta=C5=BCu i serwisie instal=
+acji fotowoltaicznych, dysponujemy najnowocze=C5=9Bniejszymi rozwi=C4=85z=
+ania, kt=C3=B3re zapewni=C4=85 Pa=C5=84stwu oczekiwane rezultaty.
 
-However si_pid and si_uid are defined with SI_USER are defined
-to be whomever sent the signal.  So I would argue by definition
-those values are wrong.
+Mo=C5=BCemy przygotowa=C4=87 dla Pa=C5=84stwa wst=C4=99pn=C4=85 kalkulacj=
+=C4=99 i przeanalizowa=C4=87 efekty mo=C5=BCliwe do osi=C4=85gni=C4=99cia=
+=2E
 
-> However the patch looks fine to me, just the word "buggy" looks a bit
-> too strong imo.
+Czy s=C4=85 Pa=C5=84stwo otwarci na wst=C4=99pn=C4=85 rozmow=C4=99 w tym =
+temacie?
 
-I guess I am in general agreement.  Perhaps I can just say they values
-are wrong by definition?
-
-Eric
-
-
+Pozdrawiam,
+Arkadiusz Soko=C5=82owski
