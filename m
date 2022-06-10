@@ -2,135 +2,100 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9EF454667B
-	for <lists+linux-ia64@lfdr.de>; Fri, 10 Jun 2022 14:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA0455466B7
+	for <lists+linux-ia64@lfdr.de>; Fri, 10 Jun 2022 14:35:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349011AbiFJMSQ convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Fri, 10 Jun 2022 08:18:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34184 "EHLO
+        id S235886AbiFJMfw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 10 Jun 2022 08:35:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348867AbiFJMSM (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 10 Jun 2022 08:18:12 -0400
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.86.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id CF9992732C7
-        for <linux-ia64@vger.kernel.org>; Fri, 10 Jun 2022 05:18:08 -0700 (PDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-317-aDi4xA9AOVCCz2X-8OmFHQ-1; Fri, 10 Jun 2022 13:18:05 +0100
-X-MC-Unique: aDi4xA9AOVCCz2X-8OmFHQ-1
-Received: from AcuMS.Aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) by
- AcuMS.aculab.com (fd9f:af1c:a25b:0:994c:f5c2:35d6:9b65) with Microsoft SMTP
- Server (TLS) id 15.0.1497.36; Fri, 10 Jun 2022 13:18:03 +0100
-Received: from AcuMS.Aculab.com ([fe80::994c:f5c2:35d6:9b65]) by
- AcuMS.aculab.com ([fe80::994c:f5c2:35d6:9b65%12]) with mapi id
- 15.00.1497.036; Fri, 10 Jun 2022 13:18:03 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Alexander Lobakin' <alexandr.lobakin@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Yury Norov <yury.norov@gmail.com>
-CC:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Brian Cain <bcain@quicinc.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        "Yoshinori Sato" <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
-        Tony Luck <tony.luck@intel.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        kernel test robot <lkp@intel.com>
-Subject: RE: [PATCH v2 1/6] ia64, processor: fix -Wincompatible-pointer-types
- in ia64_get_irr()
-Thread-Topic: [PATCH v2 1/6] ia64, processor: fix -Wincompatible-pointer-types
- in ia64_get_irr()
-Thread-Index: AQHYfL5z40oI9Qjgz0qz+n7lpkip7a1Ijjiw
-Date:   Fri, 10 Jun 2022 12:18:03 +0000
-Message-ID: <8711f7d6bdc148bd916d87515e71b3c2@AcuMS.aculab.com>
-References: <20220610113427.908751-1-alexandr.lobakin@intel.com>
- <20220610113427.908751-2-alexandr.lobakin@intel.com>
-In-Reply-To: <20220610113427.908751-2-alexandr.lobakin@intel.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        with ESMTP id S234848AbiFJMfw (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 10 Jun 2022 08:35:52 -0400
+Received: from mga14.intel.com (mga14.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C25BB1AAD8B;
+        Fri, 10 Jun 2022 05:35:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654864549; x=1686400549;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=vm6FvkmJGVU3kZjFvEVLAroyVBFPXI97WRUP2X3VzsY=;
+  b=cVGaJpaHYhitGAAD7kIxPUwNTmRmhG3ceCTYqw1+CsMAp0Xg5BW18uml
+   QKsOlHilwV6qt0EfvRELmCc0XMcLD9qmsr0XcocW/sB+/fW3B4HLbv61i
+   aD+a4YVa3s4P5gbNXfKtUNY/3aGwHOOUAdsa9/T7KFLL5EFXsxnjHk0JC
+   nknyQCq+QUeN2jSJqmHZsohvYPR0uVwkGx8CCHyOZ0ACmO6g1P1YZaeCw
+   B96YvZcfVnaUm8rd/WbIXX274t3KtO7odR2R0u5Hv4WYII+q0RwY+T6pg
+   iBaz5YJyLlAPHEIQArzVCoY5ycnMvtP8eeKlkqkhRrG01p5PtkJ3Ln0Kg
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="277651079"
+X-IronPort-AV: E=Sophos;i="5.91,290,1647327600"; 
+   d="scan'208";a="277651079"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 05:35:30 -0700
+X-IronPort-AV: E=Sophos;i="5.91,290,1647327600"; 
+   d="scan'208";a="684520680"
+Received: from elmerred-mobl2.amr.corp.intel.com (HELO [10.251.8.219]) ([10.251.8.219])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 05:35:29 -0700
+Message-ID: <7eb4762e-723b-51e8-3d70-1c28568ac4f5@intel.com>
+Date:   Fri, 10 Jun 2022 05:35:29 -0700
 MIME-Version: 1.0
-Authentication-Results: relay.mimecast.com;
-        auth=pass smtp.auth=C51A453 smtp.mailfrom=david.laight@aculab.com
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.1
+Subject: Re: [PATCH] x86: Change the return type of acpi_map_cpu2node to void
 Content-Language: en-US
+To:     Li kunyu <kunyu@nfschina.com>, chenhuacai@kernel.org,
+        rafael@kernel.org, len.brown@intel.com, pavel@ucw.cz,
+        mingo@redhat.com, bp@alien8.de
+Cc:     tglx@linutronix.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org
+References: <20220610104423.201739-1-kunyu@nfschina.com>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <20220610104423.201739-1-kunyu@nfschina.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-9.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Alexander Lobakin
-> Sent: 10 June 2022 12:34
-> 
-> test_bit(), as any other bitmap op, takes `unsigned long *` as a
-> second argument (pointer to the actual bitmap), as any bitmap
-> itself is an array of unsigned longs. However, the ia64_get_irr()
-> code passes a ref to `u64` as a second argument.
-> This works with the ia64 bitops implementation due to that they
-> have `void *` as the second argument and then cast it later on.
-> This works with the bitmap API itself due to that `unsigned long`
-> has the same size on ia64 as `u64` (`unsigned long long`), but
-> from the compiler PoV those two are different.
-> Define @irr as `unsigned long` to fix that. That implies no
-> functional changes. Has been hidden for 16 years!
+On 6/10/22 03:44, Li kunyu wrote:
+> Reduce eax register calls by removing unused return values.
 
-Wouldn't it be better to just test the bit?
-As in:
-	return irr & (1ull << bit);
+Please stop sending these patches, at least with these repetitive,
+inaccurate descriptions.
 
-    David
+This patch has *ZERO* to do with EAX.  For one, it's patching two
+architectures that might not even have an EAX.  (I'm blissfully unaware
+of what the ia64 calling conventions are and I want to keep it that way.)
 
-> 
-> Fixes: a58786917ce2 ("[IA64] avoid broken SAL_CACHE_FLUSH implementations")
-> Cc: stable@vger.kernel.org # 2.6.16+
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Alexander Lobakin <alexandr.lobakin@intel.com>
-> ---
->  arch/ia64/include/asm/processor.h | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/ia64/include/asm/processor.h b/arch/ia64/include/asm/processor.h
-> index 7cbce290f4e5..757c2f6d8d4b 100644
-> --- a/arch/ia64/include/asm/processor.h
-> +++ b/arch/ia64/include/asm/processor.h
-> @@ -538,7 +538,7 @@ ia64_get_irr(unsigned int vector)
->  {
->  	unsigned int reg = vector / 64;
->  	unsigned int bit = vector % 64;
-> -	u64 irr;
-> +	unsigned long irr;
-> 
->  	switch (reg) {
->  	case 0: irr = ia64_getreg(_IA64_REG_CR_IRR0); break;
-> --
-> 2.36.1
+Second, (and this is important), look carefully at the function in question:
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+static int acpi_map_cpu2node(acpi_handle handle, int cpu, int physid)
 
+See the "static"?  That tells the compiler that acpi_map_cpu2node() is
+only used locally.  It lets the compiler do all kinds of fancy things,
+like inline the function which allows the compiler to do all kinds of
+fun optimizations.  Now, armed with that knowledge, please take a look
+at what effect your patch has in practice.
+
+Take your patch, and disassemble acpi_map_cpu() before and after
+applying it.  First of all, even before your patch, do you see a:
+
+	call ffffffff81d0000d <acpi_map_cpu2node>
+
+?
+
+Do you see a call to numa_set_node()?  That's odd considering that
+acpi_map_cpu() doesn't directly call numa_set_node().  Right?  Do you
+see unnecessary manipulation of EAX?  Now, apply your patch.
+Disassemble the function again.  What changed?
+
+Now, armed with the knowledge of what your patch actually does to the
+code, would you like to try and write a better changelog?  Or, better
+yet, maybe it will dissuade you from sending this again.
