@@ -2,55 +2,130 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C241546940
-	for <lists+linux-ia64@lfdr.de>; Fri, 10 Jun 2022 17:17:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D9D3546A0F
+	for <lists+linux-ia64@lfdr.de>; Fri, 10 Jun 2022 18:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235359AbiFJPRX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 10 Jun 2022 11:17:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44230 "EHLO
+        id S1349068AbiFJQC3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 10 Jun 2022 12:02:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34970 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238346AbiFJPRV (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 10 Jun 2022 11:17:21 -0400
-Received: from mail.nfschina.com (unknown [IPv6:2400:dd01:100f:2:72e2:84ff:fe10:5f45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 4B36A3190A;
-        Fri, 10 Jun 2022 08:17:17 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-        by mail.nfschina.com (Postfix) with ESMTP id D63741E80D6E;
-        Fri, 10 Jun 2022 23:16:29 +0800 (CST)
-X-Virus-Scanned: amavisd-new at test.com
-Received: from mail.nfschina.com ([127.0.0.1])
-        by localhost (mail.nfschina.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id qUBS2U_TeEmX; Fri, 10 Jun 2022 23:16:27 +0800 (CST)
-Received: from localhost.localdomain (unknown [111.193.129.231])
-        (Authenticated sender: kunyu@nfschina.com)
-        by mail.nfschina.com (Postfix) with ESMTPA id 207871E80D24;
-        Fri, 10 Jun 2022 23:16:27 +0800 (CST)
-From:   Li kunyu <kunyu@nfschina.com>
-To:     dave.hansen@intel.com
-Cc:     bp@alien8.de, chenhuacai@kernel.org, dave.hansen@linux.intel.com,
-        hpa@zytor.com, kunyu@nfschina.com, len.brown@intel.com,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, mingo@redhat.com, pavel@ucw.cz,
-        rafael@kernel.org, tglx@linutronix.de, x86@kernel.org
-Subject: Re: [PATCH] x86: Change the return type of acpi_map_cpu2node to void
-Date:   Fri, 10 Jun 2022 23:17:04 +0800
-Message-Id: <20220610151705.8383-1-kunyu@nfschina.com>
-X-Mailer: git-send-email 2.18.2
-In-Reply-To: <7eb4762e-723b-51e8-3d70-1c28568ac4f5@intel.com>
-References: <7eb4762e-723b-51e8-3d70-1c28568ac4f5@intel.com>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        with ESMTP id S1349045AbiFJQC1 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 10 Jun 2022 12:02:27 -0400
+Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB87B157E91;
+        Fri, 10 Jun 2022 09:02:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654876947; x=1686412947;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=kNcm+gjJO6fKHMBCmtNxq9Lkb0xQ0Nu8YYmwRSNqM/Q=;
+  b=nmBM1UgWsxrS2x1LGFbAhJwJnWxkL44hBIoJoANrkQQJZXYnxP2obmPe
+   3eCDYPk5ogoze8c5W3fuAZFuEj5bmeF79wx8bjM94ryGWxS4LsAIOtARH
+   bpRjJwdqPap+foTRPS5ieO3ZIs1483Xk8WFltADZgqCTlcWhSVDSBoF1/
+   5uf/7s8n1laxw/QPu5rep9rYE+NIZHHpAwHq8N/L4Ae2VwlDFKPd4oAVv
+   QkKssk2oRMwhQgckqE4W/oFUNk5FlcGZNu+W98d6q3lGoEA8Ml4OvGNbE
+   NKJobX0s6C5qZ6GYjlMYA35CjAKkeOc6XmtFJbsELbjXW56vpYEjQtVSk
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10374"; a="276447153"
+X-IronPort-AV: E=Sophos;i="5.91,290,1647327600"; 
+   d="scan'208";a="276447153"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 09:02:05 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,290,1647327600"; 
+   d="scan'208";a="760569390"
+Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
+  by orsmga005.jf.intel.com with ESMTP; 10 Jun 2022 09:02:04 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Fri, 10 Jun 2022 09:02:04 -0700
+Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2308.27; Fri, 10 Jun 2022 09:02:03 -0700
+Received: from fmsmsx610.amr.corp.intel.com ([10.18.126.90]) by
+ fmsmsx610.amr.corp.intel.com ([10.18.126.90]) with mapi id 15.01.2308.027;
+ Fri, 10 Jun 2022 09:02:03 -0700
+From:   "Luck, Tony" <tony.luck@intel.com>
+To:     Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        "Lobakin, Alexandr" <alexandr.lobakin@intel.com>
+CC:     Arnd Bergmann <arnd@arndb.de>, Yury Norov <yury.norov@gmail.com>,
+        "Mark Rutland" <mark.rutland@arm.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Brian Cain <bcain@quicinc.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        "Yoshinori Sato" <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Kees Cook <keescook@chromium.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: RE: [PATCH v2 2/6] bitops: always define asm-generic non-atomic
+ bitops
+Thread-Topic: [PATCH v2 2/6] bitops: always define asm-generic non-atomic
+ bitops
+Thread-Index: AQHYfL4xWJEoq3eTcEeKREBjFjjrHK1JHg2A//+t5kA=
+Date:   Fri, 10 Jun 2022 16:02:03 +0000
+Message-ID: <22042c14bc6a437d9c6b235fbfa32c8a@intel.com>
+References: <20220610113427.908751-1-alexandr.lobakin@intel.com>
+ <20220610113427.908751-3-alexandr.lobakin@intel.com>
+ <YqNMO0ioGzJ1IkoA@smile.fi.intel.com>
+In-Reply-To: <YqNMO0ioGzJ1IkoA@smile.fi.intel.com>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+dlp-product: dlpe-windows
+dlp-reaction: no-action
+dlp-version: 11.6.500.17
+x-originating-ip: [10.1.200.100]
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+> > +/**
+> > + * generic_test_bit - Determine whether a bit is set
+> > + * @nr: bit number to test
+> > + * @addr: Address to start counting from
+> > + */
+>
+> Shouldn't we add in this or in separate patch a big NOTE to explain that =
+this
+> is actually atomic and must be kept as a such?
 
-I'm really sorry, Dave. My email prompted abnormal sending (when I sent patch before), so I sent it three times, but there was no abnormal message for the third time.
+"atomic" isn't really the right word. The volatile access makes sure that t=
+he
+compiler does the test at the point that the source code asked, and doesn't
+move it before/after other operations.
 
-Static functions are called from the current source file, and their basic functions are similar to global functions (perhaps I don't fully understand).
+But there is no such thing as an atomic test_bit() operation:
 
-In addition, the x86 architecture is EAX in the IA64 architecture did not pay much attention, which is my oversight.
+	if (test_bit(5, addr)) {
+		/* some other CPU nukes bit 5 */
 
+		/* I know it was set when I looked, but now, could be anything */
+
+		...
+	}
+
+-Tony
