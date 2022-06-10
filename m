@@ -2,77 +2,59 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E83085467DE
-	for <lists+linux-ia64@lfdr.de>; Fri, 10 Jun 2022 15:58:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E27D8546833
+	for <lists+linux-ia64@lfdr.de>; Fri, 10 Jun 2022 16:22:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349554AbiFJN5r (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 10 Jun 2022 09:57:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46694 "EHLO
+        id S237180AbiFJOWj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 10 Jun 2022 10:22:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349546AbiFJN5c (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 10 Jun 2022 09:57:32 -0400
-Received: from mga17.intel.com (mga17.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C00D6100B24;
-        Fri, 10 Jun 2022 06:56:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654869398; x=1686405398;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Rgp4lTJLX0ot2IhjAJHLXWfwVn1Hf1envZh9HGJ8MuU=;
-  b=LL9TDN8rw3ofnJ0/yz8QuWpf4lPwstD6t+nWUuEoX0+cGassHsh0A1qw
-   5x5FBh65NaEm9+peLkqTbvr4HE56LRqfrqeND5JtKXJ2VQl8kuKZYi48y
-   49LbDsI+VvVbqmKxWXzpk7Di6fnQqxUml/piRmWOqbnNejQfjdHGeqNle
-   h1MNEK7YwpuXhkVKh1ixtlHt+10YSeU4yVRD3T7a6zqdMIv8mWya9RYWg
-   HWBRMS3emvcMWhASbaxIqgsJ8Lyp9V5zVyQ9Rz3t3kX/TkhQcY+ZUuV4E
-   7mWdg1B5c3qpFuWeAJNKNkUp/w3PcKsKNrszHVM30xXg91/6FBmvRUR2r
-   w==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="258072404"
-X-IronPort-AV: E=Sophos;i="5.91,290,1647327600"; 
-   d="scan'208";a="258072404"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 06:56:38 -0700
-X-IronPort-AV: E=Sophos;i="5.91,290,1647327600"; 
-   d="scan'208";a="556386807"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 06:56:32 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.95)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1nzf7k-000Ypb-8i;
-        Fri, 10 Jun 2022 16:56:28 +0300
-Date:   Fri, 10 Jun 2022 16:56:28 +0300
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Alexander Lobakin <alexandr.lobakin@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Yury Norov <yury.norov@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Brian Cain <bcain@quicinc.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 4/6] bitops: define const_*() versions of the
- non-atomics
-Message-ID: <YqNNjKRja7KelljA@smile.fi.intel.com>
-References: <20220610113427.908751-1-alexandr.lobakin@intel.com>
- <20220610113427.908751-5-alexandr.lobakin@intel.com>
+        with ESMTP id S233916AbiFJOWi (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 10 Jun 2022 10:22:38 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADC0F183142;
+        Fri, 10 Jun 2022 07:22:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=taDMUZIEgul2ITYIFLACg5Q+J8VqiWoHCll5z3PilY4=; b=Jz+h7b4O3ozdl6yfEml+x3bJ5H
+        9NirobyIj/c3ttimjSTbGxGqT+mcYiw5p2HXbL7SYwWksgYNnFLypeqy2AZFFGb6uN7utH4Wtmg/c
+        h4j+r074vP3xisV+ivq7zuCVeUpqQtd1bN+8924nhglINgJO4lvVAwUocsc7Nv6ufQLcoPjwWBLcl
+        X1v8EWSQCWNbVUa2BP8LJCkZJ82DWvdudLceZkoYUE7nUNnr21snjQaIv3nsi+V8qGtqbQbRd5Ju3
+        i/yYZLkrrfoBNKu+KTdzFirZdHTWLV/XDuDY/AgVrBCqDMHgZ8ATe8be7hJMeCumcURJxRja/1nBB
+        zW2t+Zpw==;
+Received: from dhcp-077-249-017-003.chello.nl ([77.249.17.3] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1nzfWG-006gV5-VO; Fri, 10 Jun 2022 14:21:49 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id C9B2E30017D;
+        Fri, 10 Jun 2022 16:21:47 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 833F228405295; Fri, 10 Jun 2022 16:21:47 +0200 (CEST)
+Date:   Fri, 10 Jun 2022 16:21:47 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Dave Hansen <dave.hansen@intel.com>
+Cc:     Li kunyu <kunyu@nfschina.com>, chenhuacai@kernel.org,
+        rafael@kernel.org, len.brown@intel.com, pavel@ucw.cz,
+        mingo@redhat.com, bp@alien8.de, tglx@linutronix.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Subject: Re: [PATCH] x86: Change the return type of acpi_map_cpu2node to void
+Message-ID: <YqNTewtUzizxovJO@hirez.programming.kicks-ass.net>
+References: <20220610104423.201739-1-kunyu@nfschina.com>
+ <7eb4762e-723b-51e8-3d70-1c28568ac4f5@intel.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20220610113427.908751-5-alexandr.lobakin@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-5.5 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+In-Reply-To: <7eb4762e-723b-51e8-3d70-1c28568ac4f5@intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,29 +62,11 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Jun 10, 2022 at 01:34:25PM +0200, Alexander Lobakin wrote:
-> Define const_*() variants of the non-atomic bitops to be used when
-> the input arguments are compile-time constants, so that the compiler
-> will be always to resolve those to compile-time constants as well.
-> Those are mostly direct aliases for generic_*() with one exception
-> for const_test_bit(): the original one is declared atomic-safe and
-> thus doesn't discard the `volatile` qualifier, so in order to let
-> optimize the code, define it separately disregarding the qualifier.
-> Add them to the compile-time type checks as well just in case.
+On Fri, Jun 10, 2022 at 05:35:29AM -0700, Dave Hansen wrote:
+> On 6/10/22 03:44, Li kunyu wrote:
+> > Reduce eax register calls by removing unused return values.
+> 
+> Please stop sending these patches, at least with these repetitive,
+> inaccurate descriptions.
 
-...
-
->  /* Check that the bitops prototypes are sane */
->  #define __check_bitop_pr(name)						\
-> -	static_assert(__same_type(arch_##name, generic_##name) &&	\
-> +	static_assert(__same_type(const_##name, generic_##name) &&	\
-> +		      __same_type(arch_##name, generic_##name) &&	\
->  		      __same_type(name, generic_##name))
-
-Can't it be a one line change and actually keeping ordering at the same time?
-
--- 
-With Best Regards,
-Andy Shevchenko
-
-
+Dave, just add them to the /dev/null mailbox.
