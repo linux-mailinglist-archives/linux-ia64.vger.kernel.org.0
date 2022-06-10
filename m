@@ -2,121 +2,207 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94B86546468
-	for <lists+linux-ia64@lfdr.de>; Fri, 10 Jun 2022 12:49:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3288A5465A6
+	for <lists+linux-ia64@lfdr.de>; Fri, 10 Jun 2022 13:35:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348159AbiFJKss (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 10 Jun 2022 06:48:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50884 "EHLO
+        id S243983AbiFJLfa (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 10 Jun 2022 07:35:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348702AbiFJKsZ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 10 Jun 2022 06:48:25 -0400
-Received: from mail.nfschina.com (unknown [IPv6:2400:dd01:100f:2:72e2:84ff:fe10:5f45])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 6D83C2DE7EF;
-        Fri, 10 Jun 2022 03:44:29 -0700 (PDT)
-Received: from localhost (unknown [127.0.0.1])
-        by mail.nfschina.com (Postfix) with ESMTP id C69631E80D8E;
-        Fri, 10 Jun 2022 18:43:43 +0800 (CST)
-X-Virus-Scanned: amavisd-new at test.com
-Received: from mail.nfschina.com ([127.0.0.1])
-        by localhost (mail.nfschina.com [127.0.0.1]) (amavisd-new, port 10024)
-        with ESMTP id YoUoP4Ep4wgP; Fri, 10 Jun 2022 18:43:41 +0800 (CST)
-Received: from localhost.localdomain (unknown [219.141.250.2])
-        (Authenticated sender: kunyu@nfschina.com)
-        by mail.nfschina.com (Postfix) with ESMTPA id EF5371E80D78;
-        Fri, 10 Jun 2022 18:43:40 +0800 (CST)
-From:   Li kunyu <kunyu@nfschina.com>
-To:     chenhuacai@kernel.org, rafael@kernel.org, len.brown@intel.com,
-        pavel@ucw.cz, mingo@redhat.com, bp@alien8.de
-Cc:     tglx@linutronix.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
-        Li kunyu <kunyu@nfschina.com>
-Subject: [PATCH] x86: Change the return type of acpi_map_cpu2node to void
-Date:   Fri, 10 Jun 2022 18:44:23 +0800
-Message-Id: <20220610104423.201739-1-kunyu@nfschina.com>
-X-Mailer: git-send-email 2.18.2
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,RDNS_NONE,
-        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=no
-        autolearn_force=no version=3.4.6
+        with ESMTP id S238605AbiFJLf3 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 10 Jun 2022 07:35:29 -0400
+Received: from mga05.intel.com (mga05.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FD346D85B;
+        Fri, 10 Jun 2022 04:35:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1654860928; x=1686396928;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=lB5zlFU8ozw7+6CLJK8PifBqONusbCYHzssMxh4LrsQ=;
+  b=JR5zB0zunO6CRt0gTUGy6RWEo+YoOkNeZU5PiYR63dPj8DP1SH1vNlIC
+   mZ9WA/chrlpcxt/09Mr+55zpVqnd9xraF+KSqq27kfkeR4vml7coM2OOf
+   RreoWbc5pdbNAyvYscQJK3NVWFe6VLZDurlKW3UYPWGVJZvlSF9LJ6PdA
+   7uG5XoqeVp25kwsXiKi41ASBgo6PS5EQTsXJy7iQxyFCQ6b9J+/LTF1EF
+   vq8kE+pxctSkY2ir3JZaxops+N6OLdgYLjBPyr3qw5OeF+Se2C1Ha6KT7
+   8rw6VQCQ0ljOl4pYM5qB9Tlx4En88oITMgTVTSGCnkZuHztt0VQcHQ+Q2
+   Q==;
+X-IronPort-AV: E=McAfee;i="6400,9594,10373"; a="363934286"
+X-IronPort-AV: E=Sophos;i="5.91,290,1647327600"; 
+   d="scan'208";a="363934286"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 04:35:28 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="5.91,290,1647327600"; 
+   d="scan'208";a="710903621"
+Received: from irvmail001.ir.intel.com ([10.43.11.63])
+  by orsmga004.jf.intel.com with ESMTP; 10 Jun 2022 04:35:22 -0700
+Received: from newjersey.igk.intel.com (newjersey.igk.intel.com [10.102.20.203])
+        by irvmail001.ir.intel.com (8.14.3/8.13.6/MailSET/Hub) with ESMTP id 25ABZKig030333;
+        Fri, 10 Jun 2022 12:35:20 +0100
+From:   Alexander Lobakin <alexandr.lobakin@intel.com>
+To:     Arnd Bergmann <arnd@arndb.de>, Yury Norov <yury.norov@gmail.com>
+Cc:     Alexander Lobakin <alexandr.lobakin@intel.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Brian Cain <bcain@quicinc.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Kees Cook <keescook@chromium.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 0/6] bitops: let optimize out non-atomic bitops on compile-time constants
+Date:   Fri, 10 Jun 2022 13:34:21 +0200
+Message-Id: <20220610113427.908751-1-alexandr.lobakin@intel.com>
+X-Mailer: git-send-email 2.36.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Reduce eax register calls by removing unused return values.
+While I was working on converting some structure fields from a fixed
+type to a bitmap, I started observing code size increase not only in
+places where the code works with the converted structure fields, but
+also where the converted vars were on the stack. That said, the
+following code:
 
-Signed-off-by: Li kunyu <kunyu@nfschina.com>
----
- arch/ia64/kernel/acpi.c      | 3 +--
- arch/loongarch/kernel/acpi.c | 3 +--
- arch/x86/kernel/acpi/boot.c  | 3 +--
- 3 files changed, 3 insertions(+), 6 deletions(-)
+	DECLARE_BITMAP(foo, BITS_PER_LONG) = { }; // -> unsigned long foo[1];
+	unsigned long bar = BIT(BAR_BIT);
+	unsigned long baz = 0;
 
-diff --git a/arch/ia64/kernel/acpi.c b/arch/ia64/kernel/acpi.c
-index 96d13cb7c19f..2665cc873f0a 100644
---- a/arch/ia64/kernel/acpi.c
-+++ b/arch/ia64/kernel/acpi.c
-@@ -712,7 +712,7 @@ int acpi_isa_irq_to_gsi(unsigned isa_irq, u32 *gsi)
-  *  ACPI based hotplug CPU support
-  */
- #ifdef CONFIG_ACPI_HOTPLUG_CPU
--int acpi_map_cpu2node(acpi_handle handle, int cpu, int physid)
-+void acpi_map_cpu2node(acpi_handle handle, int cpu, int physid)
- {
- #ifdef CONFIG_ACPI_NUMA
- 	/*
-@@ -725,7 +725,6 @@ int acpi_map_cpu2node(acpi_handle handle, int cpu, int physid)
- 	node_cpuid[cpu].phys_id = physid;
- 	node_cpuid[cpu].nid = acpi_get_node(handle);
- #endif
--	return 0;
- }
- 
- int additional_cpus __initdata = -1;
-diff --git a/arch/loongarch/kernel/acpi.c b/arch/loongarch/kernel/acpi.c
-index b16c3dea5eeb..369b49343563 100644
---- a/arch/loongarch/kernel/acpi.c
-+++ b/arch/loongarch/kernel/acpi.c
-@@ -282,7 +282,7 @@ void __init arch_reserve_mem_area(acpi_physical_address addr, size_t size)
- 
- #include <acpi/processor.h>
- 
--static int __ref acpi_map_cpu2node(acpi_handle handle, int cpu, int physid)
-+static void __ref acpi_map_cpu2node(acpi_handle handle, int cpu, int physid)
- {
- #ifdef CONFIG_ACPI_NUMA
- 	int nid;
-@@ -295,7 +295,6 @@ static int __ref acpi_map_cpu2node(acpi_handle handle, int cpu, int physid)
- 		cpumask_set_cpu(cpu, cpumask_of_node(nid));
- 	}
- #endif
--	return 0;
- }
- 
- int acpi_map_cpu(acpi_handle handle, phys_cpuid_t physid, u32 acpi_id, int *pcpu)
-diff --git a/arch/x86/kernel/acpi/boot.c b/arch/x86/kernel/acpi/boot.c
-index 907cc98b1938..d63ec3ea3be3 100644
---- a/arch/x86/kernel/acpi/boot.c
-+++ b/arch/x86/kernel/acpi/boot.c
-@@ -799,7 +799,7 @@ static void __init acpi_set_irq_model_ioapic(void)
- #ifdef CONFIG_ACPI_HOTPLUG_CPU
- #include <acpi/processor.h>
- 
--static int acpi_map_cpu2node(acpi_handle handle, int cpu, int physid)
-+static void acpi_map_cpu2node(acpi_handle handle, int cpu, int physid)
- {
- #ifdef CONFIG_ACPI_NUMA
- 	int nid;
-@@ -810,7 +810,6 @@ static int acpi_map_cpu2node(acpi_handle handle, int cpu, int physid)
- 		numa_set_node(cpu, nid);
- 	}
- #endif
--	return 0;
- }
- 
- int acpi_map_cpu(acpi_handle handle, phys_cpuid_t physid, u32 acpi_id,
+	__set_bit(FOO_BIT, foo);
+	baz |= BIT(BAZ_BIT);
+
+	BUILD_BUG_ON(!__builtin_constant_p(test_bit(FOO_BIT, foo));
+	BUILD_BUG_ON(!__builtin_constant_p(bar & BAR_BIT));
+	BUILD_BUG_ON(!__builtin_constant_p(baz & BAZ_BIT));
+
+triggers the first assertion on x86_64, which means that the
+compiler is unable to evaluate it to a compile-time initializer
+when the architecture-specific bitop is used even if it's obvious.
+I found that this is due to that many architecture-specific
+non-atomic bitop implementations use inline asm or other hacks which
+are faster or more robust when working with "real" variables (i.e.
+fields from the structures etc.), but the compilers have no clue how
+to optimize them out when called on compile-time constants.
+
+So, in order to let the compiler optimize out such cases, expand the
+test_bit() and __*_bit() definitions with a compile-time condition
+check, so that they will pick the generic C non-atomic bitop
+implementations when all of the arguments passed are compile-time
+constants, which means that the result will be a compile-time
+constant as well and the compiler will produce more efficient and
+simple code in 100% cases (no changes when there's at least one
+non-compile-time-constant argument).
+The condition itself:
+
+if (
+__builtin_constant_p(nr) &&	/* <- bit position is constant */
+__builtin_constant_p(!!addr) &&	/* <- compiler knows bitmap addr is
+				      always either NULL or not */
+addr &&				/* <- bitmap addr is not NULL */
+__builtin_constant_p(*addr)	/* <- compiler knows the value of
+				      the target bitmap */
+)
+	/* then pick the generic C variant
+else
+	/* old code path, arch-specific
+
+I also tried __is_constexpr() as suggested by Andy, but it was
+always returning 0 ('not a constant') for the 2,3 and 4th
+conditions.
+
+The savings are architecture, compiler and compiler flags dependent,
+for example, on x86_64 -O2:
+
+GCC 12: add/remove: 78/29 grow/shrink: 332/525 up/down: 31325/-61560 (-30235)
+LLVM 13: add/remove: 79/76 grow/shrink: 184/537 up/down: 55076/-141892 (-86816)
+LLVM 14: add/remove: 10/3 grow/shrink: 93/138 up/down: 3705/-6992 (-3287)
+
+and ARM64 (courtesy of Mark[0]):
+
+GCC 11: add/remove: 92/29 grow/shrink: 933/2766 up/down: 39340/-82580 (-43240)
+LLVM 14: add/remove: 21/11 grow/shrink: 620/651 up/down: 12060/-15824 (-3764)
+
+And the following:
+
+	DECLARE_BITMAP(flags, __IP_TUNNEL_FLAG_NUM) = { };
+	__be16 flags;
+
+	__set_bit(IP_TUNNEL_CSUM_BIT, flags);
+
+	tun_flags = cpu_to_be16(*flags & U16_MAX);
+
+	if (test_bit(IP_TUNNEL_VTI_BIT, flags))
+		tun_flags |= VTI_ISVTI;
+
+	BUILD_BUG_ON(!__builtin_constant_p(tun_flags));
+
+doesn't blow up anymore, so that we now can e.g. use fixed bitmaps
+in compile-time assertions etc.
+
+The series has been in intel-next for a while with no reported issues.
+
+From v1[1]:
+* change 'gen_' prefixes to '_generic' to disambiguate from
+  'generated' etc. (Mark);
+* define a separate 'const_' set to use in the optimization to keep
+  the generic test_bit() atomic-safe (Marco);
+* unify arch_{test,__*}_bit() as well and include them in the type
+  check;
+* add more relevant and up-to-date bloat-o-meter results, including
+  ARM64 (me, Mark);
+* pick a couple '*-by' tags (Mark, Yury).
+
+Also available on my open GH[2].
+
+[0] https://lore.kernel.org/all/Yp4GQFQYD32Rs9Cw@FVFF77S0Q05N
+[1] https://lore.kernel.org/all/20220606114908.962562-1-alexandr.lobakin@intel.com
+[2] https://github.com/alobakin/linux/commits/bitops
+
+Alexander Lobakin (6):
+  ia64, processor: fix -Wincompatible-pointer-types in ia64_get_irr()
+  bitops: always define asm-generic non-atomic bitops
+  bitops: unify non-atomic bitops prototypes across architectures
+  bitops: define const_*() versions of the non-atomics
+  bitops: wrap non-atomic bitops with a transparent macro
+  bitops: let optimize out non-atomic bitops on compile-time constants
+
+ arch/alpha/include/asm/bitops.h               |  28 ++--
+ arch/hexagon/include/asm/bitops.h             |  23 ++-
+ arch/ia64/include/asm/bitops.h                |  40 ++---
+ arch/ia64/include/asm/processor.h             |   2 +-
+ arch/m68k/include/asm/bitops.h                |  47 ++++--
+ arch/sh/include/asm/bitops-op32.h             |  32 ++--
+ arch/sparc/include/asm/bitops_32.h            |  18 +-
+ arch/sparc/lib/atomic32.c                     |  12 +-
+ arch/x86/include/asm/bitops.h                 |  22 +--
+ .../asm-generic/bitops/generic-non-atomic.h   | 155 ++++++++++++++++++
+ .../bitops/instrumented-non-atomic.h          |  35 ++--
+ include/asm-generic/bitops/non-atomic.h       | 123 ++------------
+ include/linux/bitops.h                        |  50 ++++++
+ tools/include/asm-generic/bitops/non-atomic.h |  34 ++--
+ tools/include/linux/bitops.h                  |  16 ++
+ 15 files changed, 407 insertions(+), 230 deletions(-)
+ create mode 100644 include/asm-generic/bitops/generic-non-atomic.h
+
+base-commit: 874c8ca1e60b2c564a48f7e7acc40d328d5c8733
 -- 
-2.18.2
+2.36.1
 
