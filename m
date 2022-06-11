@@ -2,149 +2,127 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BDF9546EED
-	for <lists+linux-ia64@lfdr.de>; Fri, 10 Jun 2022 23:03:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69FBD54714F
+	for <lists+linux-ia64@lfdr.de>; Sat, 11 Jun 2022 04:23:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348154AbiFJVC6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 10 Jun 2022 17:02:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47748 "EHLO
+        id S1348748AbiFKCX2 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 10 Jun 2022 22:23:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346839AbiFJVC6 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 10 Jun 2022 17:02:58 -0400
-Received: from mga01.intel.com (mga01.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FC421008;
-        Fri, 10 Jun 2022 14:02:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1654894977; x=1686430977;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=ITqyNN6aMfLgWrZqGcYWjoDoxlzkxWNBkOIz9CdtswQ=;
-  b=WykKd0jY4dJx2z7tstMKwRCvWaRs5dcgAPMhCphYJR9nZV85v3REbSiy
-   gE0k5YcR+v7/wNm/pph4SzfYgUJyRvHgG2pEs9YWQ6aSt0Ip6quqJosxi
-   I3pOgFIqXYpGJ+fE3I1BorHtQ6TlC7zBE3Yw3Y4fypIdm948edWkNdKwi
-   WURk9j54gwnzFGs2K7KKM0hX/a84kEr8CzV5wcMNpYlYCzzxsWCP2fDMo
-   OVCcsiHqIwqD7shTovx0s7eMHqHI1mdo4n+uYHslQeCtDtrjzh+yNZeRK
-   eWWfzrHikKv5PbEj0QAmtIaivC67DYJj3ZHHfs7QHy79Hy2xYMtFZ2Tyt
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10374"; a="303128029"
-X-IronPort-AV: E=Sophos;i="5.91,291,1647327600"; 
-   d="scan'208";a="303128029"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Jun 2022 14:02:56 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.91,291,1647327600"; 
-   d="scan'208";a="725144484"
-Received: from lkp-server01.sh.intel.com (HELO 60dabacc1df6) ([10.239.97.150])
-  by fmsmga001.fm.intel.com with ESMTP; 10 Jun 2022 14:02:52 -0700
-Received: from kbuild by 60dabacc1df6 with local (Exim 4.95)
-        (envelope-from <lkp@intel.com>)
-        id 1nzlmN-000IHB-VP;
-        Fri, 10 Jun 2022 21:02:51 +0000
-Date:   Sat, 11 Jun 2022 05:02:21 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-        linux-kernel@vger.kernel.org
-Cc:     kbuild-all@lists.01.org,
-        Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
-        Eric Biederman <ebiederm@xmission.com>,
-        Kees Cook <keescook@chromium.org>,
-        Alexander Viro <viro@zeniv.linux.org.uk>,
-        Ingo Molnar <mingo@redhat.com>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Valentin Schneider <vschneid@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Linux Memory Management List <linux-mm@kvack.org>,
-        linux-ia64@vger.kernel.org, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 1/2] Add CABA tree to task_struct
-Message-ID: <202206110409.b8UJYnuq-lkp@intel.com>
-References: <20220610163214.49974-2-ptikhomirov@virtuozzo.com>
+        with ESMTP id S1349060AbiFKCXV (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 10 Jun 2022 22:23:21 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 633F03F467F
+        for <linux-ia64@vger.kernel.org>; Fri, 10 Jun 2022 19:23:14 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id o10so1030500edi.1
+        for <linux-ia64@vger.kernel.org>; Fri, 10 Jun 2022 19:23:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google;
+        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
+         :cc;
+        bh=HvaEucNyttJ72r4dgkt1sbWCJsvBPyIh5zMt0LNXalY=;
+        b=D62jI1p8sOcmW+dGG367yCKI6736qfwlRYdRbtg+pQI3VQ/mZvhMkSh4muEy4yFzXi
+         1pifN6keFBPADAFAutLs2f+vKDRy3jOy1SmannYfmHY7tjbpoLbP8600CMqIboz22zit
+         FmdCeKC+IDyY3i3YwKCGDz5In1oYgHbIW3q58=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc;
+        bh=HvaEucNyttJ72r4dgkt1sbWCJsvBPyIh5zMt0LNXalY=;
+        b=aQZzxk07fh5pbiG44VIVzxMEKLqt1TptAAvrUGQz4gW/L6988QJDlP3Iu3pvZJwp/v
+         4dHietq32bB7+rUsGuTFgnBWc/h4SMCSaViUeNcHMuKoOjGwKKAb9ySbb5VEUgdvvxc6
+         aU0RsDPsv82EcofdQlfMbKhyE429+i5GHuTWjN/IsCxaL2zgIKon52/02buJwASONuMT
+         o/fKooNqmCC9LgAZJ1ozkEN6tqVOGb6GL8kh12WJVZvKFteZ5fi2VS3xO2Ls3RIz1GHp
+         NSiNXoet7IX4lTsmupeyxxD7zjXw2Ng1yIEC0+THYy6fEE0P0MoXOUo883L59fpVxUFV
+         T5hA==
+X-Gm-Message-State: AOAM5337W2W8d8JHQompkPibFhFuMPCj8+rglQlE7EApFkArbJMD74Tt
+        SZo+6iAKZVeDnDmnBpIUUHz74mteiT1qraK2zfuvlQ==
+X-Google-Smtp-Source: ABdhPJz16+9kQdS9QDTB0tjL4FsLbUEsFaIS0ykQfnx5qpyFYyBQCn1i8W4mcCkA/y3viUzYkXAgYYv9JpSOTwgMdpQ=
+X-Received: by 2002:a50:eb91:0:b0:42d:c1d8:616a with SMTP id
+ y17-20020a50eb91000000b0042dc1d8616amr54940771edr.219.1654914192936; Fri, 10
+ Jun 2022 19:23:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220610163214.49974-2-ptikhomirov@virtuozzo.com>
-X-Spam-Status: No, score=-8.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+References: <20220608142723.103523089@infradead.org> <20220608144517.444659212@infradead.org>
+ <YqG6URbihTNCk9YR@alley> <YqHFHB6qqv5wiR8t@worktop.programming.kicks-ass.net> <YqHwOFg/WlMqe8/Z@alley>
+In-Reply-To: <YqHwOFg/WlMqe8/Z@alley>
+From:   Sergey Senozhatsky <senozhatsky@chromium.org>
+Date:   Sat, 11 Jun 2022 11:23:02 +0900
+Message-ID: <CA+_sPaq_47C2PWnGU7WfGXMc03E1Nz+1=F-wZe0B2+ymqdm3Fg@mail.gmail.com>
+Subject: Re: [PATCH 24/36] printk: Remove trace_.*_rcuidle() usage
+To:     Petr Mladek <pmladek@suse.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        tony@atomide.com, khilman@kernel.org, catalin.marinas@arm.com,
+        will@kernel.org, guoren@kernel.org, bcain@quicinc.com,
+        chenhuacai@kernel.org, kernel@xen0n.name, geert@linux-m68k.org,
+        sammy@sammy.net, monstr@monstr.eu, tsbogend@alpha.franken.de,
+        dinguyen@kernel.org, jonas@southpole.se,
+        stefan.kristiansson@saunalahti.fi, shorne@gmail.com,
+        James.Bottomley@hansenpartnership.com, deller@gmx.de,
+        mpe@ellerman.id.au, benh@kernel.crashing.org, paulus@samba.org,
+        paul.walmsley@sifive.com, palmer@dabbelt.com,
+        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
+        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
+        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
+        davem@davemloft.net, richard@nod.at,
+        anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net,
+        tglx@linutronix.de, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+        acme@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
+        amakhalov@vmware.com, pv-drivers@vmware.com,
+        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
+        gregkh@linuxfoundation.org, mturquette@baylibre.com,
+        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org,
+        bjorn.andersson@linaro.org, anup@brainfault.org,
+        thierry.reding@gmail.com, jonathanh@nvidia.com,
+        jacob.jun.pan@linux.intel.com, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk, rostedt@goodmis.org,
+        john.ogness@linutronix.de, paulmck@kernel.org, frederic@kernel.org,
+        quic_neeraju@quicinc.com, josh@joshtriplett.org,
+        mathieu.desnoyers@efficios.com, jiangshanlai@gmail.com,
+        joel@joelfernandes.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        bsegall@google.com, mgorman@suse.de, bristot@redhat.com,
+        vschneid@redhat.com, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        xen-devel@lists.xenproject.org, linux-xtensa@linux-xtensa.org,
+        linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org,
+        linux-clk@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-tegra@vger.kernel.org, linux-arch@vger.kernel.org,
+        rcu@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Pavel,
+On Thu, Jun 9, 2022 at 10:06 PM Petr Mladek <pmladek@suse.com> wrote:
+>
+> Makes sense. Feel free to use for this patch:
+>
+> Acked-by: Petr Mladek <pmladek@suse.com>
 
-Thank you for the patch! Perhaps something to improve:
-
-[auto build test WARNING on shuah-kselftest/next]
-[also build test WARNING on kees/for-next/execve tip/sched/core linus/master v5.19-rc1 next-20220610]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Pavel-Tikhomirov/Introduce-CABA-helper-process-tree/20220611-003433
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git next
-config: i386-randconfig-a001 (https://download.01.org/0day-ci/archive/20220611/202206110409.b8UJYnuq-lkp@intel.com/config)
-compiler: gcc-11 (Debian 11.3.0-3) 11.3.0
-reproduce (this is a W=1 build):
-        # https://github.com/intel-lab-lkp/linux/commit/0875a2bed5ff95643c487dfcc28a550db06ea418
-        git remote add linux-review https://github.com/intel-lab-lkp/linux
-        git fetch --no-tags linux-review Pavel-Tikhomirov/Introduce-CABA-helper-process-tree/20220611-003433
-        git checkout 0875a2bed5ff95643c487dfcc28a550db06ea418
-        # save the config file
-        mkdir build_dir && cp config build_dir/.config
-        make W=1 O=build_dir ARCH=i386 SHELL=/bin/bash fs/proc/
-
-If you fix the issue, kindly add following tag where applicable
-Reported-by: kernel test robot <lkp@intel.com>
-
-All warnings (new ones prefixed by >>):
-
-   fs/proc/array.c: In function 'task_state':
->> fs/proc/array.c:157:15: warning: unused variable 'caba_pids' [-Wunused-variable]
-     157 |         pid_t caba_pids[MAX_PID_NS_LEVEL] = {};
-         |               ^~~~~~~~~
->> fs/proc/array.c:156:13: warning: unused variable 'caba_level' [-Wunused-variable]
-     156 |         int caba_level = 0;
-         |             ^~~~~~~~~~
->> fs/proc/array.c:155:21: warning: unused variable 'caba_pid' [-Wunused-variable]
-     155 |         struct pid *caba_pid;
-         |                     ^~~~~~~~
->> fs/proc/array.c:154:29: warning: unused variable 'caba' [-Wunused-variable]
-     154 |         struct task_struct *caba;
-         |                             ^~~~
-
-
-vim +/caba_pids +157 fs/proc/array.c
-
-   143	
-   144	static inline void task_state(struct seq_file *m, struct pid_namespace *ns,
-   145					struct pid *pid, struct task_struct *p)
-   146	{
-   147		struct user_namespace *user_ns = seq_user_ns(m);
-   148		struct group_info *group_info;
-   149		int g, umask = -1;
-   150		struct task_struct *tracer;
-   151		const struct cred *cred;
-   152		pid_t ppid, tpid = 0, tgid, ngid;
-   153		unsigned int max_fds = 0;
- > 154		struct task_struct *caba;
- > 155		struct pid *caba_pid;
- > 156		int caba_level = 0;
- > 157		pid_t caba_pids[MAX_PID_NS_LEVEL] = {};
-   158	
-   159		rcu_read_lock();
-   160		ppid = pid_alive(p) ?
-   161			task_tgid_nr_ns(rcu_dereference(p->real_parent), ns) : 0;
-   162	
-
--- 
-0-DAY CI Kernel Test Service
-https://01.org/lkp
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
