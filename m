@@ -2,121 +2,443 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E8F55479EF
-	for <lists+linux-ia64@lfdr.de>; Sun, 12 Jun 2022 13:32:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B85B5480A4
+	for <lists+linux-ia64@lfdr.de>; Mon, 13 Jun 2022 09:36:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234717AbiFLLcd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 12 Jun 2022 07:32:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50422 "EHLO
+        id S232017AbiFMHfc convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Mon, 13 Jun 2022 03:35:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41486 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236431AbiFLLcb (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 12 Jun 2022 07:32:31 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B00A72A721
-        for <linux-ia64@vger.kernel.org>; Sun, 12 Jun 2022 04:32:29 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id b8so3911284edj.11
-        for <linux-ia64@vger.kernel.org>; Sun, 12 Jun 2022 04:32:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:sender:from:date:message-id:subject:to;
-        bh=9FfohXFhB1sP403VxH1swwcmiEO4r97TnueS6gdgla0=;
-        b=HutqJca9cz10+fhpLBqF5pkCfmNuVpB/QmLPLH2RoeSpp+88FPj9DCRLsYlrV60IRI
-         yfGt8kTQJ3+U5hD05c9eQjOTUDndc3kFmmCKtoZcJTw6iEXGeaPRZUwBIb2hL10aHe3A
-         7EbObtS3e/RUerZDq6P0if6rMoEsasBL0IeuLIxwTHpNu3CceyHT/j7BTvAXuGh/jXn3
-         mZ2PnrRRlC0NrnYO4yqGRbm/BexgsBU/ybIJL5KQreT4XiaErEnB2fMcohiz3+qsoqp8
-         Xl5GKvTeAgRog3ZkHFVKaziM00o+HwG/FDCDlODVc32UellWfe2pLGmko+Rt8jRhNdyv
-         b+pA==
+        with ESMTP id S229514AbiFMHfb (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 13 Jun 2022 03:35:31 -0400
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40E6DB46;
+        Mon, 13 Jun 2022 00:35:30 -0700 (PDT)
+Received: by mail-qt1-f169.google.com with SMTP id w13so2482860qts.6;
+        Mon, 13 Jun 2022 00:35:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:sender:from:date:message-id:subject
-         :to;
-        bh=9FfohXFhB1sP403VxH1swwcmiEO4r97TnueS6gdgla0=;
-        b=AjpeUBCm+e+mnl57cEHuuny+iP7dQnfs8hyTY6U+2LO4W+Oi5YlHu2GprKLzjW33Rf
-         eU5PGUpNKEn+4S0aC4f7Z5o56vz0ZzQKc2RFmGqEp7xbOgiYBNl0UG6tPn9swXDyajLN
-         yxz2nQuWrW3nggYFOB0SeClbgzzTW2kwK8JVGxdntDPEti4kA1UR9bGe337LW/P1t6Uk
-         kPyXx3ZFNB4w+KZm+xawCq3NS+zHj7nNzih4e9ozy1j35CpRBWr5BLX1kN8637WbKv5o
-         YQiVoAoVzncLaeCkPSzFB2ilyTKP7vJ+L+7w4II/DA4JIm8PA2UGVPUdShvx6FMLBkac
-         k95w==
-X-Gm-Message-State: AOAM532sezlfDVOiAmvLH0IhG9MxEqgVudCikWhe9evo22IlbfGu8MYb
-        yovJgHMIdZbb89RipFIpTJvzTec6M2rArfJgPWs=
-X-Google-Smtp-Source: ABdhPJwdx/ts4yT81TfY9H4jSVwEQwJ2e/fPBdkfFmfsPIbmOM0FEcnF1voZtHMiIfkmIVV3xB+6Fmj8j1iYk6t89oo=
-X-Received: by 2002:a05:6402:d05:b0:425:b5c8:faeb with SMTP id
- eb5-20020a0564020d0500b00425b5c8faebmr60549161edb.273.1655033547542; Sun, 12
- Jun 2022 04:32:27 -0700 (PDT)
+        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
+         :message-id:subject:to:cc:content-transfer-encoding;
+        bh=qsyvnc1KOjyjdVi81D7KKSfX66FwwQukTSl7hAx3+2E=;
+        b=g3SWWSMyR08qyaU0shbaDaFzqsCySxxwyi7byJ3Y2pBYv/krD1b7zlV9iUzJDLZ/1t
+         +K5c/RHttI8tEZ5vs3wufXuk7wXFyH/lYJYIypxrZ+kle5UclXkJSdNLAOS6CWacoPEY
+         cfDzuQJMy8bk5jNh0yiQeLuP7FcEOTs9uZDrZRgln56YqGaAD7C4tn3RIzrea7U8QS3m
+         MhGkkUvQSgo9vLeZ3laHIAahcj1XWktvwzo/tgk7KTv8YVCVBcfiI91xurayQpGZAzD6
+         agrsFX+IFzMqAI7bhf5ljaxURaO8KPqLvPVsSummoDnY+/bOhz5C67njSHawnC19gkxI
+         7wdQ==
+X-Gm-Message-State: AOAM532dwq/NG0N/bQ0SQmC3ODehIbx5IliRUi8BOLGF1tNdTBgqcX6E
+        t6ucp46IX24yc7TspGby4HsKBPaxTQYVJA==
+X-Google-Smtp-Source: ABdhPJy/7gKaCflC+blYm8lrPyt8ljmL9WmIAE6eitPyuI7Yz/oCU8zrW7fy7mWewiN0XxZDh14g5g==
+X-Received: by 2002:ac8:7f4d:0:b0:305:3474:56e8 with SMTP id g13-20020ac87f4d000000b00305347456e8mr3158120qtk.127.1655105729004;
+        Mon, 13 Jun 2022 00:35:29 -0700 (PDT)
+Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com. [209.85.128.170])
+        by smtp.gmail.com with ESMTPSA id w11-20020a05620a424b00b006a6a7b4e7besm6234204qko.109.2022.06.13.00.35.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 13 Jun 2022 00:35:28 -0700 (PDT)
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-30c2f288f13so42231487b3.7;
+        Mon, 13 Jun 2022 00:35:28 -0700 (PDT)
+X-Received: by 2002:a81:4811:0:b0:30c:8021:4690 with SMTP id
+ v17-20020a814811000000b0030c80214690mr63372112ywa.47.1655105728002; Mon, 13
+ Jun 2022 00:35:28 -0700 (PDT)
 MIME-Version: 1.0
-Sender: mariajohn0331@gmail.com
-Received: by 2002:a54:3a4a:0:0:0:0:0 with HTTP; Sun, 12 Jun 2022 04:32:26
- -0700 (PDT)
-From:   MARIA ROLAND <mariaroland74@gmail.com>
-Date:   Sun, 12 Jun 2022 04:32:26 -0700
-X-Google-Sender-Auth: Co32K8Guj2mgf2O-dHQRzwqxqMY
-Message-ID: <CAEmdD2WEq8iFu03odoUHJOLqaAfOodUu9x8Et1FumwjSBv0eHw@mail.gmail.com>
-Subject: Greetings,
-To:     undisclosed-recipients:;
+References: <20220610113427.908751-1-alexandr.lobakin@intel.com>
+In-Reply-To: <20220610113427.908751-1-alexandr.lobakin@intel.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 13 Jun 2022 09:35:16 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdUZCaPN2B6bvmja9rDm3qCc4mYYAOSEB2W0R0pws8peqw@mail.gmail.com>
+Message-ID: <CAMuHMdUZCaPN2B6bvmja9rDm3qCc4mYYAOSEB2W0R0pws8peqw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] bitops: let optimize out non-atomic bitops on
+ compile-time constants
+To:     Alexander Lobakin <alexandr.lobakin@intel.com>
+Cc:     Arnd Bergmann <arnd@arndb.de>, Yury Norov <yury.norov@gmail.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Matt Turner <mattst88@gmail.com>,
+        Brian Cain <bcain@quicinc.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Kees Cook <keescook@chromium.org>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        alpha <linux-alpha@vger.kernel.org>,
+        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        linux-m68k <linux-m68k@lists.linux-m68k.org>,
+        Linux-sh list <linux-sh@vger.kernel.org>,
+        sparclinux <sparclinux@vger.kernel.org>,
+        Linux-Arch <linux-arch@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=ADVANCE_FEE_5_NEW_MONEY,
-        BAYES_60,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        FREEMAIL_ENVFROM_END_DIGIT,FREEMAIL_FROM,LOTS_OF_MONEY,MONEY_FRAUD_8,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:531 listed in]
-        [list.dnswl.org]
-        *  1.5 BAYES_60 BODY: Bayes spam probability is 60 to 80%
-        *      [score: 0.6404]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [mariajohn0331[at]gmail.com]
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [mariajohn0331[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  0.0 MONEY_FRAUD_8 Lots of money and very many fraud phrases
-        *  3.0 ADVANCE_FEE_5_NEW_MONEY Advance Fee fraud and lots of money
-        *  0.6 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *****
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Greetings,
+Hi Alexander,
 
-I sent this mail praying it will find you in a good condition, since I
-myself am in a very critical health condition in which I sleep every
-night  without knowing if I may be alive to see the next day. I am
-Mrs. Maria Roland, a widow suffering from a long time illness. I have
-some funds I  inherited from my late husband, the sum of
-($11,000,000.00) my Doctor told me recently that I have serious
-sickness which is a cancer problem. What disturbs me most is my stroke
-sickness. Having known my condition, I decided to donate this fund to
-a good person that will utilize it the way I am going to instruct
-herein. I need a very honest God.
+On Fri, Jun 10, 2022 at 1:35 PM Alexander Lobakin
+<alexandr.lobakin@intel.com> wrote:
+> While I was working on converting some structure fields from a fixed
+> type to a bitmap, I started observing code size increase not only in
+> places where the code works with the converted structure fields, but
+> also where the converted vars were on the stack. That said, the
+> following code:
+>
+>         DECLARE_BITMAP(foo, BITS_PER_LONG) = { }; // -> unsigned long foo[1];
+>         unsigned long bar = BIT(BAR_BIT);
+>         unsigned long baz = 0;
+>
+>         __set_bit(FOO_BIT, foo);
+>         baz |= BIT(BAZ_BIT);
+>
+>         BUILD_BUG_ON(!__builtin_constant_p(test_bit(FOO_BIT, foo));
+>         BUILD_BUG_ON(!__builtin_constant_p(bar & BAR_BIT));
+>         BUILD_BUG_ON(!__builtin_constant_p(baz & BAZ_BIT));
+>
+> triggers the first assertion on x86_64, which means that the
+> compiler is unable to evaluate it to a compile-time initializer
+> when the architecture-specific bitop is used even if it's obvious.
+> I found that this is due to that many architecture-specific
+> non-atomic bitop implementations use inline asm or other hacks which
+> are faster or more robust when working with "real" variables (i.e.
+> fields from the structures etc.), but the compilers have no clue how
+> to optimize them out when called on compile-time constants.
+>
+> So, in order to let the compiler optimize out such cases, expand the
+> test_bit() and __*_bit() definitions with a compile-time condition
+> check, so that they will pick the generic C non-atomic bitop
+> implementations when all of the arguments passed are compile-time
+> constants, which means that the result will be a compile-time
+> constant as well and the compiler will produce more efficient and
+> simple code in 100% cases (no changes when there's at least one
+> non-compile-time-constant argument).
+> The condition itself:
+>
+> if (
+> __builtin_constant_p(nr) &&     /* <- bit position is constant */
+> __builtin_constant_p(!!addr) && /* <- compiler knows bitmap addr is
+>                                       always either NULL or not */
+> addr &&                         /* <- bitmap addr is not NULL */
+> __builtin_constant_p(*addr)     /* <- compiler knows the value of
+>                                       the target bitmap */
+> )
+>         /* then pick the generic C variant
+> else
+>         /* old code path, arch-specific
+>
+> I also tried __is_constexpr() as suggested by Andy, but it was
+> always returning 0 ('not a constant') for the 2,3 and 4th
+> conditions.
+>
+> The savings are architecture, compiler and compiler flags dependent,
+> for example, on x86_64 -O2:
+>
+> GCC 12: add/remove: 78/29 grow/shrink: 332/525 up/down: 31325/-61560 (-30235)
+> LLVM 13: add/remove: 79/76 grow/shrink: 184/537 up/down: 55076/-141892 (-86816)
+> LLVM 14: add/remove: 10/3 grow/shrink: 93/138 up/down: 3705/-6992 (-3287)
+>
+> and ARM64 (courtesy of Mark[0]):
+>
+> GCC 11: add/remove: 92/29 grow/shrink: 933/2766 up/down: 39340/-82580 (-43240)
+> LLVM 14: add/remove: 21/11 grow/shrink: 620/651 up/down: 12060/-15824 (-3764)
+>
+> And the following:
+>
+>         DECLARE_BITMAP(flags, __IP_TUNNEL_FLAG_NUM) = { };
+>         __be16 flags;
+>
+>         __set_bit(IP_TUNNEL_CSUM_BIT, flags);
+>
+>         tun_flags = cpu_to_be16(*flags & U16_MAX);
+>
+>         if (test_bit(IP_TUNNEL_VTI_BIT, flags))
+>                 tun_flags |= VTI_ISVTI;
+>
+>         BUILD_BUG_ON(!__builtin_constant_p(tun_flags));
+>
+> doesn't blow up anymore, so that we now can e.g. use fixed bitmaps
+> in compile-time assertions etc.
+>
+> The series has been in intel-next for a while with no reported issues.
+>
+> From v1[1]:
+> * change 'gen_' prefixes to '_generic' to disambiguate from
+>   'generated' etc. (Mark);
+> * define a separate 'const_' set to use in the optimization to keep
+>   the generic test_bit() atomic-safe (Marco);
+> * unify arch_{test,__*}_bit() as well and include them in the type
+>   check;
+> * add more relevant and up-to-date bloat-o-meter results, including
+>   ARM64 (me, Mark);
+> * pick a couple '*-by' tags (Mark, Yury).
 
-fearing a person who can claim this money and use it for Charity
-works, for orphanages, widows and also build schools for less
-privileges that will be named after my late husband if possible and to
-promote the word of God and the effort that the house of God is
-maintained. I do not want a situation where this money will be used in
-an ungodly manner. That's why I' making this decision. I'm not afraid
-of death so I know where I'm going. I accept this decision because I
-do not have any child who will inherit this money after I die. Please
-I want your sincere and urgent answer to know if you will be able to
-execute this project, and I will give you more information on how the
-fund will be transferred to your bank account. I am waiting for your reply,
+Thanks for the update!
 
-May God Bless you,
+On m68k, using gcc version 9.4.0 (Ubuntu 9.4.0-1ubuntu1~20.04), this
+blows up immediately with:
 
-Mrs. Maria Roland,
+  CC      kernel/bounds.s
+In file included from include/linux/bits.h:22,
+                 from include/linux/ratelimit_types.h:5,
+                 from include/linux/printk.h:9,
+                 from include/asm-generic/bug.h:22,
+                 from arch/m68k/include/asm/bug.h:32,
+                 from include/linux/bug.h:5,
+                 from include/linux/page-flags.h:10,
+                 from kernel/bounds.c:10:
+include/linux/bitops.h:72:21: error: ‘arch___set_bit’ undeclared here
+(not in a function); did you mean ‘const___set_bit’?
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |                     ^~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:72:9: note: in expansion of macro ‘__same_type’
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |         ^~~~~~~~~~~
+include/linux/bitops.h:75:1: note: in expansion of macro ‘__check_bitop_pr’
+   75 | __check_bitop_pr(__set_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/compiler_types.h:293:27: error: expression in static
+assertion is not an integer
+  293 | #define __same_type(a, b)
+__builtin_types_compatible_p(typeof(a), typeof(b))
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:71:16: note: in expansion of macro ‘__same_type’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |                ^~~~~~~~~~~
+include/linux/bitops.h:75:1: note: in expansion of macro ‘__check_bitop_pr’
+   75 | __check_bitop_pr(__set_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/bitops.h:72:21: error: ‘arch___clear_bit’ undeclared
+here (not in a function); did you mean ‘const___clear_bit’?
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |                     ^~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:72:9: note: in expansion of macro ‘__same_type’
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |         ^~~~~~~~~~~
+include/linux/bitops.h:76:1: note: in expansion of macro ‘__check_bitop_pr’
+   76 | __check_bitop_pr(__clear_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/compiler_types.h:293:27: error: expression in static
+assertion is not an integer
+  293 | #define __same_type(a, b)
+__builtin_types_compatible_p(typeof(a), typeof(b))
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:71:16: note: in expansion of macro ‘__same_type’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |                ^~~~~~~~~~~
+include/linux/bitops.h:76:1: note: in expansion of macro ‘__check_bitop_pr’
+   76 | __check_bitop_pr(__clear_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/bitops.h:72:21: error: ‘arch___change_bit’ undeclared
+here (not in a function); did you mean ‘const___change_bit’?
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |                     ^~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:72:9: note: in expansion of macro ‘__same_type’
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |         ^~~~~~~~~~~
+include/linux/bitops.h:77:1: note: in expansion of macro ‘__check_bitop_pr’
+   77 | __check_bitop_pr(__change_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/compiler_types.h:293:27: error: expression in static
+assertion is not an integer
+  293 | #define __same_type(a, b)
+__builtin_types_compatible_p(typeof(a), typeof(b))
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:71:16: note: in expansion of macro ‘__same_type’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |                ^~~~~~~~~~~
+include/linux/bitops.h:77:1: note: in expansion of macro ‘__check_bitop_pr’
+   77 | __check_bitop_pr(__change_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/bitops.h:72:21: error: ‘arch___test_and_set_bit’
+undeclared here (not in a function); did you mean
+‘const___test_and_set_bit’?
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |                     ^~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:72:9: note: in expansion of macro ‘__same_type’
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |         ^~~~~~~~~~~
+include/linux/bitops.h:78:1: note: in expansion of macro ‘__check_bitop_pr’
+   78 | __check_bitop_pr(__test_and_set_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/compiler_types.h:293:27: error: expression in static
+assertion is not an integer
+  293 | #define __same_type(a, b)
+__builtin_types_compatible_p(typeof(a), typeof(b))
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:71:16: note: in expansion of macro ‘__same_type’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |                ^~~~~~~~~~~
+include/linux/bitops.h:78:1: note: in expansion of macro ‘__check_bitop_pr’
+   78 | __check_bitop_pr(__test_and_set_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/bitops.h:72:21: error: ‘arch___test_and_clear_bit’
+undeclared here (not in a function); did you mean
+‘const___test_and_clear_bit’?
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |                     ^~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:72:9: note: in expansion of macro ‘__same_type’
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |         ^~~~~~~~~~~
+include/linux/bitops.h:79:1: note: in expansion of macro ‘__check_bitop_pr’
+   79 | __check_bitop_pr(__test_and_clear_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/compiler_types.h:293:27: error: expression in static
+assertion is not an integer
+  293 | #define __same_type(a, b)
+__builtin_types_compatible_p(typeof(a), typeof(b))
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:71:16: note: in expansion of macro ‘__same_type’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |                ^~~~~~~~~~~
+include/linux/bitops.h:79:1: note: in expansion of macro ‘__check_bitop_pr’
+   79 | __check_bitop_pr(__test_and_clear_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/bitops.h:72:21: error: ‘arch___test_and_change_bit’
+undeclared here (not in a function); did you mean
+‘const___test_and_change_bit’?
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |                     ^~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:72:9: note: in expansion of macro ‘__same_type’
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |         ^~~~~~~~~~~
+include/linux/bitops.h:80:1: note: in expansion of macro ‘__check_bitop_pr’
+   80 | __check_bitop_pr(__test_and_change_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/compiler_types.h:293:27: error: expression in static
+assertion is not an integer
+  293 | #define __same_type(a, b)
+__builtin_types_compatible_p(typeof(a), typeof(b))
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:71:16: note: in expansion of macro ‘__same_type’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |                ^~~~~~~~~~~
+include/linux/bitops.h:80:1: note: in expansion of macro ‘__check_bitop_pr’
+   80 | __check_bitop_pr(__test_and_change_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/bitops.h:72:21: error: ‘arch_test_bit’ undeclared here
+(not in a function); did you mean ‘_test_bit’?
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |                     ^~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:72:9: note: in expansion of macro ‘__same_type’
+   72 |         __same_type(arch_##name, generic_##name) && \
+      |         ^~~~~~~~~~~
+include/linux/bitops.h:81:1: note: in expansion of macro ‘__check_bitop_pr’
+   81 | __check_bitop_pr(test_bit);
+      | ^~~~~~~~~~~~~~~~
+include/linux/compiler_types.h:293:27: error: expression in static
+assertion is not an integer
+  293 | #define __same_type(a, b)
+__builtin_types_compatible_p(typeof(a), typeof(b))
+      |                           ^~~~~~~~~~~~~~~~~~~~~~~~~~~~
+include/linux/build_bug.h:78:56: note: in definition of macro ‘__static_assert’
+   78 | #define __static_assert(expr, msg, ...) _Static_assert(expr, msg)
+      |                                                        ^~~~
+include/linux/bitops.h:71:2: note: in expansion of macro ‘static_assert’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |  ^~~~~~~~~~~~~
+include/linux/bitops.h:71:16: note: in expansion of macro ‘__same_type’
+   71 |  static_assert(__same_type(const_##name, generic_##name) && \
+      |                ^~~~~~~~~~~
+include/linux/bitops.h:81:1: note: in expansion of macro ‘__check_bitop_pr’
+   81 | __check_bitop_pr(test_bit);
+      | ^~~~~~~~~~~~~~~~
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
