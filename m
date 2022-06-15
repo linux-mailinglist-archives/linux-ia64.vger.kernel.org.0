@@ -2,145 +2,62 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CEF054C2D2
-	for <lists+linux-ia64@lfdr.de>; Wed, 15 Jun 2022 09:46:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D31B54C313
+	for <lists+linux-ia64@lfdr.de>; Wed, 15 Jun 2022 10:05:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239892AbiFOHq4 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 15 Jun 2022 03:46:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53188 "EHLO
+        id S229460AbiFOIFk (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 15 Jun 2022 04:05:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232409AbiFOHqy (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Jun 2022 03:46:54 -0400
-Received: from mail-yw1-x1130.google.com (mail-yw1-x1130.google.com [IPv6:2607:f8b0:4864:20::1130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A48C40A2B
-        for <linux-ia64@vger.kernel.org>; Wed, 15 Jun 2022 00:46:53 -0700 (PDT)
-Received: by mail-yw1-x1130.google.com with SMTP id 00721157ae682-30c2f288f13so52664257b3.7
-        for <linux-ia64@vger.kernel.org>; Wed, 15 Jun 2022 00:46:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20210112;
-        h=mime-version:references:in-reply-to:from:date:message-id:subject:to
-         :cc;
-        bh=6TunYOqloBF4qLChlgaS7iv3LW3vD06QMv7vYl8gqBE=;
-        b=i2CcqUtrsIDkjaoSSAE5LJhiUeUlJuVADv1ngNNW36lXa09SoQcpveMkDEKuHpN1nK
-         OSTwc5GQA1cqqaDU8xoKdGf4VNibWkBZs9lkprQc81915FZ28b+H0OiKrwIrp8m9ecHh
-         OiQMFa6k9NgB2vpeqWO5iSFhzJOjrI3JaCBFzs55F40LdKMNz+QMAItb9zjeLNzsMn82
-         i9IFvhjQDrz11c26V+4BzMXa+YIGzcEq276G5oduvKPOYUdPT3NvAs3AAmiF2gLaCs6C
-         uNxnPmdvvksW8dsvscU7IRW0MAWz7UOtkH/7pQAMI8UW5cdoHzte4JFOFBr4G+NekyNW
-         bpDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=6TunYOqloBF4qLChlgaS7iv3LW3vD06QMv7vYl8gqBE=;
-        b=ej6X9XJcOmu9A135Pul9zdkxsLwXSEjf2ea6OFAMVOTUlTmzrsGhlv0Pma5ncJsW63
-         /4sx33RNWWDaGIZJnyp6mon4z6nJ+6hCEYoyLb5IXyQpVnsaJuYEfYhfye4SneuJPrC3
-         OT+Doe2H0dSkKJ7h/Ve1IZegSexQEECjQfNTWlviTywpguHk0uu7q7dRZqnrpV85lN+a
-         LJ3PbZbpTDCPSi2CBjFtWAguvuFw0TXGqi0qf17KK8M3YP7E1SFg2XNw+CcuMpImYpxz
-         hJ19D+TocIUD07/UmPB0m3BQ0Mz4wTNODZmXkHvLOqafjDTH9HMfWS/vT2yFJa8EpP3l
-         XhDw==
-X-Gm-Message-State: AJIora9R0pv8ZhlerPmX+hae2nNYuO1WHHXtfmPpvVUF1zKw/t+jCnWd
-        2TjJuC68SheYN1Jy2MOs3BMetVA0JAaE1bQLaZR6VQ==
-X-Google-Smtp-Source: AGRyM1saOw0vSmHtMDdGxukVnu8JafJ/oalySrc+hOJX6qe5P1u/hURE3aR4FUFhUD6VGWIdDVu0+xbTE+as4/0CPac=
-X-Received: by 2002:a81:3a12:0:b0:314:6097:b801 with SMTP id
- h18-20020a813a12000000b003146097b801mr7498148ywa.512.1655279212429; Wed, 15
- Jun 2022 00:46:52 -0700 (PDT)
+        with ESMTP id S236403AbiFOIFj (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Jun 2022 04:05:39 -0400
+X-Greylist: delayed 394 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 15 Jun 2022 01:05:39 PDT
+Received: from mail.olerise.pl (mail.olerise.pl [46.183.184.59])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 429D14754B
+        for <linux-ia64@vger.kernel.org>; Wed, 15 Jun 2022 01:05:39 -0700 (PDT)
+Received: by mail.olerise.pl (Postfix, from userid 1001)
+        id D5F6E2421E; Wed, 15 Jun 2022 09:56:15 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=olerise.pl; s=mail;
+        t=1655279893; bh=FDuFY3XQoq0gMX1b2gxgT7Py2p4Sxl0PJZYZ4NVaPho=;
+        h=Date:From:To:Subject:From;
+        b=AjAwwPTm3AbqEI06nnsgN0WtxH9qR8lMc7ek1/0biVb3bedrhUPHZr8mYAacsWN+c
+         2Omqa1mJWOC+UQwTKCAYNJajCrqLiGKtRetDGhMsZcyOHVH8lSKMlIBoT5J1yObkwi
+         6U+ZR7fAon0eh1ytKCB1jFPxmnG2/JjxRFzugsB1awTDvwQHEwb3ieIC2FhyghQl37
+         eQ05fBgtJaN6oSAx5vvU3IXsHFeENR1cH9FvDgQcI10RtvXXuIVgXbWiZ4UQcWGysu
+         pTXwmaqiziWFjs5LySvhQQSjlVWl7uJ512nCgHTYpmy2SUFO0iS3y53OHjup0DvnbJ
+         Z3AjnbY+rDHEA==
+Received: by mail.olerise.pl for <linux-ia64@vger.kernel.org>; Wed, 15 Jun 2022 07:55:22 GMT
+Message-ID: <20220615084500-0.1.f.83q4.0.dhhecjd8z7@olerise.pl>
+Date:   Wed, 15 Jun 2022 07:55:22 GMT
+From:   =?UTF-8?Q? "Przemys=C5=82aw_Wr=C3=B3blewski" ?= 
+        <przemyslaw.wroblewski@olerise.pl>
+To:     <linux-ia64@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.olerise.pl
 MIME-Version: 1.0
-References: <20220610113427.908751-1-alexandr.lobakin@intel.com>
- <20220610113427.908751-3-alexandr.lobakin@intel.com> <YqNMO0ioGzJ1IkoA@smile.fi.intel.com>
- <22042c14bc6a437d9c6b235fbfa32c8a@intel.com> <CANpmjNNZAeMQjzNyXLeKY4cp_m-xJBU1vs7PgT+7_sJwxtEEAg@mail.gmail.com>
- <20220613141947.1176100-1-alexandr.lobakin@intel.com> <CANpmjNM0noP8ieQztyEvijz+MG-cDxxmfwaX_QTpnyT5G33EGA@mail.gmail.com>
- <YqlITqttNYqT/xpN@yury-laptop>
-In-Reply-To: <YqlITqttNYqT/xpN@yury-laptop>
-From:   Marco Elver <elver@google.com>
-Date:   Wed, 15 Jun 2022 09:46:15 +0200
-Message-ID: <CANpmjNMd+r9Hq+vwWGoNhOg_W=x3Umo+i14TRvEMz6PhcHgXWQ@mail.gmail.com>
-Subject: Re: [PATCH v2 2/6] bitops: always define asm-generic non-atomic bitops
-To:     Yury Norov <yury.norov@gmail.com>
-Cc:     Alexander Lobakin <alexandr.lobakin@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Brian Cain <bcain@quicinc.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Borislav Petkov <bp@suse.de>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
-        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
-        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
-        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
-        "linux-arch@vger.kernel.org" <linux-arch@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.7 required=5.0 tests=BAYES_05,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, 15 Jun 2022 at 04:47, Yury Norov <yury.norov@gmail.com> wrote:
->
-> On Mon, Jun 13, 2022 at 04:33:17PM +0200, Marco Elver wrote:
-> > On Mon, 13 Jun 2022 at 16:21, Alexander Lobakin
-> > <alexandr.lobakin@intel.com> wrote:
-> > >
-> > > From: Marco Elver <elver@google.com>
-> > > Date: Fri, 10 Jun 2022 18:32:36 +0200
-> > >
-> > > > On Fri, 10 Jun 2022 at 18:02, Luck, Tony <tony.luck@intel.com> wrote:
-> > > > >
-> > > > > > > +/**
-> > > > > > > + * generic_test_bit - Determine whether a bit is set
-> > > > > > > + * @nr: bit number to test
-> > > > > > > + * @addr: Address to start counting from
-> > > > > > > + */
-> > > > > >
-> > > > > > Shouldn't we add in this or in separate patch a big NOTE to explain that this
-> > > > > > is actually atomic and must be kept as a such?
-> > > > >
-> > > > > "atomic" isn't really the right word. The volatile access makes sure that the
-> > > > > compiler does the test at the point that the source code asked, and doesn't
-> > > > > move it before/after other operations.
-> > > >
-> > > > It's listed in Documentation/atomic_bitops.txt.
-> > >
-> > > Oh, so my memory was actually correct that I saw it in the docs
-> > > somewhere.
-> > > WDYT, should I mention this here in the code (block comment) as well
-> > > that it's atomic and must not lose `volatile` as Andy suggested or
-> > > it's sufficient to have it in the docs (+ it's not underscored)?
-> >
-> > Perhaps a quick comment in the code (not kerneldoc above) will be
-> > sufficient, with reference to Documentation/atomic_bitops.txt.
->
-> If it may help, we can do:
->
-> /*
->  * Bit testing is a naturally atomic operation because bit is
->  * a minimal quantum of information.
->  */
-> #define __test_bit test_bit
+Dzie=C5=84 dobry,
 
-That's redundant and we'll end up with a random mix of both.
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
 
-What'd be more interesting is having a __test_bit without the volatile
-that allows compilers to optimize things more. But I think that also
-becomes mostly redundant with the optimizations that this series seeks
-out to do.
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej nawet o 90%.
 
-The distinction is ever so subtle, and clever compilers *will* break
-concurrent code in ways that are rather hard to imagine:
-https://lwn.net/Articles/793253/
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
+
+
+Pozdrawiam,
+Przemys=C5=82aw Wr=C3=B3blewski
