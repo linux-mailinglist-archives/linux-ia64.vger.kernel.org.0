@@ -2,108 +2,68 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FAA254F2D3
-	for <lists+linux-ia64@lfdr.de>; Fri, 17 Jun 2022 10:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3F7D54F64C
+	for <lists+linux-ia64@lfdr.de>; Fri, 17 Jun 2022 13:07:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1380954AbiFQI0b (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 17 Jun 2022 04:26:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35634 "EHLO
+        id S1381154AbiFQLHS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 17 Jun 2022 07:07:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1380966AbiFQI03 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 17 Jun 2022 04:26:29 -0400
-Received: from mail-pj1-x1032.google.com (mail-pj1-x1032.google.com [IPv6:2607:f8b0:4864:20::1032])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 253E66898F
-        for <linux-ia64@vger.kernel.org>; Fri, 17 Jun 2022 01:26:28 -0700 (PDT)
-Received: by mail-pj1-x1032.google.com with SMTP id d14so306936pjs.3
-        for <linux-ia64@vger.kernel.org>; Fri, 17 Jun 2022 01:26:28 -0700 (PDT)
+        with ESMTP id S1381072AbiFQLHQ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 17 Jun 2022 07:07:16 -0400
+Received: from mail-lj1-x242.google.com (mail-lj1-x242.google.com [IPv6:2a00:1450:4864:20::242])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 423296C569
+        for <linux-ia64@vger.kernel.org>; Fri, 17 Jun 2022 04:07:14 -0700 (PDT)
+Received: by mail-lj1-x242.google.com with SMTP id l18so4340104lje.13
+        for <linux-ia64@vger.kernel.org>; Fri, 17 Jun 2022 04:07:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance-com.20210112.gappssmtp.com; s=20210112;
-        h=date:from:to:cc:subject:message-id:references:mime-version
-         :content-disposition:in-reply-to;
-        bh=Yr0ixUanPwolWpl8lCaQhXzB90rLEzIJZVwDXXKPA0U=;
-        b=T0JCgWDTB1C2DISDgdZ4UDVFOWnRp2zy2MnmauLXScjZ1nAwZFhugPqk7LJHr/ZqYR
-         gS7AQ2LY7MCi12zojIG7f8Ph+i4IbqU+gY2wftHcxhfe5I/JxipjHT9G+VpC1zh5K6vU
-         duBUQkQeO+lYH2S0APPy5npNumr73wIpqlOnbbnKsqaOmmaPmmMnefSyRGqfn72oeVHY
-         4XT/louGb1lBLYbfoesSgG/+I51syqllEu+lF2uvmS6543R3TVlllAbeuSojS2oaZNiz
-         0vsqAzWz7egUsoU66blaHOD0ko2YmWG/bFdUR0JWK3PFEfpAyeZtKbMvGonQ25pbr7g8
-         /rng==
+        d=gmail.com; s=20210112;
+        h=mime-version:reply-to:from:date:message-id:subject:to;
+        bh=Jh3M8LDovYWs/mBJiVJoI/DS8xun0EDDqspVSX/swmY=;
+        b=pFedS01kBZoPf8w5+XJZcYZ94+8/5BPGUMxxnwwcOpVYITA5QWxlJn7CMxhAI+ggn0
+         /n/28MyUQZTSa/tie3dRsmPvE6NX0vXVKx9GcLBynkwRm7La1SLF/jZ5GK37A9iYVslj
+         cxRwouHTo6i4mfGOTyJ4x2iJ0wTWYK30mjugdDqjpN9rYfygPrW9NZ0NWOyToP1CWp46
+         jNS7rLQYL887bhFBWjWHc5O4KaUdYzHyX312OjiTsq7uRVOIf6TRRgIWJ/y7caMT0Xuq
+         B8ExJre+ZX9oLKGDOuZypV3MojECtLAOVpHDZkChLfLTJ8bAgTQGLFSFyIawJRZds+UR
+         mrog==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=x-gm-message-state:date:from:to:cc:subject:message-id:references
-         :mime-version:content-disposition:in-reply-to;
-        bh=Yr0ixUanPwolWpl8lCaQhXzB90rLEzIJZVwDXXKPA0U=;
-        b=zmiN+Qdu/htEftw1XY0CcSJQgYsjtbfliXGQY5FTpEituYGgOucTQ5IJGRGxMevdDz
-         G224ck96H8IVGbJQos5levN0SY4rlYAcFYDq0imDlxQV4GN3FsIfHIaR+OnIo8HbJ0Ju
-         gDhtiTuy/kELbfQ85B7Xy9eMrlo7aDuvDvKdngZb/XHuC1Jk2AEldyKTHcPbPg/FsOdt
-         OCV3rZnZqjwBQfxnkHwZZ8Jk/H7FAoSZqMi18LxC6kGxYbNi8IAZ6GdL7tyr2OQEU3H7
-         5EXKY+iKnJzcOo/wD694jL2Ye400eyGcgqUA1/tW5847NeuLsO6znTnQ3R8vvYFvPrRq
-         hhKQ==
-X-Gm-Message-State: AJIora+y4tsRdvI/8mOduThIGJbZwHmqEi5MylIwvjax2qtajfuwUFgY
-        LpIfkrbkeGQaasY79l08t67Y6Q==
-X-Google-Smtp-Source: AGRyM1t5yEL1BPz7y9ug30F37C0ubzhxM59TWM8YWNbgEGd6O1gO2tufJo02mvgvoeRwcOdvYuG/tA==
-X-Received: by 2002:a17:903:22cb:b0:167:992f:60c3 with SMTP id y11-20020a17090322cb00b00167992f60c3mr8629830plg.59.1655454387624;
-        Fri, 17 Jun 2022 01:26:27 -0700 (PDT)
-Received: from localhost ([139.177.225.255])
-        by smtp.gmail.com with ESMTPSA id i12-20020a170902cf0c00b001677fa34a07sm2974542plg.43.2022.06.17.01.26.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 17 Jun 2022 01:26:27 -0700 (PDT)
-Date:   Fri, 17 Jun 2022 16:26:23 +0800
-From:   Muchun Song <songmuchun@bytedance.com>
-To:     Mike Kravetz <mike.kravetz@oracle.com>
-Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-arm-kernel@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        Michal Hocko <mhocko@suse.com>, Peter Xu <peterx@redhat.com>,
-        Naoya Horiguchi <naoya.horiguchi@linux.dev>,
-        James Houghton <jthoughton@google.com>,
-        Mina Almasry <almasrymina@google.com>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.vnet.ibm.com>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        catalin.marinas@arm.com, will@kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH 2/4] arm64/hugetlb: Implement arm64 specific
- hugetlb_mask_last_page
-Message-ID: <Yqw6r0/r34sZdrsk@FVFYT0MHHV2J.usts.net>
-References: <20220616210518.125287-1-mike.kravetz@oracle.com>
- <20220616210518.125287-3-mike.kravetz@oracle.com>
+        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
+         :subject:to;
+        bh=Jh3M8LDovYWs/mBJiVJoI/DS8xun0EDDqspVSX/swmY=;
+        b=qc/5TKyd2se/D9YBfzzgaQ8Mc1bTLPq/mGhuXDkoAmUN/m4xef9v5Y1poO5xkNm8Ke
+         7NWOGB9W5q5slfkZI+jTpCo3ikSnOqrQ8qOqLbbO8u2joeJoz3c/FXe/6Gvhw8axV/yj
+         drNiofNdJ/uqjkY2bT+ZjhiB0xUFLr5oUhJ3cMSI5vwnUYokx5IUmhQauuw15vgpUwds
+         mgCbcttKJP4EunnmwMPnR2SzqYrGFVkOhLNLLNYf75pBNL5SmRcOF7Yw/ReMKxZc2Pk2
+         vcQ59qBiLeZHChZG4N7i+aWD9T1TL3bKk76ChmIcG1J6Y+ZGsO4e6mzYMNUiXJ7YSXd6
+         ptyQ==
+X-Gm-Message-State: AJIora/y1VZt7O+x79BwIdqccv4AgM3JXIrFglmUAeIXoUDrwBtFDye0
+        M5lhjXO4df/PPWrPKDLlr7bpFhJOoR91PWR8gpk=
+X-Google-Smtp-Source: AGRyM1urbzChfLmiDMc9bFbg6bdjvB/HYUWIimmBCgu3hpulMNQeMq2SygPR7Z1ddcVc/lcKEnhtY/mkjjoZrMogRKA=
+X-Received: by 2002:a2e:3a18:0:b0:255:c053:1726 with SMTP id
+ h24-20020a2e3a18000000b00255c0531726mr4746217lja.316.1655464032670; Fri, 17
+ Jun 2022 04:07:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220616210518.125287-3-mike.kravetz@oracle.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:ab3:680f:0:0:0:0:0 with HTTP; Fri, 17 Jun 2022 04:07:12
+ -0700 (PDT)
+Reply-To: sj7209917@gmail.com
+From:   Joseph smith <maelyskpeta@gmail.com>
+Date:   Fri, 17 Jun 2022 04:07:12 -0700
+Message-ID: <CACKGxpxo3tFpcQ2Ff60d2jb9EYqr8nW2BCHOZnDrUcXOM1k82A@mail.gmail.com>
+Subject: 
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Jun 16, 2022 at 02:05:16PM -0700, Mike Kravetz wrote:
-> From: Baolin Wang <baolin.wang@linux.alibaba.com>
-> 
-> The HugeTLB address ranges are linearly scanned during fork, unmap and
-> remap operations, and the linear scan can skip to the end of range mapped
-> by the page table page if hitting a non-present entry, which can help
-> to speed linear scanning of the HugeTLB address ranges.
-> 
-> So hugetlb_mask_last_page() is introduced to help to update the address in
-> the loop of HugeTLB linear scanning with getting the last huge page mapped
-> by the associated page table page[1], when a non-present entry is encountered.
-> 
-> Considering ARM64 specific cont-pte/pmd size HugeTLB, this patch implemented
-> an ARM64 specific hugetlb_mask_last_page() to help this case.
-> 
-> [1] https://lore.kernel.org/linux-mm/20220527225849.284839-1-mike.kravetz@oracle.com/
-> 
-> Signed-off-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-> Signed-off-by: Mike Kravetz <mike.kravetz@oracle.com>
-
-Acked-by: Muchun Song <songmuchun@bytedance.com>
-
-Thanks.
+Hi   are you available to  speak now
+Thanks
