@@ -2,107 +2,234 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C6A3552EBE
-	for <lists+linux-ia64@lfdr.de>; Tue, 21 Jun 2022 11:41:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21D715532D7
+	for <lists+linux-ia64@lfdr.de>; Tue, 21 Jun 2022 15:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349378AbiFUJkh (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 21 Jun 2022 05:40:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52100 "EHLO
+        id S1345600AbiFUNB5 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 21 Jun 2022 09:01:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349324AbiFUJkJ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 21 Jun 2022 05:40:09 -0400
-Received: from mail-ua1-x932.google.com (mail-ua1-x932.google.com [IPv6:2607:f8b0:4864:20::932])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E3E027CF8
-        for <linux-ia64@vger.kernel.org>; Tue, 21 Jun 2022 02:39:57 -0700 (PDT)
-Received: by mail-ua1-x932.google.com with SMTP id q42so4882440uac.0
-        for <linux-ia64@vger.kernel.org>; Tue, 21 Jun 2022 02:39:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=mime-version:reply-to:from:date:message-id:subject:to;
-        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
-        b=NKhg6kSkfnglJlsPDVUWhCY3Iibudx7OhZC5CePFgeNekYJKNrcmU8wB8gkktmjPqY
-         f0o4DET3nwW7oGb1WQAmWVCm6yLISrVrQXMY/9qoCppMNLX7K/jA/JZ+JMs1mNT38j+N
-         qSlM2vTiSOIkQo5cZ6oY4dkMVda7fWn0vzKRT295Q67AStI8u0BTanvw38uSxo4IMvFm
-         mtbeFJOQugEk6bmbrSLJZHxNWvSEoU0AT9TQz59V3jAGDZbWiI6U0Fx8UlroTYMr9wGQ
-         +xC78kHT5AZK7k/f6wmWhdDj3ThC5Cy20ctCKCcYvb/idPExEpgvQXB/UX/ziCu3vO07
-         Q2/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:reply-to:from:date:message-id
-         :subject:to;
-        bh=/0bRExIb6Mv4sy5raFRmeQINC+UUx7zEZcUUOWWOPJg=;
-        b=JvrP0unBGRqLAMfHRZEQPcA8b5uNoIN2nj3YL3NmnlYzpg5tHE8rnWxEnhqIOrEeNK
-         oyEnjBBx0qkrQDKHRLCFnnXU8TDwCpvOm14qCEmltF9XUAglZu69bkMWNL+42OTZfPV5
-         ThVFGJ6wMChe2+XsqKGyVqBPZKmiFLLU03LzuFlZqBwrbeVSYqXmxUJ45dAA9N3WtscI
-         /r7tsR560DxxrZpBxziSz0KdPjxBen861DEzpqYZedPHXqSXmcAaW8zUFIMt6OnasUqh
-         5hdDMZKtmvb0t2mMcjn2MDmkgZZMXTfVY1Vap7ePirA8L+y8XfJWx+fMdZjWve6Hw2CA
-         h19w==
-X-Gm-Message-State: AJIora9oqQJENtw1lb46PPCKEyMeMrXRds2IN+2UP22turOmZ60Rhu1w
-        pnF+uy74UWcBOgXPZuF36McRhX8IpGw77H6HgsQ6q+LRbzbmVKX7
-X-Google-Smtp-Source: AGRyM1sTF/SvvxCyraPE52znD36ZX02jNmxmam87lP8bWzXT3yTfChS1a9JgJI9LjBXh9tpS4qLO5E/t+5efudcEruY=
-X-Received: by 2002:a0d:d7c7:0:b0:317:bfe8:4f2 with SMTP id
- z190-20020a0dd7c7000000b00317bfe804f2mr12417910ywd.276.1655804384555; Tue, 21
- Jun 2022 02:39:44 -0700 (PDT)
+        with ESMTP id S1345250AbiFUNBh (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 21 Jun 2022 09:01:37 -0400
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 804012A73B;
+        Tue, 21 Jun 2022 06:01:33 -0700 (PDT)
+Received: from pps.filterd (m0098399.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 25LCgBBv008724;
+        Tue, 21 Jun 2022 13:00:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
+ subject : message-id : references : content-type : in-reply-to :
+ mime-version; s=pp1; bh=INIoxh3uB/g84CnlKEVK7DkW60H3xY6l/Dj67LAzEhU=;
+ b=d5wnwulCcQfGxdcD2fd3NLhuX5nfTX/9Tv38VbiMlXBWUr1sebIhxyCPZabwGW9JNyYK
+ AgnaliH6U98/Z9p/Cx3OCsIwCXCXJ5wZOj+QkeOUW+sDV1axiAbeT1FCesecY8KiDuhx
+ ClvwWnnLC5vTqSu1/0IuliYM1PCGJmydsvquNnpFQgME3SVhAjdnpv/2CUNRO8kYZbtN
+ dqlPh9/xUyKeQWwQq8mdSpWdRnZ2AtLViKQlQD/AA7A4oOoH4KCQl6MNAVEYYlQft1Dg
+ 7c9YEjCo9JEZMDbacwKZ1MaWhR7kSLnwQHfEOVjpQIulYUAwcZJQm7Se/PyjPa9P7Zbu 7Q== 
+Received: from pps.reinject (localhost [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gue7n8h5q-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Jun 2022 13:00:30 +0000
+Received: from m0098399.ppops.net (m0098399.ppops.net [127.0.0.1])
+        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 25LCgIkg008927;
+        Tue, 21 Jun 2022 13:00:29 GMT
+Received: from ppma04ams.nl.ibm.com (63.31.33a9.ip4.static.sl-reverse.com [169.51.49.99])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3gue7n8h3b-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Jun 2022 13:00:29 +0000
+Received: from pps.filterd (ppma04ams.nl.ibm.com [127.0.0.1])
+        by ppma04ams.nl.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 25LCpm6Q023948;
+        Tue, 21 Jun 2022 13:00:27 GMT
+Received: from b06cxnps3075.portsmouth.uk.ibm.com (d06relay10.portsmouth.uk.ibm.com [9.149.109.195])
+        by ppma04ams.nl.ibm.com with ESMTP id 3gs6b9429v-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Tue, 21 Jun 2022 13:00:27 +0000
+Received: from d06av24.portsmouth.uk.ibm.com (d06av24.portsmouth.uk.ibm.com [9.149.105.60])
+        by b06cxnps3075.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 25LD0O3e15008038
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Tue, 21 Jun 2022 13:00:24 GMT
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id C48BB42054;
+        Tue, 21 Jun 2022 13:00:24 +0000 (GMT)
+Received: from d06av24.portsmouth.uk.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 4C64842045;
+        Tue, 21 Jun 2022 13:00:23 +0000 (GMT)
+Received: from li-4a3a4a4c-28e5-11b2-a85c-a8d192c6f089.ibm.com (unknown [9.145.144.178])
+        by d06av24.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
+        Tue, 21 Jun 2022 13:00:23 +0000 (GMT)
+Date:   Tue, 21 Jun 2022 15:00:21 +0200
+From:   Alexander Gordeev <agordeev@linux.ibm.com>
+To:     "Eric W. Biederman" <ebiederm@xmission.com>
+Cc:     linux-kernel@vger.kernel.org, rjw@rjwysocki.net,
+        Oleg Nesterov <oleg@redhat.com>, mingo@kernel.org,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, mgorman@suse.de, bigeasy@linutronix.de,
+        Will Deacon <will@kernel.org>, tj@kernel.org,
+        linux-pm@vger.kernel.org, Peter Zijlstra <peterz@infradead.org>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org
+Subject: Re: [PATCH v4 12/12] sched,signal,ptrace: Rework TASK_TRACED,
+ TASK_STOPPED state
+Message-ID: <YrHA5UkJLornOdCz@li-4a3a4a4c-28e5-11b2-a85c-a8d192c6f089.ibm.com>
+References: <87a6bv6dl6.fsf_-_@email.froward.int.ebiederm.org>
+ <20220505182645.497868-12-ebiederm@xmission.com>
+Content-Type: multipart/mixed; boundary="N4j0vMBA8JArVaRj"
+Content-Disposition: inline
+In-Reply-To: <20220505182645.497868-12-ebiederm@xmission.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: DvpD6a9DpHAX-uGDu1YH6gtZIsnZ5-px
+X-Proofpoint-ORIG-GUID: j2ZkUQPeXm04GYSgMt7nlbITLz7lQeFc
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
 MIME-Version: 1.0
-Received: by 2002:a05:7010:e10a:b0:2d9:e631:94d0 with HTTP; Tue, 21 Jun 2022
- 02:39:44 -0700 (PDT)
-Reply-To: dimitryedik@gmail.com
-From:   Dimitry Edik <lsbthdwrds@gmail.com>
-Date:   Tue, 21 Jun 2022 02:39:44 -0700
-Message-ID: <CAGrL05aBO8rbFuij24J-APa+Luis69gEjhj35iv_GZfkHCVYDQ@mail.gmail.com>
-Subject: Dear Partner,
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=7.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS,T_MONEY_PERCENT,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,
-        UNDISC_MONEY autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2607:f8b0:4864:20:0:0:0:932 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [lsbthdwrds[at]gmail.com]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.0 LOTS_OF_MONEY Huge... sums of money
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.2 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
-        *      email?
-        *  0.0 T_MONEY_PERCENT X% of a lot of money for you
-        *  2.0 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: *******
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.64.514
+ definitions=2022-06-21_05,2022-06-21_01,2022-02-23_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 spamscore=0 bulkscore=0
+ phishscore=0 priorityscore=1501 clxscore=1011 adultscore=0 impostorscore=0
+ mlxlogscore=999 mlxscore=0 suspectscore=0 lowpriorityscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2204290000 definitions=main-2206210055
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hello Dear,
 
-My Name is Dimitry Edik from Russia A special assistance to my Russia
-boss who deals in oil import and export He was killed by the Ukraine
-soldiers at the border side. He supplied
-oil to the Philippines company and he was paid over 90 per cent of the
-transaction and the remaining $18.6 Million dollars have been paid into a
-Taiwan bank in the Philippines..i want a partner that will assist me
-with the claims. Is a (DEAL ) 40% for you and 60% for me
-I have all information for the claims.
-Kindly read and reply to me back is 100 per cent risk-free
+--N4j0vMBA8JArVaRj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: 
 
-Yours Sincerely
-Dimitry Edik
+On Thu, May 05, 2022 at 01:26:45PM -0500, Eric W. Biederman wrote:
+> From: Peter Zijlstra <peterz@infradead.org>
+> 
+> Currently ptrace_stop() / do_signal_stop() rely on the special states
+> TASK_TRACED and TASK_STOPPED resp. to keep unique state. That is, this
+> state exists only in task->__state and nowhere else.
+> 
+> There's two spots of bother with this:
+> 
+>  - PREEMPT_RT has task->saved_state which complicates matters,
+>    meaning task_is_{traced,stopped}() needs to check an additional
+>    variable.
+> 
+>  - An alternative freezer implementation that itself relies on a
+>    special TASK state would loose TASK_TRACED/TASK_STOPPED and will
+>    result in misbehaviour.
+> 
+> As such, add additional state to task->jobctl to track this state
+> outside of task->__state.
+> 
+> NOTE: this doesn't actually fix anything yet, just adds extra state.
+> 
+> --EWB
+>   * didn't add a unnecessary newline in signal.h
+>   * Update t->jobctl in signal_wake_up and ptrace_signal_wake_up
+>     instead of in signal_wake_up_state.  This prevents the clearing
+>     of TASK_STOPPED and TASK_TRACED from getting lost.
+>   * Added warnings if JOBCTL_STOPPED or JOBCTL_TRACED are not cleared
+
+Hi Eric, Peter,
+
+On s390 this patch triggers warning at kernel/ptrace.c:272 when
+kill_child testcase from strace tool is repeatedly used (the source
+is attached for reference):
+
+while :; do
+	strace -f -qq -e signal=none -e trace=sched_yield,/kill ./kill_child
+done
+
+It normally takes few minutes to cause the warning in -rc3, but FWIW
+it hits almost immediately for ptrace_stop-cleanup-for-v5.19 tag of
+git://git.kernel.org/pub/scm/linux/kernel/git/ebiederm/user-namespace.
+
+Commit 7b0fe1367ef2 ("ptrace: Document that wait_task_inactive can't
+fail") suggests this WARN_ON_ONCE() is not really expected, yet we
+observe a child in __TASK_TRACED state. Could you please comment here?
+
+Thanks!
+
+--N4j0vMBA8JArVaRj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="kill_child.c"
+
+/*
+ * Check for the corner case that previously lead to segfault
+ * due to an attempt to access unitialised tcp->s_ent.
+ *
+ * 13994 ????( <unfinished ...>
+ * ...
+ * 13994 <... ???? resumed>) = ?
+ *
+ * Copyright (c) 2019 The strace developers.
+ * All rights reserved.
+ *
+ * SPDX-License-Identifier: GPL-2.0-or-later
+ */
+
+#include "tests.h"
+
+#include <sched.h>
+#include <signal.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include <sys/wait.h>
+
+#define ITERS    10000
+#define SC_ITERS 10000
+
+int
+main(void)
+{
+	volatile sig_atomic_t *const mem =
+		mmap(NULL, get_page_size(), PROT_READ | PROT_WRITE,
+		     MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+	if (mem == MAP_FAILED)
+		perror_msg_and_fail("mmap");
+
+	for (unsigned int i = 0; i < ITERS; ++i) {
+		mem[0] = mem[1] = 0;
+
+		const pid_t pid = fork();
+		if (pid < 0)
+			perror_msg_and_fail("fork");
+
+		if (!pid) {
+			/* wait for the parent */
+			while (!mem[0])
+				;
+			/* let the parent know we are running */
+			mem[1] = 1;
+
+			for (unsigned int j = 0; j < SC_ITERS; j++)
+				sched_yield();
+
+			pause();
+			return 0;
+		}
+
+		/* let the child know we are running */
+		mem[0] = 1;
+		/* wait for the child */
+		while (!mem[1])
+			;
+
+		if (kill(pid, SIGKILL))
+			perror_msg_and_fail("kill");
+		if (wait(NULL) != pid)
+			perror_msg_and_fail("wait");
+	}
+
+	return 0;
+}
+
+--N4j0vMBA8JArVaRj--
+
