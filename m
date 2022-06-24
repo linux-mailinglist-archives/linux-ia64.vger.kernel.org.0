@@ -2,204 +2,226 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FC445550CB
-	for <lists+linux-ia64@lfdr.de>; Wed, 22 Jun 2022 18:05:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B32FE55902B
+	for <lists+linux-ia64@lfdr.de>; Fri, 24 Jun 2022 06:45:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376420AbiFVQFR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 22 Jun 2022 12:05:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39286 "EHLO
+        id S229715AbiFXEn6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 24 Jun 2022 00:43:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1376435AbiFVQEz (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 22 Jun 2022 12:04:55 -0400
-Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0696134BA1;
-        Wed, 22 Jun 2022 09:04:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1655913873; x=1687449873;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=eG4q6c4UvYGtzxug36fSTUwHXCGqtjeRSHre942YGGg=;
-  b=llCY6TcTc2B4dCCWVQhv81yKwEdAtn5yadjhiwtGPA2l/qyoghHhxrd1
-   58Z4Na2DLG2+ZhTMrx76BJo0TP7j0a3agC8bITw6touar09aTBRlbgNfQ
-   ZqQsT96X7p/X4CTRPUj3B/yjdCm89Kik0CtOIJdghFGVmbhl5jLPNKFwM
-   NJ4tuZJN9CafMU2Bb/w4e/3MGkZj6YVUmNTXWL7rfnkyqzpyKV+ZqcUSK
-   3PpfnYj2mdU2IEd8nxFggTf+BCCmgscpB80AhNrSu6U/KuqigKxY/6vv3
-   hbw+poKqsbtk6Y+gjsoW9KL2XpyeZiPFIWDSpyvqVf+3nMn12NPH+fy+i
-   g==;
-X-IronPort-AV: E=McAfee;i="6400,9594,10386"; a="281191468"
-X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="281191468"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Jun 2022 09:04:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="5.92,212,1650956400"; 
-   d="scan'208";a="764940851"
-Received: from irvmail001.ir.intel.com ([10.43.11.63])
-  by orsmga005.jf.intel.com with ESMTP; 22 Jun 2022 09:04:20 -0700
-Received: from newjersey.igk.intel.com (newjersey.igk.intel.com [10.102.20.203])
-        by irvmail001.ir.intel.com (8.14.3/8.13.6/MailSET/Hub) with ESMTP id 25MG4Ip9006187;
-        Wed, 22 Jun 2022 17:04:18 +0100
-From:   Alexander Lobakin <alexandr.lobakin@intel.com>
-To:     Arnd Bergmann <arnd@arndb.de>, Yury Norov <yury.norov@gmail.com>
-Cc:     Alexander Lobakin <alexandr.lobakin@intel.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Brian Cain <bcain@quicinc.com>,
-        "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
-        Tony Luck <tony.luck@intel.com>,
-        "Maciej Fijalkowski" <maciej.fijalkowski@intel.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, linux-alpha@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-kernel@vger.kernel.org, llvm@lists.linux.dev
-Subject: Re: [PATCH v4 8/8] lib: test_bitmap: add compile-time optimization/evaluations assertions
-Date:   Wed, 22 Jun 2022 18:04:15 +0200
-Message-Id: <20220622160415.589430-1-alexandr.lobakin@intel.com>
-X-Mailer: git-send-email 2.36.1
-In-Reply-To: <20220621191553.69455-9-alexandr.lobakin@intel.com>
-References: <20220621191553.69455-1-alexandr.lobakin@intel.com> <20220621191553.69455-9-alexandr.lobakin@intel.com>
+        with ESMTP id S229515AbiFXEn5 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 24 Jun 2022 00:43:57 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 8763753A57;
+        Thu, 23 Jun 2022 21:43:55 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4787612FC;
+        Thu, 23 Jun 2022 21:43:55 -0700 (PDT)
+Received: from a077893.blr.arm.com (unknown [10.162.41.7])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 961313F66F;
+        Thu, 23 Jun 2022 21:43:47 -0700 (PDT)
+From:   Anshuman Khandual <anshuman.khandual@arm.com>
+To:     linux-mm@kvack.org
+Cc:     hch@infradead.org, christophe.leroy@csgroup.eu,
+        Anshuman Khandual <anshuman.khandual@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linuxppc-dev@lists.ozlabs.org, sparclinux@vger.kernel.org,
+        x86@kernel.org, openrisc@lists.librecores.org,
+        linux-xtensa@linux-xtensa.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linux-alpha@vger.kernel.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-um@lists.infradead.org,
+        linux-sh@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH V4 00/26] mm/mmap: Drop __SXXX/__PXXX macros from across platforms
+Date:   Fri, 24 Jun 2022 10:13:13 +0530
+Message-Id: <20220624044339.1533882-1-anshuman.khandual@arm.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-6.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Alexander Lobakin <alexandr.lobakin@intel.com>
-Date: Tue, 21 Jun 2022 21:15:53 +0200
+__SXXX/__PXXX macros is an unnecessary abstraction layer in creating the
+generic protection_map[] array which is used for vm_get_page_prot(). This
+abstraction layer can be avoided, if the platforms just define the array
+protection_map[] for all possible vm_flags access permission combinations
+and also export vm_get_page_prot() implementation.
 
-> Add a function to the bitmap test suite, which will ensure that
-> compilers are able to evaluate operations performed by the
-> bitops/bitmap helpers to compile-time constants when all of the
-> arguments are compile-time constants as well, or trigger a build
-> bug otherwise. This should work on all architectures and all the
-> optimization levels supported by Kbuild.
-> The function doesn't perform any runtime tests and gets optimized
-> out to nothing after passing the build assertions.
-> 
-> Suggested-by: Yury Norov <yury.norov@gmail.com>
-> Signed-off-by: Alexander Lobakin <alexandr.lobakin@intel.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
->  lib/test_bitmap.c | 45 +++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 45 insertions(+)
-> 
-> diff --git a/lib/test_bitmap.c b/lib/test_bitmap.c
-> index d5923a640457..3a7b09b82794 100644
-> --- a/lib/test_bitmap.c
-> +++ b/lib/test_bitmap.c
-> @@ -869,6 +869,50 @@ static void __init test_bitmap_print_buf(void)
->  	}
->  }
->  
-> +static void __init test_bitmap_const_eval(void)
-> +{
-> +	DECLARE_BITMAP(bitmap, BITS_PER_LONG);
-> +	unsigned long initvar = BIT(2);
-> +	unsigned long bitopvar = 0;
-> +	unsigned long var = 0;
-> +	int res;
-> +
-> +	/*
-> +	 * Compilers must be able to optimize all of those to compile-time
-> +	 * constants on any supported optimization level (-O2, -Os) and any
-> +	 * architecture. Otherwise, trigger a build bug.
-> +	 * The whole function gets optimized out then, there's nothing to do
-> +	 * in runtime.
-> +	 */
-> +
-> +	/* Equals to `unsigned long bitmap[1] = { BIT(5), }` */
-> +	bitmap_clear(bitmap, 0, BITS_PER_LONG);
-> +	if (!test_bit(7, bitmap))
-> +		bitmap_set(bitmap, 5, 1);
+This series drops __SXXX/__PXXX macros from across platforms in the tree.
+First it build protects generic protection_map[] array with '#ifdef __P000'
+and moves it inside platforms which enable ARCH_HAS_VM_GET_PAGE_PROT. Later
+this build protects same array with '#ifdef ARCH_HAS_VM_GET_PAGE_PROT' and
+moves inside remaining platforms while enabling ARCH_HAS_VM_GET_PAGE_PROT.
+This adds a new macro DECLARE_VM_GET_PAGE_PROT defining the current generic
+vm_get_page_prot(), in order for it to be reused on platforms that do not
+require custom implementation. Finally, ARCH_HAS_VM_GET_PAGE_PROT can just
+be dropped, as all platforms now define and export vm_get_page_prot(), via
+looking up a private and static protection_map[] array. protection_map[]
+data type is the following for all platforms without deviation (except the
+powerpc one which is shared between 32 and 64 bit platforms), keeping it
+unchanged for now.
 
-So for now, when building for s390, Clang (up to the latest Git
-snapshot) generates some incorrect code here.
-It does expand both test_bit() and bitmap_set() to const_test_bit()
-and const___set_bit(), but at the same time thinks that starting
-from this point, @bitmap and @bitopvar (???) are *not* constants
-and fails the assertions below, which is not true and weird.
-Any other architecture + compiler couples work fine, including
-s390 on GCC.
-So would it be acceptable for now to do:
+static pgprot_t protection_map[16] __ro_after_init
 
-	/* Equals to `unsigned long bitmap[1] = { BIT(5), }` */
-	bitmap_clear(bitmap, 0, BITS_PER_LONG);
-	/*
-	 * Some comment saying that this is currently broken
-	 * on s390 + Clang
-	 */
-#if !(defined(__s390__) && defined(__clang__))
-	if (!test_bit(7, bitmap))
-		bitmap_set(bitmap, 5, 1);
-#endif
+This series applies on v5.19-rc3 and has been build tested for multiple
+platforms. While here it has dropped off all previous tags from folks after
+the current restructuring. Series common CC list has been expanded to cover
+all impacted platforms for wider reach.
 
-	/* Equals to `unsigned long bitopvar = BIT(20)` */
-	__change_bit(31, &bitopvar);
-	bitmap_shift_right(&bitopvar, &bitopvar, 11, BITS_PER_LONG);
+- Anshuman
 
-[...]
+Changes in V4:
 
-or there could be any better solutions?
+- Both protection_map[] and vm_get_page_prot() moves inside all platforms
+- Split patches to create modular changes for individual platforms
+- Add macro DECLARE_VM_GET_PAGE_PROT defining generic vm_get_page_prot()
+- Drop ARCH_HAS_VM_GET_PAGE_PROT
 
-(+Cc LLVM folks)
+Changes in V3:
 
-> +
-> +	/* Equals to `unsigned long bitopvar = BIT(20)` */
-> +	__change_bit(31, &bitopvar);
-> +	bitmap_shift_right(&bitopvar, &bitopvar, 11, BITS_PER_LONG);
-> +
-> +	/* Equals to `unsigned long var = BIT(25)` */
-> +	var |= BIT(25);
-> +	if (var & BIT(0))
-> +		var ^= GENMASK(9, 6);
-> +
-> +	/* __const_hweight<32|64>(BIT(5)) == 1 */
-> +	res = bitmap_weight(bitmap, 20);
-> +	BUILD_BUG_ON(!__builtin_constant_p(res));
-> +
-> +	/* !(BIT(31) & BIT(18)) == 1 */
-> +	res = !test_bit(18, &bitopvar);
-> +	BUILD_BUG_ON(!__builtin_constant_p(res));
-> +
-> +	/* BIT(2) & GENMASK(14, 8) == 0 */
-> +	BUILD_BUG_ON(!__builtin_constant_p(initvar & GENMASK(14, 8)));
-> +	/* ~BIT(25) */
-> +	BUILD_BUG_ON(!__builtin_constant_p(~var));
-> +}
-> +
->  static void __init selftest(void)
->  {
->  	test_zero_clear();
-> @@ -884,6 +928,7 @@ static void __init selftest(void)
->  	test_for_each_set_clump8();
->  	test_bitmap_cut();
->  	test_bitmap_print_buf();
-> +	test_bitmap_const_eval();
->  }
->  
->  KSTM_MODULE_LOADERS(test_bitmap);
-> -- 
-> 2.36.1
+https://lore.kernel.org/all/20220616040924.1022607-1-anshuman.khandual@arm.com/
 
-Thanks,
-Olek
+- Fix build issues on powerpc and riscv
+
+Changes in V2:
+
+https://lore.kernel.org/all/20220613053354.553579-1-anshuman.khandual@arm.com/
+
+- Add 'const' identifier to protection_map[] on powerpc
+- Dropped #ifndef CONFIG_ARCH_HAS_VM_GET_PAGE_PROT check from sparc 32
+- Dropped protection_map[] init from sparc 64
+- Dropped all new platform changes subscribing ARCH_HAS_VM_GET_PAGE_PROT
+- Added a second patch which moves generic protection_map[] array into
+  all remaining platforms (!ARCH_HAS_VM_GET_PAGE_PROT)
+
+Changes in V1:
+
+https://lore.kernel.org/all/20220603101411.488970-1-anshuman.khandual@arm.com/
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: linuxppc-dev@lists.ozlabs.org
+Cc: sparclinux@vger.kernel.org
+Cc: x86@kernel.org
+Cc: openrisc@lists.librecores.org
+Cc: linux-xtensa@linux-xtensa.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-hexagon@vger.kernel.org
+Cc: linux-parisc@vger.kernel.org
+Cc: linux-alpha@vger.kernel.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-csky@vger.kernel.org
+Cc: linux-s390@vger.kernel.org
+Cc: linux-ia64@vger.kernel.org
+Cc: linux-mips@vger.kernel.org
+Cc: linux-m68k@lists.linux-m68k.org
+Cc: linux-snps-arc@lists.infradead.org
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-um@lists.infradead.org
+Cc: linux-sh@vger.kernel.org
+Cc: linux-mm@kvack.org
+Cc: linux-kernel@vger.kernel.org
+
+Anshuman Khandual (26):
+  mm/mmap: Build protect protection_map[] with __P000
+  mm/mmap: Define DECLARE_VM_GET_PAGE_PROT
+  powerpc/mm: Move protection_map[] inside the platform
+  sparc/mm: Move protection_map[] inside the platform
+  arm64/mm: Move protection_map[] inside the platform
+  x86/mm: Move protection_map[] inside the platform
+  mm/mmap: Build protect protection_map[] with ARCH_HAS_VM_GET_PAGE_PROT
+  microblaze/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  loongarch/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  openrisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  extensa/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  hexagon/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  parisc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  alpha/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  nios2/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  riscv/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  csky/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  s390/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  ia64/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  mips/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  m68k/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  arc/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  arm/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  um/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  sh/mm: Enable ARCH_HAS_VM_GET_PAGE_PROT
+  mm/mmap: Drop ARCH_HAS_VM_GET_PAGE_PROT
+
+ arch/alpha/include/asm/pgtable.h          | 17 -------
+ arch/alpha/mm/init.c                      | 22 +++++++++
+ arch/arc/include/asm/pgtable-bits-arcv2.h | 18 --------
+ arch/arc/mm/mmap.c                        | 20 +++++++++
+ arch/arm/include/asm/pgtable.h            | 17 -------
+ arch/arm/lib/uaccess_with_memcpy.c        |  2 +-
+ arch/arm/mm/mmu.c                         | 20 +++++++++
+ arch/arm64/Kconfig                        |  1 -
+ arch/arm64/include/asm/pgtable-prot.h     | 18 --------
+ arch/arm64/mm/mmap.c                      | 21 +++++++++
+ arch/csky/include/asm/pgtable.h           | 18 --------
+ arch/csky/mm/init.c                       | 20 +++++++++
+ arch/hexagon/include/asm/pgtable.h        | 27 -----------
+ arch/hexagon/mm/init.c                    | 42 +++++++++++++++++
+ arch/ia64/include/asm/pgtable.h           | 18 --------
+ arch/ia64/mm/init.c                       | 28 +++++++++++-
+ arch/loongarch/include/asm/pgtable-bits.h | 19 --------
+ arch/loongarch/mm/cache.c                 | 46 +++++++++++++++++++
+ arch/m68k/include/asm/mcf_pgtable.h       | 54 ----------------------
+ arch/m68k/include/asm/motorola_pgtable.h  | 22 ---------
+ arch/m68k/include/asm/sun3_pgtable.h      | 17 -------
+ arch/m68k/mm/mcfmmu.c                     | 55 +++++++++++++++++++++++
+ arch/m68k/mm/motorola.c                   | 20 +++++++++
+ arch/m68k/mm/sun3mmu.c                    | 20 +++++++++
+ arch/microblaze/include/asm/pgtable.h     | 17 -------
+ arch/microblaze/mm/init.c                 | 20 +++++++++
+ arch/mips/include/asm/pgtable.h           | 22 ---------
+ arch/mips/mm/cache.c                      |  3 ++
+ arch/nios2/include/asm/pgtable.h          | 16 -------
+ arch/nios2/mm/init.c                      | 20 +++++++++
+ arch/openrisc/include/asm/pgtable.h       | 18 --------
+ arch/openrisc/mm/init.c                   | 20 +++++++++
+ arch/parisc/include/asm/pgtable.h         | 18 --------
+ arch/parisc/mm/init.c                     | 20 +++++++++
+ arch/powerpc/Kconfig                      |  1 -
+ arch/powerpc/include/asm/pgtable.h        | 20 +--------
+ arch/powerpc/mm/pgtable.c                 | 24 ++++++++++
+ arch/riscv/include/asm/pgtable.h          | 20 ---------
+ arch/riscv/mm/init.c                      | 20 +++++++++
+ arch/s390/include/asm/pgtable.h           | 17 -------
+ arch/s390/mm/mmap.c                       | 20 +++++++++
+ arch/sh/include/asm/pgtable.h             | 17 -------
+ arch/sh/mm/mmap.c                         | 20 +++++++++
+ arch/sparc/Kconfig                        |  1 -
+ arch/sparc/include/asm/pgtable_32.h       | 19 --------
+ arch/sparc/include/asm/pgtable_64.h       | 19 --------
+ arch/sparc/mm/init_32.c                   | 20 +++++++++
+ arch/sparc/mm/init_64.c                   |  3 ++
+ arch/um/include/asm/pgtable.h             | 17 -------
+ arch/um/kernel/mem.c                      | 20 +++++++++
+ arch/x86/Kconfig                          |  1 -
+ arch/x86/include/asm/pgtable_types.h      | 19 --------
+ arch/x86/mm/mem_encrypt_amd.c             |  7 ++-
+ arch/x86/mm/pgprot.c                      | 27 +++++++++++
+ arch/x86/um/mem_32.c                      |  2 +-
+ arch/xtensa/include/asm/pgtable.h         | 18 --------
+ arch/xtensa/mm/init.c                     | 20 +++++++++
+ include/linux/mm.h                        |  9 +++-
+ mm/Kconfig                                |  3 --
+ mm/mmap.c                                 | 27 -----------
+ 60 files changed, 584 insertions(+), 543 deletions(-)
+
+-- 
+2.25.1
+
