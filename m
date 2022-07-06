@@ -2,140 +2,164 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 823FC5684CC
-	for <lists+linux-ia64@lfdr.de>; Wed,  6 Jul 2022 12:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B38AE5684F5
+	for <lists+linux-ia64@lfdr.de>; Wed,  6 Jul 2022 12:14:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232034AbiGFKKF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 6 Jul 2022 06:10:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46468 "EHLO
+        id S232214AbiGFKMT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 6 Jul 2022 06:12:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232532AbiGFKJu (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 6 Jul 2022 06:09:50 -0400
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED099A467;
-        Wed,  6 Jul 2022 03:09:46 -0700 (PDT)
-Received: by mail-qt1-f176.google.com with SMTP id c13so17480565qtq.10;
-        Wed, 06 Jul 2022 03:09:46 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=x-gm-message-state:mime-version:references:in-reply-to:from:date
-         :message-id:subject:to:cc;
-        bh=kx69JRXRHaP9bPHWeCJjLQ/KjVRjWJF5OqT3P9q0cBs=;
-        b=lAzdRd1By0sHsBk/HkiVBJYiSBscgl0i1ZLAsUpFAIe8qAFmd4kDffUF8y1jY0FzOQ
-         vVQfqo0DLW7HANISepVttWLbihN1jcWLZBXtujKa69KSjCNBQbl+XqnRi2/a+OCql/Tc
-         G8X6soaObeyIiRaLHtBaDSvM4cEzvyuPysp+OQZs4wHtBIWH/haIhn4mW1FvFW+t+ti0
-         qBHP0Vmz2rWXotho0cLXnoEcZVjtPVWLkVQDIOQaZYE5+Ub0Ua9c2gW8CKiGhkL+io3k
-         qVkdq0txxNz1x/GETY20MSUDfZmIuHQf2qN1c1YuF5B4VJ9m9c4sskMn3wC6HuqqW6ET
-         4sEA==
-X-Gm-Message-State: AJIora+fQVLRC2JPBJguYfUYsik9hV+zeKmHAXEqN5WBunFzox/ZpMxo
-        yPE6Majlkyis7OxP4gCWrdsz3ayypng1TNvl
-X-Google-Smtp-Source: AGRyM1uRi24Ome6ymG0bopZ8WaKaGL4MX+ul7f2gDeb/y4XMxl60luZgTxp4X64UGyjAH5lS0Ja8GQ==
-X-Received: by 2002:a05:622a:4cc:b0:31d:26a1:2538 with SMTP id q12-20020a05622a04cc00b0031d26a12538mr31085549qtx.498.1657102185760;
-        Wed, 06 Jul 2022 03:09:45 -0700 (PDT)
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com. [209.85.128.169])
-        by smtp.gmail.com with ESMTPSA id d71-20020a379b4a000000b006a6a1e4aec2sm28819484qke.49.2022.07.06.03.09.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Jul 2022 03:09:44 -0700 (PDT)
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-31c86fe1dddso87249647b3.1;
-        Wed, 06 Jul 2022 03:09:44 -0700 (PDT)
-X-Received: by 2002:a81:5404:0:b0:31c:c24d:94b0 with SMTP id
- i4-20020a815404000000b0031cc24d94b0mr10209449ywb.502.1657102184115; Wed, 06
- Jul 2022 03:09:44 -0700 (PDT)
+        with ESMTP id S232385AbiGFKMR (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 6 Jul 2022 06:12:17 -0400
+Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD74FB8D;
+        Wed,  6 Jul 2022 03:12:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=Tkl3lxTOKWGbOCuxxKNckxHNjYRI3zGLuGc8imHNxDs=; b=WpgGH4+Y6U9gQSSnMVR6OLMxva
+        3xYxeAZ7USH+mmbkdac+gWqkqSUncCao79OXiiUot5IPHXuNd6BKu4KcdJ/3wd9E6vbdtwdlfX++8
+        YHg9SPa4d3D+hoJ+xHEd64U2BB0PxnnwhjCX34YKvpd3mB9eaqJ+9sCf1Ma6Y4Sc+A5HLQFse3wc3
+        7p9dt+e0Yzacjyq/2QRyinJn3DEvx+LTPjMD8J3/m/+8JP5Q5o8reLw6djHCmeIC4Lr1NoUT74Cpg
+        hLfvPld/nyGauGdSHTmpv4A/geUNh2jHXRL3BD0xt9eK7uievOocsG0NSTJd7nMGZkXKKLQVVrNY/
+        fCxnd6CA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by desiato.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1o9207-000QRU-BY; Wed, 06 Jul 2022 10:11:19 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 6964C3001AE;
+        Wed,  6 Jul 2022 12:11:15 +0200 (CEST)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 43F7A20207235; Wed,  6 Jul 2022 12:11:15 +0200 (CEST)
+Date:   Wed, 6 Jul 2022 12:11:15 +0200
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Sven Schnelle <svens@linux.ibm.com>
+Cc:     Steven Rostedt <rostedt@goodmis.org>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        "Eric W. Biederman" <ebiederm@xmission.com>,
+        linux-kernel@vger.kernel.org, rjw@rjwysocki.net,
+        Oleg Nesterov <oleg@redhat.com>, mingo@kernel.org,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        mgorman@suse.de, bigeasy@linutronix.de,
+        Will Deacon <will@kernel.org>, tj@kernel.org,
+        linux-pm@vger.kernel.org, Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
+        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org
+Subject: Re: [PATCH v4 12/12] sched,signal,ptrace: Rework TASK_TRACED,
+ TASK_STOPPED state
+Message-ID: <YsVfw3dy7smrpEbn@hirez.programming.kicks-ass.net>
+References: <YrHA5UkJLornOdCz@li-4a3a4a4c-28e5-11b2-a85c-a8d192c6f089.ibm.com>
+ <877d5ajesi.fsf@email.froward.int.ebiederm.org>
+ <YrHgo8GKFPWwoBoJ@li-4a3a4a4c-28e5-11b2-a85c-a8d192c6f089.ibm.com>
+ <20220628191541.34a073fc@gandalf.local.home>
+ <yt9d5ykbekn3.fsf@linux.ibm.com>
+ <yt9dpmijcvu6.fsf@linux.ibm.com>
+ <YsSQRmCZSIQ1ewzo@worktop.programming.kicks-ass.net>
+ <yt9dsfneaczk.fsf@linux.ibm.com>
+ <YsVO1NU3bXGg9YJ3@worktop.programming.kicks-ass.net>
+ <yt9da69ma8wm.fsf@linux.ibm.com>
 MIME-Version: 1.0
-References: <20220624121313.2382500-1-alexandr.lobakin@intel.com> <20220624121313.2382500-4-alexandr.lobakin@intel.com>
-In-Reply-To: <20220624121313.2382500-4-alexandr.lobakin@intel.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Wed, 6 Jul 2022 12:09:33 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdWB8CjbOarttKSaY2=kASbqU2UBCe9bpU17=MdZP_rGUA@mail.gmail.com>
-Message-ID: <CAMuHMdWB8CjbOarttKSaY2=kASbqU2UBCe9bpU17=MdZP_rGUA@mail.gmail.com>
-Subject: Re: [PATCH v5 3/9] bitops: unify non-atomic bitops prototypes across architectures
-To:     Alexander Lobakin <alexandr.lobakin@intel.com>
-Cc:     Arnd Bergmann <arnd@arndb.de>, Yury Norov <yury.norov@gmail.com>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Brian Cain <bcain@quicinc.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, kernel test robot <lkp@intel.com>,
-        alpha <linux-alpha@vger.kernel.org>,
-        "open list:QUALCOMM HEXAGON..." <linux-hexagon@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        linux-m68k <linux-m68k@lists.linux-m68k.org>,
-        Linux-sh list <linux-sh@vger.kernel.org>,
-        sparclinux <sparclinux@vger.kernel.org>,
-        Linux-Arch <linux-arch@vger.kernel.org>, llvm@lists.linux.dev,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <yt9da69ma8wm.fsf@linux.ibm.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Jun 24, 2022 at 2:13 PM Alexander Lobakin
-<alexandr.lobakin@intel.com> wrote:
-> Currently, there is a mess with the prototypes of the non-atomic
-> bitops across the different architectures:
->
-> ret     bool, int, unsigned long
-> nr      int, long, unsigned int, unsigned long
-> addr    volatile unsigned long *, volatile void *
->
-> Thankfully, it doesn't provoke any bugs, but can sometimes make
-> the compiler angry when it's not handy at all.
-> Adjust all the prototypes to the following standard:
->
-> ret     bool                            retval can be only 0 or 1
-> nr      unsigned long                   native; signed makes no sense
-> addr    volatile unsigned long *        bitmaps are arrays of ulongs
->
-> Next, some architectures don't define 'arch_' versions as they don't
-> support instrumentation, others do. To make sure there is always the
-> same set of callables present and to ease any potential future
-> changes, make them all follow the rule:
->  * architecture-specific files define only 'arch_' versions;
->  * non-prefixed versions can be defined only in asm-generic files;
-> and place the non-prefixed definitions into a new file in
-> asm-generic to be included by non-instrumented architectures.
->
-> Finally, add some static assertions in order to prevent people from
-> making a mess in this room again.
-> I also used the %__always_inline attribute consistently, so that
-> they always get resolved to the actual operations.
->
-> Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Signed-off-by: Alexander Lobakin <alexandr.lobakin@intel.com>
-> Acked-by: Mark Rutland <mark.rutland@arm.com>
-> Reviewed-by: Yury Norov <yury.norov@gmail.com>
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+On Wed, Jul 06, 2022 at 11:27:05AM +0200, Sven Schnelle wrote:
+> Peter Zijlstra <peterz@infradead.org> writes:
+> 
+> > On Wed, Jul 06, 2022 at 09:58:55AM +0200, Sven Schnelle wrote:
+> >
+> >> >> [   86.218551] kill_chi-343805    6d.... 79990141us : ptrace_stop: JOBCTL_TRACED already set, state=0 <------ valid combination of flags?
+> >> >
+> >> > Yeah, that's not supposed to be so. JOBCTL_TRACED is supposed to follow
+> >> > __TASK_TRACED for now. Set when __TASK_TRACED, cleared when
+> >> > TASK_RUNNING.
+> >> >
+> >> > Specifically {ptrace_,}signal_wake_up() in signal.h clear JOBCTL_TRACED
+> >> > when they would wake a __TASK_TRACED task.
+> >> 
+> >> try_to_wake_up() clears TASK_TRACED in this case because a signal
+> >> (SIGKILL) has to be delivered. As a test I put the following change
+> >> on top, and it "fixes" the problem:
+> >> 
+> >> diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+> >> index da0bf6fe9ecd..f2e0f5e70e77 100644
+> >> --- a/kernel/sched/core.c
+> >> +++ b/kernel/sched/core.c
+> >> @@ -4141,6 +4149,9 @@ try_to_wake_up(struct task_struct *p, unsigned int state, int wake_flags)
+> >>          * TASK_WAKING such that we can unlock p->pi_lock before doing the
+> >>          * enqueue, such as ttwu_queue_wakelist().
+> >>          */
+> >> +       if (p->__state & TASK_TRACED)
+> >> +               trace_printk("clearing TASK_TRACED 2\n");
+> >> +       p->jobctl &= ~JOBCTL_TRACED;
+> >>         WRITE_ONCE(p->__state, TASK_WAKING);
+> >> 
+> >>         /*
+> >> 
+> >> There are several places where the state is changed from TASK_TRACED to
+> >> something else without clearing JOBCTL_TRACED.
+> >
+> > I'm having difficulty spotting them; I find:
+> >
+> > TASK_WAKEKILL: signal_wake_up()
+> > __TASK_TRACED: ptrace_signal_wake_up(), ptrace_unfreeze_traced(), ptrace_resume()
+> >
+> > And all those sites dutifully clear JOBCTL_TRACED.
+> >
+> > I'd be most interested in the calstack for the 'clearing TASK_TRACED 2'
+> > events to see where we miss a spot.
+> 
+> The calltrace is:
+> [    9.863613] Call Trace:
+> [    9.863616]  [<00000000d3105f0e>] try_to_wake_up+0xae/0x620
+> [    9.863620] ([<00000000d3106164>] try_to_wake_up+0x304/0x620)
+> [    9.863623]  [<00000000d30d1e46>] ptrace_unfreeze_traced+0x9e/0xa8
+> [    9.863629]  [<00000000d30d2ef0>] __s390x_sys_ptrace+0xc0/0x160
+> [    9.863633]  [<00000000d3c5d8f4>] __do_syscall+0x1d4/0x200
+> [    9.863678]  [<00000000d3c6c332>] system_call+0x82/0xb0
+> [    9.863685] Last Breaking-Event-Address:
+> [    9.863686]  [<00000000d3106176>] try_to_wake_up+0x316/0x620
+> [    9.863688] ---[ end trace 0000000000000000 ]---
+> 
+> ptrace_unfreeze_traced() is:
+> 
+> static void ptrace_unfreeze_traced(struct task_struct *task)
+> {
+>         unsigned long flags;
+> 
+>         /*
+>          * The child may be awake and may have cleared
+>          * JOBCTL_PTRACE_FROZEN (see ptrace_resume).  The child will
+>          * not set JOBCTL_PTRACE_FROZEN or enter __TASK_TRACED anew.
+>          */
+>         if (lock_task_sighand(task, &flags)) {
+>                 task->jobctl &= ~JOBCTL_PTRACE_FROZEN;
+>                 if (__fatal_signal_pending(task)) {
+>                         task->jobctl &= ~TASK_TRACED;
+> 
+> Looking at this, shouldn't the line above read task->jobctl &= ~JOBCTL_TRACED?
 
->  arch/m68k/include/asm/bitops.h                | 49 ++++++++++-----
+YES! Absolutely.
 
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Acked-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
-Gr{oetje,eeting}s,
-
-                        Geert
-
---
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
-
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
+>                         wake_up_state(task, __TASK_TRACED);
+>                 }
+>                 unlock_task_sighand(task, &flags);
+>         }
+> }
