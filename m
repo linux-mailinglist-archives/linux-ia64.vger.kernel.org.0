@@ -2,120 +2,106 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A55AC567F1B
-	for <lists+linux-ia64@lfdr.de>; Wed,  6 Jul 2022 08:57:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A53BC567F7B
+	for <lists+linux-ia64@lfdr.de>; Wed,  6 Jul 2022 09:06:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229530AbiGFG5R (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 6 Jul 2022 02:57:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50510 "EHLO
+        id S231508AbiGFHFi (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 6 Jul 2022 03:05:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230456AbiGFG5Q (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 6 Jul 2022 02:57:16 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7518C1E3EB;
-        Tue,  5 Jul 2022 23:57:15 -0700 (PDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 2665o6xn006900;
-        Wed, 6 Jul 2022 06:56:18 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=8ZnHdDQjpHpXOoGqi1kWeK1wdBbKk5PxQZFuzUgZhHM=;
- b=PWL38hkUxQCF6Mo9cUDFQUnyDHq73e5U9vvxCklYGscA0BOTiKnIaXFT8R5DX/QAxLZE
- 9s5RRO2b7NfTF+yOI7Dm5YorXu8osZJiMbhRxnGXgd1A7iM4QUrt1tPX3FXmfeautZZl
- DcFcxdrXKGowuX04fCkm7jiuXCWaNniZPyYATP0S3mBhlg9isLy3Rx3qFXX5qfHsGE8S
- vRmYWcVX8bn62mduiF0xGq+k7S6mAeUu2BcuoMsHL3mLWvHHHjNVEnbIhIVLeL87s9EW
- 2m/yh+3jaQ/HK7kdgdwtNRKoziTwzZ9rjkhdIbze8iQOBEHar4HudaFKxm6wu3xzxp2j iA== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h54kj9cyy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 06 Jul 2022 06:56:17 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 2666tEOj030291;
-        Wed, 6 Jul 2022 06:56:17 GMT
-Received: from ppma04fra.de.ibm.com (6a.4a.5195.ip4.static.sl-reverse.com [149.81.74.106])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3h54kj9cyd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 06 Jul 2022 06:56:16 +0000
-Received: from pps.filterd (ppma04fra.de.ibm.com [127.0.0.1])
-        by ppma04fra.de.ibm.com (8.16.1.2/8.16.1.2) with SMTP id 2666rcjT026466;
-        Wed, 6 Jul 2022 06:56:14 GMT
-Received: from b06avi18626390.portsmouth.uk.ibm.com (b06avi18626390.portsmouth.uk.ibm.com [9.149.26.192])
-        by ppma04fra.de.ibm.com with ESMTP id 3h4v658dd9-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 06 Jul 2022 06:56:14 +0000
-Received: from d06av26.portsmouth.uk.ibm.com (d06av26.portsmouth.uk.ibm.com [9.149.105.62])
-        by b06avi18626390.portsmouth.uk.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 2666su7620709726
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 6 Jul 2022 06:54:56 GMT
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 647CCAE053;
-        Wed,  6 Jul 2022 06:56:12 +0000 (GMT)
-Received: from d06av26.portsmouth.uk.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 42215AE045;
-        Wed,  6 Jul 2022 06:56:11 +0000 (GMT)
-Received: from li-4a3a4a4c-28e5-11b2-a85c-a8d192c6f089.ibm.com (unknown [9.145.48.113])
-        by d06av26.portsmouth.uk.ibm.com (Postfix) with ESMTPS;
-        Wed,  6 Jul 2022 06:56:11 +0000 (GMT)
-Date:   Wed, 6 Jul 2022 08:56:09 +0200
-From:   Alexander Gordeev <agordeev@linux.ibm.com>
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     "Eric W. Biederman" <ebiederm@xmission.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        linux-kernel@vger.kernel.org, rjw@rjwysocki.net,
-        Oleg Nesterov <oleg@redhat.com>, mingo@kernel.org,
-        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
-        mgorman@suse.de, bigeasy@linutronix.de,
-        Will Deacon <will@kernel.org>, tj@kernel.org,
-        linux-pm@vger.kernel.org, Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        linux-xtensa@linux-xtensa.org, Kees Cook <keescook@chromium.org>,
-        Jann Horn <jannh@google.com>, linux-ia64@vger.kernel.org,
-        svens@linux.ibm.com
-Subject: Re: [PATCH v4 12/12] sched,signal,ptrace: Rework TASK_TRACED,
- TASK_STOPPED state
-Message-ID: <YsUyCXji6mMJgrPA@li-4a3a4a4c-28e5-11b2-a85c-a8d192c6f089.ibm.com>
-References: <20220505182645.497868-12-ebiederm@xmission.com>
- <YrHA5UkJLornOdCz@li-4a3a4a4c-28e5-11b2-a85c-a8d192c6f089.ibm.com>
- <877d5ajesi.fsf@email.froward.int.ebiederm.org>
- <YrHgo8GKFPWwoBoJ@li-4a3a4a4c-28e5-11b2-a85c-a8d192c6f089.ibm.com>
- <87y1xk8zx5.fsf@email.froward.int.ebiederm.org>
- <YrtKReO2vIiX8VVU@tuxmaker.boeblingen.de.ibm.com>
- <87czess94h.fsf@email.froward.int.ebiederm.org>
- <20220628184850.05f60d1e@gandalf.local.home>
- <87pmisqgs0.fsf@email.froward.int.ebiederm.org>
- <YsRcRgfZFl0K4L9h@worktop.programming.kicks-ass.net>
+        with ESMTP id S231549AbiGFHFX (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 6 Jul 2022 03:05:23 -0400
+Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.135])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B019922536;
+        Wed,  6 Jul 2022 00:05:20 -0700 (PDT)
+Received: from mail-yw1-f174.google.com ([209.85.128.174]) by
+ mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
+ 1MQMm9-1nvYz6481J-00MIfJ; Wed, 06 Jul 2022 09:05:18 +0200
+Received: by mail-yw1-f174.google.com with SMTP id 00721157ae682-31c86fe1dddso83275417b3.1;
+        Wed, 06 Jul 2022 00:05:15 -0700 (PDT)
+X-Gm-Message-State: AJIora/yyXFuxC0iH8udXG4GKzeQDfZVFj5/5/aXY+3OG8rcG8jffJLV
+        2V+NVKVyV6CbxZT52ddqge0oe5EQDCQFt7Y66jU=
+X-Google-Smtp-Source: AGRyM1sFkLoTiaaVIBkcDzO6lGV11chQSm3x6oRhEtv1xOtqIu5uDObFEe7OPQNG4jMZlSfDIkbGiGD4cv9otOB20XA=
+X-Received: by 2002:a81:f8f:0:b0:31c:bd9f:31ce with SMTP id
+ 137-20020a810f8f000000b0031cbd9f31cemr10731679ywp.347.1657091114041; Wed, 06
+ Jul 2022 00:05:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <YsRcRgfZFl0K4L9h@worktop.programming.kicks-ass.net>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: EqRYoy857-IPtmbwVYfylrNVTw_7oX2e
-X-Proofpoint-ORIG-GUID: I3EKCrOAXbEpt0ucpVG6LiV05LEpJbOj
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.883,Hydra:6.0.517,FMLib:17.11.122.1
- definitions=2022-07-06_03,2022-06-28_01,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0
- priorityscore=1501 mlxlogscore=950 clxscore=1015 malwarescore=0
- bulkscore=0 mlxscore=0 spamscore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.12.0-2206140000 definitions=main-2207060022
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220630051630.1718927-1-anshuman.khandual@arm.com>
+ <8a6ccbae-7d7c-6e08-cc28-eeb649f86112@arm.com> <85fff3f6-373f-3e6a-325e-0fa8ad46273a@csgroup.eu>
+In-Reply-To: <85fff3f6-373f-3e6a-325e-0fa8ad46273a@csgroup.eu>
+From:   Arnd Bergmann <arnd@arndb.de>
+Date:   Wed, 6 Jul 2022 09:04:56 +0200
+X-Gmail-Original-Message-ID: <CAK8P3a1gb1Xrg4AGnncFpN=aDxVKfjkt1TmSvZXXADZTv7eE-g@mail.gmail.com>
+Message-ID: <CAK8P3a1gb1Xrg4AGnncFpN=aDxVKfjkt1TmSvZXXADZTv7eE-g@mail.gmail.com>
+Subject: Re: [PATCH V6 00/26] mm/mmap: Drop __SXXX/__PXXX macros from across platforms
+To:     Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc:     Anshuman Khandual <anshuman.khandual@arm.com>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "akpm@linux-foundation.org" <akpm@linux-foundation.org>,
+        "linux-xtensa@linux-xtensa.org" <linux-xtensa@linux-xtensa.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
+        "linux-parisc@vger.kernel.org" <linux-parisc@vger.kernel.org>,
+        "linux-s390@vger.kernel.org" <linux-s390@vger.kernel.org>,
+        "linux-sh@vger.kernel.org" <linux-sh@vger.kernel.org>,
+        "linux-hexagon@vger.kernel.org" <linux-hexagon@vger.kernel.org>,
+        "x86@kernel.org" <x86@kernel.org>,
+        "linux-um@lists.infradead.org" <linux-um@lists.infradead.org>,
+        "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
+        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "hch@infradead.org" <hch@infradead.org>,
+        "linux-m68k@lists.linux-m68k.org" <linux-m68k@lists.linux-m68k.org>,
+        "openrisc@lists.librecores.org" <openrisc@lists.librecores.org>,
+        "linux-alpha@vger.kernel.org" <linux-alpha@vger.kernel.org>,
+        "sparclinux@vger.kernel.org" <sparclinux@vger.kernel.org>,
+        "linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
+        "linux-snps-arc@lists.infradead.org" 
+        <linux-snps-arc@lists.infradead.org>,
+        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
+        "linux-arm-kernel@lists.infradead.org" 
+        <linux-arm-kernel@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Provags-ID: V03:K1:eoj/BCXKdmN3+Jtii2tnT9++PxDX3Qg7gtjTIvPC9UxI/6aBcxJ
+ tTae1o1xAarRHKJSP3rYt1b1/eDeegzTy0D2zVasyMJuuUa+41stGutBBXc1JX0IWj+OuEm
+ 4ASghrYondSGEJVdD4r91TCAANQlj5byQGbFpEa9jhmxGwVvHYU/Vtoar9ZPDQqoHW43WeM
+ R3ozEe+h4nV01gc2XgZ2Q==
+X-UI-Out-Filterresults: notjunk:1;V03:K0:prrS9+g5wIQ=:AH9lcMoXqt1xOcLbdnz0v3
+ FlSve9D0sISO715668G4rmmOOym/lRAuFwSwKOrEgM87WsNd50hr6zzm6CkRQaWsQNRfb3JMD
+ pcZW7ztueF93/tWxu/udv1r5lnePhIz3byRArXnmXPWihtuIM7AQ9Ky3KkRQOmYKT78as29UQ
+ r0cGiEnz6bcQpvcqYSjK3TJdLhS7PpmL3x90cG6xm+NZ6gIxuJEClno37wYHSZUPbBMVs/C9A
+ IOAAi+/oi7gWMWmtjHJarqw8Y+I2uYCh9CrF0dt8bUjvuK2QFTKEwKPEsaHgVWA42u9wlem+y
+ 4sIgHUzW0/TuymIwELBXL/ElFVOdfLORt8KL4MTwAICBILbSZS3XVWwMDkjgBf8D4QCI5c+R9
+ 00HOPOriisiG7YnK8L6mjd+xGcjfeCvzVC9XOhM+28BR7CteM5su05ac/6hzrpkJLyILrKNRs
+ HvaTSN1FwRqUy9Kj+WI1P6jXqu8d2IBxZMLKsnAXha4VVlcdtrH2kDJLkchXUmu8Y/f31xGor
+ TVUj0G1hyIitAC5nxF36puqdvyGzqw1EjycEk73/bwY8lkE1YYSQMhVTNIdROMV1pqvwgLPdl
+ IaRqUJkq0ZbXME5jinzrOPR2K+0f/rNmGTOO72ZJ2xElw39Q0uqHGgmN6++BKG4JNqK9MlBbi
+ DSfhIbUxaRzTzPoPxj2i8ePp+cVwJBWGqB9PqvGAd6DX6y27uTIL9evkQviyXz4YCMv3vnrFq
+ lsDcsJpMxdcr5+T5dz0YqL8w/tJakl/IqUgEw6m0VYya+EPCL+0rI2VwcHBY2Xj2z72Kibici
+ 54Y/uROUkJKI0rqrBWN7XoacPQ1MfP1Mq5mgKzoRwHNbT+W58ZL9IU8OR3lzsTjY6dj34FUgG
+ OKtnA6/3GxUCV6shdv1Q==
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Jul 05, 2022 at 05:44:06PM +0200, Peter Zijlstra wrote:
+On Wed, Jul 6, 2022 at 8:33 AM Christophe Leroy
+<christophe.leroy@csgroup.eu> wrote:
 
-Hi Peter,
+> As far as I can see in Kconfig, CONFIG_MMU is user selectable on the
+> following architectures:
+> - ARM
+> - M68K
+> - RISCV
+> - SH
+>
+> And is disabled by default on XTENSA.
 
-> Sven, does all this still reproduce if you take out
-> CONFIG_HAVE_MARCH_Z196_FEATURES ?
+Right, the list is complete, though it's also default-enabled for
+every CPU core on xtensa, and you can only disable it for
+"custom" CPU cores.
 
-Yes, it hits.
+        Arnd
