@@ -2,207 +2,106 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76064586D17
-	for <lists+linux-ia64@lfdr.de>; Mon,  1 Aug 2022 16:42:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B48958E309
+	for <lists+linux-ia64@lfdr.de>; Wed, 10 Aug 2022 00:17:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233179AbiHAOmE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 1 Aug 2022 10:42:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54512 "EHLO
+        id S229999AbiHIWQ3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 9 Aug 2022 18:16:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233097AbiHAOl1 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 1 Aug 2022 10:41:27 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E1D9D3B94C
-        for <linux-ia64@vger.kernel.org>; Mon,  1 Aug 2022 07:41:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1659364874;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=DZmD4gmIo8KLSmraeqPFjgSNee5vsKDTmBijYPzkavM=;
-        b=bUoKZd3t4ZR19O562iaEj0uUmEpbppOyR3z7Y5U0MhILI3F4bOQNTsJzg6s3fQgqq5Wd1l
-        S8IiQPJOVeFifD8Qrrw3UKSlV1sRDhwTpuMeknnUm/zQF5+oPrHxvka3CLik3z9VTKOzIc
-        Xpp7HlmFnwchVOUFDcDRLqLkxxf8eqo=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-240-Bc1CqywKPOqktrrGQSxCeg-1; Mon, 01 Aug 2022 10:41:11 -0400
-X-MC-Unique: Bc1CqywKPOqktrrGQSxCeg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 5505A85A587;
-        Mon,  1 Aug 2022 14:41:11 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-103.pek2.redhat.com [10.72.12.103])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 8538D1415116;
-        Mon,  1 Aug 2022 14:41:07 +0000 (UTC)
-From:   Baoquan He <bhe@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, akpm@linux-foundation.org, hch@infradead.org,
-        wangkefeng.wang@huawei.com, linux-arm-kernel@lists.infradead.org,
-        Baoquan He <bhe@redhat.com>, linux-ia64@vger.kernel.org
-Subject: [PATCH 06/11] ia64: mm: Convert to GENERIC_IOREMAP
-Date:   Mon,  1 Aug 2022 22:40:24 +0800
-Message-Id: <20220801144029.57829-7-bhe@redhat.com>
-In-Reply-To: <20220801144029.57829-1-bhe@redhat.com>
-References: <20220801144029.57829-1-bhe@redhat.com>
+        with ESMTP id S229978AbiHIWPT (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 9 Aug 2022 18:15:19 -0400
+Received: from mail-io1-xd2b.google.com (mail-io1-xd2b.google.com [IPv6:2607:f8b0:4864:20::d2b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B806C25C61
+        for <linux-ia64@vger.kernel.org>; Tue,  9 Aug 2022 15:15:15 -0700 (PDT)
+Received: by mail-io1-xd2b.google.com with SMTP id q124so10765586iod.3
+        for <linux-ia64@vger.kernel.org>; Tue, 09 Aug 2022 15:15:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc;
+        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
+        b=QTP95oQi+RYhXbI8sz4RyTZp0RSE4jP48cyyUmWbTiK1ItvOHbADVtjkGHK/8zFbqv
+         EIzUG3d4HgG5eAQxnVHuBpH33ycuIiNpMEXk8S0LHARhhQGb6AufQVVn/40aQfLvP77W
+         778oK7qnpGZXO0Q2aGCYT4Mad4FGDHlh1br3s7D4D+9Vr7gPQrhXDR8bwR1fyz6kQ1n2
+         /mI7/+oIm6xqfpBjeRephfywWnzvzUcqvvdKwYuFsxmTm/GRVEQb9jKfBsLPvHEPeyBR
+         SLk52BQ10Zm7GZ4Mv5gugSKJZhGFXVOipaGDVsAOq6ABLyMrmGMv+5RYTjL3cqduwO+M
+         O1Rw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc;
+        bh=GI1h58u9NHz7rI/vIwOU5DkUcoHPmL+b4tk5i/xxv5Y=;
+        b=FIXnMXfR9YxTX76Uzs6V1iCV0CsBIwyGNHhWVCE8uTKIrSv0swDtTSTfpa0tPrHv0F
+         a21k9Np6KGacp2o31lzcMy1mTj5ke2X/37unbnjZWoDdDsceF00qSiFwwJyg15BIrABZ
+         gP6nFThPQkHVA9fnCtxeYt65ri3yVAwFdzQgr2ZZOxJgJAYNf/vzDMQAev1pcky/amJD
+         juV70VB3f2DRlMhfiQ4Gb3SqBWpg1AGFQceJ4j/jWnck4JNcGT0OICvhQaDbYZs9i1Gk
+         2DFWlCroz0y0efPMkP2O59b0NWKLsJiYt+3Ex0MXip18HNeywVyaFIaIghTX6w/0RNey
+         0gcA==
+X-Gm-Message-State: ACgBeo1JxDK5e3//P1AHGs+Jz+hNnCI9/7XFVuEeaTuWWWfDLkZIw9zy
+        X6p4tbLYP4Hmt+wkAUiZ3jdr15RVkne+Sjl7g07476Nvf7WJqQ==
+X-Google-Smtp-Source: AA6agR7pJ6r7fhR2kV9XLe+oV3h+/ej1weqLnpTQS1YP5ule1vsDwGSNCnOW6LlEIY2xTapZFY+hu5KXPqSjTYpoaJM=
+X-Received: by 2002:a63:4642:0:b0:41b:d353:c5c7 with SMTP id
+ v2-20020a634642000000b0041bd353c5c7mr20359415pgk.568.1660083303718; Tue, 09
+ Aug 2022 15:15:03 -0700 (PDT)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 2.85 on 10.11.54.7
-X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6a10:e8a6:b0:2d4:fb1c:cc5e with HTTP; Tue, 9 Aug 2022
+ 15:15:03 -0700 (PDT)
+Reply-To: wijh555@gmail.com
+From:   "Dr. Ali Moses" <alimoses07@gmail.com>
+Date:   Tue, 9 Aug 2022 15:15:03 -0700
+Message-ID: <CADWzZe65tcOX2+bMZfMLLauGpHEQ9Cdv814nLU=uQvKzDFrEVg@mail.gmail.com>
+Subject: Good Day,
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=5.2 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2607:f8b0:4864:20:0:0:0:d2b listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [alimoses07[at]gmail.com]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [wijh555[at]gmail.com]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
+        *       in digit
+        *      [alimoses07[at]gmail.com]
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Add hooks ioremap_allowed() and iounmap_allowed() for ia64's special
-operation when ioremap() and iounmap(), then ioremap_cache() is
-converted to use ioremap_prot() from GENERIC_IOREMAP.
-
-The old ioremap_uc() is kept and add its macro definittion.
-
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Cc: linux-ia64@vger.kernel.org
----
- arch/ia64/Kconfig          |  1 +
- arch/ia64/include/asm/io.h | 26 ++++++++++++--------
- arch/ia64/mm/ioremap.c     | 50 +++++++++-----------------------------
- 3 files changed, 28 insertions(+), 49 deletions(-)
-
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index cb93769a9f2a..075ffe27dee5 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -46,6 +46,7 @@ config IA64
- 	select GENERIC_IRQ_LEGACY
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select GENERIC_IOMAP
-+	select GENERIC_IOREMAP
- 	select GENERIC_SMP_IDLE_THREAD
- 	select ARCH_TASK_STRUCT_ON_STACK
- 	select ARCH_TASK_STRUCT_ALLOCATOR
-diff --git a/arch/ia64/include/asm/io.h b/arch/ia64/include/asm/io.h
-index 6d93b923b379..a972dc284bbb 100644
---- a/arch/ia64/include/asm/io.h
-+++ b/arch/ia64/include/asm/io.h
-@@ -255,17 +255,23 @@ static inline void outsl(unsigned long port, const void *src,
- 
- # ifdef __KERNEL__
- 
--extern void __iomem * ioremap(unsigned long offset, unsigned long size);
--extern void __iomem * ioremap_uc(unsigned long offset, unsigned long size);
--extern void iounmap (volatile void __iomem *addr);
--static inline void __iomem * ioremap_cache (unsigned long phys_addr, unsigned long size)
--{
--	return ioremap(phys_addr, size);
--}
--#define ioremap ioremap
--#define ioremap_cache ioremap_cache
-+/*
-+ * I/O memory mapping functions.
-+ */
-+void __iomem *
-+ioremap_allowed(phys_addr_t *paddr, size_t size, unsigned long *prot_val);
-+#define ioremap_allowed ioremap_allowed
-+
-+int iounmap_allowed(void *addr);
-+#define iounmap_allowed iounmap_allowed
-+
-+#define _PAGE_IOREMAP pgprot_val(PAGE_KERNEL)
-+
-+#define ioremap_cache(addr, size)  \
-+	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
-+
-+void __iomem *ioremap_uc(unsigned long offset, unsigned long size);
- #define ioremap_uc ioremap_uc
--#define iounmap iounmap
- 
- /*
-  * String version of IO memory access ops:
-diff --git a/arch/ia64/mm/ioremap.c b/arch/ia64/mm/ioremap.c
-index 55fd3eb753ff..75c995e9442f 100644
---- a/arch/ia64/mm/ioremap.c
-+++ b/arch/ia64/mm/ioremap.c
-@@ -30,15 +30,12 @@ early_ioremap (unsigned long phys_addr, unsigned long size)
- }
- 
- void __iomem *
--ioremap (unsigned long phys_addr, unsigned long size)
-+ioremap_allowed(phys_addr_t *paddr, size_t size, unsigned long *prot_val)
- {
--	void __iomem *addr;
--	struct vm_struct *area;
--	unsigned long offset;
--	pgprot_t prot;
--	u64 attr;
-+	phys_addr_t phys_addr = *paddr;
- 	unsigned long gran_base, gran_size;
- 	unsigned long page_base;
-+	u64 attr;
- 
- 	/*
- 	 * For things in kern_memmap, we must use the same attribute
-@@ -69,35 +66,18 @@ ioremap (unsigned long phys_addr, unsigned long size)
- 	page_base = phys_addr & PAGE_MASK;
- 	size = PAGE_ALIGN(phys_addr + size) - page_base;
- 	if (efi_mem_attribute(page_base, size) & EFI_MEMORY_WB) {
--		prot = PAGE_KERNEL;
--
--		/*
--		 * Mappings have to be page-aligned
--		 */
--		offset = phys_addr & ~PAGE_MASK;
--		phys_addr &= PAGE_MASK;
--
--		/*
--		 * Ok, go for it..
--		 */
--		area = get_vm_area(size, VM_IOREMAP);
--		if (!area)
--			return NULL;
--
--		area->phys_addr = phys_addr;
--		addr = (void __iomem *) area->addr;
--		if (ioremap_page_range((unsigned long) addr,
--				(unsigned long) addr + size, phys_addr, prot)) {
--			vunmap((void __force *) addr);
--			return NULL;
--		}
--
--		return (void __iomem *) (offset + (char __iomem *)addr);
-+		return NULL;
- 	}
- 
- 	return __ioremap_uc(phys_addr);
- }
--EXPORT_SYMBOL(ioremap);
-+
-+int iounmap_allowed(void __iomem *addr)
-+{
-+	if (REGION_NUMBER(addr) != RGN_GATE)
-+		return -EINVAL;
-+	return 0;
-+}
- 
- void __iomem *
- ioremap_uc(unsigned long phys_addr, unsigned long size)
-@@ -113,11 +93,3 @@ void
- early_iounmap (volatile void __iomem *addr, unsigned long size)
- {
- }
--
--void
--iounmap (volatile void __iomem *addr)
--{
--	if (REGION_NUMBER(addr) == RGN_GATE)
--		vunmap((void *) ((unsigned long) addr & PAGE_MASK));
--}
--EXPORT_SYMBOL(iounmap);
 -- 
-2.34.1
+Hello,
+We the Board Directors believe you are in good health, doing great and
+with the hope that this mail will meet you in good condition, We are
+privileged and delighted to reach you via email" And we are urgently
+waiting to hear from you. and again your number is not connecting.
 
+My regards,
+Dr. Ali Moses..
+
+Sincerely,
+Prof. Chin Guang
