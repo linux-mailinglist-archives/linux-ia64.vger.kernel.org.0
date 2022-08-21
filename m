@@ -2,99 +2,60 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5ABBF59B0BC
-	for <lists+linux-ia64@lfdr.de>; Sun, 21 Aug 2022 00:14:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA40C59B280
+	for <lists+linux-ia64@lfdr.de>; Sun, 21 Aug 2022 09:03:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229536AbiHTWOn (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 20 Aug 2022 18:14:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34872 "EHLO
+        id S230112AbiHUHDF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 21 Aug 2022 03:03:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229521AbiHTWOn (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 20 Aug 2022 18:14:43 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 249242ED6A;
-        Sat, 20 Aug 2022 15:14:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id CF80FB80022;
-        Sat, 20 Aug 2022 22:14:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50F80C433D7;
-        Sat, 20 Aug 2022 22:14:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1661033679;
-        bh=Ixgj3jT3DQ1MXHhPNgXRORRDoTHm5QD9Q6G0pHrQczg=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=L4RhaSIbm4f2/Gbz+3fpyr1ld7m2UpUPB3QHpWjBabYUvfbxjDgKYsuKdIYL3KzpP
-         hLxQNtEsUq/3NRZvhnArW2SWH0HAuN2C40LYPz7047G8zH4tfLRMVxVzD4Rc+j7X/S
-         MPfGh+9MV+2qkdOQkTgWQb0Q3/mGkqKe9Qn+W4mQ=
-Date:   Sat, 20 Aug 2022 15:14:38 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     matoro <matoro_mailinglist_kernel@matoro.tk>
-Cc:     Sergei Trofimovich <slyich@gmail.com>,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
-Subject: Re: [PATCH] ia64: fix clock_getre(CLOCK_MONOTONIC) to report ITC
- frequency
-Message-Id: <20220820151438.d55718d341df99d5747caebb@linux-foundation.org>
-In-Reply-To: <6d07209d000b671a3bc48003905652e8@matoro.tk>
-References: <20220815054944.4130786-1-slyich@gmail.com>
-        <20220817122103.ecbd08bd545385e5bf8e0d72@linux-foundation.org>
-        <6d07209d000b671a3bc48003905652e8@matoro.tk>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-redhat-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S230129AbiHUHCv (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 21 Aug 2022 03:02:51 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3DBD2BB2F;
+        Sun, 21 Aug 2022 00:02:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=1DHKbj1xa01P48E9owjH5vGSs8ddOEE2lbYSbILiY58=; b=ajvA2L6ihT2XW27xqMtwqAEEl+
+        ANZk3KnN+HozWpFLm/av7Nlw0fuXSkadFWXkD64MskV21Ewf2AZj6z78pF2Ak3BwOORepIFzHL7OW
+        C2u++1bZXmuMuyRDxENOptSaFHClQCSyjy+rUTtQMsoTVZqjNwhMlF6TihNjkYdwHfznJ1pi8+KGG
+        LAUnmNMFAQCO2CSf9S69IZ262SUcTwHMa9+Y/qUeBUEeybBJa25gY7p3stWlCyoMQfjfYP5E/OtlT
+        n0R/z+v35uLbQutGF5Hx9ANd+onmB2hIWTDwVId+0DivzLKEkJPNnmJUCEFSaOCxZ/Gtbo/67AA2D
+        FwsVVVxA==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1oPeyQ-0074x6-QJ; Sun, 21 Aug 2022 07:02:18 +0000
+Date:   Sun, 21 Aug 2022 00:02:18 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Baoquan He <bhe@redhat.com>
+Cc:     linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        akpm@linux-foundation.org, hch@infradead.org,
+        agordeev@linux.ibm.com, wangkefeng.wang@huawei.com,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org
+Subject: Re: [PATCH v2 06/11] ia64: mm: Convert to GENERIC_IOREMAP
+Message-ID: <YwHYeiBP4EKi1Hd8@infradead.org>
+References: <20220820003125.353570-1-bhe@redhat.com>
+ <20220820003125.353570-7-bhe@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220820003125.353570-7-bhe@redhat.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
+        SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, 17 Aug 2022 17:57:42 -0400 matoro <matoro_mailinglist_kernel@matoro.tk> wrote:
+On Sat, Aug 20, 2022 at 08:31:20AM +0800, Baoquan He wrote:
+> Add hooks arch_ioremap() and arch_iounmap() for ia64's special
+> operation when ioremap() and iounmap(), then ioremap_cache() is
+> converted to use ioremap_prot() from GENERIC_IOREMAP.
 
-> Hi Andrew, I came up with the prototype for this patch, but it was based 
-> entirely on Sergei's investigation which was documented in 
-> https://bugs.gentoo.org/596382.  I asked him to send it upstream because 
-> I'm unable to attach my realname to it due to my job.
-
-In that case it's unclear that your Signed-off-by: is appropriate?
-
-: Developer's Certificate of Origin 1.1
-: ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-: 
-: By making a contribution to this project, I certify that:
-: 
-:         (a) The contribution was created in whole or in part by me and I
-:             have the right to submit it under the open source license
-:             indicated in the file; or
-: 
-:         (b) The contribution is based upon previous work that, to the best
-:             of my knowledge, is covered under an appropriate open source
-:             license and I have the right under that license to submit that
-:             work with modifications, whether created in whole or in part
-:             by me, under the same open source license (unless I am
-:             permitted to submit under a different license), as indicated
-:             in the file; or
-: 
-:         (c) The contribution was provided directly to me by some other
-:             person who certified (a), (b) or (c) and I have not modified
-:             it.
-: 
-:         (d) I understand and agree that this project and the contribution
-:             are public and that a record of the contribution (including all
-:             personal information I submit with it, including my sign-off) is
-:             maintained indefinitely and may be redistributed consistent with
-:             this project or the open source license(s) involved.
-
-
->  I can place a 
-> signed-off-by with my handle but I understand that's normally against 
-> kernel policy which is why I didn't.  Either way the bulk of the work 
-> belongs to Sergei, I just scribbled it down, and he cleaned it up for 
-> this submission.
-
-I think I'll switch it to a Cc: :)
+Same comment about the commit log (I won't repeat it as it applies
+to all conversions).
