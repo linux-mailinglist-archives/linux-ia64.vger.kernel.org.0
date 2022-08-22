@@ -2,159 +2,240 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E16AA59B5AD
-	for <lists+linux-ia64@lfdr.de>; Sun, 21 Aug 2022 19:43:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EDFF59B777
+	for <lists+linux-ia64@lfdr.de>; Mon, 22 Aug 2022 04:15:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230281AbiHURm7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 21 Aug 2022 13:42:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32862 "EHLO
+        id S232356AbiHVCPo (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 21 Aug 2022 22:15:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229690AbiHURm5 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 21 Aug 2022 13:42:57 -0400
-Received: from mail-wr1-x42f.google.com (mail-wr1-x42f.google.com [IPv6:2a00:1450:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE47721823;
-        Sun, 21 Aug 2022 10:42:53 -0700 (PDT)
-Received: by mail-wr1-x42f.google.com with SMTP id b5so6395216wrr.5;
-        Sun, 21 Aug 2022 10:42:53 -0700 (PDT)
+        with ESMTP id S232290AbiHVCPe (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 21 Aug 2022 22:15:34 -0400
+Received: from mail-pg1-x532.google.com (mail-pg1-x532.google.com [IPv6:2607:f8b0:4864:20::532])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DB031ADB4;
+        Sun, 21 Aug 2022 19:15:33 -0700 (PDT)
+Received: by mail-pg1-x532.google.com with SMTP id f4so6336310pgc.12;
+        Sun, 21 Aug 2022 19:15:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc;
-        bh=7Nrg8mvlqxFEJfzKh/tw2+dBWE8D/s98GD2ZnmZvMl4=;
-        b=F0ptjTbxLv2NJaVf2gvBlBshDMfCokLJPPMsIV35UHBlxVECPPma43FPvPitouEYuo
-         8dgtnhsmPRFBvIO948wmtVOueVdGaHu/6efegZ+eBz+dquE2oOi9XMsurik6HL7oB6MX
-         jV8pUVxH3f1RrwF0NH6pncq2tH6AwoMHlp65ZDTNCyiT6v1mar/Hou3sFmBJRov6RKag
-         O1el0UDp9u/+GhEvUUZhnnL+z+SJXn9IfDfG4Dlp/Iuz3gqoHz6wEPHD+abHkg+f2q3v
-         w/lO0XWXR94cHio73ZqXyXjLv1uGE7J2Xgag56CksB4nH92y765Uk+pyJbn+nJIZ5N3k
-         uDSQ==
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc;
+        bh=zg9oGgy6LoK9fsk61gtIhZkdtix+GbWYciTaAgTowJ0=;
+        b=c+l6lfgKHhlsZZv1Ik0q9aBnZiXMsDB8WQ7aQ3BEzy00yM9pY+9zaRtGbYfwQZpRIY
+         /JmwV1ZsFMcAMdAqss1T5N6AMIFSd9SkmeBQC5/sRUdDHoRwPcB66JZqGT2MBMWejU1a
+         5jBzQzH6dKT3C8cg6DwYXF9MKxCk5rvU5anGdfwiqItjRrGiKGJ572RuxLe3Gf7EFAgd
+         zx8Hfa1VYcm9nWVbYsfpnFtt/V7pr9u0LH/TTX9g+GhziLR68niQ8lrbTJgigQ+BcOmA
+         9Dvvcop3KRcA0moXHi2RGx+2R5mrzlWInm6KDqFcM/ggWUYkPDKlws3QIGZfO4w4onse
+         ijWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc;
-        bh=7Nrg8mvlqxFEJfzKh/tw2+dBWE8D/s98GD2ZnmZvMl4=;
-        b=wGX9SubZqi99/Ue3MgCKY3zxmsKb3MbnLb5/NwjxQpfZ5wzQmav5jjGeUc887aHKG4
-         rb1quJkyuDQV0w16GRoEqaC5GKtUWApRXiZ6SpWp2kVE+isc5HhWymU1P5gbmW/9rh6g
-         EuGnLJgqy31tUjF+OdqiMOH8zk08mK8ED/Z3sflQbo/YaBgSVwAiCBHWJ6+ZQI9HrDx+
-         nnVNX9ivFukySPjcqM9Df1TAIHvZTN/OaO7RL2ckutH6yN9K1GOts/zDsQxIIZSOZBKB
-         frVQ2VBy6h5LSVspcfzXODjQB1YWV6i+OshAtaElfnQP1PL1IduiKttThm30nyJectxt
-         CAsA==
-X-Gm-Message-State: ACgBeo3r87zs85hxGEUbeTgUNSAquEv54tMpf8lZSjYW7YwxyqZW3dsB
-        0BnN+1jJ+OwrJS44ytpizFU=
-X-Google-Smtp-Source: AA6agR6ii5ETBOVbnXGvrEQ2XHp9wCOCZjRgmUsSrgmsT/hEBxdRm1IL0twc5nHL0nICTG/92OzUKA==
-X-Received: by 2002:a05:6000:993:b0:222:d509:4b5b with SMTP id by19-20020a056000099300b00222d5094b5bmr9262211wrb.52.1661103772368;
-        Sun, 21 Aug 2022 10:42:52 -0700 (PDT)
-Received: from localhost ([2a03:b0c0:1:d0::dee:c001])
-        by smtp.gmail.com with ESMTPSA id t24-20020a1c7718000000b003a643ac2b08sm6876286wmi.8.2022.08.21.10.42.51
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc;
+        bh=zg9oGgy6LoK9fsk61gtIhZkdtix+GbWYciTaAgTowJ0=;
+        b=73nrUNGfwv5HV0HHyTS0tQUYQBGHGJRFBv5gaMuRppFFg0R2INzdHaH2ihoThEuSVH
+         vHQn+S+BRatiu3U6gYfquht7AJIENeTkEm06c+QJ98r5mNnDklLvqUu+7lz5KmiB/BUa
+         Qj7+Bpv7O80rE42jeeJLzvOuXxNDtxG7GRYjv2YNRT+ma9FNGe5jvv79pZhsGSNWfTUd
+         cZ7drxo2e3H02H7mHpN2ijZreCKYSE3cz/OEN0b8hseg4xCH2PmgydoJox2+2rAoyE9f
+         XXSM0j0/cII2tvvIHzMgJRT+xbFjv0NghbmnobFVE7oOde/ivgcCgSimMt0IlST7knlK
+         14tg==
+X-Gm-Message-State: ACgBeo2JdWqR1iSot3iMJp3cvOIHzfBQml5j/sJ+OAGjFgFrEenExN0Y
+        TqgflbI7zvt/WKbWH0qKyw==
+X-Google-Smtp-Source: AA6agR4qnvpGAkPTePIcMyycxY5yx1vW8ULwFLL0HHfcakxMifQD43mdwPG9RAGyA+Es/zXbY40p8A==
+X-Received: by 2002:a63:182:0:b0:42a:782c:66dc with SMTP id 124-20020a630182000000b0042a782c66dcmr6592574pgb.12.1661134532747;
+        Sun, 21 Aug 2022 19:15:32 -0700 (PDT)
+Received: from piliu.users.ipa.redhat.com ([209.132.188.80])
+        by smtp.gmail.com with ESMTPSA id k3-20020aa79723000000b005321340753fsm7312139pfg.103.2022.08.21.19.15.25
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 21 Aug 2022 10:42:51 -0700 (PDT)
-Date:   Sun, 21 Aug 2022 17:42:51 +0000
-From:   Stafford Horne <shorne@gmail.com>
-To:     Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc:     Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@kernel.org>,
+        Sun, 21 Aug 2022 19:15:32 -0700 (PDT)
+From:   Pingfan Liu <kernelfans@gmail.com>
+To:     linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     Pingfan Liu <kernelfans@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Steven Price <steven.price@arm.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
+        "Jason A. Donenfeld" <Jason@zx2c4.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
         Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, Guo Ren <guoren@kernel.org>,
-        Brian Cain <bcain@quicinc.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Jonas Bonn <jonas@southpole.se>,
-        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Will Deacon <will@kernel.org>,
         Paul Walmsley <paul.walmsley@sifive.com>,
         Palmer Dabbelt <palmer@dabbelt.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>, linux-alpha@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        akpm@linux-foundation.org
-Subject: Re: [PATCH] kernel: exit: cleanup release_thread()
-Message-ID: <YwJum2c1I8JhY0B8@oscomms1>
-References: <20220819014406.32266-1-wangkefeng.wang@huawei.com>
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Peter Zijlstra <peterz@infradead.org>,
+        "Eric W. Biederman" <ebiederm@xmission.com>
+Subject: [RFC 00/10] arm64/riscv: Introduce fast kexec reboot
+Date:   Mon, 22 Aug 2022 10:15:10 +0800
+Message-Id: <20220822021520.6996-1-kernelfans@gmail.com>
+X-Mailer: git-send-email 2.31.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20220819014406.32266-1-wangkefeng.wang@huawei.com>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Aug 19, 2022 at 09:44:06AM +0800, Kefeng Wang wrote:
-> Only x86 has own release_thread(), introduce a new weak
-> release_thread() function to clean empty definitions in
-> other ARCHs.
-> 
-> Signed-off-by: Kefeng Wang <wangkefeng.wang@huawei.com>
-> ---
+On a SMP arm64 machine, it may take a long time to kexec-reboot a new
+kernel, where the time is linear to the number of the cpus. On a 80 cpus
+machine, it takes about 15 seconds, while with this patch, the time
+will dramaticly drop to one second.
 
->  arch/openrisc/include/asm/processor.h   | 1 -
->  arch/openrisc/kernel/process.c          | 4 ----
+*** Current situation 'slow kexec reboot' ***
 
-> diff --git a/arch/openrisc/include/asm/processor.h b/arch/openrisc/include/asm/processor.h
-> index aa1699c18add..ed9efb430afa 100644
-> --- a/arch/openrisc/include/asm/processor.h
-> +++ b/arch/openrisc/include/asm/processor.h
-> @@ -72,7 +72,6 @@ struct thread_struct {
->  
->  
->  void start_thread(struct pt_regs *regs, unsigned long nip, unsigned long sp);
-> -void release_thread(struct task_struct *);
->  unsigned long __get_wchan(struct task_struct *p);
->  
->  #define cpu_relax()     barrier()
-> diff --git a/arch/openrisc/kernel/process.c b/arch/openrisc/kernel/process.c
-> index 52dc983ddeba..f94b5ec06786 100644
-> --- a/arch/openrisc/kernel/process.c
-> +++ b/arch/openrisc/kernel/process.c
-> @@ -125,10 +125,6 @@ void show_regs(struct pt_regs *regs)
->  	show_registers(regs);
->  }
->  
-> -void release_thread(struct task_struct *dead_task)
-> -{
-> -}
-> -
->  /*
->   * Copy the thread-specific (arch specific) info from the current
->   * process to the new one p
+At present, some architectures rely on smp_shutdown_nonboot_cpus() to
+implement "kexec -e". Since smp_shutdown_nonboot_cpus() tears down the
+cpus serially, it is very slow.
 
-For OpenRISC bits.
+Take a close look, a cpu_down() processing on a single cpu can approximately be
+divided into two stages:
+-1. from CPUHP_ONLINE to CPUHP_TEARDOWN_CPU
+-2. from CPUHP_TEARDOWN_CPU to CPUHP_AP_IDLE_DEAD
+    which is by stop_machine_cpuslocked(take_cpu_down, NULL, cpumask_of(cpu));
+    and runs on the teardown cpu.
 
-Acked-by: Stafford Horne <shorne@gmail.com>
+If these processes can run in parallel, then, the reboot can be speeded
+up. That is the aim of this patch.
+
+*** Contrast to other implements ***
+
+X86 and PowerPC have their own machine_shutdown(), which does not reply
+on the cpu hot-removing mechanism. They just discriminate some critical
+components and tear down in per cpu NMI handler during the kexec
+reboot. But for some architectures, let's say arm64, it is not easy to define
+these critical component due to various chipmakers' implements.
+
+As a result, sticking to the cpu hot-removing mechanism is the simplest
+way to re-implement the parallel. 
+
+
+*** Things worthy of consideration ***
+
+1. The definition of a clean boundary between the first kernel and the new kernel
+-1.1 firmware
+     The firmware's internal state should enter into a proper state, so
+it can work for the new kernel. And this is achieved by the firmware's
+cpuhp_step's teardown interface if any.
+
+-1.2 CPU internal state
+     Whether the cache or PMU needs a clean shutdown before rebooting.
+
+2. The dependency of each cpuhp_step
+   The boundary of a clean cut involves only few cpuhp_step, but they
+may propagate to other cpuhp_step by dependency. This series does not
+bother to judge the dependency, instead, just iterate downside each
+cpuhp_step. And this strategy demands that each involved cpuhp_step's
+teardown procedure supports parallelism.
+
+
+*** Solution ***
+
+Ideally, if the interface _cpu_down() can be enhanced to enable
+parallelism, then the fast reboot can be achieved.
+
+But revisiting the two parts of the current cpu_down() process, the
+second part 'stop_machine_cpuslocked()' is a blockade. Packed inside the
+_cpu_down(), stop_machine_cpuslocked() only allow one cpu to execute the
+teardown.
+
+So this patch breaks down the process of _cpu_down(), and divides the
+teardown into three steps.
+1. Send each AP from CPUHP_ONLINE to CPUHP_TEARDOWN_CPU
+   in parallel.
+2. Sync on BP to wait all APs to enter CPUHP_TEARDOWN_CPU state
+3. Send each AP from CPUHP_TEARDOWN_CPU to CPUHP_AP_IDLE_DEAD by the
+   interface of stop_machine_cpuslocked() in parallel.
+
+Finally the exposed stop_machine_cpuslocked()can be used to support
+parallelism.
+
+Apparently, step 2 is introduced in order to satisfy the prerequisite on
+which stop_machine_cpuslocked() can start on each cpu.
+
+Then the rest issue is about how to support parallelism in step 1&3.
+Fortunately, each subsystem has its own carefully designed lock
+mechanism. In each cpuhp_step teardown interface, adapting to the
+subsystem's lock rule will make things work.
+
+
+*** No rollback if failure ***
+
+During kexec reboot, the devices have already been shutdown, there is no
+way for system to roll back to a workable state. So this series also
+does not consider the rollback issue if a failure on cpu_down() happens,
+it just adventures to move on.
+
+Signed-off-by: Pingfan Liu <kernelfans@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Steven Price <steven.price@arm.com>
+Cc: Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>
+Cc: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: Frederic Weisbecker <frederic@kernel.org>
+Cc: Russell King <linux@armlinux.org.uk>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: "Eric W. Biederman" <ebiederm@xmission.com>
+To: linux-arm-kernel@lists.infradead.org
+To: linux-ia64@vger.kernel.org
+To: linux-riscv@lists.infradead.org
+To: linux-kernel@vger.kernel.org
+
+Pingfan Liu (10):
+  cpu/hotplug: Make __cpuhp_kick_ap() ready for async
+  cpu/hotplug: Compile smp_shutdown_nonboot_cpus() conditioned on
+    CONFIG_SHUTDOWN_NONBOOT_CPUS
+  cpu/hotplug: Introduce fast kexec reboot
+  cpu/hotplug: Check the capability of kexec quick reboot
+  perf/arm-dsu: Make dsu_pmu_cpu_teardown() parallel
+  rcu/hotplug: Make rcutree_dead_cpu() parallel
+  lib/cpumask: Introduce cpumask_not_dying_but()
+  cpuhp: Replace cpumask_any_but(cpu_online_mask, cpu)
+  genirq/cpuhotplug: Ask migrate_one_irq() to migrate to a real online
+    cpu
+  arm64: smp: Make __cpu_disable() parallel
+
+ arch/Kconfig                             |   4 +
+ arch/arm/Kconfig                         |   1 +
+ arch/arm/mach-imx/mmdc.c                 |   2 +-
+ arch/arm/mm/cache-l2x0-pmu.c             |   2 +-
+ arch/arm64/Kconfig                       |   1 +
+ arch/arm64/kernel/smp.c                  |  31 +++-
+ arch/ia64/Kconfig                        |   1 +
+ arch/riscv/Kconfig                       |   1 +
+ drivers/dma/idxd/perfmon.c               |   2 +-
+ drivers/fpga/dfl-fme-perf.c              |   2 +-
+ drivers/gpu/drm/i915/i915_pmu.c          |   2 +-
+ drivers/perf/arm-cci.c                   |   2 +-
+ drivers/perf/arm-ccn.c                   |   2 +-
+ drivers/perf/arm-cmn.c                   |   4 +-
+ drivers/perf/arm_dmc620_pmu.c            |   2 +-
+ drivers/perf/arm_dsu_pmu.c               |  16 +-
+ drivers/perf/arm_smmuv3_pmu.c            |   2 +-
+ drivers/perf/fsl_imx8_ddr_perf.c         |   2 +-
+ drivers/perf/hisilicon/hisi_uncore_pmu.c |   2 +-
+ drivers/perf/marvell_cn10k_tad_pmu.c     |   2 +-
+ drivers/perf/qcom_l2_pmu.c               |   2 +-
+ drivers/perf/qcom_l3_pmu.c               |   2 +-
+ drivers/perf/xgene_pmu.c                 |   2 +-
+ drivers/soc/fsl/qbman/bman_portal.c      |   2 +-
+ drivers/soc/fsl/qbman/qman_portal.c      |   2 +-
+ include/linux/cpuhotplug.h               |   2 +
+ include/linux/cpumask.h                  |   3 +
+ kernel/cpu.c                             | 213 ++++++++++++++++++++---
+ kernel/irq/cpuhotplug.c                  |   3 +-
+ kernel/rcu/tree.c                        |   3 +-
+ lib/cpumask.c                            |  18 ++
+ 31 files changed, 281 insertions(+), 54 deletions(-)
+
+-- 
+2.31.1
+
