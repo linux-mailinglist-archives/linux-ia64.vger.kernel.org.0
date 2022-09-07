@@ -2,194 +2,113 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30EF35AF25E
-	for <lists+linux-ia64@lfdr.de>; Tue,  6 Sep 2022 19:25:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4A425B06CB
+	for <lists+linux-ia64@lfdr.de>; Wed,  7 Sep 2022 16:32:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232673AbiIFRZJ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 6 Sep 2022 13:25:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37992 "EHLO
+        id S230106AbiIGOcS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 7 Sep 2022 10:32:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238932AbiIFRYe (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 6 Sep 2022 13:24:34 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A832D8E466;
-        Tue,  6 Sep 2022 10:14:00 -0700 (PDT)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.5/8.17.1.5) with ESMTP id 286GO3SV004368;
-        Tue, 6 Sep 2022 17:13:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=date : from : to : cc
- : subject : message-id : references : content-type :
- content-transfer-encoding : in-reply-to : mime-version; s=corp-2022-7-12;
- bh=UelA/A0PFMSO7fqB0d1yBlOX2x44YtgFxS3fmqUFivY=;
- b=DTVzmDTLEpSLcyQResurNOdDdjOZsR7Xbx0Ntae/wQt80lOpVLerfzZIfC8tK7SVhVZV
- P9gqsrgrGCKXuAd7v7uoOGbR6VycVEepyTYEnU34g5KMOebTap1YjPgFvl/SXo+t/pvq
- CXe4plakKxOftnYMT1AuuljyXaVHAueE5F4WIjg0uKbyIfxgaWUydvoRVVWkJDISp2la
- TOB5GPmrnj3RjvSYZRsq4TtTdfPtXPs94jIhCijW7ErSn7DaDbrtGJm2b9hLrMB62bgu
- g0iHSs46Hp3XWCK7lEcNk5VQtN5ccGa4rne6I78aF7hCRq1kYIXFTp1R5C+9CSYPPSc3 rQ== 
-Received: from iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta01.appoci.oracle.com [130.35.100.223])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3jbwbc6fcf-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 06 Sep 2022 17:13:29 +0000
-Received: from pps.filterd (iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.5/8.17.1.5) with ESMTP id 286H4HER023869;
-        Tue, 6 Sep 2022 17:13:28 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2104.outbound.protection.outlook.com [104.47.58.104])
-        by iadpaimrmta01.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3jbwc9eg8m-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 06 Sep 2022 17:13:28 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=LO7Nwv+PbGSkvhapXii/tSwDLWMs16yV32uob25oF/qFVujccyIztf8C3YbBBpKHufvd2MkpRK0pwlTspMhMz94ZF7Iw9BBj9CaOZd1wGGQgsdGBF6Ne73lCiEunFECC5uWKx32ShrjTlfwNiiieX0H30l2IyFQYZ20In0vmLI9r0tbdXCKFy51OaUoQTsw4qWY71tLNqX4V9AZfa972VZoY2+dDRTyub5ss3hPuDMyBGZaugHtJQrKsaUATgM4vSwIErQgu8VOd6cwUwIdbpYVGanfrkx5/sCuyC315eKrEdd1H+vtOPdisBKmeDBsZ4eHYq9+6dy8s7hiTSrAy9g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=c6bD0+bwChXin7IA9xG1wTkqkY21Au9WJuz/xsUNUyw=;
- b=lfyoC3IGUNfN0xuuz39CVzT7Ntz0H7zO0shuJbR1I7y/cTx/pWaxmmdtxdIIYJLToiczb87PedjUMzcCVyrPU9C+AtTyuKSi55gvEe9hcIrJ/L6ujqTfkIOp5Qrusm0FeBXqngJwM66aw2TlrxWi0uk1wsBJ2SJPhSvUtSKk1iP++mnjEnfiMS6cYHDdisLJNQGcwfDufGjSgrksgAGBkpCNSPZNBJ7rNOlf85JbmQcYa0NJY+xeRlnIBg2YuJQO9GH7FsAsWq2RL018bixBtZZEmh4+emQRMp64AqLGseKxnj8KmQSxRRI5yotKqtl9IY7BL5In8zRIzAfPIrCp8w==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+        with ESMTP id S230293AbiIGOb5 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 7 Sep 2022 10:31:57 -0400
+Received: from mail-ej1-x643.google.com (mail-ej1-x643.google.com [IPv6:2a00:1450:4864:20::643])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F07796EF20
+        for <linux-ia64@vger.kernel.org>; Wed,  7 Sep 2022 07:31:53 -0700 (PDT)
+Received: by mail-ej1-x643.google.com with SMTP id z17so2710128eje.0
+        for <linux-ia64@vger.kernel.org>; Wed, 07 Sep 2022 07:31:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=c6bD0+bwChXin7IA9xG1wTkqkY21Au9WJuz/xsUNUyw=;
- b=OuDhdhMqveBvkyj5CFen8kpqaAuEqjO/+2+M82I81bYROybdIZn3CDTopcpLxQUnC24TPa1mgKYIeSKhlhhXW0FVkqC1R9ZnkMyKyTOVXDj/6goQ0mad1SHskeG88W8nZcrMgERCgHObZVE/3Xq0wBz8Os7k7kJBXr5FWIEsZ5U=
-Received: from BY5PR10MB4196.namprd10.prod.outlook.com (2603:10b6:a03:20d::23)
- by MW4PR10MB5773.namprd10.prod.outlook.com (2603:10b6:303:18d::11) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5588.17; Tue, 6 Sep
- 2022 17:13:26 +0000
-Received: from BY5PR10MB4196.namprd10.prod.outlook.com
- ([fe80::e9d2:a804:e53a:779a]) by BY5PR10MB4196.namprd10.prod.outlook.com
- ([fe80::e9d2:a804:e53a:779a%6]) with mapi id 15.20.5588.018; Tue, 6 Sep 2022
- 17:13:26 +0000
-Date:   Tue, 6 Sep 2022 10:13:24 -0700
-From:   Mike Kravetz <mike.kravetz@oracle.com>
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc:     "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
-        David Hildenbrand <david@redhat.com>,
-        "Aneesh Kumar K . V" <aneesh.kumar@linux.ibm.com>,
-        Naoya Horiguchi <naoya.horiguchi@linux.dev>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Muchun Song <songmuchun@bytedance.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: Re: [PATCH v2] hugetlb: simplify hugetlb handling in follow_page_mask
-Message-ID: <Yxd/tE4EnIqhfd9s@monkey>
-References: <20220902190357.469512-1-mike.kravetz@oracle.com>
- <3a65e455-ce68-30e2-6e1b-fb8a1917b40d@csgroup.eu>
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <3a65e455-ce68-30e2-6e1b-fb8a1917b40d@csgroup.eu>
-X-ClientProxiedBy: MW4PR04CA0184.namprd04.prod.outlook.com
- (2603:10b6:303:86::9) To BY5PR10MB4196.namprd10.prod.outlook.com
- (2603:10b6:a03:20d::23)
+        d=gmail.com; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=hlX5LG70Pfi5xUfXCm2C7WvkXcJVP5UakJZVNodPOy7vNkSXQuxkM6JMnL0NkwpmEx
+         GApIDchppryVktOBo5G41BqVss7NVeWmLRXcOx2bAZqQ+LAYFz8ePbLc684sFXT4Nmqj
+         OcoPmJYuvMlwncvSBL0BFnkvuWLyKibj/n8A5QS+qmy30Nhg7xyf0NkI/q67juR/h0tY
+         bD/nOML45bK21IZjrLP4cVfkyGYdsdvh6OJ7KPKPWGwDpi4WDdxiFiQ5bptV3cHn11YY
+         R2/ccByiK1oIAZVOw3mE9dymIO7CzllUwLBF2JbmBffIhO2NpTaaNqhGzBB+XMxejIE1
+         VDsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date;
+        bh=UTPjlhWN0j/3cl0uibj9IdU3K9tIHCNTd74bAPWV+BQ=;
+        b=xSHJETJQdW3ib3QwkwYFEslApAxf3VA4DB0tuwzxjLnAr51/LrGHOVPRCD06K0IRJu
+         cr3oN1xnZzbgS63cXoku/J3f/pMfjXN9fBH+HgQN+DwcaIQ1vUcLUGUtZAI4yvNR4gnv
+         qvwLuj+pvoDbhwtwj4vkdTSFRE86IR+8JP0fmlVPS5rEGQIOQjNAcVNIgabZCNc8SCoG
+         r3n9euvj1chKkG09iR8N097QOXqL/6lfM/kPxeoOeZ++CPafR81Gvgmyu9CikpErRECF
+         PTJ777hooEY+iuGEjxd1vzXteUrYT2FeAWJ4riRvbTsJxkoJcifZBgqnItz30qFpxrvg
+         w76A==
+X-Gm-Message-State: ACgBeo2tvyQ2RG0au98qDdI7KvjIpMHxx0/CU1H8/nyOsL3e2GnaX3iA
+        HMX8Uc8UYW5kz5luhzcswpvUrnJlpkEOuSntuCE=
+X-Google-Smtp-Source: AA6agR4pyZsB+xbbjgKGlrl2+RDjPAQ7wWCMdSGS3qWC1Sv629AIX++hkd3miN/bJlP1/yRRoX5bdHKo53e2l2Vr/Xc=
+X-Received: by 2002:a17:906:38f:b0:742:1f68:7058 with SMTP id
+ b15-20020a170906038f00b007421f687058mr2510502eja.743.1662561112231; Wed, 07
+ Sep 2022 07:31:52 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-Office365-Filtering-Correlation-Id: f411987c-d537-4a49-e335-08da902b1c9e
-X-MS-TrafficTypeDiagnostic: MW4PR10MB5773:EE_
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 5aJaskHP1E+k3Gp2mzr+d5zmwXY3ybdMRb9Sf4fZsLmRiFW8OuJWnlYklYDwN27dUNB5q9y5JXIDvnx00g3S9J5qLGy//qUAmAFOybIJWDQs/ekwYABLtNz75H4sN3JPSdk0uQ/7ppzXsOctimsl+f1+LaN99ioHNfZLYTGGQ+42W8lTY2RE7ss6P8rKOWSqIhXWnVDoCJZm2qgipfKgip2KgMDqmBTa58tSBOvZTwGB9EoJR4+p7NcPbnPfApGEu9XSw45zXZqcuCEqVbaR642B/6u7pqFjVapbJui5C/VJShlHCvWrI0lOKMHmHL/jGykEnZscy+XixTxpwc+pBhz6225U9fDYMqpxanAGNpF6RAK98/fsI37kEWWv4YxMv4dR82mJjBbtVIVrdujKPSQaFT465/BHwzU3Tc+UT57W8tpjXbbwyRZBU8bfMU6biMoksZsZ0TDkXnPmH6L2SmYXZEZIY2bZeYfyaepX0ugfVfES47N8Qs4+T1UyhP0YtOCTaBclQvk8+xaLvp5rMHb2IhkpdpipdtoJJuK1S8X/HtnRFERAwIqDc0K/hKXTL8gkoBQkzBBFVWfuJ75+BOucTVQe5PS/1M9ldNW8onE1k/or7tMN55G1iItGpUQZL/E74BT5D0X2neNQeBl943GHfxbpqCRY5MYhq5KnKrSW4AzuIqUC7HX9fs1FPMkOPG6/iKLfkM4lnY4gAybpaA==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR10MB4196.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(7916004)(346002)(39860400002)(396003)(366004)(376002)(136003)(2906002)(186003)(44832011)(5660300002)(8936002)(86362001)(53546011)(7416002)(33716001)(8676002)(6506007)(4326008)(41300700001)(38100700002)(66946007)(66476007)(26005)(66556008)(6512007)(478600001)(9686003)(54906003)(316002)(6916009)(6486002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?l+yiffAkrvOJOI2DHXIEcRNmduMgL5WOF75sad17j764x52Vx9xk7mc7SX?=
- =?iso-8859-1?Q?EGazWTKzcl004IxohmVMvlTquQnLp/Ez+65+CPJSuCdgMC+7NOIuU4S89a?=
- =?iso-8859-1?Q?SEypKE1adJu9yDg326D4RcRB6XVmdq/1qqEILYtH0YkvudoqfjS5gnosm7?=
- =?iso-8859-1?Q?AUjM7OXXpl8tEi0/63W8ek+mHRKvLQmVFt60FsfRwzqi4FCCwXwqWNtF5T?=
- =?iso-8859-1?Q?UiiriuHnrXUI93TuU7gD5EWtolv1TK/rBVi4eehWBWCFenUqU00elJTR/q?=
- =?iso-8859-1?Q?bee3BFEY/pqdLxNmWl0HyjkVWqDQjDtto96FHSSEjhJUjzYY0gIBxZF/7f?=
- =?iso-8859-1?Q?MvgZy8kbLDy8bEGvubFVCIvP0MOyHzxGWIXAVL4g3hrKdTuzkW8zvURbNQ?=
- =?iso-8859-1?Q?uaj80BoZespVu7ttWUqS8pD16b5V6KXImusBWyFxAHHika5DRkuLg6Ymgr?=
- =?iso-8859-1?Q?Qy3Y20UVSsyykO0s8f6uSfwmepReGxKvd2+CCc20jxVa/IgHo5nmPvu0Z5?=
- =?iso-8859-1?Q?5hFNXNNAs9JLzNNKSRpQU96KXNUJrnNIwEwMvfhQC8zm/Fz3ykA94wuWMA?=
- =?iso-8859-1?Q?xAc3Oims+wqO/tHwCN0oOL7OBFgyI5aGHdWgX43CbuwXo9pZJC79UvzoaC?=
- =?iso-8859-1?Q?/cNYIjdL9vBHR78gcDQwDTbkQGe/1gSdxz5PrMxMnWPQn1D1MSoD8uwkf8?=
- =?iso-8859-1?Q?qs8XFVg+EIgFfrqoynsPUjbV7jQUzGvznJpS96f1d5RLmQGZnKa7oorG9l?=
- =?iso-8859-1?Q?3W+uJvA+h/Oc9HrOFY3IChHBIPfM8YjFMqVNbZdiYeYmnkYpVjlhRCDcX6?=
- =?iso-8859-1?Q?JYZeZu9EYBSA2W8d8vBiiHwaqH+0X2o79s3ySkZ07QYpm+iHNgCsPD7co8?=
- =?iso-8859-1?Q?A8a+ESHWVlqoS5JfCsi9Q8eQULxDoKQ1/OLkpk63m2oRPM28hgPMJEYggh?=
- =?iso-8859-1?Q?fdoGRo3RoEQzGD2bNfjxKOs+pW1Mpc8RIlU133i0xkZJKKeRdg/3c7oJNd?=
- =?iso-8859-1?Q?YNheR7JUcUWYitVlNXieWnLI87tgRQTFTowpk0AnafCvQ1XtN3q4g2SF4D?=
- =?iso-8859-1?Q?B3yL93AdvPdD0oK2kiKP5VdK59wtKnxviHTjSuRZDMlIbUyAScEeMtaGXE?=
- =?iso-8859-1?Q?p96paJruePj7ZxaWtohjmgE8Uf6cxuua/smjZr61Y4nieMBOXMmjqYuLSw?=
- =?iso-8859-1?Q?9yrGIknhnGN8D8ZwioFA3NbfeU2/PWuh3lSoeSGmdYEAtco0Vz2GtuEb/v?=
- =?iso-8859-1?Q?w03/va3V801IJTrYOeKRZwP3AeUrfFurY3g3r6p3r/qmAR2/1tgxF5DGud?=
- =?iso-8859-1?Q?lQxKWozuf6wvD36D1V52qMJU7lqOaJsPraH+ykQgFgsZNr39s1LIQzJobG?=
- =?iso-8859-1?Q?NmrhOtsg3C3cM29FghoPl8ymxauZSmkr3iS0GE8r4twUlc5cgTnanVHydT?=
- =?iso-8859-1?Q?mEqk6OEh4HicYQzm3sjU24wHZOqy1MWo0fJh/DKlKLhrGSRzGCw21kJjRg?=
- =?iso-8859-1?Q?gPDO0Yd3Nr++nwnIFyB7QvZJzkYZUU+yPv9XPf3GJTl+UBarTWgqu9rsGx?=
- =?iso-8859-1?Q?sl1a8Z+GxJnmnS9DCl9fHkBnTFw45LAcJtJ1F/UFuhOKAOLnjrxL3LQDQ1?=
- =?iso-8859-1?Q?Cqx/ZczuT+bRCzLz49sHgHR8x4OHj29vsRDy7lGklGfUHpSoEWpUioXg?=
- =?iso-8859-1?Q?=3D=3D?=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: f411987c-d537-4a49-e335-08da902b1c9e
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR10MB4196.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2022 17:13:26.7482
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: Q+fam7ZgAyLIri0UBUo7D8yypIgko3Zwtz/F6ToEW1b/n24h2TMpZ73unMWyB0yJr2r61+JXDl66/PSFfcJd5A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR10MB5773
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.895,Hydra:6.0.528,FMLib:17.11.122.1
- definitions=2022-09-06_09,2022-09-06_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 phishscore=0 mlxscore=0 adultscore=0
- malwarescore=0 mlxlogscore=999 bulkscore=0 suspectscore=0 spamscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2207270000
- definitions=main-2209060079
-X-Proofpoint-ORIG-GUID: 8D8V_Z8GXYNRqCkff_EyEPBlYC1R42Uk
-X-Proofpoint-GUID: 8D8V_Z8GXYNRqCkff_EyEPBlYC1R42Uk
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a54:3fc4:0:0:0:0:0 with HTTP; Wed, 7 Sep 2022 07:31:51 -0700 (PDT)
+Reply-To: lumar.casey@outlook.com
+From:   LUMAR CASEY <miriankushrat@gmail.com>
+Date:   Wed, 7 Sep 2022 16:31:51 +0200
+Message-ID: <CAO4StN23CjT73+kAZo3jW6NA7B_rVMGFz9vZYzq4Gs86AZgN6A@mail.gmail.com>
+Subject: ATTENTION/PROPOSAL
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: Yes, score=6.8 required=5.0 tests=ADVANCE_FEE_4_NEW_MONEY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,LOTS_OF_MONEY,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        UNDISC_FREEM,UNDISC_MONEY,UPPERCASE_75_100 autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:643 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5014]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [miriankushrat[at]gmail.com]
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  0.0 UPPERCASE_75_100 message body is 75-100% uppercase
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        *  3.1 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  2.0 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  0.2 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_4_NEW_MONEY Advance Fee fraud and lots of money
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 09/05/22 06:34, Christophe Leroy wrote:
-> 
-> 
-> Le 02/09/2022 à 21:03, Mike Kravetz a écrit :
-> > diff --git a/include/linux/hugetlb.h b/include/linux/hugetlb.h
-> > index fe4944f89d34..275e554dd365 100644
-> > --- a/include/linux/hugetlb.h
-> > +++ b/include/linux/hugetlb.h
-> > @@ -264,6 +255,13 @@ static inline void adjust_range_if_pmd_sharing_possible(
-> >   {
-> >   }
-> >   
-> > +static inline struct page *hugetlb_follow_page_mask(struct vm_area_struct *vma,
-> > +				unsigned long address, unsigned int flags)
-> > +{
-> > +	WARN_ON_ONCE(1); /* should never be called if !CONFIG_HUGETLB_PAGE*/
-> > +	return ERR_PTR(-EINVAL);
-> 
-> This function is called only when is_vm_hugetlb_page() is true.
-> 
-> When !CONFIG_HUGETLB_PAGE is_vm_hugetlb_page() always returns false, so 
-> the call to hugetlb_follow_page_mask() should never be compiled in.
-> 
-> Use BUILD_BUG() to catch it at buildtime.
-> 
+ATTENTION
 
-Yes.  My bad as David suggested this previously.
-How about we just leave out the function in the !CONFIG_HUGETLB_PAGE case?
-We will get build errors without the need for a BUILD_BUG().
+BUSINESS PARTNER,
 
-> > +}
-> > +
-> >   static inline long follow_hugetlb_page(struct mm_struct *mm,
-> >   			struct vm_area_struct *vma, struct page **pages,
-> >   			struct vm_area_struct **vmas, unsigned long *position,
+I AM LUMAR CASEY WORKING WITH AN INSURANCE FINANCIAL INSTITUTE, WITH
+MY POSITION AND PRIVILEGES I WAS ABLE TO SOURCE OUT AN OVER DUE
+PAYMENT OF 12.8 MILLION POUNDS THAT IS NOW SECURED WITH A SHIPPING
+DIPLOMATIC OUTLET.
 
--- 
-Mike Kravetz
+I AM SEEKING YOUR PARTNERSHIP TO RECEIVE THIS CONSIGNMENT AS AS MY
+PARTNER TO INVEST THIS FUND INTO A PROSPEROUS INVESTMENT VENTURE IN
+YOUR COUNTRY.
+
+I AWAIT YOUR REPLY TO ENABLE US PROCEED WITH THIS BUSINESS PARTNERSHIP TOGETHER.
+
+REGARDS,
+
+LUMAR CASEY
