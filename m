@@ -2,149 +2,205 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF1615B1C3E
-	for <lists+linux-ia64@lfdr.de>; Thu,  8 Sep 2022 14:09:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD6CC5B200B
+	for <lists+linux-ia64@lfdr.de>; Thu,  8 Sep 2022 16:03:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229535AbiIHMIo (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 8 Sep 2022 08:08:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43842 "EHLO
+        id S232218AbiIHODv (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 8 Sep 2022 10:03:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231459AbiIHMIl (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 8 Sep 2022 08:08:41 -0400
-Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 929DEF774D
-        for <linux-ia64@vger.kernel.org>; Thu,  8 Sep 2022 05:08:37 -0700 (PDT)
-Received: by mail-ej1-x62e.google.com with SMTP id dv25so8264618ejb.12
-        for <linux-ia64@vger.kernel.org>; Thu, 08 Sep 2022 05:08:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date;
-        bh=61JNgHFLNVCOHtS3GBlVT+sTDzg02TjYElOUCZQYEf8=;
-        b=HtgKNuSMlm36EUZXIQjvg66VG4Cf9KG9o7TXw54X62EKPmk+Ub/rVrVF7Jzl7Ds7kO
-         UCH679hMgBDNwFLGGeHb/2LN8HSMepKYQ4XHZWOYz2pfFTRTo10jgM61feW0CtIH9wTs
-         cWDVplksOqYnCDhQZqLWKFvC/ITbZV1SE7ZOJKNcvW/zr6YWejyvShHr4HqV1XqqLKSi
-         aHWzLSbuPSm4DXlJKfkx9cjhQ8ly/i7YVPOUpfNC3SpdRtbgdpYeqV+sVkApZCZesmsU
-         GaR5lECUziqJ61lt1CqsdCA5x5rBiwWkFcCMmQ9iK1vrrbk84so4bGOLELfaa0Dt/Xs0
-         /qWA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date;
-        bh=61JNgHFLNVCOHtS3GBlVT+sTDzg02TjYElOUCZQYEf8=;
-        b=bzrpXs6SVjW9mweEX+C1wegwbp52gxXrFnR+SjP5ddbumTSfWDvPYM8KLGR2ZQL4ZY
-         1x5+U5cUqMI0iEc0Z0cKz5o18MgohTsES9P0ZW9mp5kH7zDycES5IUBWnO3hjusSCAgU
-         8hvHPAd9DgJdjU7YenHWE7ZRWfEuBY12caC8pGiz7C2ANaVu1Lrns6kNtTF/0v5iQFyr
-         LqMHmCQNBpCvtMVMt8ROPf7Ewp1L3gCABTPOxOH3KkNzjS0s4twmyz5QxBhNuljZuF4F
-         vdQmT4wJLeW5RV/KRE4uROq3zyzII7cLrd2N5RMANXdunBqPlp5QqJ3jKRKfPxH6vx2e
-         TNDA==
-X-Gm-Message-State: ACgBeo2uA9VOgu4hS5HGDcyAtEj+BM3hIe32ym/xaGJlQk4QwETK3dRV
-        NnycjDQzeontNP2pRKaXIl4+KKhgNDpoovkIrOE=
-X-Google-Smtp-Source: AA6agR4faGLlknEVHCd7paYi7uHizUiDAwBUfsO6+JblJj9xGRNmTX1c8O11BeMjUhyh3saGVevsRUjxGHHK3sBQAxs=
-X-Received: by 2002:a17:907:6e18:b0:73d:63d9:945f with SMTP id
- sd24-20020a1709076e1800b0073d63d9945fmr5985318ejc.12.1662638916092; Thu, 08
- Sep 2022 05:08:36 -0700 (PDT)
+        with ESMTP id S232331AbiIHODe (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 8 Sep 2022 10:03:34 -0400
+Received: from EUR04-VI1-obe.outbound.protection.outlook.com (mail-eopbgr80092.outbound.protection.outlook.com [40.107.8.92])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA2221838B;
+        Thu,  8 Sep 2022 07:03:28 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=hSaHqSsCgNkv9j23PYPNOnq/zPscKKIvpTU0r+Cn31YGsx4rLVlJc+P6/AGofnslEUGwtJprJClZjZxO2RKit3ooyuAmmlaw6pc5oLqGdhKQqTqVeTZ1d9jSxXt4zp6tNrwqgO6twPyS0vn1VU6P4QFJJ+U0a7P0D8BEM5xJm9qUja8H1BDX8gpdBqGgWty1YVKNs55Oe0LmHjqM+HNcnGyEVz/PzaoJPKyZORn32ZwORIcS+had1CXpoqxNrx8344XxZ33GTOZncOJeRkxtiY9f7WG20pB2FY7Hqg/5tBgPkHICa35kdWYq0xsKvl1u26LkVQJl1eRw2NTSlj2lFQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=EDah6bUSEtLU5j2CBLB2EvDLlFSFZCrHDvlGvHVIXqY=;
+ b=RLVtV6umqN7qlOFGpwySIbdaoswCvmQGkCBYKE6iPmgPJMB52KSfhpBj8bMZnM9R6+Bcz7HNSU4bM8JF7RmZ2cQcUgRAOJLABHBImhh3WSsDFgN2qAM40oOgS2+5kwjY5Mhdw+8pX2cr5QN/uJfUiYLufGdJCp5Hq0lmCclCDzA5cFZNRD4lcMgg+FpePgx9EyCCe1eTSlG+9DXweRX0NcBIhE0PnuUx4Xj/CfWgzIGVKnK2hp46Af5GgSTVmzbZyWQz9utCZF7M0nyf6zvXppTl3SGFEeXV8gsGj2N2MWdnswS4UfwsBRwxi7/uyEWMoeyxbJZVQ0LHnb/OY1wjoQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=EDah6bUSEtLU5j2CBLB2EvDLlFSFZCrHDvlGvHVIXqY=;
+ b=NFE24JpH2B5Rk61K1eDGn0OoYE3ik7JEKAJ6CLvUUiDFZqcBdkEjwMdtC+K1LVBE6GClq3OReqkG2tjtM4xlZ2CI5ssUcKhE2W7tn5+nCUJJP9qyABEHkamrjNREjH8Vb+Oec5rwAVVkV8RO6ZXwqMx0KQbAqY+pBDsBQpx84sSCo+HLO95f3njKUpl9Vs1PG2NW9zwbeqhQ/IZG+l/wL0h08df41SFpH3C8zDkINdiegKPJRrDFwhak5EoMsqPNxPQ3qI+GUhfaFWWOgtO08rf+CGIRHk2/xuZU+A7njBRSpGReONVW5ajIzIJvnREVsP8v7B6Umbhwe8zrcHCWgg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VE1PR08MB4989.eurprd08.prod.outlook.com (2603:10a6:803:114::19)
+ by AS8PR08MB6168.eurprd08.prod.outlook.com (2603:10a6:20b:294::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5588.12; Thu, 8 Sep
+ 2022 14:03:25 +0000
+Received: from VE1PR08MB4989.eurprd08.prod.outlook.com
+ ([fe80::f536:84f7:c861:ccc1]) by VE1PR08MB4989.eurprd08.prod.outlook.com
+ ([fe80::f536:84f7:c861:ccc1%4]) with mapi id 15.20.5612.016; Thu, 8 Sep 2022
+ 14:03:25 +0000
+From:   Pavel Tikhomirov <ptikhomirov@virtuozzo.com>
+To:     Eric Biederman <ebiederm@xmission.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Christian Brauner <brauner@kernel.org>,
+        Andrei Vagin <avagin@google.com>, linux-kernel@vger.kernel.org
+Cc:     Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
+        Kees Cook <keescook@chromium.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Valentin Schneider <vschneid@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        linux-ia64@vger.kernel.org, linux-mm@kvack.org,
+        linux-fsdevel@vger.kernel.org, kernel@openvz.org
+Subject: [PATCH v3 0/2] Introduce CABA helper process tree
+Date:   Thu,  8 Sep 2022 17:03:11 +0300
+Message-Id: <20220908140313.313020-1-ptikhomirov@virtuozzo.com>
+X-Mailer: git-send-email 2.37.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR0P281CA0143.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:96::17) To VE1PR08MB4989.eurprd08.prod.outlook.com
+ (2603:10a6:803:114::19)
 MIME-Version: 1.0
-Received: by 2002:a17:906:749d:b0:743:2e24:e8cd with HTTP; Thu, 8 Sep 2022
- 05:08:35 -0700 (PDT)
-Reply-To: mrtonyelumelu98@gmail.com
-From:   "Mrs. Cristalina Georgieva" <nastyanastya88889@gmail.com>
-Date:   Thu, 8 Sep 2022 13:08:35 +0100
-Message-ID: <CADsX60CBiVvwN+F4ym_2zFH_MaVo9i9qaarXjBKw+YCBOGqM=w@mail.gmail.com>
-Subject: hi
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
-X-Spam-Status: No, score=2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
-        T_SCC_BODY_TEXT_LINE,UNDISC_FREEM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Level: **
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VE1PR08MB4989:EE_|AS8PR08MB6168:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7ab4ca98-3cb5-4756-c8ed-08da91a2e599
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 0691gsT5ld7VOzffepxDDgRE8gJ5qQe4jeuT7TpqbgGz2Wgwo60vMxq6Uf8n+SwNFFnrAHpPM1KfhwWfuoEYUAyK7UAv+BmObPls38hxG+W+5PbDb7VtwhLASRAN/PJUaR19XSFT2RO/8/rR5wjsljKVGeQBwLOFyw7mVuf5EXLS6/lyC6WfUl73TsMGDrYYs2lfwgEt5cwCWb4Se6CQ/BdqoCGV5wyxeuqtjRj2SIQlvj6d+xpW/1uxUmmXX8+4nEJQyTTNISXWZT4BJuZQQ5jTrDvXqHqXNSHTb0dKqYPTrLoOj2OoASsO87Z1Gqp6tsGEJe+mKlYwe7knziLdc0dXoUjF7Tz/sI3ENOYAkLGybK8LhC0tdMHe9PDi3ypIl4xrDis83+gSapOwtcDB0wEykh4Zw06ES/lAPubbwWfh8tCqBhKZ/i6gTANRzwVRLZCAJFAbdMxqdNgN22bF5AMOwi8EMBI8mNplDRE25dvpWAGC76toY0iMreL0VPj9UrAa8SxGhuLmG2e52OOrZMzopmjjFJz+wjrk3KqdRgI2tPFq4kByoJ0SB+E1A2WjlO5f29k+H96bnvc6t9ZWPBkJuEPagvDAvVJv/I6QycgCncUg7nUYClMnuhEPbp1h0hhHRJ7t/iObafKfDprTGkTkLFr2sNYyxsSZ3mL78y4/c0a7QNyqOFWVtEnuz8m93UN73MqCTnRbQlufG8KCZuRqLWj1B2bcp+2Bs4YRjvnNX4tdVpN/A2xOo6VrYkPxFRQbsOhqL8nPXiR+J85HfYF8w8yIsah/Ga4JpccPzaM=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VE1PR08MB4989.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230016)(4636009)(136003)(39850400004)(346002)(396003)(376002)(366004)(54906003)(110136005)(316002)(4326008)(66476007)(5660300002)(8676002)(66556008)(2906002)(8936002)(66946007)(7416002)(36756003)(966005)(478600001)(6486002)(6512007)(41300700001)(186003)(6506007)(2616005)(1076003)(86362001)(107886003)(83380400001)(26005)(52116002)(6666004)(38350700002)(38100700002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?e1OCNj7MUKBWOoXxfsYzzQpLQN+wuYOKewP8RFM99LENET74hXnKm1QmjH2E?=
+ =?us-ascii?Q?dc1z2HG8Kqk/qnYNqlP2PUM4ETYqe4wPqNb1eQbs9Kb9VO4fv5J4ifvNAiYK?=
+ =?us-ascii?Q?08UuQ3UqpNC6dRvLnjsYAyYaw9pBxYOYUfGsra+1GtG739GAwo0RE/BxkM42?=
+ =?us-ascii?Q?KO5UwK/Rr8Q5BP5NF7c2DDCgIVKigi68BMdSPWx30EjDaVtICVMeSrm6NdcX?=
+ =?us-ascii?Q?1AeVoMPLB6aV7ka9jDAXmJEW5suD4w3wugtUVIh1Dv1II5g8shRrg+MYGiI3?=
+ =?us-ascii?Q?3z+RkAdBs8BuPSbsfzd3JmoRbPJg1YhanrO2qJ0qfRCReJ/UTuLHxh614655?=
+ =?us-ascii?Q?8uWk56Oz9B19MUUbRo5z3j2nkU2YMVCQyiuxW+MQyhwPXlNqtg51y7sFszyD?=
+ =?us-ascii?Q?JiV8NZqjdIYBuQSPg20xwRN0EbmchdWamAexQNNLtzHzWFneokM7o5RKfbGl?=
+ =?us-ascii?Q?InAbx4Ry8Mk0Bm50u+FDIwAGJ6mBLbd8N3YC9KKrPFE+yuHu9e58INlPdEmM?=
+ =?us-ascii?Q?PB+cz7pV5f9lYYQN76vbFX4IoXFRIB8/r++0rhaHTiqHpixG7jI0Zo+ym6Zu?=
+ =?us-ascii?Q?5kNBdgmsRxebYizMgMPZjoJvV2mBy+1/E2QIUMniPTSFqY7lSN7Q30Dx4LnU?=
+ =?us-ascii?Q?KQS6nWic4qIYNx/RmDPTKR20fDjum6r1JUJ7LkCNZ9orpspHl/HZZ706F+zA?=
+ =?us-ascii?Q?lEkUj+mDOjgItmeu9HzI3Lm9vj4+KRf4yK0dSy3p/ZaNPB/LbrtzBJDVyKXO?=
+ =?us-ascii?Q?wJgUtcCBd/Z8Jv/prc3vpHmSCURDo3eVJ2BCaZojF/2MfbLgl/9Wgjy8oQqE?=
+ =?us-ascii?Q?UzA1jpYO8yFuLDPhWck1N9a8L6UQpHxn8vPrLqiKmml9o42kEig0390U4Vu0?=
+ =?us-ascii?Q?hhhuMi+1T0U6hHwUHuqatvcqKxHaWmlWW08J9Au6P9l97+FSzaiDb8byrsuP?=
+ =?us-ascii?Q?8QV0EEeEelz0jp66LNc9fBaoMlr8n25+/9qoeLKQofvGSfuPUZd8p3nJAZpg?=
+ =?us-ascii?Q?QcwKPFK3j3gNUYVC+erqeAWO0rATbTzcvAJ5MYRh6RDcI4wfcZy3rZPNS1t3?=
+ =?us-ascii?Q?KfNHRcAJrdjxIDuHXdEZg3VU6x79obcJ+395NNlaOz5iYdjzmV/Ve8ON/RtD?=
+ =?us-ascii?Q?+vSWkBnCF87aDDzcwJSdhEsetNL5StsvXh2S1H3Yv+B0FlN5gI6XxiByAnLj?=
+ =?us-ascii?Q?PVJNwfrZAgaSYpPSi5lSp6k1YTx8zgTa7FoM0xnErwr9RvlIv61ZLVmIYiIG?=
+ =?us-ascii?Q?9rnol0iPhS1+TWaXzKcHdfaGY9lCKNH50bHIY8R15CdjXC/JY2xI4ruYARXU?=
+ =?us-ascii?Q?uSPzGKm8s3NAP2XnT4wWNZrXqorlmjcllmFoiqMKVBXPzuspfKSocio58FdR?=
+ =?us-ascii?Q?6VKlhVAz1nNq2rT0R/U9YARbHwsfZDrPWxyZ7EkUE+SONLCvY6IVdCx3pwXk?=
+ =?us-ascii?Q?CYA2vFGNP4CV+n5shMJTzgM29c4jaIf0jUwfShqyBLQ/qwlypurLGVqnkg0o?=
+ =?us-ascii?Q?UQWkEOga6LCCworQ2kM0Am+ppyD/MVooV9E9OZetlXsnrqbN0do3nul7/FN6?=
+ =?us-ascii?Q?p28jdrJui5mY4nv6Z+qBAmq2KNxPi69vvfyfn3Y5/Pms23muX9kOQmGmxv8b?=
+ =?us-ascii?Q?KA=3D=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7ab4ca98-3cb5-4756-c8ed-08da91a2e599
+X-MS-Exchange-CrossTenant-AuthSource: VE1PR08MB4989.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2022 14:03:25.2105
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: r2UqQLgKWLmow9x2ClCYvAGhceUMKP3+p+PFlCkRh0Q++moS8yR5fnYPsPNEr7BdDMqiHQ4ZlWEMzmzWRpuudhcMfxV0eykUBo4VpYB0fW4=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS8PR08MB6168
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-2LXZhtiv2YjZgiDYp9mE2YbZgtivINin2YTYr9mI2YTZiiAoSS5NLkYpDQrYtNi52KjYqSDYpdiv
-2KfYsdipINin2YTYr9mK2YjZhiDYp9mE2K/ZiNmE2YrYqSDYjA0KIyAxOTAwINiMINi02KfYsdi5
-INin2YTYsdim2YrYsw0KDQrZhdix2K3YqNmL2Kcg2KjZg9mFINmB2Yog2LnZhtmI2KfZhiDYp9mE
-2KjYsdmK2K8g2KfZhNil2YTZg9iq2LHZiNmG2Yog2KfZhNix2LPZhdmKINmE2YTZhdiv2YrYsSBJ
-Lk0uRi4g2YPYsdmK2LPYqtin2YTZitmG2Kcg2KzZiNix2KzZitmB2KcNCg0KDQrYudiy2YrYstmK
-INin2YTZhdiz2KrZgdmK2K8hDQoNCtmE2YLYryDYs9mF2K0g2YTZhtinINmI2LLZitixINin2YTY
-rtiy2KfZhtipINin2YTZhdi52YrZhiDYrdiv2YrYq9mL2Kcg2YjYp9mE2YfZitim2Kkg2KfZhNit
-2KfZg9mF2Kkg2YTZhNiz2YTYt9ipINin2YTZhtmC2K/ZitipDQrZhNmE2KPZhdmFINin2YTZhdiq
-2K3Yr9ipINio2YHYrdi1INin2YTYo9mF2YjYp9mEINin2YTYqtmKINmE2YUg2KrYqtmFINin2YTZ
-hdi32KfZhNio2Kkg2KjZh9inINmI2KfZhNiq2Yog2YTYt9in2YTZhdinINmD2KfZhtiqDQrZhdiv
-2YrZhtipINmE2K3Zg9mI2YXYqSDYp9mE2KPZhdmFINin2YTZhdiq2K3Yr9ipINiMINmE2LDZhNmD
-INiq2YUg2KfYqtmH2KfZhSDZhdin2YTZg9mK2YfYpyDYqNin2YTYp9it2KrZitin2YQuDQrYp9mE
-2YXYrdiq2KfZhNmI2YYg2KfZhNiw2YrZhiDZitiz2KrYrtiv2YXZiNmGINin2LPZhSDYp9mE2KPZ
-hdmFINin2YTZhdiq2K3Yr9ipINiMINmI2YHZgtmL2Kcg2YTYs9is2YQg2KrYrtiy2YrZhiDYp9mE
-2KjZitin2YbYp9iqDQrZhdi5INi52YbZiNin2YYg2KfZhNio2LHZitivINin2YTYpdmE2YPYqtix
-2YjZhtmKINmE2YbYuNin2YXZhtinINij2KvZhtin2KEg2KfZhNiq2K3ZgtmK2YIg2KfZhNiw2Yog
-2KPYrNix2YrZhtin2Ycg2Iwg2YHYpdmGDQrYr9mB2LnYqtmDINmF2K/Ysdis2Kkg2YHZiiDZgtin
-2KbZhdipINiq2LbZhSAxNTAg2YXYs9iq2YHZitiv2YvYpyDZgdmKINin2YTZgdim2KfYqiDYp9mE
-2KrYp9mE2YrYqTog2LXZhtiv2YjZgiDZitin2YbYtdmK2KgNCti62YrYsSDZhdmP2LPZhNmO2ZHZ
-hSAvINi12YbYr9mI2YIg2YrYp9mG2LXZitioINi62YrYsSDZhdiv2YHZiNi5IC8g2YjYsdin2KvY
-qSDZhtmC2YQg2LrZitixINmF2YPYqtmF2YTYqSAvINij2YXZiNin2YQNCtin2YTYudmC2K8uDQoN
-CtmC2KfZhSDZhdiz2KTZiNmE2Ygg2KfZhNio2YbZgyDYp9mE2YHYp9iz2K8g2Iwg2KfZhNiw2YrZ
-hiDYp9ix2KrZg9io2YjYpyDYp9mE2YHYs9in2K8g2YXZhiDYo9is2YQg2KfZhNin2K3YqtmK2KfZ
-hCDYudmE2YkNCtij2YXZiNin2YTZgyDYjCDYqNiq2KPYrtmK2LEg2K/Zgdi52YMg2KjYtNmD2YQg
-2LrZitixINmF2LnZgtmI2YQg2Iwg2YXZhdinINij2K/ZiSDYpdmE2Ykg2KrYrdmF2YTZgyDYp9mE
-2YPYq9mK2LEg2YXZhg0K2KfZhNiq2YPYp9mE2YrZgSDZiNiq2KPYrtmK2LEg2LrZitixINmF2LnZ
-gtmI2YQg2YHZiiDZgtio2YjZhCDZhdiv2YHZiNi52KfYqtmDLiDYp9iu2KrYp9ix2Kog2KfZhNij
-2YXZhSDYp9mE2YXYqtit2K/YqQ0K2YjYtdmG2K/ZiNmCINin2YTZhtmC2K8g2KfZhNiv2YjZhNmK
-IChJTUYpINiv2YHYuSDYrNmF2YrYuSDYp9mE2KrYudmI2YrYttin2Kog2YTZgCAxNTAg2YXYs9iq
-2YHZitiv2YvYpyDYqNin2LPYqtiu2K/Yp9mFDQrYqNi32KfZgtin2KogVmlzYSBBVE0g2YXZhiDY
-o9mF2LHZitmD2Kcg2KfZhNi02YXYp9mE2YrYqSDZiNij2YXYsdmK2YPYpyDYp9mE2KzZhtmI2KjZ
-itipINmI2KfZhNmI2YTYp9mK2KfYqiDYp9mE2YXYqtit2K/YqQ0K2YjYo9mI2LHZiNio2Kcg2YjY
-otiz2YrYpyDZiNit2YjZhCDYp9mE2LnYp9mE2YUg2Iwg2K3ZitirINiq2KrZiNmB2LEg2KrZgtmG
-2YrYqSDYp9mE2K/Zgdi5INin2YTYudin2YTZhdmK2Kkg2YfYsNmHDQrZhNmE2YXYs9iq2YfZhNmD
-2YrZhiDZiNin2YTYtNix2YPYp9iqINmI2KfZhNmF2KTYs9iz2KfYqiDYp9mE2YXYp9mE2YrYqS4g
-2YjZitiz2YXYrSDZhNmE2K3Zg9mI2YXYp9iqINio2KfYs9iq2K7Yr9in2YUg2KfZhNi52YXZhNin
-2KoNCtin2YTYsdmC2YXZitipINio2K/ZhNin2Ysg2YXZhiDYp9mE2YbZgtivINmI2KfZhNi02YrZ
-g9in2KouDQoNCtmE2YLYryDZgtmF2YbYpyDYqNin2YTYqtix2KrZitioINmE2LPYr9in2K8g2YXY
-r9mB2YjYudin2KrZgyDYqNin2LPYqtiu2K/Yp9mFINio2LfYp9mC2KkgVmlzYSBBVE0g2YjYs9mK
-2KrZhSDYpdi12K/Yp9ix2YfYpw0K2YTZgyDZiNil2LHYs9in2YTZh9inINmF2KjYp9i02LHYqdmL
-INil2YTZiSDYudmG2YjYp9mG2YMg2LnYqNixINij2Yog2K7Yr9mF2KfYqiDYqNix2YrYryDYs9ix
-2YrYuSDZhdiq2KfYrdipLiDYqNi52K8NCtin2YTYp9iq2LXYp9mEINio2YbYpyDYjCDYs9mK2KrZ
-hSDYqtit2YjZitmEINmF2KjZhNi6IDHYjDUwMNiMMDAwLjAwINiv2YjZhNin2LEg2KPZhdix2YrZ
-g9mKINil2YTZiSDYqNi32KfZgtipIFZpc2ENCkFUTSDYjCDZiNin2YTYqtmKINiz2KrYs9mF2K0g
-2YTZgyDYqNiz2K3YqCDYo9mF2YjYp9mE2YMg2LnZhiDYt9ix2YrZgiDYs9it2Kgg2YXYpyDZhNin
-INmK2YLZhCDYudmGIDEw2IwwMDAg2K/ZiNmE2KfYsQ0K2KPZhdix2YrZg9mKINmB2Yog2KfZhNmK
-2YjZhSDZhdmGINij2Yog2YXYp9mD2YrZhtipINi12LHYp9mBINii2YTZiiDZgdmKINio2YTYr9mD
-LiDYqNmG2KfYodmLINi52YTZiSDYt9mE2KjZgyDYjCDZitmF2YPZhtmDDQrYstmK2KfYr9ipINin
-2YTYrdivINil2YTZiSAyMNiMMDAwLjAwINiv2YjZhNin2LEg2YHZiiDYp9mE2YrZiNmFLiDZgdmK
-INmH2LDYpyDYp9mE2LXYr9ivINiMINmK2KzYqCDYudmE2YrZgw0K2KfZhNin2KrYtdin2YQg2KjY
-pdiv2KfYsdipINin2YTZhdiv2YHZiNi52KfYqiDZiNin2YTYqtit2YjZitmE2KfYqiDYp9mE2K/Z
-iNmE2YrYqSDZiNiq2YLYr9mK2YUg2KfZhNmF2LnZhNmI2YXYp9iqINin2YTZhdi32YTZiNio2KkN
-CtmF2YYg2K7ZhNin2YQ6DQoNCjEuINin2LPZhdmDINin2YTZg9in2YXZhCAuLi4uLi4uLi4uLi4u
-Lg0KMi4g2LnZhtmI2KfZhtmDINin2YTZg9in2YXZhCAuLi4NCjMuINin2YTYrNmG2LPZitipIC4u
-Li4uLi4uLi4uLi4uLi4NCjQuINiq2KfYsdmK2K4g2KfZhNmF2YrZhNin2K8gLyDYp9mE2KzZhtiz
-IC4uLi4uLi4uLg0KNS4g2KfZhNiq2K7Ytdi1IC4uLg0KNi4g2LHZgtmFINin2YTZh9in2KrZgSAu
-Li4uLi4uLi4NCjcuINi52YbZiNin2YYg2KfZhNio2LHZitivINin2YTYpdmE2YPYqtix2YjZhtmK
-INmE2LTYsdmD2KrZgyAuLi4uLi4NCjguINi52YbZiNin2YYg2KfZhNio2LHZitivINin2YTYpdmE
-2YPYqtix2YjZhtmKINin2YTYtNiu2LXZiiAuLi4uLi4NCg0KDQrZhNiq2K3Yr9mK2K8g2YfYsNin
-INin2YTYsdmF2LIgKNin2YTYsdin2KjYtzogQ0xJRU5ULTk2Ni8xNikg2Iwg2KfYs9iq2K7Yr9mF
-2Ycg2YPZhdmI2LbZiNi5INmE2YTYqNix2YrYrw0K2KfZhNil2YTZg9iq2LHZiNmG2Yog2KfZhNiu
-2KfYtSDYqNmDINmI2K3Yp9mI2YQg2KrZgtiv2YrZhSDYp9mE2YXYudmE2YjZhdin2Kog2KfZhNmF
-2LDZg9mI2LHYqSDYo9i52YTYp9mHINil2YTZiSDYp9mE2YXZiNi42YHZitmGDQrYp9mE2KrYp9mE
-2YrZitmGINmE2KXYtdiv2KfYsSDZiNiq2LPZhNmK2YUg2KjYt9in2YLYqSBWaXNhIEFUTSDYmw0K
-DQrZhtmI2LXZitmDINio2YHYqtitINi52YbZiNin2YYg2KjYsdmK2K8g2KXZhNmD2KrYsdmI2YbZ
-iiDYtNiu2LXZiiDYqNix2YLZhSDYrNiv2YrYryDZhNmE2LPZhdin2K0g2YTZiNmD2YrZhCDYp9mE
-2KjZhtmDINio2KrYqtio2LkNCtmH2LDZhyDYp9mE2YXYr9mB2YjYudin2Kog2YjYqtio2KfYr9mE
-INin2YTYsdiz2KfYptmEINmE2YXZhti5INin2YTZhdiy2YrYryDZhdmGINin2YTYqtij2K7Zitix
-INij2Ygg2KfZhNiq2YjYrNmK2Ycg2KfZhNiu2KfYt9imDQrZhNij2YXZiNin2YTZgy4g2KfYqti1
-2YQg2KjZiNmD2YrZhCDYp9mE2KjZhtmDINin2YTYpdmB2LHZitmC2Yog2KfZhNmF2KrYrdivINin
-2YTYotmGINio2KfYs9iq2K7Yr9in2YUg2YXYudmE2YjZhdin2KoNCtin2YTYp9iq2LXYp9mEINij
-2K/Zhtin2Yc6DQoNCtin2YTYtNiu2LUg2KfZhNmF2LPYpNmI2YQ6INin2YTYs9mK2K8g2KrZiNmG
-2Yog2KXZhNmI2YXZitmE2YgNCtil2K/Yp9ix2Kkg2KrYrdmI2YrZhCDYo9mF2YjYp9mEINin2YTY
-qti52YjZiti22KfYqiDYjCDYrNmH2Kkg2KfZhNin2KrYtdin2YQg2KjYp9mE2KjYsdmK2K8g2KfZ
-hNil2YTZg9iq2LHZiNmG2Yog2YTYqNmG2YMNCtil2YHYsdmK2YLZitinINin2YTZhdiq2K3Yrzog
-KG1ydG9ueWVsdW1lbHU5OEBnbWFpbC5jb20pDQoNCtmG2K3Yqtin2Kwg2KXZhNmJINix2K8g2LPY
-sdmK2Lkg2LnZhNmJINmH2LDYpyDYp9mE2KjYsdmK2K8g2KfZhNil2YTZg9iq2LHZiNmG2Yog2YTY
-qtis2YbYqCDYp9mE2YXYstmK2K8g2YXZhiDYp9mE2KrYo9iu2YrYsS4NCg0K2LXYr9mK2YLZgyDY
-p9mE2YXYrtmE2LUNCtin2YTYs9mR2YrYr9ipLiDZg9ix2YrYs9iq2KfZhNmK2YbYpyDYrNmI2LHY
-rNmK2YHYpw0K
+CABA = Closest Alive Born Ancestor
+
+In Linux process tree we reparent children of a dying process to the
+reaper, thus loosing information in which subtree the child was
+originally born. This information can be useful to CRIU to restore
+process trees right.
+
+The idea of CABA tree is to keep reference to the closest "born"
+ancestor in the process tree. In simple case if our "born" parent dies
+(completely unhashed) CABA would then point to its "born" parent - our
+"born" grand-parent. So CABA is always referencing closest "born"
+(grand-)*parent in available processes.
+
+Please see "Add CABA tree to task_struct" for deeper explanation, and
+"tests: Add CABA selftest" for a small test and an actual example for
+which we might need CABA.
+
+Probably the original problem of restoring process tree with complex
+sessions can be resolved by allowing sessions copying, like we do for
+process group, but I'm not sure if that would be too secure to do it,
+and if there would not be another similar resource in future. So I
+prefere CABA.
+
+Also we can use CABA not only for CRIU for restoring processes, but in
+normal life when processes detach CABA will help to understand from
+which place in process tree they were originally started from sshd/crond
+or something else.
+
+Hope my idea is not completely insane =)
+
+I plan to have a talk on LPC 2022 about it https://lpc.events/event/16/contributions/1241/
+
+CC: Eric Biederman <ebiederm@xmission.com>
+CC: Kees Cook <keescook@chromium.org>
+CC: Alexander Viro <viro@zeniv.linux.org.uk>
+CC: Ingo Molnar <mingo@redhat.com>
+CC: Peter Zijlstra <peterz@infradead.org>
+CC: Juri Lelli <juri.lelli@redhat.com>
+CC: Vincent Guittot <vincent.guittot@linaro.org>
+CC: Dietmar Eggemann <dietmar.eggemann@arm.com>
+CC: Steven Rostedt <rostedt@goodmis.org>
+CC: Ben Segall <bsegall@google.com>
+CC: Mel Gorman <mgorman@suse.de>
+CC: Daniel Bristot de Oliveira <bristot@redhat.com>
+CC: Valentin Schneider <vschneid@redhat.com>
+CC: Andrew Morton <akpm@linux-foundation.org>
+CC: linux-ia64@vger.kernel.org
+CC: linux-kernel@vger.kernel.org
+CC: linux-mm@kvack.org
+CC: linux-fsdevel@vger.kernel.org
+CC: kernel@openvz.org
+
+Pavel Tikhomirov (2):
+  Add CABA tree to task_struct
+  tests: Add CABA selftest
+
+ arch/ia64/kernel/mca.c                   |   3 +
+ fs/exec.c                                |   1 +
+ fs/proc/array.c                          |  20 +
+ include/linux/sched.h                    |   7 +
+ init/init_task.c                         |   3 +
+ kernel/exit.c                            |  21 +
+ kernel/fork.c                            |   4 +
+ tools/testing/selftests/Makefile         |   1 +
+ tools/testing/selftests/caba/.gitignore  |   1 +
+ tools/testing/selftests/caba/Makefile    |   7 +
+ tools/testing/selftests/caba/caba_test.c | 509 +++++++++++++++++++++++
+ tools/testing/selftests/caba/config      |   1 +
+ 12 files changed, 578 insertions(+)
+ create mode 100644 tools/testing/selftests/caba/.gitignore
+ create mode 100644 tools/testing/selftests/caba/Makefile
+ create mode 100644 tools/testing/selftests/caba/caba_test.c
+ create mode 100644 tools/testing/selftests/caba/config
+
+-- 
+2.37.1
+
