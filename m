@@ -2,46 +2,46 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D65395B2A98
-	for <lists+linux-ia64@lfdr.de>; Fri,  9 Sep 2022 01:51:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 498185B2B48
+	for <lists+linux-ia64@lfdr.de>; Fri,  9 Sep 2022 03:02:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbiIHXvo (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 8 Sep 2022 19:51:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44516 "EHLO
+        id S229607AbiIIBCt (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 8 Sep 2022 21:02:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229566AbiIHXvn (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 8 Sep 2022 19:51:43 -0400
-Received: from mga02.intel.com (mga02.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52AD8EA409;
-        Thu,  8 Sep 2022 16:51:41 -0700 (PDT)
+        with ESMTP id S229589AbiIIBCs (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 8 Sep 2022 21:02:48 -0400
+Received: from mga09.intel.com (mga09.intel.com [134.134.136.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 033A5E9158;
+        Thu,  8 Sep 2022 18:02:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1662681101; x=1694217101;
+  t=1662685367; x=1694221367;
   h=date:from:to:cc:subject:message-id:references:
    mime-version:in-reply-to;
-  bh=3s7nawnzvVWx5LroMTcmZSWaLf5IqlCy7twyibA0vwI=;
-  b=QwARbvTvViOs49UQOJUKheYmCd+vxvXcxHTfhnYgS4beVAJk/OzR0YrA
-   KFSETxD8qYFGRB54DpPP2gmlGMjX+0oP24AiJ/263ks2u9qI13uxgoM+M
-   yiKwdCPN/WhEzfFqAU3WLv++kZ0utjfvZkwCwkg1hMpVMIgIfc+HYCea7
-   QcjEAgZkR8DUN5zb7gMlNgXUYTF6rale4VGfmAbjPv7PeEeIYG9Wcil71
-   5kG4uPfnwOVBMAjY8ji2mochvGAB/yfd2lSL5P+rU15CBZA6F2E3+HFkS
-   csBzwXr2V0rUKn40ewAACBqqxrysWtpEHz3f6ICsNH2B09JDwJ+BaMK+b
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10464"; a="284372585"
+  bh=8H0+71JYH2Oq82RNclvj3h7bCS74rR+edZ/MDVCjJ3Q=;
+  b=fve+zVbdfcZlm9egCkDmWL/Gw9r3eBiLzpKPISZc6Xdy9SdWvDL2+Unh
+   Kd8DvvEjkgq3d3BjRSUnoIo5n2qBnHzgwcJ9+T/polmCjtKgFzvGDIwcT
+   wDZIzGV0H4DFOwWSqRZdV6dGKaq8vVIXe5Y+QClkjde/+MLYWLvbByZkN
+   bna8thtXAAKAwX2fMgIWSVQ0k0PzLAwhVL+x+rd1Trwa6imzy0aggEvZd
+   EBK4ezNfWMF+CrsLQTHuRwojPOJ+eUEv0EyWpFAnZmWm87Cn5E9KFDU4V
+   IAgTmo0FipxLiudK5fOziQzVlTFstZud0uBIjZDLmhGzIgetkYDhVFy4I
+   g==;
+X-IronPort-AV: E=McAfee;i="6500,9779,10464"; a="298168651"
 X-IronPort-AV: E=Sophos;i="5.93,300,1654585200"; 
-   d="scan'208";a="284372585"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 16:51:40 -0700
+   d="scan'208";a="298168651"
+Received: from orsmga004.jf.intel.com ([10.7.209.38])
+  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2022 18:02:45 -0700
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="5.93,300,1654585200"; 
-   d="scan'208";a="860226016"
+   d="scan'208";a="740881026"
 Received: from lkp-server02.sh.intel.com (HELO b2938d2e5c5a) ([10.239.97.151])
-  by fmsmga006.fm.intel.com with ESMTP; 08 Sep 2022 16:51:36 -0700
+  by orsmga004.jf.intel.com with ESMTP; 08 Sep 2022 18:02:39 -0700
 Received: from kbuild by b2938d2e5c5a with local (Exim 4.96)
         (envelope-from <lkp@intel.com>)
-        id 1oWRJ1-0000Rj-1D;
-        Thu, 08 Sep 2022 23:51:35 +0000
-Date:   Fri, 9 Sep 2022 07:51:20 +0800
+        id 1oWSPm-0000Wb-1x;
+        Fri, 09 Sep 2022 01:02:38 +0000
+Date:   Fri, 9 Sep 2022 09:02:31 +0800
 From:   kernel test robot <lkp@intel.com>
 To:     Pavel Tikhomirov <ptikhomirov@virtuozzo.com>,
         Eric Biederman <ebiederm@xmission.com>,
@@ -65,7 +65,7 @@ Cc:     kbuild-all@lists.01.org,
         linux-ia64@vger.kernel.org, linux-fsdevel@vger.kernel.org,
         kernel@openvz.org
 Subject: Re: [PATCH v3 1/2] Add CABA tree to task_struct
-Message-ID: <202209090715.tbbHbdhr-lkp@intel.com>
+Message-ID: <202209090830.H0tKErRt-lkp@intel.com>
 References: <20220908140313.313020-2-ptikhomirov@virtuozzo.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
@@ -93,8 +93,8 @@ https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
 url:    https://github.com/intel-lab-lkp/linux/commits/Pavel-Tikhomirov/Introduce-CABA-helper-process-tree/20220908-220639
 base:   https://git.kernel.org/pub/scm/linux/kernel/git/shuah/linux-kselftest.git next
-config: loongarch-randconfig-s031-20220907 (https://download.01.org/0day-ci/archive/20220909/202209090715.tbbHbdhr-lkp@intel.com/config)
-compiler: loongarch64-linux-gcc (GCC) 12.1.0
+config: microblaze-randconfig-s053-20220907 (https://download.01.org/0day-ci/archive/20220909/202209090830.H0tKErRt-lkp@intel.com/config)
+compiler: microblaze-linux-gcc (GCC) 12.1.0
 reproduce:
         wget https://raw.githubusercontent.com/intel/lkp-tests/master/sbin/make.cross -O ~/bin/make.cross
         chmod +x ~/bin/make.cross
@@ -106,18 +106,15 @@ reproduce:
         git checkout 17a897a33137d4f49f99c8be8d619f6f711fccdb
         # save the config file
         mkdir build_dir && cp config build_dir/.config
-        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=loongarch SHELL=/bin/bash
+        COMPILER_INSTALL_PATH=$HOME/0day COMPILER=gcc-12.1.0 make.cross C=1 CF='-fdiagnostic-prefix -D__CHECK_ENDIAN__' O=build_dir ARCH=microblaze SHELL=/bin/bash
 
 If you fix the issue, kindly add following tag where applicable
 Reported-by: kernel test robot <lkp@intel.com>
 
 sparse warnings: (new ones prefixed by >>)
-   kernel/fork.c:1098:19: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct task_struct [noderef] __rcu *owner @@     got struct task_struct *p @@
-   kernel/fork.c:1098:19: sparse:     expected struct task_struct [noderef] __rcu *owner
-   kernel/fork.c:1098:19: sparse:     got struct task_struct *p
-   kernel/fork.c:1307:22: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct file *[assigned] old_exe_file @@     got struct file [noderef] __rcu *[assigned] __res @@
+   kernel/fork.c:1307:22: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct file *[assigned] old_exe_file @@     got struct file [noderef] __rcu * @@
    kernel/fork.c:1307:22: sparse:     expected struct file *[assigned] old_exe_file
-   kernel/fork.c:1307:22: sparse:     got struct file [noderef] __rcu *[assigned] __res
+   kernel/fork.c:1307:22: sparse:     got struct file [noderef] __rcu *
    kernel/fork.c:1638:38: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct refcount_struct [usertype] *r @@     got struct refcount_struct [noderef] __rcu * @@
    kernel/fork.c:1638:38: sparse:     expected struct refcount_struct [usertype] *r
    kernel/fork.c:1638:38: sparse:     got struct refcount_struct [noderef] __rcu *
@@ -136,12 +133,12 @@ sparse warnings: (new ones prefixed by >>)
    kernel/fork.c:2081:33: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct spinlock [usertype] *lock @@     got struct spinlock [noderef] __rcu * @@
    kernel/fork.c:2081:33: sparse:     expected struct spinlock [usertype] *lock
    kernel/fork.c:2081:33: sparse:     got struct spinlock [noderef] __rcu *
-   kernel/fork.c:2403:32: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct task_struct [noderef] __rcu *real_parent @@     got struct task_struct *task @@
+   kernel/fork.c:2403:32: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct task_struct [noderef] __rcu *real_parent @@     got struct task_struct *register [addressable] [toplevel] current @@
    kernel/fork.c:2403:32: sparse:     expected struct task_struct [noderef] __rcu *real_parent
-   kernel/fork.c:2403:32: sparse:     got struct task_struct *task
->> kernel/fork.c:2407:17: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct task_struct [noderef] __rcu *caba @@     got struct task_struct *task @@
+   kernel/fork.c:2403:32: sparse:     got struct task_struct *register [addressable] [toplevel] current
+>> kernel/fork.c:2407:17: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected struct task_struct [noderef] __rcu *caba @@     got struct task_struct *register [addressable] [toplevel] current @@
    kernel/fork.c:2407:17: sparse:     expected struct task_struct [noderef] __rcu *caba
-   kernel/fork.c:2407:17: sparse:     got struct task_struct *task
+   kernel/fork.c:2407:17: sparse:     got struct task_struct *register [addressable] [toplevel] current
    kernel/fork.c:2413:27: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct spinlock [usertype] *lock @@     got struct spinlock [noderef] __rcu * @@
    kernel/fork.c:2413:27: sparse:     expected struct spinlock [usertype] *lock
    kernel/fork.c:2413:27: sparse:     got struct spinlock [noderef] __rcu *
@@ -172,8 +169,9 @@ sparse warnings: (new ones prefixed by >>)
    kernel/fork.c:3078:43: sparse: sparse: incorrect type in argument 1 (different address spaces) @@     expected struct refcount_struct const [usertype] *r @@     got struct refcount_struct [noderef] __rcu * @@
    kernel/fork.c:3078:43: sparse:     expected struct refcount_struct const [usertype] *r
    kernel/fork.c:3078:43: sparse:     got struct refcount_struct [noderef] __rcu *
+   kernel/fork.c:1742:9: sparse: sparse: dereference of noderef expression
    kernel/fork.c:2122:22: sparse: sparse: dereference of noderef expression
-   kernel/fork.c: note: in included file (through include/uapi/asm-generic/bpf_perf_event.h, arch/loongarch/include/generated/uapi/asm/bpf_perf_event.h, ...):
+   kernel/fork.c: note: in included file (through include/uapi/asm-generic/bpf_perf_event.h, arch/microblaze/include/generated/uapi/asm/bpf_perf_event.h, ...):
    include/linux/ptrace.h:210:45: sparse: sparse: incorrect type in argument 2 (different address spaces) @@     expected struct task_struct *new_parent @@     got struct task_struct [noderef] __rcu *parent @@
    include/linux/ptrace.h:210:45: sparse:     expected struct task_struct *new_parent
    include/linux/ptrace.h:210:45: sparse:     got struct task_struct [noderef] __rcu *parent
@@ -182,9 +180,6 @@ sparse warnings: (new ones prefixed by >>)
    include/linux/ptrace.h:210:62: sparse:     got struct cred const [noderef] __rcu *ptracer_cred
    kernel/fork.c:2458:59: sparse: sparse: dereference of noderef expression
    kernel/fork.c:2459:59: sparse: sparse: dereference of noderef expression
-   kernel/fork.c:1090:23: sparse: sparse: incompatible types in comparison expression (different address spaces):
-   kernel/fork.c:1090:23: sparse:    struct task_struct [noderef] __rcu *
-   kernel/fork.c:1090:23: sparse:    struct task_struct *
 
 vim +2407 kernel/fork.c
 
