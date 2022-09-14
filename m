@@ -2,119 +2,71 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 567A55B5BC3
-	for <lists+linux-ia64@lfdr.de>; Mon, 12 Sep 2022 16:01:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1B735B888F
+	for <lists+linux-ia64@lfdr.de>; Wed, 14 Sep 2022 14:47:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229767AbiILOBB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 12 Sep 2022 10:01:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54430 "EHLO
+        id S230037AbiINMrr (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 14 Sep 2022 08:47:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229636AbiILOA7 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 12 Sep 2022 10:00:59 -0400
-X-Greylist: delayed 392 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 12 Sep 2022 07:00:57 PDT
-Received: from new3-smtp.messagingengine.com (new3-smtp.messagingengine.com [66.111.4.229])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B822CDD8;
-        Mon, 12 Sep 2022 07:00:56 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailnew.nyi.internal (Postfix) with ESMTP id 82E1958172C;
-        Mon, 12 Sep 2022 09:54:21 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute3.internal (MEProxy); Mon, 12 Sep 2022 09:54:21 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to; s=fm1; t=1662990861; x=1662994461; bh=5+ByPvLKo4
-        qXIPZBnHZ1cLujjwO8+fJkOf17+2RURFo=; b=Lm/LIQt4J5bUA0D+zC1vCVFS3K
-        7GapRZcIgbGt2qbjwzh/+P1RM3zFbHwJw88bl+YDwIJoBZy+naVOJvQ870RP51zp
-        JvZH7GAJa+njFpM6alGMZePJF53v9MNR1LSksZ6Mau3fZ/KoceiZd3nmyh0QsD56
-        ZGH7u/HLLMsXaAkzmerqfM+fjxSY3HFemjiYM41UdXNL2bZ3JjKHZxwKC7qCV/F2
-        d3/p7F9erANCNk917vjdXES9GgP7bjCoZQNdNQtrRgVDf290LC3yAbZLS/q/x1lp
-        guMEor+GbkKeyUzgrarM1CP1o7fHV1ZYUNPMVZQ2VM/77MGTlXJ71SedfRUQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
-        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to
-        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-        fm2; t=1662990861; x=1662994461; bh=5+ByPvLKo4qXIPZBnHZ1cLujjwO8
-        +fJkOf17+2RURFo=; b=AEzbGY58mz+/XsOLF2N75l263+JbxnqvVblCKvC1OJkK
-        QZEwNY5ajrWcftR+RbYkPAEcKAxupyxFGp/0mvbVLVf4hxhhvTRPH8Jrjn5vpL7v
-        nXVa3+2dyN1JsfQ/NQEj2pc9x1wwbT9FbvI6Zpl+ktsr3zDWH8sebZuw345sV/hp
-        MS8b6OyI/e1S61xAOnZH8BxJJN18sZnph3hxMfVLR9QvONnqjQWX+Sozesyk4B1S
-        V8TwwSG55K/ouk6Aq517im8vUrbXL905VUpkglrntLVi77JWf93ekQvT30xIdrDa
-        AmENpSAQk8xITxuCuoXeG1VbCIqSsANg4UcoOdWYSA==
-X-ME-Sender: <xms:DDofY7Qnw5lngpzc0T19ofkowrS21lqE9m4InO2pyns8zKnwzKVelg>
-    <xme:DDofY8y7qcebC4oP3vZ3S838ZjDuSplnNmnPgaPuD7M1M6kN-Gtu5JlwhjYoOELRK
-    kyo6kokN31KPHo8fkA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeduvddgjeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:DDofYw2WboGbourAPs20EMvtOf9o_fXxqKvquUD0p8iEWbHKZYw8Iw>
-    <xmx:DDofY7D9xFVXkv81fGNKor4FM_uE5ujl6wM6Cvr9TRX2SiMnfFi81A>
-    <xmx:DDofY0joTztUS0cNzqjs2E9B7EuRjvm0zXQrZBKhN4TAZGkur2i9RA>
-    <xmx:DTofY_Xh2bkruKTJrBg_CurB6C3X3t2JyTsHr6rgFWOpRDayJ4TyEQ>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 9F5DDB60086; Mon, 12 Sep 2022 09:54:20 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.7.0-alpha0-929-g09f3e68182-fm-20220908.004-g09f3e681
-Mime-Version: 1.0
-Message-Id: <687a977d-81a4-497e-86ba-b63ff4cad518@www.fastmail.com>
-In-Reply-To: <20220911012616.29948-1-rdunlap@infradead.org>
-References: <20220911012616.29948-1-rdunlap@infradead.org>
-Date:   Mon, 12 Sep 2022 15:53:54 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Randy Dunlap" <rdunlap@infradead.org>,
-        linux-kernel@vger.kernel.org
-Cc:     "kernel test robot" <lkp@intel.com>,
-        "Dan Williams" <dan.j.williams@intel.com>,
-        "Ben Widawsky" <bwidawsk@kernel.org>,
-        "Jonathan Cameron" <Jonathan.Cameron@huawei.com>,
-        linux-ia64@vger.kernel.org, "Keith Mannthey" <kmannth@us.ibm.com>,
-        "Andrew Morton" <akpm@linux-foundation.org>
-Subject: Re: [PATCH] ia64: export memory_add_physaddr_to_nid to fix cxl build error
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S230095AbiINMrU (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 14 Sep 2022 08:47:20 -0400
+Received: from szxga01-in.huawei.com (szxga01-in.huawei.com [45.249.212.187])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 483F07B78D
+        for <linux-ia64@vger.kernel.org>; Wed, 14 Sep 2022 05:47:11 -0700 (PDT)
+Received: from kwepemi500012.china.huawei.com (unknown [172.30.72.57])
+        by szxga01-in.huawei.com (SkyGuard) with ESMTP id 4MSKkQ2pqQzlVnQ;
+        Wed, 14 Sep 2022 20:43:10 +0800 (CST)
+Received: from cgs.huawei.com (10.244.148.83) by
+ kwepemi500012.china.huawei.com (7.221.188.12) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2375.24; Wed, 14 Sep 2022 20:47:08 +0800
+From:   Gaosheng Cui <cuigaosheng1@huawei.com>
+To:     <mhiramat@kernel.org>, <mingo@kernel.org>,
+        <cuigaosheng1@huawei.com>
+CC:     <linux-ia64@vger.kernel.org>
+Subject: [PATCH] ia64/kprobes: Remove orphan declarations from arch/ia64/include/asm/kprobes.h
+Date:   Wed, 14 Sep 2022 20:47:07 +0800
+Message-ID: <20220914124707.1483471-1-cuigaosheng1@huawei.com>
+X-Mailer: git-send-email 2.25.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [10.244.148.83]
+X-ClientProxiedBy: dggems704-chm.china.huawei.com (10.3.19.181) To
+ kwepemi500012.china.huawei.com (7.221.188.12)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sun, Sep 11, 2022, at 3:26 AM, Randy Dunlap wrote:
-> cxl_pmem.ko uses memory_add_physaddr_to_nid() but ia64 does not export it,
-> so this causes a build error:
->
-> ERROR: modpost: "memory_add_physaddr_to_nid" [drivers/cxl/cxl_pmem.ko] 
-> undefined!
->
-> Fix this by exporting that function.
->
-> Fixes: 8c2676a5870a ("hot-add-mem x86_64: memory_add_physaddr_to_nid 
-> node fixup")
-> Reported-by: kernel test robot <lkp@intel.com>
-> Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-> Cc: Dan Williams <dan.j.williams@intel.com>
-> Cc: Ben Widawsky <bwidawsk@kernel.org>
-> Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Cc: linux-ia64@vger.kernel.org
-> Cc: Arnd Bergmann <arnd@arndb.de>
-> Cc: Keith Mannthey <kmannth@us.ibm.com>
-> Cc: Andrew Morton <akpm@linux-foundation.org>
-> ---
-> Arnd, can you take this in your one-off fixes arch tree, or would
-> you prefer for Andrew to take it?
+flush_register_stack() and invalidate_stacked_regs()
+have been removed since commit 0aeaf6b3a345 ("ia64/kprobes:
+Remove jprobe implementation"), so remove them.
 
-I've applied it to the asm-generic tree for 6.1 now, as I don't
-expect any other bugfixes for 6.0 to go through that tree. It's
-clearly a bugfix, but since the original commit you cite was from
-2006, I assume it can wait a little longer.
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+---
+ arch/ia64/include/asm/kprobes.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-     Arnd
+diff --git a/arch/ia64/include/asm/kprobes.h b/arch/ia64/include/asm/kprobes.h
+index c5cf5e4fb338..9e956768946c 100644
+--- a/arch/ia64/include/asm/kprobes.h
++++ b/arch/ia64/include/asm/kprobes.h
+@@ -110,8 +110,6 @@ extern int kprobe_fault_handler(struct pt_regs *regs, int trapnr);
+ extern int kprobe_exceptions_notify(struct notifier_block *self,
+ 				    unsigned long val, void *data);
+ 
+-extern void invalidate_stacked_regs(void);
+-extern void flush_register_stack(void);
+ extern void arch_remove_kprobe(struct kprobe *p);
+ 
+ #endif /* CONFIG_KPROBES */
+-- 
+2.25.1
+
