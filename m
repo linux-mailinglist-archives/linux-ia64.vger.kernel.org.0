@@ -2,138 +2,109 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86F705EB27E
-	for <lists+linux-ia64@lfdr.de>; Mon, 26 Sep 2022 22:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A82C5EBA82
+	for <lists+linux-ia64@lfdr.de>; Tue, 27 Sep 2022 08:22:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231240AbiIZUmz (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 26 Sep 2022 16:42:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48482 "EHLO
+        id S229977AbiI0GWB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 27 Sep 2022 02:22:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231246AbiIZUma (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 26 Sep 2022 16:42:30 -0400
-Received: from condef-10.nifty.com (condef-10.nifty.com [202.248.20.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E67AC241
-        for <linux-ia64@vger.kernel.org>; Mon, 26 Sep 2022 13:42:16 -0700 (PDT)
-Received: from conuserg-10.nifty.com ([10.126.8.73])by condef-10.nifty.com with ESMTP id 28QKbmAj029405
-        for <linux-ia64@vger.kernel.org>; Tue, 27 Sep 2022 05:37:48 +0900
-Received: from zoe.. (133-32-182-133.west.xps.vectant.ne.jp [133.32.182.133]) (authenticated)
-        by conuserg-10.nifty.com with ESMTP id 28QKaWu7018737;
-        Tue, 27 Sep 2022 05:36:41 +0900
-DKIM-Filter: OpenDKIM Filter v2.10.3 conuserg-10.nifty.com 28QKaWu7018737
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
-        s=dec2015msa; t=1664224602;
-        bh=0kYHR0v0Xht9beu6edv2Fg++Fw26ZI8vbsd8r5R7tlM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JtuTJAYw4LhkBbOZKNuuCK0OsB2aQnt6l5TygroYmQVy79p0dKrKueoWQbcMJnZLv
-         D0MnmqdTtTXyP/wGjcVfZGS9hC2h8mZIIykMi9u1GG5Xjrnhj522nScOt2GxPSIm/V
-         Qh0R94FQpXzF3U9pyRn7bnU1Lq9i/noTvRST5kglQuNR+XLEIxF3RK+80n1AnzI71N
-         K79gElcPnjMxl5q6nTNzzCcT+w0YdjtgqVo2PaTGPkpx/js8blvbcJ0pw8M2aKxb/X
-         AhNPPTd/c4LAthtYl6BfU5c1I3xQ1lR8J3jPY72A7kjQsJfAL/IObEkRR/4KnhTS/l
-         OH++ITvdYFP9Q==
-X-Nifty-SrcIP: [133.32.182.133]
-From:   Masahiro Yamada <masahiroy@kernel.org>
-To:     linux-kbuild@vger.kernel.org
-Cc:     linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Nicolas Pitre <npitre@baylibre.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Michal Marek <michal.lkml@markovi.net>,
-        Nick Desaulniers <ndesaulniers@google.com>
-Subject: [PATCH v2 7/7] kbuild: move modules.builtin(.modinfo) rules to Makefile.vmlinux_o
-Date:   Tue, 27 Sep 2022 05:36:25 +0900
-Message-Id: <20220926203625.1117261-8-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220926203625.1117261-1-masahiroy@kernel.org>
-References: <20220926203625.1117261-1-masahiroy@kernel.org>
+        with ESMTP id S229735AbiI0GV7 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 27 Sep 2022 02:21:59 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 2791C81B07;
+        Mon, 26 Sep 2022 23:21:57 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id E879B80E0;
+        Tue, 27 Sep 2022 06:13:36 +0000 (UTC)
+Date:   Tue, 27 Sep 2022 09:21:54 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
+        ulli.kroll@googlemail.com, linus.walleij@linaro.org,
+        shawnguo@kernel.org, Sascha Hauer <s.hauer@pengutronix.de>,
+        kernel@pengutronix.de, festevam@gmail.com, linux-imx@nxp.com,
+        khilman@kernel.org, catalin.marinas@arm.com, will@kernel.org,
+        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
+        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
+        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
+        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
+        shorne@gmail.com, James.Bottomley@hansenpartnership.com,
+        deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
+        palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        richard@nod.at, anton.ivanov@cambridgegreys.com,
+        johannes@sipsolutions.net, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, acme@kernel.org, mark.rutland@arm.com,
+        alexander.shishkin@linux.intel.com, jolsa@kernel.org,
+        namhyung@kernel.org, jgross@suse.com, srivatsa@csail.mit.edu,
+        amakhalov@vmware.com, pv-drivers@vmware.com,
+        boris.ostrovsky@oracle.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        rafael@kernel.org, lenb@kernel.org, pavel@ucw.cz,
+        gregkh@linuxfoundation.org, mturquette@baylibre.com,
+        sboyd@kernel.org, daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        sudeep.holla@arm.com, agross@kernel.org,
+        bjorn.andersson@linaro.org, konrad.dybcio@somainline.org,
+        anup@brainfault.org, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com,
+        atishp@atishpatra.org, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk, dennis@kernel.org, tj@kernel.org,
+        cl@linux.com, rostedt@goodmis.org, pmladek@suse.com,
+        senozhatsky@chromium.org, john.ogness@linutronix.de,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
+        bristot@redhat.com, vschneid@redhat.com, fweisbec@gmail.com,
+        ryabinin.a.a@gmail.com, glider@google.com, andreyknvl@gmail.com,
+        dvyukov@google.com, vincenzo.frascino@arm.com,
+        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org,
+        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
+        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-arch@vger.kernel.org, kasan-dev@googlegroups.com
+Subject: Re: [PATCH v2 37/44] arm,omap2: Use WFI for omap2_pm_idle()
+Message-ID: <YzKWgjNLWSmDss/h@atomide.com>
+References: <20220919095939.761690562@infradead.org>
+ <20220919101522.842219871@infradead.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20220919101522.842219871@infradead.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Do not build modules.builtin(.modinfo) as a side-effect of vmlinux.
+* Peter Zijlstra <peterz@infradead.org> [220919 10:09]:
+> arch_cpu_idle() is a very simple idle interface and exposes only a
+> single idle state and is expected to not require RCU and not do any
+> tracing/instrumentation.
+> 
+> As such, omap2_pm_idle() is not a valid implementation. Replace it
+> with a simple (shallow) omap2_do_wfi() call.
+> 
+> Omap2 doesn't have a cpuidle driver; but adding one would be the
+> recourse to (re)gain the other idle states.
 
-There are no good reason to rebuild them just because vmlinux's
-prerequistes (vmlinux.lds, .vmlinux.export.c, etc.) have been updated.
+Looks good to me thanks:
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
-Changes in v2:
-  - New patch
-
- scripts/Makefile.vmlinux_o | 26 +++++++++++++++++++++++++-
- scripts/link-vmlinux.sh    |  7 -------
- 2 files changed, 25 insertions(+), 8 deletions(-)
-
-diff --git a/scripts/Makefile.vmlinux_o b/scripts/Makefile.vmlinux_o
-index 68c22879bade..5e8f75d336af 100644
---- a/scripts/Makefile.vmlinux_o
-+++ b/scripts/Makefile.vmlinux_o
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- 
- PHONY := __default
--__default: vmlinux.o
-+__default: vmlinux.o modules.builtin
- 
- include include/config/auto.conf
- include $(srctree)/scripts/Kbuild.include
-@@ -62,6 +62,30 @@ vmlinux.o: $(initcalls-lds) vmlinux.a $(KBUILD_VMLINUX_LIBS) FORCE
- 
- targets += vmlinux.o
- 
-+# module.builtin.modinfo
-+# ---------------------------------------------------------------------------
-+
-+OBJCOPYFLAGS_modules.builtin.modinfo := -j .modinfo -O binary
-+
-+targets += modules.builtin.modinfo
-+modules.builtin.modinfo: vmlinux.o FORCE
-+	$(call if_changed,objcopy)
-+
-+# module.builtin
-+# ---------------------------------------------------------------------------
-+
-+# The second line aids cases where multiple modules share the same object.
-+
-+quiet_cmd_modules_builtin = GEN     $@
-+      cmd_modules_builtin = \
-+	tr '\0' '\n' < $< | \
-+	sed -n 's/^[[:alnum:]:_]*\.file=//p' | \
-+	tr ' ' '\n' | uniq | sed -e 's:^:kernel/:' -e 's/$$/.ko/' > $@
-+
-+targets += modules.builtin
-+modules.builtin: modules.builtin.modinfo FORCE
-+	$(call if_changed,modules_builtin)
-+
- # Add FORCE to the prequisites of a target to force it to be always rebuilt.
- # ---------------------------------------------------------------------------
- 
-diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-index 9c3140d33ccd..5e7a12284b39 100755
---- a/scripts/link-vmlinux.sh
-+++ b/scripts/link-vmlinux.sh
-@@ -214,13 +214,6 @@ if [ "$1" = "clean" ]; then
- 	exit 0
- fi
- 
--info MODINFO modules.builtin.modinfo
--${OBJCOPY} -j .modinfo -O binary vmlinux.o modules.builtin.modinfo
--info GEN modules.builtin
--# The second line aids cases where multiple modules share the same object.
--tr '\0' '\n' < modules.builtin.modinfo | sed -n 's/^[[:alnum:]:_]*\.file=//p' |
--	tr ' ' '\n' | uniq | sed -e 's:^:kernel/:' -e 's/$/.ko/' > modules.builtin
--
- if is_enabled CONFIG_MODULES; then
- 	${MAKE} -f "${srctree}/scripts/Makefile.vmlinux" .vmlinux.export.o
- fi
--- 
-2.34.1
-
+Acked-by: Tony Lindgren <tony@atomide.com>
