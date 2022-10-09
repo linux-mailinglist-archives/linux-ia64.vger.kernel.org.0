@@ -2,94 +2,217 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40CB95F8726
-	for <lists+linux-ia64@lfdr.de>; Sat,  8 Oct 2022 21:40:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 529635F8AA3
+	for <lists+linux-ia64@lfdr.de>; Sun,  9 Oct 2022 12:33:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229773AbiJHTkg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 8 Oct 2022 15:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47988 "EHLO
+        id S230028AbiJIKdI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 9 Oct 2022 06:33:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39194 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229703AbiJHTkf (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 8 Oct 2022 15:40:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9B3F2034E;
-        Sat,  8 Oct 2022 12:40:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        with ESMTP id S230043AbiJIKci (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 9 Oct 2022 06:32:38 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A76B62DA9C
+        for <linux-ia64@vger.kernel.org>; Sun,  9 Oct 2022 03:32:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1665311555;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=UIibfMEWzx8qbt+G+E/4sdi5Hq+zAkJYVe3xl5xYLl4=;
+        b=V57gjTgm7i27xswPjlSfOf96jsPpF1zG/dIGdE17ewV8ylNMwY1/gvDBNql10jVAG3vTHg
+        N2Jd7U7dv5PNWTEZH5iw6KVH06g07NffgbdgIq322wNtnINsPu6YF6hP7V49eMKA1xoR2d
+        IUJUSRxQJoQJqfSF+8UfJr8+dP7XKAY=
+Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
+ [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-342-bIPd6-M9PcePbJcxMLGtEQ-1; Sun, 09 Oct 2022 06:32:24 -0400
+X-MC-Unique: bIPd6-M9PcePbJcxMLGtEQ-1
+Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D90D60A09;
-        Sat,  8 Oct 2022 19:40:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B91C433D6;
-        Sat,  8 Oct 2022 19:40:20 +0000 (UTC)
-Date:   Sat, 8 Oct 2022 15:40:16 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     Marcelo Tosatti <mtosatti@redhat.com>
-Cc:     Valentin Schneider <vschneid@redhat.com>,
-        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        x86@kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Marc Zyngier <maz@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Guo Ren <guoren@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [RFC PATCH 0/5] Generic IPI sending tracepoint
-Message-ID: <20221008154016.0f7ecd8f@rorschach.local.home>
-In-Reply-To: <Y0CFnWDpMNGajIRD@fuller.cnet>
-References: <20221007154145.1877054-1-vschneid@redhat.com>
-        <Y0CFnWDpMNGajIRD@fuller.cnet>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3DCCA380673A;
+        Sun,  9 Oct 2022 10:32:24 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-36.pek2.redhat.com [10.72.12.36])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9DA8F40D298B;
+        Sun,  9 Oct 2022 10:32:18 +0000 (UTC)
+From:   Baoquan He <bhe@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-mm@kvack.org, akpm@linux-foundation.org, hch@infradead.org,
+        agordeev@linux.ibm.com, wangkefeng.wang@huawei.com,
+        christophe.leroy@csgroup.eu, schnelle@linux.ibm.com,
+        David.Laight@ACULAB.COM, shorne@gmail.com, bhe@redhat.com,
+        linux-ia64@vger.kernel.org
+Subject: [PATCH v3 06/11] ia64: mm: Convert to GENERIC_IOREMAP
+Date:   Sun,  9 Oct 2022 18:31:09 +0800
+Message-Id: <20221009103114.149036-7-bhe@redhat.com>
+In-Reply-To: <20221009103114.149036-1-bhe@redhat.com>
+References: <20221009103114.149036-1-bhe@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, 7 Oct 2022 17:01:33 -0300
-Marcelo Tosatti <mtosatti@redhat.com> wrote:
+By taking GENERIC_IOREMAP method, the generic ioremap_prot() and
+iounmap() are visible and available to arch. Arch only needs to
+provide implementation of arch_ioremap() or arch_iounmap() if there's
+arch specific handling needed in its ioremap() or iounmap(). This
+change will simplify implementation by removing duplicated codes with
+generic ioremap() and iounmap(), and has the equivalent functioality
+as before.
 
-> > As for the targeted CPUs, the existing tracepoint does export them, albeit in
-> > cpumask form, which is quite inconvenient from a tooling perspective. For
-> > instance, as far as I'm aware, it's not possible to do event filtering on a
-> > cpumask via trace-cmd.  
-> 
-> https://man7.org/linux/man-pages/man1/trace-cmd-set.1.html
-> 
->        -f filter
->            Specify a filter for the previous event. This must come after
->            a -e. This will filter what events get recorded based on the
->            content of the event. Filtering is passed to the kernel
->            directly so what filtering is allowed may depend on what
->            version of the kernel you have. Basically, it will let you
->            use C notation to check if an event should be processed or
->            not.
-> 
->                ==, >=, <=, >, <, &, |, && and ||
-> 
->            The above are usually safe to use to compare fields.
+Here add hooks arch_ioremap() and arch_iounmap() for ia64's special
+operation when ioremap() and iounmap(), then ioremap_cache() is
+converted to use ioremap_prot() from GENERIC_IOREMAP.
 
-We could always add an "isset(x)" filter ;-)
+The old ioremap_uc() is kept and add its macro definittion.
 
--- Steve
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Cc: linux-ia64@vger.kernel.org
+---
+ arch/ia64/Kconfig          |  1 +
+ arch/ia64/include/asm/io.h | 26 ++++++++++++--------
+ arch/ia64/mm/ioremap.c     | 50 +++++++++-----------------------------
+ 3 files changed, 28 insertions(+), 49 deletions(-)
+
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index 26ac8ea15a9e..1ca18be5dc30 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -45,6 +45,7 @@ config IA64
+ 	select GENERIC_IRQ_LEGACY
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select GENERIC_IOMAP
++	select GENERIC_IOREMAP
+ 	select GENERIC_SMP_IDLE_THREAD
+ 	select ARCH_TASK_STRUCT_ON_STACK
+ 	select ARCH_TASK_STRUCT_ALLOCATOR
+diff --git a/arch/ia64/include/asm/io.h b/arch/ia64/include/asm/io.h
+index ce66dfc0e719..54378cea4b36 100644
+--- a/arch/ia64/include/asm/io.h
++++ b/arch/ia64/include/asm/io.h
+@@ -247,17 +247,23 @@ static inline void outsl(unsigned long port, const void *src,
+ 
+ # ifdef __KERNEL__
+ 
+-extern void __iomem * ioremap(unsigned long offset, unsigned long size);
+-extern void __iomem * ioremap_uc(unsigned long offset, unsigned long size);
+-extern void iounmap (volatile void __iomem *addr);
+-static inline void __iomem * ioremap_cache (unsigned long phys_addr, unsigned long size)
+-{
+-	return ioremap(phys_addr, size);
+-}
+-#define ioremap ioremap
+-#define ioremap_cache ioremap_cache
++/*
++ * I/O memory mapping functions.
++ */
++void __iomem *
++arch_ioremap(phys_addr_t *paddr, size_t size, unsigned long *prot_val);
++#define arch_ioremap arch_ioremap
++
++bool arch_iounmap(void __iomem *addr);
++#define arch_iounmap arch_iounmap
++
++#define _PAGE_IOREMAP pgprot_val(PAGE_KERNEL)
++
++#define ioremap_cache(addr, size)  \
++	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
++
++void __iomem *ioremap_uc(unsigned long offset, unsigned long size);
+ #define ioremap_uc ioremap_uc
+-#define iounmap iounmap
+ 
+ /*
+  * String version of IO memory access ops:
+diff --git a/arch/ia64/mm/ioremap.c b/arch/ia64/mm/ioremap.c
+index 55fd3eb753ff..a290c7dc7f1e 100644
+--- a/arch/ia64/mm/ioremap.c
++++ b/arch/ia64/mm/ioremap.c
+@@ -30,15 +30,12 @@ early_ioremap (unsigned long phys_addr, unsigned long size)
+ }
+ 
+ void __iomem *
+-ioremap (unsigned long phys_addr, unsigned long size)
++arch_ioremap(phys_addr_t *paddr, size_t size, unsigned long *prot_val)
+ {
+-	void __iomem *addr;
+-	struct vm_struct *area;
+-	unsigned long offset;
+-	pgprot_t prot;
+-	u64 attr;
++	phys_addr_t phys_addr = *paddr;
+ 	unsigned long gran_base, gran_size;
+ 	unsigned long page_base;
++	u64 attr;
+ 
+ 	/*
+ 	 * For things in kern_memmap, we must use the same attribute
+@@ -69,35 +66,18 @@ ioremap (unsigned long phys_addr, unsigned long size)
+ 	page_base = phys_addr & PAGE_MASK;
+ 	size = PAGE_ALIGN(phys_addr + size) - page_base;
+ 	if (efi_mem_attribute(page_base, size) & EFI_MEMORY_WB) {
+-		prot = PAGE_KERNEL;
+-
+-		/*
+-		 * Mappings have to be page-aligned
+-		 */
+-		offset = phys_addr & ~PAGE_MASK;
+-		phys_addr &= PAGE_MASK;
+-
+-		/*
+-		 * Ok, go for it..
+-		 */
+-		area = get_vm_area(size, VM_IOREMAP);
+-		if (!area)
+-			return NULL;
+-
+-		area->phys_addr = phys_addr;
+-		addr = (void __iomem *) area->addr;
+-		if (ioremap_page_range((unsigned long) addr,
+-				(unsigned long) addr + size, phys_addr, prot)) {
+-			vunmap((void __force *) addr);
+-			return NULL;
+-		}
+-
+-		return (void __iomem *) (offset + (char __iomem *)addr);
++		return NULL;
+ 	}
+ 
+ 	return __ioremap_uc(phys_addr);
+ }
+-EXPORT_SYMBOL(ioremap);
++
++bool arch_iounmap(void __iomem *addr)
++{
++	if (REGION_NUMBER(addr) != RGN_GATE)
++		return false;
++	return true;
++}
+ 
+ void __iomem *
+ ioremap_uc(unsigned long phys_addr, unsigned long size)
+@@ -113,11 +93,3 @@ void
+ early_iounmap (volatile void __iomem *addr, unsigned long size)
+ {
+ }
+-
+-void
+-iounmap (volatile void __iomem *addr)
+-{
+-	if (REGION_NUMBER(addr) == RGN_GATE)
+-		vunmap((void *) ((unsigned long) addr & PAGE_MASK));
+-}
+-EXPORT_SYMBOL(iounmap);
+-- 
+2.34.1
+
