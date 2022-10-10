@@ -2,217 +2,170 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 529635F8AA3
-	for <lists+linux-ia64@lfdr.de>; Sun,  9 Oct 2022 12:33:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 277755FA437
+	for <lists+linux-ia64@lfdr.de>; Mon, 10 Oct 2022 21:30:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230028AbiJIKdI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 9 Oct 2022 06:33:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39194 "EHLO
+        id S229538AbiJJTaj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 10 Oct 2022 15:30:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230043AbiJIKci (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 9 Oct 2022 06:32:38 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A76B62DA9C
-        for <linux-ia64@vger.kernel.org>; Sun,  9 Oct 2022 03:32:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1665311555;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=UIibfMEWzx8qbt+G+E/4sdi5Hq+zAkJYVe3xl5xYLl4=;
-        b=V57gjTgm7i27xswPjlSfOf96jsPpF1zG/dIGdE17ewV8ylNMwY1/gvDBNql10jVAG3vTHg
-        N2Jd7U7dv5PNWTEZH5iw6KVH06g07NffgbdgIq322wNtnINsPu6YF6hP7V49eMKA1xoR2d
-        IUJUSRxQJoQJqfSF+8UfJr8+dP7XKAY=
-Received: from mimecast-mx02.redhat.com (mx3-rdu2.redhat.com
- [66.187.233.73]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-342-bIPd6-M9PcePbJcxMLGtEQ-1; Sun, 09 Oct 2022 06:32:24 -0400
-X-MC-Unique: bIPd6-M9PcePbJcxMLGtEQ-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 3DCCA380673A;
-        Sun,  9 Oct 2022 10:32:24 +0000 (UTC)
-Received: from MiWiFi-R3L-srv.redhat.com (ovpn-12-36.pek2.redhat.com [10.72.12.36])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9DA8F40D298B;
-        Sun,  9 Oct 2022 10:32:18 +0000 (UTC)
-From:   Baoquan He <bhe@redhat.com>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-mm@kvack.org, akpm@linux-foundation.org, hch@infradead.org,
-        agordeev@linux.ibm.com, wangkefeng.wang@huawei.com,
-        christophe.leroy@csgroup.eu, schnelle@linux.ibm.com,
-        David.Laight@ACULAB.COM, shorne@gmail.com, bhe@redhat.com,
-        linux-ia64@vger.kernel.org
-Subject: [PATCH v3 06/11] ia64: mm: Convert to GENERIC_IOREMAP
-Date:   Sun,  9 Oct 2022 18:31:09 +0800
-Message-Id: <20221009103114.149036-7-bhe@redhat.com>
-In-Reply-To: <20221009103114.149036-1-bhe@redhat.com>
-References: <20221009103114.149036-1-bhe@redhat.com>
+        with ESMTP id S229459AbiJJTai (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 10 Oct 2022 15:30:38 -0400
+Received: from conssluserg-06.nifty.com (conssluserg-06.nifty.com [210.131.2.91])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 914F4402D6;
+        Mon, 10 Oct 2022 12:30:34 -0700 (PDT)
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182]) (authenticated)
+        by conssluserg-06.nifty.com with ESMTP id 29AJUD3V008989;
+        Tue, 11 Oct 2022 04:30:13 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-06.nifty.com 29AJUD3V008989
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1665430213;
+        bh=1w6TuZjh4cZPhVH0ezwJnT2FKBA5+a4r8Ml6K7U/ao4=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=Oh18wZlOWElB3yLE1YdvDnud2ipuPKF8y/aa+3CAgZrRnJIEeMUiP+jpJZGSB+ljm
+         VvtY/hyqCT2Bz53nIVxI4aiBWCrKyZFwxn3M21yOEPgw/80fMBhUQ5Mks8XbtytcCd
+         9ggv6HnvlT4jcx4QXj1MjLTPYLsDMWDDZ6DP9xGnNQ4LYnYog6NwCo/54goWKPIB0h
+         jnck7Dzr6B12KkmT4U+DEv0kMlVHCUWbGbOujHNOB4eB4ue+G7RyikfkfGfaM8h2sW
+         yf+lq6Qt0T8NlWH1V9IK0HVTXpwSWsgRfQnekh3QaRFrfiI01vC4croekCnUp4+u0Z
+         Ozd0/OpujxgmQ==
+X-Nifty-SrcIP: [209.85.167.182]
+Received: by mail-oi1-f182.google.com with SMTP id w196so7339612oiw.8;
+        Mon, 10 Oct 2022 12:30:13 -0700 (PDT)
+X-Gm-Message-State: ACrzQf1sVTNggxfza4kjfwi9NNmM4AQplN7m5AEpO4fShDWP2KDyC1v9
+        uuEZT6UnLoZqA5Vcbe39he1sKENeAB9FPqvMXZs=
+X-Google-Smtp-Source: AMsMyM6AVz0CCOkmJV4/obYbhKP/mdI0EeZI/muZ+6mbOH62KIO2Ma5Xu/X64wdPvAEGsxix0yp/vF0GkHbr4R42hpQ=
+X-Received: by 2002:aca:bbd4:0:b0:353:f167:6fd3 with SMTP id
+ l203-20020acabbd4000000b00353f1676fd3mr9686854oif.287.1665430212351; Mon, 10
+ Oct 2022 12:30:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20220928063947.299333-3-masahiroy@kernel.org> <202210090942.a159fe4-yujie.liu@intel.com>
+In-Reply-To: <202210090942.a159fe4-yujie.liu@intel.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Tue, 11 Oct 2022 04:29:36 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASUhDMo72eNge_GvdfbmOkpBCJA88Xw=_V69jcf+_072Q@mail.gmail.com>
+Message-ID: <CAK7LNASUhDMo72eNge_GvdfbmOkpBCJA88Xw=_V69jcf+_072Q@mail.gmail.com>
+Subject: Re: [kbuild] b3830bad81: System_halted
+To:     kernel test robot <yujie.liu@intel.com>
+Cc:     lkp@lists.01.org, lkp@intel.com, linux-kbuild@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Nicolas Pitre <npitre@baylibre.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-By taking GENERIC_IOREMAP method, the generic ioremap_prot() and
-iounmap() are visible and available to arch. Arch only needs to
-provide implementation of arch_ioremap() or arch_iounmap() if there's
-arch specific handling needed in its ioremap() or iounmap(). This
-change will simplify implementation by removing duplicated codes with
-generic ioremap() and iounmap(), and has the equivalent functioality
-as before.
+On Sun, Oct 9, 2022 at 10:21 AM kernel test robot <yujie.liu@intel.com> wrote:
+>
+> Greeting,
+>
+> FYI, we noticed the following commit (built with gcc-11):
+>
+> commit: b3830bad81e872632431363853c810c5f652a040 ("[PATCH v3 2/8] kbuild: rebuild .vmlinux.export.o when its prerequisite is updated")
+> url: https://github.com/intel-lab-lkp/linux/commits/Masahiro-Yamada/Unify-linux-export-h-and-asm-export-h-remove-EXPORT_DATA_SYMBOL-faster-TRIM_UNUSED_KSYMS/20220928-144539
+> base: https://git.kernel.org/cgit/linux/kernel/git/masahiroy/linux-kbuild.git for-next
+> patch link: https://lore.kernel.org/linux-kbuild/20220928063947.299333-3-masahiroy@kernel.org
+>
+> in testcase: boot
+>
+> on test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
+>
+> caused below changes (please refer to attached dmesg/kmsg for entire log/backtrace):
 
-Here add hooks arch_ioremap() and arch_iounmap() for ia64's special
-operation when ioremap() and iounmap(), then ioremap_cache() is
-converted to use ioremap_prot() from GENERIC_IOREMAP.
 
-The old ioremap_uc() is kept and add its macro definittion.
+I think this is a false-positive alarm.
 
-Signed-off-by: Baoquan He <bhe@redhat.com>
-Cc: linux-ia64@vger.kernel.org
----
- arch/ia64/Kconfig          |  1 +
- arch/ia64/include/asm/io.h | 26 ++++++++++++--------
- arch/ia64/mm/ioremap.c     | 50 +++++++++-----------------------------
- 3 files changed, 28 insertions(+), 49 deletions(-)
+As I replied before [1], I know my patch set is broken.
+I think 0day bot is testing the patch set I had already retracted.
 
-diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
-index 26ac8ea15a9e..1ca18be5dc30 100644
---- a/arch/ia64/Kconfig
-+++ b/arch/ia64/Kconfig
-@@ -45,6 +45,7 @@ config IA64
- 	select GENERIC_IRQ_LEGACY
- 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
- 	select GENERIC_IOMAP
-+	select GENERIC_IOREMAP
- 	select GENERIC_SMP_IDLE_THREAD
- 	select ARCH_TASK_STRUCT_ON_STACK
- 	select ARCH_TASK_STRUCT_ALLOCATOR
-diff --git a/arch/ia64/include/asm/io.h b/arch/ia64/include/asm/io.h
-index ce66dfc0e719..54378cea4b36 100644
---- a/arch/ia64/include/asm/io.h
-+++ b/arch/ia64/include/asm/io.h
-@@ -247,17 +247,23 @@ static inline void outsl(unsigned long port, const void *src,
- 
- # ifdef __KERNEL__
- 
--extern void __iomem * ioremap(unsigned long offset, unsigned long size);
--extern void __iomem * ioremap_uc(unsigned long offset, unsigned long size);
--extern void iounmap (volatile void __iomem *addr);
--static inline void __iomem * ioremap_cache (unsigned long phys_addr, unsigned long size)
--{
--	return ioremap(phys_addr, size);
--}
--#define ioremap ioremap
--#define ioremap_cache ioremap_cache
-+/*
-+ * I/O memory mapping functions.
-+ */
-+void __iomem *
-+arch_ioremap(phys_addr_t *paddr, size_t size, unsigned long *prot_val);
-+#define arch_ioremap arch_ioremap
-+
-+bool arch_iounmap(void __iomem *addr);
-+#define arch_iounmap arch_iounmap
-+
-+#define _PAGE_IOREMAP pgprot_val(PAGE_KERNEL)
-+
-+#define ioremap_cache(addr, size)  \
-+	ioremap_prot((addr), (size), pgprot_val(PAGE_KERNEL))
-+
-+void __iomem *ioremap_uc(unsigned long offset, unsigned long size);
- #define ioremap_uc ioremap_uc
--#define iounmap iounmap
- 
- /*
-  * String version of IO memory access ops:
-diff --git a/arch/ia64/mm/ioremap.c b/arch/ia64/mm/ioremap.c
-index 55fd3eb753ff..a290c7dc7f1e 100644
---- a/arch/ia64/mm/ioremap.c
-+++ b/arch/ia64/mm/ioremap.c
-@@ -30,15 +30,12 @@ early_ioremap (unsigned long phys_addr, unsigned long size)
- }
- 
- void __iomem *
--ioremap (unsigned long phys_addr, unsigned long size)
-+arch_ioremap(phys_addr_t *paddr, size_t size, unsigned long *prot_val)
- {
--	void __iomem *addr;
--	struct vm_struct *area;
--	unsigned long offset;
--	pgprot_t prot;
--	u64 attr;
-+	phys_addr_t phys_addr = *paddr;
- 	unsigned long gran_base, gran_size;
- 	unsigned long page_base;
-+	u64 attr;
- 
- 	/*
- 	 * For things in kern_memmap, we must use the same attribute
-@@ -69,35 +66,18 @@ ioremap (unsigned long phys_addr, unsigned long size)
- 	page_base = phys_addr & PAGE_MASK;
- 	size = PAGE_ALIGN(phys_addr + size) - page_base;
- 	if (efi_mem_attribute(page_base, size) & EFI_MEMORY_WB) {
--		prot = PAGE_KERNEL;
--
--		/*
--		 * Mappings have to be page-aligned
--		 */
--		offset = phys_addr & ~PAGE_MASK;
--		phys_addr &= PAGE_MASK;
--
--		/*
--		 * Ok, go for it..
--		 */
--		area = get_vm_area(size, VM_IOREMAP);
--		if (!area)
--			return NULL;
--
--		area->phys_addr = phys_addr;
--		addr = (void __iomem *) area->addr;
--		if (ioremap_page_range((unsigned long) addr,
--				(unsigned long) addr + size, phys_addr, prot)) {
--			vunmap((void __force *) addr);
--			return NULL;
--		}
--
--		return (void __iomem *) (offset + (char __iomem *)addr);
-+		return NULL;
- 	}
- 
- 	return __ioremap_uc(phys_addr);
- }
--EXPORT_SYMBOL(ioremap);
-+
-+bool arch_iounmap(void __iomem *addr)
-+{
-+	if (REGION_NUMBER(addr) != RGN_GATE)
-+		return false;
-+	return true;
-+}
- 
- void __iomem *
- ioremap_uc(unsigned long phys_addr, unsigned long size)
-@@ -113,11 +93,3 @@ void
- early_iounmap (volatile void __iomem *addr, unsigned long size)
- {
- }
--
--void
--iounmap (volatile void __iomem *addr)
--{
--	if (REGION_NUMBER(addr) == RGN_GATE)
--		vunmap((void *) ((unsigned long) addr & PAGE_MASK));
--}
--EXPORT_SYMBOL(iounmap);
+I only picked up low-hanging fruits with fixes to my tree,
+and did boot tests.
+
+Please let me know if linux-next is broken.
+
+
+[1] : https://lore.kernel.org/linux-kbuild/CAK7LNATcD6k+R66YFVg_mhe7-FGNc0nYaTPuORCcd34Qw3ra2g@mail.gmail.com/T/#t
+
+
+
+
+
+
+
+
+
+
+>
+> early console in setup code
+> Probing EDD (edd=off to disable)... ok
+> No EFI environment detected.
+> early console in extract_kernel
+> input_data: 0x0000000002e5740d
+> input_len: 0x000000000099c37e
+> output: 0x0000000001000000
+> output_len: 0x000000000234aa00
+> kernel_total_size: 0x0000000002828000
+> needed_size: 0x0000000002a00000
+> trampoline_32bit: 0x000000000009d000
+>
+> Decompressing Linux... Parsing ELF...
+>
+> Alignment of LOAD segment isn't multiple of 2MB
+>
+>  -- System haltedBUG: kernel hang in boot stage
+>
+>
+>
+> 61682ee38a ("kbuild: move modules.builtin(.modinfo) rules to Makefile.vmlinux_o")
+> b3830bad81 ("kbuild: rebuild .vmlinux.export.o when its prerequisite is updated")
+>
+> +----------------+------------+------------+
+> |                | 61682ee38a | b3830bad81 |
+> +----------------+------------+------------+
+> | boot_successes | 24         | 0          |
+> | boot_failures  | 0          | 18         |
+> | System_halted  | 0          | 18         |
+> +----------------+------------+------------+
+>
+>
+> If you fix the issue, kindly add following tag
+> | Reported-by: kernel test robot <yujie.liu@intel.com>
+> | Link: https://lore.kernel.org/r/202210090942.a159fe4-yujie.liu@intel.com
+>
+>
+> To reproduce:
+>
+>         # build kernel
+>         cd linux
+>         cp config-6.0.0-rc7-00038-gb3830bad81e8 .config
+>         make HOSTCC=gcc-11 CC=gcc-11 ARCH=x86_64 olddefconfig prepare modules_prepare bzImage modules
+>         make HOSTCC=gcc-11 CC=gcc-11 ARCH=x86_64 INSTALL_MOD_PATH=<mod-install-dir> modules_install
+>         cd <mod-install-dir>
+>         find lib/ | cpio -o -H newc --quiet | gzip > modules.cgz
+>
+>
+>         git clone https://github.com/intel/lkp-tests.git
+>         cd lkp-tests
+>         bin/lkp qemu -k <bzImage> -m modules.cgz job-script # job-script is attached in this email
+>
+>         # if come across any failure that blocks the test,
+>         # please remove ~/.lkp and /lkp dir to run from a clean state.
+>
+>
+> --
+> 0-DAY CI Kernel Test Service
+> https://01.org/lkp
+
+
+
 -- 
-2.34.1
-
+Best Regards
+Masahiro Yamada
