@@ -2,129 +2,132 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B7F505FB6BB
-	for <lists+linux-ia64@lfdr.de>; Tue, 11 Oct 2022 17:16:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 382875FB727
+	for <lists+linux-ia64@lfdr.de>; Tue, 11 Oct 2022 17:29:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231696AbiJKPQf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 11 Oct 2022 11:16:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35500 "EHLO
+        id S231718AbiJKP3b (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 11 Oct 2022 11:29:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231698AbiJKPQK (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 11 Oct 2022 11:16:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 21D84A7A92
-        for <linux-ia64@vger.kernel.org>; Tue, 11 Oct 2022 08:08:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1665500741;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=ti1NCFCTzr5YPwBHvg45c+mfaiUwrR60uA7ep6lLZuA=;
-        b=DLf6cqoNYA1QYFTqZYJynAzfPvBU8vcrjbpHcCHWk2rtzVs/xPYURGlmSqDw37jJ1J2RXQ
-        9EmegZsO29FwXwXdTpoCbVy+4SgFhmwvH6ap2AWojZ1RXx8AmOwmRFr75+qazadhlUE5li
-        O7mBN5sWb5bNKjzECijUQDcDu6jjNJI=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-471-GJGnrTvOPziI6BdIixFM-Q-1; Tue, 11 Oct 2022 11:02:12 -0400
-X-MC-Unique: GJGnrTvOPziI6BdIixFM-Q-1
-Received: by mail-wm1-f69.google.com with SMTP id f26-20020a7bcc1a000000b003c03db14864so3824235wmh.6
-        for <linux-ia64@vger.kernel.org>; Tue, 11 Oct 2022 08:02:12 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ti1NCFCTzr5YPwBHvg45c+mfaiUwrR60uA7ep6lLZuA=;
-        b=7+oUhwtfxWMTqjBkvbGQQ6kRQ1qnRZZG01+/Aa7Nley9JhUjILso7yt7ZU0KeqhOxi
-         FZNlhuQ8l+BAxZgWFzyOyVAj1ILsQ7zbPpZ1vluMqkGEdmeWDqQDcdj5GpkeMJMXOZwE
-         ldqBk8hPw/6QP9J/78fcWryau21FgUSlOWBSXeLH4cuA/oPfdoS0acT707GgCjM5c7GD
-         pHyEYJQ7rneODQ87n8I5+Lubf1tZi01V+Jm/SU6dGyS44bb4Rr0mP7mq8Goxa6x3W28c
-         sduUg3WKfnn5Ydnss2b5yZx+uBtefCWLCqlh0h4Fz+WHWw+XDJvEO3bHsH+fhKR83SkU
-         05mw==
-X-Gm-Message-State: ACrzQf2bANuNPK2DjwkPWVFkcvY5rhvjnjdl/SDNHEjyDrB2ydoUB+Cv
-        8jVE1wdxHAhASgqI0sqrzUwvxZRMapS9LsO1ofI4HqTTxk+4eWK31oaXCJzm3sfWVjQ0Mf2tZas
-        HdlELa62Pii+Palm9husV0Q==
-X-Received: by 2002:a5d:59a3:0:b0:22e:4b62:7ceb with SMTP id p3-20020a5d59a3000000b0022e4b627cebmr15699199wrr.90.1665500528712;
-        Tue, 11 Oct 2022 08:02:08 -0700 (PDT)
-X-Google-Smtp-Source: AMsMyM7srUgXRaEVg4Pb59BUs0ShAt8e40s56KQw2lU0G4VdN3sOMR/0VHio2//G+OqnLs1Wx3l7Vw==
-X-Received: by 2002:a5d:59a3:0:b0:22e:4b62:7ceb with SMTP id p3-20020a5d59a3000000b0022e4b627cebmr15699160wrr.90.1665500528495;
-        Tue, 11 Oct 2022 08:02:08 -0700 (PDT)
-Received: from vschneid.remote.csb ([104.132.153.106])
-        by smtp.gmail.com with ESMTPSA id bh11-20020a05600c3d0b00b003b49ab8ff53sm13552403wmb.8.2022.10.11.08.02.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Oct 2022 08:02:07 -0700 (PDT)
-From:   Valentin Schneider <vschneid@redhat.com>
-To:     Steven Rostedt <rostedt@goodmis.org>
-Cc:     linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        x86@kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
-        Peter Zijlstra <peterz@infradead.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Daniel Bristot de Oliveira <bristot@redhat.com>,
-        Marcelo Tosatti <mtosatti@redhat.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        "H. Peter Anvin" <hpa@zytor.com>, Marc Zyngier <maz@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Guo Ren <guoren@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: Re: [RFC PATCH 4/5] irq_work: Trace calls to arch_irq_work_raise()
-In-Reply-To: <20221008153442.159b2f2d@rorschach.local.home>
-References: <20221007154145.1877054-1-vschneid@redhat.com>
- <20221007154533.1878285-4-vschneid@redhat.com>
- <20221008153442.159b2f2d@rorschach.local.home>
-Date:   Tue, 11 Oct 2022 16:02:06 +0100
-Message-ID: <xhsmhlepmflox.mognet@vschneid.remote.csb>
-MIME-Version: 1.0
+        with ESMTP id S231848AbiJKP2n (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 11 Oct 2022 11:28:43 -0400
+Received: from new4-smtp.messagingengine.com (new4-smtp.messagingengine.com [66.111.4.230])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01A9D10326B;
+        Tue, 11 Oct 2022 08:19:33 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailnew.nyi.internal (Postfix) with ESMTP id 2D2A55801D6;
+        Tue, 11 Oct 2022 11:18:34 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute3.internal (MEProxy); Tue, 11 Oct 2022 11:18:34 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm2; t=1665501514; x=1665505114; bh=IYkyi6bmsK
+        t19Dqbw/69YsSocwZmqtEOH4a98ozex4I=; b=dZTgeZnKBYo3dq0eZF2BIVbtIJ
+        QjpA/XJTZeNs/dEPnxZxhaU9AYifrGwG/fVAnCqUQhH4kyHqs7848VlCExTOgiA2
+        V+TDb+DNdTrbgWIbuiemWyR4WMeQriYxfuy97Uws9tOXNHM9YBZq82fMz58GjcX+
+        L6YoHte1fy4W0GObeYZYjrWuMkS+7Y9VjOtl1UFiOBWWTWVTQK9EnlRtZge5k/3D
+        LKUtZkTwtRGPUmHAHtIZUpm5gKBJvaYTnj7z9URcXh+cXLYNMf5FeLT2e6xdihX3
+        yQrWKb1ibHleWOcczhATRwGRbkZlorA3UrbeeVgG6MFJhq5KajBtoOi2fFGg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm3; t=1665501514; x=1665505114; bh=IYkyi6bmsKt19Dqbw/69YsSocwZm
+        qtEOH4a98ozex4I=; b=f5ZKyRO/Mr2PDSwAokn+Kk/z0W/LrmXWcHvrVgRmRplW
+        otVNmjWJv03Y6Mbrt78ke8l9N3pNzQbGK2svUN7Pp5du9VDiFm/rBlP6cU5f6ihw
+        LsqTLxbWSGYFOftFrHXGw6PqWLjX74I7vLiVggzWvs2bRGsxUoaEtYwxO5oa1uby
+        KyqB5GQHRHTRoeMcit0NOqxuAb9+1pOdpj3Znl0UrHPdDUMV5KSP0JEn9ZzJwR6L
+        3PyyVPWRImGVH8TBCRzQYHWBtGvj7QTp5ajCTFORQJGn0ZUgsbckcPTVk7/q59lU
+        B1kQsCvgveSOJCWQJHTu+GbomebJAQtKb4xXXFz8mg==
+X-ME-Sender: <xms:R4lFYyFYm92oWILoBssqVAoPMy4tWk48CZIE6TR_vaQPs1CqdRG8mQ>
+    <xme:R4lFYzVItBA-DAn63dTIQl7cCKIxpb1tZc34n6Kmcpl-GLNg_CNOjnLugOP5L492E
+    4U3xc8VqVDUIeJFGRw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvfedrfeejiedgkedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnheptdetfeekudeigeegheeujeeuhedtteffheelteegveevudfgvdekkeffleef
+    gffgnecuffhomhgrihhnpehinhhtvghlrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomheprghrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:SIlFY8K03pMcjyawGrEJIRBx34B-CHkEjEOuYR82HSCCURrq2tGc5Q>
+    <xmx:SIlFY8Gu9C94SxV0lUnvLI7D22uAHB1_EgmpxmHPvNlatfFI2LtX-Q>
+    <xmx:SIlFY4WSX_Ti2r75YrxaCxFGKQOJmk0ejX6NWQLvW-aAM3Qo8C0osw>
+    <xmx:SYlFYzY_hrXArQ2t--cmSPcS-aA04jQH5ODj_3YvuTJfROPRsaV_hkagJew>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id E3E67B60086; Tue, 11 Oct 2022 11:18:31 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.7.0-alpha0-1015-gaf7d526680-fm-20220929.001-gaf7d5266
+Mime-Version: 1.0
+Message-Id: <08db7754-ecd8-4425-875b-4f2b44497f6b@app.fastmail.com>
+In-Reply-To: <20221011031843.960217-1-masahiroy@kernel.org>
+References: <20221011031843.960217-1-masahiroy@kernel.org>
+Date:   Tue, 11 Oct 2022 17:18:10 +0200
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Masahiro Yamada" <masahiroy@kernel.org>,
+        "Linus Torvalds" <torvalds@linux-foundation.org>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        "Ingo Molnar" <mingo@redhat.com>, "Borislav Petkov" <bp@alien8.de>,
+        "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>
+Cc:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        linux-ia64@vger.kernel.org,
+        "Nick Desaulniers" <ndesaulniers@google.com>,
+        "Miguel Ojeda" <ojeda@kernel.org>, "Len Brown" <lenb@kernel.org>,
+        "Nathan Chancellor" <nathan@kernel.org>,
+        "Nick Terrell" <terrelln@fb.com>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        "Robert Moore" <robert.moore@intel.com>,
+        "Tom Rix" <trix@redhat.com>, devel@acpica.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
+Subject: Re: [RFC PATCH] Remove Intel compiler support
 Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 08/10/22 15:34, Steven Rostedt wrote:
-> On Fri,  7 Oct 2022 16:45:32 +0100
-> Valentin Schneider <vschneid@redhat.com> wrote:
->>  }
->>  
->> +static inline void irq_work_raise(void)
->> +{
->> +	if (arch_irq_work_has_interrupt())
->> +		trace_ipi_send_cpu(_RET_IP_, smp_processor_id());
+On Tue, Oct 11, 2022, at 5:18 AM, Masahiro Yamada wrote:
+> include/linux/compiler-intel.h had no update in the past 3 years.
 >
-> To save on the branch, let's make the above:
+> We often forget about the third C compiler to build the kernel.
 >
-> 	if (trace_ipi_send_cpu_enabled() && arch_irq_work_has_interrupt())
+> For example, commit a0a12c3ed057 ("asm goto: eradicate CC_HAS_ASM_GOTO")
+> only mentioned GCC and Clang.
 >
-> As the "trace_*_enabled()" is a static branch that will make it a nop
-> when the tracepoint is not enabled.
+> init/Kconfig defines CC_IS_GCC and CC_IS_CLANG but not CC_IS_ICC,
+> and nobody has reported any issue.
 >
+> I guess the Intel Compiler support is broken, and nobody is caring
+> about it.
+>
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+>
+> I am sending this to Linus and the x86 maintainers with RFC.
+> If somebody is still using ICC, please speak up!
 
-Makes sense, thanks for the suggestion.
+Acked-by: Arnd Bergmann <arnd@arndb.de>
 
-> -- Steve
->
->
->> +
->> +	arch_irq_work_raise();
->> +}
->> +
->>  /* Enqueue on current CPU, work must already be claimed and preempt disabled */
 
+I had the same thought a while back and tried to show that it as
+already broken, but I never managed to actually download the compiler
+at the time.
+
+It appears that in the meantime, Intel have completely dropped their
+old codebase and moved to using LLVM[1], so my guess is that with the
+current releases it will behave the same as clang. It might help
+to verify that this is indeed the case if you want to add that
+to the changelog text.
+
+     Arnd
+
+[1] https://www.intel.com/content/www/us/en/developer/articles/technical/adoption-of-llvm-complete-icx.html
