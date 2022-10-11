@@ -2,77 +2,61 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC1AC5FB1DC
-	for <lists+linux-ia64@lfdr.de>; Tue, 11 Oct 2022 13:55:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 859545FB4CD
+	for <lists+linux-ia64@lfdr.de>; Tue, 11 Oct 2022 16:43:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229564AbiJKLzw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 11 Oct 2022 07:55:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60590 "EHLO
+        id S229815AbiJKOnz (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 11 Oct 2022 10:43:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229451AbiJKLzv (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 11 Oct 2022 07:55:51 -0400
-Received: from mail-il1-x135.google.com (mail-il1-x135.google.com [IPv6:2607:f8b0:4864:20::135])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 183C87F26F;
-        Tue, 11 Oct 2022 04:55:51 -0700 (PDT)
-Received: by mail-il1-x135.google.com with SMTP id d14so7018718ilf.2;
-        Tue, 11 Oct 2022 04:55:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=X9ELJWsFEOA9ZjR8vqRc+1/Kb4xOZiuQUQY31p1h+Q8=;
-        b=DZszs+gH1es+xg6y+a7l0fAdLt1s52gSgAZiIDQumcRtKI4eEhlGm+9JR8DSEWZR7t
-         I8sigBB0KtgDK6bFwuAQbJ6nT2M0FgHcR93WYRgrV9HcCYk4FmCdYeksFA4Q/AoLgGt+
-         3C4/KXreibaj3FvFT4nynzieUW3Hsuk7PVMTZRA/3WrfBnlKy+KUYHcIOaoIgq21QAqF
-         Gp45E8UcByMRn8YstbmTXUQ/c19HZIhtTlxc1jD9CxuyPT7l37ZuBk14F6ZOm3pM/oOt
-         kh3DASTrFByWwriz90Cvt3/a38lVOCpTXRcI4McEVEutLlAVrRouROph3+xL2iHzkU4w
-         wf1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X9ELJWsFEOA9ZjR8vqRc+1/Kb4xOZiuQUQY31p1h+Q8=;
-        b=6gkVtOts6FCpKNKjm9yq+zdRp9YIYULMaQWpcjEJ7TFpfKCID685kEyJZ4mb5oTjyB
-         g7a12GF1xombz1cEnHLe4cu+jnD0H2h+D0iTZkn8NzWCZHu16pB3A6zmw2bK5L2aP1xR
-         HQCw2HCv+4M985PUuVxtYpzpmDpz5uCbC51mIGejlT4bjvCYFczZgyrBpkIa3iIBK6p/
-         +wCWP98tVSmimSlD8qQcdZRNkOdimbKEv6582hjwM1rkMcJtdJ9eHu4rRzVzCRSUdUCz
-         dI0XnlwD8Ga0a+FV2TGS32VET7kcTd7h72Rw7TsjeLECz8lnFq5FBjsUsqYsOL6ftAmA
-         aLUw==
-X-Gm-Message-State: ACrzQf1XC+yN3OhWeF3tVhzCwFr0ISRYZ9ICDIcjVlZvhY7E5iHbz4Wk
-        H2F/083EN5uIX37YlyPFoSWPr/GSWxa8V/aDPpo=
-X-Google-Smtp-Source: AMsMyM5+gu5fEJL3u/z9fh5zuGtorQ255IKQ4OfCeJYH5cGS9UtuhnZ0j68AmjbTrs1kGnaP/bv1mWaQfSHEJHHX7Pc=
-X-Received: by 2002:a05:6e02:b2d:b0:2f9:e735:a010 with SMTP id
- e13-20020a056e020b2d00b002f9e735a010mr11659127ilu.151.1665489350477; Tue, 11
- Oct 2022 04:55:50 -0700 (PDT)
+        with ESMTP id S229785AbiJKOnz (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 11 Oct 2022 10:43:55 -0400
+Received: from conssluserg-03.nifty.com (conssluserg-03.nifty.com [210.131.2.82])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 601865141C;
+        Tue, 11 Oct 2022 07:43:51 -0700 (PDT)
+Received: from mail-lf1-f41.google.com (mail-lf1-f41.google.com [209.85.167.41]) (authenticated)
+        by conssluserg-03.nifty.com with ESMTP id 29BEhQVh028058;
+        Tue, 11 Oct 2022 23:43:27 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-03.nifty.com 29BEhQVh028058
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1665499407;
+        bh=f7cFsivqt5aB8JibP0uT38jXQu/Wbj/dqE/9O7jlMto=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=qOGRld0JJhbnaZ4tp5bXCh8X+a3tamoliyOdSOL++AcJ/NyAFRT5sqviP1CMKFnRu
+         fPS+ED2Q8niO2KVFkOcs+YhcAMZDfPbwoNYDII+FAamLnWBaBA47uqxdj7UbD73T3S
+         THyJCcbvTodfRvi3TnwAeohLJoBtpIyLv3GH2bSoFamML7yuMu1X2bUs84u17+xzGM
+         dXiCupNuOYdvKTxmEj0dpWy4ZxvKf10u0YoQSsbDZtUoz5JzB6ILdlaxIX6xnhp0WK
+         MhjJRRwPl5wtZlmWCCsbsUZ42Qj2WtQlne0HE/7a6Tk9sBlKOYDx2v1svR5rp8D9EV
+         TTnZgyo9ca72Q==
+X-Nifty-SrcIP: [209.85.167.41]
+Received: by mail-lf1-f41.google.com with SMTP id b2so21451496lfp.6;
+        Tue, 11 Oct 2022 07:43:26 -0700 (PDT)
+X-Gm-Message-State: ACrzQf1sCJbpYJdVCzOzDuctB8MSBVhPQe6FLVlhxvo4DAOzjLowXwiR
+        ZDYjJY1R9+WvbXG1kAnPf+YnkM/2OSIVBMt3pbY=
+X-Google-Smtp-Source: AMsMyM6WYbxn4XqdnP3i8B7Mg5ouZcvg+JX5c5rIz8T9AFPEHexE5+sM5jJfYqjyUaDcsRGwDNd1eVbsUFwlrGrxgCk=
+X-Received: by 2002:a05:6512:2310:b0:4a2:593e:3443 with SMTP id
+ o16-20020a056512231000b004a2593e3443mr8490807lfu.226.1665499405103; Tue, 11
+ Oct 2022 07:43:25 -0700 (PDT)
 MIME-Version: 1.0
-References: <20221011031843.960217-1-masahiroy@kernel.org>
-In-Reply-To: <20221011031843.960217-1-masahiroy@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Tue, 11 Oct 2022 13:55:39 +0200
-Message-ID: <CANiq72k9wAVCbHKVZFE=E3xv+2ZamUMsJ=uV43NxsSUQ4wXGdw@mail.gmail.com>
-Subject: Re: [RFC PATCH] Remove Intel compiler support
-To:     Masahiro Yamada <masahiroy@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-ia64@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Len Brown <lenb@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Terrell <terrelln@fb.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Robert Moore <robert.moore@intel.com>,
-        Tom Rix <trix@redhat.com>, devel@acpica.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
+References: <20220928063947.299333-3-masahiroy@kernel.org> <202210090942.a159fe4-yujie.liu@intel.com>
+ <CAK7LNASUhDMo72eNge_GvdfbmOkpBCJA88Xw=_V69jcf+_072Q@mail.gmail.com> <f09f2fb1-ae86-5419-4361-bdd8f8a22e11@intel.com>
+In-Reply-To: <f09f2fb1-ae86-5419-4361-bdd8f8a22e11@intel.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Tue, 11 Oct 2022 23:42:46 +0900
+X-Gmail-Original-Message-ID: <CAK7LNASFi-q-fbMq+3orWnJS6b3Yc7ZQAvRDNvwTSCj2UkP1MQ@mail.gmail.com>
+Message-ID: <CAK7LNASFi-q-fbMq+3orWnJS6b3Yc7ZQAvRDNvwTSCj2UkP1MQ@mail.gmail.com>
+Subject: Re: [kbuild] b3830bad81: System_halted
+To:     Yujie Liu <yujie.liu@intel.com>
+Cc:     lkp@lists.01.org, lkp@intel.com, linux-kbuild@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org, Al Viro <viro@zeniv.linux.org.uk>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Nicolas Pitre <npitre@baylibre.com>,
+        Michal Marek <michal.lkml@markovi.net>,
+        Nick Desaulniers <ndesaulniers@google.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -80,16 +64,58 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Oct 11, 2022 at 5:19 AM Masahiro Yamada <masahiroy@kernel.org> wrote:
+On Tue, Oct 11, 2022 at 6:37 PM Yujie Liu <yujie.liu@intel.com> wrote:
 >
->  include/linux/compiler-intel.h            |  34 -----
->  include/linux/compiler_types.h            |   2 -
+> On 10/11/2022 03:29, Masahiro Yamada wrote:
+> > On Sun, Oct 9, 2022 at 10:21 AM kernel test robot <yujie.liu@intel.com> wrote:
+> >>
+> >> Greeting,
+> >>
+> >> FYI, we noticed the following commit (built with gcc-11):
+> >>
+> >> commit: b3830bad81e872632431363853c810c5f652a040 ("[PATCH v3 2/8] kbuild: rebuild .vmlinux.export.o when its prerequisite is updated")
+> >> url: https://github.com/intel-lab-lkp/linux/commits/Masahiro-Yamada/Unify-linux-export-h-and-asm-export-h-remove-EXPORT_DATA_SYMBOL-faster-TRIM_UNUSED_KSYMS/20220928-144539
+> >> base: https://git.kernel.org/cgit/linux/kernel/git/masahiroy/linux-kbuild.git for-next
+> >> patch link: https://lore.kernel.org/linux-kbuild/20220928063947.299333-3-masahiroy@kernel.org
+> >>
+> >> in testcase: boot
+> >>
+> >> on test machine: qemu-system-x86_64 -enable-kvm -cpu SandyBridge -smp 2 -m 16G
+> >>
+> >> caused below changes (please refer to attached dmesg/kmsg for entire log/backtrace):
+> >
+> >
+> > I think this is a false-positive alarm.
+> >
+> > As I replied before [1], I know my patch set is broken.
+> > I think 0day bot is testing the patch set I had already retracted.
+> >
+> > I only picked up low-hanging fruits with fixes to my tree,
+> > and did boot tests.
+> >
+> > Please let me know if linux-next is broken.
+> >
+> >
+> > [1] : https://lore.kernel.org/linux-kbuild/CAK7LNATcD6k+R66YFVg_mhe7-FGNc0nYaTPuORCcd34Qw3ra2g@mail.gmail.com/T/#t
+> >
+>
+> Sorry for this false-positive report.
+>
+> Thanks for the info, we noticed that this patch has been merged into
+> linux-next, so we tested below commits:
+>
+> b9f85101cad33 (tag: next-20221011, linux-next/master) Add linux-next specific files for 20221011
+> 5d4aeffbf7092 kbuild: rebuild .vmlinux.export.o when its prerequisite is updated
+>
+> They all passed the boot tests.
 
-You can also remove a few lines from `compiler_attributes.h`:
 
-    * Optional: not supported by icc
+Thank you for testing them!
 
-Thanks for this!
 
-Cheers,
-Miguel
+
+
+
+-- 
+Best Regards
+Masahiro Yamada
