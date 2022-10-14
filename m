@@ -2,172 +2,137 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B0D45FF079
-	for <lists+linux-ia64@lfdr.de>; Fri, 14 Oct 2022 16:40:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E32955FF539
+	for <lists+linux-ia64@lfdr.de>; Fri, 14 Oct 2022 23:23:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229998AbiJNOkV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 14 Oct 2022 10:40:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35412 "EHLO
+        id S229790AbiJNVW7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 14 Oct 2022 17:22:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230153AbiJNOkS (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 14 Oct 2022 10:40:18 -0400
-Received: from mail-io1-xd2e.google.com (mail-io1-xd2e.google.com [IPv6:2607:f8b0:4864:20::d2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 928994A10D;
-        Fri, 14 Oct 2022 07:40:12 -0700 (PDT)
-Received: by mail-io1-xd2e.google.com with SMTP id 187so4023614iov.10;
-        Fri, 14 Oct 2022 07:40:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=gqNU3jyIKdP2LeNPDch6KlM75RQE0z3FFP6RVfvlhuM=;
-        b=bOZwXqjmw7sX8px0+Lq1iBo8giDDyRK0xiJO9OwdoKqeV1HX0S+EZc16NmoDZ3CreO
-         E3MsKXQNl8pOLt9wKYBMoUbK8LMoUsAhlVXPRyC3f/gN4Jhi9BrrjbNAspvqnLGhRNRi
-         67pzpwb+iThnF6UR0j3G/qaIxYxN0kn8C80RC3s1jnu899Zj4TgbKzaQgAB9ReHmRjcP
-         XrdIZgeVELwuXJEq7d9BEfq7PGtbOhbzc2+ObHITZOjbGju5C7nmlA5elNU1ObdBPamj
-         StKKbp+pt2rm7wAgOIJKzscSzTIZgFDpxUDFoXX7coX+Hq/+qzDa8Ki3cZiAi5jKCYZk
-         R5lw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gqNU3jyIKdP2LeNPDch6KlM75RQE0z3FFP6RVfvlhuM=;
-        b=T1A9zeMOVz3u8HlogQ7adtD5wdK91XpPFuyTcMO2Szx7AxLNDuXa9h5HTu+5D1McgK
-         B7aaQTnuqQGzGywTy6nKgym7VLfA/a+/z4F2FVS6qqctdg64S9c8daXb6c1eTG/9RRN8
-         xUIXxAHDZc9aK5wP+YIBvEWBlYPLrSdb1Z/sXLTwjS0Qc98Nkx8mg8GBN62OWy0zoDbc
-         jcjuP/SXOURDZ5oEkzKwA/Dvte1x0W9tRUPYtIzqp6nalyGPeyXbMmhuDPGA8jkhKwB7
-         gXoMLX/Q4pCxLzUlSVgxm3u968ZR1Tounq2CJoBayRFE2tlKyIsrjlLQWa39yraMiw8n
-         yeEA==
-X-Gm-Message-State: ACrzQf0IQDh7H/5zf0TLsl34D2cZza5MyxQjR2aYijiIbxDmDG15/Y3R
-        snNDd8bCnTsv4oCb3/9umNFVwMMUw3NHkK91RvE=
-X-Google-Smtp-Source: AMsMyM7FQagympQoF02w3NjUUBCYlwsxqfgUO0qOaLc+FgBJvwDwQYVryxvfwBHP7BeFHYosXU5c9eiwuRqFCvXiKUI=
-X-Received: by 2002:a05:6602:1509:b0:69b:35ba:4720 with SMTP id
- g9-20020a056602150900b0069b35ba4720mr2422187iow.155.1665758411053; Fri, 14
- Oct 2022 07:40:11 -0700 (PDT)
+        with ESMTP id S229436AbiJNVW6 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 14 Oct 2022 17:22:58 -0400
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 265AE1D375E;
+        Fri, 14 Oct 2022 14:22:50 -0700 (PDT)
+Received: from localhost.localdomain (178.176.75.138) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 15 Oct
+ 2022 00:22:41 +0300
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+To:     Oleg Nesterov <oleg@redhat.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Brian Cain <bcain@quicinc.com>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Jonas Bonn <jonas@southpole.se>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Stafford Horne <shorne@gmail.com>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-hexagon@vger.kernel.org>, <linux-ia64@vger.kernel.org>,
+        <linux-kernel@vger.kernel.org>, <linux-mips@vger.kernel.org>,
+        <linux-parisc@vger.kernel.org>, <linux-sh@vger.kernel.org>,
+        <linuxppc-dev@lists.ozlabs.org>, <openrisc@lists.librecores.org>,
+        <sparclinux@vger.kernel.org>
+CC:     Andrew Morton <akpm@linux-foundation.org>,
+        <lvc-patches@linuxtesting.org>, <lvc-project@linuxtesting.org>
+Subject: [PATCH 00/13] Make user_regset_copyin_ignore() *void*
+Date:   Sat, 15 Oct 2022 00:22:22 +0300
+Message-ID: <20221014212235.10770-1-s.shtylyov@omp.ru>
+X-Mailer: git-send-email 2.26.3
 MIME-Version: 1.0
-References: <20221011171427.58891-1-masahiroy@kernel.org>
-In-Reply-To: <20221011171427.58891-1-masahiroy@kernel.org>
-From:   Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date:   Fri, 14 Oct 2022 16:39:59 +0200
-Message-ID: <CANiq72kvaPGr=2S6J7q7gfEg_CauHUfhuLmABpktfUPfK+_Hvg@mail.gmail.com>
-Subject: Re: [PATCH v2] Remove Intel compiler support
-To:     Masahiro Yamada <masahiroy@kernel.org>,
-        Nick Terrell <terrelln@fb.com>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-ia64@vger.kernel.org,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Len Brown <lenb@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Robert Moore <robert.moore@intel.com>,
-        Tom Rix <trix@redhat.com>, devel@acpica.org,
-        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+X-Originating-IP: [178.176.75.138]
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/14/2022 21:00:39
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 173137 [Oct 14 2022]
+X-KSE-AntiSpam-Info: Version: 5.9.20.0
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 500 500 6cc86d8f5638d79810308830d98d6b6279998c49
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: omp.ru:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
+X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.75.138
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 10/14/2022 21:03:00
+X-KSE-AttachmentFiltering-Interceptor-Info: protection disabled
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 10/14/2022 3:23:00 PM
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Oct 11, 2022 at 7:16 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
->
-> diff --git a/include/linux/compiler_attributes.h b/include/linux/compiler_attributes.h
-> index 898b3458b24a..9221302f6ae8 100644
-> --- a/include/linux/compiler_attributes.h
-> +++ b/include/linux/compiler_attributes.h
-> @@ -64,16 +64,10 @@
->   * compiler should see some alignment anyway, when the return value is
->   * massaged by 'flags = ptr & 3; ptr &= ~3;').
->   *
-> - * Optional: not supported by icc
-> - *
->   *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-assume_005faligned-function-attribute
->   * clang: https://clang.llvm.org/docs/AttributeReference.html#assume-aligned
->   */
-> -#if __has_attribute(__assume_aligned__)
-> -# define __assume_aligned(a, ...)       __attribute__((__assume_aligned__(a, ## __VA_ARGS__)))
-> -#else
-> -# define __assume_aligned(a, ...)
-> -#endif
-> +#define __assume_aligned(a, ...)        __attribute__((__assume_aligned__(a, ## __VA_ARGS__)))
+Here are 13 patches against the 'next-20221014' tag of the 'linux-next.git'
+repo.  I'm not sure how this cross-arch series should be merged -- perhaps
+thru Andrew Morton's tree?
 
-Thanks for cleaning the conditional inclusion here. I double-checked
-it is indeed available for both GCC and Clang current minimum versions
-just in case: https://godbolt.org/z/PxaqeEdcE.
+user_regset_copyin_ignore() apparently cannot fail and so always returns 0.
+Let's first remove the result checks in several architectures that call this
+function and then make user_regset_copyin_ignore() return *void* instead of
+*int*...
 
-> diff --git a/lib/zstd/common/compiler.h b/lib/zstd/common/compiler.h
-> index f5a9c70a228a..c281a6430cd4 100644
-> --- a/lib/zstd/common/compiler.h
-> +++ b/lib/zstd/common/compiler.h
-> @@ -116,7 +116,7 @@
->
->  /* vectorization
->   * older GCC (pre gcc-4.3 picked as the cutoff) uses a different syntax */
-> -#if !defined(__INTEL_COMPILER) && !defined(__clang__) && defined(__GNUC__)
-> +#if !defined(__clang__) && defined(__GNUC__)
->  #  if (__GNUC__ == 4 && __GNUC_MINOR__ > 3) || (__GNUC__ >= 5)
->  #    define DONT_VECTORIZE __attribute__((optimize("no-tree-vectorize")))
->  #  else
+Sergey Shtylyov (13):
+  arc: ptrace: user_regset_copyin_ignore() always returns 0
+  arm: ptrace: user_regset_copyin_ignore() always returns 0
+  arm64: ptrace: user_regset_copyin_ignore() always returns 0
+  hexagon: ptrace: user_regset_copyin_ignore() always returns 0
+  ia64: ptrace: user_regset_copyin_ignore() always returns 0
+  mips: ptrace: user_regset_copyin_ignore() always returns 0
+  nios2: ptrace: user_regset_copyin_ignore() always returns 0
+  openrisc: ptrace: user_regset_copyin_ignore() always returns 0
+  parisc: ptrace: user_regset_copyin_ignore() always returns 0
+  powerpc: ptrace: user_regset_copyin_ignore() always returns 0
+  sh: ptrace: user_regset_copyin_ignore() always returns 0
+  sparc: ptrace: user_regset_copyin_ignore() always returns 0
+  regset: make user_regset_copyin_ignore() *void*
 
-These files come from upstream Zstandard -- should we keep those lines
-to minimize divergence?
-https://github.com/facebook/zstd/blob/v1.4.10/lib/common/compiler.h#L154.
+ arch/arc/kernel/ptrace.c                 |  2 +-
+ arch/arm/kernel/ptrace.c                 |  8 +++-----
+ arch/arm64/kernel/ptrace.c               | 16 ++++------------
+ arch/hexagon/kernel/ptrace.c             |  7 +++----
+ arch/ia64/kernel/ptrace.c                | 20 +++++++++-----------
+ arch/mips/kernel/ptrace.c                |  9 +++++----
+ arch/nios2/kernel/ptrace.c               |  6 +++---
+ arch/openrisc/kernel/ptrace.c            |  8 +++-----
+ arch/parisc/kernel/ptrace.c              | 15 +++++++++------
+ arch/powerpc/kernel/ptrace/ptrace-tm.c   | 10 +++++-----
+ arch/powerpc/kernel/ptrace/ptrace-view.c | 10 +++++-----
+ arch/sh/kernel/ptrace_32.c               |  8 ++++----
+ arch/sparc/kernel/ptrace_32.c            |  9 +++++----
+ arch/sparc/kernel/ptrace_64.c            | 23 +++++++++++------------
+ include/linux/regset.h                   | 15 +++++++--------
+ 15 files changed, 77 insertions(+), 89 deletions(-)
 
-Commit e0c1b49f5b67 ("lib: zstd: Upgrade to latest upstream zstd
-version 1.4.10") is the latest upgrade, and says:
+-- 
+2.26.3
 
-    This patch is 100% generated from upstream zstd commit 20821a46f412 [0].
-
-    This patch is very large because it is transitioning from the custom
-    kernel zstd to using upstream directly. The new zstd follows upstreams
-    file structure which is different. Future update patches will be much
-    smaller because they will only contain the changes from one upstream
-    zstd release.
-
-So I think Nick would prefer to keep the changes as minimal as
-possible with respect to upstream.
-
-Further reading seems to suggest this is the case, e.g. see this
-commit upstream that introduces a space to match the kernel:
-https://github.com/facebook/zstd/commit/b53da1f6f499f0d44c5f40795b080d967b24e5fa.
-
-> diff --git a/lib/zstd/compress/zstd_fast.c b/lib/zstd/compress/zstd_fast.c
-> index 96b7d48e2868..800f3865119f 100644
-> --- a/lib/zstd/compress/zstd_fast.c
-> +++ b/lib/zstd/compress/zstd_fast.c
-> @@ -80,13 +80,6 @@ ZSTD_compressBlock_fast_generic(
->      }
->
->      /* Main Search Loop */
-> -#ifdef __INTEL_COMPILER
-> -    /* From intel 'The vector pragma indicates that the loop should be
-> -     * vectorized if it is legal to do so'. Can be used together with
-> -     * #pragma ivdep (but have opted to exclude that because intel
-> -     * warns against using it).*/
-> -    #pragma vector always
-> -#endif
->      while (ip1 < ilimit) {   /* < instead of <=, because check at ip0+2 */
->          size_t mLength;
->          BYTE const* ip2 = ip0 + 2;
-
-Ditto: https://github.com/facebook/zstd/blob/v1.4.10/lib/compress/zstd_fast.c#L83.
-
-Apart from the zstd divergence which I am not sure about, everything
-looks good to me!
-
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-
-Cheers,
-Miguel
