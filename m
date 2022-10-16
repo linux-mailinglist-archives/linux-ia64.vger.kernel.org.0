@@ -2,119 +2,178 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 077B15FF545
-	for <lists+linux-ia64@lfdr.de>; Fri, 14 Oct 2022 23:23:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 357426002DA
+	for <lists+linux-ia64@lfdr.de>; Sun, 16 Oct 2022 20:23:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229485AbiJNVXb (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 14 Oct 2022 17:23:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54182 "EHLO
+        id S229662AbiJPSX6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 16 Oct 2022 14:23:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229965AbiJNVXZ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 14 Oct 2022 17:23:25 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCDBA1DD891;
-        Fri, 14 Oct 2022 14:23:15 -0700 (PDT)
-Received: from localhost.localdomain (178.176.75.138) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 15 Oct
- 2022 00:23:06 +0300
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-To:     Oleg Nesterov <oleg@redhat.com>, <linux-ia64@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 05/13] ia64: ptrace: user_regset_copyin_ignore() always returns 0
-Date:   Sat, 15 Oct 2022 00:22:27 +0300
-Message-ID: <20221014212235.10770-6-s.shtylyov@omp.ru>
-X-Mailer: git-send-email 2.26.3
-In-Reply-To: <20221014212235.10770-1-s.shtylyov@omp.ru>
-References: <20221014212235.10770-1-s.shtylyov@omp.ru>
+        with ESMTP id S229696AbiJPSX5 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 16 Oct 2022 14:23:57 -0400
+Received: from conssluserg-01.nifty.com (conssluserg-01.nifty.com [210.131.2.80])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 269C94507B;
+        Sun, 16 Oct 2022 11:23:54 -0700 (PDT)
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41]) (authenticated)
+        by conssluserg-01.nifty.com with ESMTP id 29GINb2O032674;
+        Mon, 17 Oct 2022 03:23:37 +0900
+DKIM-Filter: OpenDKIM Filter v2.10.3 conssluserg-01.nifty.com 29GINb2O032674
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nifty.com;
+        s=dec2015msa; t=1665944617;
+        bh=fRz3ySy23/ffC+gMEN6Ix4ccsH+L67FX85AWDvOKFP8=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=dG5x6oSvzyK0jY6Po8VHkVul8Z73cqvvfY0uq5MqnGBTyn4mcxQsRBOqM32iRIbqc
+         qIhzU+wy7U+WDgq3TgN6zrbhbufMe8cpTwoS3UkVWnTe8+Qa5sHfSJ6K6OwzptCfWf
+         5Zj4YyHI4AswPvS6Lw1MFT2FfqGwfN5XbeFHvjT6ldbIQe/CCcTvuEc0caKueYhGsp
+         2Y6zSpyS9QRYyEM0FHxISxXUL1bp9WtvKW6N6UQj0f7A2Lk3AMmECRE56r8PNN+dMg
+         Ic/CTfVobJxsDJVZj3sSVZJHrKlO+BrHh6nFQBgjBvke9IffduQ6fgQPQcFCHGrUk7
+         69r8WkeJ9UhyQ==
+X-Nifty-SrcIP: [209.85.160.41]
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-134072c15c1so11293026fac.2;
+        Sun, 16 Oct 2022 11:23:37 -0700 (PDT)
+X-Gm-Message-State: ACrzQf14KkT1z9z4Z37Zubp/3lDY2k/yizLdnrAdqy2ITuJH+3lJ4zHU
+        BMxyyqtQREV+U6ciOdoq/kpePnx0IfT99zli9D0=
+X-Google-Smtp-Source: AMsMyM6GRvVgXtI3ayO2vjiuPBvoDA4IVEzkiYVV0tBwypOIIW4e6YoM8Or3yA24icDQL2VRQQfGQFrPBzAw0kD++Z4=
+X-Received: by 2002:a05:6870:8a09:b0:132:554d:2f3d with SMTP id
+ p9-20020a0568708a0900b00132554d2f3dmr13479026oaq.194.1665944616376; Sun, 16
+ Oct 2022 11:23:36 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
-X-Originating-IP: [178.176.75.138]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.20, Database issued on: 10/14/2022 21:00:39
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 173137 [Oct 14 2022]
-X-KSE-AntiSpam-Info: Version: 5.9.20.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 500 500 6cc86d8f5638d79810308830d98d6b6279998c49
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: omp.ru:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.75.138
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 10/14/2022 21:03:00
-X-KSE-AttachmentFiltering-Interceptor-Info: protection disabled
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 10/14/2022 3:23:00 PM
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20221011171427.58891-1-masahiroy@kernel.org> <CANiq72kvaPGr=2S6J7q7gfEg_CauHUfhuLmABpktfUPfK+_Hvg@mail.gmail.com>
+In-Reply-To: <CANiq72kvaPGr=2S6J7q7gfEg_CauHUfhuLmABpktfUPfK+_Hvg@mail.gmail.com>
+From:   Masahiro Yamada <masahiroy@kernel.org>
+Date:   Mon, 17 Oct 2022 03:22:59 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQkSbH-Gw3sgMzxHyA9pSf3gLVvbCLg3yvbO43_vi5=YA@mail.gmail.com>
+Message-ID: <CAK7LNAQkSbH-Gw3sgMzxHyA9pSf3gLVvbCLg3yvbO43_vi5=YA@mail.gmail.com>
+Subject: Re: [PATCH v2] Remove Intel compiler support
+To:     Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc:     Nick Terrell <terrelln@fb.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H . Peter Anvin" <hpa@zytor.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-ia64@vger.kernel.org,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Miguel Ojeda <ojeda@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Len Brown <lenb@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Robert Moore <robert.moore@intel.com>,
+        Tom Rix <trix@redhat.com>, devel@acpica.org,
+        linux-acpi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-user_regset_copyin_ignore() always returns 0, so checking its result seems
-pointless -- don't do this anymore...
+On Fri, Oct 14, 2022 at 11:40 PM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Tue, Oct 11, 2022 at 7:16 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
+> >
+> > diff --git a/include/linux/compiler_attributes.h b/include/linux/compiler_attributes.h
+> > index 898b3458b24a..9221302f6ae8 100644
+> > --- a/include/linux/compiler_attributes.h
+> > +++ b/include/linux/compiler_attributes.h
+> > @@ -64,16 +64,10 @@
+> >   * compiler should see some alignment anyway, when the return value is
+> >   * massaged by 'flags = ptr & 3; ptr &= ~3;').
+> >   *
+> > - * Optional: not supported by icc
+> > - *
+> >   *   gcc: https://gcc.gnu.org/onlinedocs/gcc/Common-Function-Attributes.html#index-assume_005faligned-function-attribute
+> >   * clang: https://clang.llvm.org/docs/AttributeReference.html#assume-aligned
+> >   */
+> > -#if __has_attribute(__assume_aligned__)
+> > -# define __assume_aligned(a, ...)       __attribute__((__assume_aligned__(a, ## __VA_ARGS__)))
+> > -#else
+> > -# define __assume_aligned(a, ...)
+> > -#endif
+> > +#define __assume_aligned(a, ...)        __attribute__((__assume_aligned__(a, ## __VA_ARGS__)))
+>
+> Thanks for cleaning the conditional inclusion here. I double-checked
+> it is indeed available for both GCC and Clang current minimum versions
+> just in case: https://godbolt.org/z/PxaqeEdcE.
+>
+> > diff --git a/lib/zstd/common/compiler.h b/lib/zstd/common/compiler.h
+> > index f5a9c70a228a..c281a6430cd4 100644
+> > --- a/lib/zstd/common/compiler.h
+> > +++ b/lib/zstd/common/compiler.h
+> > @@ -116,7 +116,7 @@
+> >
+> >  /* vectorization
+> >   * older GCC (pre gcc-4.3 picked as the cutoff) uses a different syntax */
+> > -#if !defined(__INTEL_COMPILER) && !defined(__clang__) && defined(__GNUC__)
+> > +#if !defined(__clang__) && defined(__GNUC__)
+> >  #  if (__GNUC__ == 4 && __GNUC_MINOR__ > 3) || (__GNUC__ >= 5)
+> >  #    define DONT_VECTORIZE __attribute__((optimize("no-tree-vectorize")))
+> >  #  else
+>
+> These files come from upstream Zstandard -- should we keep those lines
+> to minimize divergence?
+> https://github.com/facebook/zstd/blob/v1.4.10/lib/common/compiler.h#L154.
+>
+> Commit e0c1b49f5b67 ("lib: zstd: Upgrade to latest upstream zstd
+> version 1.4.10") is the latest upgrade, and says:
+>
+>     This patch is 100% generated from upstream zstd commit 20821a46f412 [0].
+>
+>     This patch is very large because it is transitioning from the custom
+>     kernel zstd to using upstream directly. The new zstd follows upstreams
+>     file structure which is different. Future update patches will be much
+>     smaller because they will only contain the changes from one upstream
+>     zstd release.
+>
+> So I think Nick would prefer to keep the changes as minimal as
+> possible with respect to upstream.
+>
+> Further reading seems to suggest this is the case, e.g. see this
+> commit upstream that introduces a space to match the kernel:
+> https://github.com/facebook/zstd/commit/b53da1f6f499f0d44c5f40795b080d967b24e5fa.
+>
+> > diff --git a/lib/zstd/compress/zstd_fast.c b/lib/zstd/compress/zstd_fast.c
+> > index 96b7d48e2868..800f3865119f 100644
+> > --- a/lib/zstd/compress/zstd_fast.c
+> > +++ b/lib/zstd/compress/zstd_fast.c
+> > @@ -80,13 +80,6 @@ ZSTD_compressBlock_fast_generic(
+> >      }
+> >
+> >      /* Main Search Loop */
+> > -#ifdef __INTEL_COMPILER
+> > -    /* From intel 'The vector pragma indicates that the loop should be
+> > -     * vectorized if it is legal to do so'. Can be used together with
+> > -     * #pragma ivdep (but have opted to exclude that because intel
+> > -     * warns against using it).*/
+> > -    #pragma vector always
+> > -#endif
+> >      while (ip1 < ilimit) {   /* < instead of <=, because check at ip0+2 */
+> >          size_t mLength;
+> >          BYTE const* ip2 = ip0 + 2;
+>
+> Ditto: https://github.com/facebook/zstd/blob/v1.4.10/lib/compress/zstd_fast.c#L83.
+>
+> Apart from the zstd divergence which I am not sure about, everything
+> looks good to me!
+>
+> Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
+>
+> Cheers,
+> Miguel
 
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
----
- arch/ia64/kernel/ptrace.c | 20 +++++++++-----------
- 1 file changed, 9 insertions(+), 11 deletions(-)
 
-diff --git a/arch/ia64/kernel/ptrace.c b/arch/ia64/kernel/ptrace.c
-index ab8aeb34d1d9..4c41912c550f 100644
---- a/arch/ia64/kernel/ptrace.c
-+++ b/arch/ia64/kernel/ptrace.c
-@@ -1481,12 +1481,10 @@ static void do_gpregs_set(struct unw_frame_info *info, void *arg)
- 		return;
- 	/* Skip r0 */
- 	if (dst->pos < ELF_GR_OFFSET(1)) {
--		dst->ret = user_regset_copyin_ignore(&dst->pos, &dst->count,
--						       &dst->u.set.kbuf,
--						       &dst->u.set.ubuf,
--						       0, ELF_GR_OFFSET(1));
--		if (dst->ret)
--			return;
-+		user_regset_copyin_ignore(&dst->pos, &dst->count,
-+					  &dst->u.set.kbuf, &dst->u.set.ubuf,
-+					  0, ELF_GR_OFFSET(1));
-+		dst->ret = 0;
- 	}
- 
- 	while (dst->count && dst->pos < ELF_AR_END_OFFSET) {
-@@ -1560,11 +1558,11 @@ static void do_fpregs_set(struct unw_frame_info *info, void *arg)
- 
- 	/* Skip pos 0 and 1 */
- 	if (dst->count > 0 && dst->pos < ELF_FP_OFFSET(2)) {
--		dst->ret = user_regset_copyin_ignore(&dst->pos, &dst->count,
--						       &dst->u.set.kbuf,
--						       &dst->u.set.ubuf,
--						       0, ELF_FP_OFFSET(2));
--		if (dst->count == 0 || dst->ret)
-+		user_regset_copyin_ignore(&dst->pos, &dst->count,
-+					  &dst->u.set.kbuf, &dst->u.set.ubuf,
-+					  0, ELF_FP_OFFSET(2));
-+		dst->ret = 0;
-+		if (dst->count == 0)
- 			return;
- 	}
- 
+Thanks for your close review.
+
+I will drop zstd changes and send v3.
+
+
+
 -- 
-2.26.3
-
+Best Regards
+Masahiro Yamada
