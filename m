@@ -2,103 +2,114 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0C61603DE8
-	for <lists+linux-ia64@lfdr.de>; Wed, 19 Oct 2022 11:07:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B34BB605EDC
+	for <lists+linux-ia64@lfdr.de>; Thu, 20 Oct 2022 13:30:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232625AbiJSJH5 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 19 Oct 2022 05:07:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45194 "EHLO
+        id S229893AbiJTLaN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 20 Oct 2022 07:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232458AbiJSJGS (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 19 Oct 2022 05:06:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1562119C0B;
-        Wed, 19 Oct 2022 01:59:35 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D125617F7;
-        Wed, 19 Oct 2022 08:57:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D0EC433C1;
-        Wed, 19 Oct 2022 08:57:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1666169871;
-        bh=3i1Ed3bk0XkELjKa8ysuyW1Wad/0dMDZaLkwWHH547Y=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UNaXIP+CiqqI/k8s2stZ9GFmjYaFVF2xfUbUs7Z2jtS6H8tGMVBaYUgQO85RoyuW6
-         M3+mrq59Rs4D00+/rLOLZyV9v1FFTGRhq2NWGBrq5uwgG72SHocSE8at7L7jnq+H4m
-         qDaXB6htg2JuwseSBUKuhWHVUga8DKAKu1Nj/q3g=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
-        Randy Dunlap <rdunlap@infradead.org>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Ben Widawsky <bwidawsk@kernel.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        linux-ia64@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Keith Mannthey <kmannth@us.ibm.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.0 439/862] ia64: export memory_add_physaddr_to_nid to fix cxl build error
-Date:   Wed, 19 Oct 2022 10:28:46 +0200
-Message-Id: <20221019083309.387354722@linuxfoundation.org>
-X-Mailer: git-send-email 2.38.0
-In-Reply-To: <20221019083249.951566199@linuxfoundation.org>
-References: <20221019083249.951566199@linuxfoundation.org>
-User-Agent: quilt/0.67
+        with ESMTP id S229910AbiJTLaM (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 20 Oct 2022 07:30:12 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A67E108DC6;
+        Thu, 20 Oct 2022 04:30:10 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id y4so1165772plb.2;
+        Thu, 20 Oct 2022 04:30:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=oxkGsht8Um+eQ+AA7QKGJnPL5aBRWvNYoBIpMYroGm4=;
+        b=jZtD2P3GIVjFPZkSUmowjCEhkSQTvPcvND+AfjIb6qweRdwnG03O+zmnmEYQ5osRtL
+         teoCIB2sLgezbRp+C2Qfv/12yC4p3fYkTT8MzqaK6FfKbdFyGWC/AT6liTuG3gMn+iVm
+         JdpVOvZvxPN2DvTAMpe9vU+/PxU/+TcPKRj7LSE8/ojly6rBd0ggiVjAh/OPEa6EGayd
+         n0XPjUozMyNbzMpdiwJGBdHNUul1c5rO8wWDcxZEj5RbIiFri2LHODT0twLn+XOYdIrg
+         ytADM1bsY2IkS0QHbct0LkFcd7kEi/JNwXf1aZx/EZ7GrEBe7EWIcy03G6J4ECChl43a
+         77Ig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oxkGsht8Um+eQ+AA7QKGJnPL5aBRWvNYoBIpMYroGm4=;
+        b=hr7XU92Us7IbsIyT8mMtZ4bqolrB/4EhiJ4SeZOOa6zodwXBw59Ox6/h7t/05Ksv8t
+         NzcmMGT7LhYfwLkdKPVYhcfum82lKrWfk5jOtbq8rVPPsfzGHoThvp+HbW9Xl5g9OHK8
+         GFAiAlXzBctAMOLX14nMScL/JrmIQbH8NO0qLSwPe1hiNYZNYZGg32ja2pCI2OxIzJE+
+         FcowMkvwh0TC8LD9sb8aPIJvFMrB29dPE0p9jxhUUVm2HuG/a4+NcRku0iR0quN5GBON
+         sUNTMjXjsMjIntolhYa9V+seGyXeG7CfPDhoFwaIMLDsSLwwPZLJ+QE3+eZnagncp4My
+         WSRQ==
+X-Gm-Message-State: ACrzQf1PZisQYqOt7VfGX0WgtWTkjAQS4vzzWRSv7wwZFVKLLTZlfCgS
+        50e1dhfMh0Sue1kdviP9BUk=
+X-Google-Smtp-Source: AMsMyM4uzCN4Fy0l5xIt4oMVRAoHTiGctlsItIuQgXL2SYAEs0yARZdIleQ97SzmJVT0qrPbCFMO1w==
+X-Received: by 2002:a17:90b:1a84:b0:20d:5086:3694 with SMTP id ng4-20020a17090b1a8400b0020d50863694mr15913301pjb.74.1666265409872;
+        Thu, 20 Oct 2022 04:30:09 -0700 (PDT)
+Received: from localhost.localdomain ([193.203.214.57])
+        by smtp.gmail.com with ESMTPSA id p7-20020a17090a284700b00200461cfa99sm1539369pjf.11.2022.10.20.04.30.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Oct 2022 04:30:09 -0700 (PDT)
+From:   yexingchen116@gmail.com
+X-Google-Original-From: ye.xingchen@zte.com.cn
+To:     akpm@linux-foundation.org
+Cc:     slyich@gmail.com, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ye xingchen <ye.xingchen@zte.com.cn>
+Subject: [PATCH linux-next] ia64: Replace IS_ERR() with IS_ERR_VALUE()
+Date:   Thu, 20 Oct 2022 11:30:04 +0000
+Message-Id: <20221020113004.400031-1-ye.xingchen@zte.com.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: ye xingchen <ye.xingchen@zte.com.cn>
 
-[ Upstream commit 97c318bfbe84efded246e80428054f300042f110 ]
+Avoid type casts that are needed for IS_ERR() and use
+IS_ERR_VALUE() instead.
 
-cxl_pmem.ko uses memory_add_physaddr_to_nid() but ia64 does not export it,
-so this causes a build error:
-
-ERROR: modpost: "memory_add_physaddr_to_nid" [drivers/cxl/cxl_pmem.ko] undefined!
-
-Fix this by exporting that function.
-
-Fixes: 8c2676a5870a ("hot-add-mem x86_64: memory_add_physaddr_to_nid node fixup")
-Reported-by: kernel test robot <lkp@intel.com>
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Dan Williams <dan.j.williams@intel.com>
-Cc: Ben Widawsky <bwidawsk@kernel.org>
-Cc: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Cc: linux-ia64@vger.kernel.org
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Keith Mannthey <kmannth@us.ibm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: ye xingchen <ye.xingchen@zte.com.cn>
 ---
- arch/ia64/mm/numa.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/ia64/kernel/sys_ia64.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/ia64/mm/numa.c b/arch/ia64/mm/numa.c
-index d6579ec3ea32..4c7b1f50e3b7 100644
---- a/arch/ia64/mm/numa.c
-+++ b/arch/ia64/mm/numa.c
-@@ -75,5 +75,6 @@ int memory_add_physaddr_to_nid(u64 addr)
- 		return 0;
- 	return nid;
+diff --git a/arch/ia64/kernel/sys_ia64.c b/arch/ia64/kernel/sys_ia64.c
+index 215bf3f8cb20..f6a502e8f02c 100644
+--- a/arch/ia64/kernel/sys_ia64.c
++++ b/arch/ia64/kernel/sys_ia64.c
+@@ -140,7 +140,7 @@ asmlinkage unsigned long
+ sys_mmap2 (unsigned long addr, unsigned long len, int prot, int flags, int fd, long pgoff)
+ {
+ 	addr = ksys_mmap_pgoff(addr, len, prot, flags, fd, pgoff);
+-	if (!IS_ERR((void *) addr))
++	if (!IS_ERR_VALUE(addr))
+ 		force_successful_syscall_return();
+ 	return addr;
  }
-+EXPORT_SYMBOL(memory_add_physaddr_to_nid);
- #endif
- #endif
+@@ -152,7 +152,7 @@ sys_mmap (unsigned long addr, unsigned long len, int prot, int flags, int fd, lo
+ 		return -EINVAL;
+ 
+ 	addr = ksys_mmap_pgoff(addr, len, prot, flags, fd, off >> PAGE_SHIFT);
+-	if (!IS_ERR((void *) addr))
++	if (!IS_ERR_VALUE(addr))
+ 		force_successful_syscall_return();
+ 	return addr;
+ }
+@@ -162,7 +162,7 @@ ia64_mremap (unsigned long addr, unsigned long old_len, unsigned long new_len, u
+ 	     unsigned long new_addr)
+ {
+ 	addr = sys_mremap(addr, old_len, new_len, flags, new_addr);
+-	if (!IS_ERR((void *) addr))
++	if (!IS_ERR_VALUE(addr))
+ 		force_successful_syscall_return();
+ 	return addr;
+ }
 -- 
-2.35.1
-
-
+2.25.1
 
