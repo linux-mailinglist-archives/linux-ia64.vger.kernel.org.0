@@ -2,80 +2,94 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D2BD613ACC
-	for <lists+linux-ia64@lfdr.de>; Mon, 31 Oct 2022 16:56:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CB754614EC9
+	for <lists+linux-ia64@lfdr.de>; Tue,  1 Nov 2022 17:06:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231621AbiJaP4H (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 31 Oct 2022 11:56:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59030 "EHLO
+        id S229650AbiKAQGY (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 1 Nov 2022 12:06:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231693AbiJaP4G (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 31 Oct 2022 11:56:06 -0400
-Received: from mail-ed1-x531.google.com (mail-ed1-x531.google.com [IPv6:2a00:1450:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48C81120BD
-        for <linux-ia64@vger.kernel.org>; Mon, 31 Oct 2022 08:56:01 -0700 (PDT)
-Received: by mail-ed1-x531.google.com with SMTP id z18so13073205edb.9
-        for <linux-ia64@vger.kernel.org>; Mon, 31 Oct 2022 08:56:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=54IXG2FPqhGXRhjbMJeBZJCoE2PKYVWz3wVMDeZTLCU=;
-        b=Zskj8hY47y9/vRBVhsXI/zOvfwa2iyJBv9QUq1+i13j5qsNOJnVU3wL/JUdlYLqz4v
-         Mk75ESkgustxHq75/QaQ5OEO1eZt7heVL+VSe9tWHj5UP5z0WxpoZwggf/S4CeijV4z5
-         HpPLq4by6bha61t+359KMwWeXzdOid4NQVZsaks1CdeCumgLsRV5VNAtoBtOUtua3AOs
-         B5a4nrT+akXiUSdAx3LfyeaIm/nUCwSaWn4ght0Rx/QkIRjjlRNszAEfCaGP1d1g0WE4
-         nBI6wREzdJQ6Rx+IOYKCW7XmWBLDVtspMgcS3+GdeG5+YYpDHOEQlReggADgkn+UXgD5
-         SxHw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=54IXG2FPqhGXRhjbMJeBZJCoE2PKYVWz3wVMDeZTLCU=;
-        b=mIR9WQDt6XwUhvuy6eH6PkTsCwTle5nqT6Le3sMGNWxSllCnFG9PjMl0Leood21XCt
-         bE/ES0j6fcKN4HPehgmWzxs5D+iHaVbfsSi2wf4lZNh+1ScsDDRGq/ltP/drLtVBEZZm
-         IAQzyrggZ7akB9t6NejODoxJbnwm8YSKmejfDTzVovBpTY6TFTi6+cRvYvc11Ii3ufdA
-         jxqf45pefqWbEyE4Xbwlvavl5e7yNYoOHX1q5FfB2OjJEiAuFR5Sk0HGIAnBdqq5/kq9
-         QGuYAjNS3hdbfqFiwfhvWfCglpi0g5cdekCgb/Zozg0RUerooNg3iEB4jiAQOB4+XWuS
-         ck9g==
-X-Gm-Message-State: ACrzQf3EvnB/WXssywszSzKUNUeEiadhHhVs9NiMIplIxLbkdI6SFAy1
-        0PHW3rdd0p+WMKNikcXvmGlYQ8woXd88BEuGLvk=
-X-Google-Smtp-Source: AMsMyM4G/j8m1/zSeccQf2AkVugX8309cUfDI+UYDvZQuRuoGB23q/LHl7RH2mbAs7rIvYUS8mc5Ee0Zt9e7fN034Ws=
-X-Received: by 2002:a05:6402:f0e:b0:461:aaa3:a11c with SMTP id
- i14-20020a0564020f0e00b00461aaa3a11cmr14510961eda.53.1667231759743; Mon, 31
- Oct 2022 08:55:59 -0700 (PDT)
+        with ESMTP id S229553AbiKAQGX (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 1 Nov 2022 12:06:23 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E93713E14;
+        Tue,  1 Nov 2022 09:06:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.net; s=s31663417;
+        t=1667318776; bh=GDM5w/VeqzXan3VWgpM/qUk5TbfOxJCHDnXddN5FY2E=;
+        h=X-UI-Sender-Class:From:To:Cc:Subject:Date;
+        b=QnqfJL1ucll31p6hRPGdK0rNqX3J1n6DaEO9OEl4Ei8qe4eqRQ6PVZxbwXBeawo3+
+         pgzbW8GTTRVUWa8Bfe6pT1+b4oKaW9mG5Q9w3Z/bct/tQ8sv163x5eZ4lrX70ZEFvj
+         qA2KeBbBEXWV/2vU+XjDHtAOQBCS3NG8XqFtKexvT0bdZ2qRviPrnE/Vhe+alQ4VkD
+         dOEwz3phUr8eIQMKW3GVDw7OZ/PrkxSpPRZjV/H4DMmNDbmPeoDDQY5K6disCjUf2x
+         gazzijXRzFr+fMj9SihgU4XSxNeQMLWT/++6XxmU1dYMEBWJKJ38bHr4tDJ+wSWAF4
+         hrMGPmT0Vbfwg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from probook ([78.34.126.36]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1M89L1-1ouaTL2iA7-005HB4; Tue, 01
+ Nov 2022 17:06:16 +0100
+From:   =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>
+To:     linux-doc@vger.kernel.org
+Cc:     =?UTF-8?q?Jonathan=20Neusch=C3=A4fer?= <j.neuschaefer@gmx.net>,
+        Jonathan Corbet <corbet@lwn.net>, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Subject: [PATCH] docs: ia64: Fix a typo ("identify mappings")
+Date:   Tue,  1 Nov 2022 17:06:09 +0100
+Message-Id: <20221101160609.961950-1-j.neuschaefer@gmx.net>
+X-Mailer: git-send-email 2.35.1
 MIME-Version: 1.0
-Received: by 2002:a05:7208:608b:b0:5d:5fd:eaac with HTTP; Mon, 31 Oct 2022
- 08:55:59 -0700 (PDT)
-Reply-To: victorinaquezon01@yahoo.com
-From:   Victorina <victorinaquezon@gmail.com>
-Date:   Mon, 31 Oct 2022 15:55:59 +0000
-Message-ID: <CAAOoKdtKiOsY9NHKOKnMFde+5RJ9erb66BYraxj99G3YEi+ybg@mail.gmail.com>
-Subject: Bonjour
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=4.8 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,FREEMAIL_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:/VRiGKjvC/suvQdqYSsF82L0JMSiSVg4aF1DQVvMmkX1CJI9art
+ HtrqolxTTDg+JqHeNQybqSf9BGPIHmg241N+PMI16yAEMiaNSttZKKMSxWBt+ZyEBRejXfj
+ QUYRxrpZKWIvseBOpAxyQhcj4M5oOaHFullar9+IHPYgVciBsZbfqQAR9vJqMdFS6ozpiBf
+ IvEpaztOQPLYm9Z0VY1fA==
+UI-OutboundReport: notjunk:1;M01:P0:CinfW92A6PE=;XnaiRvyVEhl15pc8HtejAYg6GNs
+ PJYMwfoxBsQuVW/9ils3T/lJnuKWM3MoiNqWikPCndzaYLTbwGme4MBBWUpI8jmjDfB6iiVTw
+ Sn8frRqd+IsJL4RykXeTTlaLKBFUu9ri21ZA1FAYsJoJbmKulLpK/imXr07hYrU6lxnSxXjWy
+ 9f7aY8yu0QR9AJ9/3LImfbOulilBhJUoEUAKBUZIuirkJwOR1DEbTVDa7nNoK0Jk32Rgpl/wW
+ WLtAsihjSbIFhepwjLmYxtBQE09OIBp2Fyy0G7oOkBUC9Z2/ZZnzci6UIvTUfxBpFZ0xXVrY6
+ tOkGs/4vdPnUq6F48zZ4avY/2ucldbOhd1NYFeys8nAQMxhsjLNFAa4qKb5AiYccS4R6wcVK4
+ nFIq6i6c5cQ0kfbvfvGCjIGj8db3CauGsRpet1S/BYgXjQiQNTVBgAbpoz4NMCHfIuvd6Il1r
+ wkSQ/1iEygyfDaBMXx0f1czt9EdOSOY1Q+UR4k2YLc0zgiUR+QQuNgClS1mDBnh+bhBPap3hd
+ NkrbYqXGvRWSy7oTFpSLRkC1ji6STv/Uuaigu+ASnBAHoDGeVSTG8cWUHs/mteC6txevHiJs3
+ zvBVWgVyUMocf0LYCclZ1hALERH/QwAGfb2YD0L76wXetF4s5+mTxYbms4jVm4uVJhlQCISvy
+ XtXWnbj/ytLy7KjWTfNvBeK8hKcQpj7aonGbgFKQf0jv2EZnnjjVfnmtgJt2hy8WdpyP/8egb
+ E1LEXqtnC8X7oahrLYemXiPV/j0yjt1+hTj2HdOOBVPAkgBe074TQFtwuqmOprPmq207nq54w
+ hclZ7fhuhVm7dJ3xZt6nFX23GdIGfH7wE6HsfobpBnhMbLflzkeo6v2cXnG+9SNxMxF7q786s
+ E7Amgrbc3Pi64MPHWLF3z1JoZG+dkEo5Gxs5yaDng7RemE+gEMJg6slyS0YvPn43knEOXZsQz
+ tIix66iVg2C37IAf/r9ubPxER8o=
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
--- 
-I am Madam Victorina Quezon a citizen of philippine,A widow
-I am  woman going through so much pain and suffer and might not walk
-again if nothing is been done fast
-Please  I want you to help me retrieve the only Thing I have now in a
-box  which contains my jewelries and 585,000 thounsand dollars   which
- my late husband left for me which is currently in a Security company,
-I have no strength to do this due to my health condition and safety
-Please Keep this Confidential
-I await your response
-Please reply me at     victorinaquezon01@yahoo.com
-So i can explain more
-With love
-Victorina Quezon
+The correct term here, also used in the next line, is "identity
+mappings". "itentify mappings" was probably just a typo.
+
+Signed-off-by: Jonathan Neusch=C3=A4fer <j.neuschaefer@gmx.net>
+=2D--
+ Documentation/ia64/aliasing.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Documentation/ia64/aliasing.rst b/Documentation/ia64/aliasing=
+.rst
+index a08b36aba0159..36a1e1d4842b8 100644
+=2D-- a/Documentation/ia64/aliasing.rst
++++ b/Documentation/ia64/aliasing.rst
+@@ -61,7 +61,7 @@ Memory Map
+     The efi_memmap table is preserved unmodified because the original
+     boot-time information is required for kexec.
+
+-Kernel Identify Mappings
++Kernel Identity Mappings
+ =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+
+     Linux/ia64 identity mappings are done with large pages, currently
+=2D-
+2.35.1
+
