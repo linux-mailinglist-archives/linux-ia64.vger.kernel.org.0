@@ -2,64 +2,67 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41F0562C76C
-	for <lists+linux-ia64@lfdr.de>; Wed, 16 Nov 2022 19:17:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 8191B62C881
+	for <lists+linux-ia64@lfdr.de>; Wed, 16 Nov 2022 19:57:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238685AbiKPSQ6 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 16 Nov 2022 13:16:58 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55582 "EHLO
+        id S234047AbiKPS5A (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 16 Nov 2022 13:57:00 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239090AbiKPSQz (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 16 Nov 2022 13:16:55 -0500
-Received: from mail-qv1-xf34.google.com (mail-qv1-xf34.google.com [IPv6:2607:f8b0:4864:20::f34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC166627E8
-        for <linux-ia64@vger.kernel.org>; Wed, 16 Nov 2022 10:16:54 -0800 (PST)
-Received: by mail-qv1-xf34.google.com with SMTP id i12so12456827qvs.2
-        for <linux-ia64@vger.kernel.org>; Wed, 16 Nov 2022 10:16:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=PBgZn+u117R7gFQNpsnvlIYlwSeo0LUTLoxlFKr3wyI=;
-        b=eH0YS14VezMu1YoYc8i9L/9V4Rda12NtBPhbyEQG9con1K8dLIyV9b4KNCmIq0wzpX
-         WqxRC9GRz2SSVMeoKLZbZ25GRVxvk4TLZwapfzc9KJm3PzFnUZgrmijMI3uqPEOn38/b
-         +5K39+JbiCr6klzOuT84Gyzf87KIYKFM/ltfQ=
+        with ESMTP id S239328AbiKPS4h (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 16 Nov 2022 13:56:37 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F09D467118
+        for <linux-ia64@vger.kernel.org>; Wed, 16 Nov 2022 10:54:10 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1668624849;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=XrMOrTfFoolcBWY273BC4KVOqyrI8gbytsgZlItRSSY=;
+        b=MKF4C93E73NupDI9xlbLUzFm+GILJ6JKH6p7XX8zbpKZ+mJJHcaz2V4GLyz1zUR2JsM3Kd
+        hyk5LjwX3YXnXSp87+2Lss/wk82vwz+3CHquSZJ2xUoJvh0R51NSe455H+X89sMbXGfo7M
+        KsFgxiLbFcbXgVK2bR6bwDlvzjb/onU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-662-M8d73eqFOIeRew6UvbKyZw-1; Wed, 16 Nov 2022 13:54:02 -0500
+X-MC-Unique: M8d73eqFOIeRew6UvbKyZw-1
+Received: by mail-wr1-f72.google.com with SMTP id x17-20020adfbb51000000b0024182561cb2so2717801wrg.4
+        for <linux-ia64@vger.kernel.org>; Wed, 16 Nov 2022 10:54:02 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:in-reply-to:subject:organization:from
+         :references:cc:to:content-language:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=PBgZn+u117R7gFQNpsnvlIYlwSeo0LUTLoxlFKr3wyI=;
-        b=hODcJfq3MW+lTlRcbDKnCjpa0yTGPzAGasK/C+SZ9GeNXVx3vz3X8KHH4lY37ILZv0
-         UD06LikBOU6iKhTGbksiOog/Ir1JE4oBisIGOiGrtZFhBkhItVcZdbQt8QMuYjiAiLT6
-         qtYCtitPtn7i1xc65ADarSmZYE69XJeffY06EZqoDkSa2PzocpQK8jQE+hWWRTMzF11d
-         Y+73301nIDPaWuNPmboRxKVM50WQ5wnE+OsBoHfvORpmtVqZ5uZDeFUCyOcYRhFyll4a
-         zldB8wQc+SZ7oD0tkH/Ph91AroNU9N0WpT2Qw4uTs3MPh1JOHlEoQ4ryuadGkTJdj78i
-         4krg==
-X-Gm-Message-State: ANoB5pllc1pKFJ7XKVTR+xU7Hcz7dX7Y2xmV+ZbdddMeNewXGm92ZhP0
-        YPnbUyD+n6Ah90sAusWshnTwliVUzXTgNQ==
-X-Google-Smtp-Source: AA0mqf7a+Es3SPWVbGFdK6vQ3rUJxixUoqTMlwgZvndlzCAZaGIMClpX8xTdTtjDciM8CJQ3s0KOzg==
-X-Received: by 2002:a0c:fa4b:0:b0:4aa:a2b3:6c84 with SMTP id k11-20020a0cfa4b000000b004aaa2b36c84mr21752289qvo.50.1668622613524;
-        Wed, 16 Nov 2022 10:16:53 -0800 (PST)
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com. [209.85.160.175])
-        by smtp.gmail.com with ESMTPSA id o26-20020ac8699a000000b003a50b9f099esm9029955qtq.12.2022.11.16.10.16.51
-        for <linux-ia64@vger.kernel.org>
+        bh=XrMOrTfFoolcBWY273BC4KVOqyrI8gbytsgZlItRSSY=;
+        b=o3SOqTz7Rs6UX7Y0VoJRqW8neUMKFcqCotRnuCSeXzyTgtbw05KSA3wWis3sqZaLyT
+         KenXq80Il7TSLVEXsTAuWn/thVVj9NAdQ3+w2Qq9r/4OIXT+93Z7YYgzu+BVCNyvcKBp
+         KAgzfIVqq+9X3cD+H761csf5phocReIYG0FKbEb25qYbsGwEuP8+rjQ6t2tVwtqBr6xw
+         n9n5iQvfO2sqwAozEo8VUdDtyjTE1TW8rK8YyAv3Zg8ZEXm2RDR+Bx3ogEr5b/Xp1qW5
+         xPxShKKooaDsymwtBpsa57XuiSa6NtqEKo8EBht+/5ehzVxjYfc4gCBhzmoxrq3zb+Uj
+         z1Yw==
+X-Gm-Message-State: ANoB5pm9hTypJTKbjIkcLEYxvxThna5yu7tYqnvrW3huFXWtBX+oncBl
+        CacLQTXs7YGbwGw3HMm8Cux3epGKZSoxO/Im20On1y5kWYusX02IHT0SipU5wS0b+jp1CsngeqQ
+        hTovB/9XS4EpHEwDUbfwWVA==
+X-Received: by 2002:a05:600c:188a:b0:3cf:8e62:f769 with SMTP id x10-20020a05600c188a00b003cf8e62f769mr3135338wmp.52.1668624841277;
+        Wed, 16 Nov 2022 10:54:01 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf5DCp6F6fiXltcSvKkMYb+ZcNvwNu+I48re+Q7o+sjDMiBTT1rVi2cU7FL82kIKKDnPvsKEPw==
+X-Received: by 2002:a05:600c:188a:b0:3cf:8e62:f769 with SMTP id x10-20020a05600c188a00b003cf8e62f769mr3135302wmp.52.1668624841029;
+        Wed, 16 Nov 2022 10:54:01 -0800 (PST)
+Received: from ?IPV6:2003:cb:c704:9f00:a98d:4026:7c44:40fd? (p200300cbc7049f00a98d40267c4440fd.dip0.t-ipconnect.de. [2003:cb:c704:9f00:a98d:4026:7c44:40fd])
+        by smtp.gmail.com with ESMTPSA id h16-20020a05600c315000b003cff309807esm3012333wmo.23.2022.11.16.10.53.57
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 16 Nov 2022 10:16:51 -0800 (PST)
-Received: by mail-qt1-f175.google.com with SMTP id a27so11211025qtw.10
-        for <linux-ia64@vger.kernel.org>; Wed, 16 Nov 2022 10:16:51 -0800 (PST)
-X-Received: by 2002:a05:622a:1c15:b0:3a5:49fa:3983 with SMTP id
- bq21-20020a05622a1c1500b003a549fa3983mr21860304qtb.436.1668622610752; Wed, 16
- Nov 2022 10:16:50 -0800 (PST)
+        Wed, 16 Nov 2022 10:54:00 -0800 (PST)
+Message-ID: <caf52607-49cd-3073-ca4a-ddce9509e7c9@redhat.com>
+Date:   Wed, 16 Nov 2022 19:53:57 +0100
 MIME-Version: 1.0
-References: <20221116102659.70287-1-david@redhat.com> <20221116102659.70287-21-david@redhat.com>
-In-Reply-To: <20221116102659.70287-21-david@redhat.com>
-From:   Linus Torvalds <torvalds@linux-foundation.org>
-Date:   Wed, 16 Nov 2022 10:16:34 -0800
-X-Gmail-Original-Message-ID: <CAHk-=wgtEwpR-rE_=cXzecHMZ+zgrx5zf9UfvH0w-mKgckn4=Q@mail.gmail.com>
-Message-ID: <CAHk-=wgtEwpR-rE_=cXzecHMZ+zgrx5zf9UfvH0w-mKgckn4=Q@mail.gmail.com>
-Subject: Re: [PATCH mm-unstable v1 20/20] mm: rename FOLL_FORCE to FOLL_PTRACE
-To:     David Hildenbrand <david@redhat.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+Content-Language: en-US
+To:     Linus Torvalds <torvalds@linux-foundation.org>
 Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
         linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
         linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
@@ -121,55 +124,81 @@ Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
         Paul Moore <paul@paul-moore.com>,
         James Morris <jmorris@namei.org>,
         "Serge E. Hallyn" <serge@hallyn.com>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+References: <20221116102659.70287-1-david@redhat.com>
+ <20221116102659.70287-21-david@redhat.com>
+ <CAHk-=wgtEwpR-rE_=cXzecHMZ+zgrx5zf9UfvH0w-mKgckn4=Q@mail.gmail.com>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH mm-unstable v1 20/20] mm: rename FOLL_FORCE to FOLL_PTRACE
+In-Reply-To: <CAHk-=wgtEwpR-rE_=cXzecHMZ+zgrx5zf9UfvH0w-mKgckn4=Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Nov 16, 2022 at 2:30 AM David Hildenbrand <david@redhat.com> wrote:
->
-> Let's make it clearer that functionality provided by FOLL_FORCE is
-> really only for ptrace access.
+On 16.11.22 19:16, Linus Torvalds wrote:
+> On Wed, Nov 16, 2022 at 2:30 AM David Hildenbrand <david@redhat.com> wrote:
+>>
+>> Let's make it clearer that functionality provided by FOLL_FORCE is
+>> really only for ptrace access.
+> 
+> I'm not super-happy about this one.
+> 
+> I do understand the "let's rename the bit so that no new user shows up".
+> 
+> And it's true that the main traditional use is ptrace.
+> 
+> But from the patch itself it becomes obvious that no, it's not *just*
+> ptrace. At least not yet.
+> 
+> It's used for get_arg_page(), which uses it to basically look up (and
+> install) pages in the newly created VM.
+> 
+> Now, I'm not entirely sure why it even uses FOLL_FORCE, - I think it
+> might be historical, because the target should always be the new stack
+> vma.
+> 
+> Following the history of it is a big of a mess, because there's a
+> number of renamings and re-organizations, but it seems to go back to
+> 2007 and commit b6a2fea39318 ("mm: variable length argument support").
+> 
 
-I'm not super-happy about this one.
+Right.
 
-I do understand the "let's rename the bit so that no new user shows up".
+> Before that commit, we kept our own array of "this is the set of pages
+> that I will install in the new VM". That commit basically just inserts
+> the pages directly into the VM instead, getting rid of the array size
+> limitation.
+> 
+> So at a minimum, I think that FOLL_FORCE would need to be removed
+> before any renaming to FOLL_PTRACE, because that's not some kind of
+> small random case.
+> 
+> It *might* be as simple as just removing it, but maybe there's some
+> reason for having it that I don't immediately see.
 
-And it's true that the main traditional use is ptrace.
+Right, I have the same feeling. It might just be a copy-and-paste legacy 
+leftover.
 
-But from the patch itself it becomes obvious that no, it's not *just*
-ptrace. At least not yet.
+> 
+> There _are_ also small random cases too, like get_cmdline(). Maybe
+> that counts as ptrace, but the execve() case most definitely does not.
 
-It's used for get_arg_page(), which uses it to basically look up (and
-install) pages in the newly created VM.
+I agree. I'd suggest moving forward without this (last) patch for now 
+and figuring out how to further cleanup FOLL_FORCE usage on top.
 
-Now, I'm not entirely sure why it even uses FOLL_FORCE, - I think it
-might be historical, because the target should always be the new stack
-vma.
+@Andrew, if you intend to put this into mm-unstable, please drop the 
+last patch for now.
 
-Following the history of it is a big of a mess, because there's a
-number of renamings and re-organizations, but it seems to go back to
-2007 and commit b6a2fea39318 ("mm: variable length argument support").
+-- 
+Thanks,
 
-Before that commit, we kept our own array of "this is the set of pages
-that I will install in the new VM". That commit basically just inserts
-the pages directly into the VM instead, getting rid of the array size
-limitation.
+David / dhildenb
 
-So at a minimum, I think that FOLL_FORCE would need to be removed
-before any renaming to FOLL_PTRACE, because that's not some kind of
-small random case.
-
-It *might* be as simple as just removing it, but maybe there's some
-reason for having it that I don't immediately see.
-
-There _are_ also small random cases too, like get_cmdline(). Maybe
-that counts as ptrace, but the execve() case most definitely does not.
-
-                Linus
