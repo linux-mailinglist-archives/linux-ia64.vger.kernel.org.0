@@ -2,57 +2,57 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B357662D00C
-	for <lists+linux-ia64@lfdr.de>; Thu, 17 Nov 2022 01:47:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9507B62D017
+	for <lists+linux-ia64@lfdr.de>; Thu, 17 Nov 2022 01:47:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238722AbiKQAq5 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 16 Nov 2022 19:46:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38890 "EHLO
+        id S238928AbiKQArb (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 16 Nov 2022 19:47:31 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234506AbiKQAqY (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 16 Nov 2022 19:46:24 -0500
-Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F2C76B235
-        for <linux-ia64@vger.kernel.org>; Wed, 16 Nov 2022 16:45:24 -0800 (PST)
-Received: by mail-qk1-x729.google.com with SMTP id z17so215053qki.11
-        for <linux-ia64@vger.kernel.org>; Wed, 16 Nov 2022 16:45:24 -0800 (PST)
+        with ESMTP id S238971AbiKQAqw (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 16 Nov 2022 19:46:52 -0500
+Received: from mail-qv1-xf2a.google.com (mail-qv1-xf2a.google.com [IPv6:2607:f8b0:4864:20::f2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EBEF70182
+        for <linux-ia64@vger.kernel.org>; Wed, 16 Nov 2022 16:45:47 -0800 (PST)
+Received: by mail-qv1-xf2a.google.com with SMTP id c8so200578qvn.10
+        for <linux-ia64@vger.kernel.org>; Wed, 16 Nov 2022 16:45:47 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=ziepe.ca; s=google;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HEOs2OljVpzFekHebtNmxJNTS1biZDzbDC+7E+gbGXE=;
-        b=NKUDG6/HRBHYArrki2ErKlKAFAloDP3syGXEvUqNJ9D2fVrZim0dI4zYfgnJWEKy+2
-         eIgPOs+mttvXhYUIJL/UppN4gHtQqcQpWlrONSgHhATtfRfLqa70r2Y5AFUtDhoXumLz
-         QwAO0SpqErl+SpXb2isD+wqK260zhrI3m0OcjGKZmRIuadG54e+ieDR5HURAecTq4gww
-         +4XuPNBvBD2G5dec/bz8Eh9V9EDh1RbiHGn8GIrcO4V8END9r1k5y0xfRAbT/lxmG9Cm
-         d4SXiY9+ZupOQT/Gb+ZePnA6lwtOPkxvxI9tRVsC2WHBPZX7s+xnX8nZsTymxhqmYSZB
-         7vEA==
+        bh=6GmH5bBgQAPTYyWGM7n52ZkzuQiQsRGb4mBRnSjjrbs=;
+        b=l2lxIbefVRjdcatsHe8zxGxmcFT5QX0zkZlGmTA+6hS7woiLsGV9I6bNGV4zHN8kjb
+         l2p/UcY6CYSTNWmi7VujvEPDLopmeYV5y04nexmylfHHZLvrChhtK9ZoFHB8KXFnQm2L
+         u2KxlP3m/08gOzMOWFz7wJqhAgcRBAizzZiUHkaGNmUyt44/uIl+uDznkLyQC/8LtiyK
+         IYJyOaMVreNHxUrE7KnyIf6buUGiBVrXdyfdI9hycSXNdg6N07L9Zen1tNKJCn4NMx7j
+         3tR7ySmG4oePdK/F1paF+sUf2cgVO41erHwEOTLPwwAJA2UwmtpAOpPTOIoYWmh1mJkM
+         +oJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=HEOs2OljVpzFekHebtNmxJNTS1biZDzbDC+7E+gbGXE=;
-        b=Sc+GU1XiTTEoX/mTCP/ak+XSM1ucDQQ5sutBV9B8aIlIJoTArAV4myGSYg9lpYIeqh
-         3CUnvkvJDfd07Kh9YicCp7rf3TV/XjirTY7OgonmrtwmW4wbMEfOIWk+JBATFGlbbKf3
-         ysQAnVDukh2SsP/aQ5+y3jnSO07A1gUdBlQ9bzyyWRmap37S9zKEcsKjxXLF+DdshNZZ
-         ihqPmfQquc7acumqVGIBgNECtM7YJlrmCawAEPQppdzvrr0+1JyqaQAwnpBoG+ySENeH
-         iJ4XT8gGAMhxxdBmHETGub7HFHUaTqlboe1RE0Qj0fsvnvqCSuLFS6J/wPXW8hESPNOS
-         1piA==
-X-Gm-Message-State: ANoB5pnzZz0M3iEokJf4VOmbRAw3aRX6FEh0iSkqT4Cfge5QyKR/mo60
-        VqzkAxrNFgEE9OPsLJZ9lwVnlQ==
-X-Google-Smtp-Source: AA0mqf7xjJLeTnaPhhrans4JhE0iVba1LlwPzkyl9vYE07B6pyjsI7ODbIFQEN1WHHyVUFKfNxMUWg==
-X-Received: by 2002:a05:620a:1455:b0:6ee:80b5:32d3 with SMTP id i21-20020a05620a145500b006ee80b532d3mr22079595qkl.237.1668645923644;
-        Wed, 16 Nov 2022 16:45:23 -0800 (PST)
+        bh=6GmH5bBgQAPTYyWGM7n52ZkzuQiQsRGb4mBRnSjjrbs=;
+        b=uymJ8zkoaGMuNSLfqETv06xM7WAAVvA08WMDscBhhM+6NqQv7FZJhylcBkFBNGERBz
+         Y1Muc0DbtoJfTZYEr3tkrsRUsUKERi7WOCQh7Nzef92pdasQkSiLkKmlOt0MvB0pCxQr
+         XkskLRMmE/9a37CeSZxf/bF5ljLNw4m7sE2u5aaUTrX5jf5VREX4B8ciCC4hlruGo8yM
+         wDn7RrARJBScQ5RuE6QyPLpLy4ZgMNpbU560LwgYr43FPwAnPinA8IobsMrCSUzvq/EB
+         NaVZ23p0FwLU2tc5TSBpWh9Cl3w2V1J9+YM+t1p95L2Ebri4oJqPA+DWWpDbLlO/jGy7
+         cynA==
+X-Gm-Message-State: ANoB5pmeY5Z8AC4fmkPEwz3TRYSglRSQ0QxfhkWlnHHEsbA9tiJlzV1y
+        NgXnxApDLmeCWFARfOqDbEtMVQ==
+X-Google-Smtp-Source: AA0mqf6kOndX6mF3jdPV+JEPNJmYotlDtU6GG3yPlrdGFCMTOM0aazChCn63y+VS5Enp4BFgjok9CA==
+X-Received: by 2002:a05:6214:7f3:b0:4c6:5acc:1e24 with SMTP id bp19-20020a05621407f300b004c65acc1e24mr626072qvb.61.1668645946250;
+        Wed, 16 Nov 2022 16:45:46 -0800 (PST)
 Received: from ziepe.ca (hlfxns017vw-47-55-122-23.dhcp-dynamic.fibreop.ns.bellaliant.net. [47.55.122.23])
-        by smtp.gmail.com with ESMTPSA id n7-20020ac86747000000b00399ad646794sm9480378qtp.41.2022.11.16.16.45.22
+        by smtp.gmail.com with ESMTPSA id h2-20020ac85042000000b003a606428a59sm2189506qtm.91.2022.11.16.16.45.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 16 Nov 2022 16:45:22 -0800 (PST)
+        Wed, 16 Nov 2022 16:45:45 -0800 (PST)
 Received: from jgg by wakko with local (Exim 4.95)
         (envelope-from <jgg@ziepe.ca>)
-        id 1ovT1t-0066TN-E8;
-        Wed, 16 Nov 2022 20:45:21 -0400
-Date:   Wed, 16 Nov 2022 20:45:21 -0400
+        id 1ovT2G-0066Tl-Ts;
+        Wed, 16 Nov 2022 20:45:44 -0400
+Date:   Wed, 16 Nov 2022 20:45:44 -0400
 From:   Jason Gunthorpe <jgg@ziepe.ca>
 To:     David Hildenbrand <david@redhat.com>
 Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
@@ -84,16 +84,17 @@ Cc:     linux-kernel@vger.kernel.org, x86@kernel.org,
         Arnd Bergmann <arnd@arndb.de>,
         Christoph Hellwig <hch@infradead.org>,
         Alex Williamson <alex.williamson@redhat.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
+        Christian Benvenuti <benve@cisco.com>,
+        Nelson Escobar <neescoba@cisco.com>,
         Leon Romanovsky <leon@kernel.org>
-Subject: Re: [PATCH mm-unstable v1 10/20] RDMA/umem: remove FOLL_FORCE usage
-Message-ID: <Y3WEIVROhUPTtaeQ@ziepe.ca>
+Subject: Re: [PATCH mm-unstable v1 11/20] RDMA/usnic: remove FOLL_FORCE usage
+Message-ID: <Y3WEONlxYkwrglYR@ziepe.ca>
 References: <20221116102659.70287-1-david@redhat.com>
- <20221116102659.70287-11-david@redhat.com>
+ <20221116102659.70287-12-david@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221116102659.70287-11-david@redhat.com>
+In-Reply-To: <20221116102659.70287-12-david@redhat.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
@@ -104,7 +105,7 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Nov 16, 2022 at 11:26:49AM +0100, David Hildenbrand wrote:
+On Wed, Nov 16, 2022 at 11:26:50AM +0100, David Hildenbrand wrote:
 > GUP now supports reliable R/O long-term pinning in COW mappings, such
 > that we break COW early. MAP_SHARED VMAs only use the shared zeropage so
 > far in one corner case (DAXFS file with holes), which can be ignored
@@ -115,13 +116,14 @@ On Wed, Nov 16, 2022 at 11:26:49AM +0100, David Hildenbrand wrote:
 > for reliable R/O long-term pinning: FOLL_LONGTERM is sufficient. So stop
 > using FOLL_FORCE, which is really only for ptrace access.
 > 
-> Tested-by: Leon Romanovsky <leonro@nvidia.com> # Over mlx4 and mlx5.
+> Cc: Christian Benvenuti <benve@cisco.com>
+> Cc: Nelson Escobar <neescoba@cisco.com>
 > Cc: Jason Gunthorpe <jgg@ziepe.ca>
 > Cc: Leon Romanovsky <leon@kernel.org>
 > Signed-off-by: David Hildenbrand <david@redhat.com>
 > ---
->  drivers/infiniband/core/umem.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+>  drivers/infiniband/hw/usnic/usnic_uiom.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
 
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
