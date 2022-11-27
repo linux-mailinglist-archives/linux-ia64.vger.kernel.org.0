@@ -2,122 +2,221 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6420B6392E5
-	for <lists+linux-ia64@lfdr.de>; Sat, 26 Nov 2022 01:57:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 153DB6399E7
+	for <lists+linux-ia64@lfdr.de>; Sun, 27 Nov 2022 11:37:07 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230024AbiKZA45 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 25 Nov 2022 19:56:57 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59804 "EHLO
+        id S229595AbiK0KhD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 27 Nov 2022 05:37:03 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229958AbiKZA44 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 25 Nov 2022 19:56:56 -0500
-Received: from mail-wm1-x342.google.com (mail-wm1-x342.google.com [IPv6:2a00:1450:4864:20::342])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D93B59863
-        for <linux-ia64@vger.kernel.org>; Fri, 25 Nov 2022 16:56:55 -0800 (PST)
-Received: by mail-wm1-x342.google.com with SMTP id t4so4571467wmj.5
-        for <linux-ia64@vger.kernel.org>; Fri, 25 Nov 2022 16:56:55 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=KLS2zcruSlKyOQ1OBKYSyr+7+6zj0YKBqr4fpDhq6DI=;
-        b=lfYmbOP9ucL9DjkZA6V55PYtDgnIjUPje4WoT9nlkr4//Y5sCsGEK9xucBRIo9oyzT
-         eRob59yUSChBjuakz70kAaVYTBvIfrq5blHwNq8IFEvgrVWKTaJ1Vs+Oen3YGhOnQQVm
-         u91HNWxEhp0+hCfCit7L1J/O3Z0nAEYDgkeRl1idn7ggUnSKGCdgvgGSLfMdI2rW8Qbi
-         bIS6YHZes89+U/7FU3DlG45cgTMOE/HMIaBnq6iol4O9YN25RkTc2aeBy9gXhoSmhf0j
-         54L6VcfskWHLZawwz69uIS0oqzJ1GzLmX2sYniqueDppMjIR0BN4bMI1YpNgKa+u77aK
-         dF8w==
+        with ESMTP id S229574AbiK0KhC (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 27 Nov 2022 05:37:02 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69AAFE0FD
+        for <linux-ia64@vger.kernel.org>; Sun, 27 Nov 2022 02:35:15 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1669545314;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=a/FKhEJUKr4Au5jEDV0nA39boCfv1uOAmeL78/XZzlw=;
+        b=O27xJtPpaXX+WGWtRHYJetfQf0LitOuWyYASTvh9BOIc76OBbAvqAJoksVcyj8ihyyybuL
+        K0BzXUXxU998BrnvTHmhdCmjqJ56s5MlltXbtXEOh8pcP8m9+etTCwEOVSMLMxVzLD+KhE
+        02JICc1N+vm9jg/GhumwHtE2HYBwStg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
+ us-mta-166-dfiPU17gMHChnqmr7QeIHQ-1; Sun, 27 Nov 2022 05:35:13 -0500
+X-MC-Unique: dfiPU17gMHChnqmr7QeIHQ-1
+Received: by mail-wm1-f69.google.com with SMTP id 1-20020a05600c028100b003cf7833293cso6998740wmk.3
+        for <linux-ia64@vger.kernel.org>; Sun, 27 Nov 2022 02:35:13 -0800 (PST)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:in-reply-to:subject:organization:from
+         :content-language:references:cc:to:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KLS2zcruSlKyOQ1OBKYSyr+7+6zj0YKBqr4fpDhq6DI=;
-        b=vqWlcq9sIQe5QdE+5db2ppbJ7bcJhJ9NXm6JIhqtQkWJ2AOwzTYLC83ox9gbnbq0yL
-         QuG+0dTpUVIMV0oZyyJuXd3XOPcEOBRN792PZ9c04QiLwFpAG1HXxIhUNe44BW/l44No
-         ZaCZKaEgdXooq4T0d5wOjZMTFf+XGS5s/+wE4nVuOaziO+TgNvLZvO0wrDVnkYb9REk4
-         mSsCmjHVuxyOr4xLKkSprVX92OlDK76tgkkVDteXlVylQxHVzfB3QUfqF7FE8v9wUSv+
-         NYdN1LzCh1jg5vwxEIu4EHm/V3nVd8fr3OEUhlumedp6aul8RtMhG/4KiGr87lChEWWV
-         Of8g==
-X-Gm-Message-State: ANoB5pnZFuVGwbQsi+6zQxro0C6sWuGBWwZPUTg0vNxTZmxurfAmTC8W
-        42c21hhrnXw2y9JyjarhfAkI20tNdzPFHJmTAbE=
-X-Google-Smtp-Source: AA0mqf4ejnDcyhITVh1fSw1EB2a8aPAKWM2gvK5+cnZtosMW/URRO/3XqGgnw9Udbeho1nBisGjyAT/ie6GvUfWGTaA=
-X-Received: by 2002:a05:600c:4d09:b0:3cf:6e8e:7e8d with SMTP id
- u9-20020a05600c4d0900b003cf6e8e7e8dmr28361164wmp.58.1669424214079; Fri, 25
- Nov 2022 16:56:54 -0800 (PST)
+        bh=a/FKhEJUKr4Au5jEDV0nA39boCfv1uOAmeL78/XZzlw=;
+        b=djYS37m17rBXcoVbdrpeERz0GxgkuFW7d/mUZToBgPpHmm7lKDuM2bHD4QzOmnOV8X
+         7nb17YGFcYLAEfZ3DvOoX2d19/x4Mx3eGgYXcuiThTHAtOq4pIMTQE9JvwyJc8ikMFjP
+         6fqdbcjcy+l+8Ge8anPDBFXI223STIw8w9rHDpuWzyUbociTNV6GtfOosUHxsV3exUoS
+         EqowfqkYv+yNJyL1t+E8ZKyAzP/tbubcwWZ+mc9i/7/qXnkDNIvgsXk0WhyTZPRcbps6
+         /BYDMNqXIjHUcf5IKUxrWgk2bJXeg9k7maBChJbqbbdGihaFEeUO6tAPJoAOZjb5pwox
+         98Sw==
+X-Gm-Message-State: ANoB5plNxX/oz6ajA2nUQFYU8s3tG+aaLuW5/sErL5cz8k2buEPD8BGE
+        Odx4RPr2n/d8yDwh8EAw/KdvLnnIaMsPftc3P3YJPAHUHOkzv0SoIX37Ngg3iCbzugyEmJCKd2m
+        EV8zXhxAZtgy9xwT0NSB5Og==
+X-Received: by 2002:a05:600c:4e88:b0:3b5:477:1e80 with SMTP id f8-20020a05600c4e8800b003b504771e80mr34594856wmq.200.1669545311990;
+        Sun, 27 Nov 2022 02:35:11 -0800 (PST)
+X-Google-Smtp-Source: AA0mqf44zTk6J1KBaqs1seffTqR2+v9TqwwPSmjBWI2JrtJKUPaYELfhGu32bDJHUXiVwBKDfUuj3g==
+X-Received: by 2002:a05:600c:4e88:b0:3b5:477:1e80 with SMTP id f8-20020a05600c4e8800b003b504771e80mr34594816wmq.200.1669545311706;
+        Sun, 27 Nov 2022 02:35:11 -0800 (PST)
+Received: from ?IPV6:2003:cb:c724:dc00:5ea8:da59:8609:7da? (p200300cbc724dc005ea8da59860907da.dip0.t-ipconnect.de. [2003:cb:c724:dc00:5ea8:da59:8609:7da])
+        by smtp.gmail.com with ESMTPSA id u10-20020a05600c19ca00b003c5571c27a1sm14797024wmq.32.2022.11.27.02.35.09
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 27 Nov 2022 02:35:11 -0800 (PST)
+Message-ID: <81fb0fa3-2e06-b765-56ac-a7d981194e59@redhat.com>
+Date:   Sun, 27 Nov 2022 11:35:09 +0100
 MIME-Version: 1.0
-Received: by 2002:adf:d1cf:0:0:0:0:0 with HTTP; Fri, 25 Nov 2022 16:56:53
- -0800 (PST)
-Reply-To: samsonvichisunday@gmail.com
-From:   Aminu Bello <aminuadamuvitaform@gmail.com>
-Date:   Sat, 26 Nov 2022 01:56:53 +0100
-Message-ID: <CADwEiSuOWmvHnVVeCLJzu-rnAGqocdNYSQmCm5GbqWAPJJ6y8w@mail.gmail.com>
-Subject: INVITATION TO THE GREAT ILLUMINATI SOCIETY.
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=7.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FILL_THIS_FORM,
-        FILL_THIS_FORM_LONG,FREEMAIL_FROM,FREEMAIL_REPLYTO,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,T_FILL_THIS_FORM_LOAN,
-        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:342 listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5005]
-        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [aminuadamuvitaform[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-        *  0.0 FILL_THIS_FORM Fill in a form with personal information
-        *  2.0 FILL_THIS_FORM_LONG Fill in a form with personal information
-        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
-X-Spam-Level: *******
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.1
+To:     linux-kernel@vger.kernel.org, Hans Verkuil <hverkuil@xs4all.nl>,
+        Andrew Morton <akpm@linux-foundation.org>
+Cc:     x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        linux-mips@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
+        etnaviv@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        linux-samsung-soc@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-media@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        linux-mm@kvack.org, linux-perf-users@vger.kernel.org,
+        linux-security-module@vger.kernel.org,
+        linux-kselftest@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Peter Xu <peterx@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Hugh Dickins <hughd@google.com>, Nadav Amit <namit@vmware.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Matthew Wilcox <willy@infradead.org>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Muchun Song <songmuchun@bytedance.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Lucas Stach <l.stach@pengutronix.de>,
+        David Airlie <airlied@gmail.com>,
+        Oded Gabbay <ogabbay@kernel.org>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Christoph Hellwig <hch@infradead.org>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Marek Szyprowski <m.szyprowski@samsung.com>,
+        Tomasz Figa <tfiga@chromium.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>
+References: <20221116102659.70287-1-david@redhat.com>
+ <20221116102659.70287-17-david@redhat.com>
+Content-Language: en-US
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
+Subject: Re: [PATCH mm-unstable v1 16/20] mm/frame-vector: remove FOLL_FORCE
+ usage
+In-Reply-To: <20221116102659.70287-17-david@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
---=20
-INVITATION TO THE GREAT ILLUMINATI SOCIETY
-CONGRATULATIONS TO YOU....
-You have been chosen among the people given the opportunity this
-November to become rich and popular by joining the Great ILLUMINATI.
-This is an open invitation for you to become part of the world's
-biggest conglomerate and reach the peak of your career. a worthy goal
-and motivation to reach those upper layers of the pyramid to become
-one among the most Successful, Richest, Famous, Celebrated, Powerful
-and most decorated Personalities in the World???
-If you are interested, please respond to this message now with =E2=80=9CI
-ACCEPT" and fill the below details to get the step to join the
-Illuminati.
-KINDLY FILL BELOW DETAILS AND RETURN NOW.....
-Full names: ....................
-Your Country: .................
-State/ City: .............
-Age: ....................
-Marital status: ....................
-Occupation: ....................
-Monthly income: ....................
-WhatsApp Number: ......
-Postal Code: .....
-Home / House Address: .....
-NOTE: That you are not forced to join us, it is on your decision to
-become part of the world's biggest conglomerate and reach the peak of
-your career.
-Distance is not a barrier.
+On 16.11.22 11:26, David Hildenbrand wrote:
+> FOLL_FORCE is really only for ptrace access. According to commit
+> 707947247e95 ("media: videobuf2-vmalloc: get_userptr: buffers are always
+> writable"), get_vaddr_frames() currently pins all pages writable as a
+> workaround for issues with read-only buffers.
+> 
+> FOLL_FORCE, however, seems to be a legacy leftover as it predates
+> commit 707947247e95 ("media: videobuf2-vmalloc: get_userptr: buffers are
+> always writable"). Let's just remove it.
+> 
+> Once the read-only buffer issue has been resolved, FOLL_WRITE could
+> again be set depending on the DMA direction.
+> 
+> Cc: Hans Verkuil <hverkuil@xs4all.nl>
+> Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+> Cc: Tomasz Figa <tfiga@chromium.org>
+> Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+> Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+> Signed-off-by: David Hildenbrand <david@redhat.com>
+> ---
+>   drivers/media/common/videobuf2/frame_vector.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/media/common/videobuf2/frame_vector.c b/drivers/media/common/videobuf2/frame_vector.c
+> index 542dde9d2609..062e98148c53 100644
+> --- a/drivers/media/common/videobuf2/frame_vector.c
+> +++ b/drivers/media/common/videobuf2/frame_vector.c
+> @@ -50,7 +50,7 @@ int get_vaddr_frames(unsigned long start, unsigned int nr_frames,
+>   	start = untagged_addr(start);
+>   
+>   	ret = pin_user_pages_fast(start, nr_frames,
+> -				  FOLL_FORCE | FOLL_WRITE | FOLL_LONGTERM,
+> +				  FOLL_WRITE | FOLL_LONGTERM,
+>   				  (struct page **)(vec->ptrs));
+>   	if (ret > 0) {
+>   		vec->got_ref = true;
+
+
+Hi Andrew,
+
+see the discussion at [1] regarding a conflict and how to proceed with
+upstreaming. The conflict would be easy to resolve, however, also
+the patch description doesn't make sense anymore with [1].
+
+
+On top of mm-unstable, reverting this patch and applying [1] gives me
+an updated patch:
+
+
+ From 1e66c25f1467c1f1e5f275312f2c6df29308d4df Mon Sep 17 00:00:00 2001
+From: David Hildenbrand <david@redhat.com>
+Date: Wed, 16 Nov 2022 11:26:55 +0100
+Subject: [PATCH] mm/frame-vector: remove FOLL_FORCE usage
+
+GUP now supports reliable R/O long-term pinning in COW mappings, such
+that we break COW early. MAP_SHARED VMAs only use the shared zeropage so
+far in one corner case (DAXFS file with holes), which can be ignored
+because GUP does not support long-term pinning in fsdax (see
+check_vma_flags()).
+
+Consequently, FOLL_FORCE | FOLL_WRITE | FOLL_LONGTERM is no longer required
+for reliable R/O long-term pinning: FOLL_LONGTERM is sufficient. So stop
+using FOLL_FORCE, which is really only for ptrace access.
+
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Acked-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Cc: Hans Verkuil <hverkuil@xs4all.nl>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Tomasz Figa <tfiga@chromium.org>
+Cc: Marek Szyprowski <m.szyprowski@samsung.com>
+Cc: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: David Hildenbrand <david@redhat.com>
+---
+  drivers/media/common/videobuf2/frame_vector.c | 2 +-
+  1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/media/common/videobuf2/frame_vector.c b/drivers/media/common/videobuf2/frame_vector.c
+index aad72640f055..8606fdacf5b8 100644
+--- a/drivers/media/common/videobuf2/frame_vector.c
++++ b/drivers/media/common/videobuf2/frame_vector.c
+@@ -41,7 +41,7 @@ int get_vaddr_frames(unsigned long start, unsigned int nr_frames, bool write,
+  	int ret_pin_user_pages_fast = 0;
+  	int ret = 0;
+  	int err;
+-	unsigned int gup_flags = FOLL_FORCE | FOLL_LONGTERM;
++	unsigned int gup_flags = FOLL_LONGTERM;
+  
+  	if (nr_frames == 0)
+  		return 0;
+-- 
+2.38.1
+
+
+
+Please let me know how you want to proceed. Ideally, you'd pick up
+[1] and apply this updated patch. Also, please tell me if I should
+send this updated patch in a separate mail (e.g., as reply to this mail).
+
+
+[1] https://lkml.kernel.org/r/71bdd3cf-b044-3f12-df58-7c16d5749587@xs4all.nl
+
+-- 
+Thanks,
+
+David / dhildenb
+
