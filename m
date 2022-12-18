@@ -2,267 +2,268 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA2C864D142
-	for <lists+linux-ia64@lfdr.de>; Wed, 14 Dec 2022 21:34:33 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id C129564FD85
+	for <lists+linux-ia64@lfdr.de>; Sun, 18 Dec 2022 04:33:23 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230174AbiLNUec (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 14 Dec 2022 15:34:32 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36344 "EHLO
+        id S230113AbiLRDdU (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 17 Dec 2022 22:33:20 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229914AbiLNUeI (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 14 Dec 2022 15:34:08 -0500
-Received: from CAN01-YQB-obe.outbound.protection.outlook.com (mail-yqbcan01on2067.outbound.protection.outlook.com [40.107.116.67])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E2112D1D5;
-        Wed, 14 Dec 2022 12:26:31 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=lMk/Zf5AvC0J8OgpALldr+b/Cw7189PdsNbVcI1viFi0fZY5lrlXaRrTqlRKJJ9ozjyNAileq2JTUwQNnjIaVCjpVEiENeWTgyIuF6AzfTYV3vols8WlM8AfN/Wj05U//yh74ZgpcBy6+xWXIPsf8XfPwHlAaxSDxh70yMsOzy5Ji2MVivi7YTidDP5SBCvISTHdN+068fzP9zxz3eLQ7LVBQlOCA02ra9Y0PYchIQlAQleNTlPPcpFkvtngb1TzfG0Xr+4CPgT3LQ+4C77637TYZ/VRXXOT6sU/brfLrPxtjJ5y29XgSkigBSEVjG/iwz61ky5fxpLXENWp1RQiqw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=WfZwq2on/ekbOK2qwGSlfOb6JvOjZ2FcfokeuNQEib8=;
- b=d6kf7hyCl2Qp0+fppOFbnR3n5AIX9qh5PP1g8zAj2dcADjCzY2G54FCltMzUWOyCDkK0HVAUjmO9IE1pgFDNs5eyxsfqgtl8fKinGOhiH8HXiqqGltj941Rf/qydWKU2yuNTirtjps9zpWeUkzoAO64GbG9MSOe8w8iOCJeRKc04vnb4qLaMQqtNH+0SJ9jWp74MrX0iyGryTnLsxPqJd7mKQSIqtKGMRu8H9asEdiY5NpneDpCg/vDB4u6/B09xC1IlS4pIahePMy8sNR4k2mkgvxSiaqSXZhHdo1FqtrIyAvqkEJzB8USqjn1DKl1hIeAoqrEK75R6lp1Ltw7s9A==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=efficios.com; dmarc=pass action=none header.from=efficios.com;
- dkim=pass header.d=efficios.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=WfZwq2on/ekbOK2qwGSlfOb6JvOjZ2FcfokeuNQEib8=;
- b=J5x0DJEYK2lT2Z9hguLQ/RPLxqcr5G2nXlxO2tpzMLjHOCh5m1vWSG0EONrkFU072ccdUoQtQSCLJuP4KU1/8DzA/nNW8yWIvurq3TJqAq1SnPBqjcz82aIuLLTIKaRQIXBl/IamsbvY32DlT3p2V2Q60SGWTVRsLQHwaJzmoKsmIqwEPVLthFnnQINZvrOPEc3MMDtWNDRyfW3eTsKaB5U5v9ZIygmzlAgXF2W14xKI7cBvP8L1EVlEJQG2g27Qc7KgleD5aA4oyLYK0cb+nQlIwV7KGtkBA/yB65iVlJxgdzyE3YFWLQVzUE+ZnKUEU5mglvDqs8d8h2MeibriTQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=efficios.com;
-Received: from YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:c01:24::5)
- by YT3PR01MB10733.CANPRD01.PROD.OUTLOOK.COM (2603:10b6:b01:95::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5924.11; Wed, 14 Dec
- 2022 20:26:29 +0000
-Received: from YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::2bff:5fa3:434e:517]) by YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM
- ([fe80::2bff:5fa3:434e:517%9]) with mapi id 15.20.5924.011; Wed, 14 Dec 2022
- 20:26:29 +0000
-Message-ID: <a6e99b31-5719-5f21-3c4f-836f809e893e@efficios.com>
-Date:   Wed, 14 Dec 2022 15:26:27 -0500
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Subject: Re: [RFC PATCH] Syscall tracing on PPC64_ELF_ABI_V1 without
- KALLSYMS_ALL
-Content-Language: en-US
-To:     Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "linuxppc-dev@lists.ozlabs.org" <linuxppc-dev@lists.ozlabs.org>
-Cc:     Michael Ellerman <mpe@ellerman.id.au>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        "linux-mm@kvack.org" <linux-mm@kvack.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        linux-arch <linux-arch@vger.kernel.org>,
-        "open list:PARISC ARCHITECTURE" <linux-parisc@vger.kernel.org>,
-        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
-References: <20221212212159.3435046-1-mjeanson@efficios.com>
- <39c53bd1-432f-15f6-4cbd-b8551fc261cf@csgroup.eu>
-From:   Michael Jeanson <mjeanson@efficios.com>
-In-Reply-To: <39c53bd1-432f-15f6-4cbd-b8551fc261cf@csgroup.eu>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: YQBPR01CA0140.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:1::40) To YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:24::5)
+        with ESMTP id S230083AbiLRDdS (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 17 Dec 2022 22:33:18 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BDF2DFC5;
+        Sat, 17 Dec 2022 19:33:16 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 77499B801B8;
+        Sun, 18 Dec 2022 03:33:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16076C433A1;
+        Sun, 18 Dec 2022 03:33:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1671334394;
+        bh=tIkYFzXEO2chGeVvpnhnUSRiaYqUOvaPo7G7agH5seU=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=NZznuv2H9MQueEsr6jgEx1junfwjYsvNcOR43Yi/brcuSQR9UH+m6CrgXjrTxCtE7
+         e6bwe9cJqXk1WuwXoKDMvpo9TzcCqL2J7/rfInWmXCzjpBl8AaPX8/ZDKlqMvr8Jnb
+         yPLDT135jBzOiGZQnkegHTEPk2QAKPw71lNMeRicomC31rduSeqQEgDS6bhnzMGqcq
+         lEoicK81SZ/d6NH3t3vJk88ScyMf0ePdwVfZuCHv/jvCCwGUN6mZAZhI4t+dG610gH
+         fki7MqLM2MPF400PykUCrGAk2XSSyU7i3CvLgBvt+bZ5XueXYRrGIX178MJ5NirAWw
+         7omV8lnwwK5iA==
+Received: by mail-ed1-f41.google.com with SMTP id c66so8663216edf.5;
+        Sat, 17 Dec 2022 19:33:13 -0800 (PST)
+X-Gm-Message-State: ANoB5plJ8pjO5BU+5v5yl3nOKX1Q0HJhAly0WbfPacy7qvj3vmXNuHS2
+        Y8i85IyPHUomi832jhxjl4eA6N+uASbxGv+Y4LQ=
+X-Google-Smtp-Source: AA0mqf6HJrjOIUv4bzcPb2/bKtCuYat7PlsqCSDeflk0KMk+BHjoAVHTjhW6I8Yv82IxystWMfrMsjTObq3olIShGs4=
+X-Received: by 2002:a05:6402:5003:b0:462:a25f:f0f2 with SMTP id
+ p3-20020a056402500300b00462a25ff0f2mr35194911eda.156.1671334392205; Sat, 17
+ Dec 2022 19:33:12 -0800 (PST)
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: YQBPR0101MB5080:EE_|YT3PR01MB10733:EE_
-X-MS-Office365-Filtering-Correlation-Id: fa2266fc-331f-4308-bee0-08dade117b49
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 1CszFifJ2Uew0l0OeOno6CNVr2VPMuBJG3oXqCcBfP2j7lEIeuYdk9HJT0EuNmxVvzzzK1aAl/BXagOxOsUXSUAi0BLnloWxp0NnywArBtu+URrmoOHJFmfuQC192b72wuLV8A5wJuRQZ6suDSoLpPHc74jxWz/5CAkxz3avLEkQdSGRtYi4UZcXgXSnYviW1HeHWkAPqA1CEW4iHtDjndcuNIqRIxBB/vxMch0f0AInhqYi3hmtlCHMVN3lxXYTKqOaA+POdA0Ln0u1anXkAtKoD/yYDXkRUU2UVUKDAS2fz2QU/4GY77cPg6XNbl+3D8luFRNMT5fcjDFWN46+NsGaJTl1uTOX5YKCn3kbVKblTASi830EFAMOIMmhYZmzZKY4aHWP4IhWq6+5M7Y6ZcpzG/jbBM+brrVFzyEA1h3AqeiZC8zrgYLJQ53jtz3cNA2NBJOs34ocz+nGj3QCeZ9hu/6H+vy2F7p8V4OamdJ6kLKpz6+1YQlqO67yAiMUOzC9mI+gr0FaJqE1HNNLNQqMDMjmRr1FHzW7AnSLaHIGaoau3lO152JMmQzl9Frb+GwNgIj0I87xJb0EN93uivBLqerOjUY7n19WA6Wpu4SmbEaHG/r+cPecc6LgLpTlZF4b7ZaoM9UFmrDQekmiZekMj3gQ61TTPr5eFdkQAxVybl35UpngRa49iUE8kqRToAr9E1jCpjhJR6lOrDrlFcsidlHswrBn1zQ26fY/s9I=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230022)(346002)(376002)(39830400003)(366004)(136003)(396003)(451199015)(4326008)(66556008)(66476007)(8676002)(36756003)(83380400001)(54906003)(316002)(66946007)(110136005)(4001150100001)(2906002)(86362001)(31696002)(41300700001)(38100700002)(7416002)(5660300002)(8936002)(31686004)(6506007)(6486002)(478600001)(2616005)(6512007)(53546011)(186003)(26005)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?SDFydmJFZTBhZzVib1ByRmtEckgrZDcwYklLNFluYVZZbzUvVEhwQXlDamhE?=
- =?utf-8?B?ZGM4a1djNVFmVGliWVhEN0g0azZUdkVza0xYNkJhN3lvWGNjaHFOMExmYXUx?=
- =?utf-8?B?U091YkRENGtzUU1GcGREdTYwai9GYkhtSEVaMUEzUEV0ZmZMSkxlZk9mL3o3?=
- =?utf-8?B?aEVBTkl4eXpmQ0h3N0pSN0JPL01DbXpQdWlaTE4vZWhBODZJRU1XTTZ2VHJo?=
- =?utf-8?B?WllmZUVzMjlWV1FMOW90aENtVVhDSWErTy84WTFBeUwrN1hqRjM5alFINVZE?=
- =?utf-8?B?cHROSk1kSUZTOGNOSElCci93eE1tWDhDdnpLTWcyWktNRGNZeEZlZ1M4N09P?=
- =?utf-8?B?NVpQREVqY3J0aThsRXVPVHVQR2tMY21zTDdRcnAxSjN5S2REalRQYWNCc0c2?=
- =?utf-8?B?WGZLV1N2aHpkWDgyZEJwNmcwbi9xK09yWFJEVUIxTzRqVThDUFpRb3QyNVhq?=
- =?utf-8?B?WjNYamhvY1FZWmtuT1N2andzV0dqY2VHeFdPTzRiSFhyNGdTZkFwRjhvUU15?=
- =?utf-8?B?TFplUndDcU1wVkhpNFlCeHdUb0VxSW54NjFHdi9nZWc3aVp6WkZvV3QrdE45?=
- =?utf-8?B?YXhXazEvVnZGUlhEMmZSd0UxRUtkL1Zmd2ZWVzFpZWlJdkhmRzlCT2VtY0F5?=
- =?utf-8?B?NmlEZnJwaXdWMUtFNitmMzVWdWRtQldoMlJ0Y3FjaDRvYU5QVDRZMU9rcWNX?=
- =?utf-8?B?RzRBNUpCNnVZaFVvTkFUQzk1Ky9iMk15SHk4dWpuRmNzd2JxdTluSnZXWXQ3?=
- =?utf-8?B?eFgyTml3YytaSEx5NDlkSThXVjNZUndQVTlwMHZkMmVmMzQ3YStOUmVIUENx?=
- =?utf-8?B?RkdvWnVRejNHWDRMQ1lmT0tBK1cyZUVKcXk5QUwrYlN3Z0FRbjB3UXVzamVy?=
- =?utf-8?B?NXJYYkF4NFQrWVdoN3BqOWNDTzFBa2VCdThSUHF1UjBKS25ic0FiN1hBQ0lx?=
- =?utf-8?B?Y2JWZVFwOW1MNlNQODFwb05jRnh4alRKa3U4SmxCSER2WnAxUnVkNHlvUlQy?=
- =?utf-8?B?dGswU2MrYkR5YTVmMXBtYWhuUnY1QXpuYkNZQ3l4WTk1ZWsrbGR0NXFMQ09H?=
- =?utf-8?B?MERvbVRLKzZrMW9JdXBteWhyZW5mTWJpcXl6TU9yWkVCbVJXTWJsZW9xRmRY?=
- =?utf-8?B?NDdXQ1liR0VBK1JIRUVtU2kwYUxwMlVPV0RPVGZzdFZFSnNXWDkzOE12Njdx?=
- =?utf-8?B?TmdCU2JrVVgwMU1PZTl4MWRrYmJKT1R6N3lBcTEzSlRNNTViL09iZmkvdHZW?=
- =?utf-8?B?UEVqTVM4dHVGYWJLd3B0dUVQSWdqU3Vsa2c5ZTgramlNTmM4dVhnMkkzUmpp?=
- =?utf-8?B?RC9FbFh5cDBVS3dVY1pJVmpzUjFhNUxJMUh4M3pIeVBYMW5CaFA2N0lvSERj?=
- =?utf-8?B?MnJSSTBSSnFSZGtHQ2QxbFB6Mkg5SUx5TElGUUM1U3ovbVcxTXNDYkZkS3lV?=
- =?utf-8?B?VU1hWjdWbDBlM0pDNVJrNmg0SVNNT1U1K3p1VXU3bWNpTTkzMXlqRHlFVEZD?=
- =?utf-8?B?VUZ0RjBzTjVXRmExSUNhbFcvUXJSWldEQjZvWW5VbDJpQ1VialAyUkhKQ2h4?=
- =?utf-8?B?NllUOXh5SUw0TTlnOC9EV3RxSC9tcjNiZHhIdTRUdE1oaDVJQ3dPZjBVOEF5?=
- =?utf-8?B?bUttekcwT1g5REM5Z3hqSlZaa3J1RkFRY0JNSUxlQjA5THMzREt6eXZseXVh?=
- =?utf-8?B?R00wUnBpMEJXZjBQOGJjSUNrcmFyRWZNRHhoamZnZ2s3bmxkUUNONUZleUxv?=
- =?utf-8?B?TmlHemJNTWdzNVR4dlRoeEM3SFJkYmlJN1Rsa2NxSkVyNGEydU15b0RTREYy?=
- =?utf-8?B?Z09ZTUNlQWxSNmxtaE9qdERSVlFxaHhWYWNXL1NxdkMxRlJnWSt1aEltZ3h0?=
- =?utf-8?B?TE0rVkhEaXl6SzBBUW93TnA5cyt1KzBhcWsrK2ZJektoOXZUY0o5RjlROWpn?=
- =?utf-8?B?b0l0Rm9HeDVoSW1mYkV4NEJ3NFMvR2xtcE1XbjVHV3pKVjFLR216KzZ1cjM4?=
- =?utf-8?B?cXBtY0N4eTJYdDRlNWN5dXgrL2J5SU5xcHV4bFo4dCtEemRSb3ZOVFJSaFZG?=
- =?utf-8?B?ZDNrbXNmUEQ2OSs4TlhWaWpLVEpjbjRRZzhHQTZLcHNsbk5IRjFlUmg5YS9w?=
- =?utf-8?Q?0fBr9FdvFvwDnCDAZXVL9p5Ym?=
-X-OriginatorOrg: efficios.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fa2266fc-331f-4308-bee0-08dade117b49
-X-MS-Exchange-CrossTenant-AuthSource: YQBPR0101MB5080.CANPRD01.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Dec 2022 20:26:29.1680
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4f278736-4ab6-415c-957e-1f55336bd31e
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: v/jR/MVLmBR1ZJfyt7V7Vae8wdiGMvcvRJEdIxFTqBNw4d0NXV/ivzcMMJr0VHhGpxkefpQxlY7jTb4H02Oizw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: YT3PR01MB10733
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20221206144730.163732-1-david@redhat.com>
+In-Reply-To: <20221206144730.163732-1-david@redhat.com>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Sun, 18 Dec 2022 11:32:59 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4bU7JnAPyf9Mv1m+WGR5NWmHJLva3d9_CsRd4Q_OHVpg@mail.gmail.com>
+Message-ID: <CAAhV-H4bU7JnAPyf9Mv1m+WGR5NWmHJLva3d9_CsRd4Q_OHVpg@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable RFC 00/26] mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+ on all architectures with swap PTEs
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Hugh Dickins <hughd@google.com>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Yang Shi <shy828301@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Nadav Amit <namit@vmware.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+        x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Borislav Petkov <bp@alien8.de>, Brian Cain <bcain@quicinc.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Chris Zankel <chris@zankel.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Greg Ungerer <gerg@linux-m68k.org>,
+        Guo Ren <guoren@kernel.org>, Helge Deller <deller@gmx.de>,
+        "H. Peter Anvin" <hpa@zytor.com>, Ingo Molnar <mingo@redhat.com>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        "James E.J. Bottomley" <James.Bottomley@hansenpartnership.com>,
+        Johannes Berg <johannes@sipsolutions.net>,
+        Matt Turner <mattst88@gmail.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Michal Simek <monstr@monstr.eu>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Richard Weinberger <richard@nod.at>,
+        Rich Felker <dalias@libc.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Stafford Horne <shorne@gmail.com>,
+        Stefan Kristiansson <stefan.kristiansson@saunalahti.fi>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Vineet Gupta <vgupta@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 2022-12-13 02:29, Christophe Leroy wrote:
-> The changes are absolutely not specific to powerpc. You should adjust
-> the subject accordingly, and copy linux-arch and tracing and probably
-> also ia64 and parisc.
+Hi, David,
 
-I was hoping to get feedback from the PPC maintainers before posting something 
-more widely. I'll send an updated patch which addresses your comments.
+What is the opposite of exclusive here? Shared or inclusive? I prefer
+pte_swp_mkshared() or pte_swp_mkinclusive() rather than
+pte_swp_clear_exclusive(). Existing examples: dirty/clean, young/old
+...
 
-Thanks.
+Huacai
 
-> 
-> Le 12/12/2022 à 22:21, Michael Jeanson a écrit :
->> In ad050d2390fccb22aa3e6f65e11757ce7a5a7ca5 we fixed ftrace syscall
->> tracing on PPC64_ELF_ABI_V1 by looking for the non-dot prefixed symbol
->> of a syscall.
-> 
-> Should be written as:
-> 
-> Commit ad050d2390fc ("powerpc/ftrace: fix syscall tracing on
-> PPC64_ELF_ABI_V1") fixed ....
-> 
-> 
->>
->> Ftrace uses kallsyms to locate syscall symbols and those non-dot
->> prefixed symbols reside in a separate '.opd' section which is not
->> included by kallsyms.
->>
->> So we either need to have FTRACE_SYSCALLS select KALLSYMS_ALL on
->> PPC64_ELF_ABI_V1 or add the '.opd' section symbols to kallsyms.
->>
->> This patch does the minimum to achieve the latter, it's tested on a
->> corenet64_smp_defconfig with KALLSYMS_ALL turned off.
->>
->> I'm unsure which of the alternatives would be better.
->>
->> ---
->> In 'kernel/module/kallsyms.c' the 'is_core_symbol' function might also
->> require some tweaking to make all opd symbols available to kallsyms but
->> that doesn't impact ftrace syscall tracing.
->>
->> Cc: Michael Ellerman <mpe@ellerman.id.au>
->> Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
->> Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
->> Signed-off-by: Michael Jeanson <mjeanson@efficios.com>
->> ---
->>    include/asm-generic/sections.h | 14 ++++++++++++++
->>    include/linux/kallsyms.h       |  3 +++
->>    kernel/kallsyms.c              |  2 ++
->>    scripts/kallsyms.c             |  1 +
->>    4 files changed, 20 insertions(+)
->>
->> diff --git a/include/asm-generic/sections.h b/include/asm-generic/sections.h
->> index db13bb620f52..1410566957e5 100644
->> --- a/include/asm-generic/sections.h
->> +++ b/include/asm-generic/sections.h
->> @@ -180,6 +180,20 @@ static inline bool is_kernel_rodata(unsigned long addr)
->>    	       addr < (unsigned long)__end_rodata;
->>    }
->>    
->> +/**
->> + * is_kernel_opd - checks if the pointer address is located in the
->> + *                 .opd section
->> + *
->> + * @addr: address to check
->> + *
->> + * Returns: true if the address is located in .opd, false otherwise.
->> + */
->> +static inline bool is_kernel_opd(unsigned long addr)
->> +{
-> 
-> I would add a check of CONFIG_HAVE_FUNCTION_DESCRIPTORS:
-> 
-> 	if (!IS_ENABLED(CONFIG_HAVE_FUNCTION_DESCRIPTORS))
-> 		return false;
-> 
->> +	return addr >= (unsigned long)__start_opd &&
->> +	       addr < (unsigned long)__end_opd;
->> +}
->> +
->>    /**
->>     * is_kernel_inittext - checks if the pointer address is located in the
->>     *                      .init.text section
->> diff --git a/include/linux/kallsyms.h b/include/linux/kallsyms.h
->> index 649faac31ddb..9bfb4d8d41a5 100644
->> --- a/include/linux/kallsyms.h
->> +++ b/include/linux/kallsyms.h
->> @@ -43,6 +43,9 @@ static inline int is_ksym_addr(unsigned long addr)
->>    	if (IS_ENABLED(CONFIG_KALLSYMS_ALL))
->>    		return is_kernel(addr);
->>    
->> +	if (IS_ENABLED(CONFIG_HAVE_FUNCTION_DESCRIPTORS))
->> +		return is_kernel_text(addr) || is_kernel_inittext(addr) || is_kernel_opd(addr);
->> +
-> 
-> With the check inside is_kernel_opd(), you can make it simpler:
-> 
-> 	return is_kernel_text(addr) || is_kernel_inittext(addr) ||
-> is_kernel_opd(addr);
-> 
->>    	return is_kernel_text(addr) || is_kernel_inittext(addr);
->>    }
->>    
->> diff --git a/kernel/kallsyms.c b/kernel/kallsyms.c
->> index 60c20f301a6b..009b1ca21618 100644
->> --- a/kernel/kallsyms.c
->> +++ b/kernel/kallsyms.c
->> @@ -281,6 +281,8 @@ static unsigned long get_symbol_pos(unsigned long addr,
->>    			symbol_end = (unsigned long)_einittext;
->>    		else if (IS_ENABLED(CONFIG_KALLSYMS_ALL))
->>    			symbol_end = (unsigned long)_end;
->> +		else if (IS_ENABLED(CONFIG_HAVE_FUNCTION_DESCRIPTORS) && is_kernel_opd(addr))
->> +			symbol_end = (unsigned long)__end_opd;
-> 
-> Same, with the check included inside is_kernel_opd() you don't need the
-> IS_ENABLED(CONFIG_HAVE_FUNCTION_DESCRIPTORS) here.
-> 
->>    		else
->>    			symbol_end = (unsigned long)_etext;
->>    	}
->> diff --git a/scripts/kallsyms.c b/scripts/kallsyms.c
->> index 03fa07ad45d9..decf31c497f5 100644
->> --- a/scripts/kallsyms.c
->> +++ b/scripts/kallsyms.c
->> @@ -64,6 +64,7 @@ static unsigned long long relative_base;
->>    static struct addr_range text_ranges[] = {
->>    	{ "_stext",     "_etext"     },
->>    	{ "_sinittext", "_einittext" },
->> +	{ "__start_opd", "__end_opd" },
->>    };
->>    #define text_range_text     (&text_ranges[0])
->>    #define text_range_inittext (&text_ranges[1])
-
+On Tue, Dec 6, 2022 at 10:48 PM David Hildenbrand <david@redhat.com> wrote:
+>
+> This is the follow-up on [1]:
+>         [PATCH v2 0/8] mm: COW fixes part 3: reliable GUP R/W FOLL_GET of
+>         anonymous pages
+>
+> After we implemented __HAVE_ARCH_PTE_SWP_EXCLUSIVE on most prominent
+> enterprise architectures, implement __HAVE_ARCH_PTE_SWP_EXCLUSIVE on all
+> remaining architectures that support swap PTEs.
+>
+> This makes sure that exclusive anonymous pages will stay exclusive, even
+> after they were swapped out -- for example, making GUP R/W FOLL_GET of
+> anonymous pages reliable. Details can be found in [1].
+>
+> This primarily fixes remaining known O_DIRECT memory corruptions that can
+> happen on concurrent swapout, whereby we can lose DMA reads to a page
+> (modifying the user page by writing to it).
+>
+> To verify, there are two test cases (requiring swap space, obviously):
+> (1) The O_DIRECT+swapout test case [2] from Andrea. This test case tries
+>     triggering a race condition.
+> (2) My vmsplice() test case [3] that tries to detect if the exclusive
+>     marker was lost during swapout, not relying on a race condition.
+>
+>
+> For example, on 32bit x86 (with and without PAE), my test case fails
+> without these patches:
+>         $ ./test_swp_exclusive
+>         FAIL: page was replaced during COW
+> But succeeds with these patches:
+>         $ ./test_swp_exclusive
+>         PASS: page was not replaced during COW
+>
+>
+> Why implement __HAVE_ARCH_PTE_SWP_EXCLUSIVE for all architectures, even
+> the ones where swap support might be in a questionable state? This is the
+> first step towards removing "readable_exclusive" migration entries, and
+> instead using pte_swp_exclusive() also with (readable) migration entries
+> instead (as suggested by Peter). The only missing piece for that is
+> supporting pmd_swp_exclusive() on relevant architectures with THP
+> migration support.
+>
+> As all relevant architectures now implement __HAVE_ARCH_PTE_SWP_EXCLUSIVE,,
+> we can drop __HAVE_ARCH_PTE_SWP_EXCLUSIVE in the last patch.
+>
+>
+> RFC because some of the swap PTE layouts are really tricky and I really
+> need some feedback related to deciphering these layouts and "using yet
+> unused PTE bits in swap PTEs". I tried cross-compiling all relevant setups
+> (phew, I might only miss some power/nohash variants), but only tested on
+> x86 so far.
+>
+> CCing arch maintainers only on this cover letter and on the respective
+> patch(es).
+>
+>
+> [1] https://lkml.kernel.org/r/20220329164329.208407-1-david@redhat.com
+> [2] https://gitlab.com/aarcange/kernel-testcases-for-v5.11/-/blob/main/page_count_do_wp_page-swap.c
+> [3] https://gitlab.com/davidhildenbrand/scratchspace/-/blob/main/test_swp_exclusive.c
+>
+> David Hildenbrand (26):
+>   mm/debug_vm_pgtable: more pte_swp_exclusive() sanity checks
+>   alpha/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   arc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   arm/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   csky/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   hexagon/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   ia64/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   loongarch/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   m68k/mm: remove dummy __swp definitions for nommu
+>   m68k/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   microblaze/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   mips/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   nios2/mm: refactor swap PTE layout
+>   nios2/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   openrisc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   parisc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   powerpc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE on 32bit book3s
+>   powerpc/nohash/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   riscv/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   sh/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   sparc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE on 32bit
+>   sparc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE on 64bit
+>   um/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   x86/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE also on 32bit
+>   xtensa/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>   mm: remove __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+>
+>  arch/alpha/include/asm/pgtable.h              | 40 ++++++++-
+>  arch/arc/include/asm/pgtable-bits-arcv2.h     | 26 +++++-
+>  arch/arm/include/asm/pgtable-2level.h         |  3 +
+>  arch/arm/include/asm/pgtable-3level.h         |  3 +
+>  arch/arm/include/asm/pgtable.h                | 34 ++++++--
+>  arch/arm64/include/asm/pgtable.h              |  1 -
+>  arch/csky/abiv1/inc/abi/pgtable-bits.h        | 13 ++-
+>  arch/csky/abiv2/inc/abi/pgtable-bits.h        | 19 ++--
+>  arch/csky/include/asm/pgtable.h               | 17 ++++
+>  arch/hexagon/include/asm/pgtable.h            | 36 ++++++--
+>  arch/ia64/include/asm/pgtable.h               | 31 ++++++-
+>  arch/loongarch/include/asm/pgtable-bits.h     |  4 +
+>  arch/loongarch/include/asm/pgtable.h          | 38 +++++++-
+>  arch/m68k/include/asm/mcf_pgtable.h           | 35 +++++++-
+>  arch/m68k/include/asm/motorola_pgtable.h      | 37 +++++++-
+>  arch/m68k/include/asm/pgtable_no.h            |  6 --
+>  arch/m68k/include/asm/sun3_pgtable.h          | 38 +++++++-
+>  arch/microblaze/include/asm/pgtable.h         | 44 +++++++---
+>  arch/mips/include/asm/pgtable-32.h            | 86 ++++++++++++++++---
+>  arch/mips/include/asm/pgtable-64.h            | 23 ++++-
+>  arch/mips/include/asm/pgtable.h               | 35 ++++++++
+>  arch/nios2/include/asm/pgtable-bits.h         |  3 +
+>  arch/nios2/include/asm/pgtable.h              | 37 ++++++--
+>  arch/openrisc/include/asm/pgtable.h           | 40 +++++++--
+>  arch/parisc/include/asm/pgtable.h             | 40 ++++++++-
+>  arch/powerpc/include/asm/book3s/32/pgtable.h  | 37 ++++++--
+>  arch/powerpc/include/asm/book3s/64/pgtable.h  |  1 -
+>  arch/powerpc/include/asm/nohash/32/pgtable.h  | 22 +++--
+>  arch/powerpc/include/asm/nohash/32/pte-40x.h  |  6 +-
+>  arch/powerpc/include/asm/nohash/32/pte-44x.h  | 18 +---
+>  arch/powerpc/include/asm/nohash/32/pte-85xx.h |  4 +-
+>  arch/powerpc/include/asm/nohash/64/pgtable.h  | 24 +++++-
+>  arch/powerpc/include/asm/nohash/pgtable.h     | 15 ++++
+>  arch/powerpc/include/asm/nohash/pte-e500.h    |  1 -
+>  arch/riscv/include/asm/pgtable-bits.h         |  3 +
+>  arch/riscv/include/asm/pgtable.h              | 28 ++++--
+>  arch/s390/include/asm/pgtable.h               |  1 -
+>  arch/sh/include/asm/pgtable_32.h              | 53 +++++++++---
+>  arch/sparc/include/asm/pgtable_32.h           | 26 +++++-
+>  arch/sparc/include/asm/pgtable_64.h           | 37 +++++++-
+>  arch/sparc/include/asm/pgtsrmmu.h             | 14 +--
+>  arch/um/include/asm/pgtable.h                 | 36 +++++++-
+>  arch/x86/include/asm/pgtable-2level.h         | 26 ++++--
+>  arch/x86/include/asm/pgtable-3level.h         | 26 +++++-
+>  arch/x86/include/asm/pgtable.h                |  3 -
+>  arch/xtensa/include/asm/pgtable.h             | 31 +++++--
+>  include/linux/pgtable.h                       | 29 -------
+>  mm/debug_vm_pgtable.c                         | 25 +++++-
+>  mm/memory.c                                   |  4 -
+>  mm/rmap.c                                     | 11 ---
+>  50 files changed, 943 insertions(+), 227 deletions(-)
+>
+> --
+> 2.38.1
+>
+>
