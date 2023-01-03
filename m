@@ -2,114 +2,109 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A07E65B5CA
-	for <lists+linux-ia64@lfdr.de>; Mon,  2 Jan 2023 18:24:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9800B65BBEC
+	for <lists+linux-ia64@lfdr.de>; Tue,  3 Jan 2023 09:18:26 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233225AbjABRYp (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 2 Jan 2023 12:24:45 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34192 "EHLO
+        id S237032AbjACIQv (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 3 Jan 2023 03:16:51 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232535AbjABRYo (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 2 Jan 2023 12:24:44 -0500
-Received: from mga04.intel.com (mga04.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 191B0B84E;
-        Mon,  2 Jan 2023 09:24:44 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1672680284; x=1704216284;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=6MsclmYEbFQLTFumk27drrI0fnEhnwF05BH3vrcK1XM=;
-  b=Zuu0P2qceyuck5L3YA/oO/w+5y5QRYkCcYNfbk5pwlE0gZtMBOg5xHrt
-   QpH6M8QfT8h7GK7VhQuJU/5iL46+7D559BMoCuC3QPZFigBHJthVOBTE9
-   Z3MHa3i1VWacAEcl4GSibn5uH4PfDBDtVdYHqtuQ2o1dnu4BYRQtj5cOe
-   yGVlbf9rC60Tup8plc0P5VSLrR4ge9fo/yEPozIXsYJdDFCXnjSHYcsI1
-   QQjN8WqJkAkDBvzV4KxqUSh/cLwdtoIGUYfU3Aenw47d5VIijriMzy/8s
-   g+UyORqtyvyX2bLY6PtKYhp8+XvDM45ZwD83yN1QvWFlRwTjNLWo1Jm33
-   A==;
-X-IronPort-AV: E=McAfee;i="6500,9779,10578"; a="320231190"
-X-IronPort-AV: E=Sophos;i="5.96,294,1665471600"; 
-   d="scan'208";a="320231190"
-Received: from orsmga006.jf.intel.com ([10.7.209.51])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 02 Jan 2023 09:24:43 -0800
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6500,9779,10578"; a="632193640"
-X-IronPort-AV: E=Sophos;i="5.96,294,1665471600"; 
-   d="scan'208";a="632193640"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by orsmga006.jf.intel.com with ESMTP; 02 Jan 2023 09:24:34 -0800
-Received: from andy by smile.fi.intel.com with local (Exim 4.96)
-        (envelope-from <andriy.shevchenko@linux.intel.com>)
-        id 1pCOY3-003WV9-0D;
-        Mon, 02 Jan 2023 19:24:31 +0200
-Date:   Mon, 2 Jan 2023 19:24:30 +0200
-From:   Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To:     Alexander Lobakin <alexandr.lobakin@intel.com>
-Cc:     Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Yury Norov <yury.norov@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Matt Turner <mattst88@gmail.com>,
-        Brian Cain <bcain@quicinc.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Kees Cook <keescook@chromium.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Marco Elver <elver@google.com>, Borislav Petkov <bp@suse.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Tom Rix <trix@redhat.com>, kernel test robot <lkp@intel.com>,
-        linux-alpha@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-arch@vger.kernel.org, llvm@lists.linux.dev,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v5 2/9] bitops: always define asm-generic non-atomic
- bitops
-Message-ID: <Y7MTTtlDCottjQi1@smile.fi.intel.com>
-References: <20220624121313.2382500-1-alexandr.lobakin@intel.com>
- <20220624121313.2382500-3-alexandr.lobakin@intel.com>
- <Y7MC5/wxgGZz/met@boxer>
- <20230102163059.3556962-1-alexandr.lobakin@intel.com>
+        with ESMTP id S237061AbjACIQe (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 3 Jan 2023 03:16:34 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7AABDF6E;
+        Tue,  3 Jan 2023 00:16:33 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 55866B80E46;
+        Tue,  3 Jan 2023 08:16:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE09DC433EF;
+        Tue,  3 Jan 2023 08:16:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1672733791;
+        bh=LMollx75INxlsOc4OTrM24TyDpkA3hw5kYHp28nCAsg=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=pFr1bMX5LNT5kMw5nBD7CP7aipg3AkHRh+9WTP65KmAoE7dSfnogM0M2Hvx8AMRtn
+         vZG+5GgjoDSAZGNEA/cdYuh2kdcFrlrxfXqpZV3rOAPPMdhgbPKi5RheD67Z1iZf51
+         UmRF7/VE3haFmFRAlGM11bVNu3p7A9KERtAPj8+o=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, linux-ia64@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 37/63] ia64: add support for TIF_NOTIFY_SIGNAL
+Date:   Tue,  3 Jan 2023 09:14:07 +0100
+Message-Id: <20230103081310.802833748@linuxfoundation.org>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20230103081308.548338576@linuxfoundation.org>
+References: <20230103081308.548338576@linuxfoundation.org>
+User-Agent: quilt/0.67
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230102163059.3556962-1-alexandr.lobakin@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Jan 02, 2023 at 05:30:59PM +0100, Alexander Lobakin wrote:
-> From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-> Date: Mon, 2 Jan 2023 17:14:31 +0100
-> > On Fri, Jun 24, 2022 at 02:13:06PM +0200, Alexander Lobakin wrote:
+From: Jens Axboe <axboe@kernel.dk>
 
-> > this patch gives me a headache when trying to run sparse against a module.
+[ Upstream commit b269c229b0e89aedb7943c06673b56b6052cf5e5 ]
 
-No, it's not related to this patch.
+Wire up TIF_NOTIFY_SIGNAL handling for ia64.
 
-> > Olek please help :D
-> 
-> It was fixed shortly after the build bots turned on on the original
-> series with [0]. Hovewer, no release tag's been made after the fix.
-> There's also a short discussion regarding packaging Sparse 0.6.4 for
-> Debian with that fix cherry-picked[1], not sure if it led anywhere.
+Cc: linux-ia64@vger.kernel.org
+[axboe: added fixes from Mike Rapoport <rppt@kernel.org>]
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ arch/ia64/include/asm/thread_info.h |    4 +++-
+ arch/ia64/kernel/process.c          |    3 ++-
+ 2 files changed, 5 insertions(+), 2 deletions(-)
 
-Debian already fixed that for a few weeks at least.
-
--- 
-With Best Regards,
-Andy Shevchenko
+--- a/arch/ia64/include/asm/thread_info.h
++++ b/arch/ia64/include/asm/thread_info.h
+@@ -103,6 +103,7 @@ struct thread_info {
+ #define TIF_SYSCALL_TRACE	2	/* syscall trace active */
+ #define TIF_SYSCALL_AUDIT	3	/* syscall auditing active */
+ #define TIF_SINGLESTEP		4	/* restore singlestep on return to user mode */
++#define TIF_NOTIFY_SIGNAL	5	/* signal notification exist */
+ #define TIF_NOTIFY_RESUME	6	/* resumption notification requested */
+ #define TIF_MEMDIE		17	/* is terminating due to OOM killer */
+ #define TIF_MCA_INIT		18	/* this task is processing MCA or INIT */
+@@ -115,6 +116,7 @@ struct thread_info {
+ #define _TIF_SINGLESTEP		(1 << TIF_SINGLESTEP)
+ #define _TIF_SYSCALL_TRACEAUDIT	(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT|_TIF_SINGLESTEP)
+ #define _TIF_NOTIFY_RESUME	(1 << TIF_NOTIFY_RESUME)
++#define _TIF_NOTIFY_SIGNAL	(1 << TIF_NOTIFY_SIGNAL)
+ #define _TIF_SIGPENDING		(1 << TIF_SIGPENDING)
+ #define _TIF_NEED_RESCHED	(1 << TIF_NEED_RESCHED)
+ #define _TIF_MCA_INIT		(1 << TIF_MCA_INIT)
+@@ -124,7 +126,7 @@ struct thread_info {
+ 
+ /* "work to do on user-return" bits */
+ #define TIF_ALLWORK_MASK	(_TIF_SIGPENDING|_TIF_NOTIFY_RESUME|_TIF_SYSCALL_AUDIT|\
+-				 _TIF_NEED_RESCHED|_TIF_SYSCALL_TRACE)
++				 _TIF_NEED_RESCHED|_TIF_SYSCALL_TRACE|_TIF_NOTIFY_SIGNAL)
+ /* like TIF_ALLWORK_BITS but sans TIF_SYSCALL_TRACE or TIF_SYSCALL_AUDIT */
+ #define TIF_WORK_MASK		(TIF_ALLWORK_MASK&~(_TIF_SYSCALL_TRACE|_TIF_SYSCALL_AUDIT))
+ 
+--- a/arch/ia64/kernel/process.c
++++ b/arch/ia64/kernel/process.c
+@@ -171,7 +171,8 @@ do_notify_resume_user(sigset_t *unused,
+ 	}
+ 
+ 	/* deal with pending signal delivery */
+-	if (test_thread_flag(TIF_SIGPENDING)) {
++	if (test_thread_flag(TIF_SIGPENDING) ||
++	    test_thread_flag(TIF_NOTIFY_SIGNAL)) {
+ 		local_irq_enable();	/* force interrupt enable */
+ 		ia64_do_signal(scr, in_syscall);
+ 	}
 
 
