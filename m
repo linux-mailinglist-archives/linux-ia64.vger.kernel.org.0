@@ -2,77 +2,164 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D94C66DFCE
-	for <lists+linux-ia64@lfdr.de>; Tue, 17 Jan 2023 15:02:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D632366E06B
+	for <lists+linux-ia64@lfdr.de>; Tue, 17 Jan 2023 15:24:05 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230202AbjAQOCw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 17 Jan 2023 09:02:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58452 "EHLO
+        id S231945AbjAQOYC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 17 Jan 2023 09:24:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230395AbjAQOCk (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 17 Jan 2023 09:02:40 -0500
-Received: from mail-wr1-x432.google.com (mail-wr1-x432.google.com [IPv6:2a00:1450:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD61839CDF
-        for <linux-ia64@vger.kernel.org>; Tue, 17 Jan 2023 06:02:39 -0800 (PST)
-Received: by mail-wr1-x432.google.com with SMTP id k8so16184469wrc.9
-        for <linux-ia64@vger.kernel.org>; Tue, 17 Jan 2023 06:02:39 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:subject:to:from:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=qnONv6ljq41Tulih2wNiX8/3YbIpOSq+P5AfGvqItI4=;
-        b=Ws+mjG2NzzEZQgO3+83tVSol4c+qN51rxRe9UNPSA7L9D4kkcAwgwujbPfWU8ZM10F
-         VfPYoF+64BCBQhxMCv3OWM6++l4cp6kz0eEk+juxFsVfH4D2ZqOfAgT7jlO5odctqCTD
-         gCHax0Z4F8DXXl2DeaVWpbHeNwZCKtnvSs/beS98UvDdh7hM2d3TkY3EQFuJp59/hM5r
-         /cSbOpUsn1DHXYJWlDxW8ldv2BLNsUAPyOVh4XpMSI/TvpHGn29cA2BRJPrvr5qHZx4C
-         /vZOsifO9zJGr9BujsmZCcrc2ojfeBpuJjQxx/hxQxpBMMavE1xe2BSmOGj3ddDGrqB/
-         gLqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:subject:to:from:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=qnONv6ljq41Tulih2wNiX8/3YbIpOSq+P5AfGvqItI4=;
-        b=zBlZ7KLGkl0zCBb79r3OsDKYn2AdVfq97GCcpAwHCcp53+1b9Yg2mRG0w8XMvFE2C9
-         t+vCNKxwHMr3OBmvaK5ipCz84+KAkTQxI+pSCfoP7FV6uo5mdVvp20cC8udSfOt0taa1
-         TS+o7W2CuMhpvogC7ATlbkTVPT4shCNklQr8rdsE6AT+KSM3KaCvxvbUfvTQ7ggYo7Tv
-         wwgP/SnzALdVJy6XjEusO6+OnB6MW77An5YtY8l6E8mK8QSaSHoLghUR6ex0jRqmn65q
-         PckFNPISLmQwbl2hXbTIT+D5AA1gC3dRxspgtj96JWbZi1cVu73BRUIv5TWRX7L+cPRw
-         4NfQ==
-X-Gm-Message-State: AFqh2kqsBU19wI9uuvla7UHNyazvFSBnU/99J6o4cOsWqhfJOYGm4pc8
-        ZB2fjPp4eWyLN7P9W04nYwdcO+bQL4s=
-X-Google-Smtp-Source: AMrXdXtBgoui25MAJbNWchSD+Kg0e9BHroXMp8Q0qorZNgRQ8A1dnNCg5YNIK/DN4ZPlUFiGinC8LQ==
-X-Received: by 2002:adf:f384:0:b0:2b7:26c1:e81a with SMTP id m4-20020adff384000000b002b726c1e81amr2975946wro.25.1673964157765;
-        Tue, 17 Jan 2023 06:02:37 -0800 (PST)
-Received: from DESKTOP-53HLT22 ([39.42.156.237])
-        by smtp.gmail.com with ESMTPSA id e36-20020a5d5964000000b002be0b1e556esm4317792wri.59.2023.01.17.06.02.36
-        for <linux-ia64@vger.kernel.org>
-        (version=TLS1 cipher=ECDHE-ECDSA-AES128-SHA bits=128/128);
-        Tue, 17 Jan 2023 06:02:36 -0800 (PST)
-Message-ID: <63c6aa7c.5d0a0220.9c028.026d@mx.google.com>
-Date:   Tue, 17 Jan 2023 06:02:36 -0800 (PST)
-X-Google-Original-Date: 17 Jan 2023 09:04:12 -0500
+        with ESMTP id S232609AbjAQOXe (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 17 Jan 2023 09:23:34 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 48AEE3E617;
+        Tue, 17 Jan 2023 06:22:00 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7277412FC;
+        Tue, 17 Jan 2023 06:22:41 -0800 (PST)
+Received: from bogus (e103737-lin.cambridge.arm.com [10.1.197.49])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1B3A83F67D;
+        Tue, 17 Jan 2023 06:21:43 -0800 (PST)
+Date:   Tue, 17 Jan 2023 14:21:40 +0000
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Mark Rutland <mark.rutland@arm.com>
+Cc:     Peter Zijlstra <peterz@infradead.org>,
+        richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, vgupta@kernel.org, linux@armlinux.org.uk,
+        nsekhar@ti.com, brgl@bgdev.pl, ulli.kroll@googlemail.com,
+        linus.walleij@linaro.org, shawnguo@kernel.org,
+        Sascha Hauer <s.hauer@pengutronix.de>, kernel@pengutronix.de,
+        festevam@gmail.com, linux-imx@nxp.com, tony@atomide.com,
+        khilman@kernel.org, krzysztof.kozlowski@linaro.org,
+        alim.akhtar@samsung.com, catalin.marinas@arm.com, will@kernel.org,
+        guoren@kernel.org, bcain@quicinc.com, chenhuacai@kernel.org,
+        kernel@xen0n.name, geert@linux-m68k.org, sammy@sammy.net,
+        monstr@monstr.eu, tsbogend@alpha.franken.de, dinguyen@kernel.org,
+        jonas@southpole.se, stefan.kristiansson@saunalahti.fi,
+        shorne@gmail.com, James.Bottomley@hansenpartnership.com,
+        deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
+        christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
+        palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
+        gor@linux.ibm.com, agordeev@linux.ibm.com,
+        borntraeger@linux.ibm.com, svens@linux.ibm.com,
+        ysato@users.sourceforge.jp, dalias@libc.org, davem@davemloft.net,
+        richard@nod.at, anton.ivanov@cambridgegreys.com,
+        johannes@sipsolutions.net, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, acme@kernel.org, alexander.shishkin@linux.intel.com,
+        jolsa@kernel.org, namhyung@kernel.org, jgross@suse.com,
+        srivatsa@csail.mit.edu, amakhalov@vmware.com,
+        pv-drivers@vmware.com, boris.ostrovsky@oracle.com,
+        chris@zankel.net, jcmvbkbc@gmail.com, rafael@kernel.org,
+        lenb@kernel.org, pavel@ucw.cz, gregkh@linuxfoundation.org,
+        mturquette@baylibre.com, sboyd@kernel.org,
+        daniel.lezcano@linaro.org, lpieralisi@kernel.org,
+        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
+        anup@brainfault.org, thierry.reding@gmail.com,
+        jonathanh@nvidia.com, jacob.jun.pan@linux.intel.com,
+        atishp@atishpatra.org, Arnd Bergmann <arnd@arndb.de>,
+        yury.norov@gmail.com, andriy.shevchenko@linux.intel.com,
+        linux@rasmusvillemoes.dk, dennis@kernel.org, tj@kernel.org,
+        cl@linux.com, rostedt@goodmis.org, mhiramat@kernel.org,
+        frederic@kernel.org, paulmck@kernel.org, pmladek@suse.com,
+        senozhatsky@chromium.org, john.ogness@linutronix.de,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, bsegall@google.com, mgorman@suse.de,
+        bristot@redhat.com, vschneid@redhat.com, ryabinin.a.a@gmail.com,
+        glider@google.com, andreyknvl@gmail.com, dvyukov@google.com,
+        vincenzo.frascino@arm.com,
+        Andrew Morton <akpm@linux-foundation.org>, jpoimboe@kernel.org,
+        linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org, linux-omap@vger.kernel.org,
+        linux-samsung-soc@vger.kernel.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-perf-users@vger.kernel.org,
+        virtualization@lists.linux-foundation.org,
+        linux-xtensa@linux-xtensa.org, linux-acpi@vger.kernel.org,
+        linux-pm@vger.kernel.org, linux-clk@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-tegra@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-mm@kvack.org,
+        linux-trace-kernel@vger.kernel.org, kasan-dev@googlegroups.com,
+        Sudeep Holla <sudeep.holla@arm.com>
+Subject: Re: [PATCH v3 00/51] cpuidle,rcu: Clean up the mess
+Message-ID: <20230117142140.g423hxisv7djudof@bogus>
+References: <20230112194314.845371875@infradead.org>
+ <Y8WCWAuQSHN651dA@FVFF77S0Q05N.cambridge.arm.com>
+ <Y8Z31UbzG3LJgAXE@hirez.programming.kicks-ass.net>
+ <Y8afpbHtDOqAHq9M@FVFF77S0Q05N.cambridge.arm.com>
 MIME-Version: 1.0
-From:   felixjosiah47@gmail.com
-To:     linux-ia64@vger.kernel.org
-Subject: TakeOff
 Content-Type: text/plain; charset=us-ascii
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.1 required=5.0 tests=BAYES_20,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Disposition: inline
+In-Reply-To: <Y8afpbHtDOqAHq9M@FVFF77S0Q05N.cambridge.arm.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-=0D=0AHi,=0D=0A=0D=0ADo you have any estimating projects for us=0D=0A=
-=0D=0AIf you are holding a project, please send over the plans in=
- PDF format for getting a firm quote on your project.=0D=0A=0D=0A=
-Let me know if you have any questions or if you would like to see=
- some samples.=0D=0A=0D=0AWe will be happy to answer any question=
-s you have. Thank you=0D=0A=0D=0ARegards,=0D=0AFelix Josiah=0D=0A=
-Crossland Estimation, INC
+On Tue, Jan 17, 2023 at 01:16:21PM +0000, Mark Rutland wrote:
+> On Tue, Jan 17, 2023 at 11:26:29AM +0100, Peter Zijlstra wrote:
+> > On Mon, Jan 16, 2023 at 04:59:04PM +0000, Mark Rutland wrote:
+> > 
+> > > I'm sorry to have to bear some bad news on that front. :(
+> > 
+> > Moo, something had to give..
+> > 
+> > 
+> > > IIUC what's happenign here is the PSCI cpuidle driver has entered idle and RCU
+> > > is no longer watching when arm64's cpu_suspend() manipulates DAIF. Our
+> > > local_daif_*() helpers poke lockdep and tracing, hence the call to
+> > > trace_hardirqs_off() and the RCU usage.
+> > 
+> > Right, strictly speaking not needed at this point, IRQs should have been
+> > traced off a long time ago.
+> 
+> True, but there are some other calls around here that *might* end up invoking
+> RCU stuff (e.g. the MTE code).
+> 
+> That all needs a noinstr cleanup too, which I'll sort out as a follow-up.
+> 
+> > > I think we need RCU to be watching all the way down to cpu_suspend(), and it's
+> > > cpu_suspend() that should actually enter/exit idle context. That and we need to
+> > > make cpu_suspend() and the low-level PSCI invocation noinstr.
+> > > 
+> > > I'm not sure whether 32-bit will have a similar issue or not.
+> > 
+> > I'm not seeing 32bit or Risc-V have similar issues here, but who knows,
+> > maybe I missed somsething.
+> 
+> I reckon if they do, the core changes here give us the infrastructure to fix
+> them if/when we get reports.
+> 
+> > In any case, the below ought to cure the ARM64 case and remove that last
+> > known RCU_NONIDLE() user as a bonus.
+> 
+> The below works for me testing on a Juno R1 board with PSCI, using defconfig +
+> CONFIG_PROVE_LOCKING=y + CONFIG_DEBUG_LOCKDEP=y + CONFIG_DEBUG_ATOMIC_SLEEP=y.
+> I'm not sure how to test the LPI / FFH part, but it looks good to me.
+> 
+> FWIW:
+> 
+> Reviewed-by: Mark Rutland <mark.rutland@arm.com>
+> Tested-by: Mark Rutland <mark.rutland@arm.com>
+> 
+> Sudeep, would you be able to give the LPI/FFH side a spin with the kconfig
+> options above?
+> 
 
+Not sure if I have messed up something in my mail setup, but I did reply
+earlier. I did test both DT/cpuidle-psci driver and  ACPI/LPI+FFH driver
+with the fix Peter sent. I was seeing same splat as you in both DT and
+ACPI boot which the patch fixed it. I used the same config as described by
+you above.
+
+-- 
+Regards,
+Sudeep
