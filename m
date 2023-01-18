@@ -2,99 +2,91 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 080796717A8
-	for <lists+linux-ia64@lfdr.de>; Wed, 18 Jan 2023 10:27:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EE2AC671BFB
+	for <lists+linux-ia64@lfdr.de>; Wed, 18 Jan 2023 13:24:44 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230137AbjARJ1d (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 18 Jan 2023 04:27:33 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45398 "EHLO
+        id S230262AbjARMYj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 18 Jan 2023 07:24:39 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230289AbjARJZQ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 18 Jan 2023 04:25:16 -0500
-Received: from mail.bostmarktrun.com (mail.bostmarktrun.com [135.125.238.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AEA551C4D
-        for <linux-ia64@vger.kernel.org>; Wed, 18 Jan 2023 00:50:41 -0800 (PST)
-Received: by mail.bostmarktrun.com (Postfix, from userid 1002)
-        id B66C6A28C8; Wed, 18 Jan 2023 08:50:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=bostmarktrun.com;
-        s=mail; t=1674031839;
-        bh=gfWmJwOZk+B/IN1TMPg7emKhIvoExrJdUiyEL8yd2Jk=;
-        h=Date:From:To:Subject:From;
-        b=epcKC57m5fpEmcN6OF6pkOui718IDuW5BvfIMyf2Dx935YBnJ5q0i/31U/BxVAVQy
-         iriDRwF9eziTYsMCHSdoyPX0CDjMI8mnS5arutqwk724n7S2c7+r6fzFDADQIUAfOX
-         Kosxswghk96tE/9qSvnxpW+QwlszSMIYX13bpOE3SUiuHXR8jjntps5bXzjBfWh7Sg
-         iX+CAg5SbAzu5PyXjJbBpZMm+1Nu1ytEOurE4y6XH0nyQ3nPiHHYM/G/X4JdGKkEez
-         COHBUz+8ijVPVdjEn0S4SMrubXoO6RbZwKB8qN1O/Fx+cjUOc9d6JDoowcvgG9c202
-         iH4uxKwgplFuQ==
-Received: by mail.bostmarktrun.com for <linux-ia64@vger.kernel.org>; Wed, 18 Jan 2023 08:50:31 GMT
-Message-ID: <20230118074500-0.1.4p.wrtb.0.a6k5u59pqf@bostmarktrun.com>
-Date:   Wed, 18 Jan 2023 08:50:31 GMT
-From:   "Corey Webb" <corey.webb@bostmarktrun.com>
-To:     <linux-ia64@vger.kernel.org>
-Subject: Custom Software Development
-X-Mailer: mail.bostmarktrun.com
+        with ESMTP id S230222AbjARMXS (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 18 Jan 2023 07:23:18 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5FDDC65F00;
+        Wed, 18 Jan 2023 03:45:03 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 491331477;
+        Wed, 18 Jan 2023 03:45:45 -0800 (PST)
+Received: from [10.1.196.46] (eglon.cambridge.arm.com [10.1.196.46])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1B5EE3F71A;
+        Wed, 18 Jan 2023 03:45:02 -0800 (PST)
+Message-ID: <99b295ed-7157-0c95-cafb-9cf8afdf41f2@arm.com>
+Date:   Wed, 18 Jan 2023 11:44:54 +0000
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: bostmarktrun.com]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [135.125.238.46 listed in zen.spamhaus.org]
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: bostmarktrun.com]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-X-Spam-Level: ******
+User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:91.0) Gecko/20100101
+ Thunderbird/91.13.0
+Subject: Re: [PATCH] ia64: Fix build error due to switch case label appearing
+ next to declaration
+Content-Language: en-GB
+To:     Sergei Trofimovich <slyich@gmail.com>
+Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        matoro <matoro_mailinglist_kernel@matoro.tk>,
+        =?UTF-8?Q?=c3=89meric_Maschino?= <emeric.maschino@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+References: <20230117151632.393836-1-james.morse@arm.com>
+ <20230117193109.5650fd6f@nz>
+From:   James Morse <james.morse@arm.com>
+In-Reply-To: <20230117193109.5650fd6f@nz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi,=20
+Hi Sergei,
 
-I would like to reach the person responsible for the implementation of yo=
-ur company's goals, vision and mission or the decision-maker in the devel=
-opment of your technology strategy.
+On 17/01/2023 19:31, Sergei Trofimovich wrote:
+> On Tue, 17 Jan 2023 15:16:32 +0000
+> James Morse <james.morse@arm.com> wrote:
+> 
+>> Since commit aa06a9bd8533 ("ia64: fix clock_getres(CLOCK_MONOTONIC) to
+>> report ITC frequency"), gcc 10.1.0 fails to build ia64 with the gnomic:
+>> | ../arch/ia64/kernel/sys_ia64.c: In function 'ia64_clock_getres':
+>> | ../arch/ia64/kernel/sys_ia64.c:189:3: error: a label can only be part of a statement and a declaration is not a statement
+>> |   189 |   s64 tick_ns = DIV_ROUND_UP(NSEC_PER_SEC, local_cpu_data->itc_freq);
+>>
+>> This line appears immediately after a case label in a switch.
+>>
+>> Move the declarations out of the case, to the top of the function.
+>>
+>> Fixes: aa06a9bd8533 ("ia64: fix clock_getres(CLOCK_MONOTONIC) to report ITC frequency")
+>> Signed-off-by: James Morse <james.morse@arm.com>
 
-I represent provider of lucrative IT solutions that remove the barriers t=
-o process development resulting from limited access to appropriate IT res=
-ources.
+> Out of curiosity what compiler version behaves like that? I think I and
+> matoro build-/run-tested it on gcc-12 and maybe gcc-11.
 
-We guarantee you access to the knowledge and experience of outstanding 3,=
-000 software developers from Poland and 500 professional consultants and =
-senior developers in the United States and other Western countries. =20
+| # ia64-linux-gcc --version
+| ia64-linux-gcc (GCC) 10.1.0
+| Copyright (C) 2020 Free Software Foundation, Inc.
+| This is free software; see the source for copying conditions.  There is NO
+| warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-We respond to a variety of needs, ranging from expanding your project tea=
-m with specialists with specific skills to supporting project managers, e=
-xperienced innovation teams to creating a Minimum Viable Project (MVP).
+The toolchain originally came from https://mirrors.edge.kernel.org/pub/tools/crosstool/
 
-The comprehensiveness of our services guarantees you dynamic software dev=
-elopment including creation, testing and implementation systems that are =
-the backbone of effective management of the entire organization.
-
-A partnership that lasts for years is the best proof that our clients mee=
-t their unique requirements within a specific timeframe, introduce new op=
-portunities and grow their business while we solve their problems.
-
-Are you available for a brief call? I will be looking forward to hearing =
-from you.
+The really odd thing I'm doing is cross compiling for ia64 on arm64 ... but I wouldn't
+have thought the toolchain configuration was any different.
 
 
-Best regards
-Corey Webb
+> Thank you!
+> 
+> Reviewed-by: Sergei Trofimovich <slyich@gmail.com>
+
+
+Thanks,
+
+James
