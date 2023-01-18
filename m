@@ -2,91 +2,71 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EE2AC671BFB
-	for <lists+linux-ia64@lfdr.de>; Wed, 18 Jan 2023 13:24:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB122671CEC
+	for <lists+linux-ia64@lfdr.de>; Wed, 18 Jan 2023 14:05:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230262AbjARMYj (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 18 Jan 2023 07:24:39 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57158 "EHLO
+        id S229622AbjARNFs (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 18 Jan 2023 08:05:48 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230222AbjARMXS (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 18 Jan 2023 07:23:18 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 5FDDC65F00;
-        Wed, 18 Jan 2023 03:45:03 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 491331477;
-        Wed, 18 Jan 2023 03:45:45 -0800 (PST)
-Received: from [10.1.196.46] (eglon.cambridge.arm.com [10.1.196.46])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 1B5EE3F71A;
-        Wed, 18 Jan 2023 03:45:02 -0800 (PST)
-Message-ID: <99b295ed-7157-0c95-cafb-9cf8afdf41f2@arm.com>
-Date:   Wed, 18 Jan 2023 11:44:54 +0000
+        with ESMTP id S231247AbjARNFQ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 18 Jan 2023 08:05:16 -0500
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB37B683EF
+        for <linux-ia64@vger.kernel.org>; Wed, 18 Jan 2023 04:26:32 -0800 (PST)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1pI7WR-002IF8-4U; Wed, 18 Jan 2023 13:26:31 +0100
+Received: from p57bd9464.dip0.t-ipconnect.de ([87.189.148.100] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_128_GCM_SHA256
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1pI7WP-001tOi-HW; Wed, 18 Jan 2023 13:26:31 +0100
+Message-ID: <77eacc0d-086f-505d-37ea-30611b0b35e2@physik.fu-berlin.de>
+Date:   Wed, 18 Jan 2023 13:26:29 +0100
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux aarch64; rv:91.0) Gecko/20100101
- Thunderbird/91.13.0
-Subject: Re: [PATCH] ia64: Fix build error due to switch case label appearing
- next to declaration
-Content-Language: en-GB
-To:     Sergei Trofimovich <slyich@gmail.com>
-Cc:     linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        matoro <matoro_mailinglist_kernel@matoro.tk>,
-        =?UTF-8?Q?=c3=89meric_Maschino?= <emeric.maschino@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-References: <20230117151632.393836-1-james.morse@arm.com>
- <20230117193109.5650fd6f@nz>
-From:   James Morse <james.morse@arm.com>
-In-Reply-To: <20230117193109.5650fd6f@nz>
-Content-Type: text/plain; charset=UTF-8
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.6.1
+Content-Language: en-US
+To:     "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+Cc:     Sergei Trofimovich <slyich@gmail.com>,
+        Jessica Clarke <jrtc27@debian.org>
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Subject: Boot regression on ia64 with 6.1
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 87.189.148.100
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Sergei,
+Hi!
 
-On 17/01/2023 19:31, Sergei Trofimovich wrote:
-> On Tue, 17 Jan 2023 15:16:32 +0000
-> James Morse <james.morse@arm.com> wrote:
-> 
->> Since commit aa06a9bd8533 ("ia64: fix clock_getres(CLOCK_MONOTONIC) to
->> report ITC frequency"), gcc 10.1.0 fails to build ia64 with the gnomic:
->> | ../arch/ia64/kernel/sys_ia64.c: In function 'ia64_clock_getres':
->> | ../arch/ia64/kernel/sys_ia64.c:189:3: error: a label can only be part of a statement and a declaration is not a statement
->> |   189 |   s64 tick_ns = DIV_ROUND_UP(NSEC_PER_SEC, local_cpu_data->itc_freq);
->>
->> This line appears immediately after a case label in a switch.
->>
->> Move the declarations out of the case, to the top of the function.
->>
->> Fixes: aa06a9bd8533 ("ia64: fix clock_getres(CLOCK_MONOTONIC) to report ITC frequency")
->> Signed-off-by: James Morse <james.morse@arm.com>
+There is a boot regression on ia64 with 6.1 that causes the machine to reset
+during boot. I haven't bisected the bad commit yet, this will happen later today:
 
-> Out of curiosity what compiler version behaves like that? I think I and
-> matoro build-/run-tested it on gcc-12 and maybe gcc-11.
+[    1.296316] Unpacking initramfs...
+[    1.313806] Entered OS MCA handler. PSP=20010000fff21320 cpu=2 monarch=1
+[    1.313806] 6All OS MCA slaves have reached rendezvous
+[    1.313806] mlogbuf_finish: printing switched to urgent mode, MCA/INIT might be dodgy or fail.
+[    1.313806] Delaying for 5 seconds...
 
-| # ia64-linux-gcc --version
-| ia64-linux-gcc (GCC) 10.1.0
-| Copyright (C) 2020 Free Software Foundation, Inc.
-| This is free software; see the source for copying conditions.  There is NO
-| warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+Just in case anyone already has an idea.
 
-The toolchain originally came from https://mirrors.edge.kernel.org/pub/tools/crosstool/
+Adrian
 
-The really odd thing I'm doing is cross compiling for ia64 on arm64 ... but I wouldn't
-have thought the toolchain configuration was any different.
-
-
-> Thank you!
-> 
-> Reviewed-by: Sergei Trofimovich <slyich@gmail.com>
-
-
-Thanks,
-
-James
+-- 
+  .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+   `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
