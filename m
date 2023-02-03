@@ -2,95 +2,150 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 919A868A47B
-	for <lists+linux-ia64@lfdr.de>; Fri,  3 Feb 2023 22:17:09 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A15068A52A
+	for <lists+linux-ia64@lfdr.de>; Fri,  3 Feb 2023 23:05:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233473AbjBCVRI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 3 Feb 2023 16:17:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33020 "EHLO
+        id S231526AbjBCWFn (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 3 Feb 2023 17:05:43 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232519AbjBCVRG (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 3 Feb 2023 16:17:06 -0500
-X-Greylist: delayed 491 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 03 Feb 2023 13:16:27 PST
-Received: from out-35.mta1.migadu.com (out-35.mta1.migadu.com [IPv6:2001:41d0:203:375::23])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCC53A7781
-        for <linux-ia64@vger.kernel.org>; Fri,  3 Feb 2023 13:16:27 -0800 (PST)
-Date:   Fri, 3 Feb 2023 21:08:00 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1675458492;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=zF794bsssBgYs01gtLHUkS28EIicNc0l0YnvFt/94YI=;
-        b=gF+Ot9L7bvkYWgstVlN3IGR5gepXbOhnLUW+ryxf0GGE8OvgoAe8gh4332GPCHIBnUEDfl
-        OstQTXxU52klLCCbGsxtBPABUoe9zoYwljDknwyOPX3XqLcs69d34u9p3+onFADs6Ko7Qx
-        oTbdNErPix3LGrijaxdz/cn1jgoVGFY=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Oliver Upton <oliver.upton@linux.dev>
-To:     James Morse <james.morse@arm.com>
-Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
-        kvmarm@lists.linux.dev, kvm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Len Brown <lenb@kernel.org>,
-        Rafael Wysocki <rafael@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: Re: [RFC PATCH 29/32] KVM: arm64: Pass hypercalls to userspace
-Message-ID: <Y913sIqWxmf4O5oG@google.com>
-References: <20230203135043.409192-1-james.morse@arm.com>
- <20230203135043.409192-30-james.morse@arm.com>
+        with ESMTP id S230114AbjBCWFn (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 3 Feb 2023 17:05:43 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39599945ED;
+        Fri,  3 Feb 2023 14:05:42 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C73686200C;
+        Fri,  3 Feb 2023 22:05:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C488C433EF;
+        Fri,  3 Feb 2023 22:05:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675461941;
+        bh=Yfz7LDRr9C5stKW6l039uMgeR9w4g6B/htPQVWCmvo0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=hT/RSWKOfEB8jVVNR5UZ+ZbSj3FXLQ0xxyrY0heskGWE6khYrrAFQ76LYykM4i9o8
+         irBoG35w/xMGiAEWy8hEkn9Q1tIzJzxmXAljxc/iWYKnUXFrHhRYGep0nxJSoT9spP
+         4dB2u1vvWVrwhpcumbKdCJR0B2wTRgDCB5121JafDUwhKmELKjCdPeOrwXK5eLJDjK
+         tyz30wSd9T+Wd8Rt8ftd27zDruJpmQXIwZCt+CSiXATiejyCyi516LIlzhPyorZH8T
+         WTNmRq1LmErrBsj/ynnHP8Qccsk6gRrw9tAaXNUSu/osCJkwqecmj01XHOVKQ9ef7f
+         Ezggi0dcZPCBQ==
+From:   Josh Poimboeuf <jpoimboe@kernel.org>
+To:     linux-kernel@vger.kernel.org
+Cc:     jgross@suse.com, richard.henderson@linaro.org,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        linux-alpha@vger.kernel.org, linux@armlinux.org.uk,
+        linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+        will@kernel.org, guoren@kernel.org, linux-csky@vger.kernel.org,
+        linux-ia64@vger.kernel.org, chenhuacai@kernel.org,
+        kernel@xen0n.name, loongarch@lists.linux.dev, f.fainelli@gmail.com,
+        bcm-kernel-feedback-list@broadcom.com, tsbogend@alpha.franken.de,
+        linux-mips@vger.kernel.org, jiaxun.yang@flygoat.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        linuxppc-dev@lists.ozlabs.org, ysato@users.sourceforge.jp,
+        dalias@libc.org, linux-sh@vger.kernel.org, davem@davemloft.net,
+        sparclinux@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        linux-xtensa@linux-xtensa.org, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+        mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
+        paulmck@kernel.org
+Subject: [PATCH 00/22] cpu,sched: Mark arch_cpu_idle_dead() __noreturn
+Date:   Fri,  3 Feb 2023 14:05:09 -0800
+Message-Id: <cover.1675461757.git.jpoimboe@kernel.org>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230203135043.409192-30-james.morse@arm.com>
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi James,
+These are some minor changes to enable the __noreturn attribute for
+arch_cpu_idle_dead().  (If there are no objections, I can merge the
+entire set through the tip tree.)
 
-On Fri, Feb 03, 2023 at 01:50:40PM +0000, James Morse wrote:
-> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> 
-> When capability KVM_CAP_ARM_HVC_TO_USER is available, userspace can
-> request to handle all hypercalls that aren't handled by KVM.
+Until recently [1], in Xen, when a previously offlined CPU was brought
+back online, it unexpectedly resumed execution where it left off in the
+middle of the idle loop by returning from play_dead() and its caller
+arch_cpu_idle_dead().
 
-I would very much prefer we not go down this route. This capability
-effectively constructs an ABI out of what KVM presently does not
-implement. What would happen if KVM decides to implement a new set
-of hypercalls later down the road that were previously forwarded to
-userspace?
+There were some clever hacks to make that work, but the behavior was
+surprising as do_idle() doesn't expect an offlined CPU to return from
+the dead in the middle of the function.
 
-Instead of a catch-all I think we should take the approach of having
-userspace explicitly request which hypercalls should be forwarded to
-userspace. I proposed something similar [1], but never got around to
-respinning it (oops).
+Now that Xen has been fixed, make sure arch_cpu_idle_dead() never
+returns by marking it __noreturn.  This causes the compiler to complain
+if an arch-specific implementation might return.  It also improves code
+generation for both caller and callee.
 
-Let me dust those patches off and align with Marc's suggestions.
+Patches 1-20 update the arch-specific implementations of the function so
+they don't actually return (even in error cases), and make that visible
+to the compiler.  That's typically done by ending the function with a
+call to another noreturn function, or with a BUG().
 
-[1]: https://lore.kernel.org/kvmarm/20221110015327.3389351-1-oliver.upton@linux.dev/
+Patch 21 fixes the weak implementation.
 
---
-Thanks,
-Oliver
+Patch 22 actually adds the __noreturn attribute.
+
+[1] 076cbf5d2163 ("x86/xen: don't let xen_pv_play_dead() return")
+
+Josh Poimboeuf (22):
+  alpha/cpu: Expose arch_cpu_idle_dead()'s prototype declaration
+  alpha/cpu: Make sure arch_cpu_idle_dead() doesn't return
+  arm/cpu: Make sure arch_cpu_idle_dead() doesn't return
+  arm64/cpu: Mark cpu_die() __noreturn
+  csky/cpu: Make sure arch_cpu_idle_dead() doesn't return
+  ia64/cpu: Mark play_dead() __noreturn
+  loongarch/cpu: Make sure play_dead() doesn't return
+  loongarch/cpu: Mark play_dead() __noreturn
+  mips/cpu: Expose play_dead()'s prototype definition
+  mips/cpu: Make sure play_dead() doesn't return
+  mips/cpu: Mark play_dead() __noreturn
+  powerpc/cpu: Mark start_secondary_resume() __noreturn
+  sh/cpu: Make sure play_dead() doesn't return
+  sh/cpu: Mark play_dead() __noreturn
+  sh/cpu: Expose arch_cpu_idle_dead()'s prototype definition
+  sparc/cpu: Mark cpu_play_dead() __noreturn
+  x86/cpu: Make sure play_dead() doesn't return
+  x86/cpu: Mark play_dead() __noreturn
+  xtensa/cpu: Make sure cpu_die() doesn't return
+  xtensa/cpu: Mark cpu_die() __noreturn
+  sched/idle: Make sure weak version of arch_cpu_idle_dead() doesn't
+    return
+  sched/idle: Mark arch_cpu_idle_dead() __noreturn
+
+ arch/alpha/kernel/process.c      | 2 ++
+ arch/arm/kernel/smp.c            | 2 ++
+ arch/arm64/include/asm/smp.h     | 2 +-
+ arch/csky/kernel/smp.c           | 2 ++
+ arch/ia64/kernel/process.c       | 4 ++--
+ arch/loongarch/include/asm/smp.h | 2 +-
+ arch/loongarch/kernel/smp.c      | 2 +-
+ arch/mips/include/asm/smp.h      | 2 +-
+ arch/mips/kernel/smp-bmips.c     | 3 +++
+ arch/mips/loongson64/smp.c       | 1 +
+ arch/powerpc/include/asm/smp.h   | 2 +-
+ arch/sh/include/asm/smp-ops.h    | 5 +++--
+ arch/sh/kernel/idle.c            | 1 +
+ arch/sparc/include/asm/smp_64.h  | 2 +-
+ arch/x86/include/asm/smp.h       | 3 ++-
+ arch/x86/kernel/process.c        | 2 +-
+ arch/xtensa/include/asm/smp.h    | 2 +-
+ arch/xtensa/kernel/smp.c         | 2 ++
+ include/linux/cpu.h              | 2 +-
+ kernel/sched/idle.c              | 2 +-
+ tools/objtool/check.c            | 1 +
+ 21 files changed, 31 insertions(+), 15 deletions(-)
+
+-- 
+2.39.0
+
