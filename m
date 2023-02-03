@@ -2,265 +2,252 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 65D7A688A16
-	for <lists+linux-ia64@lfdr.de>; Thu,  2 Feb 2023 23:57:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 76B7F689A2A
+	for <lists+linux-ia64@lfdr.de>; Fri,  3 Feb 2023 14:51:38 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230173AbjBBW5R (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 2 Feb 2023 17:57:17 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60310 "EHLO
+        id S231766AbjBCNvh (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 3 Feb 2023 08:51:37 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232240AbjBBW5Q (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 2 Feb 2023 17:57:16 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D427723DB0
-        for <linux-ia64@vger.kernel.org>; Thu,  2 Feb 2023 14:56:27 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1675378587;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=XMJSsnUmUwDCBuOmcITqEg5FKDzJKTZTwWrtPHX2Mzk=;
-        b=GmToqAq7xdqxUKlEy3kXF8evXkmP1iurk8S1T+DCQWAbIVEdQSgk57dB6nrzaQntXbisC6
-        DLJGEcvofaScDnMO0xlN+8IQLkwD6UL+eLp13Q3UVKnKRf8VJaw58Irne6FpLXZNSIozgc
-        RZpuZcsRu1+28/ijnZTEh23zpW/DQbA=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-595-wIJkPbBkOkOs60jx-dJSTg-1; Thu, 02 Feb 2023 17:56:25 -0500
-X-MC-Unique: wIJkPbBkOkOs60jx-dJSTg-1
-Received: by mail-qv1-f72.google.com with SMTP id ng1-20020a0562143bc100b004bb706b3a27so1809483qvb.20
-        for <linux-ia64@vger.kernel.org>; Thu, 02 Feb 2023 14:56:25 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XMJSsnUmUwDCBuOmcITqEg5FKDzJKTZTwWrtPHX2Mzk=;
-        b=XFTqHmBbelIsF3hJG1RVERZjNyicgSty07cvthTJUk5xSMCLZFZ6yXufJ2TdT/T6fm
-         1xSbfrfm3RiWhaIlrw+dYiHH+hV7Hcs78K9Xl4VlMQWbySBZhKFQgUAQalluNkOeENun
-         oMDh/jUtAzJrmwEr+5+28PhFpQ7nGtiV0Z7js8nbD4ni+GbRQHgseBq+m3fLxX8udCwF
-         l8Wrz6JV2PVoCqwGNVdI8CPNLY8f9QdKLNHgaixGqXYo7hnqndNzVSgQZnA5ekGZ+C79
-         bzlz+qXOE1imS+wHXNjLeO+lX8QyX3zNJ6raZs9uAdt6NfcxPDFj2DkInAMEeT2H0FhL
-         XGcw==
-X-Gm-Message-State: AO0yUKWRWEt6p2yBCYGnIXqsM8d29U5oAIkhWSRDFrePvLrZfKBoTvpR
-        y0+/NF2V/Ru4z2fZ5w2YgvagB/2h+eb29uJq03cLnFMZh1WWZjoUyZEbE11oM2kIZMzk8k17EKQ
-        JtRauFv9hbT5wWgTql9g2Dw==
-X-Received: by 2002:a05:622a:1e10:b0:3b8:68df:fc72 with SMTP id br16-20020a05622a1e1000b003b868dffc72mr12702093qtb.2.1675378585234;
-        Thu, 02 Feb 2023 14:56:25 -0800 (PST)
-X-Google-Smtp-Source: AK7set98ufe9BnObmCyLO5vL17bxJ3WNbuFwrxLR6rxAVU1vknl5Zn7Dx1QXwCn46sOWBGmNV32apQ==
-X-Received: by 2002:a05:622a:1e10:b0:3b8:68df:fc72 with SMTP id br16-20020a05622a1e1000b003b868dffc72mr12702061qtb.2.1675378584842;
-        Thu, 02 Feb 2023 14:56:24 -0800 (PST)
-Received: from x1n (bras-base-aurron9127w-grc-56-70-30-145-63.dsl.bell.ca. [70.30.145.63])
-        by smtp.gmail.com with ESMTPSA id j9-20020a05620a410900b00729b7d71ac7sm661766qko.33.2023.02.02.14.56.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Feb 2023 14:56:24 -0800 (PST)
-Date:   Thu, 2 Feb 2023 17:56:22 -0500
-From:   Peter Xu <peterx@redhat.com>
-To:     Al Viro <viro@zeniv.linux.org.uk>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-arch@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-hexagon@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, Michal Simek <monstr@monstr.eu>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
-        linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org
-Subject: Re: [RFC][PATCHSET] VM_FAULT_RETRY fixes
-Message-ID: <Y9w/lrL6g4yauXz4@x1n>
-References: <Y9lz6yk113LmC9SI@ZenIV>
- <CAHk-=whf73Vm2U3jyTva95ihZzefQbThZZxqZuKAF-Xjwq=G4Q@mail.gmail.com>
- <Y9mD1qp/6zm+jOME@ZenIV>
- <CAHk-=wjiwFzEGd_60H3nbgVB=R_8KTcfUJmXy=hSXCvLrXQRFA@mail.gmail.com>
- <Y9mM5wiEhepjJcN0@ZenIV>
- <CAHk-=wjNwwnBckTo8HLSdsd1ndoAR=5RBoZhdOyzhsnDAYWL9g@mail.gmail.com>
- <Y9rCBqwbLlLf1fHe@x1n>
- <Y9rlI6d5J2Y/YNQ+@ZenIV>
+        with ESMTP id S231775AbjBCNvg (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 3 Feb 2023 08:51:36 -0500
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9D981A0EB7;
+        Fri,  3 Feb 2023 05:51:06 -0800 (PST)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5A97A1FB;
+        Fri,  3 Feb 2023 05:51:45 -0800 (PST)
+Received: from eglon.cambridge.arm.com (eglon.cambridge.arm.com [10.1.196.177])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 877CE3F71E;
+        Fri,  3 Feb 2023 05:50:59 -0800 (PST)
+From:   James Morse <james.morse@arm.com>
+To:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+        kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org
+Cc:     Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        James Morse <james.morse@arm.com>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Len Brown <lenb@kernel.org>,
+        Rafael Wysocki <rafael@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: [RFC PATCH 00/32] ACPI/arm64: add support for virtual cpuhotplug
+Date:   Fri,  3 Feb 2023 13:50:11 +0000
+Message-Id: <20230203135043.409192-1-james.morse@arm.com>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <Y9rlI6d5J2Y/YNQ+@ZenIV>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Feb 01, 2023 at 10:18:11PM +0000, Al Viro wrote:
-> On Wed, Feb 01, 2023 at 02:48:22PM -0500, Peter Xu wrote:
-> 
-> > I do also see a common pattern of the possibility to have a generic fault
-> > handler like generic_page_fault().
-> > 
-> > It probably should start with taking the mmap_sem until providing some
-> > retval that is much easier to digest further by the arch-dependent code, so
-> > it can directly do something rather than parsing the bitmask in a
-> > duplicated way (hence the new retval should hopefully not a bitmask anymore
-> > but a "what to do").
-> > 
-> > Maybe it can be something like:
-> > 
-> > /**
-> >  * enum page_fault_retval - Higher level fault retval, generalized from
-> >  * vm_fault_reason above that is only used by hardware page fault handlers.
-> >  * It generalizes the bitmask-versioned retval into something that the arch
-> >  * dependent code should react upon.
-> >  *
-> >  * @PF_RET_COMPLETED:		The page fault is completed successfully
-> >  * @PF_RET_BAD_AREA:		The page fault address falls in a bad area
-> >  *				(e.g., vma not found, expand_stack() fails..)
-> 
-> FWIW, there's a fun discrepancy - VM_FAULT_SIGSEGV may yield SEGV_MAPERR
-> or SEGV_ACCERR; depends upon the architecture.  Not that there'd been
-> many places that return VM_FAULT_SIGSEGV these days...  Good thing, too,
-> since otherwise e.g. csky would oops...
-> 
-> >  * @PF_RET_ACCESS_ERR:		The page fault has access errors
-> >  *				(e.g., write fault on !VM_WRITE vmas)
-> >  * @PF_RET_KERN_FIXUP:		The page fault requires kernel fixups
-> >  *				(e.g., during copy_to_user() but fault failed?)
-> >  * @PF_RET_HWPOISON:		The page fault encountered poisoned pages
-> >  * @PF_RET_SIGNAL:		The page fault encountered poisoned pages
-> 
-> ??
-> 
-> >  * ...
-> >  */
-> > enum page_fault_retval {
-> > 	PF_RET_DONE = 0,
-> > 	PF_RET_BAD_AREA,
-> > 	PF_RET_ACCESS_ERR,
-> > 	PF_RET_KERN_FIXUP,
-> >         PF_RET_HWPOISON,
-> >         PF_RET_SIGNAL,
-> > 	...
-> > };
-> > 
-> > As a start we may still want to return some more information (perhaps still
-> > the vm_fault_t alongside?  Or another union that will provide different
-> > information based on different PF_RET_*).  One major thing is I see how we
-> > handle VM_FAULT_HWPOISON and also the fact that we encode something more
-> > into the bitmask on page sizes (VM_FAULT_HINDEX_MASK).
-> > 
-> > So the generic helper could, hopefully, hide the complexity of:
-> > 
-> >   - Taking and releasing of mmap lock
-> >   - find_vma(), and also relevant checks on access or stack handling
-> 
-> Umm...  arm is a bit special here:
->                 if (addr < FIRST_USER_ADDRESS)
-> 			return VM_FAULT_BADMAP;
-> with no counterparts elsewhere.
+Hello!
 
-For this specific case IIUC it's the same as bad_area.  VM_FAULT_BADMAP is
-further handled later in do_page_fault() there for either arm/arm64.
+This series adds what looks like cpuhotplug support to arm64 for use in
+virtual machines. It does this by moving the cpu_register() calls for
+architectures that support ACPI out of the arch code by using
+GENERIC_CPU_DEVICES, then into the ACPI processor driver.
 
-This reminded me this, on how arm defines the private retvals, while the
-generic ones grows and probably no one noticed they can collapse already..
+The kubernetes folk really want to be able to add CPUs to an existing VM,
+in exactly the same way they do on x86. The use-case is pre-booting guests
+with one CPU, then adding the number that were actually needed when the
+workload is provisioned.
 
-#define VM_FAULT_BADMAP		0x010000
-#define VM_FAULT_BADACCESS	0x020000
+Wait? Doesn't arm64 support cpuhotplug already!?
+In the arm world, cpuhotplug gets used to mean removing the power from a CPU.
+The CPU is offline, and remains present. For x86, and ACPI, cpuhotplug
+has the additional step of physically removing the CPU, so that it isn't
+present anymore.
 
-enum vm_fault_reason {
-        ...
-	VM_FAULT_HINDEX_MASK    = (__force vm_fault_t)0x0f0000,
-};
+Arm64 doesn't support this, and can't support it: CPUs are really a slice
+of the SoC, and there is not enough information in the existing ACPI tables
+to describe which bits of the slice also got removed. Without a reference
+machine: adding this support to the spec is a wild goose chase.
 
-VM_FAULT_HINDEX_MASK is only used by VM_FAULT_HWPOISON_LARGE, so I think
-arm[64] could expect some surprise when it hit hugetlb hwpoison pages...
-maybe I should prepare a patch for arm.
+Critically: everything described in the firmware tables must remain present.
 
-> 
-> >   - handle_mm_fault() itself (of course...)
-> >   - detect signals
-> >   - handle page fault retries (so, in the new layer of retval there should
-> >     have nothing telling it to retry; it should always be the ultimate result)
-> 
-> agreed.
-> 
->     - unlock mmap; don't leave that to caller.
-> 
-> >   - parse different errors into "what the arch code should do", and
-> >     generalize the common ones, e.g.
-> >     - OOM, do pagefault_out_of_memory() for user-mode
-> >     - VM_FAULT_SIGSEGV, which should be able to merge into PF_RET_BAD_AREA?
-> >     - ...
-> 
-> AFAICS, all errors in kernel mode => no_context.
-> 
-> > It'll simplify things if we can unify some small details like whether the
-> > -EFAULT above should contain a sigbus.
-> > 
-> > A trivial detail I found when I was looking at this is, x86_64 passes in
-> > different signals to kernelmode_fixup_or_oops() - in do_user_addr_fault()
-> > there're three call sites and each of them pass over a differerent signal.
-> > IIUC that will only make a difference if there's a nested page fault during
-> > the vsyscall emulation (but I may be wrong too because I'm new to this
-> > code), and I have no idea when it'll happen and whether that needs to be
-> > strictly followed.
-> 
-> From my (very incomplete so far) dig through that pile:
-> 	Q: do we still have the cases when handle_mm_fault() does
-> not return any of VM_FAULT_COMPLETED | VM_FAULT_RETRY | VM_FAULT_ERROR?
-> That gets treated as unlock + VM_FAULT_COMPLETED, but do we still need
-> that?
-> 	Q: can VM_FAULT_RETRY be mixed with anything in VM_FAULT_ERROR?
-> What locking, if that happens?
+For a virtual machine this is easy as all the other bits of 'virtual SoC'
+are emulated, so they can (and do) remain present when a vCPU is 'removed'.
 
-For this one, I don't think they can be mixed.  IMHO RETRY only binds with
-a wait, so if we didn't wait and found issue, we return ERROR; if we
-decided to wait, we will try nothing more besides return after wait with
-the RETRY.  We should just never check any error at all if the wait
-happened.  Otherwise there's a bug of potential deadlock.
+On a system that supports cpuhotplug the MADT has to describe every possible
+CPU at boot. Under KVM, the vGIC needs to know about every possible vCPU before
+the guest is started.
+With these constraints, virtual-cpuhotplug is really just a hypervisor/firmware
+policy about which CPUs can be brought online.
 
-I'll skip some details in this email either above or below; I agree
-there're so many trivial details to take care of to not break a thing.
+This series adds support for virtual-cpuhotplug as exactly that: firmware
+policy. This may even work on a physical machine too; for a guest the part of
+firmware is played by the VMM. (typically Qemu).
 
-IMHO it'll be merely impossible to merge things across most (if not to say,
-all) archs.  It will need to be start from one or at least a few that still
-shares a major common base - I would still rely on x86 as a start - then we
-try to use the helper in as much archs as possible.
+PSCI support is modified to return 'DENIED' if the CPU can't be brought
+online/enabled yet. The CPU object's _STA method's enabled bit is used to
+indicate firmware's current disposition. If the CPU has its enabled bit clear,
+it will not be registered with sysfs, and attempts to bring it online will
+fail. The notifications that _STA has changed its value then work in the same
+way as physical hotplug, and firmware can cause the CPU to be registered some
+time later, allowing it to be brought online.
 
-Even on x86, I do also see challenges so I'm not sure whether a common
-enough routine can be abstracted indeed.  But I believe there's a way to do
-this because obviously we still see tons of duplicated logics falling
-around.  It may definitely need time to think out where's the best spot to
-start, and how to gradually move towards covering more archs starting from
-one.
+This creates something that looks like cpuhotplug to user-space, as the sysfs
+files appear and disappear, and the udev notifications look the same.
+
+One notable difference is the CPU present mask, which is exposed via sysfs.
+Because the CPUs remain present throughout, they can still be seen in that mask.
+This value does get used by webbrowsers to estimate the number of CPUs
+as the CPU online mask is constantly changed on mobile phones.
+
+Linux is tolerant of PSCI returning errors, as its always been allowed to do
+that. To avoid confusing OS that can't tolerate this, we needed an additional
+bit in the MADT GICC flags. This series copies ACPI_MADT_ONLINE_CAPABLE, which
+appears to be for this purpose, but calls it ACPI_MADT_GICC_CPU_CAPABLE as it
+has a different bit position in the GICC.
+
+This code is unconditionally enabled for all ACPI architectures.
+If there are problems with firmware tables on some devices, the CPUs will
+already be online by the time the acpi_processor_make_enabled() is called.
+A mismatch here causes a firmware-bug message and kernel taint. This should
+only affect people with broken firmware who also boot with maxcpus=1, and
+bring CPUs online later.
+
+I had a go at switching the remaining architectures over to GENERIC_CPU_DEVICES,
+so that the Kconfig symbol can be removed, but I got stuck with powerpc
+and s390.
+
+
+The first patch has already been posted as a fix here:
+https://www.spinics.net/lists/linux-ia64/msg21920.html
+I've only build tested Loongarch and ia64.
+
+
+If folk want to play along at home, you'll need a copy of Qemu that supports this.
+https://github.com/salil-mehta/qemu.git salil/virt-cpuhp-armv8/rfc-v1-port29092022.psci.present
+
+You'll need to fix the numbers of KVM_CAP_ARM_HVC_TO_USER and KVM_CAP_ARM_PSCI_TO_USER
+to match your host kernel. Replace your '-smp' argument with something like:
+| -smp cpus=1,maxcpus=3,cores=3,threads=1,sockets=1
+
+then feed the following to the Qemu montior;
+| (qemu) device_add driver=host-arm-cpu,core-id=1,id=cpu1
+| (qemu) device_del cpu1
+
+
+This series is based on v6.2-rc3, and can be retrieved from:
+https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git/ virtual_cpu_hotplug/rfc/v1
+
 
 Thanks,
 
-> 	* details of storing the fault details (for ptrace, mostly)
-> vary a lot; no chance to unify, AFAICS.
-> 	* requirements for vma flags also differ; e.g. read fault on
-> alpha is explicitly OK with absence of VM_READ if VM_WRITE is there.
-> Probably should go by way of arm and pass the mask that must
-> have non-empty intersection with vma->vm_flags?  Because *that*
-> is very likely to be a part of ABI - mmap(2) callers that rely
-> upon the flags being OK for given architecture are quite possible.
-> 	* mmap lock is also quite variable in how it's taken;
-> x86 and arm have fun dance with trylock/search for exception handler/etc.
-> Other architectures do not; OTOH, there's a prefetch stuck in itanic
-> variant, with comment about mmap_sem being performance-critical...
-> 	* logics for stack expansion includes this twist:
->         if (!(vma->vm_flags & VM_GROWSDOWN))
->                 goto map_err;
->         if (user_mode(regs)) {
->                 /* Accessing the stack below usp is always a bug.  The
->                    "+ 256" is there due to some instructions doing
->                    pre-decrement on the stack and that doesn't show up
->                    until later.  */
->                 if (address + 256 < rdusp())
->                         goto map_err;
->         }
->         if (expand_stack(vma, address))
->                 goto map_err;
-> That's m68k; ISTR similar considerations elsewhere, but I could be
-> wrong.
-> 
+James Morse (29):
+  ia64: Fix build error due to switch case label appearing next to
+    declaration
+  ACPI: Move ACPI_HOTPLUG_CPU to be enabled per architecture
+  drivers: base: Use present CPUs in GENERIC_CPU_DEVICES
+  drivers: base: Allow parts of GENERIC_CPU_DEVICES to be overridden
+  drivers: base: Move cpu_dev_init() after node_dev_init()
+  arm64: setup: Switch over to GENERIC_CPU_DEVICES using
+    arch_register_cpu()
+  ia64/topology: Switch over to GENERIC_CPU_DEVICES
+  x86/topology: Switch over to GENERIC_CPU_DEVICES
+  LoongArch: Switch over to GENERIC_CPU_DEVICES
+  arch_topology: Make register_cpu_capacity_sysctl() tolerant to late
+    CPUs
+  ACPI: processor: Add support for processors described as container
+    packages
+  ACPI: processor: Register CPUs that are online, but not described in
+    the DSDT
+  ACPI: processor: Register all CPUs from acpi_processor_get_info()
+  ACPI: Rename ACPI_HOTPLUG_CPU to include 'present'
+  ACPI: Move acpi_bus_trim_one() before acpi_scan_hot_remove()
+  ACPI: Rename acpi_processor_hotadd_init and remove pre-processor
+    guards
+  ACPI: Add post_eject to struct acpi_scan_handler for cpu hotplug
+  ACPI: Check _STA present bit before making CPUs not present
+  ACPI: Warn when the present bit changes but the feature is not enabled
+  drivers: base: Implement weak arch_unregister_cpu()
+  LoongArch: Use the __weak version of arch_unregister_cpu()
+  arm64: acpi: Move get_cpu_for_acpi_id() to a header
+  ACPICA: Add new MADT GICC flags fields [code first?]
+  arm64, irqchip/gic-v3, ACPI: Move MADT GICC enabled check into a
+    helper
+  irqchip/gic-v3: Don't return errors from gic_acpi_match_gicc()
+  irqchip/gic-v3: Add support for ACPI's disabled but 'online capable'
+    CPUs
+  ACPI: add support to register CPUs based on the _STA enabled bit
+  arm64: document virtual CPU hotplug's expectations
+  cpumask: Add enabled cpumask for present CPUs that can be brought
+    online
+
+Jean-Philippe Brucker (3):
+  arm64: psci: Ignore DENIED CPUs
+  KVM: arm64: Pass hypercalls to userspace
+  KVM: arm64: Pass PSCI calls to userspace
+
+ Documentation/arm64/cpu-hotplug.rst       |  79 ++++++++++++
+ Documentation/arm64/index.rst             |   1 +
+ Documentation/virt/kvm/api.rst            |  31 ++++-
+ Documentation/virt/kvm/arm/hypercalls.rst |   1 +
+ arch/arm64/Kconfig                        |   1 +
+ arch/arm64/include/asm/acpi.h             |  11 ++
+ arch/arm64/include/asm/cpu.h              |   1 -
+ arch/arm64/include/asm/kvm_host.h         |   2 +
+ arch/arm64/kernel/acpi_numa.c             |  11 --
+ arch/arm64/kernel/psci.c                  |   2 +-
+ arch/arm64/kernel/setup.c                 |  13 +-
+ arch/arm64/kernel/smp.c                   |   5 +-
+ arch/arm64/kvm/arm.c                      |  15 ++-
+ arch/arm64/kvm/hypercalls.c               |  28 ++++-
+ arch/arm64/kvm/psci.c                     |  13 ++
+ arch/ia64/Kconfig                         |   2 +
+ arch/ia64/include/asm/acpi.h              |   2 +-
+ arch/ia64/include/asm/cpu.h               |  11 --
+ arch/ia64/kernel/acpi.c                   |   6 +-
+ arch/ia64/kernel/setup.c                  |   2 +-
+ arch/ia64/kernel/sys_ia64.c               |   7 +-
+ arch/ia64/kernel/topology.c               |  35 +-----
+ arch/loongarch/Kconfig                    |   2 +
+ arch/loongarch/kernel/topology.c          |  31 +----
+ arch/x86/Kconfig                          |   2 +
+ arch/x86/include/asm/cpu.h                |   6 -
+ arch/x86/kernel/acpi/boot.c               |   4 +-
+ arch/x86/kernel/topology.c                |  19 +--
+ drivers/acpi/Kconfig                      |   5 +-
+ drivers/acpi/acpi_processor.c             | 146 +++++++++++++++++-----
+ drivers/acpi/processor_core.c             |   2 +-
+ drivers/acpi/scan.c                       | 116 +++++++++++------
+ drivers/base/arch_topology.c              |  38 ++++--
+ drivers/base/cpu.c                        |  31 ++++-
+ drivers/base/init.c                       |   2 +-
+ drivers/firmware/psci/psci.c              |   2 +
+ drivers/irqchip/irq-gic-v3.c              |  38 +++---
+ include/acpi/acpi_bus.h                   |   1 +
+ include/acpi/actbl2.h                     |   1 +
+ include/kvm/arm_hypercalls.h              |   1 +
+ include/kvm/arm_psci.h                    |   4 +
+ include/linux/acpi.h                      |  10 +-
+ include/linux/cpu.h                       |   6 +
+ include/linux/cpumask.h                   |  25 ++++
+ include/uapi/linux/kvm.h                  |   2 +
+ kernel/cpu.c                              |   3 +
+ 46 files changed, 532 insertions(+), 244 deletions(-)
+ create mode 100644 Documentation/arm64/cpu-hotplug.rst
 
 -- 
-Peter Xu
+2.30.2
 
