@@ -2,111 +2,101 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39B5D68B9E7
-	for <lists+linux-ia64@lfdr.de>; Mon,  6 Feb 2023 11:21:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A2C068BAFD
+	for <lists+linux-ia64@lfdr.de>; Mon,  6 Feb 2023 12:10:49 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230331AbjBFKV2 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 6 Feb 2023 05:21:28 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48004 "EHLO
+        id S229676AbjBFLKq (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 6 Feb 2023 06:10:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59840 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230057AbjBFKV0 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 6 Feb 2023 05:21:26 -0500
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 636032069F;
-        Mon,  6 Feb 2023 02:20:59 -0800 (PST)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id ED41813D5;
-        Mon,  6 Feb 2023 02:11:29 -0800 (PST)
-Received: from [10.57.75.57] (unknown [10.57.75.57])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 584233F71E;
-        Mon,  6 Feb 2023 02:10:43 -0800 (PST)
-Message-ID: <cffde8a1-74e4-9b61-1eea-544ba3405ed4@arm.com>
-Date:   Mon, 6 Feb 2023 10:10:41 +0000
+        with ESMTP id S229526AbjBFLKp (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 6 Feb 2023 06:10:45 -0500
+Received: from gandalf.ozlabs.org (mail.ozlabs.org [IPv6:2404:9400:2221:ea00::3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D31213D71;
+        Mon,  6 Feb 2023 03:10:44 -0800 (PST)
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        by mail.ozlabs.org (Postfix) with ESMTPSA id 4P9NpV6n6sz4x1f;
+        Mon,  6 Feb 2023 22:10:26 +1100 (AEDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+        s=201909; t=1675681839;
+        bh=kUcid2K08WtpFrwk3dq6n2jc2ZZxMaSNsif8b2qLpcI=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=JSr9bUqckLWxlQvgXrqHdLKjhZNKCyo4/W+R7iqEdoTwQny8JL4fA9p8KLiKopoBY
+         5u53AQEtGGXSUIVhYTsKoGTQqHAWk/L2OGiEhn+0/8fSth4VXKAS3aT226D33i5p+m
+         FdbPDX2xoyL2dmmxuKSPL38q4OEI/nwe/wpGmzrwBTQTovoqi6LZ4omZBFLcu1QcvH
+         OCmTE96dRBgZqYLhxf1uVZpSZUhhjl9pivy58AnZ8D9ntUKLxW5BuUV2Rkfq3DMiAR
+         1E1dDbWxoKsiTVWbw5buAHInDRJ1Jkci48lbw53vA/21E8Kh226KSjdHUbEkKMeduf
+         u7otQ9CqmaTuA==
+From:   Michael Ellerman <mpe@ellerman.id.au>
+To:     Josh Poimboeuf <jpoimboe@kernel.org>, linux-kernel@vger.kernel.org
+Cc:     jgross@suse.com, richard.henderson@linaro.org,
+        ink@jurassic.park.msu.ru, mattst88@gmail.com,
+        linux-alpha@vger.kernel.org, linux@armlinux.org.uk,
+        linux-arm-kernel@lists.infradead.org, catalin.marinas@arm.com,
+        will@kernel.org, guoren@kernel.org, linux-csky@vger.kernel.org,
+        linux-ia64@vger.kernel.org, chenhuacai@kernel.org,
+        kernel@xen0n.name, loongarch@lists.linux.dev, f.fainelli@gmail.com,
+        bcm-kernel-feedback-list@broadcom.com, tsbogend@alpha.franken.de,
+        linux-mips@vger.kernel.org, jiaxun.yang@flygoat.com,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        linuxppc-dev@lists.ozlabs.org, ysato@users.sourceforge.jp,
+        dalias@libc.org, linux-sh@vger.kernel.org, davem@davemloft.net,
+        sparclinux@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        linux-xtensa@linux-xtensa.org, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+        mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
+        paulmck@kernel.org
+Subject: Re: [PATCH 12/22] powerpc/cpu: Mark start_secondary_resume()
+ __noreturn
+In-Reply-To: <b5d065218265e79daa23f82bb84efc6a7ea120fc.1675461757.git.jpoimboe@kernel.org>
+References: <cover.1675461757.git.jpoimboe@kernel.org>
+ <b5d065218265e79daa23f82bb84efc6a7ea120fc.1675461757.git.jpoimboe@kernel.org>
+Date:   Mon, 06 Feb 2023 22:10:22 +1100
+Message-ID: <87v8kfdp7l.fsf@mpe.ellerman.id.au>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.6.1
-Subject: Re: [RFC PATCH 29/32] KVM: arm64: Pass hypercalls to userspace
-To:     Marc Zyngier <maz@kernel.org>, James Morse <james.morse@arm.com>
-Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
-        kvmarm@lists.linux.dev, kvm@vger.kernel.org,
-        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Oliver Upton <oliver.upton@linux.dev>,
-        Len Brown <lenb@kernel.org>,
-        Rafael Wysocki <rafael@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>
-References: <20230203135043.409192-1-james.morse@arm.com>
- <20230203135043.409192-30-james.morse@arm.com> <865ycg1kv2.wl-maz@kernel.org>
-From:   Suzuki K Poulose <suzuki.poulose@arm.com>
-In-Reply-To: <865ycg1kv2.wl-maz@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_PASS,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi,
+Josh Poimboeuf <jpoimboe@kernel.org> writes:
+> start_secondary_resume() doesn't return.  Annotate it as such.  By
+> extension this also makes arch_cpu_idle_dead() noreturn.
 
-A few cents from the Realm support point of view.
+Can we also mark arch_cpu_idle_dead() (the C function) __noreturn ?
 
-On 05/02/2023 10:12, Marc Zyngier wrote:
-> On Fri, 03 Feb 2023 13:50:40 +0000,
-> James Morse <james.morse@arm.com> wrote:
->>
->> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
->>
->> When capability KVM_CAP_ARM_HVC_TO_USER is available, userspace can
->> request to handle all hypercalls that aren't handled by KVM. With the
->> help of another capability, this will allow userspace to handle PSCI
->> calls.
->>
->> Suggested-by: James Morse <james.morse@arm.com>
->> Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
->> Signed-off-by: James Morse <james.morse@arm.com>
->>
->> ---
->>
-> 
-> On top of Oliver's ask not to make this a blanket "steal everything",
-> but instead to have an actual request for ranges of forwarded
-> hypercalls:
-> 
->> Notes on this implementation:
->>
->> * A similar mechanism was proposed for SDEI some time ago [1]. This RFC
->>    generalizes the idea to all hypercalls, since that was suggested on
->>    the list [2, 3].
->>
->> * We're reusing kvm_run.hypercall. I copied x0-x5 into
->>    kvm_run.hypercall.args[] to help userspace but I'm tempted to remove
->>    this, because:
->>    - Most user handlers will need to write results back into the
->>      registers (x0-x3 for SMCCC), so if we keep this shortcut we should
->>      go all the way and read them back on return to kernel.
->>    - QEMU doesn't care about this shortcut, it pulls all vcpu regs before
->>      handling the call.
+Seems like it would be good documentation, even if it's not required
+once the generic prototype is __noreturn.
 
-This may not be always possible, e.g., for Realms. GET_ONE_REG is
-not supported. So using an explicit passing down of the args is
-preferrable.
+But not a show-stopper.
 
-Thanks
-Suzuki
+Acked-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+
+cheers
+
+> diff --git a/arch/powerpc/include/asm/smp.h b/arch/powerpc/include/asm/smp.h
+> index f63505d74932..cfd42ca8765c 100644
+> --- a/arch/powerpc/include/asm/smp.h
+> +++ b/arch/powerpc/include/asm/smp.h
+> @@ -66,7 +66,7 @@ void start_secondary(void *unused);
+>  extern int smp_send_nmi_ipi(int cpu, void (*fn)(struct pt_regs *), u64 delay_us);
+>  extern int smp_send_safe_nmi_ipi(int cpu, void (*fn)(struct pt_regs *), u64 delay_us);
+>  extern void smp_send_debugger_break(void);
+> -extern void start_secondary_resume(void);
+> +extern void __noreturn start_secondary_resume(void);
+>  extern void smp_generic_give_timebase(void);
+>  extern void smp_generic_take_timebase(void);
+>  
+> -- 
+> 2.39.0
