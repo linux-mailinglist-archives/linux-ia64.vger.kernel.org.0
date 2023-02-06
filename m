@@ -2,148 +2,77 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B866868C4AD
-	for <lists+linux-ia64@lfdr.de>; Mon,  6 Feb 2023 18:27:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F94468C73D
+	for <lists+linux-ia64@lfdr.de>; Mon,  6 Feb 2023 21:06:40 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229657AbjBFR1w (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 6 Feb 2023 12:27:52 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34728 "EHLO
+        id S229490AbjBFUGi (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 6 Feb 2023 15:06:38 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229929AbjBFR1v (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 6 Feb 2023 12:27:51 -0500
-X-Greylist: delayed 464 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 06 Feb 2023 09:27:25 PST
-Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [IPv6:2001:41d0:1004:224b::ad])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 524722B617
-        for <linux-ia64@vger.kernel.org>; Mon,  6 Feb 2023 09:27:25 -0800 (PST)
-Date:   Mon, 6 Feb 2023 17:19:25 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-        t=1675703978;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=HQYDCy4xAq7++DqBp2PrFrzWfoeLMTv7/t3BwVc+5/M=;
-        b=J9ErNIUpPqZIZXdMg30fbXll1h9T0Tvc0m6YwSEjZKdUoEOooQgqWauEEwTKgz5T3W0FTk
-        rki4AZWQsgRfhqb68OZxWvRzYjB94NkQRpb2vk7/ewhW1i4abF/GN+8YazanH4qC5F0Wee
-        Dwv1drNtXNr6gUzp6+ranIztAkcY0no=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From:   Oliver Upton <oliver.upton@linux.dev>
-To:     Marc Zyngier <maz@kernel.org>
-Cc:     James Morse <james.morse@arm.com>, linux-pm@vger.kernel.org,
-        loongarch@lists.linux.dev, kvmarm@lists.linux.dev,
-        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        x86@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Len Brown <lenb@kernel.org>,
-        Rafael Wysocki <rafael@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>
-Subject: Re: [RFC PATCH 29/32] KVM: arm64: Pass hypercalls to userspace
-Message-ID: <Y+E2nVnadj1emNs5@google.com>
-References: <20230203135043.409192-1-james.morse@arm.com>
- <20230203135043.409192-30-james.morse@arm.com>
- <865ycg1kv2.wl-maz@kernel.org>
+        with ESMTP id S229486AbjBFUGh (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 6 Feb 2023 15:06:37 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE6B71EFED;
+        Mon,  6 Feb 2023 12:06:36 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9DE4CB810E5;
+        Mon,  6 Feb 2023 20:06:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0507AC433EF;
+        Mon,  6 Feb 2023 20:06:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675713994;
+        bh=3Yg7D05MkzSc67p0IllIeOFYuHpgtoWHEDyGg89cEn4=;
+        h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+        b=TrFanAIL/NQxsb91JvfkKgGGInV2GbJv83xXwVospLmonVoYF0qugCWhOe08RPwaX
+         KSz2R1yQLjbocys0qpEKTIJcvGgasxF/iufKfZWM+KLnESrINJ3xvu3fY01VN9IBBd
+         A14tJwz1NoSgpuJDM1gKfn9n4bZjtVGyWg1FSCcjcagioOTF4tpLoxfVEQ3ZgZwQ/X
+         1DTz425W+yIiGefj9MW9+XxaZDTOhpCSDxfOWIbHdEj1cNpx4bg45I7e94f2NXzAcH
+         p/5XOjHti0H5HYdlYMgGbFgyQK/fMQnqBl9p3+VIiziorpSavNm5enxgwyrcpj7Rpb
+         iz3O+/RqhOzlA==
+From:   =?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>
+To:     Al Viro <viro@zeniv.linux.org.uk>, linux-arch@vger.kernel.org
+Cc:     linux-alpha@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        Michal Simek <monstr@monstr.eu>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, sparclinux@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Mark Rutland <mark.rutland@arm.com>
+Subject: Re: [PATCH 09/10] riscv: fix livelock in uaccess
+In-Reply-To: <Y9l02DvS6CYThTEG@ZenIV>
+References: <Y9lz6yk113LmC9SI@ZenIV> <Y9l02DvS6CYThTEG@ZenIV>
+Date:   Mon, 06 Feb 2023 21:06:31 +0100
+Message-ID: <87h6vyimns.fsf@all.your.base.are.belong.to.us>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <865ycg1kv2.wl-maz@kernel.org>
-X-Migadu-Flow: FLOW_OUT
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sun, Feb 05, 2023 at 10:12:49AM +0000, Marc Zyngier wrote:
-> On Fri, 03 Feb 2023 13:50:40 +0000,
-> James Morse <james.morse@arm.com> wrote:
-> > 
-> > From: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > 
-> > When capability KVM_CAP_ARM_HVC_TO_USER is available, userspace can
-> > request to handle all hypercalls that aren't handled by KVM. With the
-> > help of another capability, this will allow userspace to handle PSCI
-> > calls.
-> > 
-> > Suggested-by: James Morse <james.morse@arm.com>
-> > Signed-off-by: Jean-Philippe Brucker <jean-philippe@linaro.org>
-> > Signed-off-by: James Morse <james.morse@arm.com>
-> > 
-> > ---
-> > 
-> 
-> On top of Oliver's ask not to make this a blanket "steal everything",
-> but instead to have an actual request for ranges of forwarded
-> hypercalls:
-> 
-> > Notes on this implementation:
-> > 
-> > * A similar mechanism was proposed for SDEI some time ago [1]. This RFC
-> >   generalizes the idea to all hypercalls, since that was suggested on
-> >   the list [2, 3].
-> > 
-> > * We're reusing kvm_run.hypercall. I copied x0-x5 into
-> >   kvm_run.hypercall.args[] to help userspace but I'm tempted to remove
-> >   this, because:
-> >   - Most user handlers will need to write results back into the
-> >     registers (x0-x3 for SMCCC), so if we keep this shortcut we should
-> >     go all the way and read them back on return to kernel.
-> >   - QEMU doesn't care about this shortcut, it pulls all vcpu regs before
-> >     handling the call.
-> >   - SMCCC uses x0-x16 for parameters.
-> >   x0 does contain the SMCCC function ID and may be useful for fast
-> >   dispatch, we could keep that plus the immediate number.
-> > 
-> > * Add a flag in the kvm_run.hypercall telling whether this is HVC or
-> >   SMC?  Can be added later in those bottom longmode and pad fields.
-> 
-> We definitely need this. A nested hypervisor can (and does) use SMCs
-> as the conduit. The question is whether they represent two distinct
-> namespaces or not. I *think* we can unify them, but someone should
-> check and maybe get clarification from the owners of the SMCCC spec.
-> 
-> >
-> > * On top of this we could share with userspace which HVC ranges are
-> >   available and which ones are handled by KVM. That can actually be added
-> >   independently, through a vCPU/VM device attribute which doesn't consume
-> >   a new ioctl:
-> >   - userspace issues HAS_ATTR ioctl on the vcpu fd to query whether this
-> >     feature is available.
-> >   - userspace queries the number N of HVC ranges using one GET_ATTR.
-> >   - userspace passes an array of N ranges using another GET_ATTR. The
-> >     array is filled and returned by KVM.
-> 
-> As mentioned above, I think this interface should go both ways.
-> Userspace should request the forwarding of a certain range of
-> hypercalls via a similar SET_ATTR interface.
-> 
-> Another question is how we migrate VMs that have these forwarding
-> requirements. Do we expect the VMM to replay the forwarding as part of
-> the setting up on the other side? Or do we save/restore this via a
-> firmware pseudo-register?
+Al Viro <viro@zeniv.linux.org.uk> writes:
 
-Personally I'd prefer we left that job to userspace.
+> riscv equivalent of 26178ec11ef3 "x86: mm: consolidate VM_FAULT_RETRY han=
+dling"
+> If e.g. get_user() triggers a page fault and a fatal signal is caught, we=
+ might
+> end up with handle_mm_fault() returning VM_FAULT_RETRY and not doing anyt=
+hing
+> to page tables.  In such case we must *not* return to the faulting insn -
+> that would repeat the entire thing without making any progress; what we n=
+eed
+> instead is to treat that as failed (user) memory access.
+>
+> Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 
-We could also implement GET_ATTR, in case userspace has forgotten what
-it wrote to the hypercall filter. The firmware pseudo-registers are
-handy for moving KVM state back and forth 'for free', but I don't think
-we need to bend over backwards to migrate state userspace is directly
-responsible for.
+Reproduced with Mark's userland program -- thanks!
 
--- 
-Thanks,
-Oliver
+Tested-by: Bj=C3=B6rn T=C3=B6pel <bjorn@kernel.org>
