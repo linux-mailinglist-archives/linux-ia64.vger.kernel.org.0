@@ -2,174 +2,156 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 845F668F061
-	for <lists+linux-ia64@lfdr.de>; Wed,  8 Feb 2023 15:13:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id ED1C568F0B6
+	for <lists+linux-ia64@lfdr.de>; Wed,  8 Feb 2023 15:26:09 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231195AbjBHONB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 8 Feb 2023 09:13:01 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60736 "EHLO
+        id S231490AbjBHO0H (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 8 Feb 2023 09:26:07 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230296AbjBHONA (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 8 Feb 2023 09:13:00 -0500
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54A0C3A584
-        for <linux-ia64@vger.kernel.org>; Wed,  8 Feb 2023 06:12:13 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1675865532;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=MVdXAMmBKMdGVdB031db9qoOwXwbq1WnNqDyKF+cm50=;
-        b=dLwSavBU4t06fi51AXk6R87JknE+gFYHznnwXgX5QTAxgvNDLfAldR6i0/T+7Kdw7RvxWT
-        WigG6t9fWr8ISG3Tt+XgDnQ7cCZvwsT+aiPM4xA4Dt1b3nIkyDqb7LtTkYLWXcBKitdFPP
-        5suV0rYX7dtkXQpbXC1qoZXdo1Y1NKU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_128_GCM_SHA256) id
- us-mta-452-q1wRwyXTNgarmovPNHyvoA-1; Wed, 08 Feb 2023 09:12:11 -0500
-X-MC-Unique: q1wRwyXTNgarmovPNHyvoA-1
-Received: by mail-wm1-f72.google.com with SMTP id n4-20020a05600c3b8400b003dfe223de49so1201158wms.5
-        for <linux-ia64@vger.kernel.org>; Wed, 08 Feb 2023 06:12:10 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:in-reply-to:subject:organization:from
-         :references:cc:to:content-language:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=MVdXAMmBKMdGVdB031db9qoOwXwbq1WnNqDyKF+cm50=;
-        b=WU03npRH0Y+xKuiOIhZbdpGDBpUH4CghGv17zFJdlpTANyTqN5v7fCCchmE/6193MH
-         L/8htyEWLlv640uFm6Bs3R/9r1I2Mugisksyto2F7asOpw0ejdz2Xf+u/tWpYdfSBtmz
-         cX2wPmUHoQrlqltVix4ZI3lSKAwKkO1VRQMjhWP1+Bodb/x3IRUtNzgCdSmgBtCflVyA
-         oNDiT8QF1wYl7OBWtjOfYJZ9YQI103B3VYsavqbN2JGuUomkBY6lJZ35fzsAURLgYs91
-         hLzXU1jY/+9DPfKDHPsUIW2tTzbVWKR1YtRGdFEXoA/6Cd+YNbmqx4vMCa/X9GrO8DJU
-         5qdA==
-X-Gm-Message-State: AO0yUKU+nG3Pb/MxZxeRKOH/V78/t4K4Rt6ioGF7O1r4tm2N9R49tYWe
-        csvIVn1862Sk0orM0VHYsaFUCHKM3tsOIyzk7uXSbT3ws11lgLKxRcg6axRq8g/c/TIU3a3t1ZC
-        U4W7ZdOaCYov2/cGf/kxtMQ==
-X-Received: by 2002:a05:600c:2ac8:b0:3d9:fb59:c16b with SMTP id t8-20020a05600c2ac800b003d9fb59c16bmr6807520wme.36.1675865529849;
-        Wed, 08 Feb 2023 06:12:09 -0800 (PST)
-X-Google-Smtp-Source: AK7set9buY9+5cxJmjHAU1gwkYhkjh45ggBfiU2I1/g0SGqFxOSQ99Rkm86npGHpTIA79oxlUNrbqQ==
-X-Received: by 2002:a05:600c:2ac8:b0:3d9:fb59:c16b with SMTP id t8-20020a05600c2ac800b003d9fb59c16bmr6807491wme.36.1675865529588;
-        Wed, 08 Feb 2023 06:12:09 -0800 (PST)
-Received: from ?IPV6:2003:cb:c704:b300:758c:6214:cd51:8ab0? (p200300cbc704b300758c6214cd518ab0.dip0.t-ipconnect.de. [2003:cb:c704:b300:758c:6214:cd51:8ab0])
-        by smtp.gmail.com with ESMTPSA id a3-20020a05600c224300b003db01178b62sm2066527wmm.40.2023.02.08.06.12.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 08 Feb 2023 06:12:08 -0800 (PST)
-Message-ID: <39fd91e3-c93b-23c6-afc6-cbe473bb0ca9@redhat.com>
-Date:   Wed, 8 Feb 2023 15:12:06 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.6.0
-Content-Language: en-US
-To:     Mark Brown <broonie@kernel.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Hugh Dickins <hughd@google.com>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Mike Rapoport <rppt@linux.ibm.com>,
-        Yang Shi <shy828301@gmail.com>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Nadav Amit <namit@vmware.com>,
-        Andrea Arcangeli <aarcange@redhat.com>,
-        Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
-        x86@kernel.org, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
-        Russell King <linux@armlinux.org.uk>
-References: <20230113171026.582290-1-david@redhat.com>
- <20230113171026.582290-5-david@redhat.com> <Y+GcDFMNHw2cdDN1@sirena.org.uk>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-Subject: Re: [PATCH mm-unstable v1 04/26] arm/mm: support
- __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-In-Reply-To: <Y+GcDFMNHw2cdDN1@sirena.org.uk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.2 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S231280AbjBHOZv (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 8 Feb 2023 09:25:51 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AFCB4B1AB;
+        Wed,  8 Feb 2023 06:25:44 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id BAAD9B81E3A;
+        Wed,  8 Feb 2023 14:25:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5819EC433EF;
+        Wed,  8 Feb 2023 14:25:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1675866341;
+        bh=t5jw1fCX4NoFeI2EPmYRhXOtkcVOIpQY0b9/jl5R8zA=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=QgNyeqlpCi/SBDeCi1TjNEdCqZoJFbgr2WJlBzhmFCZPBDl+FvwZLFuUoEtRHiVbv
+         uS4uK4r0XCkRineIPNNP9oNxBtbjMeBbnPgCgvwNC+24iI018JePzQOYQtTUyIy/Mp
+         /qg/12O4pWuU4Ph2uCYFfSRaCoExuPkTdS6885J4+z8cV91aO0N0MHwBMlJryvG9OZ
+         X0le3Z/bcdQT3Q9bcuXnQc0LtSfZRuA6mh3CZD/9kvJpn4wp9UOAU86Mdp+1pChhIx
+         M/bUit0KIlLfw8FTXVwGO//F6H/bwcRj6WGI2Aj+ovZgdrJEnNUillAjBfdPPc/tmo
+         KNXBaoR+knFdw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+        by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.95)
+        (envelope-from <maz@kernel.org>)
+        id 1pPlOF-008gAy-0C;
+        Wed, 08 Feb 2023 14:25:39 +0000
+Date:   Wed, 08 Feb 2023 14:25:38 +0000
+Message-ID: <86h6vwz125.wl-maz@kernel.org>
+From:   Marc Zyngier <maz@kernel.org>
+To:     James Morse <james.morse@arm.com>
+Cc:     linux-pm@vger.kernel.org, loongarch@lists.linux.dev,
+        kvmarm@lists.linux.dev, kvm@vger.kernel.org,
+        linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, x86@kernel.org,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Len Brown <lenb@kernel.org>,
+        Rafael Wysocki <rafael@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: Re: [RFC PATCH 29/32] KVM: arm64: Pass hypercalls to userspace
+In-Reply-To: <878rh81rfa.wl-maz@kernel.org>
+References: <20230203135043.409192-1-james.morse@arm.com>
+        <20230203135043.409192-30-james.morse@arm.com>
+        <865ycg1kv2.wl-maz@kernel.org>
+        <7462738f-e837-cd99-f441-8e7c29d250cd@arm.com>
+        <878rh81rfa.wl-maz@kernel.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/28.2
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: james.morse@arm.com, linux-pm@vger.kernel.org, loongarch@lists.linux.dev, kvmarm@lists.linux.dev, kvm@vger.kernel.org, linux-acpi@vger.kernel.org, linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, x86@kernel.org, tglx@linutronix.de, lpieralisi@kernel.org, mark.rutland@arm.com, sudeep.holla@arm.com, bp@alien8.de, hpa@zytor.com, dave.hansen@linux.intel.com, mingo@redhat.com, will@kernel.org, catalin.marinas@arm.com, chenhuacai@kernel.org, suzuki.poulose@arm.com, oliver.upton@linux.dev, lenb@kernel.org, rafael@kernel.org, kernel@xen0n.name, salil.mehta@huawei.com, linux@armlinux.org.uk, jean-philippe@linaro.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 07.02.23 01:32, Mark Brown wrote:
-> On Fri, Jan 13, 2023 at 06:10:04PM +0100, David Hildenbrand wrote:
->> Let's support __HAVE_ARCH_PTE_SWP_EXCLUSIVE by stealing one bit from the
->> offset. This reduces the maximum swap space per file to 64 GiB (was 128
->> GiB).
->>
->> While at it drop the PTE_TYPE_FAULT from __swp_entry_to_pte() which is
->> defined to be 0 and is rather confusing because we should be dealing
->> with "Linux PTEs" not "hardware PTEs". Also, properly mask the type in
->> __swp_entry().
+On Wed, 08 Feb 2023 08:40:09 +0000,
+Marc Zyngier <maz@kernel.org> wrote:
 > 
-> Today's -next (and at least back to Friday, older logs are unclear - I
-> only noticed -next issues today) fails to NFS boot on an AT91SAM9G20-EK
-> (an old ARMv5 platform) with multi_v5_defconfig, a bisect appears to
-> point to this patch (20aae9eff5acd8f5 in today's -next) as the culprit.
-
-It's been in -next for quite a while, thanks for the report!
-
+> On Tue, 07 Feb 2023 17:50:58 +0000,
+> James Morse <james.morse@arm.com> wrote:
+> > 
+> > Hi Marc,
+> > 
+> > On 05/02/2023 10:12, Marc Zyngier wrote:
+> > > On Fri, 03 Feb 2023 13:50:40 +0000,
+> > > James Morse <james.morse@arm.com> wrote:
+> > >>
+> > >> From: Jean-Philippe Brucker <jean-philippe@linaro.org>
+> > >>
+> > >> When capability KVM_CAP_ARM_HVC_TO_USER is available, userspace can
+> > >> request to handle all hypercalls that aren't handled by KVM. With the
+> > >> help of another capability, this will allow userspace to handle PSCI
+> > >> calls.
+> > 
+> > > On top of Oliver's ask not to make this a blanket "steal everything",
+> > > but instead to have an actual request for ranges of forwarded
+> > > hypercalls:
+> > > 
+> > >> Notes on this implementation:
+> > >>
+> > >> * A similar mechanism was proposed for SDEI some time ago [1]. This RFC
+> > >>   generalizes the idea to all hypercalls, since that was suggested on
+> > >>   the list [2, 3].
+> > >>
+> > >> * We're reusing kvm_run.hypercall. I copied x0-x5 into
+> > >>   kvm_run.hypercall.args[] to help userspace but I'm tempted to remove
+> > >>   this, because:
+> > >>   - Most user handlers will need to write results back into the
+> > >>     registers (x0-x3 for SMCCC), so if we keep this shortcut we should
+> > >>     go all the way and read them back on return to kernel.
+> > >>   - QEMU doesn't care about this shortcut, it pulls all vcpu regs before
+> > >>     handling the call.
+> > >>   - SMCCC uses x0-x16 for parameters.
+> > >>   x0 does contain the SMCCC function ID and may be useful for fast
+> > >>   dispatch, we could keep that plus the immediate number.
+> > >>
+> > >> * Add a flag in the kvm_run.hypercall telling whether this is HVC or
+> > >>   SMC?  Can be added later in those bottom longmode and pad fields.
+> > 
+> > > We definitely need this. A nested hypervisor can (and does) use SMCs
+> > > as the conduit.
+> > 
+> > Christoffer's comments last time round on this was that EL2 guests
+> > get SMC with this, and EL1 guests get HVC. The VMM could never get
+> > both...
 > 
-> The failure happens at some point after starting userspace, the kernel
-> starts spamming the console with messages in the form:
-> 
->      get_swap_device: Bad swap file entry 10120d20
-> 
+> I agree with the first half of the statement (EL2 guest using SMC),
+> but limiting EL1 guests to HVC is annoying. On systems that have a
+> secure side, it would make sense to be able to route the guest's SMC
+> calls to userspace and allow it to emulate/proxy/deny such calls.
 
-_swap_info_get() tells us that the swp type seems to be bad.
-I assume we're dealing with a migration entry, if swap is disabled, and fail to
-detect is_migration_entry() correctly because the type is messed up.
+You also want to look at the TRNG firmware spec (aka DEN0098), which
+explicitly calls out for the use of SMC when EL2 and EL3 are
+implemented (see 1.5 "Invocation considerations").
 
-Could you give the following a test?
+Is it mad? Yes. But madness seems to be the direction of travel these
+days.
 
+	M.
 
- From 8c4bdbd9862f85782d5919d044c172b584063e83 Mon Sep 17 00:00:00 2001
-From: David Hildenbrand <david@redhat.com>
-Date: Wed, 8 Feb 2023 15:08:01 +0100
-Subject: [PATCH] arm/mm: Fix swp type masking in __swp_entry()
-
-We're masking with the number of type bits instead of the type mask, which
-is obviously wrong.
-
-Fixes: 20aae9eff5ac ("arm/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE")
-Reported-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: David Hildenbrand <david@redhat.com>
----
-  arch/arm/include/asm/pgtable.h | 2 +-
-  1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm/include/asm/pgtable.h b/arch/arm/include/asm/pgtable.h
-index 2e626e6da9a3..a58ccbb406ad 100644
---- a/arch/arm/include/asm/pgtable.h
-+++ b/arch/arm/include/asm/pgtable.h
-@@ -292,7 +292,7 @@ static inline pte_t pte_modify(pte_t pte, pgprot_t newprot)
-  
-  #define __swp_type(x)		(((x).val >> __SWP_TYPE_SHIFT) & __SWP_TYPE_MASK)
-  #define __swp_offset(x)		((x).val >> __SWP_OFFSET_SHIFT)
--#define __swp_entry(type, offset) ((swp_entry_t) { (((type) & __SWP_TYPE_BITS) << __SWP_TYPE_SHIFT) | \
-+#define __swp_entry(type, offset) ((swp_entry_t) { (((type) & __SWP_TYPE_MASK) << __SWP_TYPE_SHIFT) | \
-  						   ((offset) << __SWP_OFFSET_SHIFT) })
-  
-  #define __pte_to_swp_entry(pte)	((swp_entry_t) { pte_val(pte) })
 -- 
-2.39.1
-
-
--- 
-Thanks,
-
-David / dhildenb
-
+Without deviation from the norm, progress is not possible.
