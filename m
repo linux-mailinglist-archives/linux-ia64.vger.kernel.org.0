@@ -2,53 +2,53 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10E2B695BF2
-	for <lists+linux-ia64@lfdr.de>; Tue, 14 Feb 2023 09:05:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C34E695C07
+	for <lists+linux-ia64@lfdr.de>; Tue, 14 Feb 2023 09:06:02 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231656AbjBNIFI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 14 Feb 2023 03:05:08 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38892 "EHLO
+        id S231876AbjBNIF7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 14 Feb 2023 03:05:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229589AbjBNIEc (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 14 Feb 2023 03:04:32 -0500
-Received: from mail-wr1-x429.google.com (mail-wr1-x429.google.com [IPv6:2a00:1450:4864:20::429])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0CF422DCF
-        for <linux-ia64@vger.kernel.org>; Tue, 14 Feb 2023 00:04:23 -0800 (PST)
-Received: by mail-wr1-x429.google.com with SMTP id co8so10960175wrb.1
-        for <linux-ia64@vger.kernel.org>; Tue, 14 Feb 2023 00:04:23 -0800 (PST)
+        with ESMTP id S231778AbjBNIFp (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 14 Feb 2023 03:05:45 -0500
+Received: from mail-wm1-x32d.google.com (mail-wm1-x32d.google.com [IPv6:2a00:1450:4864:20::32d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DE6223129
+        for <linux-ia64@vger.kernel.org>; Tue, 14 Feb 2023 00:05:25 -0800 (PST)
+Received: by mail-wm1-x32d.google.com with SMTP id f47-20020a05600c492f00b003dc584a7b7eso13026982wmp.3
+        for <linux-ia64@vger.kernel.org>; Tue, 14 Feb 2023 00:05:25 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=rivosinc-com.20210112.gappssmtp.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5wjc5nUaXPqzOcikp/dFCXLyDNPdOZGtU07c3eeQkEo=;
-        b=QzV31v7ItXqx4yWsJfh152ebFGrBo9gPdhTErCgeoMfuI0a/bXBwVo9zVazH0XhD1o
-         1P22Wx88GfdDl5eEqBxmERSHFO/cszqUOCuMenN38SqwMA+e3o2paztN+lm0B02Xgkp3
-         e+v+idvauAUtu3a/SIQ7MztA/LQf+9eZsxk+Jym1ZZLsfwfAVWgFyBnu0nM0VTcvl2h7
-         FliYXwQgV+CnK774qEo/1yzLrYpRuhTqe2ZbWRvyqrg3H8e5u97kFVktjSnfWw7k86cI
-         vT5XzHCiZvDMnZ0VdkIY4TftV6Qme4WQXbWLgnrifFqlcq70lxh8ilRJsq+QAWvDOKHL
-         u3Gw==
+        bh=1ct5xtrlPKjjQBQKaK50Nq6yDXnm+cC6tgPBoUaDGX0=;
+        b=1xRasjafQOUXarQQWSF/7kHUt/+VaNN41JsvVie78fHCvnBtsCj6XLXrQlYRyk8SMa
+         GUvcrv27BCA5nhu5rZ94G6eP2FCJVlbcxEW473/DE88fooxiWY9B3ounLWgrhC4c354l
+         WCThvbDJj9wDfwDG0MFuPCBT5KS6UkeI42mD0IwkIqFFeSHi8NMzagvzhfMT0/BwgnWP
+         h8Hb9DgJ/7Q+wtMt+d0JNEWdyH5Eaer5oW2YbMyEVxGNa5XMlrHPlxrCXibcUIedhoSo
+         MSEeANfbCIS64jx01S1TkpGuf4oDZKB8Ll/vCgOr+9ec/Px4ccZvgwXFQD+nV5t3n5cg
+         9NWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5wjc5nUaXPqzOcikp/dFCXLyDNPdOZGtU07c3eeQkEo=;
-        b=BqowPj6cPYI/2QJqm2tBG1gQ0lJnsZIn9MvkPu5Vrxd2FZXnIh0lp+cFhhxIKNdpEW
-         1dIe/TVF2MqPkY10O1fge1ofFGpFFdnsyYX07U5vpzZcy/GKT1nDP4XEDMWsDb4aHoAu
-         E1bHdfZrjljfiZyMXZHjLq3drS1gW86l1UXqE+VGRApCPTl5h9J2QkxafJJ8CSfWZ2XV
-         6l9AJoAK58WDOBsYzeyvKg+3xCRw3wpXI89ulAieCR+Zqd3D2w1DTGAjPLSe8X6pgkmx
-         FWHNfOQxObF3jaBZkl8wX3Y8wUj0sLzhuUX9KBh6Ylq2qAWq5ZpM6EsR5URMkUWBIdM7
-         JbmQ==
-X-Gm-Message-State: AO0yUKW8H6GxLt4gqKXOCtPmIgVE8voPNkCkdf0WO1k+f3D78Jcbxc8a
-        uFIM76gLgWz/m2G+HMhKmBfszA==
-X-Google-Smtp-Source: AK7set8HOf1J9ROM5HGHA9FxRtFWjGn9F9yobbBJ6lKeYYbdTM09Q7loKzacnDzy8U96Ii9jf9YULg==
-X-Received: by 2002:a5d:43c6:0:b0:2bf:bf05:85ac with SMTP id v6-20020a5d43c6000000b002bfbf0585acmr797767wrr.23.1676361862446;
-        Tue, 14 Feb 2023 00:04:22 -0800 (PST)
+        bh=1ct5xtrlPKjjQBQKaK50Nq6yDXnm+cC6tgPBoUaDGX0=;
+        b=RKbsZiK4u1m2LRLHIb4rY9JWxQal9brti+zyv54YYaTzgHnRhyMsHBeT73u/+xI5aP
+         ew3fVJaAwy29gw+xOcZ5SHkW+2Q7W466YHWZryrGEuO7WpWG57/x757WSPXO7AktacpB
+         6rVN7PCz31hYcYtyIfeDYzjdt73apMnm8Bt+ok79+q2gh+NHySYM73fXdEwdT/gAH5on
+         56nmnOuLuBJDb5kJH7rGkiyhT0ipfywDzqBlBJ3Y31YonItiN8ZzmGoXYev1Q8mvBe1Y
+         zz92B4Htub373btgNjoVRUIABCV03rsgLsnhgkj2r/GGV7duwrGhdQmG7jlTKxSadMuz
+         RQkw==
+X-Gm-Message-State: AO0yUKUIWHoCxvPGH+Z2tJNwMeMzwFXodntR1egUqPe/fvdmhO94sUXR
+        6YKPSqKydtokcACaRbuiZrxaog==
+X-Google-Smtp-Source: AK7set+BLoUtubkaXYrAKpwb/kFTGI2YrmVGXgoEUrVzZbAjF6WRjdC9KQBLGH8OODS4OAEhnIqBZQ==
+X-Received: by 2002:a05:600c:18a3:b0:3de:e8c5:d826 with SMTP id x35-20020a05600c18a300b003dee8c5d826mr1140255wmp.28.1676361924127;
+        Tue, 14 Feb 2023 00:05:24 -0800 (PST)
 Received: from alex-rivos.ba.rivosinc.com (lfbn-lyo-1-450-160.w2-7.abo.wanadoo.fr. [2.7.42.160])
-        by smtp.gmail.com with ESMTPSA id r2-20020adff702000000b002bddac15b3dsm12021459wrp.33.2023.02.14.00.04.21
+        by smtp.gmail.com with ESMTPSA id t15-20020a5d534f000000b002c55306f6edsm6381370wrv.54.2023.02.14.00.05.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 14 Feb 2023 00:04:22 -0800 (PST)
+        Tue, 14 Feb 2023 00:05:23 -0800 (PST)
 From:   Alexandre Ghiti <alexghiti@rivosinc.com>
 To:     Jonathan Corbet <corbet@lwn.net>,
         Richard Henderson <richard.henderson@linaro.org>,
@@ -95,9 +95,9 @@ To:     Jonathan Corbet <corbet@lwn.net>,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linux-arch@vger.kernel.org
 Cc:     Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH v3 14/24] arc: Remove empty <uapi/asm/setup.h>
-Date:   Tue, 14 Feb 2023 08:49:15 +0100
-Message-Id: <20230214074925.228106-15-alexghiti@rivosinc.com>
+Subject: [PATCH v3 15/24] m68k: Remove empty <uapi/asm/setup.h>
+Date:   Tue, 14 Feb 2023 08:49:16 +0100
+Message-Id: <20230214074925.228106-16-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230214074925.228106-1-alexghiti@rivosinc.com>
 References: <20230214074925.228106-1-alexghiti@rivosinc.com>
@@ -116,35 +116,31 @@ From: Palmer Dabbelt <palmer@rivosinc.com>
 
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 ---
- arch/arc/include/asm/setup.h      | 1 -
- arch/arc/include/uapi/asm/setup.h | 6 ------
- 2 files changed, 7 deletions(-)
- delete mode 100644 arch/arc/include/uapi/asm/setup.h
+ arch/m68k/include/uapi/asm/setup.h | 15 ---------------
+ 1 file changed, 15 deletions(-)
+ delete mode 100644 arch/m68k/include/uapi/asm/setup.h
 
-diff --git a/arch/arc/include/asm/setup.h b/arch/arc/include/asm/setup.h
-index 028a8cf76206..fe45ff4681bc 100644
---- a/arch/arc/include/asm/setup.h
-+++ b/arch/arc/include/asm/setup.h
-@@ -7,7 +7,6 @@
- 
- 
- #include <linux/types.h>
--#include <uapi/asm/setup.h>
- 
- #define COMMAND_LINE_SIZE 256
- 
-diff --git a/arch/arc/include/uapi/asm/setup.h b/arch/arc/include/uapi/asm/setup.h
+diff --git a/arch/m68k/include/uapi/asm/setup.h b/arch/m68k/include/uapi/asm/setup.h
 deleted file mode 100644
-index a6d4e44938be..000000000000
---- a/arch/arc/include/uapi/asm/setup.h
+index 005593acc7d8..000000000000
+--- a/arch/m68k/include/uapi/asm/setup.h
 +++ /dev/null
-@@ -1,6 +0,0 @@
+@@ -1,15 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
 -/*
-- * setup.h is part of userspace header ABI so UAPI scripts have to generate it
-- * even if there's nothing to export - causing empty <uapi/asm/setup.h>
-- * However to prevent "patch" from discarding it we add this placeholder
-- * comment
-- */
+-** asm/setup.h -- Definition of the Linux/m68k setup information
+-**
+-** Copyright 1992 by Greg Harp
+-**
+-** This file is subject to the terms and conditions of the GNU General Public
+-** License.  See the file COPYING in the main directory of this archive
+-** for more details.
+-*/
+-
+-#ifndef _UAPI_M68K_SETUP_H
+-#define _UAPI_M68K_SETUP_H
+-
+-#endif /* _UAPI_M68K_SETUP_H */
 -- 
 2.37.2
 
