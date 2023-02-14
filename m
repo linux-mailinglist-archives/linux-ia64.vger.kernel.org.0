@@ -2,94 +2,147 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D710F69664B
-	for <lists+linux-ia64@lfdr.de>; Tue, 14 Feb 2023 15:16:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B433696C7A
+	for <lists+linux-ia64@lfdr.de>; Tue, 14 Feb 2023 19:11:17 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232489AbjBNOQK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 14 Feb 2023 09:16:10 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35312 "EHLO
+        id S233352AbjBNSLQ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 14 Feb 2023 13:11:16 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232359AbjBNOQH (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 14 Feb 2023 09:16:07 -0500
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B69E44EE0;
-        Tue, 14 Feb 2023 06:15:38 -0800 (PST)
+        with ESMTP id S233309AbjBNSLO (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 14 Feb 2023 13:11:14 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1C763C1C;
+        Tue, 14 Feb 2023 10:11:07 -0800 (PST)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0B4E1B81DCC;
-        Tue, 14 Feb 2023 14:15:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0907C433EF;
-        Tue, 14 Feb 2023 14:14:59 +0000 (UTC)
-Date:   Tue, 14 Feb 2023 14:14:56 +0000
-From:   Catalin Marinas <catalin.marinas@arm.com>
-To:     Alexandre Ghiti <alexghiti@rivosinc.com>
-Cc:     Jonathan Corbet <corbet@lwn.net>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Vineet Gupta <vgupta@kernel.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Will Deacon <will@kernel.org>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>, Chris Zankel <chris@zankel.net>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org, Palmer Dabbelt <palmer@rivosinc.com>
-Subject: Re: [PATCH v3 02/24] arm64: Remove COMMAND_LINE_SIZE from uapi
-Message-ID: <Y+uXYILgDMc7zrh+@arm.com>
-References: <20230214074925.228106-1-alexghiti@rivosinc.com>
- <20230214074925.228106-3-alexghiti@rivosinc.com>
+        by ams.source.kernel.org (Postfix) with ESMTPS id 851CBB81EB3;
+        Tue, 14 Feb 2023 18:11:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F352C4339B;
+        Tue, 14 Feb 2023 18:11:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676398265;
+        bh=TKLtb/CYAjL8ExEwN2xeP7hJFXlbI5pH9qu3eQ0qmvA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=n8kTCiR3nrn23S9SyNNUTkXUfCumSDdFWvPXylR4gSXNC6g+2D+lxgO1fwXaaokrY
+         YVuLXGZbvvPMISaAP3wcazASy0rreHUgKB6li+yndvVqSXl0jqLsa1A9ETU4D4baHD
+         +///MI1JyNrU0ZT9OEzao9lmsZ8IdtbTtCxXLGbZAyZGrD2bN6mrI5UH2cs9usKRiY
+         bQMkI5fWLLowvUmtkCaAN5DN5oB/0AQwqle2Bn8qcUvo4LBvfw0VUZsTdIt2ANhZAW
+         wrih0yuj8p3luuIs6lJTwcX1j3ukAvE1/aQWQn2g4hCMVpjAMdZ4HwZ/dNztV4bKzz
+         l6j7aiyTxWddw==
+Date:   Tue, 14 Feb 2023 10:11:01 -0800
+From:   Josh Poimboeuf <jpoimboe@kernel.org>
+To:     Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
+Cc:     linux-kernel@vger.kernel.org, jgross@suse.com,
+        richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, linux-alpha@vger.kernel.org,
+        linux@armlinux.org.uk, linux-arm-kernel@lists.infradead.org,
+        catalin.marinas@arm.com, will@kernel.org, guoren@kernel.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        chenhuacai@kernel.org, kernel@xen0n.name,
+        loongarch@lists.linux.dev, f.fainelli@gmail.com,
+        bcm-kernel-feedback-list@broadcom.com, tsbogend@alpha.franken.de,
+        linux-mips@vger.kernel.org, jiaxun.yang@flygoat.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        linuxppc-dev@lists.ozlabs.org, ysato@users.sourceforge.jp,
+        dalias@libc.org, linux-sh@vger.kernel.org, davem@davemloft.net,
+        sparclinux@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        linux-xtensa@linux-xtensa.org, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+        mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
+        paulmck@kernel.org
+Subject: Re: [PATCH v2 09/24] mips/cpu: Expose play_dead()'s prototype
+ definition
+Message-ID: <20230214181101.3a2tscbmwdnwbqpu@treble>
+References: <cover.1676358308.git.jpoimboe@kernel.org>
+ <39835bc75af2e812fce56400533cb2ab41bcf0e2.1676358308.git.jpoimboe@kernel.org>
+ <080a5ccb-7fa0-1a75-538f-a09dc146fc4e@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230214074925.228106-3-alexghiti@rivosinc.com>
-X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <080a5ccb-7fa0-1a75-538f-a09dc146fc4e@linaro.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Feb 14, 2023 at 08:49:03AM +0100, Alexandre Ghiti wrote:
-> From: Palmer Dabbelt <palmer@rivosinc.com>
+On Tue, Feb 14, 2023 at 08:46:41AM +0100, Philippe Mathieu-Daudé wrote:
+> Hi Josh,
 > 
-> As far as I can tell this is not used by userspace and thus should not
-> be part of the user-visible API.
+> On 14/2/23 08:05, Josh Poimboeuf wrote:
+> > Include <asm/smp.h> to make sure play_dead() matches its prototype going
+> > forward.
+> > 
+> > Acked-by: Florian Fainelli <f.fainelli@gmail.com>
+> > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+> > ---
+> >   arch/mips/kernel/smp-bmips.c | 1 +
+> >   1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
+> > index f5d7bfa3472a..df9158e8329d 100644
+> > --- a/arch/mips/kernel/smp-bmips.c
+> > +++ b/arch/mips/kernel/smp-bmips.c
+> > @@ -38,6 +38,7 @@
+> >   #include <asm/traps.h>
+> >   #include <asm/barrier.h>
+> >   #include <asm/cpu-features.h>
+> > +#include <asm/smp.h>
 > 
-> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+> What about the other implementations?
+> 
+> $ git grep -L asm/smp.h $(git grep -wlF 'play_dead(void)' arch/mips)
+> arch/mips/cavium-octeon/smp.c
+> arch/mips/kernel/smp-bmips.c
+> arch/mips/kernel/smp-cps.c
+> arch/mips/loongson64/smp.c
 
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Indeed.  I really wish we had -Wmissing-prototypes.
+
+I'll squash this in:
+
+diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
+index 89954f5f87fb..4212584e6efa 100644
+--- a/arch/mips/cavium-octeon/smp.c
++++ b/arch/mips/cavium-octeon/smp.c
+@@ -20,6 +20,7 @@
+ #include <asm/mmu_context.h>
+ #include <asm/time.h>
+ #include <asm/setup.h>
++#include <asm/smp.h>
+ 
+ #include <asm/octeon/octeon.h>
+ 
+diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
+index bcd6a944b839..6d69a9ba8167 100644
+--- a/arch/mips/kernel/smp-cps.c
++++ b/arch/mips/kernel/smp-cps.c
+@@ -20,6 +20,7 @@
+ #include <asm/mipsregs.h>
+ #include <asm/pm-cps.h>
+ #include <asm/r4kcache.h>
++#include <asm/smp.h>
+ #include <asm/smp-cps.h>
+ #include <asm/time.h>
+ #include <asm/uasm.h>
+diff --git a/arch/mips/loongson64/smp.c b/arch/mips/loongson64/smp.c
+index c81c2bd07c62..df8d789ede3c 100644
+--- a/arch/mips/loongson64/smp.c
++++ b/arch/mips/loongson64/smp.c
+@@ -14,6 +14,7 @@
+ #include <linux/cpufreq.h>
+ #include <linux/kexec.h>
+ #include <asm/processor.h>
++#include <asm/smp.h>
+ #include <asm/time.h>
+ #include <asm/tlbflush.h>
+ #include <asm/cacheflush.h>
