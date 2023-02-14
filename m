@@ -2,59 +2,59 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9303695E0C
-	for <lists+linux-ia64@lfdr.de>; Tue, 14 Feb 2023 10:05:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B885695E17
+	for <lists+linux-ia64@lfdr.de>; Tue, 14 Feb 2023 10:06:37 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232258AbjBNJFy (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 14 Feb 2023 04:05:54 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38642 "EHLO
+        id S232222AbjBNJGg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 14 Feb 2023 04:06:36 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231921AbjBNJFb (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 14 Feb 2023 04:05:31 -0500
-Received: from mail-wr1-x42b.google.com (mail-wr1-x42b.google.com [IPv6:2a00:1450:4864:20::42b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06B9723C75
-        for <linux-ia64@vger.kernel.org>; Tue, 14 Feb 2023 01:04:56 -0800 (PST)
-Received: by mail-wr1-x42b.google.com with SMTP id o15so11550161wrc.9
-        for <linux-ia64@vger.kernel.org>; Tue, 14 Feb 2023 01:04:55 -0800 (PST)
+        with ESMTP id S232228AbjBNJGU (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 14 Feb 2023 04:06:20 -0500
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A4D324110
+        for <linux-ia64@vger.kernel.org>; Tue, 14 Feb 2023 01:05:33 -0800 (PST)
+Received: by mail-wr1-x42d.google.com with SMTP id o18so14888755wrj.3
+        for <linux-ia64@vger.kernel.org>; Tue, 14 Feb 2023 01:05:33 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=linaro.org; s=google;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=KZk18aUwfr/crPnHPA/QNPK0H4tWzNL+2OmakVamCi8=;
-        b=FuqeOAA0zOBxZDuVrmVbvP8dKvoEf0MRrKKfm5NpFSyLOS1syMedD57gIqKmrL5zko
-         qHpdqh+1Qi4vk3xY+Y+b00Y3rfjpVOFAPuWKFoaNHXYX+NhTIfQLIuO5WcCVUFUjRwy7
-         xMFDBg0c617IjgdOAOjwaUswIiGz5V4UI7DfJ8LBDe8ExR38WilQf/7hqV4J4nMfP3dK
-         +NkXzLhRfCI4LG9OC+J6fTkyG/7he+OYSDs5hlMQV6UXzYF2Dol240t6thsBMIDBZKNF
-         mf4lP1Tmk2bhebKijyv57HPqf77+Ml7M9RiO9cyGc/K41l5a0L/IdrW6ctCufCt4MQrg
-         Mpqg==
+        bh=UN96HvyAH3A0F2+hA45TCkXOEUd+s53tiI7+aSVqnGA=;
+        b=WP20i8MASM2rCtGp2Z93dGmU3cHmgSrcGF/TuhBxt26HL8dLV8rMBWxB7sa8KBt4Tv
+         IL6JfqV+420KDLNpueRS17I87wZnHynwV7GyYH2PGB5tWYRSxhfFEZxTzExAwws6mG6P
+         iakcPY+GsXyCb0Vpx7GzOxxLT7GAjj6878tQ978Llodda2xKxo9vKpEvTImdNhhBzQyU
+         GBTQXOLeWISX7EYhUsOut4r3WpqCivpUPrmqlCqWIZ3Nn69+5MkbHE7fIJ058QvFHCQX
+         3iiN01Fw0+PayGQK0xVI5HNTUycC8oyQptZzWy5M0sPaLFpPfPKlT60lGhE8n0Vhtc/y
+         UvqA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KZk18aUwfr/crPnHPA/QNPK0H4tWzNL+2OmakVamCi8=;
-        b=K/ddAxGySIPPtobFyW9yltuYRs37HkQ9uL7ftq1rVK2Txypfh3Pk/JflA5RgZnbXF9
-         PirHom9ir3bup1X3bsFl/DTAbJgc8CK4NrEYqMb6TnfPXpwOx+kPNqQ2m85gajOQQTqq
-         gIRDej00vS5F6y2YFpNDg8mqcGCFjdvdXdRITZPIzssZ0+aOD29wqlsJkoGQiiCp2Che
-         s1iL4oXNjmVY3padJStCV7VUr12jpVJOU+WAVV6z3wsgJSthj/Wki+ohfibB62UzJLpG
-         4ZAQnkc2H9d0OukAjc2x6pP6BYONA8pocfpjPpwHF4/DwWaXC3Q85IMRaEZUyj7/V6Zv
-         EgAg==
-X-Gm-Message-State: AO0yUKXZvksgVVGVXrM8AxoAD7zY5CsilSHjwz9ZXVNggs9YTQ1DhOvo
-        SRas8bjY0D8aSqIGQSP1jTyPwg==
-X-Google-Smtp-Source: AK7set+jlADAGeMno/J4b9rMaQi1OSFbGE2cOeHJ3WYCoMJkKRkmj2/GQpc+G+sprep4ghyf/aRSVg==
-X-Received: by 2002:a05:6000:8b:b0:2bd:f5bd:5482 with SMTP id m11-20020a056000008b00b002bdf5bd5482mr1310606wrx.28.1676365493352;
-        Tue, 14 Feb 2023 01:04:53 -0800 (PST)
+        bh=UN96HvyAH3A0F2+hA45TCkXOEUd+s53tiI7+aSVqnGA=;
+        b=o7RAfypZj34tWX8TcQlCW19npNVGpmWhOzGdTNvbOL5oBDczo5zLrrAIeZng0uQCke
+         f0EiQazffVGs0wdYo2Ze65C/ayXVCyLSwzEbZxKRNB/QADiRQ+Cp0TZ0VSRnFkkL4TTn
+         bGHBNT6kECq3fky/pCGM79rwgjpi5nxiAFVEQ28A8j+Rdy6h7X2f9m/eEUG2rqMpBx1t
+         10mGLxPU4OhZD+UqC57cz+9GUdEDwYZxqYCsZTXSD88pzMQaT/qTSPTsJd8M+1eVYtYy
+         vonXho5wEExr6gHD0F9H4yAqZBF5LvtKdw73EiSaLXth6mMMP93WZCqgCdSzhuTLOm5A
+         on6w==
+X-Gm-Message-State: AO0yUKXTa1eyI+aJJIqtTIZ0XgHtfL1jFn5u3oz+zTgjnOt/6h6DsMUZ
+        7jfbP0gECOCNdJePG5LUPV+0pg==
+X-Google-Smtp-Source: AK7set/bnATx/QinUZEv/kaFr37XQ6gSjCAmEMskILGrw/zUjdr7eN5YeojitqRWgY6y+UsZcveJ9A==
+X-Received: by 2002:adf:ef91:0:b0:2c3:e0a0:94f with SMTP id d17-20020adfef91000000b002c3e0a0094fmr1673667wro.37.1676365532856;
+        Tue, 14 Feb 2023 01:05:32 -0800 (PST)
 Received: from [192.168.30.216] ([81.0.6.76])
-        by smtp.gmail.com with ESMTPSA id d13-20020adfe88d000000b002c54f4d0f71sm7494931wrm.38.2023.02.14.01.04.49
+        by smtp.gmail.com with ESMTPSA id o7-20020a056000010700b002c559def236sm3870899wrx.57.2023.02.14.01.05.29
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 14 Feb 2023 01:04:52 -0800 (PST)
-Message-ID: <a018ab25-b545-1227-951b-a7b4e1c25d5e@linaro.org>
-Date:   Tue, 14 Feb 2023 10:04:48 +0100
+        Tue, 14 Feb 2023 01:05:32 -0800 (PST)
+Message-ID: <34543e7d-f34f-a3bb-cb64-d47da577589e@linaro.org>
+Date:   Tue, 14 Feb 2023 10:05:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
  Gecko/20100101 Thunderbird/102.7.2
-Subject: Re: [PATCH v3 20/24] x86: Remove empty <uapi/asm/setup.h>
+Subject: Re: [PATCH v3 24/24] s390: Remove empty <uapi/asm/setup.h>
 Content-Language: en-US
 To:     Alexandre Ghiti <alexghiti@rivosinc.com>,
         Jonathan Corbet <corbet@lwn.net>,
@@ -103,9 +103,9 @@ To:     Alexandre Ghiti <alexghiti@rivosinc.com>,
         linux-arch@vger.kernel.org
 Cc:     Palmer Dabbelt <palmer@rivosinc.com>
 References: <20230214074925.228106-1-alexghiti@rivosinc.com>
- <20230214074925.228106-21-alexghiti@rivosinc.com>
+ <20230214074925.228106-25-alexghiti@rivosinc.com>
 From:   =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>
-In-Reply-To: <20230214074925.228106-21-alexghiti@rivosinc.com>
+In-Reply-To: <20230214074925.228106-25-alexghiti@rivosinc.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -122,10 +122,10 @@ On 14/2/23 08:49, Alexandre Ghiti wrote:
 > 
 > Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 > ---
->   arch/x86/include/asm/setup.h      | 2 --
->   arch/x86/include/uapi/asm/setup.h | 1 -
->   2 files changed, 3 deletions(-)
->   delete mode 100644 arch/x86/include/uapi/asm/setup.h
+>   arch/s390/include/asm/setup.h      | 1 -
+>   arch/s390/include/uapi/asm/setup.h | 1 -
+>   2 files changed, 2 deletions(-)
+>   delete mode 100644 arch/s390/include/uapi/asm/setup.h
 
 Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
 
