@@ -2,39 +2,35 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDAA8695F96
-	for <lists+linux-ia64@lfdr.de>; Tue, 14 Feb 2023 10:46:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 30E70696114
+	for <lists+linux-ia64@lfdr.de>; Tue, 14 Feb 2023 11:40:13 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232198AbjBNJqG (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 14 Feb 2023 04:46:06 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55174 "EHLO
+        id S232686AbjBNKkJ convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Tue, 14 Feb 2023 05:40:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232545AbjBNJpz (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 14 Feb 2023 04:45:55 -0500
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 443A723328;
-        Tue, 14 Feb 2023 01:45:51 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1676367870; bh=ERFp+UKx/iNbj6Y6kJUSMmT/xdPleSppwgENqVxf/VM=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=Za6u4dReX/HTRyphBPafGiLsxCJ+KKmFXzBp1N3wK/BdK0FrKi1Znyq7KSHyqIyd/
-         kgfg1K7p6XNdoVzNndtK42V0pk1FbtgyitZSCQWfWujqXuBYwphv2YLUpu/j4syKSL
-         9RAZMIGf3dW2anwxyU5UMo1EVcbifIrk3T62A2sIhCPMYdsaAzhIY5t2nwHlg40Zt7
-         HtazUlk5mlSfLPOR/KKhdC1Dq5qLUvlQDvzaYGy2cDXLDVpukIxIWr8q4OHqWuB3tT
-         6cx52IlEbcB5iPGAwJpjsjaFv5wT4dz6E7YwfLhROeby+gu9v1sPXxrdEBwhQ+jslK
-         7mKSZA/LRAQdg==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([92.116.155.167]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mr9Bu-1ooy3k2CyE-00oHk0; Tue, 14
- Feb 2023 10:44:30 +0100
-Message-ID: <32c2584a-8777-26b9-ae29-80df9dfa7833@gmx.de>
-Date:   Tue, 14 Feb 2023 10:44:14 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-Subject: Re: [PATCH v3 19/24] parisc: Remove empty <uapi/asm/setup.h>
-Content-Language: en-US
-To:     =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
+        with ESMTP id S232672AbjBNKj4 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 14 Feb 2023 05:39:56 -0500
+Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39CB825E2D;
+        Tue, 14 Feb 2023 02:39:53 -0800 (PST)
+Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
+          by outpost.zedat.fu-berlin.de (Exim 4.95)
+          with esmtps (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@zedat.fu-berlin.de>)
+          id 1pRshz-000K86-Qj; Tue, 14 Feb 2023 11:38:47 +0100
+Received: from p5b13aa49.dip0.t-ipconnect.de ([91.19.170.73] helo=[192.168.178.81])
+          by inpost2.zedat.fu-berlin.de (Exim 4.95)
+          with esmtpsa (TLS1.3)
+          tls TLS_AES_256_GCM_SHA384
+          (envelope-from <glaubitz@physik.fu-berlin.de>)
+          id 1pRshz-003Z8i-EF; Tue, 14 Feb 2023 11:38:47 +0100
+Message-ID: <6a420bb0e033562bc7f67cc8f218f994e0892d3b.camel@physik.fu-berlin.de>
+Subject: Re: [PATCH v3 10/24] sparc: Remove COMMAND_LINE_SIZE from uapi
+From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+To:     WANG Xuerui <kernel@xen0n.name>,
+        Sergey Shtylyov <s.shtylyov@omp.ru>,
         Alexandre Ghiti <alexghiti@rivosinc.com>,
         Jonathan Corbet <corbet@lwn.net>,
         Richard Henderson <richard.henderson@linaro.org>,
@@ -45,11 +41,11 @@ To:     =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
         Catalin Marinas <catalin.marinas@arm.com>,
         Will Deacon <will@kernel.org>,
         Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
         Geert Uytterhoeven <geert@linux-m68k.org>,
         Michal Simek <monstr@monstr.eu>,
         Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
         "James E . J . Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
         Michael Ellerman <mpe@ellerman.id.au>,
         Nicholas Piggin <npiggin@gmail.com>,
         Christophe Leroy <christophe.leroy@csgroup.eu>,
@@ -80,35 +76,20 @@ To:     =?UTF-8?Q?Philippe_Mathieu-Daud=c3=a9?= <philmd@linaro.org>,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linux-arch@vger.kernel.org
 Cc:     Palmer Dabbelt <palmer@rivosinc.com>
+Date:   Tue, 14 Feb 2023 11:38:45 +0100
+In-Reply-To: <f3db61bb-5c89-2724-769f-9d606f587f92@xen0n.name>
 References: <20230214074925.228106-1-alexghiti@rivosinc.com>
- <20230214074925.228106-20-alexghiti@rivosinc.com>
- <6f9c7a6b-4f6b-dead-2d9b-14b405f18397@linaro.org>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <6f9c7a6b-4f6b-dead-2d9b-14b405f18397@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:6i9MLH1uyN4UjvbKa9qFgGzxyogAl9vzFG+CnYpeJmhfg1aCjEo
- fgPVjxDy4iWSOp0fQduaCkCLS49XMnxFV3Cebj1wXgxrmR7Mk+7ALLo+bEOtaCQ7LtdzxdY
- sCyP+X8u7wZGNhDO2HoSYGEmEl3/72yEi0kFbG3gxrNGYWo22p1QITkOnVbWjeRtGq3QAhO
- 81HzmD9N+fT9Dd0qQJFHw==
-UI-OutboundReport: notjunk:1;M01:P0:/sXWrTs+GHs=;mOBmE8xN1RO7T/4g1DSsoRwJcwg
- 9UZR9rEyA6LxshPy2Pz3oePTMgiIj4+AJ5S/kMjQzK+6c4x3H5hr27yLtzKfDT5PmjzMBJ+Of
- 3zfIEJQlV54kh1Ta/E2FfIdf+80zKMSI52rgvhwMkMmCjI3cvExJnD5nlbysiqstKtT+wFzv2
- Z260NQ1Y6j9s9OOAoLni9UrAct6Rzpr/LUuWUMgXKKuXfF7kU52/jKJgDV1uBFAO6e5+U9ium
- VU7bbslf79RWKAUFAz+cqTgWfg2fuGDImyE9L+3DmCjQMG4Je3gjyU6QTxHzjARx67lC7Pl/p
- bedRk356yNR+IaCi4+oVkCwy2AY9dZJ/arcneDsIauL5AATahoUIulBRN7BP8SDlfJek6s/Jl
- DdbP1C/VuGwfRMSoxHG8JGSkxMV5vKemlpgKIjZBdDtJFI77SS55OS105zLh5z4ZUEQAw5+iD
- gVWGMHv/5YX1gJCtlIOQqpAHCfa/KUliQGzWaNumDuHSbS1WfcGa+yV5bTGOpiX0VvFOGSRQB
- U8RMxnOZrwFy8bBzFJhabD91opgpUnM1Drax9wp+qCBQVYPpwhhcgl6on9cy9pH9R+aFk3mO1
- nccDm7RKozeMO0SgmShqcIoAo/MMXzhU+k4jUwmlvTNKux7KYJMrIZ3ji9OPa5aewlpMHOTna
- SozD4wCdOT6JL2dhqNqhu36n4+0Z9IWZgWgaFVcSdY0J6JSMrCZl1PwuiDm7p3APkGs2WM/5J
- r7eIJOkBYD6bzCYdI23czK+lvIluKLxeFS4fLTCAb1WjYXxNnV13KwV1j8Yk4Fb+FVUt28ZT4
- 0LWoGNHs7csGcm5b93meJrBGDiIruUcZg9DNckv8YppQk7vzTqpr/lTUzz0R/0FKX3/+tbfQa
- Xa6y4Nti/opEugZMRO7Vpm0AV2+BhhBkSR95zi7OPWYYGnYk/coI5tYGHEiard+vIs75wAtJz
- L71IAbhumB1qAsU4XQRHfRtAGXM=
-X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+         <20230214074925.228106-11-alexghiti@rivosinc.com>
+         <017f0b40-8021-8b3b-24d2-c70661b6b292@omp.ru>
+         <f3db61bb-5c89-2724-769f-9d606f587f92@xen0n.name>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.46.4 
+MIME-Version: 1.0
+X-Original-Sender: glaubitz@physik.fu-berlin.de
+X-Originating-IP: 91.19.170.73
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -116,18 +97,43 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 2/14/23 10:08, Philippe Mathieu-Daud=C3=A9 wrote:
-> On 14/2/23 08:49, Alexandre Ghiti wrote:
->> From: Palmer Dabbelt <palmer@rivosinc.com>
->>
->> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
->> ---
->> =C2=A0 arch/parisc/include/uapi/asm/setup.h | 5 -----
->> =C2=A0 1 file changed, 5 deletions(-)
->> =C2=A0 delete mode 100644 arch/parisc/include/uapi/asm/setup.h
->
-> Reviewed-by: Philippe Mathieu-Daud=C3=A9 <philmd@linaro.org>
+On Tue, 2023-02-14 at 16:59 +0800, WANG Xuerui wrote:
+> On 2023/2/14 16:50, Sergey Shtylyov wrote:
+> > On 2/14/23 10:49 AM, Alexandre Ghiti wrote:
+> > 
+> > > From: Palmer Dabbelt <palmer@rivosinc.com>
+> > > 
+> > > As far as I can tell this is not used by userspace and thus should not
+> > > be part of the user-visible API.
+> > > 
+> > > Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+> > > ---
+> > >   arch/sparc/include/asm/setup.h      | 6 +++++-
+> > >   arch/sparc/include/uapi/asm/setup.h | 7 -------
+> > >   2 files changed, 5 insertions(+), 8 deletions(-)
+> > > 
+> > > diff --git a/arch/sparc/include/asm/setup.h b/arch/sparc/include/asm/setup.h
+> > > index 72205684e51e..d1384ed92547 100644
+> > > --- a/arch/sparc/include/asm/setup.h
+> > > +++ b/arch/sparc/include/asm/setup.h
+> > > @@ -7,7 +7,11 @@
+> > >   
+> > >   #include <linux/interrupt.h>
+> > >   
+> > > -#include <uapi/asm/setup.h>
+> > > +#if defined(__sparc__) && defined(__arch64__)
+> > 
+> >     Mhm, I don't think these two can be #define'd simulaneously...
+> 
+> I believe it's just a SPARC-ism [1] [2] that may look strange and be 
+> easily confused for __aarch64__ (notice the extra 'a')...
 
-Acked-by: Helge Deller <deller@gmx.de>
+Yep, that's correct. On 64-bit Linux/SPARC, gcc/clang define __sparc__ AND __arch64__.
 
+Adrian
 
+-- 
+ .''`.  John Paul Adrian Glaubitz
+: :' :  Debian Developer
+`. `'   Physicist
+  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
