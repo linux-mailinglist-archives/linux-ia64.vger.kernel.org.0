@@ -2,120 +2,117 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 149BA6984A2
-	for <lists+linux-ia64@lfdr.de>; Wed, 15 Feb 2023 20:45:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id D46A369853E
+	for <lists+linux-ia64@lfdr.de>; Wed, 15 Feb 2023 21:08:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229668AbjBOTpo (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 15 Feb 2023 14:45:44 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40700 "EHLO
+        id S229513AbjBOUIu (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 15 Feb 2023 15:08:50 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229651AbjBOTpn (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Feb 2023 14:45:43 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E04233BD8F;
-        Wed, 15 Feb 2023 11:45:42 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E36461D23;
-        Wed, 15 Feb 2023 19:45:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43254C433EF;
-        Wed, 15 Feb 2023 19:45:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676490341;
-        bh=jEHEKJREN3+faSwa9KQfDCZrIk1boGFeW1CEIEtwaE8=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=nR0NlH9Idu9r6K5BB6SiskW/nN4Duv8oUu4t8oAsMW/BA2jHnn50sUmTtFA09snEM
-         MM4Q1KeVxIEK0CQ3heZ6KGEcJDJrmingPvv4ff3yLJnpeg2zJ4He1vCJjQd4s9mOGJ
-         HhE0qrDT5xUO3xGvs5zweCTvugYIA2adLOusrfvLPAxv6b4Cny+j0eHRlRanyAeAV0
-         ysxu48fte0a0SA7XcnPw1U31MXQzSfjcPpTrp4Qgi04O07kA/LeXjWVthIX5CMIF30
-         JAfOEJGYLSGZoEytWeIGwTCLRlwIMdQ5V+BaoKw5Pr+bw7iEZ2yNGIfGT3LJDZnQTo
-         qDwCO7AGpVLow==
-Date:   Wed, 15 Feb 2023 11:45:38 -0800
-From:   Josh Poimboeuf <jpoimboe@kernel.org>
-To:     Mark Rutland <mark.rutland@arm.com>
-Cc:     Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-        juri.lelli@redhat.com, dalias@libc.org, linux-ia64@vger.kernel.org,
-        linux-sh@vger.kernel.org, peterz@infradead.org,
-        catalin.marinas@arm.com, dave.hansen@linux.intel.com,
-        x86@kernel.org, jiaxun.yang@flygoat.com,
-        linux-mips@vger.kernel.org, bsegall@google.com, jcmvbkbc@gmail.com,
-        guoren@kernel.org, hpa@zytor.com, sparclinux@vger.kernel.org,
-        kernel@xen0n.name, will@kernel.org, vschneid@redhat.com,
-        f.fainelli@gmail.com, vincent.guittot@linaro.org,
-        ysato@users.sourceforge.jp, chenhuacai@kernel.org,
-        linux@armlinux.org.uk, linux-csky@vger.kernel.org,
-        dietmar.eggemann@arm.com, mingo@redhat.com,
-        bcm-kernel-feedback-list@broadcom.com, mgorman@suse.de,
-        mattst88@gmail.com, linux-xtensa@linux-xtensa.org,
-        paulmck@kernel.org, richard.henderson@linaro.org,
-        npiggin@gmail.com, ink@jurassic.park.msu.ru, rostedt@goodmis.org,
-        loongarch@lists.linux.dev, tglx@linutronix.de,
-        linux-arm-kernel@lists.infradead.org, jgross@suse.com,
-        chris@zankel.net, tsbogend@alpha.franken.de, bristot@redhat.com,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        bp@alien8.de, linuxppc-dev@lists.ozlabs.org, davem@davemloft.net
-Subject: Re: [PATCH v2 04/24] arm64/cpu: Mark cpu_die() __noreturn
-Message-ID: <20230215194538.aiiris3uabnuvkkg@treble>
-References: <cover.1676358308.git.jpoimboe@kernel.org>
- <e47fc487980d5330e6059ac6e16416bec88cda0e.1676358308.git.jpoimboe@kernel.org>
- <14274f04-2991-95bd-c29b-07e86e8755c1@linaro.org>
- <Y+zZgZIP7RPIgyQf@FVFF77S0Q05N>
+        with ESMTP id S229436AbjBOUIt (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Feb 2023 15:08:49 -0500
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FFBF1A4A1
+        for <linux-ia64@vger.kernel.org>; Wed, 15 Feb 2023 12:08:48 -0800 (PST)
+Received: by mail-ed1-x52d.google.com with SMTP id t16so2555064edd.10
+        for <linux-ia64@vger.kernel.org>; Wed, 15 Feb 2023 12:08:48 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=sX8eBY3r/AKljtkiUqNTMEw6Hfvd61xzSRLPDUIPd9Q=;
+        b=b3zaR1eXoCYn5Ncbvddo3VOGAogqKZWNMAaERJ6GTd/LN/ybHkxlYqOqMBj+FLCC/g
+         AHBOnjbV+wnvXKbg5stV7lRWcsYYG8w+F/+Nb61gju1iBIq88cQzgKSw8Ekgog29Rfqf
+         hQ0yBjOU03BCb8f3qoHoTNLVeAnc0rGw9nBzg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sX8eBY3r/AKljtkiUqNTMEw6Hfvd61xzSRLPDUIPd9Q=;
+        b=Co4KNODOkvqxiTNAXjjjxoczc5HfrrIk+OzKA+O6kq7fjpnK+iD9zvwzw6PIJbqy/B
+         /hzKfW6lNYvE47DHwfH/qQasDLEy58aeoVsUo1szAFvAW39t64ydPDoo7N/RQL7OxCBu
+         jvWIoMQL5hEA5gQ2WcEhq7ABbPzHStD9osT68j2RZ5YsgjiXjpC9BS9nDO1/jwoEgNpQ
+         Lht/CuWr+voa5LULp4w+bHPFqrkUnKmpckUTqeJUlZye11saQVs/6qQCnP6Zsh5/uLkZ
+         LmAd/tIpcFAgpBhPdfAcAqcDGPHTbXNxXKxjZm3mES6Q8HunLUZo3VR/cOh0hOaV7h6V
+         smbg==
+X-Gm-Message-State: AO0yUKXvfcfWJnk9L4vgkpll2MPClTqZ2gZc7emL6Yhd2kk9XUTo/nLO
+        GUutpfEdSBw77ol12k4/ou5CN185pklztCOHLKs=
+X-Google-Smtp-Source: AK7set+lNF5LgW3yZoVKczOzLK629xxN1sFTijGzTL7D4oL8FSwrnBLkfONVxgAFSxuNNjFNdI3EKg==
+X-Received: by 2002:a17:906:80d3:b0:886:50d:be8d with SMTP id a19-20020a17090680d300b00886050dbe8dmr3860541ejx.13.1676491726619;
+        Wed, 15 Feb 2023 12:08:46 -0800 (PST)
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com. [209.85.208.53])
+        by smtp.gmail.com with ESMTPSA id k16-20020a170906681000b0087223b8d6efsm10189268ejr.16.2023.02.15.12.08.45
+        for <linux-ia64@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Feb 2023 12:08:46 -0800 (PST)
+Received: by mail-ed1-f53.google.com with SMTP id dz21so13358759edb.13
+        for <linux-ia64@vger.kernel.org>; Wed, 15 Feb 2023 12:08:45 -0800 (PST)
+X-Received: by 2002:a50:d5de:0:b0:4ac:b616:4ba9 with SMTP id
+ g30-20020a50d5de000000b004acb6164ba9mr1810449edj.5.1676491725489; Wed, 15 Feb
+ 2023 12:08:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <Y+zZgZIP7RPIgyQf@FVFF77S0Q05N>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <20230215100008.2565237-1-ardb@kernel.org> <534469b750e1847e1645f9ae5ed19dcc80b82be6.camel@physik.fu-berlin.de>
+ <CAHk-=wjEmZ19T4XpVb0_Hacm53xJG_w5ygcuorwC0xBoT-myUA@mail.gmail.com> <SJ1PR11MB6083F7F30FE9ED8F39FA1F85FCA39@SJ1PR11MB6083.namprd11.prod.outlook.com>
+In-Reply-To: <SJ1PR11MB6083F7F30FE9ED8F39FA1F85FCA39@SJ1PR11MB6083.namprd11.prod.outlook.com>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 15 Feb 2023 12:08:28 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wj9RkLN+GpYcFmsd8tze6zYL7MMkNpvdKbETQnqYm+Hwg@mail.gmail.com>
+Message-ID: <CAHk-=wj9RkLN+GpYcFmsd8tze6zYL7MMkNpvdKbETQnqYm+Hwg@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/5] Retire IA64/Itanium support
+To:     "Luck, Tony" <tony.luck@intel.com>
+Cc:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jessica Clarke <jrtc27@jrtc27.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Feb 15, 2023 at 01:09:21PM +0000, Mark Rutland wrote:
-> On Tue, Feb 14, 2023 at 09:13:08AM +0100, Philippe Mathieu-Daudé wrote:
-> > On 14/2/23 08:05, Josh Poimboeuf wrote:
-> > > cpu_die() doesn't return.  Annotate it as such.  By extension this also
-> > > makes arch_cpu_idle_dead() noreturn.
-> > > 
-> > > Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-> > > ---
-> > >   arch/arm64/include/asm/smp.h | 2 +-
-> > >   1 file changed, 1 insertion(+), 1 deletion(-)
-> > > 
-> > > diff --git a/arch/arm64/include/asm/smp.h b/arch/arm64/include/asm/smp.h
-> > > index fc55f5a57a06..5733a31bab08 100644
-> > > --- a/arch/arm64/include/asm/smp.h
-> > > +++ b/arch/arm64/include/asm/smp.h
-> > > @@ -100,7 +100,7 @@ static inline void arch_send_wakeup_ipi_mask(const struct cpumask *mask)
-> > >   extern int __cpu_disable(void);
-> > >   extern void __cpu_die(unsigned int cpu);
-> > > -extern void cpu_die(void);
-> > > +extern void __noreturn cpu_die(void);
-> > >   extern void cpu_die_early(void);
-> > 
-> > Shouldn't cpu_operations::cpu_die() be declared noreturn first?
-> 
-> The cpu_die() function ends with a BUG(), and so does not return, even if a
-> cpu_operations::cpu_die() function that it calls erroneously returned.
-> 
-> We *could* mark cpu_operations::cpu_die() as noreturn, but I'd prefer that we
-> did not so that the compiler doesn't optimize away the BUG() which is there to
-> catch such erroneous returns.
-> 
-> That said, could we please add __noreturn to the implementation of cpu_die() in
-> arch/arm64/kernel/smp.c? i.e. the fixup below.
+On Wed, Feb 15, 2023 at 11:43 AM Luck, Tony <tony.luck@intel.com> wrote:
+>
+> Maybe you don't see others pain?  I added Al Viro ... perhaps
+> he'll replay some of his thoughts from trying to make signals
+> and other stuff work correctly on ia64.
 
-Done.
+Well, as long as it's ia64-specific, I'll just go "hey, it was Al's
+choice to look at that code".
 
-> With that fixup:
-> 
-> Acked-by: Mark Rutland <mark.rutland@arm.com>
+IOW, I'm more worried about "ia64 makes it a pain to make _generic_ changes".
 
-Thanks!
+IOW, doing something like this:
 
--- 
-Josh
+    git log -p --no-merges --since=1.year arch/ia64/
+
+to see what kind of pain ia64 parts of patches have caused, about a
+third of them are that "look, somebody cared about ia64 explicitly".
+
+And then the rest are trivial fixups for generic changes that aren't
+any different from any other architecture. The only half-way
+complicated one is the SET_FS removal, and I don't think it was any
+worse than most other architectures.
+
+IOW, it doesn't look like ia64 causes any huge issues _per_se_. I
+suspect alpha continues to be more of a pain.
+
+That said, it's entirely possible I've missed some particular painpoint.
+
+But when it's actively known to be broken and nobody has time or
+interest to look at it, at that point the "it doesn't look any more
+painful than other architectures" becomes kind of moot.
+
+                  Linus
