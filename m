@@ -2,81 +2,111 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 82D6C6979A3
-	for <lists+linux-ia64@lfdr.de>; Wed, 15 Feb 2023 11:17:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id CF8896979B7
+	for <lists+linux-ia64@lfdr.de>; Wed, 15 Feb 2023 11:19:53 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229605AbjBOKRU convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Wed, 15 Feb 2023 05:17:20 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43598 "EHLO
+        id S233946AbjBOKTr (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 15 Feb 2023 05:19:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229578AbjBOKRT (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Feb 2023 05:17:19 -0500
-Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40FF020D38;
-        Wed, 15 Feb 2023 02:17:17 -0800 (PST)
-Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
-          by outpost.zedat.fu-berlin.de (Exim 4.95)
-          with esmtps (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1pSEqe-003VIA-Kf; Wed, 15 Feb 2023 11:17:12 +0100
-Received: from p5b13aa49.dip0.t-ipconnect.de ([91.19.170.73] helo=[192.168.178.81])
-          by inpost2.zedat.fu-berlin.de (Exim 4.95)
-          with esmtpsa (TLS1.3)
-          tls TLS_AES_256_GCM_SHA384
-          (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1pSEqe-002su4-DJ; Wed, 15 Feb 2023 11:17:12 +0100
-Message-ID: <534469b750e1847e1645f9ae5ed19dcc80b82be6.camel@physik.fu-berlin.de>
-Subject: Re: [RFC PATCH 0/5] Retire IA64/Itanium support
-From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org
-Cc:     Jonathan Corbet <corbet@lwn.net>, Arnd Bergmann <arnd@arndb.de>,
-        Tony Luck <tony.luck@intel.com>,
-        Jessica Clarke <jrtc27@jrtc27.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-ia64@vger.kernel.org
-Date:   Wed, 15 Feb 2023 11:17:11 +0100
-In-Reply-To: <20230215100008.2565237-1-ardb@kernel.org>
+        with ESMTP id S233949AbjBOKTp (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Feb 2023 05:19:45 -0500
+Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24ADA3346D;
+        Wed, 15 Feb 2023 02:19:42 -0800 (PST)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id 903B1320099E;
+        Wed, 15 Feb 2023 05:19:38 -0500 (EST)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Wed, 15 Feb 2023 05:19:39 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
+        :cc:content-type:date:date:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to; s=fm3; t=1676456378; x=1676542778; bh=q5E/e4i4oy
+        VGmRBU38c6Pkpr1j0okcfftjblOsGQyQI=; b=DRbk2b+FXi6SUP6W+ojrbicoD0
+        Ew5GnQj2LMnKFmCRAmxnCbOlLclnDxqX4J2XlCqfLANayML0rDX7SjfCk7mYvi3M
+        eEClWb+22zugY6/tg7S2NWv8w0DhJ4Es2Rf5K90L36HVNvOh2qUttliZnxA2myU5
+        b/c1he16qLicxbVJXJWSMEdkUnDaYoViYqSh9ENr+qo01Bl3O5MAL/tJ5sfEF4sv
+        KjnLzQbuwspJtQU3kvthN/FA7vvOXZO55huEmyELk/y/Y9gqvswRq4dMxECiV8BX
+        J2q8iDx1xGQm7Z8ZPR96Bl94DOSNHEahs8mlzua1Zw1Wyn4FkxDENSwb6sLA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:date:date:feedback-id
+        :feedback-id:from:from:in-reply-to:in-reply-to:message-id
+        :mime-version:references:reply-to:sender:subject:subject:to:to
+        :x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+        fm1; t=1676456378; x=1676542778; bh=q5E/e4i4oyVGmRBU38c6Pkpr1j0o
+        kcfftjblOsGQyQI=; b=EjTkd0PifDzqDA3DcI0Bn05hfuiggvGkV4KtS0KJacYk
+        uGgl/r4aL5zcMu5OoadMNM1QIBM0Cuez1+DKOvIk+5eZhuzgFy7/74pHBRSIOUyX
+        zI4kTcvX53552K9GHia26DPIBDh5XDOTq4roHO+ZAZwLOwfCVQGO2oDezi3i5QWf
+        82TjmnJgxs5s4jIRzjivaQcyy8KjlSEO7TEhyGZDzOorsrpYpIru8s/NPzfueSuC
+        M7ubCwSMB0PoEbe4cTRQaV9u1TzOlHO2joffwlMb9LwCC7yDTYWAaSIdw8ZprYYo
+        X/IafuUnjL4yNGLDjtZAzd0VvCoztOBfv/9Dlptvkg==
+X-ME-Sender: <xms:ubHsYz0Hy6b6MO2hPBHBNcGvx-9acqkJES8AKca0PNzgyIT8YywKdQ>
+    <xme:ubHsYyH_JEekBQXrMboesMInvwjVnP4UGVatIiVNlTOKSW4S2C6dCtN0DI1IKTDdI
+    exLaEw4oUhlbT373aw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrudeihedgtdelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
+    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
+    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hrnhgusegrrhhnuggsrdguvg
+X-ME-Proxy: <xmx:ubHsYz6fxE_-uzjtKjVWA5oMZhZBULmukf7QpH81xz9a4hG9np0LMA>
+    <xmx:ubHsY43t1HPi-3PMxM_1oyenvidCgB1HDVvMl0jQUnLlEAIPrrYpPw>
+    <xmx:ubHsY2GXVR97LalXWh1sdjlMQSw_YfoUFp8JBtWjd4T0NPQ9nwhe_Q>
+    <xmx:urHsY0bT8WlsSHiKtvoqsY_z6pDWP_GvYeHvTuomY2LMTL45sh9DlQ>
+Feedback-ID: i56a14606:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id A2774B60089; Wed, 15 Feb 2023 05:19:37 -0500 (EST)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-156-g081acc5ed5-fm-20230206.001-g081acc5e
+Mime-Version: 1.0
+Message-Id: <ea12dd12-db17-44a8-8c29-6b0a129f355d@app.fastmail.com>
+In-Reply-To: <20230215100008.2565237-3-ardb@kernel.org>
 References: <20230215100008.2565237-1-ardb@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.46.4 
-MIME-Version: 1.0
-X-Original-Sender: glaubitz@physik.fu-berlin.de
-X-Originating-IP: 91.19.170.73
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+ <20230215100008.2565237-3-ardb@kernel.org>
+Date:   Wed, 15 Feb 2023 11:19:18 +0100
+From:   "Arnd Bergmann" <arnd@arndb.de>
+To:     "Ard Biesheuvel" <ardb@kernel.org>, linux-kernel@vger.kernel.org
+Cc:     "Jonathan Corbet" <corbet@lwn.net>,
+        "Tony Luck" <tony.luck@intel.com>,
+        "Jessica Clarke" <jrtc27@jrtc27.com>,
+        "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
+        "Matthew Wilcox" <willy@infradead.org>,
+        "Marc Zyngier" <maz@kernel.org>,
+        "Guenter Roeck" <linux@roeck-us.net>,
+        "Linus Torvalds" <torvalds@linux-foundation.org>,
+        linux-ia64@vger.kernel.org
+Subject: Re: [RFC PATCH 2/5] kernel: Drop IA64 support from sig_fault handlers
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hello Ard!
+On Wed, Feb 15, 2023, at 11:00, Ard Biesheuvel wrote:
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  include/linux/sched/signal.h | 17 ++++---------
+>  kernel/signal.c              | 25 ++++----------------
+>  2 files changed, 9 insertions(+), 33 deletions(-)
 
-On Wed, 2023-02-15 at 11:00 +0100, Ard Biesheuvel wrote:
-> The IA64 port of Linux has no maintainer, and according to a report from
-> its only remaining user [0], it has been broken for a month and nobody
-> cares.
+The patch looks good, but I'd suggest adding a oneline description
+referencing that ia64 as a whole is removed.
 
-It's not that I don't care. I just haven't been able to bisect the bug .yet
+I see that you created a couple of patches looking for __ia64__
+but not CONFIG_IA64. If we get consensus on patch 1, we should
+do that as well, let me know if you you want to add those or
+would like me to help here.
 
-> Given that keeping a complex but unused architecture alive uses up
-> valuable developer bandwidth, let's just get rid of it.
-> 
-> This supersedes my patch proposing to mark it as 'dead', which received
-> no replies from anyone that wants to keep it alive. [1]
+I can probably do the same recursive check for removed Kconfig
+options that I used for finding dead code after the boardfile
+removal.
 
-I'm actually fine with marking it as dead. I forgot to ack.
-
-Adrian
-
--- 
- .''`.  John Paul Adrian Glaubitz
-: :' :  Debian Developer
-`. `'   Physicist
-  `-    GPG: 62FF 8A75 84E0 2956 9546  0006 7426 3B37 F5B5 F913
+     Arnd
