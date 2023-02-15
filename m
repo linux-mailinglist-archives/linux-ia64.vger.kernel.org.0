@@ -2,71 +2,75 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF895698326
-	for <lists+linux-ia64@lfdr.de>; Wed, 15 Feb 2023 19:20:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 83F9B69848D
+	for <lists+linux-ia64@lfdr.de>; Wed, 15 Feb 2023 20:31:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229520AbjBOSUu (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 15 Feb 2023 13:20:50 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43222 "EHLO
+        id S229512AbjBOTbN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 15 Feb 2023 14:31:13 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230167AbjBOSUt (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Feb 2023 13:20:49 -0500
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42C4D193EA
-        for <linux-ia64@vger.kernel.org>; Wed, 15 Feb 2023 10:20:48 -0800 (PST)
-Received: by mail-pl1-x635.google.com with SMTP id d8so19864701plr.10
-        for <linux-ia64@vger.kernel.org>; Wed, 15 Feb 2023 10:20:48 -0800 (PST)
+        with ESMTP id S229493AbjBOTbM (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Feb 2023 14:31:12 -0500
+Received: from mail-ed1-x530.google.com (mail-ed1-x530.google.com [IPv6:2a00:1450:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D68AD3C292
+        for <linux-ia64@vger.kernel.org>; Wed, 15 Feb 2023 11:31:10 -0800 (PST)
+Received: by mail-ed1-x530.google.com with SMTP id n20so9997118edy.0
+        for <linux-ia64@vger.kernel.org>; Wed, 15 Feb 2023 11:31:10 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20210112.gappssmtp.com; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ngfthk39UuE8LQIlzioHOnXbEp30RrwAPLvsiKFP2/k=;
-        b=Fdkqv8o31HwSzEZhT/7++HjFN/ca0KGhqpZfla2Uh8lxNnFLbWHg45ymP16VxoWoUq
-         OqWGkfrjODXnZS9gfM8xg2r3bc8dzYDUmqJUlbNPhpZKwKN48dRfVU8kwEYCc95q6EZc
-         Gr0fzgwyCpK2UaoVOr5UVvnbCkOB1eLtbbaJIBg0W2pjupRlnTac9qa3GS1Wi/ChAAUQ
-         cdCCPo70P8D3TmUBRd30U8AMzJkAdRLSwZ55MAsGf+qLN8CMChya4L5VRjSU1H4hhllY
-         0Ou0ZvosxC2RTCFIzvx+MTPViltu6P2anvPFwXIYwJD4I5BpPDv7nHn9BasrCONt8MN5
-         sXYQ==
+        d=linux-foundation.org; s=google;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=RED9+vAJdW3sKqtHeyKyIn11vo3x09LmIinPSfGfkd0=;
+        b=MoQe7iVa3MT5PDdVl/QDU0kTTLca4GFekIkTiTQ02LvSSx5UnCUFroMNyhzDT2vzH/
+         uw2jdnoctQ1jc2aut0ty7G6s2izwMb9t/kgqyDBge39MaCtw9m6s1fwN6quFCL6DkM8s
+         0jF5t3yNSunFrfCUAHvHrDmjKDiRsSSvdcJN8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ngfthk39UuE8LQIlzioHOnXbEp30RrwAPLvsiKFP2/k=;
-        b=hdNJ9UPrnMoMWfZQ+bLgLo/NbRWr1EA4Rj6ekjawiGi/nqCO4O2u60t/CpBiihQwTY
-         b4xwWiAj3wfGN5o3H7faOfPGBvZ3snFprEpUvHERcBcQUnnL3tHJcg3wnTzLzslIex8L
-         QDyNJR8jkPEi3EcWjzhp5rwkfV2AEVN6IT4wI0JNyETeBWTvs6uhkGIFMbECFRy6POD3
-         nHU10gZeoNyD4Z9EwLVYts5Ko3CylthKIdFRPKSt57zWbdFNYt8F3Gm0VwXSYECDXA5y
-         YwRguiM98QqfB10vfbnnLyDN+8vnyLm/aoyhiSgipluNa7IkDSgpmO/7MkHaeqh8JobB
-         kYlA==
-X-Gm-Message-State: AO0yUKU4pNGgiIM75vq7Qj80syf0n4e3VP4HMhomcKwjG++Rg1XUDVNj
-        TTQn1ph0dA8TVibVCPjHwFWQVA==
-X-Google-Smtp-Source: AK7set9AiHG6VEF7zzAidh3sLglj/Q5j2ZXAY20OV0sjtR6hhQ7FBFxoNcgKwkmJU5FLhKjtsQKjBw==
-X-Received: by 2002:a05:6a20:2443:b0:be:d368:5c7f with SMTP id t3-20020a056a20244300b000bed3685c7fmr3181285pzc.41.1676485247569;
-        Wed, 15 Feb 2023 10:20:47 -0800 (PST)
-Received: from localhost ([135.180.226.51])
-        by smtp.gmail.com with ESMTPSA id j4-20020aa78dc4000000b00590163e1762sm12011772pfr.200.2023.02.15.10.20.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 15 Feb 2023 10:20:47 -0800 (PST)
-Date:   Wed, 15 Feb 2023 10:20:47 -0800 (PST)
-X-Google-Original-Date: Wed, 15 Feb 2023 10:20:45 PST (-0800)
-Subject:     Re: [RFC PATCH 0/5] Retire IA64/Itanium support
-In-Reply-To: <CAMj1kXFmZYmrZB7QyLCu3rpkChat=PVqPHsOi+HuWRj-FZ2S-g@mail.gmail.com>
-CC:     linux-kernel@vger.kernel.org, corbet@lwn.net,
-        Arnd Bergmann <arnd@arndb.de>, tony.luck@intel.com,
-        jrtc27@jrtc27.com, glaubitz@physik.fu-berlin.de,
-        willy@infradead.org, Marc Zyngier <maz@kernel.org>,
-        linux@roeck-us.net, Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-ia64@vger.kernel.org
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     ardb@kernel.org
-Message-ID: <mhng-5f83e606-a48d-4d18-bae1-20a6cc01952e@palmer-ri-x1c9>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RED9+vAJdW3sKqtHeyKyIn11vo3x09LmIinPSfGfkd0=;
+        b=It+ttmdRP8DDkbJruoRiHdttYpRHEYau/44uzKyhBeZQ82BeWqga9LYIlDmLWMJp0o
+         7dg7Tru99l0uvmxpZNdVyxJFPXTWRPyV2Q39IA3ZhAWfL8dZQlANV4YkTBKC5zteKwTe
+         OrzZSEMA/6+8b+RhRlQshgYegkDD6A+Ez/2qX9rm99ogkIcLjWsBEN0UucEua62LMsCv
+         ZmZfZAZ9JL5HihN6RpRPhD+pZCg1i0T+EwvbmBQDrXWnBIaQo+aqlvWD1pwwPsejZHFw
+         TIPGLfIIf5NIUc3h9ZlwMGP+jjaQ8hLHNTSECWsv97PLVgYFhZRpJHKOWdxWoDawgWHF
+         crcg==
+X-Gm-Message-State: AO0yUKVTuHwZFtE+SQZfzjI3Cu0SWL8ctQ9Le/lEpFHpe6lkht97HGsm
+        1ZWdQ8kz9xptSPk+bCPVbHkLb1L9U1Wp+BRhPH0=
+X-Google-Smtp-Source: AK7set+p4MgAl7aEsRpcFONy04dWX2OgomTqfm0dR0i06o/+iv67HWLxqhu2qOEo7CkYr82nnf3i4w==
+X-Received: by 2002:a17:906:7312:b0:8b1:3422:ddb6 with SMTP id di18-20020a170906731200b008b13422ddb6mr4445513ejc.69.1676489468934;
+        Wed, 15 Feb 2023 11:31:08 -0800 (PST)
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com. [209.85.208.52])
+        by smtp.gmail.com with ESMTPSA id z22-20020a17090655d600b00871f66bf354sm9963985ejp.204.2023.02.15.11.31.07
+        for <linux-ia64@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 15 Feb 2023 11:31:08 -0800 (PST)
+Received: by mail-ed1-f52.google.com with SMTP id bt8so19171912edb.12
+        for <linux-ia64@vger.kernel.org>; Wed, 15 Feb 2023 11:31:07 -0800 (PST)
+X-Received: by 2002:a17:907:cc12:b0:88f:a9ec:dfd7 with SMTP id
+ uo18-20020a170907cc1200b0088fa9ecdfd7mr1591050ejc.0.1676489467608; Wed, 15
+ Feb 2023 11:31:07 -0800 (PST)
+MIME-Version: 1.0
+References: <20230215100008.2565237-1-ardb@kernel.org> <534469b750e1847e1645f9ae5ed19dcc80b82be6.camel@physik.fu-berlin.de>
+In-Reply-To: <534469b750e1847e1645f9ae5ed19dcc80b82be6.camel@physik.fu-berlin.de>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Wed, 15 Feb 2023 11:30:50 -0800
+X-Gmail-Original-Message-ID: <CAHk-=wjEmZ19T4XpVb0_Hacm53xJG_w5ygcuorwC0xBoT-myUA@mail.gmail.com>
+Message-ID: <CAHk-=wjEmZ19T4XpVb0_Hacm53xJG_w5ygcuorwC0xBoT-myUA@mail.gmail.com>
+Subject: Re: [RFC PATCH 0/5] Retire IA64/Itanium support
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Arnd Bergmann <arnd@arndb.de>, Tony Luck <tony.luck@intel.com>,
+        Jessica Clarke <jrtc27@jrtc27.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>, linux-ia64@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,72 +78,16 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, 15 Feb 2023 09:00:28 PST (-0800), ardb@kernel.org wrote:
-> On Wed, 15 Feb 2023 at 17:50, Palmer Dabbelt <palmer@dabbelt.com> wrote:
->>
->> On Wed, 15 Feb 2023 02:00:03 PST (-0800), ardb@kernel.org wrote:
->> > The IA64 port of Linux has no maintainer, and according to a report from
->> > its only remaining user [0], it has been broken for a month and nobody
->> > cares.
->> >
->> > Given that keeping a complex but unused architecture alive uses up
->> > valuable developer bandwidth, let's just get rid of it.
->> >
->> > This supersedes my patch proposing to mark it as 'dead', which received
->> > no replies from anyone that wants to keep it alive. [1]
->> >
->> > [0] https://www.spinics.net/lists/linux-ia64/msg21926.html
->> > [1] https://lore.kernel.org/all/20230128122904.1345120-1-ardb@kernel.org/
->> >
->> > Cc: Jonathan Corbet <corbet@lwn.net>
->> > Cc: Arnd Bergmann <arnd@arndb.de>
->> > Cc: Tony Luck <tony.luck@intel.com>
->> > Cc: Jessica Clarke <jrtc27@jrtc27.com>
->> > Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
->> > Cc: Matthew Wilcox <willy@infradead.org>
->> > Cc: Marc Zyngier <maz@kernel.org>
->> > Cc: Guenter Roeck <linux@roeck-us.net>
->> > Cc: Linus Torvalds <torvalds@linux-foundation.org>
->> > Cc: linux-ia64@vger.kernel.org
->> >
->> > Ard Biesheuvel (5):
->> >   arch: Remove Itanium (IA-64) architecture
->> >   kernel: Drop IA64 support from sig_fault handlers
->> >   Documentation: Drop IA64 from feature descriptions
->> >   lib/raid6: Drop IA64 support
->> >   Documentation: Drop or replace remaining mentions of IA64
->>
->> Not sure if I'm missing it in the diff, but it looks like there's also a
->> bunch of "#ifdef __ia64__" and "#ifdef __IA64__" type code spread
->> throughout the kernel.  I didn't look at the actual diff, but it's in
->> files that aren't showing up in the diffstat.
->>
+On Wed, Feb 15, 2023 at 2:17 AM John Paul Adrian Glaubitz
+<glaubitz@physik.fu-berlin.de> wrote:
 >
-> Thanks for taking a look. It seems I indeed missed a couple.
->
->> Just "git grep -i __ia64__" lists a bunch.  I didn't look at all of
->> them, but at least spot checking include/acpi/actypes.h looks like it's
->> a real Itanium workaround.  If the arch goes, it's probbaly worth
->> removing those too?
->>
->
-> The ACPI code is synced with another project, so I didn't touch it.
-> Same goes for some other header files where IA-64 is referenced, e.g.,
-> in the PE/COFF header stuff.
+> It's not that I don't care. I just haven't been able to bisect the bug .yet
 
-Thanks, I didn't know that.  Pretty sure there's some scattered in 
-drivers, but...
+I'm not a fan of ia64 as an architecture, but it's a bit sad to remove
+it entirely. It's not like it's been a huge maintenance burden in
+general.
 
->> There's also some mentions of "Itanium" in Documentation outside that
->> don't look like they got caught here.  Not sure if they'd be worth
->> getting rid of, though as they could still be useful examples.  The
->> blurb in Documentation/memory-barriers.txt looks pretty port-specific,
->> though.
->>
->
-> Yeah, I don't think it is necessary to rewrite history soviet-style,
-> so some remaining references are fine IMHO.
+That said, if it doesn't work, and nobody has the time and/or
+inclination to figure out why, I don't really see any alternative.
 
-That seems reasonable to me -- assuming the port goes the rest is just 
-dead code so it'll filter out over time (presumably all over userspace 
-too, which will take a while).
+             Linus
