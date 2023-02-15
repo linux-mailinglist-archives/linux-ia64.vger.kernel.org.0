@@ -2,46 +2,52 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E44CA698894
-	for <lists+linux-ia64@lfdr.de>; Thu, 16 Feb 2023 00:09:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E5B66988A6
+	for <lists+linux-ia64@lfdr.de>; Thu, 16 Feb 2023 00:14:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229585AbjBOXJT convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Wed, 15 Feb 2023 18:09:19 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60008 "EHLO
+        id S229485AbjBOXOC convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Wed, 15 Feb 2023 18:14:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229554AbjBOXJS (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Feb 2023 18:09:18 -0500
+        with ESMTP id S229460AbjBOXOB (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Feb 2023 18:14:01 -0500
 Received: from outpost1.zedat.fu-berlin.de (outpost1.zedat.fu-berlin.de [130.133.4.66])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D0F437541;
-        Wed, 15 Feb 2023 15:09:17 -0800 (PST)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1733C3BD94;
+        Wed, 15 Feb 2023 15:14:01 -0800 (PST)
 Received: from inpost2.zedat.fu-berlin.de ([130.133.4.69])
           by outpost.zedat.fu-berlin.de (Exim 4.95)
           with esmtps (TLS1.3)
           tls TLS_AES_256_GCM_SHA384
           (envelope-from <glaubitz@zedat.fu-berlin.de>)
-          id 1pSQtk-003UZK-63; Thu, 16 Feb 2023 00:09:12 +0100
-Received: from p5b13aa49.dip0.t-ipconnect.de ([91.19.170.73] helo=suse-laptop.fritz.box)
+          id 1pSQyA-003Vpv-Do; Thu, 16 Feb 2023 00:13:46 +0100
+Received: from p5b13aa49.dip0.t-ipconnect.de ([91.19.170.73] helo=[192.168.178.81])
           by inpost2.zedat.fu-berlin.de (Exim 4.95)
           with esmtpsa (TLS1.3)
           tls TLS_AES_256_GCM_SHA384
           (envelope-from <glaubitz@physik.fu-berlin.de>)
-          id 1pSQtj-000eZ4-Un; Thu, 16 Feb 2023 00:09:12 +0100
-Message-ID: <f896bde517ac65e1933bba4f2ceb9f4a9717e7bd.camel@physik.fu-berlin.de>
+          id 1pSQyA-000ex6-58; Thu, 16 Feb 2023 00:13:46 +0100
+Message-ID: <77ff2776d99286eac6eefecb1903b96899d0ff62.camel@physik.fu-berlin.de>
 Subject: Re: [RFC PATCH 0/5] Retire IA64/Itanium support
 From:   John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        "Luck, Tony" <tony.luck@intel.com>
+Cc:     Al Viro <viro@zeniv.linux.org.uk>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
         Jonathan Corbet <corbet@lwn.net>,
-        Arnd Bergmann <arnd@arndb.de>, Tony Luck <tony.luck@intel.com>,
+        Arnd Bergmann <arnd@arndb.de>,
         Jessica Clarke <jrtc27@jrtc27.com>,
         Matthew Wilcox <willy@infradead.org>,
         Marc Zyngier <maz@kernel.org>,
-        Guenter Roeck <linux@roeck-us.net>, linux-ia64@vger.kernel.org
-Date:   Thu, 16 Feb 2023 00:09:10 +0100
-In-Reply-To: <CAHk-=wjEmZ19T4XpVb0_Hacm53xJG_w5ygcuorwC0xBoT-myUA@mail.gmail.com>
+        Guenter Roeck <linux@roeck-us.net>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+Date:   Thu, 16 Feb 2023 00:13:44 +0100
+In-Reply-To: <CAHk-=wj9RkLN+GpYcFmsd8tze6zYL7MMkNpvdKbETQnqYm+Hwg@mail.gmail.com>
 References: <20230215100008.2565237-1-ardb@kernel.org>
          <534469b750e1847e1645f9ae5ed19dcc80b82be6.camel@physik.fu-berlin.de>
          <CAHk-=wjEmZ19T4XpVb0_Hacm53xJG_w5ygcuorwC0xBoT-myUA@mail.gmail.com>
+         <SJ1PR11MB6083F7F30FE9ED8F39FA1F85FCA39@SJ1PR11MB6083.namprd11.prod.outlook.com>
+         <CAHk-=wj9RkLN+GpYcFmsd8tze6zYL7MMkNpvdKbETQnqYm+Hwg@mail.gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8BIT
 User-Agent: Evolution 3.46.4 
@@ -57,35 +63,17 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Linus!
+On Wed, 2023-02-15 at 12:08 -0800, Linus Torvalds wrote:
+> But when it's actively known to be broken and nobody has time or
+> interest to look at it, at that point the "it doesn't look any more
+> painful than other architectures" becomes kind of moot.
 
-On Wed, 2023-02-15 at 11:30 -0800, Linus Torvalds wrote:
-> On Wed, Feb 15, 2023 at 2:17 AM John Paul Adrian Glaubitz
-> <glaubitz@physik.fu-berlin.de> wrote:
-> > 
-> > It's not that I don't care. I just haven't been able to bisect the bug .yet
-> 
-> I'm not a fan of ia64 as an architecture, but it's a bit sad to remove
-> it entirely. It's not like it's been a huge maintenance burden in
-> general.
+Let me look after it in the weekend and let's see whether we can unbreak
+it. I don't think there is really a big issue. The last time we had a
+similar issue was the regression introduced by 974b9b2c68f3 which got fixed
+with the simple fix in bd05220c7be3.
 
-I agree. It would be sad to see it go.
-
-> That said, if it doesn't work, and nobody has the time and/or
-> inclination to figure out why, I don't really see any alternative.
-
-That's not really what I meant though. I definitely have the time to look
-after the architecture as I am also maintaining it in Debian.
-
-What I meant here is that I simply hadn't had the time yet to fully debug
-this particular regression that was introduced with 6.1. I did actually
-start a bisect and got close to the problematic commit as I got distracted
-with my day job.
-
-My plan was definitely to continue debugging the problem in the coming weekend
-and at least find the commit that introduced the regression. I always have an
-Itanium server ready for testing kernels that I can power on and control remotely
-via its built-in management system.
+It's probably similarly trivial to fix the current regression.
 
 Adrian
 
