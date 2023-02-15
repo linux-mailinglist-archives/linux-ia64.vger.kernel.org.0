@@ -2,217 +2,152 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E499B698542
-	for <lists+linux-ia64@lfdr.de>; Wed, 15 Feb 2023 21:09:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 11AF96987BC
+	for <lists+linux-ia64@lfdr.de>; Wed, 15 Feb 2023 23:23:03 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229593AbjBOUJf (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 15 Feb 2023 15:09:35 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36596 "EHLO
+        id S229623AbjBOWXB (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 15 Feb 2023 17:23:01 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbjBOUJe (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Feb 2023 15:09:34 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1742724C98;
-        Wed, 15 Feb 2023 12:09:32 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description;
-        bh=rO9DpJQQWF0SyEucyLTZyrAzjeodDlsM2btoEWRp7WU=; b=vGfYtOSzjDXVBKdUpt5Ko4JWG+
-        y6gE2yNUNg+f8lkuv0YSdhHYTNlAJnLynIAQgbO4ZtYEe7FRBuG98ubV+a2KILxUrhZMnVzStr5h6
-        XDspcBrrLtpGCXXBblT/MxYtEY0VCKwp2H2y3xh41PQ9UDK6mL1BroF9kFQUUO7dDPcoV5rSlwswq
-        r3jGbzlqdnuGMpvdSkiaY95Y72lmnlUuMc6Cn25QSWhoPdtvnZGWkXMkdOxbDsQV8VP07aEmMmped
-        93oHezjWeBlePl6VBPBpp3UaLLCsyqmNVJuCpSKaf14YbwZXpG0Xf3hZptWg3mo0kAEaLXJzJkR0h
-        uB5H0EYA==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1pSO5m-007lAL-OL; Wed, 15 Feb 2023 20:09:26 +0000
-From:   "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To:     linux-mm@kvack.org, linux-ia64@vger.kernel.org,
-        linux-arch@vger.kernel.org
-Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>
-Subject: [PATCH 14/17] ia64: Implement the new page table range API
-Date:   Wed, 15 Feb 2023 20:09:17 +0000
-Message-Id: <20230215200920.1849567-1-willy@infradead.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20230215000446.1655635-1-willy@infradead.org>
-References: <20230215000446.1655635-1-willy@infradead.org>
+        with ESMTP id S229493AbjBOWXA (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Feb 2023 17:23:00 -0500
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73ACC28D00;
+        Wed, 15 Feb 2023 14:22:55 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E5470B82425;
+        Wed, 15 Feb 2023 22:22:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FAD0C433D2;
+        Wed, 15 Feb 2023 22:22:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1676499772;
+        bh=3/B+NZRwzEkNo04hOsRXt8MwWSjpYxIfsEH4O0Y0Iy0=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=lgMebc9/PyCNI2WQWQFGhJ6pEjvuGS4FIDV8Hndf+NKrHLS1WG/DGBpNgqf8fOyYC
+         y8+V3Q2tj+S2zmKUBdMwoObfAcO+heEDDn/va0AU2ijfCtQ4tDaxjdOoA+qCu96qJu
+         tkWdqqKZlqO1cHNQGCQ3kzUKY7M1SSh9fmDTqH1qGb+lN/kKUpvSTLbTM6FeL2JzDg
+         3qeqvtZTigjAwCmsYZOm8DYFJHs+rNCQMwz1iolZjE/BUncjAH+Fit4Bh2Gox6pFxx
+         1CSx3J/q9TyNq1z7sg7E7kSGGeSWuf8YWJVgL80Qlbz1kmmdtCqghuKDCBxMa4nZ97
+         KwdXvAMHmGl/A==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+        id D10DF5C0F9D; Wed, 15 Feb 2023 14:22:49 -0800 (PST)
+Date:   Wed, 15 Feb 2023 14:22:49 -0800
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Josh Poimboeuf <jpoimboe@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, jgross@suse.com,
+        richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
+        mattst88@gmail.com, linux-alpha@vger.kernel.org,
+        linux@armlinux.org.uk, linux-arm-kernel@lists.infradead.org,
+        catalin.marinas@arm.com, will@kernel.org, guoren@kernel.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        chenhuacai@kernel.org, kernel@xen0n.name,
+        loongarch@lists.linux.dev, f.fainelli@gmail.com,
+        bcm-kernel-feedback-list@broadcom.com, tsbogend@alpha.franken.de,
+        linux-mips@vger.kernel.org, jiaxun.yang@flygoat.com,
+        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
+        linuxppc-dev@lists.ozlabs.org, ysato@users.sourceforge.jp,
+        dalias@libc.org, linux-sh@vger.kernel.org, davem@davemloft.net,
+        sparclinux@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
+        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
+        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
+        linux-xtensa@linux-xtensa.org, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+        mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com
+Subject: Re: [PATCH v2 00/24] cpu,sched: Mark arch_cpu_idle_dead() __noreturn
+Message-ID: <20230215222249.GM2948950@paulmck-ThinkPad-P17-Gen-1>
+Reply-To: paulmck@kernel.org
+References: <cover.1676358308.git.jpoimboe@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1676358308.git.jpoimboe@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Add set_ptes(), update_mmu_cache_range() and flush_dcache_folio().
-PG_arch_1 (aka PG_dcache_clean) becomes a per-folio flag instead of
-per-page, which makes arch_dma_mark_clean() and mark_clean() a little
-more exciting.
+On Mon, Feb 13, 2023 at 11:05:34PM -0800, Josh Poimboeuf wrote:
+> v2:
+> - make arch_call_rest_init() and rest_init() __noreturn
+> - make objtool 'global_returns' work for weak functions
+> - rebase on tip/objtool/core with dependencies merged in (mingo)
+> - add acks
+> 
+> v1.1:
+> - add __noreturn to all arch_cpu_idle_dead() implementations (mpe)
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
----
- arch/ia64/hp/common/sba_iommu.c    | 26 +++++++++++++++-----------
- arch/ia64/include/asm/cacheflush.h | 14 ++++++++++----
- arch/ia64/include/asm/pgtable.h    | 14 +++++++++++++-
- arch/ia64/mm/init.c                | 29 +++++++++++++++++++----------
- 4 files changed, 57 insertions(+), 26 deletions(-)
+With this, rcutorture no longer gets objtool complaints on x86, thank you!
 
-diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
-index 8ad6946521d8..48d475f10003 100644
---- a/arch/ia64/hp/common/sba_iommu.c
-+++ b/arch/ia64/hp/common/sba_iommu.c
-@@ -798,22 +798,26 @@ sba_io_pdir_entry(u64 *pdir_ptr, unsigned long vba)
- #endif
- 
- #ifdef ENABLE_MARK_CLEAN
--/**
-+/*
-  * Since DMA is i-cache coherent, any (complete) pages that were written via
-  * DMA can be marked as "clean" so that lazy_mmu_prot_update() doesn't have to
-  * flush them when they get mapped into an executable vm-area.
-  */
--static void
--mark_clean (void *addr, size_t size)
-+static void mark_clean(void *addr, size_t size)
- {
--	unsigned long pg_addr, end;
--
--	pg_addr = PAGE_ALIGN((unsigned long) addr);
--	end = (unsigned long) addr + size;
--	while (pg_addr + PAGE_SIZE <= end) {
--		struct page *page = virt_to_page((void *)pg_addr);
--		set_bit(PG_arch_1, &page->flags);
--		pg_addr += PAGE_SIZE;
-+	struct folio *folio = virt_to_folio(addr);
-+	ssize_t left = size;
-+	size_t offset = offset_in_folio(folio, addr);
-+
-+	if (offset) {
-+		left -= folio_size(folio) - offset;
-+		folio = folio_next(folio);
-+	}
-+
-+	while (left >= folio_size(folio)) {
-+		set_bit(PG_arch_1, &folio->flags);
-+		left -= folio_size(folio);
-+		folio = folio_next(folio);
- 	}
- }
- #endif
-diff --git a/arch/ia64/include/asm/cacheflush.h b/arch/ia64/include/asm/cacheflush.h
-index 708c0fa5d975..eac493fa9e0d 100644
---- a/arch/ia64/include/asm/cacheflush.h
-+++ b/arch/ia64/include/asm/cacheflush.h
-@@ -13,10 +13,16 @@
- #include <asm/page.h>
- 
- #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
--#define flush_dcache_page(page)			\
--do {						\
--	clear_bit(PG_arch_1, &(page)->flags);	\
--} while (0)
-+static inline void flush_dcache_folio(struct folio *folio)
-+{
-+	clear_bit(PG_arch_1, &folio->flags);
-+}
-+#define flush_dcache_folio flush_dcache_folio
-+
-+static inline void flush_dcache_page(struct page *page)
-+{
-+	flush_dcache_folio(page_folio(page));
-+}
- 
- extern void flush_icache_range(unsigned long start, unsigned long end);
- #define flush_icache_range flush_icache_range
-diff --git a/arch/ia64/include/asm/pgtable.h b/arch/ia64/include/asm/pgtable.h
-index 21c97e31a28a..0c2be4ea664b 100644
---- a/arch/ia64/include/asm/pgtable.h
-+++ b/arch/ia64/include/asm/pgtable.h
-@@ -303,7 +303,18 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
- 	*ptep = pteval;
- }
- 
--#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
-+static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
-+		pte_t *ptep, pte_t pte, unsigned int nr)
-+{
-+	for (;;) {
-+		set_pte(ptep, pte);
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		pte_val(pte) += PAGE_SIZE;
-+	}
-+}
-+#define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, add, ptep, pte, 1)
- 
- /*
-  * Make page protection values cacheable, uncacheable, or write-
-@@ -396,6 +407,7 @@ pte_same (pte_t a, pte_t b)
- 	return pte_val(a) == pte_val(b);
- }
- 
-+#define update_mmu_cache_range(vma, address, ptep, nr) do { } while (0)
- #define update_mmu_cache(vma, address, ptep) do { } while (0)
- 
- extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
-diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-index 7f5353e28516..12aef25944aa 100644
---- a/arch/ia64/mm/init.c
-+++ b/arch/ia64/mm/init.c
-@@ -50,30 +50,39 @@ void
- __ia64_sync_icache_dcache (pte_t pte)
- {
- 	unsigned long addr;
--	struct page *page;
-+	struct folio *folio;
- 
--	page = pte_page(pte);
--	addr = (unsigned long) page_address(page);
-+	folio = page_folio(pte_page(pte));
-+	addr = (unsigned long)folio_address(folio);
- 
--	if (test_bit(PG_arch_1, &page->flags))
-+	if (test_bit(PG_arch_1, &folio->flags))
- 		return;				/* i-cache is already coherent with d-cache */
- 
--	flush_icache_range(addr, addr + page_size(page));
--	set_bit(PG_arch_1, &page->flags);	/* mark page as clean */
-+	flush_icache_range(addr, addr + folio_size(folio));
-+	set_bit(PG_arch_1, &folio->flags);	/* mark page as clean */
- }
- 
- /*
-- * Since DMA is i-cache coherent, any (complete) pages that were written via
-+ * Since DMA is i-cache coherent, any (complete) folios that were written via
-  * DMA can be marked as "clean" so that lazy_mmu_prot_update() doesn't have to
-  * flush them when they get mapped into an executable vm-area.
-  */
- void arch_dma_mark_clean(phys_addr_t paddr, size_t size)
- {
--	unsigned long pfn = PHYS_PFN(paddr);
-+	struct folio *folio = page_folio(phys_to_page(paddr));
-+	ssize_t left = size;
-+	size_t offset = offset_in_folio(folio, paddr);
- 
--	do {
-+	if (offset) {
-+		left -= folio_size(folio) - offset;
-+		folio = folio_next(folio);
-+	}
-+
-+	while (left >= (ssize_t)folio_size(folio)) {
- 		set_bit(PG_arch_1, &pfn_to_page(pfn)->flags);
--	} while (++pfn <= PHYS_PFN(paddr + size - 1));
-+		left -= folio_size(folio);
-+		folio = folio_next(folio);
-+	}
- }
- 
- inline void
--- 
-2.39.1
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
 
+> Josh Poimboeuf (24):
+>   alpha/cpu: Expose arch_cpu_idle_dead()'s prototype declaration
+>   alpha/cpu: Make sure arch_cpu_idle_dead() doesn't return
+>   arm/cpu: Make sure arch_cpu_idle_dead() doesn't return
+>   arm64/cpu: Mark cpu_die() __noreturn
+>   csky/cpu: Make sure arch_cpu_idle_dead() doesn't return
+>   ia64/cpu: Mark play_dead() __noreturn
+>   loongarch/cpu: Make sure play_dead() doesn't return
+>   loongarch/cpu: Mark play_dead() __noreturn
+>   mips/cpu: Expose play_dead()'s prototype definition
+>   mips/cpu: Make sure play_dead() doesn't return
+>   mips/cpu: Mark play_dead() __noreturn
+>   powerpc/cpu: Mark start_secondary_resume() __noreturn
+>   sh/cpu: Make sure play_dead() doesn't return
+>   sh/cpu: Mark play_dead() __noreturn
+>   sh/cpu: Expose arch_cpu_idle_dead()'s prototype definition
+>   sparc/cpu: Mark cpu_play_dead() __noreturn
+>   x86/cpu: Make sure play_dead() doesn't return
+>   x86/cpu: Mark play_dead() __noreturn
+>   xtensa/cpu: Make sure cpu_die() doesn't return
+>   xtensa/cpu: Mark cpu_die() __noreturn
+>   sched/idle: Make sure weak version of arch_cpu_idle_dead() doesn't
+>     return
+>   objtool: Include weak functions in 'global_noreturns' check
+>   init: Make arch_call_rest_init() and rest_init() __noreturn
+>   sched/idle: Mark arch_cpu_idle_dead() __noreturn
+> 
+>  arch/alpha/kernel/process.c      |  4 +++-
+>  arch/arm/kernel/smp.c            |  4 +++-
+>  arch/arm64/include/asm/smp.h     |  2 +-
+>  arch/arm64/kernel/process.c      |  2 +-
+>  arch/csky/kernel/smp.c           |  4 +++-
+>  arch/ia64/kernel/process.c       |  6 +++---
+>  arch/loongarch/include/asm/smp.h |  2 +-
+>  arch/loongarch/kernel/process.c  |  2 +-
+>  arch/loongarch/kernel/smp.c      |  2 +-
+>  arch/mips/include/asm/smp.h      |  2 +-
+>  arch/mips/kernel/process.c       |  2 +-
+>  arch/mips/kernel/smp-bmips.c     |  3 +++
+>  arch/mips/loongson64/smp.c       |  1 +
+>  arch/parisc/kernel/process.c     |  2 +-
+>  arch/powerpc/include/asm/smp.h   |  2 +-
+>  arch/powerpc/kernel/smp.c        |  2 +-
+>  arch/riscv/kernel/cpu-hotplug.c  |  2 +-
+>  arch/s390/kernel/idle.c          |  2 +-
+>  arch/s390/kernel/setup.c         |  2 +-
+>  arch/sh/include/asm/smp-ops.h    |  5 +++--
+>  arch/sh/kernel/idle.c            |  3 ++-
+>  arch/sparc/include/asm/smp_64.h  |  2 +-
+>  arch/sparc/kernel/process_64.c   |  2 +-
+>  arch/x86/include/asm/smp.h       |  3 ++-
+>  arch/x86/kernel/process.c        |  4 ++--
+>  arch/xtensa/include/asm/smp.h    |  2 +-
+>  arch/xtensa/kernel/smp.c         |  4 +++-
+>  include/linux/cpu.h              |  2 +-
+>  include/linux/start_kernel.h     |  4 ++--
+>  init/main.c                      |  4 ++--
+>  kernel/sched/idle.c              |  2 +-
+>  tools/objtool/check.c            | 11 +++++++----
+>  32 files changed, 57 insertions(+), 39 deletions(-)
+> 
+> -- 
+> 2.39.1
+> 
