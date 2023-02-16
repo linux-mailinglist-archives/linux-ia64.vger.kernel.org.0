@@ -2,142 +2,117 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0C46699C86
-	for <lists+linux-ia64@lfdr.de>; Thu, 16 Feb 2023 19:43:03 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C992699CEC
+	for <lists+linux-ia64@lfdr.de>; Thu, 16 Feb 2023 20:18:04 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229534AbjBPSnA (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 16 Feb 2023 13:43:00 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48398 "EHLO
+        id S229619AbjBPTSC (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 16 Feb 2023 14:18:02 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229731AbjBPSm7 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 16 Feb 2023 13:42:59 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B54569766;
-        Thu, 16 Feb 2023 10:42:53 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A5C962067;
-        Thu, 16 Feb 2023 18:42:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2134C433D2;
-        Thu, 16 Feb 2023 18:42:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1676572972;
-        bh=TlkXm7VNtzsJ7EfaEbNCQ0jrF6Prk2gRLM56xZV0kHk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=gKpTH6Xma+bwkChOl4NLqIndv0Q0HNEGdo6fSGe2zx9UY2BJokLjGScUyDUFIyjs9
-         wHG7zTGmWy1W1NXsvoAG52q2DP0SVTJfLhB/sg40zsXEkiXxqQfCmiK5HkoaXoi50K
-         RajXDINrwduwnFFcetLEurxPZRsCdQSD9lXzw5lPbEjrfxkkYiP49ODJA32x+gCeCZ
-         Qz7xF5LCN8Pkp+5JWe3iXQAVfIJDqbiEKe6CoSERnlnc9RX8jR98iPo7qWnXozME9c
-         lzv2gmFirTvDhgkYO8L7uGcZgBqTJWPnxzROBXQ924iZHTN2zPNmp9qGv97dKbm8K7
-         3PR4cj03EaGxg==
-Date:   Thu, 16 Feb 2023 10:42:49 -0800
-From:   Josh Poimboeuf <jpoimboe@kernel.org>
-To:     Philippe =?utf-8?Q?Mathieu-Daud=C3=A9?= <philmd@linaro.org>
-Cc:     linux-kernel@vger.kernel.org, jgross@suse.com,
-        richard.henderson@linaro.org, ink@jurassic.park.msu.ru,
-        mattst88@gmail.com, linux-alpha@vger.kernel.org,
-        linux@armlinux.org.uk, linux-arm-kernel@lists.infradead.org,
-        catalin.marinas@arm.com, will@kernel.org, guoren@kernel.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        chenhuacai@kernel.org, kernel@xen0n.name,
-        loongarch@lists.linux.dev, f.fainelli@gmail.com,
-        bcm-kernel-feedback-list@broadcom.com, tsbogend@alpha.franken.de,
-        linux-mips@vger.kernel.org, jiaxun.yang@flygoat.com,
-        mpe@ellerman.id.au, npiggin@gmail.com, christophe.leroy@csgroup.eu,
-        linuxppc-dev@lists.ozlabs.org, ysato@users.sourceforge.jp,
-        dalias@libc.org, linux-sh@vger.kernel.org, davem@davemloft.net,
-        sparclinux@vger.kernel.org, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        linux-xtensa@linux-xtensa.org, peterz@infradead.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-        mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
-        paulmck@kernel.org
-Subject: [PATCH v2.1 09/24] mips/cpu: Expose play_dead()'s prototype
- definition
-Message-ID: <20230216184249.ogaqsaykottpxtcb@treble>
-References: <cover.1676358308.git.jpoimboe@kernel.org>
- <39835bc75af2e812fce56400533cb2ab41bcf0e2.1676358308.git.jpoimboe@kernel.org>
- <080a5ccb-7fa0-1a75-538f-a09dc146fc4e@linaro.org>
- <20230214181101.3a2tscbmwdnwbqpu@treble>
- <c56dc4b9-035d-7773-ecb2-0e1ac6af7abc@linaro.org>
+        with ESMTP id S229620AbjBPTSC (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 16 Feb 2023 14:18:02 -0500
+Received: from mail-oi1-x231.google.com (mail-oi1-x231.google.com [IPv6:2607:f8b0:4864:20::231])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA71725955
+        for <linux-ia64@vger.kernel.org>; Thu, 16 Feb 2023 11:17:59 -0800 (PST)
+Received: by mail-oi1-x231.google.com with SMTP id t5so2704127oiw.1
+        for <linux-ia64@vger.kernel.org>; Thu, 16 Feb 2023 11:17:59 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20210112;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=nOVlvsUBz2mNf5oykYZJP3CIj5NMFan6eI3l7bZzRvw=;
+        b=Cj1DSIWgpSz+/e/0E+xF3TQVbmNA45pOIWbj6UcKt9o89U4vSWznB/hIogbVq1kgg+
+         2uj2Eerr3zLOOan94X3vyJjND5rmt8OS5f3bCiT3ybzGHhJ0xjPoCiL0ii6Jj/9UpeXN
+         C7rON8QrYPcNSBlaiNqWhDfgxJeEDvVoib75XM6FegxUOA9VUXt8HPt3uEp377dFfjDB
+         LCN17veksRXImKe7d+W957GiEJ3Ox+V/tpKShCNTaexGHLB9QFUIe9Wi31k3sZBSMGlu
+         AqW6hDaoR7vR0kMhCaEFj7sGNNJ/kd6nKBrcMxKAX+uXZvHY/vkTjdlNPXfM/tjOIUuS
+         51BA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=content-transfer-encoding:in-reply-to:subject:from:references:cc:to
+         :content-language:user-agent:mime-version:date:message-id:sender
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=nOVlvsUBz2mNf5oykYZJP3CIj5NMFan6eI3l7bZzRvw=;
+        b=LLY3ki1fHdQ1mEASURUmM1S0Mt372HfQvLrUTYIrtD4MbZz73wPVNeCt6vPUFAqU2i
+         AHub245Z+WnrxT99yj2zfjfLQKxDk9OXogs6kM7PjoMXNsxzJe7+z29WLfm2vefUIHE/
+         3ZmYX8SN0PUC1ZO1txtXZ3Jt49k35gUGRHcorC3h9jN90aSeFIJQr46Jlc2zgxYdxPvE
+         LqRvZlFKBMB0m7+OD1HgLx65+SttjDHY7AL/6bQRi/BmaQV5VVvhSpecrwUi1ELCU1r+
+         e0u1MKdw/2fRz+ouApAiqmprLt9l9hc64dHycobSjKWLF1wjSudVlFCeN8pqoJzSm5LY
+         thNA==
+X-Gm-Message-State: AO0yUKV0yjCszdmzQRsEyfXX1ISZ8pUFRt6zakdElO/4zv3NmSLV6Gas
+        WdLL0RUrbB6pEIRWUtrJzVM=
+X-Google-Smtp-Source: AK7set9kii7+hWFq+AZkDv+r6rvCOSRXfrXz0jgjlool1lIZwCBfHXAv7XXPRYMdKK75dGDXVyzaFw==
+X-Received: by 2002:a05:6808:aa7:b0:360:c338:b958 with SMTP id r7-20020a0568080aa700b00360c338b958mr3048206oij.55.1676575079031;
+        Thu, 16 Feb 2023 11:17:59 -0800 (PST)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id o124-20020acad782000000b0036e9160f57csm887418oig.20.2023.02.16.11.17.56
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 16 Feb 2023 11:17:58 -0800 (PST)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <3f91da52-619a-89a2-da96-bf04e8ae3e48@roeck-us.net>
+Date:   Thu, 16 Feb 2023 11:17:55 -0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <c56dc4b9-035d-7773-ecb2-0e1ac6af7abc@linaro.org>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.4.2
+Content-Language: en-US
+To:     Ard Biesheuvel <ardb@kernel.org>,
+        Pedro Miguel Justo <pmsjt@texair.net>
+Cc:     Jonathan Corbet <corbet@lwn.net>, Arnd Bergmann <arnd@arndb.de>,
+        Tony Luck <tony.luck@intel.com>,
+        Jessica Clarke <jrtc27@jrtc27.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Matthew Wilcox <willy@infradead.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        "linux-ia64@vger.kernel.org" <linux-ia64@vger.kernel.org>
+References: <CO1PR13MB48707CAD2AFD26D4B6D11321C8A09@CO1PR13MB4870.namprd13.prod.outlook.com>
+ <CAMj1kXG5ufjnZGX=i92REDTayrYEKu0uVCdMB5X5JkNfAX4peA@mail.gmail.com>
+From:   Guenter Roeck <linux@roeck-us.net>
+Subject: Re: [RFC PATCH 0/5] Retire IA64/Itanium support
+In-Reply-To: <CAMj1kXG5ufjnZGX=i92REDTayrYEKu0uVCdMB5X5JkNfAX4peA@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Include <asm/smp.h> to make sure play_dead() matches its prototype going
-forward.
+On 2/16/23 10:32, Ard Biesheuvel wrote:
+> On Thu, 16 Feb 2023 at 18:43, Pedro Miguel Justo <pmsjt@texair.net> wrote:
+>>
+>> Hi Ard.
+>>
+>> John is not the "only remaining user". I also reported the problem. I am sorry I don't update the kernel every month. Yes there might have been more than 30 days between updates.
+>>
+> 
+> Thanks for the report.
+> 
+> Apologies if that sounded a bit callous but it does help get some
+> clarity regarding the ia64 situation. Essentially, we have a very
+> small number of downstream users but no dedicated developers or
+> maintainers. That is still not a great situation.
+> 
+>> I'd prefer if we don't remove the Itanium McKinley+ support but I'll understand if it must.
+>>
+> 
+> If you are invested in keeping Itanium alive, how much effort would
+> you be willing to spend yourself on testing and reviewing Itanium
+> changes?
 
-Acked-by: Florian Fainelli <f.fainelli@gmail.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
----
- arch/mips/cavium-octeon/smp.c | 1 +
- arch/mips/kernel/smp-bmips.c  | 1 +
- arch/mips/kernel/smp-cps.c    | 1 +
- arch/mips/loongson64/smp.c    | 1 +
- 4 files changed, 4 insertions(+)
+It isn't just that. Trying to build ia64:allmodconfig with gcc 11.2
+fails due to build warning(s) which are now errors, and the same
+build with gcc 11.3 or later (and binutils 2.32 or later) fails
+completely with
+     Error: Register number out of range 0..1
+and similar all over the place. So there isn't just code bitrot,
+there is also compiler and/or binutils bitrot.
 
-diff --git a/arch/mips/cavium-octeon/smp.c b/arch/mips/cavium-octeon/smp.c
-index 89954f5f87fb..4212584e6efa 100644
---- a/arch/mips/cavium-octeon/smp.c
-+++ b/arch/mips/cavium-octeon/smp.c
-@@ -20,6 +20,7 @@
- #include <asm/mmu_context.h>
- #include <asm/time.h>
- #include <asm/setup.h>
-+#include <asm/smp.h>
- 
- #include <asm/octeon/octeon.h>
- 
-diff --git a/arch/mips/kernel/smp-bmips.c b/arch/mips/kernel/smp-bmips.c
-index f5d7bfa3472a..df9158e8329d 100644
---- a/arch/mips/kernel/smp-bmips.c
-+++ b/arch/mips/kernel/smp-bmips.c
-@@ -38,6 +38,7 @@
- #include <asm/traps.h>
- #include <asm/barrier.h>
- #include <asm/cpu-features.h>
-+#include <asm/smp.h>
- 
- static int __maybe_unused max_cpus = 1;
- 
-diff --git a/arch/mips/kernel/smp-cps.c b/arch/mips/kernel/smp-cps.c
-index bcd6a944b839..6d69a9ba8167 100644
---- a/arch/mips/kernel/smp-cps.c
-+++ b/arch/mips/kernel/smp-cps.c
-@@ -20,6 +20,7 @@
- #include <asm/mipsregs.h>
- #include <asm/pm-cps.h>
- #include <asm/r4kcache.h>
-+#include <asm/smp.h>
- #include <asm/smp-cps.h>
- #include <asm/time.h>
- #include <asm/uasm.h>
-diff --git a/arch/mips/loongson64/smp.c b/arch/mips/loongson64/smp.c
-index 660e1de4412a..4e24b317e7cb 100644
---- a/arch/mips/loongson64/smp.c
-+++ b/arch/mips/loongson64/smp.c
-@@ -14,6 +14,7 @@
- #include <linux/cpufreq.h>
- #include <linux/kexec.h>
- #include <asm/processor.h>
-+#include <asm/smp.h>
- #include <asm/time.h>
- #include <asm/tlbflush.h>
- #include <asm/cacheflush.h>
--- 
-2.39.1
+Guenter
 
