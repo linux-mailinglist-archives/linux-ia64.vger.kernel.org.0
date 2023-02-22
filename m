@@ -2,89 +2,95 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3898669F983
-	for <lists+linux-ia64@lfdr.de>; Wed, 22 Feb 2023 18:05:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DE2869FE6A
+	for <lists+linux-ia64@lfdr.de>; Wed, 22 Feb 2023 23:23:46 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232461AbjBVRE7 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 22 Feb 2023 12:04:59 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50722 "EHLO
+        id S232630AbjBVWXq (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 22 Feb 2023 17:23:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232458AbjBVRE6 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 22 Feb 2023 12:04:58 -0500
-Received: from desiato.infradead.org (desiato.infradead.org [IPv6:2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83BC23A08B;
-        Wed, 22 Feb 2023 09:04:56 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-        Content-Transfer-Encoding:Content-ID:Content-Description;
-        bh=8seSikIduHdwWlxLKvtsNdKihKZpOnnG/byEzPIYqpo=; b=Y1ljMAsEbY1xeALhV24P6D+VB8
-        W1bdI7nU0WhWoHx4NgJjUs1eL4F579QHnU+VRNoxr0EmxLBTqZ3vOKnmHpwMB+Sofv3xiO5BeF6WD
-        1LD1NvVLmJ2+7rgSzEr2KFdkQGbvBYCsMTfz8sZqwESBDJCLccPcpvy9GuBpXxB4wGZyirHyFJlTf
-        gndmj7kqHoQ049GccgXjz/BpbKTlsy/A8I1wozGsWIJRtFjTTw2VRwpq8mSkA9UdnUdhM7yIf7jgi
-        NcbLaUrNNJrkpHmN4j4xvoM8KhBnKHeFAYPSNMidGw19ugtisIBpD9l0VLYU1g+Tbm+Yn6Ihuibqi
-        eg9uba3g==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-        by desiato.infradead.org with esmtpsa (Exim 4.96 #2 (Red Hat Linux))
-        id 1pUsXk-00CbPL-05;
-        Wed, 22 Feb 2023 17:04:36 +0000
-Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (Client did not present a certificate)
-        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 58890300446;
-        Wed, 22 Feb 2023 18:04:32 +0100 (CET)
-Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
-        id 0DE9520DD8076; Wed, 22 Feb 2023 18:04:32 +0100 (CET)
-Date:   Wed, 22 Feb 2023 18:04:31 +0100
-From:   Peter Zijlstra <peterz@infradead.org>
-To:     Andrzej Hajda <andrzej.hajda@intel.com>
-Cc:     linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, intel-gfx@lists.freedesktop.org,
-        dri-devel@lists.freedesktop.org, Arnd Bergmann <arnd@arndb.de>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Mark Rutland <mark.rutland@arm.com>
-Subject: Re: [PATCH v5 0/7] Introduce __xchg, non-atomic xchg
-Message-ID: <Y/ZLH5F8LA3H10aL@hirez.programming.kicks-ass.net>
-References: <20230118153529.57695-1-andrzej.hajda@intel.com>
+        with ESMTP id S232470AbjBVWXp (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 22 Feb 2023 17:23:45 -0500
+X-Greylist: delayed 904 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 22 Feb 2023 14:23:40 PST
+Received: from matoro.tk (unknown [IPv6:2600:1700:4b10:9d80::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE128A71;
+        Wed, 22 Feb 2023 14:23:39 -0800 (PST)
+DKIM-Signature: a=rsa-sha256; bh=VS1HHbC0iO2PhRUGrVGHMgzgjQpr4xymHa7Uw4M10ho=;
+ c=relaxed/relaxed; d=matoro.tk;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@matoro.tk; s=20221223; t=1677102747; v=1; x=1677534747;
+ b=kHy0L+6PSCGXbbCQrkUJJSQowAkx1/SguKsqaxuLitimADUym+pMI4IAH+DgVRWkw19dG+48
+ APcKIAfPxczX79TfXx/LOk1T4Iw/hwbZRTeMiTSPYLLwVKecYP84HobDAPSmaDE7TD1JCy/F4XD
+ uJwMwUhnpr/XrV6LBFWX3sbByYObIyuWAaAhg77U1Ao9xUKQcanHjdxTaEkVg+X7BAi+RObRDDk
+ 7flKmHTQf8Y9uWMHzMwUZCu8ucGZTjUjEFf/7OuRwAkMaGnv8mVoLKMlRpvTGRp1M03RhFv9Je5
+ UPXr8ZHm3GzYuWwsJlg+6DZvYhXzJ+AHWIkIR1hmf1AcmMylQphdch6XRrGaiVaaIdC0D0FtzaR
+ PXZ9nW85XJPA2XlGvcQ6nWkAbtHaSuihZYMEvMFDPOP0EcH9r+JAg52ZB1GiNDs2uHUBvzHToes
+ NfWzDzieRRP+7v5OjKU5si4Te8uYfA/38+FEJEZOVmm7uVeBLTYfibFmc+NNDUO7+CTcDLj/IFu
+ tooLJbJ8cLBKx17BV0c0Q9ZU1uZQmlrlBKI0gc9Nm9kdg/XiQqnRl4BD1Z0jcESaVtis/JUU+GF
+ jcWbFMeb4wpyRNtjOF6433YTFgq1DZEHF3cYUVchhGP6Of4NyG32c7tOBzCwDiYyDCifHn5xwiy
+ cqkPKZj22xY=
+Received: by matoro.tk (envelope-sender
+ <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id 10abfbb5; Wed, 22 Feb
+ 2023 16:52:27 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230118153529.57695-1-andrzej.hajda@intel.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Date:   Wed, 22 Feb 2023 16:52:27 -0500
+From:   matoro <matoro_mailinglist_kernel@matoro.tk>
+To:     John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        "Luck, Tony" <tony.luck@intel.com>,
+        Al Viro <viro@zeniv.linux.org.uk>,
+        Ard Biesheuvel <ardb@kernel.org>, linux-kernel@vger.kernel.org,
+        Jonathan Corbet <corbet@lwn.net>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Jessica Clarke <jrtc27@jrtc27.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>, linux-ia64@vger.kernel.org
+Subject: Re: [RFC PATCH 0/5] Retire IA64/Itanium support
+In-Reply-To: <77ff2776d99286eac6eefecb1903b96899d0ff62.camel@physik.fu-berlin.de>
+References: <20230215100008.2565237-1-ardb@kernel.org>
+ <534469b750e1847e1645f9ae5ed19dcc80b82be6.camel@physik.fu-berlin.de>
+ <CAHk-=wjEmZ19T4XpVb0_Hacm53xJG_w5ygcuorwC0xBoT-myUA@mail.gmail.com>
+ <SJ1PR11MB6083F7F30FE9ED8F39FA1F85FCA39@SJ1PR11MB6083.namprd11.prod.outlook.com>
+ <CAHk-=wj9RkLN+GpYcFmsd8tze6zYL7MMkNpvdKbETQnqYm+Hwg@mail.gmail.com>
+ <77ff2776d99286eac6eefecb1903b96899d0ff62.camel@physik.fu-berlin.de>
+Message-ID: <1d5b903ef5e5b5f83feee241fb0cbcca@matoro.tk>
+X-Sender: matoro_mailinglist_kernel@matoro.tk
+Content-Type: text/plain; charset=US-ASCII;
+ format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_PASS,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Jan 18, 2023 at 04:35:22PM +0100, Andrzej Hajda wrote:
+On 2023-02-15 18:13, John Paul Adrian Glaubitz wrote:
+> On Wed, 2023-02-15 at 12:08 -0800, Linus Torvalds wrote:
+>> But when it's actively known to be broken and nobody has time or
+>> interest to look at it, at that point the "it doesn't look any more
+>> painful than other architectures" becomes kind of moot.
+> 
+> Let me look after it in the weekend and let's see whether we can 
+> unbreak
+> it. I don't think there is really a big issue. The last time we had a
+> similar issue was the regression introduced by 974b9b2c68f3 which got 
+> fixed
+> with the simple fix in bd05220c7be3.
+> 
+> It's probably similarly trivial to fix the current regression.
+> 
+> Adrian
 
-> Andrzej Hajda (7):
->   arch: rename all internal names __xchg to __arch_xchg
->   linux/include: add non-atomic version of xchg
->   arch/*/uprobes: simplify arch_uretprobe_hijack_return_addr
->   llist: simplify __llist_del_all
->   io_uring: use __xchg if possible
->   qed: use __xchg if possible
->   drm/i915/gt: use __xchg instead of internal helper
+Just for reference, this specific bug does not seem to be universal, but 
+possibly only applies to a specific configuration.  I have observed no 
+problems with 6.1 on my rx 2800 i2 and just booted 6.2 with no issues.  
+Please feel free to try out my kernel config here:  
+https://dpaste.com/43CACUUG8.txt
 
-Nothing crazy in here I suppose, I somewhat wonder why you went through
-the trouble, but meh.
-
-You want me to take this through te locking tree (for the next cycle,
-not this one) where I normally take atomic things or does someone else
-want this?
+A possible guess is initramfs-related, as according to your logs on the 
+Debian ML the hang happens shortly after initramfs unpacking, and I do 
+not use an initramfs.
