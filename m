@@ -2,218 +2,145 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 771DE6A48BD
-	for <lists+linux-ia64@lfdr.de>; Mon, 27 Feb 2023 18:57:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EB4776A4B76
+	for <lists+linux-ia64@lfdr.de>; Mon, 27 Feb 2023 20:47:18 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230098AbjB0R5z (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 27 Feb 2023 12:57:55 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47820 "EHLO
+        id S230274AbjB0TrR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 27 Feb 2023 14:47:17 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230002AbjB0R5y (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 27 Feb 2023 12:57:54 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 266C8241DB;
-        Mon, 27 Feb 2023 09:57:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description;
-        bh=X4gTGIoZDPD05YxRdFQZH/uA/i6Ep+mlgv+7pNzKT5k=; b=Stc4k6nNmjxaPWz69W1KOrnUO2
-        aaMutptGkXNCVe3gZKsAonPL4JoW3W7A5oCHi0/rqfQoIe1pv0H3qEZ+XeaC0EaOh/qHj+1w7bpGp
-        UpPx3ppcsRKWQQtwJ8cZ3M0yFSBXUDTDRPvj9R4oB7u3tTuRDqc5svb6VxJZtURnq/jaG+IebhQPO
-        YAnfQkUnzeVHiEM0ewjgdj9SnYp2VN37ZU9kmKKS4mAaYTq+AjynPZ6PbLUwjXI1gQWs5PtTrkzcm
-        x1HExJ9B5grwqCSJoP7LcpaY2XrYuOuNzPWG1XZXKo28GpahAObdAB/eO7OBPkBEUGx/f3sA0kCG/
-        JteVmCHA==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1pWhku-000IXK-Dj; Mon, 27 Feb 2023 17:57:44 +0000
-From:   "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To:     linux-mm@kvack.org, linux-arch@vger.kernel.org
-Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
-Subject: [PATCH v2 10/30] ia64: Implement the new page table range API
-Date:   Mon, 27 Feb 2023 17:57:21 +0000
-Message-Id: <20230227175741.71216-11-willy@infradead.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20230227175741.71216-1-willy@infradead.org>
-References: <20230227175741.71216-1-willy@infradead.org>
+        with ESMTP id S230268AbjB0TrQ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 27 Feb 2023 14:47:16 -0500
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27EA028202;
+        Mon, 27 Feb 2023 11:46:48 -0800 (PST)
+Received: by mail-qt1-f181.google.com with SMTP id w23so8016473qtn.6;
+        Mon, 27 Feb 2023 11:46:48 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zgbfP6t1iEXlYeQDHgpgkGKrmlu/wPbkfmiZJDZsq5c=;
+        b=PeklCc/BUNFCM4ElJPmsx7n8MV2Iwl7q5/6ZPW3lCqlV0dMVC71bUn6ySKhihacRzX
+         IhLjkT0taaowmeHkjhqcFjY42CZF3KDVUY920L/intcsjFkVCc92QmU6ESE91dLH9qqs
+         V3sLiIIK128WszIJ9B7tbufuqevD12qezThCbonkuk3CPRtE9KNzSf+rSsBX0KMmXCT3
+         +Yjkpx/NDjxKtTNEsS7Lw4xz/pqZVVRInUsB7OPGfgDt+AWZsfiYWcwVyZRQoHcUkzDM
+         zBLMNGBSVhgNGmNAK4cWhJW8rVsEcT3kNheHkBquP/cEltZS6iHTNcLNoBthBFvRZfmE
+         406w==
+X-Gm-Message-State: AO0yUKU2kiVR8Z6e10D3Yg2rJy4ajsfSR3Icpd5EZkzuMmyjFb/fVh/f
+        9rbA4MyhoEEmv4O+n6cUCizaH3lW93uHzw==
+X-Google-Smtp-Source: AK7set/pQ6JDnl+0gvg72l8iO9kyYF90JvlZkNPQjMM+HJ4miR7SQEsMKDfQzYgWmCLw7AgxTXFqhg==
+X-Received: by 2002:a05:622a:50:b0:3bf:ce27:e1fc with SMTP id y16-20020a05622a005000b003bfce27e1fcmr1053059qtw.7.1677527206826;
+        Mon, 27 Feb 2023 11:46:46 -0800 (PST)
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com. [209.85.128.171])
+        by smtp.gmail.com with ESMTPSA id s184-20020a372cc1000000b0073bb00eb0besm5463580qkh.22.2023.02.27.11.46.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 27 Feb 2023 11:46:45 -0800 (PST)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-536cb25982eso206302047b3.13;
+        Mon, 27 Feb 2023 11:46:45 -0800 (PST)
+X-Received: by 2002:a5b:d4e:0:b0:967:f8b2:7a42 with SMTP id
+ f14-20020a5b0d4e000000b00967f8b27a42mr7816406ybr.7.1677527205039; Mon, 27 Feb
+ 2023 11:46:45 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230113171026.582290-1-david@redhat.com> <20230113171026.582290-12-david@redhat.com>
+ <CAMuHMdX-FDga8w=pgg1myskEx6wp+oyZifhPPPFnWrc1zW7ZpQ@mail.gmail.com>
+ <9ed766a6-cf06-535d-3337-ea6ff25c2362@redhat.com> <CAMuHMdWSaoKqO1Nx7QMDCcXrRmFbqqX8uwDRezXs8g+HdEFjKA@mail.gmail.com>
+ <c145a2db-f92c-65aa-3e68-07dbb2e097a6@redhat.com>
+In-Reply-To: <c145a2db-f92c-65aa-3e68-07dbb2e097a6@redhat.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Mon, 27 Feb 2023 20:46:31 +0100
+X-Gmail-Original-Message-ID: <CAMuHMdX7MND++KXgTpx4jscfctQA_-zPt3EN9-+79EWE7e+OjA@mail.gmail.com>
+Message-ID: <CAMuHMdX7MND++KXgTpx4jscfctQA_-zPt3EN9-+79EWE7e+OjA@mail.gmail.com>
+Subject: Re: [PATCH mm-unstable v1 11/26] microblaze/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
+To:     David Hildenbrand <david@redhat.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Hugh Dickins <hughd@google.com>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Mike Rapoport <rppt@linux.ibm.com>,
+        Yang Shi <shy828301@gmail.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Nadav Amit <namit@vmware.com>,
+        Andrea Arcangeli <aarcange@redhat.com>,
+        Peter Xu <peterx@redhat.com>, linux-mm@kvack.org,
+        x86@kernel.org, linux-alpha@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
+        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org, linux-xtensa@linux-xtensa.org,
+        Michal Simek <monstr@monstr.eu>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Add set_ptes(), update_mmu_cache_range() and flush_dcache_folio().
-Change the PG_arch_1 (aka PG_dcache_clean) flag from being per-page to
-per-folio, which makes arch_dma_mark_clean() and mark_clean() a little
-more exciting.
+Hi David,
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: linux-ia64@vger.kernel.org
----
- arch/ia64/hp/common/sba_iommu.c    | 26 +++++++++++++++-----------
- arch/ia64/include/asm/cacheflush.h | 14 ++++++++++----
- arch/ia64/include/asm/pgtable.h    | 14 +++++++++++++-
- arch/ia64/mm/init.c                | 29 +++++++++++++++++++----------
- 4 files changed, 57 insertions(+), 26 deletions(-)
+On Mon, Feb 27, 2023 at 6:01 PM David Hildenbrand <david@redhat.com> wrote:
+> >>>>    /*
+> >>>>     * Externally used page protection values.
+> >>>> diff --git a/arch/microblaze/include/asm/pgtable.h b/arch/microblaze/include/asm/pgtable.h
+> >>>> index 42f5988e998b..7e3de54bf426 100644
+> >>>> --- a/arch/microblaze/include/asm/pgtable.h
+> >>>> +++ b/arch/microblaze/include/asm/pgtable.h
 
-diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
-index 8ad6946521d8..48d475f10003 100644
---- a/arch/ia64/hp/common/sba_iommu.c
-+++ b/arch/ia64/hp/common/sba_iommu.c
-@@ -798,22 +798,26 @@ sba_io_pdir_entry(u64 *pdir_ptr, unsigned long vba)
- #endif
- 
- #ifdef ENABLE_MARK_CLEAN
--/**
-+/*
-  * Since DMA is i-cache coherent, any (complete) pages that were written via
-  * DMA can be marked as "clean" so that lazy_mmu_prot_update() doesn't have to
-  * flush them when they get mapped into an executable vm-area.
-  */
--static void
--mark_clean (void *addr, size_t size)
-+static void mark_clean(void *addr, size_t size)
- {
--	unsigned long pg_addr, end;
--
--	pg_addr = PAGE_ALIGN((unsigned long) addr);
--	end = (unsigned long) addr + size;
--	while (pg_addr + PAGE_SIZE <= end) {
--		struct page *page = virt_to_page((void *)pg_addr);
--		set_bit(PG_arch_1, &page->flags);
--		pg_addr += PAGE_SIZE;
-+	struct folio *folio = virt_to_folio(addr);
-+	ssize_t left = size;
-+	size_t offset = offset_in_folio(folio, addr);
-+
-+	if (offset) {
-+		left -= folio_size(folio) - offset;
-+		folio = folio_next(folio);
-+	}
-+
-+	while (left >= folio_size(folio)) {
-+		set_bit(PG_arch_1, &folio->flags);
-+		left -= folio_size(folio);
-+		folio = folio_next(folio);
- 	}
- }
- #endif
-diff --git a/arch/ia64/include/asm/cacheflush.h b/arch/ia64/include/asm/cacheflush.h
-index 708c0fa5d975..eac493fa9e0d 100644
---- a/arch/ia64/include/asm/cacheflush.h
-+++ b/arch/ia64/include/asm/cacheflush.h
-@@ -13,10 +13,16 @@
- #include <asm/page.h>
- 
- #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
--#define flush_dcache_page(page)			\
--do {						\
--	clear_bit(PG_arch_1, &(page)->flags);	\
--} while (0)
-+static inline void flush_dcache_folio(struct folio *folio)
-+{
-+	clear_bit(PG_arch_1, &folio->flags);
-+}
-+#define flush_dcache_folio flush_dcache_folio
-+
-+static inline void flush_dcache_page(struct page *page)
-+{
-+	flush_dcache_folio(page_folio(page));
-+}
- 
- extern void flush_icache_range(unsigned long start, unsigned long end);
- #define flush_icache_range flush_icache_range
-diff --git a/arch/ia64/include/asm/pgtable.h b/arch/ia64/include/asm/pgtable.h
-index 21c97e31a28a..0c2be4ea664b 100644
---- a/arch/ia64/include/asm/pgtable.h
-+++ b/arch/ia64/include/asm/pgtable.h
-@@ -303,7 +303,18 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
- 	*ptep = pteval;
- }
- 
--#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
-+static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
-+		pte_t *ptep, pte_t pte, unsigned int nr)
-+{
-+	for (;;) {
-+		set_pte(ptep, pte);
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		pte_val(pte) += PAGE_SIZE;
-+	}
-+}
-+#define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, add, ptep, pte, 1)
- 
- /*
-  * Make page protection values cacheable, uncacheable, or write-
-@@ -396,6 +407,7 @@ pte_same (pte_t a, pte_t b)
- 	return pte_val(a) == pte_val(b);
- }
- 
-+#define update_mmu_cache_range(vma, address, ptep, nr) do { } while (0)
- #define update_mmu_cache(vma, address, ptep) do { } while (0)
- 
- extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
-diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-index 7f5353e28516..12aef25944aa 100644
---- a/arch/ia64/mm/init.c
-+++ b/arch/ia64/mm/init.c
-@@ -50,30 +50,39 @@ void
- __ia64_sync_icache_dcache (pte_t pte)
- {
- 	unsigned long addr;
--	struct page *page;
-+	struct folio *folio;
- 
--	page = pte_page(pte);
--	addr = (unsigned long) page_address(page);
-+	folio = page_folio(pte_page(pte));
-+	addr = (unsigned long)folio_address(folio);
- 
--	if (test_bit(PG_arch_1, &page->flags))
-+	if (test_bit(PG_arch_1, &folio->flags))
- 		return;				/* i-cache is already coherent with d-cache */
- 
--	flush_icache_range(addr, addr + page_size(page));
--	set_bit(PG_arch_1, &page->flags);	/* mark page as clean */
-+	flush_icache_range(addr, addr + folio_size(folio));
-+	set_bit(PG_arch_1, &folio->flags);	/* mark page as clean */
- }
- 
- /*
-- * Since DMA is i-cache coherent, any (complete) pages that were written via
-+ * Since DMA is i-cache coherent, any (complete) folios that were written via
-  * DMA can be marked as "clean" so that lazy_mmu_prot_update() doesn't have to
-  * flush them when they get mapped into an executable vm-area.
-  */
- void arch_dma_mark_clean(phys_addr_t paddr, size_t size)
- {
--	unsigned long pfn = PHYS_PFN(paddr);
-+	struct folio *folio = page_folio(phys_to_page(paddr));
-+	ssize_t left = size;
-+	size_t offset = offset_in_folio(folio, paddr);
- 
--	do {
-+	if (offset) {
-+		left -= folio_size(folio) - offset;
-+		folio = folio_next(folio);
-+	}
-+
-+	while (left >= (ssize_t)folio_size(folio)) {
- 		set_bit(PG_arch_1, &pfn_to_page(pfn)->flags);
--	} while (++pfn <= PHYS_PFN(paddr + size - 1));
-+		left -= folio_size(folio);
-+		folio = folio_next(folio);
-+	}
- }
- 
- inline void
+> >>>>     * - All other bits of the PTE are loaded into TLBLO without
+> >>>>     *  * modification, leaving us only the bits 20, 21, 24, 25, 26, 30 for
+> >>>>     * software PTE bits.  We actually use bits 21, 24, 25, and
+> >>>> @@ -155,6 +155,9 @@ extern pte_t *va_to_pte(unsigned long address);
+> >>>>    #define _PAGE_ACCESSED 0x400   /* software: R: page referenced */
+> >>>>    #define _PMD_PRESENT   PAGE_MASK
+> >>>>
+> >>>> +/* We borrow bit 24 to store the exclusive marker in swap PTEs. */
+> >>>> +#define _PAGE_SWP_EXCLUSIVE    _PAGE_DIRTY
+> >>>
+> >>> _PAGE_DIRTY is 0x80, so this is also bit 7, thus the new comment is
+> >>> wrong?
+> >>
+> >> In the example, I use MSB-0 bit numbering (which I determined to be
+> >> correct in microblaze context eventually, but I got confused a couple a
+> >> times because it's very inconsistent). That should be MSB-0 bit 24.
+> >
+> > Thanks, TIL microblaze uses IBM bit numbering...
+>
+> I assume IBM bit numbering corresponds to MSB-0 bit numbering, correct?
+
+Correct, as seen in s370 and PowerPC manuals...
+
+> I recall that I used the comment above "/* Definitions for MicroBlaze.
+> */" as an orientation.
+>
+> 0  1  2  3  4  ... 18 19 20 21 22 23 24 25 26 27 28 29 30 31
+> RPN.....................  0  0 EX WR ZSEL.......  W  I  M  G
+
+Indeed, that's where I noticed the "unconventional" numbering...
+
+> So ... either we adjust both or we leave it as is. (again, depends on
+> what the right thing to to is -- which I don't know :) )
+
+It depends whether you want to match the hardware documentation,
+or the Linux BIT() macro and friends...
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.39.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
