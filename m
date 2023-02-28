@@ -2,159 +2,218 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8DCA26A60FB
-	for <lists+linux-ia64@lfdr.de>; Tue, 28 Feb 2023 22:11:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id EC9426A6156
+	for <lists+linux-ia64@lfdr.de>; Tue, 28 Feb 2023 22:37:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229848AbjB1VLY (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 28 Feb 2023 16:11:24 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57524 "EHLO
+        id S229906AbjB1Vhq (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 28 Feb 2023 16:37:46 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbjB1VLW (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 28 Feb 2023 16:11:22 -0500
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8786A2B2B1;
-        Tue, 28 Feb 2023 13:11:18 -0800 (PST)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 251AC611D6;
-        Tue, 28 Feb 2023 21:11:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 67CEDC4339C;
-        Tue, 28 Feb 2023 21:11:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1677618677;
-        bh=hQNwE+IEUbKQvI91yvljJosaVP7JCZ7+8bppV3cOFbg=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=EWCQE/HQjrWuM9JLi5n8h88COIVDC0Dwj8Ls7hxDeYr4SIALkO/qqCk/UGcAvWK5o
-         c02+sh/QcUi/6bE0ILdbEb/C+A8GV+CJaLo8WfaGxJWgLFvkSK7vL/E7uokCa4MOxg
-         ngdg3jXiJrkGUm98gEQXAgu/dxa50c+7WgMlmDgNw1PpnJ2oFrWoeU4ingGh4tZ7R7
-         NCLLPqaZ1Zn4rnovGjIPX8BlJ6CPAfDs1vwTGYqI9oMCtgbAk9Bh8oF1Q3q6KxteX4
-         j5u6Jm2tA55Z1q6NEJRkgLy4vCcaaRiYhIH8qBVhYl9/Ucn2GR4gvjnvRg/iSe5UV4
-         UdVCGz5UeLKDg==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 3FB70C691DE;
-        Tue, 28 Feb 2023 21:11:17 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229871AbjB1Vhq (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 28 Feb 2023 16:37:46 -0500
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B3E34323;
+        Tue, 28 Feb 2023 13:37:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+        Content-Type:Content-ID:Content-Description;
+        bh=X4gTGIoZDPD05YxRdFQZH/uA/i6Ep+mlgv+7pNzKT5k=; b=d64ZiIZwbaZAR26epvp/fIC9ZJ
+        4oAPhYbNdFVbSebf5WTKvAstEIjxipjzZkYQBvxy6T5/cPJHsz6b7cOGTTzsbUMisq/PARR/croyV
+        386bEC6Y844QeOXW8GtSK4ycdugpUvB/2iIkP/nRGrtHnVXDHhh+GNxFBcFSglXGf7pX9Zi7Me0U+
+        uCrTAaMmU3tAXFylqB8VCo+bNjwNnbsladeGoCCzjRh7KrI/FWsm3kkPy+sn4LsdjLib5Mo8UNXFt
+        PerbroycxkC0s00okLnb7cwTLHo7VK4uTlB45F5Zh7n8Ydln+h4qJigRBeBi+2jsZAEPcsXcw7hep
+        EivU9tOQ==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pX7fI-0018p8-Ho; Tue, 28 Feb 2023 21:37:40 +0000
+From:   "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To:     linux-mm@kvack.org, linux-arch@vger.kernel.org
+Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
+Subject: [PATCH v3 11/34] ia64: Implement the new page table range API
+Date:   Tue, 28 Feb 2023 21:37:14 +0000
+Message-Id: <20230228213738.272178-12-willy@infradead.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20230228213738.272178-1-willy@infradead.org>
+References: <20230228213738.272178-1-willy@infradead.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH mm-unstable v1 00/26] mm: support
- __HAVE_ARCH_PTE_SWP_EXCLUSIVE on all architectures with swap PTEs
-From:   patchwork-bot+linux-riscv@kernel.org
-Message-Id: <167761867725.10135.3611718470427113262.git-patchwork-notify@kernel.org>
-Date:   Tue, 28 Feb 2023 21:11:17 +0000
-References: <20230113171026.582290-1-david@redhat.com>
-In-Reply-To: <20230113171026.582290-1-david@redhat.com>
-To:     David Hildenbrand <david@redhat.com>
-Cc:     linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        akpm@linux-foundation.org, hughd@google.com, jhubbard@nvidia.com,
-        jgg@nvidia.com, rppt@linux.ibm.com, shy828301@gmail.com,
-        vbabka@suse.cz, namit@vmware.com, aarcange@redhat.com,
-        peterx@redhat.com, linux-mm@kvack.org, x86@kernel.org,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, openrisc@lists.librecores.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-um@lists.infradead.org,
-        linux-xtensa@linux-xtensa.org, aou@eecs.berkeley.edu,
-        anton.ivanov@cambridgegreys.com, bp@alien8.de, bcain@quicinc.com,
-        christophe.leroy@csgroup.eu, chris@zankel.net,
-        dave.hansen@linux.intel.com, davem@davemloft.net,
-        dinguyen@kernel.org, geert@linux-m68k.org, gerg@linux-m68k.org,
-        guoren@kernel.org, deller@gmx.de, hpa@zytor.com,
-        chenhuacai@kernel.org, mingo@redhat.com, ink@jurassic.park.msu.ru,
-        James.Bottomley@HansenPartnership.com, johannes@sipsolutions.net,
-        mattst88@gmail.com, jcmvbkbc@gmail.com, mpe@ellerman.id.au,
-        monstr@monstr.eu, npiggin@gmail.com, palmer@dabbelt.com,
-        paul.walmsley@sifive.com, richard.henderson@linaro.org,
-        richard@nod.at, dalias@libc.org, linux@armlinux.org.uk,
-        shorne@gmail.com, stefan.kristiansson@saunalahti.fi,
-        tsbogend@alpha.franken.de, tglx@linutronix.de, vgupta@kernel.org,
-        kernel@xen0n.name, ysato@users.sourceforge.jp
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hello:
+Add set_ptes(), update_mmu_cache_range() and flush_dcache_folio().
+Change the PG_arch_1 (aka PG_dcache_clean) flag from being per-page to
+per-folio, which makes arch_dma_mark_clean() and mark_clean() a little
+more exciting.
 
-This series was applied to riscv/linux.git (for-next)
-by Andrew Morton <akpm@linux-foundation.org>:
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: linux-ia64@vger.kernel.org
+---
+ arch/ia64/hp/common/sba_iommu.c    | 26 +++++++++++++++-----------
+ arch/ia64/include/asm/cacheflush.h | 14 ++++++++++----
+ arch/ia64/include/asm/pgtable.h    | 14 +++++++++++++-
+ arch/ia64/mm/init.c                | 29 +++++++++++++++++++----------
+ 4 files changed, 57 insertions(+), 26 deletions(-)
 
-On Fri, 13 Jan 2023 18:10:00 +0100 you wrote:
-> This is the follow-up on [1]:
-> 	[PATCH v2 0/8] mm: COW fixes part 3: reliable GUP R/W FOLL_GET of
-> 	anonymous pages
-> 
-> After we implemented __HAVE_ARCH_PTE_SWP_EXCLUSIVE on most prominent
-> enterprise architectures, implement __HAVE_ARCH_PTE_SWP_EXCLUSIVE on all
-> remaining architectures that support swap PTEs.
-> 
-> [...]
-
-Here is the summary with links:
-  - [mm-unstable,v1,01/26] mm/debug_vm_pgtable: more pte_swp_exclusive() sanity checks
-    (no matching commit)
-  - [mm-unstable,v1,02/26] alpha/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,03/26] arc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,04/26] arm/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,05/26] csky/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,06/26] hexagon/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,07/26] ia64/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,08/26] loongarch/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,09/26] m68k/mm: remove dummy __swp definitions for nommu
-    (no matching commit)
-  - [mm-unstable,v1,10/26] m68k/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,11/26] microblaze/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,12/26] mips/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,13/26] nios2/mm: refactor swap PTE layout
-    (no matching commit)
-  - [mm-unstable,v1,14/26] nios2/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,15/26] openrisc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,16/26] parisc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,17/26] powerpc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE on 32bit book3s
-    (no matching commit)
-  - [mm-unstable,v1,18/26] powerpc/nohash/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,19/26] riscv/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    https://git.kernel.org/riscv/c/51a1007d4113
-  - [mm-unstable,v1,20/26] sh/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,21/26] sparc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE on 32bit
-    (no matching commit)
-  - [mm-unstable,v1,22/26] sparc/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE on 64bit
-    (no matching commit)
-  - [mm-unstable,v1,23/26] um/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,24/26] x86/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE also on 32bit
-    (no matching commit)
-  - [mm-unstable,v1,25/26] xtensa/mm: support __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-  - [mm-unstable,v1,26/26] mm: remove __HAVE_ARCH_PTE_SWP_EXCLUSIVE
-    (no matching commit)
-
-You are awesome, thank you!
+diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
+index 8ad6946521d8..48d475f10003 100644
+--- a/arch/ia64/hp/common/sba_iommu.c
++++ b/arch/ia64/hp/common/sba_iommu.c
+@@ -798,22 +798,26 @@ sba_io_pdir_entry(u64 *pdir_ptr, unsigned long vba)
+ #endif
+ 
+ #ifdef ENABLE_MARK_CLEAN
+-/**
++/*
+  * Since DMA is i-cache coherent, any (complete) pages that were written via
+  * DMA can be marked as "clean" so that lazy_mmu_prot_update() doesn't have to
+  * flush them when they get mapped into an executable vm-area.
+  */
+-static void
+-mark_clean (void *addr, size_t size)
++static void mark_clean(void *addr, size_t size)
+ {
+-	unsigned long pg_addr, end;
+-
+-	pg_addr = PAGE_ALIGN((unsigned long) addr);
+-	end = (unsigned long) addr + size;
+-	while (pg_addr + PAGE_SIZE <= end) {
+-		struct page *page = virt_to_page((void *)pg_addr);
+-		set_bit(PG_arch_1, &page->flags);
+-		pg_addr += PAGE_SIZE;
++	struct folio *folio = virt_to_folio(addr);
++	ssize_t left = size;
++	size_t offset = offset_in_folio(folio, addr);
++
++	if (offset) {
++		left -= folio_size(folio) - offset;
++		folio = folio_next(folio);
++	}
++
++	while (left >= folio_size(folio)) {
++		set_bit(PG_arch_1, &folio->flags);
++		left -= folio_size(folio);
++		folio = folio_next(folio);
+ 	}
+ }
+ #endif
+diff --git a/arch/ia64/include/asm/cacheflush.h b/arch/ia64/include/asm/cacheflush.h
+index 708c0fa5d975..eac493fa9e0d 100644
+--- a/arch/ia64/include/asm/cacheflush.h
++++ b/arch/ia64/include/asm/cacheflush.h
+@@ -13,10 +13,16 @@
+ #include <asm/page.h>
+ 
+ #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
+-#define flush_dcache_page(page)			\
+-do {						\
+-	clear_bit(PG_arch_1, &(page)->flags);	\
+-} while (0)
++static inline void flush_dcache_folio(struct folio *folio)
++{
++	clear_bit(PG_arch_1, &folio->flags);
++}
++#define flush_dcache_folio flush_dcache_folio
++
++static inline void flush_dcache_page(struct page *page)
++{
++	flush_dcache_folio(page_folio(page));
++}
+ 
+ extern void flush_icache_range(unsigned long start, unsigned long end);
+ #define flush_icache_range flush_icache_range
+diff --git a/arch/ia64/include/asm/pgtable.h b/arch/ia64/include/asm/pgtable.h
+index 21c97e31a28a..0c2be4ea664b 100644
+--- a/arch/ia64/include/asm/pgtable.h
++++ b/arch/ia64/include/asm/pgtable.h
+@@ -303,7 +303,18 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
+ 	*ptep = pteval;
+ }
+ 
+-#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
++static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
++		pte_t *ptep, pte_t pte, unsigned int nr)
++{
++	for (;;) {
++		set_pte(ptep, pte);
++		if (--nr == 0)
++			break;
++		ptep++;
++		pte_val(pte) += PAGE_SIZE;
++	}
++}
++#define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, add, ptep, pte, 1)
+ 
+ /*
+  * Make page protection values cacheable, uncacheable, or write-
+@@ -396,6 +407,7 @@ pte_same (pte_t a, pte_t b)
+ 	return pte_val(a) == pte_val(b);
+ }
+ 
++#define update_mmu_cache_range(vma, address, ptep, nr) do { } while (0)
+ #define update_mmu_cache(vma, address, ptep) do { } while (0)
+ 
+ extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
+diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
+index 7f5353e28516..12aef25944aa 100644
+--- a/arch/ia64/mm/init.c
++++ b/arch/ia64/mm/init.c
+@@ -50,30 +50,39 @@ void
+ __ia64_sync_icache_dcache (pte_t pte)
+ {
+ 	unsigned long addr;
+-	struct page *page;
++	struct folio *folio;
+ 
+-	page = pte_page(pte);
+-	addr = (unsigned long) page_address(page);
++	folio = page_folio(pte_page(pte));
++	addr = (unsigned long)folio_address(folio);
+ 
+-	if (test_bit(PG_arch_1, &page->flags))
++	if (test_bit(PG_arch_1, &folio->flags))
+ 		return;				/* i-cache is already coherent with d-cache */
+ 
+-	flush_icache_range(addr, addr + page_size(page));
+-	set_bit(PG_arch_1, &page->flags);	/* mark page as clean */
++	flush_icache_range(addr, addr + folio_size(folio));
++	set_bit(PG_arch_1, &folio->flags);	/* mark page as clean */
+ }
+ 
+ /*
+- * Since DMA is i-cache coherent, any (complete) pages that were written via
++ * Since DMA is i-cache coherent, any (complete) folios that were written via
+  * DMA can be marked as "clean" so that lazy_mmu_prot_update() doesn't have to
+  * flush them when they get mapped into an executable vm-area.
+  */
+ void arch_dma_mark_clean(phys_addr_t paddr, size_t size)
+ {
+-	unsigned long pfn = PHYS_PFN(paddr);
++	struct folio *folio = page_folio(phys_to_page(paddr));
++	ssize_t left = size;
++	size_t offset = offset_in_folio(folio, paddr);
+ 
+-	do {
++	if (offset) {
++		left -= folio_size(folio) - offset;
++		folio = folio_next(folio);
++	}
++
++	while (left >= (ssize_t)folio_size(folio)) {
+ 		set_bit(PG_arch_1, &pfn_to_page(pfn)->flags);
+-	} while (++pfn <= PHYS_PFN(paddr + size - 1));
++		left -= folio_size(folio);
++		folio = folio_next(folio);
++	}
+ }
+ 
+ inline void
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.39.1
 
