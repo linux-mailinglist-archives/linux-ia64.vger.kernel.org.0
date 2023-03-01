@@ -2,218 +2,195 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC9426A6156
-	for <lists+linux-ia64@lfdr.de>; Tue, 28 Feb 2023 22:37:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id A3ACB6A66AD
+	for <lists+linux-ia64@lfdr.de>; Wed,  1 Mar 2023 04:45:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229906AbjB1Vhq (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 28 Feb 2023 16:37:46 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
+        id S229985AbjCADpJ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 28 Feb 2023 22:45:09 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229871AbjB1Vhq (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 28 Feb 2023 16:37:46 -0500
-Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B3E34323;
-        Tue, 28 Feb 2023 13:37:42 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-        Content-Type:Content-ID:Content-Description;
-        bh=X4gTGIoZDPD05YxRdFQZH/uA/i6Ep+mlgv+7pNzKT5k=; b=d64ZiIZwbaZAR26epvp/fIC9ZJ
-        4oAPhYbNdFVbSebf5WTKvAstEIjxipjzZkYQBvxy6T5/cPJHsz6b7cOGTTzsbUMisq/PARR/croyV
-        386bEC6Y844QeOXW8GtSK4ycdugpUvB/2iIkP/nRGrtHnVXDHhh+GNxFBcFSglXGf7pX9Zi7Me0U+
-        uCrTAaMmU3tAXFylqB8VCo+bNjwNnbsladeGoCCzjRh7KrI/FWsm3kkPy+sn4LsdjLib5Mo8UNXFt
-        PerbroycxkC0s00okLnb7cwTLHo7VK4uTlB45F5Zh7n8Ydln+h4qJigRBeBi+2jsZAEPcsXcw7hep
-        EivU9tOQ==;
-Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
-        id 1pX7fI-0018p8-Ho; Tue, 28 Feb 2023 21:37:40 +0000
-From:   "Matthew Wilcox (Oracle)" <willy@infradead.org>
-To:     linux-mm@kvack.org, linux-arch@vger.kernel.org
-Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
-Subject: [PATCH v3 11/34] ia64: Implement the new page table range API
-Date:   Tue, 28 Feb 2023 21:37:14 +0000
-Message-Id: <20230228213738.272178-12-willy@infradead.org>
-X-Mailer: git-send-email 2.37.1
-In-Reply-To: <20230228213738.272178-1-willy@infradead.org>
-References: <20230228213738.272178-1-willy@infradead.org>
+        with ESMTP id S229989AbjCADol (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 28 Feb 2023 22:44:41 -0500
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 348F5311C1
+        for <linux-ia64@vger.kernel.org>; Tue, 28 Feb 2023 19:43:53 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1677642232;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JSBskRH3zN0SXR915sPzY9L3Zw+2FPOJn9W+BKcVjBU=;
+        b=RLKqGJGkUYSWQe8D3WsrS2AYH9lPDRnJut7eTYBDVzfkXf1vTSiQ+tnt2/41MyfbhABKFP
+        7LUqXT535NsIjr06DV5Dg6uVehp2bYIWq6FBQEetVkGEuuo0etiLxHmSNFbgBwIaDVpERe
+        p80+lit8E+W5sqUMVRV0x+1u2axm/UA=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-647-BotlniHDOQCs-0dgE9B3-w-1; Tue, 28 Feb 2023 22:43:46 -0500
+X-MC-Unique: BotlniHDOQCs-0dgE9B3-w-1
+Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 6B68B18A6463;
+        Wed,  1 Mar 2023 03:43:45 +0000 (UTC)
+Received: from MiWiFi-R3L-srv.redhat.com (ovpn-13-180.pek2.redhat.com [10.72.13.180])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 39504C15BAD;
+        Wed,  1 Mar 2023 03:43:39 +0000 (UTC)
+From:   Baoquan He <bhe@redhat.com>
+To:     linux-kernel@vger.kernel.org
+Cc:     linux-arch@vger.kernel.org, linux-mm@kvack.org, arnd@arndb.de,
+        christophe.leroy@csgroup.eu, hch@infradead.org,
+        agordeev@linux.ibm.com, wangkefeng.wang@huawei.com,
+        schnelle@linux.ibm.com, David.Laight@ACULAB.COM, shorne@gmail.com,
+        willy@infradead.org, Baoquan He <bhe@redhat.com>,
+        linux-ia64@vger.kernel.org
+Subject: [PATCH v5 08/17] ia64: mm: Convert to GENERIC_IOREMAP
+Date:   Wed,  1 Mar 2023 11:42:38 +0800
+Message-Id: <20230301034247.136007-9-bhe@redhat.com>
+In-Reply-To: <20230301034247.136007-1-bhe@redhat.com>
+References: <20230301034247.136007-1-bhe@redhat.com>
 MIME-Version: 1.0
+Content-type: text/plain
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Add set_ptes(), update_mmu_cache_range() and flush_dcache_folio().
-Change the PG_arch_1 (aka PG_dcache_clean) flag from being per-page to
-per-folio, which makes arch_dma_mark_clean() and mark_clean() a little
-more exciting.
+By taking GENERIC_IOREMAP method, the generic generic_ioremap_prot(),
+generic_iounmap(), and their generic wrapper ioremap_prot(), ioremap()
+and iounmap() are all visible and available to arch. Arch needs to
+provide wrapper functions to override the generic versions if there's
+arch specific handling in its ioremap_prot(), ioremap() or iounmap().
+This change will simplify implementation by removing duplicated codes
+with generic_ioremap_prot() and generic_iounmap(), and has the equivalent
+functioality as before.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Here, add wrapper functions ioremap_prot() and iounmap() for ia64's
+special operation when ioremap() and iounmap().
+
+Signed-off-by: Baoquan He <bhe@redhat.com>
 Cc: linux-ia64@vger.kernel.org
 ---
- arch/ia64/hp/common/sba_iommu.c    | 26 +++++++++++++++-----------
- arch/ia64/include/asm/cacheflush.h | 14 ++++++++++----
- arch/ia64/include/asm/pgtable.h    | 14 +++++++++++++-
- arch/ia64/mm/init.c                | 29 +++++++++++++++++++----------
- 4 files changed, 57 insertions(+), 26 deletions(-)
+ arch/ia64/Kconfig          |  1 +
+ arch/ia64/include/asm/io.h | 13 +++++-------
+ arch/ia64/mm/ioremap.c     | 41 ++++++--------------------------------
+ 3 files changed, 12 insertions(+), 43 deletions(-)
 
-diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
-index 8ad6946521d8..48d475f10003 100644
---- a/arch/ia64/hp/common/sba_iommu.c
-+++ b/arch/ia64/hp/common/sba_iommu.c
-@@ -798,22 +798,26 @@ sba_io_pdir_entry(u64 *pdir_ptr, unsigned long vba)
- #endif
+diff --git a/arch/ia64/Kconfig b/arch/ia64/Kconfig
+index d7e4a24e8644..74568cb73d87 100644
+--- a/arch/ia64/Kconfig
++++ b/arch/ia64/Kconfig
+@@ -45,6 +45,7 @@ config IA64
+ 	select GENERIC_IRQ_LEGACY
+ 	select ARCH_HAVE_NMI_SAFE_CMPXCHG
+ 	select GENERIC_IOMAP
++	select GENERIC_IOREMAP
+ 	select GENERIC_SMP_IDLE_THREAD
+ 	select ARCH_TASK_STRUCT_ON_STACK
+ 	select ARCH_TASK_STRUCT_ALLOCATOR
+diff --git a/arch/ia64/include/asm/io.h b/arch/ia64/include/asm/io.h
+index 83a492c8d298..eedc0afa8cad 100644
+--- a/arch/ia64/include/asm/io.h
++++ b/arch/ia64/include/asm/io.h
+@@ -243,15 +243,12 @@ static inline void outsl(unsigned long port, const void *src,
  
- #ifdef ENABLE_MARK_CLEAN
--/**
-+/*
-  * Since DMA is i-cache coherent, any (complete) pages that were written via
-  * DMA can be marked as "clean" so that lazy_mmu_prot_update() doesn't have to
-  * flush them when they get mapped into an executable vm-area.
-  */
--static void
--mark_clean (void *addr, size_t size)
-+static void mark_clean(void *addr, size_t size)
+ # ifdef __KERNEL__
+ 
+-extern void __iomem * ioremap(unsigned long offset, unsigned long size);
++#define _PAGE_IOREMAP pgprot_val(PAGE_KERNEL)
++
+ extern void __iomem * ioremap_uc(unsigned long offset, unsigned long size);
+-extern void iounmap (volatile void __iomem *addr);
+-static inline void __iomem * ioremap_cache (unsigned long phys_addr, unsigned long size)
+-{
+-	return ioremap(phys_addr, size);
+-}
+-#define ioremap ioremap
+-#define ioremap_cache ioremap_cache
++
++#define ioremap_prot ioremap_prot
++#define ioremap_cache ioremap
+ #define ioremap_uc ioremap_uc
+ #define iounmap iounmap
+ 
+diff --git a/arch/ia64/mm/ioremap.c b/arch/ia64/mm/ioremap.c
+index 55fd3eb753ff..35e75e9c878b 100644
+--- a/arch/ia64/mm/ioremap.c
++++ b/arch/ia64/mm/ioremap.c
+@@ -29,13 +29,9 @@ early_ioremap (unsigned long phys_addr, unsigned long size)
+ 	return __ioremap_uc(phys_addr);
+ }
+ 
+-void __iomem *
+-ioremap (unsigned long phys_addr, unsigned long size)
++void __iomem *ioremap_prot(phys_addr_t phys_addr, size_t size,
++			   unsigned long flags)
  {
--	unsigned long pg_addr, end;
+-	void __iomem *addr;
+-	struct vm_struct *area;
+-	unsigned long offset;
+-	pgprot_t prot;
+ 	u64 attr;
+ 	unsigned long gran_base, gran_size;
+ 	unsigned long page_base;
+@@ -68,36 +64,12 @@ ioremap (unsigned long phys_addr, unsigned long size)
+ 	 */
+ 	page_base = phys_addr & PAGE_MASK;
+ 	size = PAGE_ALIGN(phys_addr + size) - page_base;
+-	if (efi_mem_attribute(page_base, size) & EFI_MEMORY_WB) {
+-		prot = PAGE_KERNEL;
 -
--	pg_addr = PAGE_ALIGN((unsigned long) addr);
--	end = (unsigned long) addr + size;
--	while (pg_addr + PAGE_SIZE <= end) {
--		struct page *page = virt_to_page((void *)pg_addr);
--		set_bit(PG_arch_1, &page->flags);
--		pg_addr += PAGE_SIZE;
-+	struct folio *folio = virt_to_folio(addr);
-+	ssize_t left = size;
-+	size_t offset = offset_in_folio(folio, addr);
-+
-+	if (offset) {
-+		left -= folio_size(folio) - offset;
-+		folio = folio_next(folio);
-+	}
-+
-+	while (left >= folio_size(folio)) {
-+		set_bit(PG_arch_1, &folio->flags);
-+		left -= folio_size(folio);
-+		folio = folio_next(folio);
- 	}
+-		/*
+-		 * Mappings have to be page-aligned
+-		 */
+-		offset = phys_addr & ~PAGE_MASK;
+-		phys_addr &= PAGE_MASK;
+-
+-		/*
+-		 * Ok, go for it..
+-		 */
+-		area = get_vm_area(size, VM_IOREMAP);
+-		if (!area)
+-			return NULL;
+-
+-		area->phys_addr = phys_addr;
+-		addr = (void __iomem *) area->addr;
+-		if (ioremap_page_range((unsigned long) addr,
+-				(unsigned long) addr + size, phys_addr, prot)) {
+-			vunmap((void __force *) addr);
+-			return NULL;
+-		}
+-
+-		return (void __iomem *) (offset + (char __iomem *)addr);
+-	}
++	if (efi_mem_attribute(page_base, size) & EFI_MEMORY_WB)
++		return generic_ioremap_prot(phys_addr, size, __pgprot(flags));
+ 
+ 	return __ioremap_uc(phys_addr);
  }
- #endif
-diff --git a/arch/ia64/include/asm/cacheflush.h b/arch/ia64/include/asm/cacheflush.h
-index 708c0fa5d975..eac493fa9e0d 100644
---- a/arch/ia64/include/asm/cacheflush.h
-+++ b/arch/ia64/include/asm/cacheflush.h
-@@ -13,10 +13,16 @@
- #include <asm/page.h>
+-EXPORT_SYMBOL(ioremap);
++EXPORT_SYMBOL(ioremap_prot);
  
- #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
--#define flush_dcache_page(page)			\
--do {						\
--	clear_bit(PG_arch_1, &(page)->flags);	\
--} while (0)
-+static inline void flush_dcache_folio(struct folio *folio)
-+{
-+	clear_bit(PG_arch_1, &folio->flags);
-+}
-+#define flush_dcache_folio flush_dcache_folio
-+
-+static inline void flush_dcache_page(struct page *page)
-+{
-+	flush_dcache_folio(page_folio(page));
-+}
- 
- extern void flush_icache_range(unsigned long start, unsigned long end);
- #define flush_icache_range flush_icache_range
-diff --git a/arch/ia64/include/asm/pgtable.h b/arch/ia64/include/asm/pgtable.h
-index 21c97e31a28a..0c2be4ea664b 100644
---- a/arch/ia64/include/asm/pgtable.h
-+++ b/arch/ia64/include/asm/pgtable.h
-@@ -303,7 +303,18 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
- 	*ptep = pteval;
- }
- 
--#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
-+static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
-+		pte_t *ptep, pte_t pte, unsigned int nr)
-+{
-+	for (;;) {
-+		set_pte(ptep, pte);
-+		if (--nr == 0)
-+			break;
-+		ptep++;
-+		pte_val(pte) += PAGE_SIZE;
-+	}
-+}
-+#define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, add, ptep, pte, 1)
- 
- /*
-  * Make page protection values cacheable, uncacheable, or write-
-@@ -396,6 +407,7 @@ pte_same (pte_t a, pte_t b)
- 	return pte_val(a) == pte_val(b);
- }
- 
-+#define update_mmu_cache_range(vma, address, ptep, nr) do { } while (0)
- #define update_mmu_cache(vma, address, ptep) do { } while (0)
- 
- extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
-diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
-index 7f5353e28516..12aef25944aa 100644
---- a/arch/ia64/mm/init.c
-+++ b/arch/ia64/mm/init.c
-@@ -50,30 +50,39 @@ void
- __ia64_sync_icache_dcache (pte_t pte)
+ void __iomem *
+ ioremap_uc(unsigned long phys_addr, unsigned long size)
+@@ -114,8 +86,7 @@ early_iounmap (volatile void __iomem *addr, unsigned long size)
  {
- 	unsigned long addr;
--	struct page *page;
-+	struct folio *folio;
- 
--	page = pte_page(pte);
--	addr = (unsigned long) page_address(page);
-+	folio = page_folio(pte_page(pte));
-+	addr = (unsigned long)folio_address(folio);
- 
--	if (test_bit(PG_arch_1, &page->flags))
-+	if (test_bit(PG_arch_1, &folio->flags))
- 		return;				/* i-cache is already coherent with d-cache */
- 
--	flush_icache_range(addr, addr + page_size(page));
--	set_bit(PG_arch_1, &page->flags);	/* mark page as clean */
-+	flush_icache_range(addr, addr + folio_size(folio));
-+	set_bit(PG_arch_1, &folio->flags);	/* mark page as clean */
  }
  
- /*
-- * Since DMA is i-cache coherent, any (complete) pages that were written via
-+ * Since DMA is i-cache coherent, any (complete) folios that were written via
-  * DMA can be marked as "clean" so that lazy_mmu_prot_update() doesn't have to
-  * flush them when they get mapped into an executable vm-area.
-  */
- void arch_dma_mark_clean(phys_addr_t paddr, size_t size)
+-void
+-iounmap (volatile void __iomem *addr)
++void iounmap(volatile void __iomem *addr)
  {
--	unsigned long pfn = PHYS_PFN(paddr);
-+	struct folio *folio = page_folio(phys_to_page(paddr));
-+	ssize_t left = size;
-+	size_t offset = offset_in_folio(folio, paddr);
- 
--	do {
-+	if (offset) {
-+		left -= folio_size(folio) - offset;
-+		folio = folio_next(folio);
-+	}
-+
-+	while (left >= (ssize_t)folio_size(folio)) {
- 		set_bit(PG_arch_1, &pfn_to_page(pfn)->flags);
--	} while (++pfn <= PHYS_PFN(paddr + size - 1));
-+		left -= folio_size(folio);
-+		folio = folio_next(folio);
-+	}
- }
- 
- inline void
+ 	if (REGION_NUMBER(addr) == RGN_GATE)
+ 		vunmap((void *) ((unsigned long) addr & PAGE_MASK));
 -- 
-2.39.1
+2.34.1
 
