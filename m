@@ -2,53 +2,53 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AA016A7E75
-	for <lists+linux-ia64@lfdr.de>; Thu,  2 Mar 2023 10:47:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 84B656A7E88
+	for <lists+linux-ia64@lfdr.de>; Thu,  2 Mar 2023 10:48:19 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230093AbjCBJrF (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 2 Mar 2023 04:47:05 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54990 "EHLO
+        id S230142AbjCBJsS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 2 Mar 2023 04:48:18 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229752AbjCBJrE (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 2 Mar 2023 04:47:04 -0500
-Received: from mail-wr1-x430.google.com (mail-wr1-x430.google.com [IPv6:2a00:1450:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D9E83B0C4
-        for <linux-ia64@vger.kernel.org>; Thu,  2 Mar 2023 01:47:02 -0800 (PST)
-Received: by mail-wr1-x430.google.com with SMTP id e13so4362649wro.10
-        for <linux-ia64@vger.kernel.org>; Thu, 02 Mar 2023 01:47:02 -0800 (PST)
+        with ESMTP id S230105AbjCBJsR (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 2 Mar 2023 04:48:17 -0500
+Received: from mail-wr1-x42e.google.com (mail-wr1-x42e.google.com [IPv6:2a00:1450:4864:20::42e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57FA32723
+        for <linux-ia64@vger.kernel.org>; Thu,  2 Mar 2023 01:48:04 -0800 (PST)
+Received: by mail-wr1-x42e.google.com with SMTP id t15so15885993wrz.7
+        for <linux-ia64@vger.kernel.org>; Thu, 02 Mar 2023 01:48:04 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1677750421;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1677750483;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8G1o29Ga/UNTNJtY/6LksyBwTKom5lFj7gKfXcB8h4g=;
-        b=f5l6eWLUG26Tt1766JjI6+GInzRq5lOwonJqSgSnLvYw936TWJoY/k8LCTgJ0bfkJF
-         /sik1QE/lKik4wYpmelpWwyeaSPucJJe3LtOwmdgxeOqZMifyze3wQXcaEwnVHnCP8iI
-         uhTP6oBehvNs+Cq9TAu5oyX9Vr61Hg6hkYQJhCoxh8B3x+E2tjjKNdPaBlxqsIBA6ezp
-         DZWBusm4N21C0GYVueAYiVK6ByGTSyb/OuQDlMShYL/GtXpALshSesRtnYJRb8OPxeZX
-         E33mvg7vxn/lJGdB/iNyGNTrfDviw75Ua5B9SYEXBJXNoIAFOQ2EvY0Y2b9fZZBUzwZp
-         R52Q==
+        bh=eHW49K+JXovgrHDB/sHf8iD4ZzCoi5+3r8HKHXzfaII=;
+        b=aUycDY6R5Blvxn5QrHrge2eQMzpOJGy1SQgkohH7kfZg+4nkD2I1cJv+iJjAslEy+t
+         gXHSodwCtp4lnfGBPcq5o2XKzU7Lkp+/ZPCrkKZaFbMUGkku7rQ7I5Ur/UqnMSvlyAmi
+         TkH+ViZphas3kGoEHFF2e+vCiMUueSmxTqckQY2C7JhXbeNIQVcpoQQxV5G5eVThKvYY
+         UB4EgPrhcIdWLvBH3F+DNEtRDy41o7SqNDKc7Kgiq22gYv8uf1f7SL7fyRoeQ1MpckJ/
+         rewJFCj1A6M1CpaFAsOOzMQJSrcfhc0V007iGSrHIyXHRpsoDawYa6gdKkxx701pFO/M
+         +PMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677750421;
+        d=1e100.net; s=20210112; t=1677750483;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8G1o29Ga/UNTNJtY/6LksyBwTKom5lFj7gKfXcB8h4g=;
-        b=Q7dDBfJnboreTyrLfdyKLXxc7rwLYfXrjnIZrT8QM1l94bl8jtTWHvIH6e9tmxrc9Z
-         Y/XiaDnbk0k/h0nN38m+vJSW1vR+5eRIuH4CUkjjOEpSfQEUp2O9VR4No9hBRSlvIvp8
-         eilenKfwQkmC9iTwzG2lonEygRqK0Lk1h0GQcv4XfSVd6fd5CVSoybVyAgQPjPeLSb9M
-         LKrIcRJtIWaYZkRzu4kq0yVznsFOpVteCw087qyj4j3yEmDls5jthtfom/dofncMiKkz
-         eovbQXgj3zGMD+MfJSZ+hKPianm/Bza4Hghho9Y3EXhl0bNgGWpBYUqyzS4lc0bPV8Ef
-         5vbw==
-X-Gm-Message-State: AO0yUKWqusDzBc76k1sSOC+3T2vypei0a5h3hb4f90l25MXyBbsVUps2
-        Qd/RQhpKOFWWS0TCuPCxnA6u1Q==
-X-Google-Smtp-Source: AK7set9J3h1SdWZFjFBk1kF/VV/+0cIiLPOiFxwZAoniEed5KnNwwwJqjyvLs0/w3Ko/NwUYEOVAHw==
-X-Received: by 2002:a5d:568d:0:b0:2c7:f56:28d9 with SMTP id f13-20020a5d568d000000b002c70f5628d9mr6805976wrv.54.1677750420888;
-        Thu, 02 Mar 2023 01:47:00 -0800 (PST)
+        bh=eHW49K+JXovgrHDB/sHf8iD4ZzCoi5+3r8HKHXzfaII=;
+        b=ydJ0WaRvTC/2tLzksDM7I7YD4Ja1QI3rmf/UlD/spXtyflz79ECmowRMyap135FBzS
+         api8zGgRMhEpNiQtgyJ/S1aC+U4LIvT8t5HZcz0kf+dNcnakLpJfCz1sjEiKjjUdFpAj
+         1FwAzg92NbsnTvs9jRtEfknogyc0Iy4XYe3LaE4bnVfOP/kx81iSsEBbmyZmPHzNHPWp
+         Apc1nIJZIausUV0f+yqvA+zvkWIxw5DSiYzWU1pxikdqf1Q1ZWR1cPxpcRRCDvqnvU3N
+         gpkEFTH23BrNg0bhQ2eC7Nf7dpeuxC3iI2Yypr5qGeQpV+XZOckMbQKt1MfNsA11hjbA
+         MQ8Q==
+X-Gm-Message-State: AO0yUKUpBsLp072+PaZ6g2Vh4VSos0TCsPhuJH3yw/ui0bwk+is3Ccjg
+        Ck709wIjI0kOWVtmWVjBLKa1IA==
+X-Google-Smtp-Source: AK7set/MG6zZulkr1z5TBx9S++TinXOiTherZtNLIOIxMrYGlsJS/201poTNHTSHELw/PYIdOC7kDA==
+X-Received: by 2002:adf:cd02:0:b0:2c7:f2f:e47 with SMTP id w2-20020adfcd02000000b002c70f2f0e47mr7729534wrm.22.1677750482792;
+        Thu, 02 Mar 2023 01:48:02 -0800 (PST)
 Received: from alex-rivos.home (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id v7-20020a05600c444700b003eb0d6f48f3sm2536356wmn.27.2023.03.02.01.46.59
+        by smtp.gmail.com with ESMTPSA id i13-20020adfe48d000000b002c5539171d1sm15027734wrm.41.2023.03.02.01.48.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Mar 2023 01:47:00 -0800 (PST)
+        Thu, 02 Mar 2023 01:48:02 -0800 (PST)
 From:   Alexandre Ghiti <alexghiti@rivosinc.com>
 To:     Jonathan Corbet <corbet@lwn.net>,
         Richard Henderson <richard.henderson@linaro.org>,
@@ -94,10 +94,11 @@ To:     Jonathan Corbet <corbet@lwn.net>,
         linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linux-arch@vger.kernel.org
-Cc:     Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH v4 11/24] xtensa: Remove COMMAND_LINE_SIZE from uapi
-Date:   Thu,  2 Mar 2023 10:35:26 +0100
-Message-Id: <20230302093539.372962-12-alexghiti@rivosinc.com>
+Cc:     Palmer Dabbelt <palmerdabbelt@google.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH v4 12/24] asm-generic: Remove COMMAND_LINE_SIZE from uapi
+Date:   Thu,  2 Mar 2023 10:35:27 +0100
+Message-Id: <20230302093539.372962-13-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230302093539.372962-1-alexghiti@rivosinc.com>
 References: <20230302093539.372962-1-alexghiti@rivosinc.com>
@@ -112,53 +113,93 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Palmer Dabbelt <palmer@rivosinc.com>
+From: Palmer Dabbelt <palmerdabbelt@google.com>
 
 As far as I can tell this is not used by userspace and thus should not
-be part of the user-visible API.
+be part of the user-visible API.  Since <uapi/asm-generic/setup.h> only
+contains COMMAND_LINE_SIZE we can just move it out of uapi to hide the
+definition and fix up the only direct use in Loongarch.
 
+Signed-off-by: Palmer Dabbelt <palmerdabbelt@google.com>
+Link: https://lore.kernel.org/r/20210423025545.313965-1-palmer@dabbelt.com
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Acked-by: Max Filippov <jcmvbkbc@gmail.com>
 ---
- arch/xtensa/include/asm/setup.h      | 17 +++++++++++++++++
- arch/xtensa/include/uapi/asm/setup.h |  2 --
- 2 files changed, 17 insertions(+), 2 deletions(-)
- create mode 100644 arch/xtensa/include/asm/setup.h
+ Documentation/admin-guide/kernel-parameters.rst | 2 +-
+ arch/loongarch/include/asm/setup.h              | 2 +-
+ arch/sh/include/asm/setup.h                     | 2 +-
+ include/asm-generic/Kbuild                      | 1 +
+ include/{uapi => }/asm-generic/setup.h          | 0
+ include/uapi/asm-generic/Kbuild                 | 1 -
+ 6 files changed, 4 insertions(+), 4 deletions(-)
+ rename include/{uapi => }/asm-generic/setup.h (100%)
 
-diff --git a/arch/xtensa/include/asm/setup.h b/arch/xtensa/include/asm/setup.h
-new file mode 100644
-index 000000000000..5356a5fd4d17
---- /dev/null
-+++ b/arch/xtensa/include/asm/setup.h
-@@ -0,0 +1,17 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+/*
-+ * include/asm-xtensa/setup.h
-+ *
-+ * This file is subject to the terms and conditions of the GNU General Public
-+ * License.  See the file "COPYING" in the main directory of this archive
-+ * for more details.
-+ *
-+ * Copyright (C) 2001 - 2005 Tensilica Inc.
-+ */
-+
-+#ifndef _XTENSA_SETUP_H
-+#define _XTENSA_SETUP_H
-+
-+#define COMMAND_LINE_SIZE	256
-+
-+#endif
-diff --git a/arch/xtensa/include/uapi/asm/setup.h b/arch/xtensa/include/uapi/asm/setup.h
-index 5356a5fd4d17..6f982394684a 100644
---- a/arch/xtensa/include/uapi/asm/setup.h
-+++ b/arch/xtensa/include/uapi/asm/setup.h
-@@ -12,6 +12,4 @@
- #ifndef _XTENSA_SETUP_H
- #define _XTENSA_SETUP_H
+diff --git a/Documentation/admin-guide/kernel-parameters.rst b/Documentation/admin-guide/kernel-parameters.rst
+index 19600c50277b..2b94d5a42bd6 100644
+--- a/Documentation/admin-guide/kernel-parameters.rst
++++ b/Documentation/admin-guide/kernel-parameters.rst
+@@ -207,7 +207,7 @@ The number of kernel parameters is not limited, but the length of the
+ complete command line (parameters including spaces etc.) is limited to
+ a fixed number of characters. This limit depends on the architecture
+ and is between 256 and 4096 characters. It is defined in the file
+-./include/uapi/asm-generic/setup.h as COMMAND_LINE_SIZE.
++./include/asm-generic/setup.h as COMMAND_LINE_SIZE.
  
--#define COMMAND_LINE_SIZE	256
--
- #endif
+ Finally, the [KMG] suffix is commonly described after a number of kernel
+ parameter values. These 'K', 'M', and 'G' letters represent the _binary_
+diff --git a/arch/loongarch/include/asm/setup.h b/arch/loongarch/include/asm/setup.h
+index 72ead58039f3..86c99b183ea0 100644
+--- a/arch/loongarch/include/asm/setup.h
++++ b/arch/loongarch/include/asm/setup.h
+@@ -7,7 +7,7 @@
+ #define _LOONGARCH_SETUP_H
+ 
+ #include <linux/types.h>
+-#include <uapi/asm/setup.h>
++#include <asm-generic/setup.h>
+ 
+ #define VECSIZE 0x200
+ 
+diff --git a/arch/sh/include/asm/setup.h b/arch/sh/include/asm/setup.h
+index fc807011187f..ae09b1c29fd1 100644
+--- a/arch/sh/include/asm/setup.h
++++ b/arch/sh/include/asm/setup.h
+@@ -2,7 +2,7 @@
+ #ifndef _SH_SETUP_H
+ #define _SH_SETUP_H
+ 
+-#include <uapi/asm/setup.h>
++#include <asm-generic/setup.h>
+ 
+ /*
+  * This is set up by the setup-routine at boot-time
+diff --git a/include/asm-generic/Kbuild b/include/asm-generic/Kbuild
+index 941be574bbe0..0fb55a119f54 100644
+--- a/include/asm-generic/Kbuild
++++ b/include/asm-generic/Kbuild
+@@ -49,6 +49,7 @@ mandatory-y += preempt.h
+ mandatory-y += rwonce.h
+ mandatory-y += sections.h
+ mandatory-y += serial.h
++mandatory-y += setup.h
+ mandatory-y += shmparam.h
+ mandatory-y += simd.h
+ mandatory-y += softirq_stack.h
+diff --git a/include/uapi/asm-generic/setup.h b/include/asm-generic/setup.h
+similarity index 100%
+rename from include/uapi/asm-generic/setup.h
+rename to include/asm-generic/setup.h
+diff --git a/include/uapi/asm-generic/Kbuild b/include/uapi/asm-generic/Kbuild
+index ebb180aac74e..0e7122339ee9 100644
+--- a/include/uapi/asm-generic/Kbuild
++++ b/include/uapi/asm-generic/Kbuild
+@@ -20,7 +20,6 @@ mandatory-y += posix_types.h
+ mandatory-y += ptrace.h
+ mandatory-y += resource.h
+ mandatory-y += sembuf.h
+-mandatory-y += setup.h
+ mandatory-y += shmbuf.h
+ mandatory-y += sigcontext.h
+ mandatory-y += siginfo.h
 -- 
 2.37.2
 
