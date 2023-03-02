@@ -2,53 +2,53 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 445916A7ECE
-	for <lists+linux-ia64@lfdr.de>; Thu,  2 Mar 2023 10:52:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F7256A7EDE
+	for <lists+linux-ia64@lfdr.de>; Thu,  2 Mar 2023 10:53:50 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230183AbjCBJw1 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 2 Mar 2023 04:52:27 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34364 "EHLO
+        id S229711AbjCBJxr (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 2 Mar 2023 04:53:47 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230248AbjCBJwP (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 2 Mar 2023 04:52:15 -0500
-Received: from mail-wm1-x336.google.com (mail-wm1-x336.google.com [IPv6:2a00:1450:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B268F3E0AB
-        for <linux-ia64@vger.kernel.org>; Thu,  2 Mar 2023 01:52:11 -0800 (PST)
-Received: by mail-wm1-x336.google.com with SMTP id bg16-20020a05600c3c9000b003eb34e21bdfso1311742wmb.0
-        for <linux-ia64@vger.kernel.org>; Thu, 02 Mar 2023 01:52:11 -0800 (PST)
+        with ESMTP id S230020AbjCBJxR (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 2 Mar 2023 04:53:17 -0500
+Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0097893EE
+        for <linux-ia64@vger.kernel.org>; Thu,  2 Mar 2023 01:53:12 -0800 (PST)
+Received: by mail-wr1-x434.google.com with SMTP id h14so15904537wru.4
+        for <linux-ia64@vger.kernel.org>; Thu, 02 Mar 2023 01:53:12 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1677750730;
+        d=rivosinc-com.20210112.gappssmtp.com; s=20210112; t=1677750791;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L/w7ieSXW+WzBEEqtsZC24vvchjHjLnvFIFUR1Ngux8=;
-        b=SUtNZ4kc8a6JEPa4tbaMVB2zZPSOdSvymYroHh3/0a3pj3EYdR6kjKNBN8Il1Cb6w9
-         +i/EDcKqHaogNz6VVZCeM+mjKoIq1r8REAn0j0lbyT0rp3rAuRLWQE+owOZtLO2hTQYd
-         jmWcJNxUJ9d2I+XRKC832YEAlQjXaSYfDtFnH02p1A2DjQzvV7khMNmFvk5x/Axj5ngu
-         6qYtDjzevh+iTXHQPLpkDpnvwoFSL6ahLT/Ypau/FuH1ZsgsLY/QkX7mTU+CVqqqDyRS
-         AsEYJ9Q5y0W/IGo8Np3s8Jf92dI0KhniVqZJXWYnKHxdTiuhj88yCUGK8iphvFXzkquP
-         73Pg==
+        bh=LZHaQjAFpi9TJWHqFM+95KfED/Q/8XVJn3AfBj+QDY8=;
+        b=Nx4N4DdfyFWmONBZABZS4Pm48hFk0i7XpSeJxFrM1IdkfpJbDeyx2UyPVjtHwnvx3a
+         lpJXWjSvdy1yA0+hsNHtFHR7RAp9b0Z0XO4k4icMtyTCMym42JBufqEzKgEBwsOsjazw
+         /c7TRJTAU4Nc8WHkQHpKc4GVUwoLceyqRnQjvnYnGOpH2u7mKNaRPZtCGDvInV5yov12
+         JFsF8t1MvvdfsRhJQjY6N65bWxYp11k2qdDBiH4IhSi5lTyWuaqar1mM2sU6+8fhAPHw
+         ib++0c+6bL+olAEsz3JXTuqgqGgSJHpnVL3Rm6fHw46S19nREvykZzaIRYjbTis2Y08+
+         sXCw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1677750730;
+        d=1e100.net; s=20210112; t=1677750791;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=L/w7ieSXW+WzBEEqtsZC24vvchjHjLnvFIFUR1Ngux8=;
-        b=JJ+Yp3naeXzWJ/L8yFKWA8T5TUHhi+5fwbTv1NO+mWsTVkYR+ZyiYP2sfMUBq4nJ1Z
-         iTw4r8SL/hhCjM5SUZbzG00ui/I0VIk23cT6We2y1eS5l/xcw+NP0PvQLdH5lGehbLL1
-         omEiz5rxDbDPJpKvtgC/7hQMeOT1LMofk/gTArpNwxgbl1dE/P00UjsQ/ZtAvxs77zj+
-         ZSx1zqlZ/WIvaJugg7GetBNG8f+96ScSTxalyBdHWSCnvpdq4vbFscWKyKT1su4erMY4
-         Y2DsF/jCSpuGJ9OGAnp2uGwQDqMeBM8sLYrE0Mh6nnc4tJKl6nLzrgZPOaGpi8+B0z4S
-         4JFQ==
-X-Gm-Message-State: AO0yUKUvoAraF8sp1dPKNDeZ4wUVG2YCK+y5BhLjqj0h9TtbpzUDFrqi
-        oFLVceQTDyNGmPtJiN1JdFUi9A==
-X-Google-Smtp-Source: AK7set8xXXNjFuAiVjVA6G35CFfSYzj2/d9FHwm8o3qlA6y6smKEZ5mP1aEub8GJqdo2kC1Vui33IA==
-X-Received: by 2002:a05:600c:3544:b0:3eb:3fea:a2ac with SMTP id i4-20020a05600c354400b003eb3feaa2acmr7448856wmq.22.1677750729760;
-        Thu, 02 Mar 2023 01:52:09 -0800 (PST)
+        bh=LZHaQjAFpi9TJWHqFM+95KfED/Q/8XVJn3AfBj+QDY8=;
+        b=LzQwJUTEaOXiL5fSmDzpYCP6yqc8ERhGh+S0oGm7KFxPsIFFErGbbZ/4gNErnXaxpy
+         0YbHwS3VCfqKsxjg/m66Ck2LrfZGBqGB2ZjFdScTHwhnP0tXnmEeDWMNWfVzwt6P6ypq
+         pQ69uJvAKffeNWCm/LHWxMuxa9X5tGrZpajzk0L+jqoO8eG2pu7/uf51zI6OlcAu6FJc
+         nFrGQtMeaXhE7jLgyVh2Ag7ev27IdxBkX2oi6o6CXn0x0cfke697z8QL5gOYn0LQZ+QT
+         wp6OTyFduLQ1s6FRiUelm3+BLu4D0/Xf+C/KnYWqrBFE6utl8hGjNoASdExF+pMoQCx5
+         bVkw==
+X-Gm-Message-State: AO0yUKXeY8WMGwuN8Wqm8NnwvZu+GsILEWsT7e/Ceepn4G+oc68JO6u1
+        WONd+yGeU9vrKQ4fSW2hcyVxXA==
+X-Google-Smtp-Source: AK7set81+J76ESnZZm3oyyxTlRUvfii3Bic87MlN7SxfDicQQ8S1GtBwYUf9j+RljuZEcb8UvRCRMQ==
+X-Received: by 2002:adf:cf04:0:b0:2c7:19c1:5557 with SMTP id o4-20020adfcf04000000b002c719c15557mr8383081wrj.64.1677750791453;
+        Thu, 02 Mar 2023 01:53:11 -0800 (PST)
 Received: from alex-rivos.home (amontpellier-656-1-456-62.w92-145.abo.wanadoo.fr. [92.145.124.62])
-        by smtp.gmail.com with ESMTPSA id r9-20020a05600c458900b003e1f6e18c95sm2586998wmo.21.2023.03.02.01.52.08
+        by smtp.gmail.com with ESMTPSA id y18-20020adffa52000000b002c55efa9cbesm14490820wrr.39.2023.03.02.01.53.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 02 Mar 2023 01:52:09 -0800 (PST)
+        Thu, 02 Mar 2023 01:53:11 -0800 (PST)
 From:   Alexandre Ghiti <alexghiti@rivosinc.com>
 To:     Jonathan Corbet <corbet@lwn.net>,
         Richard Henderson <richard.henderson@linaro.org>,
@@ -95,9 +95,9 @@ To:     Jonathan Corbet <corbet@lwn.net>,
         sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
         linux-arch@vger.kernel.org
 Cc:     Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH v4 16/24] arm64: Remove empty <uapi/asm/setup.h>
-Date:   Thu,  2 Mar 2023 10:35:31 +0100
-Message-Id: <20230302093539.372962-17-alexghiti@rivosinc.com>
+Subject: [PATCH v4 17/24] microblaze: Remove empty <uapi/asm/setup.h>
+Date:   Thu,  2 Mar 2023 10:35:32 +0100
+Message-Id: <20230302093539.372962-18-alexghiti@rivosinc.com>
 X-Mailer: git-send-email 2.37.2
 In-Reply-To: <20230302093539.372962-1-alexghiti@rivosinc.com>
 References: <20230302093539.372962-1-alexghiti@rivosinc.com>
@@ -116,41 +116,34 @@ From: Palmer Dabbelt <palmer@rivosinc.com>
 
 Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 ---
- arch/arm64/include/uapi/asm/setup.h | 25 -------------------------
- 1 file changed, 25 deletions(-)
- delete mode 100644 arch/arm64/include/uapi/asm/setup.h
+ arch/microblaze/include/uapi/asm/setup.h | 18 ------------------
+ 1 file changed, 18 deletions(-)
+ delete mode 100644 arch/microblaze/include/uapi/asm/setup.h
 
-diff --git a/arch/arm64/include/uapi/asm/setup.h b/arch/arm64/include/uapi/asm/setup.h
+diff --git a/arch/microblaze/include/uapi/asm/setup.h b/arch/microblaze/include/uapi/asm/setup.h
 deleted file mode 100644
-index f9f51e5925aa..000000000000
---- a/arch/arm64/include/uapi/asm/setup.h
+index 51aed65880e7..000000000000
+--- a/arch/microblaze/include/uapi/asm/setup.h
 +++ /dev/null
-@@ -1,25 +0,0 @@
+@@ -1,18 +0,0 @@
 -/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
 -/*
-- * Based on arch/arm/include/asm/setup.h
+- * Copyright (C) 2007-2009 Michal Simek <monstr@monstr.eu>
+- * Copyright (C) 2007-2009 PetaLogix
+- * Copyright (C) 2006 Atmark Techno, Inc.
 - *
-- * Copyright (C) 1997-1999 Russell King
-- * Copyright (C) 2012 ARM Ltd.
-- *
-- * This program is free software; you can redistribute it and/or modify
-- * it under the terms of the GNU General Public License version 2 as
-- * published by the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful,
-- * but WITHOUT ANY WARRANTY; without even the implied warranty of
-- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-- * GNU General Public License for more details.
-- *
-- * You should have received a copy of the GNU General Public License
-- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+- * This file is subject to the terms and conditions of the GNU General Public
+- * License. See the file "COPYING" in the main directory of this archive
+- * for more details.
 - */
--#ifndef __ASM_SETUP_H
--#define __ASM_SETUP_H
 -
--#include <linux/types.h>
+-#ifndef _UAPI_ASM_MICROBLAZE_SETUP_H
+-#define _UAPI_ASM_MICROBLAZE_SETUP_H
 -
--#endif
+-# ifndef __ASSEMBLY__
+-
+-# endif /* __ASSEMBLY__ */
+-#endif /* _UAPI_ASM_MICROBLAZE_SETUP_H */
 -- 
 2.37.2
 
