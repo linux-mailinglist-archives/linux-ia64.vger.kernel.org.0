@@ -2,62 +2,247 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 837056A935B
-	for <lists+linux-ia64@lfdr.de>; Fri,  3 Mar 2023 10:06:32 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EB146A96CD
+	for <lists+linux-ia64@lfdr.de>; Fri,  3 Mar 2023 12:56:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229494AbjCCJGb (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 3 Mar 2023 04:06:31 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38814 "EHLO
+        id S229737AbjCCL4y (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 3 Mar 2023 06:56:54 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45330 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbjCCJGa (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 3 Mar 2023 04:06:30 -0500
-Received: from mail.corrib.pl (mail.corrib.pl [185.58.226.145])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D16571A498
-        for <linux-ia64@vger.kernel.org>; Fri,  3 Mar 2023 01:06:29 -0800 (PST)
-Received: by mail.corrib.pl (Postfix, from userid 1001)
-        id 021C9A3784; Fri,  3 Mar 2023 09:00:33 +0000 (GMT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=corrib.pl; s=mail;
-        t=1677834034; bh=X6IEpSISwJiYlJ3uA866lskXve3r+4o2hf4z7VM6m5o=;
-        h=Date:From:To:Subject:From;
-        b=bEmfIPvWUhyux/aZGNSq+ZMedq+iOUCOLqCKZhmbmh+ei84gCRecZ7Wrk8nx3tOAU
-         raAM/PDzo3LpfYqC9wxaUXjRihuN6HJZUdsMOcZLZcdAVQ4Yinx2HrAuatGuHL5fTv
-         Rh8zgJwcuptQknWRMledwNxi9L80L73pr3f0oKIB/EsRuMA9jCG8D7TpYpIzFdm4g/
-         cowQXR8nbZxfvlPxz8UN0pfxnJtSasTpDAJFacGcphL+Bd+4yp7EfWkyOqAvAi/wkM
-         +0cHGsQWjPtdI7qbulQbxh0JaQY1ujaYa9lzftdAAEriN6PanR4oYF2/5EjK9If+cf
-         hDmvuzKzVffUA==
-Received: by mail.corrib.pl for <linux-ia64@vger.kernel.org>; Fri,  3 Mar 2023 09:00:32 GMT
-Message-ID: <20230303074501-0.1.5u.gg8i.0.f4fs3074t4@corrib.pl>
-Date:   Fri,  3 Mar 2023 09:00:32 GMT
-From:   =?UTF-8?Q? "Szczepan_Kie=C5=82basa" ?= 
-        <szczepan.kielbasa@corrib.pl>
-To:     <linux-ia64@vger.kernel.org>
-Subject: Faktoring
-X-Mailer: mail.corrib.pl
+        with ESMTP id S229511AbjCCL4y (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 3 Mar 2023 06:56:54 -0500
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1711D5D880;
+        Fri,  3 Mar 2023 03:56:51 -0800 (PST)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BD61617B4;
+        Fri,  3 Mar 2023 11:56:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD28C433D2;
+        Fri,  3 Mar 2023 11:56:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1677844609;
+        bh=dOgzlBLPlOS+XYasJ+6eJlX1/dEnbvS4fGafOnUfsz8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=AByWUKAVZiITmU8Swud8hn6PhHc/swNFS21og02GUGdjC864s3RfOkwOWi7mGhwka
+         Vn9nDg/PAA8PQIUcLRHMVxBI3OL0Zh6j14sIHjGlVQythjKtVeybJ6CCVDNXEMqrPF
+         FQL3GpKM/skJJ6kzb1OcBAhc+uZtoPnUomEfbw9xW7NaKze7EXuT1qxXiRxYcJ8Sxj
+         gNEoXpKSYaZL8N+HE3rOTlYQZAfPDzf/tcZKFcDrl9Fzr9u1cgMCf5AgAlrr8Sb8eA
+         H02/TD16cAijVy2/josMh83yvCBoiSqW7/Yw30d+S/50Aphl/Ni5YlNAjuCfahxOo6
+         LrK18vjSTHW7Q==
+Date:   Fri, 3 Mar 2023 13:56:36 +0200
+From:   Mike Rapoport <rppt@kernel.org>
+To:     "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Cc:     linux-mm@kvack.org, linux-arch@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org
+Subject: Re: [PATCH v3 11/34] ia64: Implement the new page table range API
+Message-ID: <ZAHgdEzqWk4Peyjh@kernel.org>
+References: <20230228213738.272178-1-willy@infradead.org>
+ <20230228213738.272178-12-willy@infradead.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230228213738.272178-12-willy@infradead.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Tue, Feb 28, 2023 at 09:37:14PM +0000, Matthew Wilcox (Oracle) wrote:
+> Add set_ptes(), update_mmu_cache_range() and flush_dcache_folio().
+> Change the PG_arch_1 (aka PG_dcache_clean) flag from being per-page to
+> per-folio, which makes arch_dma_mark_clean() and mark_clean() a little
+> more exciting.
+> 
+> Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Cc: linux-ia64@vger.kernel.org
+> ---
+>  arch/ia64/hp/common/sba_iommu.c    | 26 +++++++++++++++-----------
+>  arch/ia64/include/asm/cacheflush.h | 14 ++++++++++----
+>  arch/ia64/include/asm/pgtable.h    | 14 +++++++++++++-
+>  arch/ia64/mm/init.c                | 29 +++++++++++++++++++----------
+>  4 files changed, 57 insertions(+), 26 deletions(-)
+> 
+> diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
+> index 8ad6946521d8..48d475f10003 100644
+> --- a/arch/ia64/hp/common/sba_iommu.c
+> +++ b/arch/ia64/hp/common/sba_iommu.c
+> @@ -798,22 +798,26 @@ sba_io_pdir_entry(u64 *pdir_ptr, unsigned long vba)
+>  #endif
+>  
+>  #ifdef ENABLE_MARK_CLEAN
+> -/**
+> +/*
+>   * Since DMA is i-cache coherent, any (complete) pages that were written via
+>   * DMA can be marked as "clean" so that lazy_mmu_prot_update() doesn't have to
+>   * flush them when they get mapped into an executable vm-area.
+>   */
+> -static void
+> -mark_clean (void *addr, size_t size)
+> +static void mark_clean(void *addr, size_t size)
+>  {
+> -	unsigned long pg_addr, end;
+> -
+> -	pg_addr = PAGE_ALIGN((unsigned long) addr);
+> -	end = (unsigned long) addr + size;
+> -	while (pg_addr + PAGE_SIZE <= end) {
+> -		struct page *page = virt_to_page((void *)pg_addr);
+> -		set_bit(PG_arch_1, &page->flags);
+> -		pg_addr += PAGE_SIZE;
+> +	struct folio *folio = virt_to_folio(addr);
+> +	ssize_t left = size;
+> +	size_t offset = offset_in_folio(folio, addr);
+> +
+> +	if (offset) {
+> +		left -= folio_size(folio) - offset;
+> +		folio = folio_next(folio);
+> +	}
+> +
+> +	while (left >= folio_size(folio)) {
+> +		set_bit(PG_arch_1, &folio->flags);
+> +		left -= folio_size(folio);
+> +		folio = folio_next(folio);
+>  	}
+>  }
+>  #endif
+> diff --git a/arch/ia64/include/asm/cacheflush.h b/arch/ia64/include/asm/cacheflush.h
+> index 708c0fa5d975..eac493fa9e0d 100644
+> --- a/arch/ia64/include/asm/cacheflush.h
+> +++ b/arch/ia64/include/asm/cacheflush.h
+> @@ -13,10 +13,16 @@
+>  #include <asm/page.h>
+>  
+>  #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
+> -#define flush_dcache_page(page)			\
+> -do {						\
+> -	clear_bit(PG_arch_1, &(page)->flags);	\
+> -} while (0)
+> +static inline void flush_dcache_folio(struct folio *folio)
+> +{
+> +	clear_bit(PG_arch_1, &folio->flags);
+> +}
+> +#define flush_dcache_folio flush_dcache_folio
+> +
+> +static inline void flush_dcache_page(struct page *page)
+> +{
+> +	flush_dcache_folio(page_folio(page));
+> +}
+>  
+>  extern void flush_icache_range(unsigned long start, unsigned long end);
+>  #define flush_icache_range flush_icache_range
+> diff --git a/arch/ia64/include/asm/pgtable.h b/arch/ia64/include/asm/pgtable.h
+> index 21c97e31a28a..0c2be4ea664b 100644
+> --- a/arch/ia64/include/asm/pgtable.h
+> +++ b/arch/ia64/include/asm/pgtable.h
+> @@ -303,7 +303,18 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
+>  	*ptep = pteval;
+>  }
+>  
+> -#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
+> +static inline void set_ptes(struct mm_struct *mm, unsigned long addr,
+> +		pte_t *ptep, pte_t pte, unsigned int nr)
+> +{
+> +	for (;;) {
+> +		set_pte(ptep, pte);
+> +		if (--nr == 0)
+> +			break;
+> +		ptep++;
+> +		pte_val(pte) += PAGE_SIZE;
+> +	}
+> +}
+> +#define set_pte_at(mm, addr, ptep, pte) set_ptes(mm, add, ptep, pte, 1)
+>  
+>  /*
+>   * Make page protection values cacheable, uncacheable, or write-
+> @@ -396,6 +407,7 @@ pte_same (pte_t a, pte_t b)
+>  	return pte_val(a) == pte_val(b);
+>  }
+>  
+> +#define update_mmu_cache_range(vma, address, ptep, nr) do { } while (0)
+>  #define update_mmu_cache(vma, address, ptep) do { } while (0)
+>  
+>  extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
+> diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
+> index 7f5353e28516..12aef25944aa 100644
+> --- a/arch/ia64/mm/init.c
+> +++ b/arch/ia64/mm/init.c
+> @@ -50,30 +50,39 @@ void
+>  __ia64_sync_icache_dcache (pte_t pte)
+>  {
+>  	unsigned long addr;
+> -	struct page *page;
+> +	struct folio *folio;
+>  
+> -	page = pte_page(pte);
+> -	addr = (unsigned long) page_address(page);
+> +	folio = page_folio(pte_page(pte));
+> +	addr = (unsigned long)folio_address(folio);
+>  
+> -	if (test_bit(PG_arch_1, &page->flags))
+> +	if (test_bit(PG_arch_1, &folio->flags))
+>  		return;				/* i-cache is already coherent with d-cache */
+>  
+> -	flush_icache_range(addr, addr + page_size(page));
+> -	set_bit(PG_arch_1, &page->flags);	/* mark page as clean */
+> +	flush_icache_range(addr, addr + folio_size(folio));
+> +	set_bit(PG_arch_1, &folio->flags);	/* mark page as clean */
+>  }
+>  
+>  /*
+> - * Since DMA is i-cache coherent, any (complete) pages that were written via
+> + * Since DMA is i-cache coherent, any (complete) folios that were written via
+>   * DMA can be marked as "clean" so that lazy_mmu_prot_update() doesn't have to
+>   * flush them when they get mapped into an executable vm-area.
+>   */
+>  void arch_dma_mark_clean(phys_addr_t paddr, size_t size)
+>  {
+> -	unsigned long pfn = PHYS_PFN(paddr);
+> +	struct folio *folio = page_folio(phys_to_page(paddr));
+> +	ssize_t left = size;
+> +	size_t offset = offset_in_folio(folio, paddr);
 
-rozwa=C5=BCali Pa=C5=84stwo wyb=C3=B3r finansowania, kt=C3=B3re spe=C5=82=
-ni potrzeby firmy, zapewniaj=C4=85c natychmiastowy dost=C4=99p do got=C3=B3=
-wki, bez zb=C4=99dnych przestoj=C3=B3w?=20
+Build of defconfig failed miserably for me without this:
 
-Przygotowali=C5=9Bmy rozwi=C4=85zania faktoringowe dopasowane do Pa=C5=84=
-stwa bran=C5=BCy i wielko=C5=9Bci firmy, dzi=C4=99ki kt=C3=B3rym, nie mus=
-z=C4=85 Pa=C5=84stwo martwi=C4=87 si=C4=99 o niewyp=C5=82acalno=C5=9B=C4=87=
- kontrahent=C3=B3w, poniewa=C5=BC transakcje s=C4=85 zabezpieczone i posi=
-adaj=C4=85 gwarancj=C4=99 sp=C5=82aty.=20
-Chc=C4=85 Pa=C5=84stwo przeanalizowa=C4=87 dost=C4=99pne opcje?
+diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
+index 12aef25944aa..0775e7870257 100644
+--- a/arch/ia64/mm/init.c
++++ b/arch/ia64/mm/init.c
+@@ -69,7 +69,8 @@ __ia64_sync_icache_dcache (pte_t pte)
+  */
+ void arch_dma_mark_clean(phys_addr_t paddr, size_t size)
+ {
+-	struct folio *folio = page_folio(phys_to_page(paddr));
++	unsigned long pfn = __phys_to_pfn(paddr);
++	struct folio *folio = page_folio(pfn_to_page(pfn));
+ 	ssize_t left = size;
+ 	size_t offset = offset_in_folio(folio, paddr);
+ 
 
+>  
+> -	do {
+> +	if (offset) {
+> +		left -= folio_size(folio) - offset;
+> +		folio = folio_next(folio);
+> +	}
+> +
+> +	while (left >= (ssize_t)folio_size(folio)) {
+>  		set_bit(PG_arch_1, &pfn_to_page(pfn)->flags);
+> -	} while (++pfn <= PHYS_PFN(paddr + size - 1));
+> +		left -= folio_size(folio);
+> +		folio = folio_next(folio);
+> +	}
+>  }
+>  
+>  inline void
+> -- 
+> 2.39.1
+> 
 
-Pozdrawiam
-Szczepan Kie=C5=82basa
+-- 
+Sincerely yours,
+Mike.
