@@ -2,135 +2,96 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C6556AF7D3
-	for <lists+linux-ia64@lfdr.de>; Tue,  7 Mar 2023 22:42:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 542636B5591
+	for <lists+linux-ia64@lfdr.de>; Sat, 11 Mar 2023 00:24:35 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230044AbjCGVmE (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 7 Mar 2023 16:42:04 -0500
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50026 "EHLO
+        id S231814AbjCJXYe (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 10 Mar 2023 18:24:34 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230486AbjCGVmD (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 7 Mar 2023 16:42:03 -0500
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28995A674D
-        for <linux-ia64@vger.kernel.org>; Tue,  7 Mar 2023 13:41:59 -0800 (PST)
-Received: by mail-pl1-x62d.google.com with SMTP id h8so15592841plf.10
-        for <linux-ia64@vger.kernel.org>; Tue, 07 Mar 2023 13:41:59 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=dabbelt-com.20210112.gappssmtp.com; s=20210112; t=1678225318;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=h0UBWEzua7mI1E3a/+R1pzklpJ+RGJpYFy9mijom/UM=;
-        b=3d0i9L9fgsM6wfDV6SgEVPe2doCmA84h8dgaHpMbejZeZuQRklJuURRf6PhkCN7ukc
-         w/n+8nbuC+OW0mQWtjtERbzb9wBvkWnsuB3UcR0sH2Ba3g7FDMT+jDol43sV0ZSapUuU
-         afFVzDtGs7qaCnWpNgGUvXPCI9VeRCtjLQt1T3AcBXMLT19wGawFny88dkq7b+SM519J
-         izcWM0iUW0/Sac/AVhLneLvdpP7x0olNKc4YqRIWvevDICe0+qs1ypmIQEYjXt6H2n6Q
-         PGyqmNUpfeGmcTALJ+qCkHjqjpTn7tbuCsOrFtOo3YqXRw3n/PRxx6fcIN5oBf8fOwBc
-         hPrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1678225318;
-        h=content-transfer-encoding:mime-version:message-id:to:from:cc
-         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h0UBWEzua7mI1E3a/+R1pzklpJ+RGJpYFy9mijom/UM=;
-        b=A7TLxsg/RXDxf+lRCF+CuqpYKWB7mNhAfUIh0R5xvnlD3ULKLbkhaWyGDL0lwGgT1Y
-         ZJDoufbjNyfsbNeMwE7W2cqOdaQe49dqr/jNGqB5no8dcBKsfD8tAqydiYe/E9Tc1Zqc
-         szozfqQ0g/Kps0I+J7jpH5DMVIkSvOvcAREhRvbRDSG8u/kjHpF+qWBiQ3DxTuZglzRn
-         6a+kYua0hKb4z4wiB3upCHDGbhpY//7uSLgYuDzHuZRjVUOmyRwoDGRiKeOkfYhXXXlp
-         6M8AMy5zAcYTGROq5ztPj0mHOORwwEqXw5L5PorKNClSE5Jcp8FW3nUN928HSCX5axfn
-         KnLA==
-X-Gm-Message-State: AO0yUKU87Med8s1gi90OOt84X2BIhQECTp/g1U9Z/HaSVv3xcg2sgg0T
-        h8uks6/UWxuDGlfx9o4Z4Hateg==
-X-Google-Smtp-Source: AK7set/K6eJAQf/eSbaq269PoSBswE0gsDc5h7lzSW9lr2zauw1plinMmCGHpVyR/4qKnDR1/eXDIg==
-X-Received: by 2002:a17:902:ce90:b0:19a:9434:af30 with SMTP id f16-20020a170902ce9000b0019a9434af30mr18505363plg.18.1678225318377;
-        Tue, 07 Mar 2023 13:41:58 -0800 (PST)
-Received: from localhost ([50.221.140.188])
-        by smtp.gmail.com with ESMTPSA id km12-20020a17090327cc00b0019e30e3068bsm8866509plb.168.2023.03.07.13.41.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 07 Mar 2023 13:41:57 -0800 (PST)
-Date:   Tue, 07 Mar 2023 13:41:57 -0800 (PST)
-X-Google-Original-Date: Tue, 07 Mar 2023 13:40:59 PST (-0800)
-Subject:     Re: [PATCH v5 12/26] riscv: Remove COMMAND_LINE_SIZE from uapi
-In-Reply-To: <20230306100508.1171812-13-alexghiti@rivosinc.com>
-CC:     Greg KH <gregkh@linuxfoundation.org>, corbet@lwn.net,
-        Richard Henderson <richard.henderson@linaro.org>,
-        ink@jurassic.park.msu.ru, mattst88@gmail.com, vgupta@kernel.org,
-        linux@armlinux.org.uk, Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, chenhuacai@kernel.org,
-        kernel@xen0n.name, geert@linux-m68k.org, monstr@monstr.eu,
-        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        aou@eecs.berkeley.edu, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com,
-        svens@linux.ibm.com, ysato@users.sourceforge.jp, dalias@libc.org,
-        davem@davemloft.net, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        hpa@zytor.com, chris@zankel.net, jcmvbkbc@gmail.com,
-        Arnd Bergmann <arnd@arndb.de>, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-alpha@vger.kernel.org,
-        linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
-        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
-        linux-arch@vger.kernel.org, alexghiti@rivosinc.com
-From:   Palmer Dabbelt <palmer@dabbelt.com>
-To:     alexghiti@rivosinc.com
-Message-ID: <mhng-d4be5bb5-f0ad-4e76-9b11-83732d233a45@palmer-ri-x1c9a>
-Mime-Version: 1.0 (MHng)
-Content-Type: text/plain; charset=utf-8; format=flowed
+        with ESMTP id S231952AbjCJXYS (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 10 Mar 2023 18:24:18 -0500
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047685CECC;
+        Fri, 10 Mar 2023 15:24:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=Sender:Content-Transfer-Encoding:
+        MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+        Content-ID:Content-Description:In-Reply-To:References;
+        bh=n3ibBOSHwLtyYWSPz4byfz4X1HpWIu7EDA2VdrWLfGg=; b=oY5BhI0UKiQJz+oVu3mMg8gY7t
+        zqnqSgmo9/fkhKmgDQNJSot1ASq8dmZpKF3mHqTbtmtmRukQ/tB7GS1fAluaTbQfhd4TOlTqMapR5
+        PPp1v2kxfb5Tqdx3/FAIg9O3eYr8KFWck+wdleTjGP4Dfsym9ZsKEUpRKs19Cz2nigJ8ilbF+zrIC
+        /ZzQ3KQ2Ih8LAvctLYJv4LfZUEpXXms0Lmu3Wix/wtbK5SmHjF8VFe4zBfvTuQcL1dZWHikG+huRl
+        yp5D0i3FpTXu5kH5iMkVSi4ZOoRVeNxM4PhFF7utzvjjCUfJkKJVAfmVtesXWAtp2oqeOqc99R+U9
+        Sc/kDHhw==;
+Received: from mcgrof by bombadil.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pam5w-00Gbr0-MM; Fri, 10 Mar 2023 23:24:16 +0000
+From:   Luis Chamberlain <mcgrof@kernel.org>
+To:     linux-ia64@vger.kernel.org
+Cc:     ebiederm@xmission.com, keescook@chromium.org, yzaikin@google.com,
+        j.granados@samsung.com, patches@lists.linux.dev,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH] ia64: simplify one-level sysctl registration for kdump_ctl_table
+Date:   Fri, 10 Mar 2023 15:24:16 -0800
+Message-Id: <20230310232416.3958751-1-mcgrof@kernel.org>
+X-Mailer: git-send-email 2.37.1
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Sender: Luis Chamberlain <mcgrof@infradead.org>
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, 06 Mar 2023 02:04:54 PST (-0800), alexghiti@rivosinc.com wrote:
-> As far as I can tell this is not used by userspace and thus should not
-> be part of the user-visible API.
->
-> Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-> ---
->  arch/riscv/include/asm/setup.h      | 7 +++++++
->  arch/riscv/include/uapi/asm/setup.h | 2 --
->  2 files changed, 7 insertions(+), 2 deletions(-)
->  create mode 100644 arch/riscv/include/asm/setup.h
->
-> diff --git a/arch/riscv/include/asm/setup.h b/arch/riscv/include/asm/setup.h
-> new file mode 100644
-> index 000000000000..f165a14344e2
-> --- /dev/null
-> +++ b/arch/riscv/include/asm/setup.h
-> @@ -0,0 +1,7 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef _ASM_RISCV_SETUP_H
-> +#define _ASM_RISCV_SETUP_H
-> +
-> +#define COMMAND_LINE_SIZE       1024
-> +
-> +#endif /* _ASM_RISCV_SETUP_H */
-> diff --git a/arch/riscv/include/uapi/asm/setup.h b/arch/riscv/include/uapi/asm/setup.h
-> index 66b13a522880..17fcecd4a2f8 100644
-> --- a/arch/riscv/include/uapi/asm/setup.h
-> +++ b/arch/riscv/include/uapi/asm/setup.h
-> @@ -3,6 +3,4 @@
->  #ifndef _UAPI_ASM_RISCV_SETUP_H
->  #define _UAPI_ASM_RISCV_SETUP_H
->
-> -#define COMMAND_LINE_SIZE	1024
-> -
->  #endif /* _UAPI_ASM_RISCV_SETUP_H */
+There is no need to declare an extra tables to just create directory,
+this can be easily be done with a prefix path with register_sysctl().
 
-Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
-Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Simplify this registration.
 
-Thanks!
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+---
+
+If ia64 is not removed from the kernel feel free to take this or I can
+take it through sysctl-next.
+
+ arch/ia64/kernel/crash.c | 11 +----------
+ 1 file changed, 1 insertion(+), 10 deletions(-)
+
+diff --git a/arch/ia64/kernel/crash.c b/arch/ia64/kernel/crash.c
+index 76730f34685c..88b3ce3e66cd 100644
+--- a/arch/ia64/kernel/crash.c
++++ b/arch/ia64/kernel/crash.c
+@@ -234,15 +234,6 @@ static struct ctl_table kdump_ctl_table[] = {
+ 	},
+ 	{ }
+ };
+-
+-static struct ctl_table sys_table[] = {
+-	{
+-	  .procname = "kernel",
+-	  .mode = 0555,
+-	  .child = kdump_ctl_table,
+-	},
+-	{ }
+-};
+ #endif
+ 
+ static int
+@@ -257,7 +248,7 @@ machine_crash_setup(void)
+ 	if((ret = register_die_notifier(&kdump_init_notifier_nb)) != 0)
+ 		return ret;
+ #ifdef CONFIG_SYSCTL
+-	register_sysctl_table(sys_table);
++	register_sysctl("kernel", kdump_ctl_table);
+ #endif
+ 	return 0;
+ }
+-- 
+2.39.1
+
