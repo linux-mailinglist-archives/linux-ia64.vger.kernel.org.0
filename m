@@ -2,159 +2,121 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FE7C6B90F2
-	for <lists+linux-ia64@lfdr.de>; Tue, 14 Mar 2023 12:03:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 98D6F6B9416
+	for <lists+linux-ia64@lfdr.de>; Tue, 14 Mar 2023 13:40:48 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230216AbjCNLD5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Tue, 14 Mar 2023 07:03:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57654 "EHLO
+        id S231310AbjCNMkr (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 14 Mar 2023 08:40:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230265AbjCNLDz (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 14 Mar 2023 07:03:55 -0400
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 884C99CBDF;
-        Tue, 14 Mar 2023 04:03:13 -0700 (PDT)
-Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.201])
-        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4PbVw92GJMz6J7Km;
-        Tue, 14 Mar 2023 19:02:01 +0800 (CST)
-Received: from localhost (10.48.148.120) by lhrpeml500005.china.huawei.com
- (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21; Tue, 14 Mar
- 2023 11:02:51 +0000
-Date:   Tue, 14 Mar 2023 11:02:50 +0000
-From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
-To:     James Morse <james.morse@arm.com>
-CC:     <linux-pm@vger.kernel.org>, <loongarch@lists.linux.dev>,
-        <kvmarm@lists.linux.dev>, <kvm@vger.kernel.org>,
-        <linux-acpi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-        <linux-ia64@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>, <x86@kernel.org>,
-        Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        with ESMTP id S231405AbjCNMki (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 14 Mar 2023 08:40:38 -0400
+Received: from sipsolutions.net (s3.sipsolutions.net [IPv6:2a01:4f8:191:4433::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04C4596C0A;
+        Tue, 14 Mar 2023 05:40:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
+        Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
+        :Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
+        Resent-Cc:Resent-Message-ID; bh=pOg2+UYpTygnBlX1RyGCO9nWu9fsmXuoawMaiLoDXLo=;
+        t=1678797615; x=1680007215; b=JDfeqyz66j/1OSlkRo7oEl8L1nvxvq6BodO72FGLa+QNkVX
+        aHBXuz/sE64+EN/m3XGIVLLNuEsNf/YmmnF40dDsKpcC66Pdm5L5rRE7WIKYkeP9pydbwIS+MV3Cz
+        TkaKWzppMgeSjoK+de2gH5lIsLKEjP61kBEAw0v+gqLL2FUOkjeL45cduFXpAb9jhQpzmMR86WWbW
+        mhTa1koli65WDXs/25LuQ1O082uNBWPKZD/KrpQyI7p/3OdOudSYEso0DaNATgxC+wzxMWw5BI3dA
+        Y0DUmQgocQiDrndOG3IhH6cdOx2EYurOW0+mcI+Hn/uegCUYHxyPECaw/pcUTJYA==;
+Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        (Exim 4.96)
+        (envelope-from <johannes@sipsolutions.net>)
+        id 1pc3uU-003AIF-1Y;
+        Tue, 14 Mar 2023 13:37:46 +0100
+Message-ID: <21a828bae06b97b8ca806a6b76d867902b1e0e1f.camel@sipsolutions.net>
+Subject: Re: [PATCH v3 01/38] Kconfig: introduce HAS_IOPORT option and
+ select it as necessary
+From:   Johannes Berg <johannes@sipsolutions.net>
+To:     Niklas Schnelle <schnelle@linux.ibm.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Richard Henderson <richard.henderson@linaro.org>,
+        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
+        Matt Turner <mattst88@gmail.com>,
+        Russell King <linux@armlinux.org.uk>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        "Suzuki K Poulose" <suzuki.poulose@arm.com>,
-        Oliver Upton <oliver.upton@linux.dev>,
-        Len Brown <lenb@kernel.org>,
-        Rafael Wysocki <rafael@kernel.org>,
-        "WANG Xuerui" <kernel@xen0n.name>,
-        Salil Mehta <salil.mehta@huawei.com>,
-        "Russell King" <linux@armlinux.org.uk>,
-        <kangkang.shen@futurewei.com>
-Subject: Re: [RFC PATCH 00/32] ACPI/arm64: add support for virtual
- cpuhotplug
-Message-ID: <20230314110250.00005685@Huawei.com>
-In-Reply-To: <1f21673e-e5e6-a158-94a4-6ae6724c1f93@arm.com>
-References: <20230203135043.409192-1-james.morse@arm.com>
-        <20230307120050.000032f1@Huawei.com>
-        <1f21673e-e5e6-a158-94a4-6ae6724c1f93@arm.com>
-Followup-To: Jean-Philippe Brucker <jean-philippe@linaro.org>
-Organization: Huawei Technologies Research and Development (UK) Ltd.
-X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
+        Will Deacon <will@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Michal Simek <monstr@monstr.eu>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
+        Helge Deller <deller@gmx.de>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "David S. Miller" <davem@davemloft.net>,
+        Richard Weinberger <richard@nod.at>,
+        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
+        <u.kleine-koenig@pengutronix.de>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Alan Stern <stern@rowland.harvard.edu>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
+        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
+        linux-um@lists.infradead.org
+Date:   Tue, 14 Mar 2023 13:37:43 +0100
+In-Reply-To: <20230314121216.413434-2-schnelle@linux.ibm.com>
+References: <20230314121216.413434-1-schnelle@linux.ibm.com>
+         <20230314121216.413434-2-schnelle@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 8BIT
-X-Originating-IP: [10.48.148.120]
-X-ClientProxiedBy: lhrpeml500003.china.huawei.com (7.191.162.67) To
- lhrpeml500005.china.huawei.com (7.191.163.240)
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham
-        autolearn_force=no version=3.4.6
+X-malware-bazaar: not-scanned
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, 13 Mar 2023 15:50:52 +0000
-James Morse <james.morse@arm.com> wrote:
+On Tue, 2023-03-14 at 13:11 +0100, Niklas Schnelle wrote:
+> --- a/arch/um/Kconfig
+> +++ b/arch/um/Kconfig
+> @@ -56,6 +56,7 @@ config NO_IOPORT_MAP
+> =20
+>  config ISA
+>  	bool
+> +	depends on HAS_IOPORT
+>=20
 
-> Hi Jonathan,
-> 
-> On 07/03/2023 12:00, Jonathan Cameron wrote:
-> > On Fri,  3 Feb 2023 13:50:11 +0000
-> > James Morse <james.morse@arm.com> wrote:  
-> 
-> >> On a system that supports cpuhotplug the MADT has to describe every possible
-> >> CPU at boot. Under KVM, the vGIC needs to know about every possible vCPU before
-> >> the guest is started.
-> >> With these constraints, virtual-cpuhotplug is really just a hypervisor/firmware
-> >> policy about which CPUs can be brought online.
-> >>
-> >> This series adds support for virtual-cpuhotplug as exactly that: firmware
-> >> policy. This may even work on a physical machine too; for a guest the part of
-> >> firmware is played by the VMM. (typically Qemu).
-> >>
-> >> PSCI support is modified to return 'DENIED' if the CPU can't be brought
-> >> online/enabled yet. The CPU object's _STA method's enabled bit is used to
-> >> indicate firmware's current disposition. If the CPU has its enabled bit clear,
-> >> it will not be registered with sysfs, and attempts to bring it online will
-> >> fail. The notifications that _STA has changed its value then work in the same
-> >> way as physical hotplug, and firmware can cause the CPU to be registered some
-> >> time later, allowing it to be brought online.  
-> 
-> > As we discussed on an LOD call a while back, I think that we need some path to
-> > find out if the guest supports vCPU HP or not so that info can be queried by
-> > an orchestrator / libvirt etc.  In general the entity responsible for allocating
-> > extra vCPUs may not know what support the VM has for this feature.  
-> 
-> I agree. For arm64 this is going to be important if/when there are machines that do
-> physical hotplug of CPUs too.
-> 
-> 
-> > There are various ways we could get this information into the VMM.
-> > My immediate thought is to use one of the ACPI interfaces that lets us write
-> > AML that can set an emulated register. A query to the VMM can check if this
-> > register is set.
-> > 
-> > So options.
-> > 
-> > _OSI() - Deprecated on ARM64 so lets not use that ;)  
-> 
-> News to me, I've only just discovered it!
-> 
-> 
-> > _OSC() - Could add a bit to Table 6.13 Platform-Wide Capabilites in ACPI 6.5 spec.
-> >          Given x86 has a similar online capable bit perhaps this is the best option
-> >          though it is the one that requires a formal code first proposal to ASWG.  
-> 
-> I've had a go at writing this one:
-> https://gitlab.arm.com/linux-arm/linux-jm/-/commit/220b0d8b0261d7467c8705e6f614d57325798859
+config ISA here is already unselectable, and nothing ever does "select
+ISA" (only in some other architectures), so is there much point in this?
 
-From a quick glance that looks good to me.
+I'm not even sure why this exists at all.
 
-> 
-> It'll appear in the v1 of the series once the kernel and qemu bits are all lined up again.
+But anyway, adding a dependency to a always-false symbol doesn't make it
+less always-false :-)
 
-We'll also need to kick off the spec change with a code-first proposal.
-I think current standard way to do that is a bugzilla entry in EDK2 repo 
-https://bugzilla.tianocore.org/buglist.cgi?component=Specification%20Update&product=EDK2%20Code%20First&resolution=---
-and the get someone in ASWG to create equivalent tracking issue in mantis.
+Acked-by: Johannes Berg <johannes@sipsolutions.net> # for ARCH=3Dum
 
-Great if you already have that in hand via relevant ARM folks.
 
-Jonathan
+Certainly will be nice to get rid of this cruft for architectures that
+don't have it.
 
-> 
-> 
-> Thanks,
-> 
-> James
-> 
-> 
-> > _OSC() - Could add a new UUID and put it under a suitable device - maybe all CPUs?
-> >          You could definitely argue this feature is an operating system property.
-> > _DSM() - Similar to OSC but always under a device.
-> >          Whilst can be used for this I'm not sure it really matches intended usecase.
-> > 
-> > Assuming everyone agrees this bit of introspection is useful,
-> > Rafael / other ACPI specialists: Any suggestions on how best to do this?  
-> 
-
+johannes
