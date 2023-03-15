@@ -2,41 +2,41 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8E866BE190
-	for <lists+linux-ia64@lfdr.de>; Fri, 17 Mar 2023 07:51:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 06B7D6BF610
+	for <lists+linux-ia64@lfdr.de>; Sat, 18 Mar 2023 00:16:14 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229629AbjCQGvX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 17 Mar 2023 02:51:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41722 "EHLO
+        id S229530AbjCQXQN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 17 Mar 2023 19:16:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230161AbjCQGvU (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 17 Mar 2023 02:51:20 -0400
+        with ESMTP id S229769AbjCQXQM (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 17 Mar 2023 19:16:12 -0400
 Received: from sragenkab.go.id (mail.sragenkab.go.id [103.172.109.4])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id BA19EC0805
-        for <linux-ia64@vger.kernel.org>; Thu, 16 Mar 2023 23:51:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with SMTP id 1C71528E83
+        for <linux-ia64@vger.kernel.org>; Fri, 17 Mar 2023 16:16:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sragenkab.go.id;
          h=mime-version:content-type:content-transfer-encoding:date:from
         :to:subject:reply-to:message-id; q=dns/txt; s=dkim1; bh=QGcIAmD5
-        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=zKREKC2xJMJ273cI0jRwZw8A
-        9YEa6wA4NkFFtpEKmdsfefLnnPjrVfV0rBzBI4wbJ8x0HBqz5G0V2kR9E0DWKaTN
-        FcK1E8mUUEZrAy+pWfvVM6g1HuRTUmSpMFIyLaVn3uozhXiuVoFePfv8hoepybP0
-        9V7RKqaWcMe8waRF15+ZO24GPYOc1OqqRN8OL283t5gnKXslBiV90x32BT53jqrv
-        KAoA9kofvQrmK11pwwIAB/LSP5kRjOLhHBOX9gkIAT6PNtI510b3t/Tvxyjeo77V
-        hA2P7IY3bQ2e/9i5zROGqw3+R5a7Qp6XLLjbYqjWEvGvQ90ZhN2jdlIu1z3P6A==
-Received: (qmail 63985 invoked from network); 14 Mar 2023 19:51:07 -0000
+        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=F8ROy0owlYcDvo4Y4ZmFwhfV
+        x6pnMQeHyyDa9Z1fHWkfCsdwzpNrLoXq06HEeVxParkAvhQQ15v+c3azWQt/8kJB
+        nRGBZhWyglr1eTCJC0c162yVMnBMBEMvfz2Ht7tSCtumbAHNoHRrHEwSUZ5SjVXD
+        VyKftBBkIfPcRlrEP4exQsLk7EuTZ8HicJbm4BAbjtGNEBG6BnskBDaUvYr82PKU
+        GdGpfXneoxcdAqpMFFnODnNgcSQw8djZmMG+cd17f2MqSXENAO+0OeqU/aUD/vk4
+        i/Qr8aQcNJ/s+5dsFUkycShCbfNCmxGLynGI+LOlkVo/yjbyA2tAHAAAkpraBg==
+Received: (qmail 61809 invoked from network); 15 Mar 2023 02:02:23 -0000
 Received: from localhost (HELO mail2.sragenkab.go.id) (127.0.0.1)
-  by localhost with SMTP; 14 Mar 2023 19:51:07 -0000
+  by localhost with SMTP; 15 Mar 2023 02:02:23 -0000
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8;
  format=flowed
 Content-Transfer-Encoding: 7bit
-Date:   Tue, 14 Mar 2023 12:51:06 -0700
+Date:   Tue, 14 Mar 2023 19:02:22 -0700
 From:   Ibrahim Tafa <jurnalsukowati@sragenkab.go.id>
 To:     undisclosed-recipients:;
-Subject: LOAN OPPORTUNITY AT LOW-INTEREST RATE>/
+Subject: LOAN FUNDING OPPORTUNITY
 Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
 Mail-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
-Message-ID: <11771ddb8e306d95f5b3116ea710d3df@sragenkab.go.id>
+Message-ID: <c4a45754541c8e01d8faca63bce6519b@sragenkab.go.id>
 X-Sender: jurnalsukowati@sragenkab.go.id
 User-Agent: Roundcube Webmail/0.8.1
 X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
