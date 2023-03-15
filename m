@@ -2,162 +2,216 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F18736B9BCB
-	for <lists+linux-ia64@lfdr.de>; Tue, 14 Mar 2023 17:39:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A0F96BA69E
+	for <lists+linux-ia64@lfdr.de>; Wed, 15 Mar 2023 06:15:10 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229755AbjCNQje (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 14 Mar 2023 12:39:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38868 "EHLO
+        id S231325AbjCOFPI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 15 Mar 2023 01:15:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47926 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229743AbjCNQjd (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 14 Mar 2023 12:39:33 -0400
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2BB312CE7;
-        Tue, 14 Mar 2023 09:39:31 -0700 (PDT)
-Received: from pps.filterd (m0187473.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32EGRZv7022013;
-        Tue, 14 Mar 2023 16:37:45 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=message-id : subject :
- from : to : cc : date : in-reply-to : references : content-type :
- content-transfer-encoding : mime-version; s=pp1;
- bh=kD2FKGQJY5Kf8K0VUyX35AX5LQg3aJuJoe2kwtuWMw0=;
- b=iX+D+PfLCDYte+nyP0JUfTanv1++cGMzXrkEu0Li7gI+yPLgvxEuvkpjg4AncLeq64G9
- 2J9fKM7/vPtmoBOzbMKmeCDtmQG0XDWf54DltcsKhWYAuKplKoOIpPTtp95LGHgrmgiV
- Rq3jKvzt+N1JnIEz6jZRQsFU2f723zceIWqx9FuNuJRK75jzM/k+WABeQua+XcnSbykr
- bdRxuuZaXxG3TSQoNNiFZgrb+KDS3pIxhdEgt8PRwyQlXBieEpqK8ka56UgVrIypPnNx
- tnn7NWo4kn7j5vMmGl15UmWAXzMuzcf0dXBg5vuYXQnfj5PClVT6OaWcgCyyxtydI2AT YQ== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pavf5r7qa-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Mar 2023 16:37:45 +0000
-Received: from m0187473.ppops.net (m0187473.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 32EGRYU7021991;
-        Tue, 14 Mar 2023 16:37:44 GMT
-Received: from ppma03ams.nl.ibm.com (62.31.33a9.ip4.static.sl-reverse.com [169.51.49.98])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3pavf5r7nw-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Mar 2023 16:37:43 +0000
-Received: from pps.filterd (ppma03ams.nl.ibm.com [127.0.0.1])
-        by ppma03ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 32E8ZueW001600;
-        Tue, 14 Mar 2023 16:37:40 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-        by ppma03ams.nl.ibm.com (PPS) with ESMTPS id 3p8h96n2sy-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 14 Mar 2023 16:37:40 +0000
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-        by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 32EGbc0p46662236
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Tue, 14 Mar 2023 16:37:38 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 59AC220040;
-        Tue, 14 Mar 2023 16:37:38 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id A522C20043;
-        Tue, 14 Mar 2023 16:37:34 +0000 (GMT)
-Received: from [9.171.50.237] (unknown [9.171.50.237])
-        by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
-        Tue, 14 Mar 2023 16:37:34 +0000 (GMT)
-Message-ID: <62b254d84463338f0210b52e37628d05416787d1.camel@linux.ibm.com>
-Subject: Re: [PATCH v3 01/38] Kconfig: introduce HAS_IOPORT option and
- select it as necessary
-From:   Niklas Schnelle <schnelle@linux.ibm.com>
-To:     Arnd Bergmann <arnd@arndb.de>,
-        Richard Henderson <richard.henderson@linaro.org>,
-        Ivan Kokshaysky <ink@jurassic.park.msu.ru>,
-        Matt Turner <mattst88@gmail.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Michal Simek <monstr@monstr.eu>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "James E.J. Bottomley" <James.Bottomley@HansenPartnership.com>,
-        Helge Deller <deller@gmx.de>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "David S. Miller" <davem@davemloft.net>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Uwe =?ISO-8859-1?Q?Kleine-K=F6nig?= 
-        <u.kleine-koenig@pengutronix.de>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-        linux-pci@vger.kernel.org, Arnd Bergmann <arnd@kernel.org>,
-        linux-alpha@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
-        linux-sh@vger.kernel.org, sparclinux@vger.kernel.org,
-        linux-um@lists.infradead.org
-Date:   Tue, 14 Mar 2023 17:37:34 +0100
-In-Reply-To: <20230314121216.413434-2-schnelle@linux.ibm.com>
-References: <20230314121216.413434-1-schnelle@linux.ibm.com>
-         <20230314121216.413434-2-schnelle@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        with ESMTP id S231247AbjCOFOw (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 15 Mar 2023 01:14:52 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C19E2231FD;
+        Tue, 14 Mar 2023 22:14:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+        References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+        Content-Type:Content-ID:Content-Description;
+        bh=4pf/rLft+uZgd6JDRs5O+Xa8ZHam0KkL1tl8wFZFlZk=; b=cf+tbcgA7nZNIVAuMabdqjl6VU
+        F5KZvf8zJ+HKhlelPGfge4a8lxHFrx76gg7vi5JO7EEDZXRnP+Z9NBhRNnMC4CaHY1TAicWGG/kdb
+        5uyAK7J8ZfRNMeVfR1ImsPMfnGNs/iaODI8VVJvU0tioNwVM72nOtg/EhCnBo7te4Wjn1wlcmHIel
+        4Rd74dCa26lGODfVfEiQB2pxIYQpcuAYkI9gSy7+EaezwJD0swkW6gWR9RVWVqPBAF4Y3RUUil4ky
+        B5aWaCvP2rYuJu+m7dEIuLvZEgh3yrakeOLBArHKNip9eyO02qUAiIcwFIzf/w0wvj0nin63z49St
+        sP2Krppg==;
+Received: from willy by casper.infradead.org with local (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1pcJTL-00DYBe-Pc; Wed, 15 Mar 2023 05:14:47 +0000
+From:   "Matthew Wilcox (Oracle)" <willy@infradead.org>
+To:     linux-arch@vger.kernel.org
+Cc:     "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        linux-ia64@vger.kernel.org
+Subject: [PATCH v4 12/36] ia64: Implement the new page table range API
+Date:   Wed, 15 Mar 2023 05:14:20 +0000
+Message-Id: <20230315051444.3229621-13-willy@infradead.org>
+X-Mailer: git-send-email 2.37.1
+In-Reply-To: <20230315051444.3229621-1-willy@infradead.org>
+References: <20230315051444.3229621-1-willy@infradead.org>
 MIME-Version: 1.0
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: GueKt5igeUn3bYmxiu67S5oTPZyYNUi9
-X-Proofpoint-GUID: 5FevvOZ3EWLw6_zZHyJRkdUMIbd32WjR
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-14_10,2023-03-14_02,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0 phishscore=0
- mlxlogscore=675 mlxscore=0 priorityscore=1501 impostorscore=0
- clxscore=1015 malwarescore=0 spamscore=0 bulkscore=0 adultscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2212070000 definitions=main-2303140137
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, 2023-03-14 at 13:11 +0100, Niklas Schnelle wrote:
-> We introduce a new HAS_IOPORT Kconfig option to indicate support for I/O
-> Port access. In a future patch HAS_IOPORT=3Dn will disable compilation of
-> the I/O accessor functions inb()/outb() and friends on architectures
-> which can not meaningfully support legacy I/O spaces such as s390. Also
-> add dependencies on HAS_IOPORT for the ISA and HAVE_EISA config options
-> as these busses always go along with HAS_IOPORT.
->=20
-> The "depends on" relations on HAS_IOPORT in drivers as well as ifdefs
-> for HAS_IOPORT specific sections will be added in subsequent patches on
-> a per subsystem basis.
->=20
-> Co-developed-by: Arnd Bergmann <arnd@kernel.org>
-> Signed-off-by: Niklas Schnelle <schnelle@linux.ibm.com>
-> ---
->=20
+Add PFN_PTE_SHIFT, update_mmu_cache_range() and flush_dcache_folio().
+Change the PG_arch_1 (aka PG_dcache_clean) flag from being per-page to
+per-folio, which makes arch_dma_mark_clean() and mark_clean() a little
+more exciting.
 
-@Arnd, I swear I asked you and then added Signed-off-bys for all these
-Co-developed-bys as suggested by checkpatch. Sadly that must have been
-during my failed attempt of converting to b4 prep / b4 send before
-sending this last Friday and then it got lost. It almost worked and is
-a very nice work flow except that b4 currently can only use a single
-list of To/Cc fields and for this treewide series that would probably
-hit mail server limits. Added it now.
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: linux-ia64@vger.kernel.org
+---
+ arch/ia64/hp/common/sba_iommu.c    | 26 +++++++++++++++-----------
+ arch/ia64/include/asm/cacheflush.h | 14 ++++++++++----
+ arch/ia64/include/asm/pgtable.h    |  4 ++--
+ arch/ia64/mm/init.c                | 28 +++++++++++++++++++---------
+ 4 files changed, 46 insertions(+), 26 deletions(-)
 
-Thanks,
-Niklas
+diff --git a/arch/ia64/hp/common/sba_iommu.c b/arch/ia64/hp/common/sba_iommu.c
+index 8ad6946521d8..48d475f10003 100644
+--- a/arch/ia64/hp/common/sba_iommu.c
++++ b/arch/ia64/hp/common/sba_iommu.c
+@@ -798,22 +798,26 @@ sba_io_pdir_entry(u64 *pdir_ptr, unsigned long vba)
+ #endif
+ 
+ #ifdef ENABLE_MARK_CLEAN
+-/**
++/*
+  * Since DMA is i-cache coherent, any (complete) pages that were written via
+  * DMA can be marked as "clean" so that lazy_mmu_prot_update() doesn't have to
+  * flush them when they get mapped into an executable vm-area.
+  */
+-static void
+-mark_clean (void *addr, size_t size)
++static void mark_clean(void *addr, size_t size)
+ {
+-	unsigned long pg_addr, end;
+-
+-	pg_addr = PAGE_ALIGN((unsigned long) addr);
+-	end = (unsigned long) addr + size;
+-	while (pg_addr + PAGE_SIZE <= end) {
+-		struct page *page = virt_to_page((void *)pg_addr);
+-		set_bit(PG_arch_1, &page->flags);
+-		pg_addr += PAGE_SIZE;
++	struct folio *folio = virt_to_folio(addr);
++	ssize_t left = size;
++	size_t offset = offset_in_folio(folio, addr);
++
++	if (offset) {
++		left -= folio_size(folio) - offset;
++		folio = folio_next(folio);
++	}
++
++	while (left >= folio_size(folio)) {
++		set_bit(PG_arch_1, &folio->flags);
++		left -= folio_size(folio);
++		folio = folio_next(folio);
+ 	}
+ }
+ #endif
+diff --git a/arch/ia64/include/asm/cacheflush.h b/arch/ia64/include/asm/cacheflush.h
+index 708c0fa5d975..eac493fa9e0d 100644
+--- a/arch/ia64/include/asm/cacheflush.h
++++ b/arch/ia64/include/asm/cacheflush.h
+@@ -13,10 +13,16 @@
+ #include <asm/page.h>
+ 
+ #define ARCH_IMPLEMENTS_FLUSH_DCACHE_PAGE 1
+-#define flush_dcache_page(page)			\
+-do {						\
+-	clear_bit(PG_arch_1, &(page)->flags);	\
+-} while (0)
++static inline void flush_dcache_folio(struct folio *folio)
++{
++	clear_bit(PG_arch_1, &folio->flags);
++}
++#define flush_dcache_folio flush_dcache_folio
++
++static inline void flush_dcache_page(struct page *page)
++{
++	flush_dcache_folio(page_folio(page));
++}
+ 
+ extern void flush_icache_range(unsigned long start, unsigned long end);
+ #define flush_icache_range flush_icache_range
+diff --git a/arch/ia64/include/asm/pgtable.h b/arch/ia64/include/asm/pgtable.h
+index 21c97e31a28a..5450d59e4fb9 100644
+--- a/arch/ia64/include/asm/pgtable.h
++++ b/arch/ia64/include/asm/pgtable.h
+@@ -206,6 +206,7 @@ ia64_phys_addr_valid (unsigned long addr)
+ #define RGN_MAP_SHIFT (PGDIR_SHIFT + PTRS_PER_PGD_SHIFT - 3)
+ #define RGN_MAP_LIMIT	((1UL << RGN_MAP_SHIFT) - PAGE_SIZE)	/* per region addr limit */
+ 
++#define PFN_PTE_SHIFT	PAGE_SHIFT
+ /*
+  * Conversion functions: convert page frame number (pfn) and a protection value to a page
+  * table entry (pte).
+@@ -303,8 +304,6 @@ static inline void set_pte(pte_t *ptep, pte_t pteval)
+ 	*ptep = pteval;
+ }
+ 
+-#define set_pte_at(mm,addr,ptep,pteval) set_pte(ptep,pteval)
+-
+ /*
+  * Make page protection values cacheable, uncacheable, or write-
+  * combining.  Note that "protection" is really a misnomer here as the
+@@ -396,6 +395,7 @@ pte_same (pte_t a, pte_t b)
+ 	return pte_val(a) == pte_val(b);
+ }
+ 
++#define update_mmu_cache_range(vma, address, ptep, nr) do { } while (0)
+ #define update_mmu_cache(vma, address, ptep) do { } while (0)
+ 
+ extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
+diff --git a/arch/ia64/mm/init.c b/arch/ia64/mm/init.c
+index 7f5353e28516..b95debabdc2a 100644
+--- a/arch/ia64/mm/init.c
++++ b/arch/ia64/mm/init.c
+@@ -50,30 +50,40 @@ void
+ __ia64_sync_icache_dcache (pte_t pte)
+ {
+ 	unsigned long addr;
+-	struct page *page;
++	struct folio *folio;
+ 
+-	page = pte_page(pte);
+-	addr = (unsigned long) page_address(page);
++	folio = page_folio(pte_page(pte));
++	addr = (unsigned long)folio_address(folio);
+ 
+-	if (test_bit(PG_arch_1, &page->flags))
++	if (test_bit(PG_arch_1, &folio->flags))
+ 		return;				/* i-cache is already coherent with d-cache */
+ 
+-	flush_icache_range(addr, addr + page_size(page));
+-	set_bit(PG_arch_1, &page->flags);	/* mark page as clean */
++	flush_icache_range(addr, addr + folio_size(folio));
++	set_bit(PG_arch_1, &folio->flags);	/* mark page as clean */
+ }
+ 
+ /*
+- * Since DMA is i-cache coherent, any (complete) pages that were written via
++ * Since DMA is i-cache coherent, any (complete) folios that were written via
+  * DMA can be marked as "clean" so that lazy_mmu_prot_update() doesn't have to
+  * flush them when they get mapped into an executable vm-area.
+  */
+ void arch_dma_mark_clean(phys_addr_t paddr, size_t size)
+ {
+ 	unsigned long pfn = PHYS_PFN(paddr);
++	struct folio *folio = page_folio(pfn_to_page(pfn));
++	ssize_t left = size;
++	size_t offset = offset_in_folio(folio, paddr);
+ 
+-	do {
++	if (offset) {
++		left -= folio_size(folio) - offset;
++		folio = folio_next(folio);
++	}
++
++	while (left >= (ssize_t)folio_size(folio)) {
+ 		set_bit(PG_arch_1, &pfn_to_page(pfn)->flags);
+-	} while (++pfn <= PHYS_PFN(paddr + size - 1));
++		left -= folio_size(folio);
++		folio = folio_next(folio);
++	}
+ }
+ 
+ inline void
+-- 
+2.39.2
 
