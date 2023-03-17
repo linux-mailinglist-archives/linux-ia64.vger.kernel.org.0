@@ -2,67 +2,66 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06B7D6BF610
-	for <lists+linux-ia64@lfdr.de>; Sat, 18 Mar 2023 00:16:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id BB5926BF5ED
+	for <lists+linux-ia64@lfdr.de>; Sat, 18 Mar 2023 00:04:29 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229530AbjCQXQN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 17 Mar 2023 19:16:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51350 "EHLO
+        id S229924AbjCQXE2 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 17 Mar 2023 19:04:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229769AbjCQXQM (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 17 Mar 2023 19:16:12 -0400
-Received: from sragenkab.go.id (mail.sragenkab.go.id [103.172.109.4])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 1C71528E83
-        for <linux-ia64@vger.kernel.org>; Fri, 17 Mar 2023 16:16:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=sragenkab.go.id;
-         h=mime-version:content-type:content-transfer-encoding:date:from
-        :to:subject:reply-to:message-id; q=dns/txt; s=dkim1; bh=QGcIAmD5
-        O/Y9qXzDV8MxyimbsW3+rMaQ/kz75GzBHbk=; b=F8ROy0owlYcDvo4Y4ZmFwhfV
-        x6pnMQeHyyDa9Z1fHWkfCsdwzpNrLoXq06HEeVxParkAvhQQ15v+c3azWQt/8kJB
-        nRGBZhWyglr1eTCJC0c162yVMnBMBEMvfz2Ht7tSCtumbAHNoHRrHEwSUZ5SjVXD
-        VyKftBBkIfPcRlrEP4exQsLk7EuTZ8HicJbm4BAbjtGNEBG6BnskBDaUvYr82PKU
-        GdGpfXneoxcdAqpMFFnODnNgcSQw8djZmMG+cd17f2MqSXENAO+0OeqU/aUD/vk4
-        i/Qr8aQcNJ/s+5dsFUkycShCbfNCmxGLynGI+LOlkVo/yjbyA2tAHAAAkpraBg==
-Received: (qmail 61809 invoked from network); 15 Mar 2023 02:02:23 -0000
-Received: from localhost (HELO mail2.sragenkab.go.id) (127.0.0.1)
-  by localhost with SMTP; 15 Mar 2023 02:02:23 -0000
+        with ESMTP id S230182AbjCQXET (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 17 Mar 2023 19:04:19 -0400
+X-Greylist: delayed 469 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Fri, 17 Mar 2023 16:03:57 PDT
+Received: from albireo.enyo.de (albireo.enyo.de [37.24.231.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 503DD3AA0;
+        Fri, 17 Mar 2023 16:03:56 -0700 (PDT)
+Received: from [172.17.203.2] (port=47891 helo=deneb.enyo.de)
+        by albireo.enyo.de ([172.17.140.2]) with esmtps (TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
+        id 1pdIzQ-001qjd-6U; Fri, 17 Mar 2023 22:56:00 +0000
+Received: from fw by deneb.enyo.de with local (Exim 4.94.2)
+        (envelope-from <fw@deneb.enyo.de>)
+        id 1pdIzP-000Qvx-TG; Fri, 17 Mar 2023 23:55:59 +0100
+From:   Florian Weimer <fw@deneb.enyo.de>
+To:     Ard Biesheuvel <ardb@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, Jonathan Corbet <corbet@lwn.net>,
+        Arnd Bergmann <arnd@arndb.de>, Tony Luck <tony.luck@intel.com>,
+        Jessica Clarke <jrtc27@jrtc27.com>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Matthew Wilcox <willy@infradead.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-ia64@vger.kernel.org
+Subject: Re: [RFC PATCH 0/5] Retire IA64/Itanium support
+References: <20230215100008.2565237-1-ardb@kernel.org>
+Date:   Fri, 17 Mar 2023 23:55:59 +0100
+In-Reply-To: <20230215100008.2565237-1-ardb@kernel.org> (Ard Biesheuvel's
+        message of "Wed, 15 Feb 2023 11:00:03 +0100")
+Message-ID: <87y1nvng1s.fsf@mid.deneb.enyo.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
-Content-Transfer-Encoding: 7bit
-Date:   Tue, 14 Mar 2023 19:02:22 -0700
-From:   Ibrahim Tafa <jurnalsukowati@sragenkab.go.id>
-To:     undisclosed-recipients:;
-Subject: LOAN FUNDING OPPORTUNITY
-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
-Mail-Reply-To: <ibrahimtafa@abienceinvestmentsfze.com>
-Message-ID: <c4a45754541c8e01d8faca63bce6519b@sragenkab.go.id>
-X-Sender: jurnalsukowati@sragenkab.go.id
-User-Agent: Roundcube Webmail/0.8.1
-X-Spam-Status: No, score=3.1 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,
-        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_MONEY,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+* Ard Biesheuvel:
 
+> The IA64 port of Linux has no maintainer, and according to a report from
+> its only remaining user [0], it has been broken for a month and nobody
+> cares.
+>
+> Given that keeping a complex but unused architecture alive uses up
+> valuable developer bandwidth, let's just get rid of it.
+>
+> This supersedes my patch proposing to mark it as 'dead', which received
+> no replies from anyone that wants to keep it alive. [1]
 
--- 
-Greetings,
-   I am contacting you based on the Investment/Loan opportunity for 
-companies in need of financing a project/business, We have developed a 
-new method of financing that doesn't take long to receive financing from 
-our clients.
-    If you are looking for funds to finance your project/Business or if 
-you are willing to work as our agent in your country to find clients in 
-need of financing and earn commissions, then get back to me for more 
-details.
+Is this still going ahead?
 
-Regards,
-Ibrahim Tafa
-ABIENCE INVESTMENT GROUP FZE, United Arab Emirates
+In userspace, ia64 is of course full of special cases, too, so many of
+us really want to see it gone, but we can't really start the removal
+process while there is still kernel support.
