@@ -2,101 +2,130 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8CE56C0CB2
-	for <lists+linux-ia64@lfdr.de>; Mon, 20 Mar 2023 10:01:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C4D96C46AC
+	for <lists+linux-ia64@lfdr.de>; Wed, 22 Mar 2023 10:40:56 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230266AbjCTJBa (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 20 Mar 2023 05:01:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33974 "EHLO
+        id S230398AbjCVJky (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 22 Mar 2023 05:40:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230515AbjCTJB1 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 20 Mar 2023 05:01:27 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E50B5976C
-        for <linux-ia64@vger.kernel.org>; Mon, 20 Mar 2023 02:01:25 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id u11-20020a05600c19cb00b003edcc414997so2113776wmq.3
-        for <linux-ia64@vger.kernel.org>; Mon, 20 Mar 2023 02:01:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112; t=1679302884;
-        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4jlL8pzL6NVZbuVjV4h5KPilkuQmPMJRpXcDIhZ2tX0=;
-        b=kvNZSEfrPt2ARhJXUw+f9Op/uFdmej+cW0RpGmmfUU+wKNpwCVllRp2CvVwqyi9EGZ
-         G3OStnNoE4MiKv/wEHY+lct9/uEYy6zzgKhQ/cVFHy/0nCwfVvzk5/Ibr+NAjonbtrX4
-         zCYvpQLHmp0FsFJ6W5lNYHp7KnCOJrFD4RlF/EVm7iP5XNQVgfkAAO63rxK5VRGjx3uO
-         Vj5pcdHefCyrJYgVqWi54PoeCNs/onJvYkaxqr/yNqdyyv7u9IRh0LLdnBmopXBPk7DK
-         cl0/iIy4ZPNRjG+/nBloXVas2P5ulRTAnDfWOVH/qdYAXYmqDU691NDK4kaI2Cfo/rAG
-         QY4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1679302884;
-        h=to:subject:message-id:date:from:reply-to:mime-version
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4jlL8pzL6NVZbuVjV4h5KPilkuQmPMJRpXcDIhZ2tX0=;
-        b=nvpmg5mWErVJcWKFfC/I9yEa1ClImj52i8PZb0WrP13Uf61N69j40KQSiP7KeQs5Te
-         wbq/3Y1EnAnzBAXhGeQ8r3d2JGZTyf7cj8SYmnj9ekIP7ZpMJdpJqzaPFkVaXZ9x1STS
-         VvY3VSrhgqfDsuj4Yxu9Dp2llbIGS3Nfdx3gKWl9bEQUkBQ7la1OMAy/ne/HjvuAof7w
-         5bGXRm9iOS9lWkb1M2fI8BXDgLBZEAHYOUDbf+R0T5K+rCXRweJCbP+FtSP48CBJVSs7
-         gFkWMbCOjVtSi+XxMmxWIlSLsegbaltA8pdYDfJQBRFyLXnDAGP7eLAtIIq0yVEIBcJ7
-         pbGA==
-X-Gm-Message-State: AO0yUKW10wUArt1NQjwkdcYNC4k9sn+gN+V5D7qFeQSu0fcUi04pD8ZD
-        +4Z2QVV2qmsMTxPwCCVXP7sa63hOxAo47ybpZIU=
-X-Google-Smtp-Source: AK7set/6VPSX/SY7/1Bk+1TftPM8DlKa8Oc4B0uxIt+VXT8vGB9EFnijkuFO+S58jXmk/hdwkfpckCT2raB2WJJoE9I=
-X-Received: by 2002:a05:600c:3b29:b0:3ed:2e02:1bf5 with SMTP id
- m41-20020a05600c3b2900b003ed2e021bf5mr5813215wms.6.1679302884271; Mon, 20 Mar
- 2023 02:01:24 -0700 (PDT)
+        with ESMTP id S229873AbjCVJkx (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 22 Mar 2023 05:40:53 -0400
+Received: from casper.infradead.org (casper.infradead.org [IPv6:2001:8b0:10b:1236::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6D831989;
+        Wed, 22 Mar 2023 02:40:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+        References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=NIAHg4If27BetC+4UZobAV0PxBnmTt3z+fWts2bKQWA=; b=rgS/CEWAlsTurPe5ucKBiXaDhr
+        ew26BoXauCH9lin/sWfYKxjLJe0WysSt1P4iOSDXV1qfu4JSoUQNAlogwxNIDbcZw5jKIurC6wBP0
+        +/+Z8kdUTp/ZyyNP9QPql3dhW8rHV0QqkfTXWuMoE0vryMGgt+T+aOFFPTKbmbiRK5T84YLaG6C4t
+        iRHD6M2ZFvI2kES3RCcIFI7D2yWW07o0ZjcKw1qqr5MTJddfTUE9AHHetindb2rqkUVxpV/GEVyQu
+        B4Z/fkelloNxIIEvBXXKz9pvL88Uc5JVf1N0nCKJVM3jEC4cK78BNevAeHHN3c0k/dy9sGC9ChrU5
+        42+coITw==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+        by casper.infradead.org with esmtpsa (Exim 4.94.2 #2 (Red Hat Linux))
+        id 1peuwq-002t99-FB; Wed, 22 Mar 2023 09:40:00 +0000
+Received: from hirez.programming.kicks-ass.net (hirez.programming.kicks-ass.net [192.168.1.225])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (Client did not present a certificate)
+        by noisy.programming.kicks-ass.net (Postfix) with ESMTPS id 7E63F3001F7;
+        Wed, 22 Mar 2023 10:39:56 +0100 (CET)
+Received: by hirez.programming.kicks-ass.net (Postfix, from userid 1000)
+        id 16170205D08C3; Wed, 22 Mar 2023 10:39:56 +0100 (CET)
+Date:   Wed, 22 Mar 2023 10:39:55 +0100
+From:   Peter Zijlstra <peterz@infradead.org>
+To:     Valentin Schneider <vschneid@redhat.com>
+Cc:     linux-alpha@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-snps-arc@lists.infradead.org,
+        linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
+        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-mips@vger.kernel.org,
+        openrisc@lists.librecores.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-riscv@lists.infradead.org,
+        linux-s390@vger.kernel.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, linux-xtensa@linux-xtensa.org,
+        x86@kernel.org, Steven Rostedt <rostedt@goodmis.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Daniel Bristot de Oliveira <bristot@redhat.com>,
+        Marcelo Tosatti <mtosatti@redhat.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        "H. Peter Anvin" <hpa@zytor.com>, Marc Zyngier <maz@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Guo Ren <guoren@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH v5 1/7] trace: Add trace_ipi_send_cpumask()
+Message-ID: <20230322093955.GR2017917@hirez.programming.kicks-ass.net>
+References: <20230307143558.294354-1-vschneid@redhat.com>
+ <20230307143558.294354-2-vschneid@redhat.com>
 MIME-Version: 1.0
-Received: by 2002:adf:db8d:0:b0:2cf:f0c8:4b6d with HTTP; Mon, 20 Mar 2023
- 02:01:23 -0700 (PDT)
-Reply-To: ninacoulibaly03@myself.com
-From:   nina coulibaly <regionalmanager.nina01@gmail.com>
-Date:   Mon, 20 Mar 2023 02:01:23 -0700
-Message-ID: <CADndTXu0r2n=sTS4pHcNvgSiJmAz1XLcZcZdh=Hm+b53d6nQXA@mail.gmail.com>
-Subject: from nina coulibaly
-To:     undisclosed-recipients:;
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: Yes, score=5.0 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
-        *      https://www.dnswl.org/, no trust
-        *      [2a00:1450:4864:20:0:0:0:32e listed in]
-        [list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5868]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_ENVFROM_END_DIGIT Envelope-from freemail username ends
-        *       in digit
-        *      [regionalmanager.nina01[at]gmail.com]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
-        *      provider
-        *      [regionalmanager.nina01[at]gmail.com]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [ninacoulibaly03[at]myself.com]
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        *  2.9 UNDISC_FREEM Undisclosed recipients + freemail reply-to
-        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
-        *      different freemails
-X-Spam-Level: *****
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230307143558.294354-2-vschneid@redhat.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+        URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dear,
+On Tue, Mar 07, 2023 at 02:35:52PM +0000, Valentin Schneider wrote:
+> trace_ipi_raise() is unsuitable for generically tracing IPI sources due to
+> its "reason" argument being an uninformative string (on arm64 all you get
+> is "Function call interrupts" for SMP calls).
+> 
+> Add a variant of it that exports a target cpumask, a callsite and a callback.
+> 
+> Signed-off-by: Valentin Schneider <vschneid@redhat.com>
+> Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+> ---
+>  include/trace/events/ipi.h | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+> 
+> diff --git a/include/trace/events/ipi.h b/include/trace/events/ipi.h
+> index 0be71dad6ec03..b1125dc27682c 100644
+> --- a/include/trace/events/ipi.h
+> +++ b/include/trace/events/ipi.h
+> @@ -35,6 +35,28 @@ TRACE_EVENT(ipi_raise,
+>  	TP_printk("target_mask=%s (%s)", __get_bitmask(target_cpus), __entry->reason)
+>  );
+>  
+> +TRACE_EVENT(ipi_send_cpumask,
+> +
+> +	TP_PROTO(const struct cpumask *cpumask, unsigned long callsite, void *callback),
+> +
+> +	TP_ARGS(cpumask, callsite, callback),
+> +
+> +	TP_STRUCT__entry(
+> +		__cpumask(cpumask)
+> +		__field(void *, callsite)
+> +		__field(void *, callback)
+> +	),
+> +
+> +	TP_fast_assign(
+> +		__assign_cpumask(cpumask, cpumask_bits(cpumask));
+> +		__entry->callsite = (void *)callsite;
+> +		__entry->callback = callback;
+> +	),
+> +
+> +	TP_printk("cpumask=%s callsite=%pS callback=%pS",
+> +		  __get_cpumask(cpumask), __entry->callsite, __entry->callback)
+> +);
 
-Please grant me permission to share a very crucial discussion with
-you.I am looking forward to hearing from you at your earliest
-convenience.
+Would it make sense to add a variant like: ipi_send_cpu() that records a
+single cpu instead of a cpumask. A lot of sites seems to do:
+cpumask_of(cpu) for that first argument, and it seems to me it is quite
+daft to have to memcpy a full multi-word cpumask in those cases.
 
-Mrs. Nina Coulibaly
+Remember, nr_possible_cpus > 64 is quite common these days.
