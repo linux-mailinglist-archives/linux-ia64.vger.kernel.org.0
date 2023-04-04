@@ -2,158 +2,146 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF8CD6D3D4E
-	for <lists+linux-ia64@lfdr.de>; Mon,  3 Apr 2023 08:27:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BDFC6D595E
+	for <lists+linux-ia64@lfdr.de>; Tue,  4 Apr 2023 09:22:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231633AbjDCG1C (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 3 Apr 2023 02:27:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39276 "EHLO
+        id S233856AbjDDHW0 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 4 Apr 2023 03:22:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50796 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231634AbjDCG0u (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 3 Apr 2023 02:26:50 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C70E4976C
-        for <linux-ia64@vger.kernel.org>; Sun,  2 Apr 2023 23:26:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1680503161;
-        h=from:from:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=afBNaZ0DMuI7GB+2iDCGbyFFwGSVdQ773bP8QWimT1I=;
-        b=WGbCfhyNS/VPryiH5pv5Y045Yf30rtPkhQMrg1OuKvs/GVMUUPi1Mmj4S67ZUrVN5AyX1+
-        B2RbybyBNuSryu5OW84gJkX1n6+FboO97OrMdVJ07KpuHlmgk8ho/gTGacPA0sWLLrF54e
-        VHHRtJPTKbx2ewAjqlaJKOPeTjOvic0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-244-28z4qi46NM2VpjD3-hJMRQ-1; Mon, 03 Apr 2023 02:25:57 -0400
-X-MC-Unique: 28z4qi46NM2VpjD3-hJMRQ-1
-Received: from smtp.corp.redhat.com (int-mx08.intmail.prod.int.rdu2.redhat.com [10.11.54.8])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S233851AbjDDHWY (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 4 Apr 2023 03:22:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B63A3268B;
+        Tue,  4 Apr 2023 00:22:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 0C99A801210;
-        Mon,  3 Apr 2023 06:25:56 +0000 (UTC)
-Received: from [10.72.12.158] (ovpn-12-158.pek2.redhat.com [10.72.12.158])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 2D5BAC15BA0;
-        Mon,  3 Apr 2023 06:25:40 +0000 (UTC)
-Reply-To: Gavin Shan <gshan@redhat.com>
-Subject: Re: [RFC PATCH 00/32] ACPI/arm64: add support for virtual cpuhotplug
-To:     Shaoqin Huang <shahuang@redhat.com>,
-        James Morse <james.morse@arm.com>, linux-pm@vger.kernel.org,
-        loongarch@lists.linux.dev, kvmarm@lists.linux.dev,
-        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
-        linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        x86@kernel.org
-Cc:     Marc Zyngier <maz@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2588A62F5C;
+        Tue,  4 Apr 2023 07:22:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18439C433D2;
+        Tue,  4 Apr 2023 07:22:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1680592939;
+        bh=zNbuc2c7Q9IWg5uy9hdmHULoUQBr2Hs/BAYhilZF5F4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=CqHblzUj1z5GNNRhlVv5PjhJZbkNnPlRJpd8BNP9SFM3LozxkSRnpQ6pJHq1734IE
+         nD0HzFbv58nu6J/EDvb0/r/dPnGTG4/RX9IFH1dtOkbIUrpX4gBAxv+iMBA5DHcRED
+         emlRqtXMUO+8S4B3gXHGAfaZat5oK//B6B2YKi3S5Gq0z1OVXNwTRQKMwaAeo6YUWs
+         fVidc4rMbc4aUoxxzgWhlqdgki6r0Y6O3oX30JhcakMQVSnJAF09H5rT22qPoqcLsD
+         1rUCPCKRgr6yla1vp2aXejTBBX5r0wagFlZzYRUY3h9pSLxjoBb/Ad/MMOzP9CoNyA
+         E21K1u28YAOpQ==
+Date:   Tue, 4 Apr 2023 10:22:00 +0300
+From:   Mike Rapoport <rppt@kernel.org>
+To:     Justin Forbes <jforbes@fedoraproject.org>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Arnd Bergmann <arnd@arndb.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Suzuki K Poulose <suzuki.poulose@arm.com>,
-        Oliver Upton <oliver.upton@linux.dev>,
-        Len Brown <lenb@kernel.org>,
-        Rafael Wysocki <rafael@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Salil Mehta <salil.mehta@huawei.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guo Ren <guoren@kernel.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Rich Felker <dalias@libc.org>,
         Russell King <linux@armlinux.org.uk>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>
-References: <20230203135043.409192-1-james.morse@arm.com>
- <e17627fb-283e-dd42-94c1-f89dea167577@redhat.com>
-From:   Gavin Shan <gshan@redhat.com>
-Message-ID: <972ed7df-78cd-e02a-7376-78c806181b5f@redhat.com>
-Date:   Mon, 3 Apr 2023 14:25:36 +0800
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.2.0
+        Will Deacon <will@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Zi Yan <ziy@nvidia.com>, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mm@kvack.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of
+ ARCH_FORCE_MAX_ORDER
+Message-ID: <ZCvQGJzdED+An8an@kernel.org>
+References: <20230325060828.2662773-1-rppt@kernel.org>
+ <20230325060828.2662773-3-rppt@kernel.org>
+ <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
 MIME-Version: 1.0
-In-Reply-To: <e17627fb-283e-dd42-94c1-f89dea167577@redhat.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.8
-X-Spam-Status: No, score=-2.6 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Shaoqin,
-
-On 3/29/23 1:52 PM, Shaoqin Huang wrote:
-> On 2/3/23 21:50, James Morse wrote:
-
-[...]
-
->>
->> The first patch has already been posted as a fix here:
->> https://www.spinics.net/lists/linux-ia64/msg21920.html
->> I've only build tested Loongarch and ia64.
->>
->>
->> If folk want to play along at home, you'll need a copy of Qemu that supports this.
->> https://github.com/salil-mehta/qemu.git salil/virt-cpuhp-armv8/rfc-v1-port29092022.psci.present
->>
->> You'll need to fix the numbers of KVM_CAP_ARM_HVC_TO_USER and KVM_CAP_ARM_PSCI_TO_USER
->> to match your host kernel. Replace your '-smp' argument with something like:
->> | -smp cpus=1,maxcpus=3,cores=3,threads=1,sockets=1
->>
->> then feed the following to the Qemu montior;
->> | (qemu) device_add driver=host-arm-cpu,core-id=1,id=cpu1
->> | (qemu) device_del cpu1
->>
->>
->> This series is based on v6.2-rc3, and can be retrieved from:
->> https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git/ virtual_cpu_hotplug/rfc/v1
+On Wed, Mar 29, 2023 at 10:55:37AM -0500, Justin Forbes wrote:
+> On Sat, Mar 25, 2023 at 1:09 AM Mike Rapoport <rppt@kernel.org> wrote:
+> >
+> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> >
+> > It is not a good idea to change fundamental parameters of core memory
+> > management. Having predefined ranges suggests that the values within
+> > those ranges are sensible, but one has to *really* understand
+> > implications of changing MAX_ORDER before actually amending it and
+> > ranges don't help here.
+> >
+> > Drop ranges in definition of ARCH_FORCE_MAX_ORDER and make its prompt
+> > visible only if EXPERT=y
 > 
-> I applied this patch series on v6.2-rc3 and using the QEMU cloned from the salil-mehta/qemu.git repo. But when I try to run the QEMU, it shows:
+> I do not like suddenly hiding this behind EXPERT for a couple of
+> reasons.  Most importantly, it will silently change the config for
+> users building with an old kernel config.  If a user has for instance
+> "13" set and building with 4K pages, as is the current configuration
+> for Fedora and RHEL aarch64 builds, an oldconfig build will now set it
+> to 10 with no indication that it is doing so.  And while I think that
+> 10 is a fine default for many aarch64 users, there are valid reasons
+> for choosing other values. Putting this behind expert makes it much
+> less obvious that this is an option.
+
+That's the idea of EXPERT, no?
+
+This option was intended to allow allocation of huge pages for
+architectures that had PMD_ORDER > MAX_ORDER and not to allow user to
+select size of maximal physically contiguous allocation.
+
+Changes to MAX_ORDER fundamentally change the behaviour of core mm and
+unless users *really* know what they are doing there is no reason to choose
+non-default values so hiding this option behind EXPERT seems totally
+appropriate to me.
+ 
+> Justin
 > 
-> $ qemu-system-aarch64: -accel kvm: Failed to enable KVM_CAP_ARM_PSCI_TO_USER cap.
-> 
-> Here is the command I use:
-> 
-> $ qemu-system-aarch64
-> -machine virt
-> -bios /usr/share/qemu-efi-aarch64/QEMU_EFI.fd
-> -accel kvm
-> -m 4096
-> -smp cpus=1,maxcpus=3,cores=3,threads=1,sockets=1
-> -cpu host
-> -qmp unix:./src.socket,server,nowait
-> -hda ./XXX.qcow2
-> -serial unix:./src.serial,server,nowait
-> -monitor stdio
-> 
-> It seems something related to your notice: You'll need to fix the numbers of KVM_CAP_ARM_HVC_TO_USER and KVM_CAP_ARM_PSCI_TO_USER
-> to match your host kernel.
-> 
-> But I'm not actually understand what should I fix, since I haven't review the patch series. Could you give me some more information? Maybe I'm doing something wrong.
-> 
+> > Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > Reviewed-by: Zi Yan <ziy@nvidia.com>
+> > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> > ---
+> >  arch/arm64/Kconfig | 4 +---
+> >  1 file changed, 1 insertion(+), 3 deletions(-)
+> >
+> > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> > index e60baf7859d1..7324032af859 100644
+> > --- a/arch/arm64/Kconfig
+> > +++ b/arch/arm64/Kconfig
+> > @@ -1487,11 +1487,9 @@ config XEN
+> >  # 16K |       27          |      14      |       13        |         11         |
+> >  # 64K |       29          |      16      |       13        |         13         |
+> >  config ARCH_FORCE_MAX_ORDER
+> > -       int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
+> > +       int "Maximum zone order" if EXPERT && (ARM64_4K_PAGES || ARM64_16K_PAGES)
+> >         default "13" if ARM64_64K_PAGES
+> > -       range 11 13 if ARM64_16K_PAGES
+> >         default "11" if ARM64_16K_PAGES
+> > -       range 10 15 if ARM64_4K_PAGES
+> >         default "10"
+> >         help
+> >           The kernel memory allocator divides physically contiguous memory
+> > --
+> > 2.35.1
+> >
+> >
 
-When the kernel is rebased to v6.2.rc3, the two capabilities are conflictsing
-between QEMU and host kernel. Please adjust them like below and have a try:
-
-In qemu/linux-headers/linux/kvm.h
-
-#define KVM_CAP_ARM_HVC_TO_USER 250 /* TODO: as per linux 6.1-rc2 */
-#define KVM_CAP_ARM_PSCI_TO_USER 251 /* TODO: as per linux 6.1-rc2 */
-
-In linux/include/uapi/linux/kvm.h
-
-#define KVM_CAP_ARM_HVC_TO_USER 250
-#define KVM_CAP_ARM_PSCI_TO_USER 251
-
-Thanks,
-Gavin
-
-
+-- 
+Sincerely yours,
+Mike.
