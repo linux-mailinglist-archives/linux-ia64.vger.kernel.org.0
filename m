@@ -2,38 +2,67 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BDFC6D595E
-	for <lists+linux-ia64@lfdr.de>; Tue,  4 Apr 2023 09:22:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49A666D5F79
+	for <lists+linux-ia64@lfdr.de>; Tue,  4 Apr 2023 13:50:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233856AbjDDHW0 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 4 Apr 2023 03:22:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50796 "EHLO
+        id S234503AbjDDLuo (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 4 Apr 2023 07:50:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233851AbjDDHWY (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 4 Apr 2023 03:22:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B63A3268B;
-        Tue,  4 Apr 2023 00:22:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2588A62F5C;
-        Tue,  4 Apr 2023 07:22:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18439C433D2;
-        Tue,  4 Apr 2023 07:22:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1680592939;
-        bh=zNbuc2c7Q9IWg5uy9hdmHULoUQBr2Hs/BAYhilZF5F4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CqHblzUj1z5GNNRhlVv5PjhJZbkNnPlRJpd8BNP9SFM3LozxkSRnpQ6pJHq1734IE
-         nD0HzFbv58nu6J/EDvb0/r/dPnGTG4/RX9IFH1dtOkbIUrpX4gBAxv+iMBA5DHcRED
-         emlRqtXMUO+8S4B3gXHGAfaZat5oK//B6B2YKi3S5Gq0z1OVXNwTRQKMwaAeo6YUWs
-         fVidc4rMbc4aUoxxzgWhlqdgki6r0Y6O3oX30JhcakMQVSnJAF09H5rT22qPoqcLsD
-         1rUCPCKRgr6yla1vp2aXejTBBX5r0wagFlZzYRUY3h9pSLxjoBb/Ad/MMOzP9CoNyA
-         E21K1u28YAOpQ==
-Date:   Tue, 4 Apr 2023 10:22:00 +0300
-From:   Mike Rapoport <rppt@kernel.org>
-To:     Justin Forbes <jforbes@fedoraproject.org>
+        with ESMTP id S234424AbjDDLun (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 4 Apr 2023 07:50:43 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DB102D45
+        for <linux-ia64@vger.kernel.org>; Tue,  4 Apr 2023 04:50:36 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id fi11so5927364edb.10
+        for <linux-ia64@vger.kernel.org>; Tue, 04 Apr 2023 04:50:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1680609034;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:sender:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=I+C2675DfMBQc+7bmUpHmKjNV2QoW8Hg7liBbtScQEs=;
+        b=VKGxrdlQBWJ7ddxLJ/wW+kegpzUwC7+BiFIaBhmFUvW5eE6WzTupBV5keAhixq/DRc
+         JCnmMIw+sENwVAY0XOypWk3WuhN+TxvTOed2tWFNSfZP6fhn73v+o7/y4lMF8JR9uaCj
+         IjD+8G+1lhuJph/LZKOSQN9taVlsKAoNDbN0Y=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20210112; t=1680609034;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:sender:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=I+C2675DfMBQc+7bmUpHmKjNV2QoW8Hg7liBbtScQEs=;
+        b=ILlgW2QivSKOa4PEPLqE1mm7YF2UdLz+9sFbLW0VOn0lmJ3Dwa/iCQd3GDSayogg70
+         KG+UkRMKyv6EFGspszlOH9OeqyXqhqv48DkZ34SuC5NGUPVjIAv5O144/jVaR/w4yOfY
+         Atfjm74GVGX83UGfHYe394KcPThMTbDuMfa7dbh6htWtWSOhxlpjEJN5TCUJhVtJK5he
+         fTqQKnet2ofmsKJC1oykSL2q6taufso4/XmGsFewXYpOkZQ+cDwPZtK6ZKt+HvzsGl+s
+         CNAooQFeH5E/zVjAVxG+fFQZqMy4mKbDizhUGTMZXhk1/eUrlz53xOuiEBPfFVl21O2p
+         KKpQ==
+X-Gm-Message-State: AAQBX9c/cOobr1VGW2MuleDcyY0qt6rvXCtzz4jgbTssqTJ+Z7CJoVXk
+        mL35yDwwMLzha5LKYZwXdXNwSB4Wj4RcNB/Ct/QxEl7s
+X-Google-Smtp-Source: AKy350at8y9WBIE+jbGjuUO4fQ0ec6R0QEHPv8/WsOc1oVVTxrX9C/oJcwEIam7PsVCoVsXewrZqVg==
+X-Received: by 2002:a17:906:4c46:b0:932:4255:5902 with SMTP id d6-20020a1709064c4600b0093242555902mr1618395ejw.76.1680609034149;
+        Tue, 04 Apr 2023 04:50:34 -0700 (PDT)
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com. [209.85.128.41])
+        by smtp.gmail.com with ESMTPSA id t12-20020a170906608c00b0093d0867a65csm5948795ejj.175.2023.04.04.04.50.33
+        for <linux-ia64@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 04 Apr 2023 04:50:33 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Received: by mail-wm1-f41.google.com with SMTP id v20-20020a05600c471400b003ed8826253aso802791wmo.0
+        for <linux-ia64@vger.kernel.org>; Tue, 04 Apr 2023 04:50:33 -0700 (PDT)
+X-Received: by 2002:a05:6512:38d1:b0:4e8:45d5:53cd with SMTP id
+ p17-20020a05651238d100b004e845d553cdmr662558lft.12.1680609012911; Tue, 04 Apr
+ 2023 04:50:12 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230325060828.2662773-1-rppt@kernel.org> <20230325060828.2662773-3-rppt@kernel.org>
+ <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com> <ZCvQGJzdED+An8an@kernel.org>
+In-Reply-To: <ZCvQGJzdED+An8an@kernel.org>
+From:   Justin Forbes <jforbes@fedoraproject.org>
+Date:   Tue, 4 Apr 2023 06:50:01 -0500
+X-Gmail-Original-Message-ID: <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
+Message-ID: <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
+Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
+To:     Mike Rapoport <rppt@kernel.org>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         Arnd Bergmann <arnd@arndb.de>,
         Catalin Marinas <catalin.marinas@arm.com>,
@@ -56,92 +85,112 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-mm@kvack.org, linux-sh@vger.kernel.org,
         linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
         sparclinux@vger.kernel.org
-Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of
- ARCH_FORCE_MAX_ORDER
-Message-ID: <ZCvQGJzdED+An8an@kernel.org>
-References: <20230325060828.2662773-1-rppt@kernel.org>
- <20230325060828.2662773-3-rppt@kernel.org>
- <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
-X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIMWL_WL_HIGH,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Mar 29, 2023 at 10:55:37AM -0500, Justin Forbes wrote:
-> On Sat, Mar 25, 2023 at 1:09 AM Mike Rapoport <rppt@kernel.org> wrote:
+On Tue, Apr 4, 2023 at 2:22=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wrot=
+e:
+>
+> On Wed, Mar 29, 2023 at 10:55:37AM -0500, Justin Forbes wrote:
+> > On Sat, Mar 25, 2023 at 1:09=E2=80=AFAM Mike Rapoport <rppt@kernel.org>=
+ wrote:
+> > >
+> > > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
+> > >
+> > > It is not a good idea to change fundamental parameters of core memory
+> > > management. Having predefined ranges suggests that the values within
+> > > those ranges are sensible, but one has to *really* understand
+> > > implications of changing MAX_ORDER before actually amending it and
+> > > ranges don't help here.
+> > >
+> > > Drop ranges in definition of ARCH_FORCE_MAX_ORDER and make its prompt
+> > > visible only if EXPERT=3Dy
 > >
-> > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> >
-> > It is not a good idea to change fundamental parameters of core memory
-> > management. Having predefined ranges suggests that the values within
-> > those ranges are sensible, but one has to *really* understand
-> > implications of changing MAX_ORDER before actually amending it and
-> > ranges don't help here.
-> >
-> > Drop ranges in definition of ARCH_FORCE_MAX_ORDER and make its prompt
-> > visible only if EXPERT=y
-> 
-> I do not like suddenly hiding this behind EXPERT for a couple of
-> reasons.  Most importantly, it will silently change the config for
-> users building with an old kernel config.  If a user has for instance
-> "13" set and building with 4K pages, as is the current configuration
-> for Fedora and RHEL aarch64 builds, an oldconfig build will now set it
-> to 10 with no indication that it is doing so.  And while I think that
-> 10 is a fine default for many aarch64 users, there are valid reasons
-> for choosing other values. Putting this behind expert makes it much
-> less obvious that this is an option.
+> > I do not like suddenly hiding this behind EXPERT for a couple of
+> > reasons.  Most importantly, it will silently change the config for
+> > users building with an old kernel config.  If a user has for instance
+> > "13" set and building with 4K pages, as is the current configuration
+> > for Fedora and RHEL aarch64 builds, an oldconfig build will now set it
+> > to 10 with no indication that it is doing so.  And while I think that
+> > 10 is a fine default for many aarch64 users, there are valid reasons
+> > for choosing other values. Putting this behind expert makes it much
+> > less obvious that this is an option.
+>
+> That's the idea of EXPERT, no?
+>
+> This option was intended to allow allocation of huge pages for
+> architectures that had PMD_ORDER > MAX_ORDER and not to allow user to
+> select size of maximal physically contiguous allocation.
+>
+> Changes to MAX_ORDER fundamentally change the behaviour of core mm and
+> unless users *really* know what they are doing there is no reason to choo=
+se
+> non-default values so hiding this option behind EXPERT seems totally
+> appropriate to me.
 
-That's the idea of EXPERT, no?
+It sounds nice in theory. In practice. EXPERT hides too much. When you
+flip expert, you expose over a 175ish new config options which are
+hidden behind EXPERT.  You don't have to know what you are doing just
+with the MAX_ORDER, but a whole bunch more as well.  If everyone were
+already running 10, this might be less of a problem. At least Fedora
+and RHEL are running 13 for 4K pages on aarch64. This was not some
+accidental choice, we had to carry a patch to even allow it for a
+while.  If this does go in as is, we will likely just carry a patch to
+remove the "if EXPERT", but that is a bit of a disservice to users who
+might be trying to debug something else upstream, bisecting upstream
+kernels or testing a patch.  In those cases, people tend to use
+pristine upstream sources without distro patches to verify, and they
+tend to use their existing configs. With this change, their MAX_ORDER
+will drop to 10 from 13 silently.   That can look like a different
+issue enough to ruin a bisect or have them give bad feedback on a
+patch because it introduces a "regression" which is not a regression
+at all, but a config change they couldn't see.
 
-This option was intended to allow allocation of huge pages for
-architectures that had PMD_ORDER > MAX_ORDER and not to allow user to
-select size of maximal physically contiguous allocation.
-
-Changes to MAX_ORDER fundamentally change the behaviour of core mm and
-unless users *really* know what they are doing there is no reason to choose
-non-default values so hiding this option behind EXPERT seems totally
-appropriate to me.
- 
-> Justin
-> 
-> > Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> > ---
-> >  arch/arm64/Kconfig | 4 +---
-> >  1 file changed, 1 insertion(+), 3 deletions(-)
+>
+> > Justin
 > >
-> > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> > index e60baf7859d1..7324032af859 100644
-> > --- a/arch/arm64/Kconfig
-> > +++ b/arch/arm64/Kconfig
-> > @@ -1487,11 +1487,9 @@ config XEN
-> >  # 16K |       27          |      14      |       13        |         11         |
-> >  # 64K |       29          |      16      |       13        |         13         |
-> >  config ARCH_FORCE_MAX_ORDER
-> > -       int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
-> > +       int "Maximum zone order" if EXPERT && (ARM64_4K_PAGES || ARM64_16K_PAGES)
-> >         default "13" if ARM64_64K_PAGES
-> > -       range 11 13 if ARM64_16K_PAGES
-> >         default "11" if ARM64_16K_PAGES
-> > -       range 10 15 if ARM64_4K_PAGES
-> >         default "10"
-> >         help
-> >           The kernel memory allocator divides physically contiguous memory
-> > --
-> > 2.35.1
-> >
-> >
-
--- 
-Sincerely yours,
-Mike.
+> > > Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
+> > > Reviewed-by: Zi Yan <ziy@nvidia.com>
+> > > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
+> > > ---
+> > >  arch/arm64/Kconfig | 4 +---
+> > >  1 file changed, 1 insertion(+), 3 deletions(-)
+> > >
+> > > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> > > index e60baf7859d1..7324032af859 100644
+> > > --- a/arch/arm64/Kconfig
+> > > +++ b/arch/arm64/Kconfig
+> > > @@ -1487,11 +1487,9 @@ config XEN
+> > >  # 16K |       27          |      14      |       13        |        =
+ 11         |
+> > >  # 64K |       29          |      16      |       13        |        =
+ 13         |
+> > >  config ARCH_FORCE_MAX_ORDER
+> > > -       int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
+> > > +       int "Maximum zone order" if EXPERT && (ARM64_4K_PAGES || ARM6=
+4_16K_PAGES)
+> > >         default "13" if ARM64_64K_PAGES
+> > > -       range 11 13 if ARM64_16K_PAGES
+> > >         default "11" if ARM64_16K_PAGES
+> > > -       range 10 15 if ARM64_4K_PAGES
+> > >         default "10"
+> > >         help
+> > >           The kernel memory allocator divides physically contiguous m=
+emory
+> > > --
+> > > 2.35.1
+> > >
+> > >
+>
+> --
+> Sincerely yours,
+> Mike.
+>
