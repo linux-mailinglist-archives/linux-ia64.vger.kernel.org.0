@@ -2,195 +2,156 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49A666D5F79
-	for <lists+linux-ia64@lfdr.de>; Tue,  4 Apr 2023 13:50:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E34956D8074
+	for <lists+linux-ia64@lfdr.de>; Wed,  5 Apr 2023 17:06:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234503AbjDDLuo (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 4 Apr 2023 07:50:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55426 "EHLO
+        id S238674AbjDEPGI (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 5 Apr 2023 11:06:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234424AbjDDLun (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 4 Apr 2023 07:50:43 -0400
-Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DB102D45
-        for <linux-ia64@vger.kernel.org>; Tue,  4 Apr 2023 04:50:36 -0700 (PDT)
-Received: by mail-ed1-x529.google.com with SMTP id fi11so5927364edb.10
-        for <linux-ia64@vger.kernel.org>; Tue, 04 Apr 2023 04:50:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1680609034;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I+C2675DfMBQc+7bmUpHmKjNV2QoW8Hg7liBbtScQEs=;
-        b=VKGxrdlQBWJ7ddxLJ/wW+kegpzUwC7+BiFIaBhmFUvW5eE6WzTupBV5keAhixq/DRc
-         JCnmMIw+sENwVAY0XOypWk3WuhN+TxvTOed2tWFNSfZP6fhn73v+o7/y4lMF8JR9uaCj
-         IjD+8G+1lhuJph/LZKOSQN9taVlsKAoNDbN0Y=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112; t=1680609034;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=I+C2675DfMBQc+7bmUpHmKjNV2QoW8Hg7liBbtScQEs=;
-        b=ILlgW2QivSKOa4PEPLqE1mm7YF2UdLz+9sFbLW0VOn0lmJ3Dwa/iCQd3GDSayogg70
-         KG+UkRMKyv6EFGspszlOH9OeqyXqhqv48DkZ34SuC5NGUPVjIAv5O144/jVaR/w4yOfY
-         Atfjm74GVGX83UGfHYe394KcPThMTbDuMfa7dbh6htWtWSOhxlpjEJN5TCUJhVtJK5he
-         fTqQKnet2ofmsKJC1oykSL2q6taufso4/XmGsFewXYpOkZQ+cDwPZtK6ZKt+HvzsGl+s
-         CNAooQFeH5E/zVjAVxG+fFQZqMy4mKbDizhUGTMZXhk1/eUrlz53xOuiEBPfFVl21O2p
-         KKpQ==
-X-Gm-Message-State: AAQBX9c/cOobr1VGW2MuleDcyY0qt6rvXCtzz4jgbTssqTJ+Z7CJoVXk
-        mL35yDwwMLzha5LKYZwXdXNwSB4Wj4RcNB/Ct/QxEl7s
-X-Google-Smtp-Source: AKy350at8y9WBIE+jbGjuUO4fQ0ec6R0QEHPv8/WsOc1oVVTxrX9C/oJcwEIam7PsVCoVsXewrZqVg==
-X-Received: by 2002:a17:906:4c46:b0:932:4255:5902 with SMTP id d6-20020a1709064c4600b0093242555902mr1618395ejw.76.1680609034149;
-        Tue, 04 Apr 2023 04:50:34 -0700 (PDT)
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com. [209.85.128.41])
-        by smtp.gmail.com with ESMTPSA id t12-20020a170906608c00b0093d0867a65csm5948795ejj.175.2023.04.04.04.50.33
-        for <linux-ia64@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 04 Apr 2023 04:50:33 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Received: by mail-wm1-f41.google.com with SMTP id v20-20020a05600c471400b003ed8826253aso802791wmo.0
-        for <linux-ia64@vger.kernel.org>; Tue, 04 Apr 2023 04:50:33 -0700 (PDT)
-X-Received: by 2002:a05:6512:38d1:b0:4e8:45d5:53cd with SMTP id
- p17-20020a05651238d100b004e845d553cdmr662558lft.12.1680609012911; Tue, 04 Apr
- 2023 04:50:12 -0700 (PDT)
+        with ESMTP id S238666AbjDEPGD (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 5 Apr 2023 11:06:03 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 130C4E5;
+        Wed,  5 Apr 2023 08:05:59 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id E984822926;
+        Wed,  5 Apr 2023 15:05:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1680707157; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=g5CNiBMyJmGfOboPN85iL6BEAbMbhCK1z8h/E7PJqO8=;
+        b=w8tf3DJbATFS2jgiySieo5lgHacr0/X4t8O83kSm+JjUTN7INy+KEE0c6QKy2YQQEG1D51
+        ei/9VshpEuJZ8SmDOnR/EjlVwb3io8xNrPAvyiDEaO/puZewQ0rt7tBgAYItRDRs1brqRE
+        qzs1tuAkBaBxL74Ueu6ptbgKfBk5KMI=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1680707157;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=g5CNiBMyJmGfOboPN85iL6BEAbMbhCK1z8h/E7PJqO8=;
+        b=NJtJ5rJLvESSn/PDRi2v9Tc541wLbJpWwnGJQVN5sUOfOKv49P3yAdDLaj2lKracLovScc
+        sc9Vq2L2x0GeLvDA==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 85CA413A10;
+        Wed,  5 Apr 2023 15:05:57 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id aFHUH1WOLWTPIAAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Wed, 05 Apr 2023 15:05:57 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     arnd@arndb.de, daniel.vetter@ffwll.ch, deller@gmx.de,
+        javierm@redhat.com, gregkh@linuxfoundation.org
+Cc:     linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        linux-mips@vger.kernel.org, linux-parisc@vger.kernel.org,
+        linuxppc-dev@lists.ozlabs.org, linux-sh@vger.kernel.org,
+        sparclinux@vger.kernel.org, x86@kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 00/18] arch: Consolidate <asm/fb.h>
+Date:   Wed,  5 Apr 2023 17:05:36 +0200
+Message-Id: <20230405150554.30540-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-References: <20230325060828.2662773-1-rppt@kernel.org> <20230325060828.2662773-3-rppt@kernel.org>
- <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com> <ZCvQGJzdED+An8an@kernel.org>
-In-Reply-To: <ZCvQGJzdED+An8an@kernel.org>
-From:   Justin Forbes <jforbes@fedoraproject.org>
-Date:   Tue, 4 Apr 2023 06:50:01 -0500
-X-Gmail-Original-Message-ID: <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
-Message-ID: <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
-Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
-To:     Mike Rapoport <rppt@kernel.org>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Guo Ren <guoren@kernel.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Rich Felker <dalias@libc.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Zi Yan <ziy@nvidia.com>, linux-arm-kernel@lists.infradead.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mm@kvack.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.1 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.5 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, Apr 4, 2023 at 2:22=E2=80=AFAM Mike Rapoport <rppt@kernel.org> wrot=
-e:
->
-> On Wed, Mar 29, 2023 at 10:55:37AM -0500, Justin Forbes wrote:
-> > On Sat, Mar 25, 2023 at 1:09=E2=80=AFAM Mike Rapoport <rppt@kernel.org>=
- wrote:
-> > >
-> > > From: "Mike Rapoport (IBM)" <rppt@kernel.org>
-> > >
-> > > It is not a good idea to change fundamental parameters of core memory
-> > > management. Having predefined ranges suggests that the values within
-> > > those ranges are sensible, but one has to *really* understand
-> > > implications of changing MAX_ORDER before actually amending it and
-> > > ranges don't help here.
-> > >
-> > > Drop ranges in definition of ARCH_FORCE_MAX_ORDER and make its prompt
-> > > visible only if EXPERT=3Dy
-> >
-> > I do not like suddenly hiding this behind EXPERT for a couple of
-> > reasons.  Most importantly, it will silently change the config for
-> > users building with an old kernel config.  If a user has for instance
-> > "13" set and building with 4K pages, as is the current configuration
-> > for Fedora and RHEL aarch64 builds, an oldconfig build will now set it
-> > to 10 with no indication that it is doing so.  And while I think that
-> > 10 is a fine default for many aarch64 users, there are valid reasons
-> > for choosing other values. Putting this behind expert makes it much
-> > less obvious that this is an option.
->
-> That's the idea of EXPERT, no?
->
-> This option was intended to allow allocation of huge pages for
-> architectures that had PMD_ORDER > MAX_ORDER and not to allow user to
-> select size of maximal physically contiguous allocation.
->
-> Changes to MAX_ORDER fundamentally change the behaviour of core mm and
-> unless users *really* know what they are doing there is no reason to choo=
-se
-> non-default values so hiding this option behind EXPERT seems totally
-> appropriate to me.
+Various architectures provide <arm/fb.h> with helpers for fbdev
+framebuffer devices. Share the contained code where possible. There
+is already <asm-generic/fb.h>, which implements generic (as in
+'empty') functions of the fbdev helpers. The header was added in
+commit aafe4dbed0bf ("asm-generic: add generic versions of common
+headers"), but never used.
 
-It sounds nice in theory. In practice. EXPERT hides too much. When you
-flip expert, you expose over a 175ish new config options which are
-hidden behind EXPERT.  You don't have to know what you are doing just
-with the MAX_ORDER, but a whole bunch more as well.  If everyone were
-already running 10, this might be less of a problem. At least Fedora
-and RHEL are running 13 for 4K pages on aarch64. This was not some
-accidental choice, we had to carry a patch to even allow it for a
-while.  If this does go in as is, we will likely just carry a patch to
-remove the "if EXPERT", but that is a bit of a disservice to users who
-might be trying to debug something else upstream, bisecting upstream
-kernels or testing a patch.  In those cases, people tend to use
-pristine upstream sources without distro patches to verify, and they
-tend to use their existing configs. With this change, their MAX_ORDER
-will drop to 10 from 13 silently.   That can look like a different
-issue enough to ruin a bisect or have them give bad feedback on a
-patch because it introduces a "regression" which is not a regression
-at all, but a config change they couldn't see.
+Each per-architecture header file declares and/or implements fbdev
+helpers and defines a preprocessor token for each. The generic
+header then provides the remaining helpers. It works like the I/O
+helpers in <asm/io.h>.
 
->
-> > Justin
-> >
-> > > Acked-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-> > > Reviewed-by: Zi Yan <ziy@nvidia.com>
-> > > Signed-off-by: Mike Rapoport (IBM) <rppt@kernel.org>
-> > > ---
-> > >  arch/arm64/Kconfig | 4 +---
-> > >  1 file changed, 1 insertion(+), 3 deletions(-)
-> > >
-> > > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
-> > > index e60baf7859d1..7324032af859 100644
-> > > --- a/arch/arm64/Kconfig
-> > > +++ b/arch/arm64/Kconfig
-> > > @@ -1487,11 +1487,9 @@ config XEN
-> > >  # 16K |       27          |      14      |       13        |        =
- 11         |
-> > >  # 64K |       29          |      16      |       13        |        =
- 13         |
-> > >  config ARCH_FORCE_MAX_ORDER
-> > > -       int "Maximum zone order" if ARM64_4K_PAGES || ARM64_16K_PAGES
-> > > +       int "Maximum zone order" if EXPERT && (ARM64_4K_PAGES || ARM6=
-4_16K_PAGES)
-> > >         default "13" if ARM64_64K_PAGES
-> > > -       range 11 13 if ARM64_16K_PAGES
-> > >         default "11" if ARM64_16K_PAGES
-> > > -       range 10 15 if ARM64_4K_PAGES
-> > >         default "10"
-> > >         help
-> > >           The kernel memory allocator divides physically contiguous m=
-emory
-> > > --
-> > > 2.35.1
-> > >
-> > >
->
-> --
-> Sincerely yours,
-> Mike.
->
+For PARISC, the architecture helpers are mixed up with helpers
+for the system's STI graphics firmware. We first move the STI code
+to appropriate locations under video/ and then move the architecture
+helper under arch/parisc.
+
+For Sparc, there's an additional patch that moves the implementation
+from the header into a source file. This allows to avoid some include
+statements in the header file.
+
+Built on arm, arm64, m68k, mips, parisc, powerpc, sparc and x86.
+
+Thomas Zimmermann (18):
+  fbdev: Prepare generic architecture helpers
+  arch/arc: Implement <asm/fb.h> with generic helpers
+  arch/arm: Implement <asm/fb.h> with generic helpers
+  arch/arm64: Implement <asm/fb.h> with generic helpers
+  arch/ia64: Implement <asm/fb.h> with generic helpers
+  arch/loongarch: Implement <asm/fb.h> with generic helpers
+  arch/m68k: Implement <asm/fb.h> with generic helpers
+  arch/mips: Implement <asm/fb.h> with generic helpers
+  video: Remove trailing whitespaces
+  video: Move HP PARISC STI core code to shared location
+  arch/parisc: Remove trailing whitespaces
+  arch/parisc: Implement fb_is_primary_device() under arch/parisc
+  arch/parisc: Implement <asm/fb.h> with generic helpers
+  arch/powerpc: Implement <asm/fb.h> with generic helpers
+  arch/sh: Implement <asm/fb.h> with generic helpers
+  arch/sparc: Implement fb_is_primary_device() in source file
+  arch/sparc: Implement <asm/fb.h> with generic helpers
+  arch/x86: Implement <asm/fb.h> with generic helpers
+
+ arch/arc/include/asm/fb.h                     |  11 +-
+ arch/arm/include/asm/fb.h                     |  10 +-
+ arch/arm64/include/asm/fb.h                   |  10 +-
+ arch/ia64/include/asm/fb.h                    |  11 +-
+ arch/loongarch/include/asm/fb.h               |  10 +-
+ arch/m68k/include/asm/fb.h                    |  10 +-
+ arch/mips/include/asm/fb.h                    |  10 +-
+ arch/parisc/Makefile                          |   4 +-
+ arch/parisc/include/asm/fb.h                  |  17 +-
+ arch/parisc/video/Makefile                    |   3 +
+ arch/parisc/video/fbdev.c                     |  27 +++
+ arch/powerpc/include/asm/fb.h                 |   8 +-
+ arch/sh/include/asm/fb.h                      |  10 +-
+ arch/sparc/Makefile                           |   1 +
+ arch/sparc/include/asm/fb.h                   |  30 ++--
+ arch/sparc/video/Makefile                     |   3 +
+ arch/sparc/video/fbdev.c                      |  24 +++
+ arch/x86/include/asm/fb.h                     |  11 +-
+ drivers/video/Kconfig                         |   7 +
+ drivers/video/Makefile                        |   1 +
+ drivers/video/console/Kconfig                 |   1 +
+ drivers/video/console/Makefile                |   4 +-
+ drivers/video/console/sticon.c                |   6 +-
+ drivers/video/fbdev/Kconfig                   |   3 +-
+ drivers/video/fbdev/stifb.c                   | 158 +++++++++---------
+ drivers/video/{console => }/sticore.c         | 123 ++++++--------
+ include/asm-generic/fb.h                      |  20 ++-
+ .../video/fbdev => include/video}/sticore.h   |  16 +-
+ 28 files changed, 297 insertions(+), 252 deletions(-)
+ create mode 100644 arch/parisc/video/Makefile
+ create mode 100644 arch/parisc/video/fbdev.c
+ create mode 100644 arch/sparc/video/Makefile
+ create mode 100644 arch/sparc/video/fbdev.c
+ rename drivers/video/{console => }/sticore.c (95%)
+ rename {drivers/video/fbdev => include/video}/sticore.h (99%)
+
+
+base-commit: a7180debb9c631375684f4d717466cfb9f238660
+-- 
+2.40.0
+
