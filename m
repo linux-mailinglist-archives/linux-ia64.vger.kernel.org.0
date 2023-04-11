@@ -2,56 +2,61 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D62D6DD115
-	for <lists+linux-ia64@lfdr.de>; Tue, 11 Apr 2023 06:40:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D30696DD46F
+	for <lists+linux-ia64@lfdr.de>; Tue, 11 Apr 2023 09:41:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230183AbjDKEkz convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Tue, 11 Apr 2023 00:40:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52916 "EHLO
+        id S229947AbjDKHlw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 11 Apr 2023 03:41:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229507AbjDKEkx (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 11 Apr 2023 00:40:53 -0400
-X-Greylist: delayed 23768 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 10 Apr 2023 21:40:51 PDT
-Received: from zimbra-dc.paul-scerri.ch (dc.paul-scerri.ch [62.220.130.141])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD7041708;
-        Mon, 10 Apr 2023 21:40:51 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra-dc.paul-scerri.ch (Postfix) with ESMTP id 765715E2C87;
-        Mon, 10 Apr 2023 22:09:41 +0200 (CEST)
-Received: from zimbra-dc.paul-scerri.ch ([127.0.0.1])
-        by localhost (zimbra-dc.paul-scerri.ch [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 4N1rggO2H8MZ; Mon, 10 Apr 2023 22:09:41 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-        by zimbra-dc.paul-scerri.ch (Postfix) with ESMTP id 801FA59387C;
-        Mon, 10 Apr 2023 21:56:56 +0200 (CEST)
-X-Virus-Scanned: amavisd-new at zimbra-dc.paul-scerri.ch
-Received: from zimbra-dc.paul-scerri.ch ([127.0.0.1])
-        by localhost (zimbra-dc.paul-scerri.ch [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 2p4mzTMSQK-s; Mon, 10 Apr 2023 21:56:56 +0200 (CEST)
-Received: from [185.169.4.108] (unknown [185.169.4.108])
-        by zimbra-dc.paul-scerri.ch (Postfix) with ESMTPSA id 025FB5E2276;
-        Mon, 10 Apr 2023 21:34:30 +0200 (CEST)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229901AbjDKHlu (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 11 Apr 2023 03:41:50 -0400
+Received: from mail.lokoho.com (mail.lokoho.com [217.61.105.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7432198D
+        for <linux-ia64@vger.kernel.org>; Tue, 11 Apr 2023 00:41:49 -0700 (PDT)
+Received: by mail.lokoho.com (Postfix, from userid 1001)
+        id 7F2C282C94; Tue, 11 Apr 2023 08:40:52 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=lokoho.com; s=mail;
+        t=1681198853; bh=Z0N5VlX9/JlryGOL5I747Le9USomZJCRNNGRT3LbbKc=;
+        h=Date:From:To:Subject:From;
+        b=Bdme4JFrk50Qq1D7gBHQWfzBUTN5wE3Cib61b7gNh8QyqwXOUzg8Qf+vcwv9+XYyJ
+         IXHFAJT6OOMuEAkyXQq99uKlpDtQydaHt3gYf/1UynuONwpEyhw9Xjl30ir7iwpXWU
+         nQ/v1DhfYHTx368T5ijrEZrXrX9BWMzSr1oXVREjOn1O2JLpeQzZe0kDWaRX94p7D3
+         TaqFen8PAzER90jBvvuqmyEZfsc2oOyoNKsYMr/cRo3TVeQQeq3zWe4/JjWmw2Hn3Q
+         ttEtwQ4fMxLu7Emwjd9mPSRrFwCATIH9WAfYZVBheXBfeHZVORcm10pflRmS1Ju4DF
+         NVBgBEiCCumag==
+Received: by mail.lokoho.com for <linux-ia64@vger.kernel.org>; Tue, 11 Apr 2023 07:40:45 GMT
+Message-ID: <20230411074501-0.1.58.1tia3.0.hw071rmlj1@lokoho.com>
+Date:   Tue, 11 Apr 2023 07:40:45 GMT
+From:   "Adam Charachuta" <adam.charachuta@lokoho.com>
+To:     <linux-ia64@vger.kernel.org>
+Subject: =?UTF-8?Q?S=C5=82owa_kluczowe_do_wypozycjonowania?=
+X-Mailer: mail.lokoho.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Re
-To:     Recipients <wiki@paul-scerri.ch>
-From:   "Maria-Elisabeth Schaeffler" <wiki@paul-scerri.ch>
-Date:   Mon, 10 Apr 2023 12:34:29 -0700
-Reply-To: mariaelisabeths457@gmail.com
-Message-Id: <20230410193432.025FB5E2276@zimbra-dc.paul-scerri.ch>
-X-Spam-Status: No, score=2.8 required=5.0 tests=FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: **
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Your email account has been selected for a donation of €1,700,000. Please contact for more information.
+Dzie=C5=84 dobry,
 
-Mrs Maria Elisabeth Schaeffler
-CEO SCHAEFFLER.
+zapozna=C5=82em si=C4=99 z Pa=C5=84stwa ofert=C4=85 i z przyjemno=C5=9Bci=
+=C4=85 przyznaj=C4=99, =C5=BCe przyci=C4=85ga uwag=C4=99 i zach=C4=99ca d=
+o dalszych rozm=C3=B3w.=20
+
+Pomy=C5=9Bla=C5=82em, =C5=BCe mo=C5=BCe m=C3=B3g=C5=82bym mie=C4=87 sw=C3=
+=B3j wk=C5=82ad w Pa=C5=84stwa rozw=C3=B3j i pom=C3=B3c dotrze=C4=87 z t=C4=
+=85 ofert=C4=85 do wi=C4=99kszego grona odbiorc=C3=B3w. Pozycjonuj=C4=99 =
+strony www, dzi=C4=99ki czemu generuj=C4=85 =C5=9Bwietny ruch w sieci.
+
+Mo=C5=BCemy porozmawia=C4=87 w najbli=C5=BCszym czasie?
+
+
+Pozdrawiam
+Adam Charachuta
