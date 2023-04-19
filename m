@@ -2,126 +2,108 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D69C36E7642
-	for <lists+linux-ia64@lfdr.de>; Wed, 19 Apr 2023 11:30:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C636F6E7803
+	for <lists+linux-ia64@lfdr.de>; Wed, 19 Apr 2023 13:05:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231590AbjDSJaP (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 19 Apr 2023 05:30:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55740 "EHLO
+        id S231958AbjDSLFl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 19 Apr 2023 07:05:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230435AbjDSJaO (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 19 Apr 2023 05:30:14 -0400
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5177E7AB9
-        for <linux-ia64@vger.kernel.org>; Wed, 19 Apr 2023 02:30:13 -0700 (PDT)
-Received: from pps.filterd (m0127361.ppops.net [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 33J8BVSD027803;
-        Wed, 19 Apr 2023 09:30:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date : from : to : cc :
- subject : message-id : references : mime-version : content-type :
- in-reply-to; s=pp1; bh=BCVaQWX8wENq0DO7uDMubrTTJdT7g8WAsUs6XZCUPEc=;
- b=KI59aLQeP+ewyXB61WATBv0WCZ0jamjZKmXqoLQFp8b41aS9dlFFh3AP8mtMTFJ/9Yu0
- UhKfdMVPQNZC8ucf29Kwj6Uh3u8tGPyicOBVqQC29FUAvpsRb50E0hInINag8DlcEmjX
- BYi/8XjQaAYF83rEo6XN6zIKvhbGrxcJwOPaKi5IGItQabxjfd0/7sfSrzdLNc4mw9GM
- Jb2+ukiG/uXqx2wNx2YBGfl25k+GoBBubjOzbe63xRqHETjXv4462krI0Nz+kQlSL8xi
- gl0GGSR+Di6TKuz5ahCh5KCOPxyjSSH5ineA9rvpVptny70FNKADhcXU2FK+MQGu1Rqs 6w== 
-Received: from pps.reinject (localhost [127.0.0.1])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q28tyrdxn-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Apr 2023 09:30:03 +0000
-Received: from m0127361.ppops.net (m0127361.ppops.net [127.0.0.1])
-        by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 33J9OZkt019579;
-        Wed, 19 Apr 2023 09:30:03 GMT
-Received: from ppma06ams.nl.ibm.com (66.31.33a9.ip4.static.sl-reverse.com [169.51.49.102])
-        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3q28tyrdvk-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Apr 2023 09:30:03 +0000
-Received: from pps.filterd (ppma06ams.nl.ibm.com [127.0.0.1])
-        by ppma06ams.nl.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 33J3K8C5027628;
-        Wed, 19 Apr 2023 09:30:00 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-        by ppma06ams.nl.ibm.com (PPS) with ESMTPS id 3pyk6fjkyb-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Wed, 19 Apr 2023 09:30:00 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-        by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 33J9TwhR7275050
-        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 19 Apr 2023 09:29:58 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 3FAFF20043;
-        Wed, 19 Apr 2023 09:29:58 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-        by IMSVA (Postfix) with ESMTP id 576E020040;
-        Wed, 19 Apr 2023 09:29:57 +0000 (GMT)
-Received: from linux.ibm.com (unknown [9.171.40.70])
-        by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-        Wed, 19 Apr 2023 09:29:57 +0000 (GMT)
-Date:   Wed, 19 Apr 2023 12:29:55 +0300
-From:   Mike Rapoport <rppt@linux.ibm.com>
-To:     Hugh Dickins <hughd@google.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Ard Biesheuvel <ardb@kernel.org>, linux-ia64@vger.kernel.org,
-        linux-mm@kvack.org
-Subject: Re: [PATCH] ia64: fix an addr to taddr in huge_pte_offset()
-Message-ID: <ZD+0k0k4KzMzrmsT@linux.ibm.com>
-References: <732eae88-3beb-246-2c72-281de786740@google.com>
+        with ESMTP id S231527AbjDSLFi (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 19 Apr 2023 07:05:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B6A24C19;
+        Wed, 19 Apr 2023 04:05:37 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C896963D4C;
+        Wed, 19 Apr 2023 11:05:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58FEC433EF;
+        Wed, 19 Apr 2023 11:05:31 +0000 (UTC)
+Date:   Wed, 19 Apr 2023 12:05:28 +0100
+From:   Catalin Marinas <catalin.marinas@arm.com>
+To:     Andrew Morton <akpm@linux-foundation.org>
+Cc:     Justin Forbes <jforbes@fedoraproject.org>,
+        Mike Rapoport <rppt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        "David S. Miller" <davem@davemloft.net>,
+        Dinh Nguyen <dinguyen@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Guo Ren <guoren@kernel.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+        Max Filippov <jcmvbkbc@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Rich Felker <dalias@libc.org>,
+        Russell King <linux@armlinux.org.uk>,
+        Will Deacon <will@kernel.org>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Zi Yan <ziy@nvidia.com>, linux-arm-kernel@lists.infradead.org,
+        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
+        linux-mm@kvack.org, linux-sh@vger.kernel.org,
+        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
+        sparclinux@vger.kernel.org
+Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of
+ ARCH_FORCE_MAX_ORDER
+Message-ID: <ZD/K+Mof/Dx5yzjQ@arm.com>
+References: <20230325060828.2662773-1-rppt@kernel.org>
+ <20230325060828.2662773-3-rppt@kernel.org>
+ <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
+ <ZCvQGJzdED+An8an@kernel.org>
+ <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
+ <ZDbp7LAHES3YFo30@arm.com>
+ <20230418150557.ea8c87c96ec64c899c88ab08@linux-foundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <732eae88-3beb-246-2c72-281de786740@google.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: SRg6qd7GUcrAaW-YibhBdvpq11qOi6sT
-X-Proofpoint-GUID: 5W1KW1xNB19ev1igrtiNiz9uVgMkUKmC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-04-19_04,2023-04-18_01,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 suspectscore=0
- impostorscore=0 bulkscore=0 lowpriorityscore=0 phishscore=0 adultscore=0
- mlxlogscore=697 clxscore=1011 priorityscore=1501 mlxscore=0 spamscore=0
- malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2303200000 definitions=main-2304190081
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230418150557.ea8c87c96ec64c899c88ab08@linux-foundation.org>
+X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sun, Apr 16, 2023 at 10:17:05PM -0700, Hugh Dickins wrote:
-> I know nothing of ia64 htlbpage_to_page(), but guess that the p4d
-> line should be using taddr rather than addr, like everywhere else.
+On Tue, Apr 18, 2023 at 03:05:57PM -0700, Andrew Morton wrote:
+> On Wed, 12 Apr 2023 18:27:08 +0100 Catalin Marinas <catalin.marinas@arm.com> wrote:
+> > > It sounds nice in theory. In practice. EXPERT hides too much. When you
+> > > flip expert, you expose over a 175ish new config options which are
+> > > hidden behind EXPERT.  You don't have to know what you are doing just
+> > > with the MAX_ORDER, but a whole bunch more as well.  If everyone were
+> > > already running 10, this might be less of a problem. At least Fedora
+> > > and RHEL are running 13 for 4K pages on aarch64. This was not some
+> > > accidental choice, we had to carry a patch to even allow it for a
+> > > while.  If this does go in as is, we will likely just carry a patch to
+> > > remove the "if EXPERT", but that is a bit of a disservice to users who
+> > > might be trying to debug something else upstream, bisecting upstream
+> > > kernels or testing a patch.  In those cases, people tend to use
+> > > pristine upstream sources without distro patches to verify, and they
+> > > tend to use their existing configs. With this change, their MAX_ORDER
+> > > will drop to 10 from 13 silently.   That can look like a different
+> > > issue enough to ruin a bisect or have them give bad feedback on a
+> > > patch because it introduces a "regression" which is not a regression
+> > > at all, but a config change they couldn't see.
+> > 
+> > If we remove EXPERT (as prior to this patch), I'd rather keep the ranges
+> > and avoid having to explain to people why some random MAX_ORDER doesn't
+> > build (keeping the range would also make sense for randconfig, not sure
+> > we got to any conclusion there).
 > 
-> Fixes: c03ab9e32a2c ("ia64: add support for folded p4d page tables")
-> Signed-off-by: Hugh Dickins <hughd@google.com
+> Well this doesn't seem to have got anywhere.  I think I'll send the
+> patchset into Linus for the next merge window as-is.  Please let's take
+> a look at this Kconfig presentation issue during the following -rc
+> cycle.
 
-htlbpage_to_page() does weird things I don't understand, but I should have
-used taddr indeed :)
-
-Acked-by: Mike Rapoport (IBM) <rppt@kernel.org>
-
-> ---
-> Just something noticed when visiting recently in the source:
-> thought we might fix it before ia64 is consigned to history;
-> I'm unable to say anything about the user-visible effects!
-> 
->  arch/ia64/mm/hugetlbpage.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> --- 6.3-rc7/arch/ia64/mm/hugetlbpage.c
-> +++ linux/arch/ia64/mm/hugetlbpage.c
-> @@ -58,7 +58,7 @@ huge_pte_offset (struct mm_struct *mm, unsigned long addr, unsigned long sz)
->  
->  	pgd = pgd_offset(mm, taddr);
->  	if (pgd_present(*pgd)) {
-> -		p4d = p4d_offset(pgd, addr);
-> +		p4d = p4d_offset(pgd, taddr);
->  		if (p4d_present(*p4d)) {
->  			pud = pud_offset(p4d, taddr);
->  			if (pud_present(*pud)) {
+That's fine by me. I have a slight preference to drop EXPERT and keep
+the ranges in, especially if it affects current distro kernels. Debian
+seems to enable EXPERT already in their arm64 kernel config but I'm not
+sure about the Fedora or other distro kernels. If they don't, we can
+fix/revert this Kconfig entry once the merging window is closed.
 
 -- 
-Sincerely yours,
-Mike.
+Catalin
