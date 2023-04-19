@@ -2,156 +2,117 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 609556E789F
-	for <lists+linux-ia64@lfdr.de>; Wed, 19 Apr 2023 13:28:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45A3D6E803E
+	for <lists+linux-ia64@lfdr.de>; Wed, 19 Apr 2023 19:23:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232779AbjDSL2L (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 19 Apr 2023 07:28:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59140 "EHLO
+        id S232473AbjDSRX0 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 19 Apr 2023 13:23:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232699AbjDSL2J (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 19 Apr 2023 07:28:09 -0400
-Received: from mail-ej1-x62a.google.com (mail-ej1-x62a.google.com [IPv6:2a00:1450:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC31B10E7
-        for <linux-ia64@vger.kernel.org>; Wed, 19 Apr 2023 04:28:07 -0700 (PDT)
-Received: by mail-ej1-x62a.google.com with SMTP id sz19so23702152ejc.2
-        for <linux-ia64@vger.kernel.org>; Wed, 19 Apr 2023 04:28:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1681903686; x=1684495686;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:sender:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8N99yfKqkNg/PzVluqPrnuo7/UXaVkUZ4pARZeRWAW0=;
-        b=aOmHCOipVssUIFiOoZV/XYVogKVHpAzuiq8VEyTLvA7Yk95r4ytn9vTT8PpUhQnARJ
-         WhOkvYx9dTRxFaR/svUxtJL6wEy7ip/MEvOVSUewRhDmjfSeiPs+EqDlwS4WxJ5pxJy2
-         ++BQaECiQP+IF3B1SGcbW9EeNZEQfujRcwKyw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1681903686; x=1684495686;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:sender:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=8N99yfKqkNg/PzVluqPrnuo7/UXaVkUZ4pARZeRWAW0=;
-        b=AJa+XZGF5LOcw+nVpugOFD/qAe5vH4n94Rme9Xn73qxZx1J8aDo81PvucrtZdUeGqu
-         k+GwJoXEwmMoFW08bHdlpB2iLiyzqlNace/553lw1r8vlWZy52YCXgkB8ew6s1xYrOCe
-         Xx0cytfh0wSeT7AuLBNi9SC0C1Z4dKlrU9QxV4O4tw1j+AAq06s/cYvQFo9TOsYRd+EF
-         GOZxvDKHdPBbTi1VZykOrs4emq5hJf8DottMLNDPZum2rPuZpVXiVWKLVN+aZcu+c+3z
-         BF+oTzHBYdTSQBkLRuTt53alaNcoYi7S+DaITPVrVRPg9q2daDV/wzDVZPEviGCGsQcC
-         fJ8Q==
-X-Gm-Message-State: AAQBX9fZeqHTNVIJ00Tt/05Y8fQPSnSUG2g5dDLj4hp09BVbePBP7PbQ
-        4dOS0Nextvb/h9hBJNSE/ibd9qHv/2s/p16Swq3/qHuC
-X-Google-Smtp-Source: AKy350bTASP29wZnM1QLVfWkdT7aBCsCakTxGvvzUmw90M1ZPh9FcchzqZV6HvvdC3gmT2oqz4CniQ==
-X-Received: by 2002:a17:907:98ef:b0:948:fe00:77f2 with SMTP id ke15-20020a17090798ef00b00948fe0077f2mr13519428ejc.58.1681903685735;
-        Wed, 19 Apr 2023 04:28:05 -0700 (PDT)
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
-        by smtp.gmail.com with ESMTPSA id d25-20020a05640208d900b004fa99a22c3bsm8017028edz.61.2023.04.19.04.28.04
-        for <linux-ia64@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 19 Apr 2023 04:28:05 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Received: by mail-ej1-f42.google.com with SMTP id fw30so27972503ejc.5
-        for <linux-ia64@vger.kernel.org>; Wed, 19 Apr 2023 04:28:04 -0700 (PDT)
-X-Received: by 2002:a2e:7012:0:b0:2a5:fe8f:b314 with SMTP id
- l18-20020a2e7012000000b002a5fe8fb314mr1874851ljc.5.1681903663880; Wed, 19 Apr
- 2023 04:27:43 -0700 (PDT)
+        with ESMTP id S232271AbjDSRXZ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 19 Apr 2023 13:23:25 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB90A659B;
+        Wed, 19 Apr 2023 10:23:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
+        t=1681924974; i=deller@gmx.de;
+        bh=C5yrQi1O5H/ZJ6i2wZhc9S+TYhhPSe8koYmOSkrsxpg=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=refzFEX/nVgK8/0c/yNY2CyfC3AdkpdTH+IYk+xIV5Q+38dlY1vRhZEFTmpMyUDc/
+         9kvkEZP0kVR01Hn28FwdYcvQkmsX1L9UWL+i8vZhz0goEWhOLvIAIfwTtlVmCjbgUD
+         u0lHmNPk61xpVh/6OWDJbveUXhuyj8lAjtP3C/VV7CHk+16/4VihPYwuUHEvivlYBw
+         UlL1VdmKWD8uIdo0Aoh5XASGCGmlY7GyOYsX3ffFnBo5KedAYvGh4FHhvglxT+KgCd
+         xQN6ABCnavylRmWcBFmE/lQHqF7hO3CioLhryov1vpJhVvImQ4wtSXMt4z9yTImXug
+         5i3ajdU7cJ5LA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.20.60] ([94.134.144.134]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MatVb-1qRYCj0P8t-00cRzi; Wed, 19
+ Apr 2023 19:22:54 +0200
+Message-ID: <b1f90fa4-85c7-e785-ba14-f32962f87d5e@gmx.de>
+Date:   Wed, 19 Apr 2023 19:22:50 +0200
 MIME-Version: 1.0
-References: <20230325060828.2662773-1-rppt@kernel.org> <20230325060828.2662773-3-rppt@kernel.org>
- <CAFxkdAr5C7ggZ+WdvDbsfmwuXujT_z_x3qcUnhnCn-WrAurvgA@mail.gmail.com>
- <ZCvQGJzdED+An8an@kernel.org> <CAFbkSA38eTA_iJ3ttBvQ8G4Rjj8qB12GxY7Z=qmZ8wm+0tZieA@mail.gmail.com>
- <ZDbp7LAHES3YFo30@arm.com> <20230418150557.ea8c87c96ec64c899c88ab08@linux-foundation.org>
- <ZD/K+Mof/Dx5yzjQ@arm.com>
-In-Reply-To: <ZD/K+Mof/Dx5yzjQ@arm.com>
-From:   Justin Forbes <jforbes@fedoraproject.org>
-Date:   Wed, 19 Apr 2023 06:27:31 -0500
-X-Gmail-Original-Message-ID: <CAFbkSA3yn_4Monrnk2u3CzfJ934Hy15rjAJ85AdFU40nV7KTkQ@mail.gmail.com>
-Message-ID: <CAFbkSA3yn_4Monrnk2u3CzfJ934Hy15rjAJ85AdFU40nV7KTkQ@mail.gmail.com>
-Subject: Re: [PATCH v3 02/14] arm64: drop ranges in definition of ARCH_FORCE_MAX_ORDER
-To:     Catalin Marinas <catalin.marinas@arm.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Mike Rapoport <rppt@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        "David S. Miller" <davem@davemloft.net>,
-        Dinh Nguyen <dinguyen@kernel.org>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Guo Ren <guoren@kernel.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
-        Max Filippov <jcmvbkbc@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Rich Felker <dalias@libc.org>,
-        Russell King <linux@armlinux.org.uk>,
-        Will Deacon <will@kernel.org>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Zi Yan <ziy@nvidia.com>, linux-arm-kernel@lists.infradead.org,
-        linux-csky@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mm@kvack.org, linux-sh@vger.kernel.org,
-        linux-xtensa@linux-xtensa.org, linuxppc-dev@lists.ozlabs.org,
-        sparclinux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.8.0
+Subject: Re: [PATCH v3 00/19] arch: Consolidate <asm/fb.h>
+Content-Language: en-US
+To:     Thomas Zimmermann <tzimmermann@suse.de>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     Linux-Arch <linux-arch@vger.kernel.org>,
+        linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
+        linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev,
+        sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
+References: <20230417125651.25126-1-tzimmermann@suse.de>
+ <1641007d-7953-426a-a3de-ca9c90f6c5a9@app.fastmail.com>
+ <5fa98536-a4b0-7b71-7342-9ba05158062f@suse.de>
+From:   Helge Deller <deller@gmx.de>
+In-Reply-To: <5fa98536-a4b0-7b71-7342-9ba05158062f@suse.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-Provags-ID: V03:K1:H9qZXkCOPDN+3vsO7z+9ttDKPCRSFaiF/4cDmiO5ovofGlBxTzT
+ kMlRPG3r4Q6KYGeHBb//fU40kwtmWj1gVkdx7p7FELLCFOD5Nql8qYPGjnWefhzsS88zNIK
+ xaqD2s84khdceDbFsitlOpU2HidQYYXlykQQ9SD+p1IgyfdLRLZnqUmFoBDr2Oq3uB/Hpmu
+ vy6bniwylk05WNGd4sCJg==
+UI-OutboundReport: notjunk:1;M01:P0:5ox/8AYo9cY=;DXfWBLw0Wfb00Me5ctwgZzfIUZ/
+ 1GcLaW7zyF+rDR6gv5OFGKt/ECtMI2VLnGHaGgup0zhzHr7BbEMURzdNk4ut1hQ/I1Ur1dsc0
+ 1JvQBABCmnEIVKxSHIzxSDISBJC4Qap+OiyTLFMWZ9un0xA1yRdsUs2M1yt+a2EqGcCluQlae
+ 19JYqGAwJcB9zy4M2luWaDfLR+ZKhj9ZKj8YSY34zxXwBPDgYmXrjwHYmJ4VTpPq9lQoP7XYz
+ zFNmrhEsoPBmtBzXWAha6jdgOhp/DgbHDRiAP61aoHFFNbzRmhAGM4NsKuWZgVMGEWTXl21UX
+ RWqLtp/2wf2qeOu3egFZaXc8jYCWg1NlAIcF9HZ3295DdF25gExyuV9did7VXP77oNQQ+QXPc
+ fhCOeNGtft8Mand8MEWSS+3kWNhuIfz07igr9+fsGtxP3ysYKTaY3WPhXV0YMVT8Bep0brJsz
+ it0ElaUn+GMQsDuKpgWJIn6dE2RbkRjrP0KTWEny7DHSk8JEWgia6+A8qE0EY++w+1sCntVun
+ q6L6YvL6bob4Q1BUg6FQGSTaWbEOj1aXk0c3aEh6x+vXVvTOLaLYYUvW1lFtPoRMygYgZx4wQ
+ rJN3kennM/9oLujbd5BqjhpxyFEKAHVCVXS45wO+oSJnirRTWt+IU+XGjNEY0ptfkn3mN4x/q
+ kvGcY6cnurtogkHbIzoeA9JDtK7wJr1dYuVhIbxaw4ROiwNGBzb/BR3lIpmxi2xnCf7zxwLP8
+ po9pTOMtKhkJLo/DaIoVdM7R07TLStHRQWeCtVEbKyLKDvKxPjppGZ6s5Tz5A6AXYgiSFhuW4
+ cGKpK8tRgRhTmcAGp6W5xqVoysF2XWyW46xmjytoEwKEd8r8g4J//wzQ3dLfMvZ9GduabVyKy
+ Tq5+OYpXodvPTj/P2JbKEivhf9ZtS7PrHr8f0DO4nsV7nYIV9I/xwMZ3jymGdPYzWNpnTiyox
+ UXVSng==
+X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, Apr 19, 2023 at 6:12=E2=80=AFAM Catalin Marinas <catalin.marinas@ar=
-m.com> wrote:
->
-> On Tue, Apr 18, 2023 at 03:05:57PM -0700, Andrew Morton wrote:
-> > On Wed, 12 Apr 2023 18:27:08 +0100 Catalin Marinas <catalin.marinas@arm=
-.com> wrote:
-> > > > It sounds nice in theory. In practice. EXPERT hides too much. When =
-you
-> > > > flip expert, you expose over a 175ish new config options which are
-> > > > hidden behind EXPERT.  You don't have to know what you are doing ju=
-st
-> > > > with the MAX_ORDER, but a whole bunch more as well.  If everyone we=
-re
-> > > > already running 10, this might be less of a problem. At least Fedor=
-a
-> > > > and RHEL are running 13 for 4K pages on aarch64. This was not some
-> > > > accidental choice, we had to carry a patch to even allow it for a
-> > > > while.  If this does go in as is, we will likely just carry a patch=
- to
-> > > > remove the "if EXPERT", but that is a bit of a disservice to users =
-who
-> > > > might be trying to debug something else upstream, bisecting upstrea=
-m
-> > > > kernels or testing a patch.  In those cases, people tend to use
-> > > > pristine upstream sources without distro patches to verify, and the=
-y
-> > > > tend to use their existing configs. With this change, their MAX_ORD=
-ER
-> > > > will drop to 10 from 13 silently.   That can look like a different
-> > > > issue enough to ruin a bisect or have them give bad feedback on a
-> > > > patch because it introduces a "regression" which is not a regressio=
-n
-> > > > at all, but a config change they couldn't see.
-> > >
-> > > If we remove EXPERT (as prior to this patch), I'd rather keep the ran=
-ges
-> > > and avoid having to explain to people why some random MAX_ORDER doesn=
-'t
-> > > build (keeping the range would also make sense for randconfig, not su=
-re
-> > > we got to any conclusion there).
-> >
-> > Well this doesn't seem to have got anywhere.  I think I'll send the
-> > patchset into Linus for the next merge window as-is.  Please let's take
-> > a look at this Kconfig presentation issue during the following -rc
-> > cycle.
->
-> That's fine by me. I have a slight preference to drop EXPERT and keep
-> the ranges in, especially if it affects current distro kernels. Debian
-> seems to enable EXPERT already in their arm64 kernel config but I'm not
-> sure about the Fedora or other distro kernels. If they don't, we can
-> fix/revert this Kconfig entry once the merging window is closed.
+Hi Thomas,
 
-Fedora and RHEL do not enable EXPERT already.
+> Am 17.04.23 um 16:12 schrieb Arnd Bergmann:>> On Mon, Apr 17, 2023, at 1=
+4:56, Thomas Zimmermann wrote:
+>>> Various architectures provide <asm/fb.h> with helpers for fbdev
+>>> framebuffer devices. Share the contained code where possible. There
+>>> is already <asm-generic/fb.h>, which implements generic (as in
+>>> 'empty') functions of the fbdev helpers. The header was added in
+>>> commit aafe4dbed0bf ("asm-generic: add generic versions of common
+>>> headers"), but never used.
+>>>
+>>> Each per-architecture header file declares and/or implements fbdev
+>>> helpers and defines a preprocessor token for each. The generic
+>>> header then provides the remaining helpers. It works like the I/O
+>>> helpers in <asm/io.h>.
+>>
+>> Looks all good to me,
+>>
+>> Acked-by: Arnd Bergmann <arnd@arndb.de>
+>
+> Thanks a lot. I know that Helge wants to test the PARISC changes, so
+> I'll keep this series pending for a bit longer. I'd like to merge the
+> patches through the DRM tree, if no one objects.
 
-Justin
+Yes, patch is good and I've tested it on parisc. Thanks!
+
+You may add:
+Acked-by: Helge Deller <deller@gmx.de>
+to the series and take it through the drm tree.
+
+Helge
