@@ -2,82 +2,67 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 45A3D6E803E
-	for <lists+linux-ia64@lfdr.de>; Wed, 19 Apr 2023 19:23:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 538D16ED2B0
+	for <lists+linux-ia64@lfdr.de>; Mon, 24 Apr 2023 18:40:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232473AbjDSRX0 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 19 Apr 2023 13:23:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38272 "EHLO
+        id S231951AbjDXQkb (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 24 Apr 2023 12:40:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54994 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232271AbjDSRXZ (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 19 Apr 2023 13:23:25 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB90A659B;
-        Wed, 19 Apr 2023 10:23:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de; s=s31663417;
-        t=1681924974; i=deller@gmx.de;
-        bh=C5yrQi1O5H/ZJ6i2wZhc9S+TYhhPSe8koYmOSkrsxpg=;
-        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
-        b=refzFEX/nVgK8/0c/yNY2CyfC3AdkpdTH+IYk+xIV5Q+38dlY1vRhZEFTmpMyUDc/
-         9kvkEZP0kVR01Hn28FwdYcvQkmsX1L9UWL+i8vZhz0goEWhOLvIAIfwTtlVmCjbgUD
-         u0lHmNPk61xpVh/6OWDJbveUXhuyj8lAjtP3C/VV7CHk+16/4VihPYwuUHEvivlYBw
-         UlL1VdmKWD8uIdo0Aoh5XASGCGmlY7GyOYsX3ffFnBo5KedAYvGh4FHhvglxT+KgCd
-         xQN6ABCnavylRmWcBFmE/lQHqF7hO3CioLhryov1vpJhVvImQ4wtSXMt4z9yTImXug
-         5i3ajdU7cJ5LA==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.144.134]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MatVb-1qRYCj0P8t-00cRzi; Wed, 19
- Apr 2023 19:22:54 +0200
-Message-ID: <b1f90fa4-85c7-e785-ba14-f32962f87d5e@gmx.de>
-Date:   Wed, 19 Apr 2023 19:22:50 +0200
+        with ESMTP id S231580AbjDXQka (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 24 Apr 2023 12:40:30 -0400
+X-Greylist: delayed 953 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 24 Apr 2023 09:40:21 PDT
+Received: from zg8tndyumtaxlji0oc4xnzya.icoremail.net (zg8tndyumtaxlji0oc4xnzya.icoremail.net [46.101.248.176])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id AFD5876BB;
+        Mon, 24 Apr 2023 09:40:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=pku.edu.cn; s=dkim; h=Received:From:To:Cc:Subject:Date:
+        Message-Id:In-Reply-To:References:MIME-Version:
+        Content-Transfer-Encoding; bh=smNFfWYZDzCdeMK2Jp8UC6yG66GXW3bdYd
+        Cd5GyzDhc=; b=gbhP58M97zPzv/37DsaIKaQ0fORdRWpNhTVkU0XfWDJ4vWgjth
+        wHhGpwviy8whL4i3U/BennGlb9xW+dK5EjhTlxW4XiGpa2mOqraMk1Epx06R924j
+        ZETpdL6doCImayur9yXwJuL04C5GdspwiDvqeOdZQPytoaENLuNFRfZyc=
+Received: from localhost.localdomain (unknown [10.7.101.92])
+        by front01 (Coremail) with SMTP id 5oFpogD3fz59rEZkQRscAA--.27563S2;
+        Tue, 25 Apr 2023 00:21:22 +0800 (CST)
+From:   Ruihan Li <lrh2000@pku.edu.cn>
+To:     torvalds@linux-foundation.org, masahiroy@kernel.org
+Cc:     arnd@arndb.de, bp@alien8.de, dave.hansen@linux.intel.com,
+        devel@acpica.org, lenb@kernel.org, linux-acpi@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, mingo@redhat.com, nathan@kernel.org,
+        ndesaulniers@google.com, ojeda@kernel.org, rafael@kernel.org,
+        robert.moore@intel.com, terrelln@fb.com, tglx@linutronix.de,
+        trix@redhat.com, x86@kernel.org, Ruihan Li <lrh2000@pku.edu.cn>
+Subject: [PATCH] scripts: Remove ICC-related dead code
+Date:   Tue, 25 Apr 2023 00:21:10 +0800
+Message-Id: <20230424162110.11082-1-lrh2000@pku.edu.cn>
+X-Mailer: git-send-email 2.40.0
+In-Reply-To: <20221016182349.49308-1-masahiroy@kernel.org>
+References: <20221016182349.49308-1-masahiroy@kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v3 00/19] arch: Consolidate <asm/fb.h>
-Content-Language: en-US
-To:     Thomas Zimmermann <tzimmermann@suse.de>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Linux-Arch <linux-arch@vger.kernel.org>,
-        linux-fbdev@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
-        x86@kernel.org, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-mips@vger.kernel.org,
-        linux-m68k@lists.linux-m68k.org, loongarch@lists.linux.dev,
-        sparclinux@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linuxppc-dev@lists.ozlabs.org, linux-arm-kernel@lists.infradead.org
-References: <20230417125651.25126-1-tzimmermann@suse.de>
- <1641007d-7953-426a-a3de-ca9c90f6c5a9@app.fastmail.com>
- <5fa98536-a4b0-7b71-7342-9ba05158062f@suse.de>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <5fa98536-a4b0-7b71-7342-9ba05158062f@suse.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:H9qZXkCOPDN+3vsO7z+9ttDKPCRSFaiF/4cDmiO5ovofGlBxTzT
- kMlRPG3r4Q6KYGeHBb//fU40kwtmWj1gVkdx7p7FELLCFOD5Nql8qYPGjnWefhzsS88zNIK
- xaqD2s84khdceDbFsitlOpU2HidQYYXlykQQ9SD+p1IgyfdLRLZnqUmFoBDr2Oq3uB/Hpmu
- vy6bniwylk05WNGd4sCJg==
-UI-OutboundReport: notjunk:1;M01:P0:5ox/8AYo9cY=;DXfWBLw0Wfb00Me5ctwgZzfIUZ/
- 1GcLaW7zyF+rDR6gv5OFGKt/ECtMI2VLnGHaGgup0zhzHr7BbEMURzdNk4ut1hQ/I1Ur1dsc0
- 1JvQBABCmnEIVKxSHIzxSDISBJC4Qap+OiyTLFMWZ9un0xA1yRdsUs2M1yt+a2EqGcCluQlae
- 19JYqGAwJcB9zy4M2luWaDfLR+ZKhj9ZKj8YSY34zxXwBPDgYmXrjwHYmJ4VTpPq9lQoP7XYz
- zFNmrhEsoPBmtBzXWAha6jdgOhp/DgbHDRiAP61aoHFFNbzRmhAGM4NsKuWZgVMGEWTXl21UX
- RWqLtp/2wf2qeOu3egFZaXc8jYCWg1NlAIcF9HZ3295DdF25gExyuV9did7VXP77oNQQ+QXPc
- fhCOeNGtft8Mand8MEWSS+3kWNhuIfz07igr9+fsGtxP3ysYKTaY3WPhXV0YMVT8Bep0brJsz
- it0ElaUn+GMQsDuKpgWJIn6dE2RbkRjrP0KTWEny7DHSk8JEWgia6+A8qE0EY++w+1sCntVun
- q6L6YvL6bob4Q1BUg6FQGSTaWbEOj1aXk0c3aEh6x+vXVvTOLaLYYUvW1lFtPoRMygYgZx4wQ
- rJN3kennM/9oLujbd5BqjhpxyFEKAHVCVXS45wO+oSJnirRTWt+IU+XGjNEY0ptfkn3mN4x/q
- kvGcY6cnurtogkHbIzoeA9JDtK7wJr1dYuVhIbxaw4ROiwNGBzb/BR3lIpmxi2xnCf7zxwLP8
- po9pTOMtKhkJLo/DaIoVdM7R07TLStHRQWeCtVEbKyLKDvKxPjppGZ6s5Tz5A6AXYgiSFhuW4
- cGKpK8tRgRhTmcAGp6W5xqVoysF2XWyW46xmjytoEwKEd8r8g4J//wzQ3dLfMvZ9GduabVyKy
- Tq5+OYpXodvPTj/P2JbKEivhf9ZtS7PrHr8f0DO4nsV7nYIV9I/xwMZ3jymGdPYzWNpnTiyox
- UXVSng==
-X-Spam-Status: No, score=-5.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: 5oFpogD3fz59rEZkQRscAA--.27563S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrtFy7Kry8WF1rXF4kZrW5ZFb_yoW8JF1Upa
+        yjk34qgr1kZr4S9r1xAw10qF1rAan7t3yxCw1jgF1jkF13Gr40qrWxtFyakr98Za18trWF
+        9FW8A343Gr43CrJanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUBS1xkIjI8I6I8E6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AE
+        w4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2
+        IY67AKxVW7JVWDJwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxVWxJVW8Jr1l84ACjcxK6I8E
+        87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4UJVWxJr1lnxkEFVAIw2
+        0F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2
+        j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7x
+        kEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lFIxGxcIE
+        c7CjxVA2Y2ka0xkIwI1lc2xSY4AK6svPMxAIw28IcxkI7VAKI48JMxAIw28IcVCjz48v1s
+        IEY20_Kr1UJr1l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC2
+        0s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI7VAKI48JMI
+        IF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF
+        0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87
+        Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOlksUUUUU
+X-CM-SenderInfo: yssqiiarrvmko6sn3hxhgxhubq/1tbiAgEEBVPy77qNLwASsG
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,34 +70,41 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Thomas,
+Intel compiler support has already been completely removed in commit
+95207db8166a ("Remove Intel compiler support"). However, it appears that
+there is still some ICC-related code in scripts/cc-version.sh. There is
+no harm in leaving the code as it is, but removing the dead code makes
+the codebase a bit cleaner.
 
-> Am 17.04.23 um 16:12 schrieb Arnd Bergmann:>> On Mon, Apr 17, 2023, at 1=
-4:56, Thomas Zimmermann wrote:
->>> Various architectures provide <asm/fb.h> with helpers for fbdev
->>> framebuffer devices. Share the contained code where possible. There
->>> is already <asm-generic/fb.h>, which implements generic (as in
->>> 'empty') functions of the fbdev helpers. The header was added in
->>> commit aafe4dbed0bf ("asm-generic: add generic versions of common
->>> headers"), but never used.
->>>
->>> Each per-architecture header file declares and/or implements fbdev
->>> helpers and defines a preprocessor token for each. The generic
->>> header then provides the remaining helpers. It works like the I/O
->>> helpers in <asm/io.h>.
->>
->> Looks all good to me,
->>
->> Acked-by: Arnd Bergmann <arnd@arndb.de>
->
-> Thanks a lot. I know that Helge wants to test the PARISC changes, so
-> I'll keep this series pending for a bit longer. I'd like to merge the
-> patches through the DRM tree, if no one objects.
+Hopefully all ICC-related stuff in the build scripts will be removed
+after this commit, given the grep output as below:
 
-Yes, patch is good and I've tested it on parisc. Thanks!
+	(linux/scripts) $ grep -i -w -R 'icc'
+	cc-version.sh:ICC)
+	cc-version.sh:	min_version=$($min_tool_version icc)
+	dtc/include-prefixes/arm64/qcom/sm6350.dtsi:#include <dt-bindings/interconnect/qcom,icc.h>
 
-You may add:
-Acked-by: Helge Deller <deller@gmx.de>
-to the series and take it through the drm tree.
+Fixes: 95207db8166a ("Remove Intel compiler support")
+Signed-off-by: Ruihan Li <lrh2000@pku.edu.cn>
+---
+ scripts/cc-version.sh | 4 ----
+ 1 file changed, 4 deletions(-)
 
-Helge
+diff --git a/scripts/cc-version.sh b/scripts/cc-version.sh
+index 0573c92e8..a7e28b6a5 100755
+--- a/scripts/cc-version.sh
++++ b/scripts/cc-version.sh
+@@ -45,10 +45,6 @@ Clang)
+ 	version=$2.$3.$4
+ 	min_version=$($min_tool_version llvm)
+ 	;;
+-ICC)
+-	version=$(($2 / 100)).$(($2 % 100)).$3
+-	min_version=$($min_tool_version icc)
+-	;;
+ *)
+ 	echo "$orig_args: unknown C compiler" >&2
+ 	exit 1
+-- 
+2.40.0
+
