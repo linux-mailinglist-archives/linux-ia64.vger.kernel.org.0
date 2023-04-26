@@ -2,141 +2,144 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 35AE86EEE8B
-	for <lists+linux-ia64@lfdr.de>; Wed, 26 Apr 2023 08:51:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D312E6EF4D9
+	for <lists+linux-ia64@lfdr.de>; Wed, 26 Apr 2023 15:04:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239496AbjDZGvX (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 26 Apr 2023 02:51:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59620 "EHLO
+        id S240900AbjDZNE0 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 26 Apr 2023 09:04:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38514 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239490AbjDZGvW (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 26 Apr 2023 02:51:22 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7BD1721
-        for <linux-ia64@vger.kernel.org>; Tue, 25 Apr 2023 23:50:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1682491838;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=2EMYluwvhrMA17BDykO/E+Vbp/FohqG3vlUmCHX23RY=;
-        b=gjg0VOyiPgOqkT7W8msYsjJZ0frExms+Sd2SDEFI6Cecm+hqHPhWxExXuPI8FC5120dDtH
-        EcXUHgSVnCJEn8l6cVVrlT/5usYJ8vhtyOoWnlVTPe0726ZSMGzxsAzk5CF3RHWKjcBRe0
-        N47dlMop/sJDldaECWRwUeawmJPfCHg=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-176-fJMySYbeMG6TtRg1n50BnA-1; Wed, 26 Apr 2023 02:50:34 -0400
-X-MC-Unique: fJMySYbeMG6TtRg1n50BnA-1
-Received: from smtp.corp.redhat.com (int-mx02.intmail.prod.int.rdu2.redhat.com [10.11.54.2])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S240318AbjDZNEZ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 26 Apr 2023 09:04:25 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F5CA420C;
+        Wed, 26 Apr 2023 06:04:24 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 55105858F09;
-        Wed, 26 Apr 2023 06:50:34 +0000 (UTC)
-Received: from thuth.com (unknown [10.39.192.151])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 7F29040C6E67;
-        Wed, 26 Apr 2023 06:50:33 +0000 (UTC)
-From:   Thomas Huth <thuth@redhat.com>
-To:     linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>
-Cc:     linux-ia64@vger.kernel.org
-Subject: [PATCH] arch/ia64/include: Remove CONFIG_IA64_DEBUG_CMPXCHG from uapi header
-Date:   Wed, 26 Apr 2023 08:50:32 +0200
-Message-Id: <20230426065032.517693-1-thuth@redhat.com>
+        by smtp-out2.suse.de (Postfix) with ESMTPS id F2B2A1FDC9;
+        Wed, 26 Apr 2023 13:04:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1682514263; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=ZvaBzh3f/aiqD52UlKjdoNF7+qwuUVn7MUgqdP2D7Nw=;
+        b=UUB5WwTLuJwXSoCTJ3K7FRWI3bAowE0MAQQnTQ8Woqr9jGn3KSm4fv+l+btYHt/SEzCsD6
+        E6Tz3qvcxaYsO0Ane3YO3a66YgThKstJIJ4Lgjadjm2nGBl3KNTyxPMpou9Mnyuqc/adAL
+        KiMTTGQM90NhVMGC3ytJZ9AIyukntHg=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1682514263;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=ZvaBzh3f/aiqD52UlKjdoNF7+qwuUVn7MUgqdP2D7Nw=;
+        b=5Y5kjboljw7Gn1Hlnhprb8RfDWvqxVjp+TudZAikLk9S5eG7QO9FJaa/ij7yCLSwcYk6Zr
+        niVmZqqNbyCVxQAQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 86AF6138F0;
+        Wed, 26 Apr 2023 13:04:22 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id eEa6H1YhSWSBMgAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Wed, 26 Apr 2023 13:04:22 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     deller@gmx.de, geert@linux-m68k.org, javierm@redhat.com,
+        daniel@ffwll.ch, vgupta@kernel.org, chenhuacai@kernel.org,
+        kernel@xen0n.name, davem@davemloft.net,
+        James.Bottomley@HansenPartnership.com, arnd@arndb.de
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arch@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-parisc@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 0/5] fbdev: Move framebuffer I/O helpers to <asm/fb.h>
+Date:   Wed, 26 Apr 2023 15:04:15 +0200
+Message-Id: <20230426130420.19942-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.2
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-CONFIG_* switches should not be exposed in uapi headers.
-The macros that are defined here are also only useful for the
-kernel code, so let's move them to asm/cmpxchg.h instead.
+Fbdev provides helpers for framebuffer I/O, such as fb_readl(),
+fb_writel() or fb_memcpy_to_fb(). The implementation of each helper
+depends on the architecture. It's still all located in fbdev's main
+header file <linux/fb.h>. Move all of it into each archtecture's
+<asm/fb.h>, with shared code in <asm-generic/fb.h>.
 
-The only two files that are using these macros are the headers
-arch/ia64/include/asm/bitops.h and arch/ia64/include/asm/atomic.h
-and these include asm/cmpxchg.h via asm/intrinsics.h, so this
-movement should not cause any trouble.
+The first patch a simple whitespace cleanup.
 
-Signed-off-by: Thomas Huth <thuth@redhat.com>
----
- arch/ia64/include/asm/cmpxchg.h      | 17 +++++++++++++++++
- arch/ia64/include/uapi/asm/cmpxchg.h | 17 -----------------
- scripts/headers_install.sh           |  1 -
- 3 files changed, 17 insertions(+), 18 deletions(-)
+Until now, <linux/fb.h> contained an include of <asm/io.h>. As this
+will go away patches 2 to 4 prepare include statements in the various
+drivers. Source files that use regular I/O helpers, such as readl(),
+now include <linux/io.h>. Source files that use framebuffer I/O
+helpers, such as fb_readl(), now include <asm/fb.h>. The latter now
+includes <linux/io.h> internally.
 
-diff --git a/arch/ia64/include/asm/cmpxchg.h b/arch/ia64/include/asm/cmpxchg.h
-index 94ef84429843..d9f01ede9768 100644
---- a/arch/ia64/include/asm/cmpxchg.h
-+++ b/arch/ia64/include/asm/cmpxchg.h
-@@ -13,4 +13,21 @@
- #define arch_cmpxchg_local		arch_cmpxchg
- #define arch_cmpxchg64_local		arch_cmpxchg64
- 
-+#ifdef CONFIG_IA64_DEBUG_CMPXCHG
-+# define CMPXCHG_BUGCHECK_DECL	int _cmpxchg_bugcheck_count = 128;
-+# define CMPXCHG_BUGCHECK(v)						\
-+do {									\
-+	if (_cmpxchg_bugcheck_count-- <= 0) {				\
-+		void *ip;						\
-+		extern int _printk(const char *fmt, ...);		\
-+		ip = (void *) ia64_getreg(_IA64_REG_IP);		\
-+		_printk("CMPXCHG_BUGCHECK: stuck at %p on word %p\n", ip, (v));\
-+		break;							\
-+	}								\
-+} while (0)
-+#else /* !CONFIG_IA64_DEBUG_CMPXCHG */
-+# define CMPXCHG_BUGCHECK_DECL
-+# define CMPXCHG_BUGCHECK(v)
-+#endif /* !CONFIG_IA64_DEBUG_CMPXCHG */
-+
- #endif /* _ASM_IA64_CMPXCHG_H */
-diff --git a/arch/ia64/include/uapi/asm/cmpxchg.h b/arch/ia64/include/uapi/asm/cmpxchg.h
-index 259ae57570bf..986dbe01d883 100644
---- a/arch/ia64/include/uapi/asm/cmpxchg.h
-+++ b/arch/ia64/include/uapi/asm/cmpxchg.h
-@@ -133,23 +133,6 @@ extern long ia64_cmpxchg_called_with_bad_pointer(void);
- #define cmpxchg64_local		cmpxchg64
- #endif
- 
--#ifdef CONFIG_IA64_DEBUG_CMPXCHG
--# define CMPXCHG_BUGCHECK_DECL	int _cmpxchg_bugcheck_count = 128;
--# define CMPXCHG_BUGCHECK(v)						\
--do {									\
--	if (_cmpxchg_bugcheck_count-- <= 0) {				\
--		void *ip;						\
--		extern int _printk(const char *fmt, ...);		\
--		ip = (void *) ia64_getreg(_IA64_REG_IP);		\
--		_printk("CMPXCHG_BUGCHECK: stuck at %p on word %p\n", ip, (v));\
--		break;							\
--	}								\
--} while (0)
--#else /* !CONFIG_IA64_DEBUG_CMPXCHG */
--# define CMPXCHG_BUGCHECK_DECL
--# define CMPXCHG_BUGCHECK(v)
--#endif /* !CONFIG_IA64_DEBUG_CMPXCHG */
--
- #endif /* !__ASSEMBLY__ */
- 
- #endif /* _UAPI_ASM_IA64_CMPXCHG_H */
-diff --git a/scripts/headers_install.sh b/scripts/headers_install.sh
-index 36b56b746fce..afdddc82f02b 100755
---- a/scripts/headers_install.sh
-+++ b/scripts/headers_install.sh
-@@ -76,7 +76,6 @@ arch/arc/include/uapi/asm/swab.h:CONFIG_ARC_HAS_SWAPE
- arch/arm/include/uapi/asm/ptrace.h:CONFIG_CPU_ENDIAN_BE8
- arch/hexagon/include/uapi/asm/ptrace.h:CONFIG_HEXAGON_ARCH_VERSION
- arch/hexagon/include/uapi/asm/user.h:CONFIG_HEXAGON_ARCH_VERSION
--arch/ia64/include/uapi/asm/cmpxchg.h:CONFIG_IA64_DEBUG_CMPXCHG
- arch/m68k/include/uapi/asm/ptrace.h:CONFIG_COLDFIRE
- arch/nios2/include/uapi/asm/swab.h:CONFIG_NIOS2_CI_SWAB_NO
- arch/nios2/include/uapi/asm/swab.h:CONFIG_NIOS2_CI_SWAB_SUPPORT
+Patch 5 moves the framebuffer I/O helpers from <linux/fb.h> into
+the various architecture headers. The common case, where the framebuffer
+is located in I/O memory, serves as the generic implemenation.
+
+The patchset has been built for a variety of platforms, such as x86-64,
+arm, aarch64, ppc64, parisc, m64k, mips and sparc.
+
+Thomas Zimmermann (5):
+  fbdev/matrox: Remove trailing whitespaces
+  ipu-v3: Include <linux/io.h>
+  fbdev: Include <linux/io.h> in various drivers
+  fbdev: Include <linux/io.h> via <asm/fb.h>
+  fbdev: Move framebuffer I/O helpers into <asm/fb.h>
+
+ arch/arc/include/asm/fb.h                   | 29 +++++++
+ arch/ia64/include/asm/fb.h                  | 28 +++++++
+ arch/loongarch/include/asm/fb.h             | 29 +++++++
+ arch/m68k/include/asm/fb.h                  | 29 +++++++
+ arch/sparc/include/asm/fb.h                 | 77 +++++++++++++++++
+ drivers/gpu/ipu-v3/ipu-prv.h                |  1 +
+ drivers/video/fbdev/arcfb.c                 |  1 +
+ drivers/video/fbdev/arkfb.c                 |  2 +
+ drivers/video/fbdev/aty/atyfb.h             |  2 +
+ drivers/video/fbdev/aty/mach64_cursor.c     |  2 +-
+ drivers/video/fbdev/chipsfb.c               |  1 +
+ drivers/video/fbdev/cirrusfb.c              |  2 +
+ drivers/video/fbdev/core/cfbcopyarea.c      |  2 +-
+ drivers/video/fbdev/core/cfbfillrect.c      |  1 +
+ drivers/video/fbdev/core/cfbimgblt.c        |  1 +
+ drivers/video/fbdev/core/svgalib.c          |  3 +-
+ drivers/video/fbdev/cyber2000fb.c           |  2 +
+ drivers/video/fbdev/ep93xx-fb.c             |  2 +
+ drivers/video/fbdev/hgafb.c                 |  3 +-
+ drivers/video/fbdev/hitfb.c                 |  2 +-
+ drivers/video/fbdev/kyro/fbdev.c            |  3 +-
+ drivers/video/fbdev/matrox/matroxfb_accel.c |  8 +-
+ drivers/video/fbdev/matrox/matroxfb_base.h  |  6 +-
+ drivers/video/fbdev/pm2fb.c                 |  3 +
+ drivers/video/fbdev/pm3fb.c                 |  2 +
+ drivers/video/fbdev/pvr2fb.c                |  2 +
+ drivers/video/fbdev/s3fb.c                  |  2 +
+ drivers/video/fbdev/sm712fb.c               |  2 +
+ drivers/video/fbdev/sstfb.c                 |  2 +-
+ drivers/video/fbdev/stifb.c                 |  2 +
+ drivers/video/fbdev/tdfxfb.c                |  3 +-
+ drivers/video/fbdev/tridentfb.c             |  2 +
+ drivers/video/fbdev/vga16fb.c               |  3 +-
+ drivers/video/fbdev/vt8623fb.c              |  2 +
+ drivers/video/fbdev/wmt_ge_rops.c           |  2 +
+ include/asm-generic/fb.h                    | 93 +++++++++++++++++++++
+ include/linux/fb.h                          | 53 ------------
+ 37 files changed, 340 insertions(+), 69 deletions(-)
+
 -- 
-2.31.1
+2.40.0
 
