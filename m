@@ -2,144 +2,151 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D28A6F24FD
-	for <lists+linux-ia64@lfdr.de>; Sat, 29 Apr 2023 16:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6C7CB6F4469
+	for <lists+linux-ia64@lfdr.de>; Tue,  2 May 2023 15:02:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231310AbjD2OLl (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 29 Apr 2023 10:11:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33200 "EHLO
+        id S234291AbjEBNCd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 2 May 2023 09:02:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41558 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230005AbjD2OLk (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 29 Apr 2023 10:11:40 -0400
-Received: from out3-smtp.messagingengine.com (out3-smtp.messagingengine.com [66.111.4.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A377198A;
-        Sat, 29 Apr 2023 07:11:38 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 2DD955C00FB;
-        Sat, 29 Apr 2023 10:11:36 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Sat, 29 Apr 2023 10:11:36 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm2; t=1682777496; x=1682863896; bh=8d
-        kHZ7/OLsjO2XUx8f1h6VDCdqS9HsgrgUgQPoekbMU=; b=Tt4hmIAKM+NNZGRbGy
-        USiFmRb7ZQ7VESvUpDkvDC9rS9I/kjpxYoq4IidwwhIKTPcYD5vR6RqvLLGr+CaD
-        1I9aUqlKLEp8YNzWVAXHUtUi2kVpAha/zdduG5raE+Wi0wvbUISzk2AadoiGxkiZ
-        fZrZqC1pSn3Zxe1+KbPC8fVvKo3sFwMmI+khbEppmvaKW9CmFCgdX2QktEKQKG96
-        0SC2oHRE3uFMLM/L3dVGCHbScyE7YVtM0HH4gQT9Mh2zq/OoF5XuXAM6yoLd/EIj
-        ZLMzsUC3vaXLLJ6GGE7oLNpIHGXhuLTVOB66jjYD1eINb3WthQd7wDNhLD/+UKGq
-        YWnQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1682777496; x=1682863896; bh=8dkHZ7/OLsjO2
-        XUx8f1h6VDCdqS9HsgrgUgQPoekbMU=; b=L+nvmAfj8gymGhB5xVReToYxjM6wj
-        v8YL/JxVhiXT6yjB2/Yx5h/SGJAuFpH+LYE4mRnIgEwvZrwch6NpT/gSOm3PSm30
-        bwzptyafMGf1520s8iYPvchCZ9FvC7zQx/AofzoW8CnPAm9cpnsX+tvIm8l6CBkt
-        l6Yt2qTVsuFf+UtcSo0isg2MhJafTaqRhqjDh5e0bCdNSt6QOAH4NkSPUTzq6lqg
-        IaNqSJFzzHT4wF8tk6iLVEl76ZIcQvAzUYcqtzZGN7wjqt4YIm/cBFu+jOkocHJJ
-        6aUIjnMFtOd00CnQB01bWd1lVpHN1OGQkflEeBtWUxIcBUtPa00kswySw==
-X-ME-Sender: <xms:lyVNZPz3z-p16274zMKpAKi5nlxUSJ7lk28d3S-Ob8c6-Zv8Bdk-Gw>
-    <xme:lyVNZHQanz9SNk_GaqKBAu-Y-aPLh9z5YLE6AO4jRKX5HaqlB0s8ya2eyd2wC7WEQ
-    j71iw5FIizBJSeFfXU>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvhedrfedvtddggeekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:lyVNZJXT0voWt151wzrxLt_t0PVcRbC_n0gzPllt-KSJgQjWEnhfPQ>
-    <xmx:lyVNZJhgG76zOedSkzOp0As8nsjokHBAqvY3P4YbxzGMIvgrdkwY3A>
-    <xmx:lyVNZBB11KK0qljfYMVgugmi1r0rm1svPDZhbgiqX_QChEeIGgbRGg>
-    <xmx:mCVNZABxHV6GlowlDf3Y7NrFIlL86oq1NhGnPXRrsYfMgDf0xjmKGw>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 00DD4B60086; Sat, 29 Apr 2023 10:11:34 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-374-g72c94f7a42-fm-20230417.001-g72c94f7a
-Mime-Version: 1.0
-Message-Id: <260ee591-a71b-4c83-a775-5591d4222cec@app.fastmail.com>
-In-Reply-To: <df6fa134-3a62-0872-e008-393e4a29a5ab@suse.de>
-References: <20230428092711.406-1-tzimmermann@suse.de>
- <20230428092711.406-6-tzimmermann@suse.de>
- <430c73f0-45f4-f81e-6506-bc8cc955d936@arm.com>
- <CAMuHMdUGjtiAR37L4_e0_p8ee2=gxoUj7+e7rqMLTBK+vpV4yw@mail.gmail.com>
- <f612c682-5767-4a58-82f6-f4a4d1b592a1@app.fastmail.com>
- <df6fa134-3a62-0872-e008-393e4a29a5ab@suse.de>
-Date:   Sat, 29 Apr 2023 16:11:13 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Thomas Zimmermann" <tzimmermann@suse.de>,
-        "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        "Robin Murphy" <robin.murphy@arm.com>
-Cc:     "Helge Deller" <deller@gmx.de>,
-        "Javier Martinez Canillas" <javierm@redhat.com>,
-        "Daniel Vetter" <daniel@ffwll.ch>,
-        "Vineet Gupta" <vgupta@kernel.org>,
-        "Huacai Chen" <chenhuacai@kernel.org>,
-        "WANG Xuerui" <kernel@xen0n.name>,
-        "David S . Miller" <davem@davemloft.net>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        "Sam Ravnborg" <sam@ravnborg.org>, linux-fbdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        linux-snps-arc@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, sparclinux@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-parisc@vger.kernel.org
-Subject: Re: [PATCH v2 5/5] fbdev: Define framebuffer I/O from Linux' I/O functions
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS,T_SCC_BODY_TEXT_LINE,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S234295AbjEBNCa (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 2 May 2023 09:02:30 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86D1D618B;
+        Tue,  2 May 2023 06:02:27 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id B905921F7C;
+        Tue,  2 May 2023 13:02:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+        t=1683032545; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=4/HqMKMsbulxem0YZHptZtjI0v2zedDTIGVljFbx4A0=;
+        b=0/jQzGQjxcsbLoXKHnJlmsUT3JVv9NcXNh8VApsEzclPgvqXiOMOMMUZX42s6shx2N3wH5
+        WKHaUtVeQypvLRNNq5+GiVa4PzEli+F2Vu0ozdPBwnWfJ7TE/B8ck8OEhS+oYSIR6iBLCA
+        bcVHsdu2aNC7jCqqUglALcBQKHVFWvM=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+        s=susede2_ed25519; t=1683032545;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+        bh=4/HqMKMsbulxem0YZHptZtjI0v2zedDTIGVljFbx4A0=;
+        b=pr+0WmwF1A765+pq5Lr5jvAUfbVCp6UWP2ciA0hJDFgk5xiDi/CqmkpdDug/1NYyvo/HBE
+        9l77+O3JrXAysKCQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 58447134FB;
+        Tue,  2 May 2023 13:02:25 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id tiGhFOEJUWRYTQAAMHmgww
+        (envelope-from <tzimmermann@suse.de>); Tue, 02 May 2023 13:02:25 +0000
+From:   Thomas Zimmermann <tzimmermann@suse.de>
+To:     deller@gmx.de, geert@linux-m68k.org, javierm@redhat.com,
+        daniel@ffwll.ch, vgupta@kernel.org, chenhuacai@kernel.org,
+        kernel@xen0n.name, davem@davemloft.net,
+        James.Bottomley@HansenPartnership.com, arnd@arndb.de,
+        sam@ravnborg.org
+Cc:     linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        linux-arch@vger.kernel.org, linux-snps-arc@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
+        sparclinux@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-parisc@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH v3 0/6] fbdev: Move framebuffer I/O helpers to <asm/fb.h>
+Date:   Tue,  2 May 2023 15:02:17 +0200
+Message-Id: <20230502130223.14719-1-tzimmermann@suse.de>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sat, Apr 29, 2023, at 14:26, Thomas Zimmermann wrote:
-> Am 28.04.23 um 15:17 schrieb Arnd Bergmann:
->> The only implementations in fbdev are
->> 
->>   1) sparc sbus
->>   2) __raw_writel
->>   3) direct pointer dereference
->> 
->> But none use the byte-swapping writel() implementations, and
->> the only ones that use the direct pointer dereference or sbus
->> are the ones on which these are defined the same as __raw_writel
->
-> After thinking a bit more about the requirements, I'd like to got back 
-> to v1, but with a different spin. We want to avoid ordering guarantees, 
-> so I looked at the _relaxed() helpers, but they seem to swap bytes to 
-> little endian.
+(was: fbdev: Use regular I/O function for framebuffers)
 
-Right, the _relaxed() oens are clearly wrong, aside from
-the byteswap they also include barriers on some architectures
-where the __raw_* version is more relaxed than the required
-semantics for relaxed.
+Fbdev provides helpers for framebuffer I/O, such as fb_readl(),
+fb_writel() or fb_memcpy_to_fb(). The implementation of each helper
+depends on the architecture, but they are all equivalent to regular
+I/O functions of similar names. So use regular functions instead and
+move all helpers into <asm-generic/fb.h>
 
-> I guess we can remove the fb_mem*() functions entirely. They are the 
-> same as the non-fb_ counterparts.
+The first patch a simple whitespace cleanup.
 
-These might actually be different in some cases, or sub-optimal
-at the moment. memcpy()/memset() don't take __iomem pointers, so they
-cause sparse warnings, while the memset_io()/memcpy_fromio()/
-memcpy_toio() sometimes fall back to bytewise access that is slower
-than word-sized copy. I only looked at the readl/writel style 
-functions earlier, no idea what we want here.
+Until now, <linux/fb.h> contained an include of <asm/io.h>. As this
+will go away patches 2 to 4 prepare include statements in the various
+drivers. Source files that use regular I/O helpers, such as readl(),
+now include <linux/io.h>. Source files that use framebuffer I/O
+helpers, such as fb_readl(), also include <asm/fb.h>.
 
-> For the fb read/write helpers, I'd 
-> like to add them to <asm-generic/fb.h> in a platform-neutral way. They'd 
-> be wrappers around __raw_(), as I wouldn't want invocations of  __raw_() 
-> functions in the fbdev drivers.
+Patch 5 replaces the architecture-based if-else branching in 
+<linux/fb.h> by helpers in <asm-generic/fb.h>. All helpers use Linux'
+existing I/O functions.
 
-That sounds good to me.
+Patch 6 harmonizes naming among fbdev and existing I/O functions.
 
-     Arnd
+The patchset has been built for a variety of platforms, such as x86-64,
+arm, aarch64, ppc64, parisc, m64k, mips and sparc.
+
+v3:
+	* add the new helpers in <asm-generic/fb.h>
+	* support reordering and native byte order (Geert, Arnd)
+v2:
+	* use Linux I/O helpers (Sam, Arnd)
+
+Thomas Zimmermann (6):
+  fbdev/matrox: Remove trailing whitespaces
+  ipu-v3: Include <linux/io.h>
+  fbdev: Include <linux/io.h> in various drivers
+  fbdev: Include <linux/io.h> via <asm/fb.h>
+  fbdev: Move framebuffer I/O helpers into <asm/fb.h>
+  fbdev: Rename fb_mem*() helpers
+
+ drivers/gpu/ipu-v3/ipu-prv.h                |   1 +
+ drivers/video/fbdev/arcfb.c                 |   1 +
+ drivers/video/fbdev/arkfb.c                 |   2 +
+ drivers/video/fbdev/aty/atyfb.h             |   2 +
+ drivers/video/fbdev/aty/mach64_cursor.c     |   4 +-
+ drivers/video/fbdev/chipsfb.c               |   3 +-
+ drivers/video/fbdev/cirrusfb.c              |   2 +
+ drivers/video/fbdev/core/cfbcopyarea.c      |   2 +-
+ drivers/video/fbdev/core/cfbfillrect.c      |   1 +
+ drivers/video/fbdev/core/cfbimgblt.c        |   1 +
+ drivers/video/fbdev/core/fbmem.c            |   4 +-
+ drivers/video/fbdev/core/svgalib.c          |   3 +-
+ drivers/video/fbdev/cyber2000fb.c           |   2 +
+ drivers/video/fbdev/ep93xx-fb.c             |   2 +
+ drivers/video/fbdev/hgafb.c                 |   3 +-
+ drivers/video/fbdev/hitfb.c                 |   2 +-
+ drivers/video/fbdev/kyro/fbdev.c            |   5 +-
+ drivers/video/fbdev/matrox/matroxfb_accel.c |   8 +-
+ drivers/video/fbdev/matrox/matroxfb_base.h  |   6 +-
+ drivers/video/fbdev/pm2fb.c                 |   3 +
+ drivers/video/fbdev/pm3fb.c                 |   2 +
+ drivers/video/fbdev/pvr2fb.c                |   4 +-
+ drivers/video/fbdev/s3fb.c                  |   2 +
+ drivers/video/fbdev/sm712fb.c               |   2 +
+ drivers/video/fbdev/sstfb.c                 |   4 +-
+ drivers/video/fbdev/stifb.c                 |   6 +-
+ drivers/video/fbdev/tdfxfb.c                |   5 +-
+ drivers/video/fbdev/tridentfb.c             |   2 +
+ drivers/video/fbdev/vga16fb.c               |   3 +-
+ drivers/video/fbdev/vt8623fb.c              |   2 +
+ drivers/video/fbdev/wmt_ge_rops.c           |   2 +
+ include/asm-generic/fb.h                    | 102 ++++++++++++++++++++
+ include/linux/fb.h                          |  53 ----------
+ 33 files changed, 167 insertions(+), 79 deletions(-)
+
+-- 
+2.40.1
+
