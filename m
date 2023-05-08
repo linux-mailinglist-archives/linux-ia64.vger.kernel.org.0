@@ -2,70 +2,68 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54E4F6F9A91
-	for <lists+linux-ia64@lfdr.de>; Sun,  7 May 2023 19:30:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 025FB6FA190
+	for <lists+linux-ia64@lfdr.de>; Mon,  8 May 2023 09:52:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231301AbjEGRae convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+linux-ia64@lfdr.de>); Sun, 7 May 2023 13:30:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57626 "EHLO
+        id S233605AbjEHHwM (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 8 May 2023 03:52:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229881AbjEGRad (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 7 May 2023 13:30:33 -0400
-Received: from mail.bpip.go.id (unknown [103.166.134.2])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6890E1156D;
-        Sun,  7 May 2023 10:30:30 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.bpip.go.id (Postfix) with ESMTP id D3F41BCCBF3;
-        Sun,  7 May 2023 06:57:31 +0700 (WIB)
-Received: from mail.bpip.go.id ([127.0.0.1])
-        by localhost (mail.bpip.go.id [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id egUMpeRPiJft; Sun,  7 May 2023 06:57:31 +0700 (WIB)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.bpip.go.id (Postfix) with ESMTP id 8EC08B4D710;
-        Sat,  6 May 2023 19:52:09 +0700 (WIB)
-X-Amavis-Modified: Mail body modified (using disclaimer) - mail.bpip.go.id
-X-Virus-Scanned: amavisd-new at bpip.go.id
-Received: from mail.bpip.go.id ([127.0.0.1])
-        by localhost (mail.bpip.go.id [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id SNAIa99o813e; Sat,  6 May 2023 19:52:09 +0700 (WIB)
-Received: from [103.167.91.37] (unknown [103.167.91.37])
-        by mail.bpip.go.id (Postfix) with ESMTPSA id D0488BCC760;
-        Sat,  6 May 2023 08:34:27 +0700 (WIB)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S233585AbjEHHwJ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 8 May 2023 03:52:09 -0400
+X-Greylist: delayed 605 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 08 May 2023 00:52:07 PDT
+Received: from mail.rawlinsfis.com (mail.rawlinsfis.com [89.40.118.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A0A11BF2
+        for <linux-ia64@vger.kernel.org>; Mon,  8 May 2023 00:52:07 -0700 (PDT)
+Received: by mail.rawlinsfis.com (Postfix, from userid 1001)
+        id 63F2281BF9; Mon,  8 May 2023 08:36:13 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rawlinsfis.com;
+        s=mail; t=1683531378;
+        bh=lDo1OjfzzJ3sOfR9tSDg5RMmT4aDyBP45hIVJCLtIrE=;
+        h=Date:From:To:Subject:From;
+        b=I5Fh5lt1/Ga0otqtIbdwVcrs3v+70Ynzjf2e5p+PdclavOu12xz3xOeJI37eu0qbN
+         UiiDvVUXI3V9W8PqbQSLJegJ65yO6COvMS3F86ztHgP90qTCBn2cnXaDxiUvjjVRGt
+         sZI5sYZhAO6t7oGyAlKAiuy+TCPFH0DgGr2T0YdGOBhyQX1YlX2tFd7RhO+eieUyDH
+         BhCUrfiwxwUT3cxB4AvceKcyKxX1a0lIVOs0P5cnIdWT/Xxi1C/D2NSdyXc6Q/t5we
+         zog7QAh3XJyD8LtRhrHxVHQW2A1I0f7t27QyJZMSkmVhybkitQp/sCVZURdRMKgjbX
+         G4MXwJMmBx7KQ==
+Received: by mail.rawlinsfis.com for <linux-ia64@vger.kernel.org>; Mon,  8 May 2023 07:36:07 GMT
+Message-ID: <20230508074500-0.1.3d.5ls3.0.pmkr6rk8jv@rawlinsfis.com>
+Date:   Mon,  8 May 2023 07:36:07 GMT
+From:   "Damian Hordych" <damian.hordych@rawlinsfis.com>
+To:     <linux-ia64@vger.kernel.org>
+Subject: =?UTF-8?Q?Pompy_ciep=C5=82a_-_nowe_warunki_?=
+X-Mailer: mail.rawlinsfis.com
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8BIT
-Content-Description: Mail message body
-Subject: Letzte Erinnerung
-To:     Recipients <persuratan@bpip.go.id>
-From:   "Qatar Foundation" <persuratan@bpip.go.id>
-Date:   Fri, 05 May 2023 18:34:24 -0700
-Reply-To: qf.qatarcares.org@gmail.com
-Message-Id: <20230506013428.D0488BCC760@mail.bpip.go.id>
-X-Spam-Status: Yes, score=6.0 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,NIXSPAM_IXHASH,RCVD_IN_SBL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.1 RCVD_IN_SBL RBL: Received via a relay in Spamhaus SBL
-        *      [103.167.91.37 listed in zen.spamhaus.org]
-        *  3.0 NIXSPAM_IXHASH http://www.nixspam.org/
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: ******
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Sehr geehrter Begünstigter,
+Dzie=C5=84 dobry,
 
-Sie wurden ausgewählt,  (995.000,00 €) von Katar Foundation zu erhalten, antworten Sie bitte mit Ihrem vollständigen Namen und Ihrer Adresse, um weitere Informationen zu erhalten. E-mail:qf.qatarcares.org@gmail.com
+w ramach nowej edycji programu Czyste Powietrze dla klient=C3=B3w indywid=
+ualnych mog=C4=85 otrzyma=C4=87 Pa=C5=84stwo do 135 tys. z=C5=82 wsparcia=
+ na zakup pompy ciep=C5=82a.
 
-Mit Freundlichen Grüßen,
-Herr Rashid Al-Naimi.
-Chief Executive Officer der Qatar Foundation Endowment.
-(null)
+Pr=C3=B3cz wy=C5=BCszego dofinansowania program zak=C5=82ada m.in. podwy=C5=
+=BCszenie prog=C3=B3w dochodowych oraz mo=C5=BCliwo=C5=9B=C4=87 z=C5=82o=C5=
+=BCenia kolejnego wniosku o dofinansowanie dla tych, kt=C3=B3rzy ju=C5=BC=
+ wcze=C5=9Bniej skorzystali z Programu.
+
+Jako firma specjalizuj=C4=85ca si=C4=99 w dostawie, monta=C5=BCu i serwis=
+ie pomp ciep=C5=82a pomo=C5=BCemy Pa=C5=84stwu w uzyskaniu dofinansowania=
+ wraz z kompleksow=C4=85 realizacj=C4=85 ca=C5=82ego projektu.
+
+S=C4=85 Pa=C5=84stwo zainteresowani?
+
+Pozdrawiam
+Damian Hordych
