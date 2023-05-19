@@ -2,42 +2,41 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3DE4970A073
-	for <lists+linux-ia64@lfdr.de>; Fri, 19 May 2023 22:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 241BE70A15A
+	for <lists+linux-ia64@lfdr.de>; Fri, 19 May 2023 23:13:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229816AbjESUS5 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 19 May 2023 16:18:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54882 "EHLO
+        id S229773AbjESVNS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Fri, 19 May 2023 17:13:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229653AbjESUS4 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 19 May 2023 16:18:56 -0400
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A43DFE
-        for <linux-ia64@vger.kernel.org>; Fri, 19 May 2023 13:18:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-        t=1684527458; i=frank.scheiner@web.de;
-        bh=XQJzCnB04iHl1jQnuJ0x9rhJEnkoTnHJcRcyqB/HFw0=;
-        h=X-UI-Sender-Class:Date:From:Subject:To:Cc:References:In-Reply-To;
-        b=tXmDyfwAxd6dFmo2pX1Iyfa3ODZkEQg5DDo6smTB3mSeKXm5UENPhZA54DlQGt2C4
-         EwjrYlM8qDWSQ3r5tfgFAfUUUFIvoc1I4fdth0S/J2V6fm1t/qNPUeG7X2PiKb/r0g
-         DyH36U18wXH7udI/dKRYQi+s5wADauLfus0crGFN+kZjVqXIdzoPbohvRMyUu2xPrp
-         HvQXDC/aKV9jcxCp+C+QuJHPRNP4WwbtkpoAdC87/5/c01LxRsNCDETFKbEGI69pEd
-         LJGthtLtEou8k8EcuBkgztBTlQRWIdyY94qVnrVMK3jGfmO1KBBQ7ro3ca9jVQB+f0
-         XlfQ4Z9JkikGg==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.30] ([79.200.209.18]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1N5lnT-1qETxh0kod-017FOA; Fri, 19
- May 2023 22:17:38 +0200
-Message-ID: <12a3e3c5-9465-c97f-58ab-938e80681fbc@web.de>
-Date:   Fri, 19 May 2023 22:17:37 +0200
+        with ESMTP id S229579AbjESVNS (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Fri, 19 May 2023 17:13:18 -0400
+Received: from matoro.tk (unknown [IPv6:2600:1700:4b10:9d80::2])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 9169097
+        for <linux-ia64@vger.kernel.org>; Fri, 19 May 2023 14:13:16 -0700 (PDT)
+DKIM-Signature: a=rsa-sha256; bh=ppcfgIiw1awHymqtaFa0sNPDlgMin2BRR1QcBDBMQP4=;
+ c=relaxed/relaxed; d=matoro.tk;
+ h=Subject:Subject:Sender:To:To:Cc:Cc:From:From:Date:Date:MIME-Version:MIME-Version:Content-Type:Content-Type:Content-Transfer-Encoding:Content-Transfer-Encoding:Reply-To:In-Reply-To:In-Reply-To:Message-Id:Message-Id:References:References:Autocrypt:Openpgp;
+ i=@matoro.tk; s=20230516; t=1684529796; v=1; x=1684961796;
+ b=OWt3ze3sxfdrfg7Z12C+ddERpzdPLgGEt6uEt2+YhYOQz+r+emwcluZTNgtPQUuZFUZffBlU
+ yaCyoa9y9+s/ovbXB//q0OuTHO9DHvR75aWCQgeZLT38wekk0Sfrm/jjx3WkES52Xhkck+Vqq7M
+ BMJg6ViJANaK9Gmq2oLIuclJt/EDLpkgOABv5f3g5HImx72FefK83eJ240RYufh/HEDSzJvitxc
+ jMXt4/+zinWSCS4AKQ6GsF+mUX7QADT6Sp7WzVz3iDqG9NydWf7/Ll5BX+3fNHskPDjqzFWwgFw
+ EG6gDEVEIMbQTUvxA8t/SZMe9WlV7OX7cAqq6dnERQ0WfHnvt0Zn2aArdNQUrnD9jPgkflfqMIo
+ OjA3QeaMHahBWvm+ABWoQFOhUyrzsDyW0CWVjrxW99tkXgbLvbJRR18DUni+tnrDsm6idiOup5J
+ CTd1gvLf7KIYe/ukTwy/xXZYXtFCZYBxzasMNvFM0Vk63plyRJTV3Y6XpwGNBjzIk/aB0Ts3Krd
+ z3iheqo8s0ExF+aZo0TPMqiMz7weiT+WwmXyWIMQey7oW4n7it3rGboW7jwQnpo9UQaLZjFFz5F
+ zYtMJ0sTSiCSbCuQ/kQYuGrE+QnVa6tbLKD39gBiH4igtE2bR+MpOkeOC0mqR8ozj5g6QYyMylX
+ ke2/HcISTJY=
+Received: by matoro.tk (envelope-sender
+ <matoro_mailinglist_kernel@matoro.tk>) with ESMTPS id 5693c922; Fri, 19 May
+ 2023 16:56:36 -0400
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.0
-From:   Frank Scheiner <frank.scheiner@web.de>
-Subject: Re: [crosspost] dropping support for ia64
-To:     matoro <matoro_mailinglist_kernel@matoro.tk>,
-        Florian Weimer <fw@deneb.enyo.de>
-Cc:     Ard Biesheuvel <ardb@kernel.org>,
+Date:   Fri, 19 May 2023 16:56:36 -0400
+From:   matoro <matoro_mailinglist_kernel@matoro.tk>
+To:     Frank Scheiner <frank.scheiner@web.de>
+Cc:     Florian Weimer <fw@deneb.enyo.de>,
+        Ard Biesheuvel <ardb@kernel.org>,
         distributions@lists.freedesktop.org, debian-ia64@lists.debian.org,
         linux-ia64@vger.kernel.org, port-ia64@netbsd.org,
         Tony Luck <tony.luck@intel.com>,
@@ -45,88 +44,101 @@ Cc:     Ard Biesheuvel <ardb@kernel.org>,
         Mike Rapoport <rppt@kernel.org>,
         Daniel Kiper <dkiper@net-space.pl>,
         Steve McIntyre <steve@einval.com>
+Subject: Re: [crosspost] dropping support for ia64
+In-Reply-To: <12a3e3c5-9465-c97f-58ab-938e80681fbc@web.de>
 References: <CAMj1kXFCMh_578jniKpUtx_j8ByHnt=s7S+yQ+vGbKt9ud7+kQ@mail.gmail.com>
  <59a76177-8ed4-e71e-9b11-a673298b5b4b@web.de>
  <87bkiilpc4.fsf@mid.deneb.enyo.de>
  <4e210d61adbe73a1673f113019401e5c@matoro.tk>
-Content-Language: en-US
-In-Reply-To: <4e210d61adbe73a1673f113019401e5c@matoro.tk>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
-X-Provags-ID: V03:K1:WLWGoXnN/B59aEwORCPwWj+CDxgmdGBwPBiT+99MSqB6N3Yno19
- WFXPXYFGleqC8WwWXaKwLZtfswOJQQRzX1z9Ya0vXLX/nLD7zk0dj+jq4dSDfbfD/n4gWjK
- cCkoGwSdILZK7DsHaVzq5oHU3ss0SfacsIKmGMkAujRl2aoXiD9gvgPueg6z6gDQPfjdi2T
- rp0YkfHwLJa30kNsyRPqQ==
-UI-OutboundReport: notjunk:1;M01:P0:vUctvZHTHGg=;XtELUQSdmYgOnLS2SFIe750CgJw
- AsslyPSfopY1QD8BTKvOKkDhKajAoY6oJe5VEmogVQpUJa51nWFguIB3Mx5yDHel+v2eDt1A1
- y0wGLcWaHdwJAPJQQlngyYptbp30kx/UHcbt9YLW3Ld1RHZMA2vqF99/Ju4TPH2meNbTaO3Wa
- 0lBcnOMAms0EXNrbQ+/y4/6c7SPwkwCSRpXwlZFFXKU3TiQtd1gO4BQyO0gpYkTHe0WwbuFwv
- R+gwNrcVFauH1ZtQX7wAFYqWra2kLDQh7Ov3t+2F6hJ2ynsu2wOKYzhktPcaJKpc0i0A3eUUp
- YY9uywU77UNOa/UknqIB7h7sUf6d5OjQH0UszcUwut1jWgTxqyjE2DGxMZvM5V1RtuFLsUTxe
- 3JTty67TQzKuvhtMQLeebcT0CXwtcOMi/pqrmasuJ91Ygx6tHoSg3ZgUlwhke/M1BQijpHr4q
- tobvo065C6RAIqtLMUYYqYN8WRq3lACqLHEQokjODbP51svfHuodeVmUYlhi0SZ8KgmX7kpLA
- 0EOskgkcBMZp3FozNe+EKJeOcjBd7jQowpdXIkJECyPuOjPHwmghphbeqvPPtHZ5K95oTR+ix
- /jSq45hHryV81AUubB4Cje6eTBwIB5lFTNhP7tOc7jfP3odMJYITnItmzEaaPXVo8tFrxGn9M
- YquzZtU/GUJ8J+ohUq5B4N3dTcTLJMUljAom8PE4boseS1sccs8y6Gd3nmexd+nYAyJmlBfMX
- gsqgEiK2BQ2c1xtTBm+j6wuQ7bp3gkHWFQ0n+pIK5lcbE0AvwbYaVgmTj2xaMhKfH79lbEeyv
- d0whoUYEaK0BFYZ9W4dppwiwsTc794GN9gByIlNjbKIJr6SCpsnwp4qgO8Q1kGaUMG0gDEWM/
- kG1bBwXk+yg6F40xh/DHsZaA++HmzG45lD/1CJMLVkc/3bq7W7BoIucQIOmYOY5gFNmTVT1ku
- 1z+lEVw+UVQ1car3bv0GWFfqE+U=
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+ <12a3e3c5-9465-c97f-58ab-938e80681fbc@web.de>
+Message-ID: <5e778e16f93f2286fa535597ba5da24b@matoro.tk>
+X-Sender: matoro_mailinglist_kernel@matoro.tk
+Content-Type: text/plain; charset=UTF-8;
+ format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RDNS_NONE,SPF_HELO_PASS,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-RGVhciBtYXRvcm8sIEZsb3JpYW4sDQoNCk9uIDE3LjA1LjIzIDIzOjQ3LCBtYXRvcm8gd3Jv
-dGU6DQo+IE9uIDIwMjMtMDUtMTcgMTU6MzksIEZsb3JpYW4gV2VpbWVyIHdyb3RlOg0KPj4g
-KiBGcmFuayBTY2hlaW5lcjoNCj4+DQo+Pj4gT24gMTIuMDUuMjMgMTc6NTcsIEFyZCBCaWVz
-aGV1dmVsIHdyb3RlOg0KPj4+PiBUaGUgYm90dG9tIGxpbmUgaXMgdGhhdCwgd2hpbGUgSSBr
-bm93IG9mIGF0IGxlYXN0IDIgcGVvcGxlIChvbiBjYykNCj4+Pj4gdGhhdCB0ZXN0IHN0dWZm
-IG9uIGl0YW5pdW0sIGFuZCBwYWNrYWdlIHNvZnR3YXJlIGZvciBpdCwgSSBkb24ndCB0aGlu
-aw0KPj4+PiB0aGVyZSBhcmUgYW55IGFjdHVhbCB1c2VycyByZW1haW5pbmcsIGFuZCBzbyBp
-dCBpcyBkb3VidGZ1bCB3aGV0aGVyIGl0DQo+Pj4+IGlzIGp1c3RpZmllZCB0byBhc2sgcGVv
-cGxlIHRvIHNwZW5kIHRpbWUgYW5kIGVmZm9ydCBvbiB0aGlzLg0KPj4+DQo+Pj4gV2hpbGUg
-SSBnZXQgeW91ciBhcmd1bWVudCwgSSBhbHNvIGZpbmQgaXQgaW1wb3J0YW50IHRvIGJlIGFi
-bGUgdG8NCj4+PiBpbm5vdmF0ZSB3aXRob3V0IGRlc3Ryb3lpbmcgdGhlIHBhc3QuIEFuZCB3
-aXRoIHRoZSBhbHJlYWR5IHNldmVybHkNCj4+PiBsaW1pdGVkIGNob2ljZSBvZiBjdXJyZW50
-IGFyY2hpdGVjdHVyZXMgZm9yIHRoZSBtYXNzZXMgKHg4NiwgYXJtKSwgaXQNCj4+PiBiZWNv
-bWVzIGV2ZW4gbW9yZSBpbXBvcnRhbnQgdG8ga2VlcCB3aGF0IHdlIGhhdmUgb3IgaGFkIGlu
-IHRoZSBwYXN0LCB0bw0KPj4+IG5vdCBlbmQgaW4gYSAiSWYgYWxsIHlvdSBoYXZlIGlzIGEg
-aGFtbWVyLCBldmVyeXRoaW5nIGxvb2tzIGxpa2UgYQ0KPj4+IG5haWwuIiB0eXBlIG9mIGZ1
-dHVyZS4NCj4+DQo+PiBUaGUgaGlzdG9yeSBkb2Vzbid0IGdvIGF3YXkuwqAgV2Ugc3RpbGwg
-aGF2ZSBwcmUtYnVpbHQgaWE2NCBzeXN0ZW0NCj4+IGltYWdlcywgdGhlIHNvdXJjZXMsIGFu
-ZCBjdXJyZW50IG1hY2hpbmVzIGNhbiBydW4gaWE2NCBjb2RlIHVuZGVyDQo+PiBRRU1VLsKg
-IFRob3NlIGhvc3Qgc3lzdGVtcyB3aWxsIHJlbWFpbiBhdmFpbGFibGUgKG1heWJlIHVuZGVy
-DQo+PiB2aXJ0dWFsaXphdGlvbikgZm9yIG1hbnksIG1hbnkgeWVhcnMgdG8gY29tZS7CoCBT
-byBpZiBhbnlvbmUgd2FudHMgdG8NCj4+IGV4cGVyaW1lbnQgd2l0aCBhbiBhcmNoaXRlY3R1
-cmUgdGhhdCBoYXMgcmVnaXN0ZXIgdHJhcCBiaXRzIGFuZCB0aGluZ3MNCj4+IGxpa2UgdGhh
-dCwgaXQncyBwb3NzaWJsZS4NCj4+DQo+PiBJIGV4cGVjdCB0aGUgcmVzdCBvZiB0aGUgaGFy
-ZHdhcmUgaXRzZWxmIGlzIG5vdCByZW1hcmthYmxlLCBhbmQNCj4+IGFueXRoaW5nIHVzZWZ1
-bCBoYXMgYmVlbiB0aG9yb3VnaGx5IHJldXNlZCBmb3Igb3RoZXIgc3lzdGVtcyAobGlrZSB3
-ZQ0KPj4gZGlkIGZvciB0aGUgSXRhbml1bSBDKysgQUJJIG9uIHRoZSBzb2Z0d2FyZSBzaWRl
-KS4NCj4+DQo+PiBGcm9tIHRoZSB1c2Vyc3BhY2Ugc2lkZSwgdGhlIGlzc3VlIGlzIG5vdCBz
-byBtdWNoIHRlc3RpbmcgKGlmIHdlDQo+PiBib3RoZXIgdG8gdGVzdCBvdXIgY2hhbmdlcyBh
-dCBhbGwsIHdlIGNhbiB1c2UgZW11bGF0aW9uKSwgYnV0DQo+PiBoYWxmLWNvbXBsZXRlZCBp
-bXBsZW1lbnRhdG9uIHdvcmsgKEkgcmFuIGludG8gbWlzc2luZyByZWxheGF0aW9ucyBpbg0K
-Pj4gdGhlIGxpbmsgZWRpdG9yIGEgd2hpbGUgYmFjaywgZm9yIGV4YW1wbGUpLCBhbmQgdGhv
-c2UgbGltaXRhdGlvbnMgaGF2ZQ0KPj4ga25vY2stb24gZWZmZWN0cyBvbiBnZW5lcmljIGNv
-ZGUgdGhhdCB3ZSBoYXZlIHRvIG1haW50YWluLg0KPiANCj4gRllJLCBRRU1VIGRvZXMgbm90
-IGhhdmUgaWE2NCBob3N0IG9yIHRhcmdldCBzdXBwb3J0LCBub3QgZXZlbiBUQ0cuDQoNCkkg
-YXNzdW1lIEZsb3JpYW4gbWVhbnMgdXNlciBtb2RlIGVtdWxhdGlvbiwgd2hpY2ggZm9yIGV4
-YW1wbGUgY2FuIGJlIA0KdXNlZCB0byBjb21wbGV0ZSBhIGBkZWJvb3RzdHJhcCAtLWZvcmVp
-Z24gWy4uLl1gIHJ1biB3aGVuIHlvdSBkb24ndCBoYXZlIA0KYW4gZXhpc3RpbmcgaWE2NCB1
-c2VybGFuZCBvbiByZWFsIGhhcmR3YXJlIGF0IGhhbmQuDQoNCkkgZG91YnQgdGhhdCBpdCB3
-b3JrcyBpbiB0aGUgZXhhY3Qgc2FtZSB3YXkgdGhhbiB0aGUgcmVhbCB0aGluZywgdGhvdWdo
-LiANClN1Y2ggZGlmZmVyZW5jZXMgYXJlIHBhcnQgb2YgdGhlIHJlYXNvbnMgd2h5IHRoZSBP
-cGVuQlNEIGRldnMgZG9uJ3Qgc2VlbSANCnRvIHVzZSBjcm9zcyBjb21waWxlcnMgb3Igdmly
-dHVhbGl6ZWQgb3IgZW11bGF0ZWQgc3lzdGVtcyB0byBwcm9kdWNlIGFuZCANCnRlc3QgdGhl
-aXIgT1MsIHRob3VnaCB0aGV5IHNlZW0gdG8gdXNlIGNyb3NzIGNvbXBpbGVycyBmb3IgdGhl
-IGJyaW5ndXAgDQpvZiBuZXcgcGxhdGZvcm1zIElJQy4NCg0KQnV0IGlmIGl0J3MgZ29vZCBl
-bm91Z2ggdG8gcnVuIGlhNjQgYmluYXJpZXMgb24gb3RoZXIgYXJjaGVzLCB3aHkgbm90Lg0K
-DQpIYXZlIGEgbmljZSB3ZWVrZW5kLA0KRnJhbmsNCg0K
+On 2023-05-19 16:17, Frank Scheiner wrote:
+> Dear matoro, Florian,
+> 
+> On 17.05.23 23:47, matoro wrote:
+>> On 2023-05-17 15:39, Florian Weimer wrote:
+>>> * Frank Scheiner:
+>>> 
+>>>> On 12.05.23 17:57, Ard Biesheuvel wrote:
+>>>>> The bottom line is that, while I know of at least 2 people (on cc)
+>>>>> that test stuff on itanium, and package software for it, I don't 
+>>>>> think
+>>>>> there are any actual users remaining, and so it is doubtful whether 
+>>>>> it
+>>>>> is justified to ask people to spend time and effort on this.
+>>>> 
+>>>> While I get your argument, I also find it important to be able to
+>>>> innovate without destroying the past. And with the already severly
+>>>> limited choice of current architectures for the masses (x86, arm), 
+>>>> it
+>>>> becomes even more important to keep what we have or had in the past, 
+>>>> to
+>>>> not end in a "If all you have is a hammer, everything looks like a
+>>>> nail." type of future.
+>>> 
+>>> The history doesn't go away.  We still have pre-built ia64 system
+>>> images, the sources, and current machines can run ia64 code under
+>>> QEMU.  Those host systems will remain available (maybe under
+>>> virtualization) for many, many years to come.  So if anyone wants to
+>>> experiment with an architecture that has register trap bits and 
+>>> things
+>>> like that, it's possible.
+>>> 
+>>> I expect the rest of the hardware itself is not remarkable, and
+>>> anything useful has been thoroughly reused for other systems (like we
+>>> did for the Itanium C++ ABI on the software side).
+>>> 
+>>> From the userspace side, the issue is not so much testing (if we
+>>> bother to test our changes at all, we can use emulation), but
+>>> half-completed implementaton work (I ran into missing relaxations in
+>>> the link editor a while back, for example), and those limitations 
+>>> have
+>>> knock-on effects on generic code that we have to maintain.
+>> 
+>> FYI, QEMU does not have ia64 host or target support, not even TCG.
+> 
+> I assume Florian means user mode emulation, which for example can be 
+> used to complete a `debootstrap --foreign [...]` run when you don't 
+> have an existing ia64 userland on real hardware at hand.
+> 
+> I doubt that it works in the exact same way than the real thing, 
+> though. Such differences are part of the reasons why the OpenBSD devs 
+> don't seem to use cross compilers or virtualized or emulated systems to 
+> produce and test their OS, though they seem to use cross compilers for 
+> the bringup of new platforms IIC.
+> 
+> But if it's good enough to run ia64 binaries on other arches, why not.
+> 
+> Have a nice weekend,
+> Frank
+
+There is no user-mode emulation for ia64 in QEMU either.  The only 
+"ongoing" emulation work is Sergei's fork of the old "ski" emulator, but 
+this is far from QEMU quality or even usable yet:  
+https://github.com/trofi/ski
+
+Anyway, to summarize this thread for Ard:  the answer to the question of 
+if anybody is using these machines for anything other than to 
+experimentally see if things run or churn out packages is NO.  Any 
+Itanium machines running useful production workloads are on HP-UX/VMS.  
+Possibly Windows Server 2008 or an old RHEL, but unlikely.
+
+The only argument for continued support is as you described, the 
+argument from the commons, that the ecosystem as a whole benefits from 
+diversity of architectures.  All that matters is whether you find this 
+argument convincing.  There are some like myself who do, but I am not a 
+kernel maintainer.  If you don't, then that should be that.
