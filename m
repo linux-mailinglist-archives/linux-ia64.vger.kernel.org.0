@@ -2,59 +2,31 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 024657118A6
-	for <lists+linux-ia64@lfdr.de>; Thu, 25 May 2023 23:01:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E24AE711DE2
+	for <lists+linux-ia64@lfdr.de>; Fri, 26 May 2023 04:28:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241903AbjEYVBP (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 25 May 2023 17:01:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53302 "EHLO
+        id S233533AbjEZC2z (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 25 May 2023 22:28:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232203AbjEYVBI (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 25 May 2023 17:01:08 -0400
-Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55B961B6;
-        Thu, 25 May 2023 14:01:01 -0700 (PDT)
-Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-53f448cde66so263a12.1;
-        Thu, 25 May 2023 14:01:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685048461; x=1687640461;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5+zfwXmZs7on+rhgyTI9s9jH0CR5rkGZ9aJZCDn5M88=;
-        b=mU7K5hQEZ44NsT0+5VXofyw6qEDSPgD8wBkX7n613X0GzbWLqpmZC3VJfMwNx6m/tq
-         nnfiSAnDqXg2POPsu6CCB/gzZ0hd00mUuaPE+wCpcwaSz8z7oc89KKDtJz7qu8LL0mFn
-         S+jgvx9ju/DapGofobgM+AK3Axd4+Sc4U5KjNwRTJHheCODSmqZjtYzqbwgiWlD2FgMF
-         srcMN9K8JH7pV8rjvzbVKic2ZONIx6t1veprRCepvX3TDcKPRo9Y07bOKmCyV0LvyjJw
-         gbGeTnFOlGb6asM++1XIHud54i9VTyzPItSSun7x2eo35b2AKXgtMS5KXFv8bAflCIg7
-         ysIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685048461; x=1687640461;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=5+zfwXmZs7on+rhgyTI9s9jH0CR5rkGZ9aJZCDn5M88=;
-        b=Plew69F6gnqLSoJ/bbamJq5mgfBLeVEz9Rdy5MwzAohMxJ9piwR8FFzFcpyjGmW5Fp
-         u9AtrakaxQq1r2CE/ghuzCMdlZWMsb6qsuKdZQcGyCjH6bEaQSCQjOcSi9SlZ0C3jQH4
-         GxUSQD/quw7iE39aL8w4RV+Wpro6NUsq4B378ECBxsahe6IsldWaZdHuVKkzfiyoE9k+
-         J8lLG2s09IzXJgHqHI5IJhvyRtIUdns80X2XsgH4LvbFICQ9/xPM5CjQtIS7JpwA7jfK
-         P6yp6tDKGcme+UK+bmXQwwODiBhL9IcWhfUrOJ9s8cpKsmnqNAgRcqry3XxQhTSgg2mb
-         7HsQ==
-X-Gm-Message-State: AC+VfDxGyW/Ww9ig3e/9e5AF/wXqL8nUQW1SV6uuHeRoObIf1K+n/5GK
-        KpsMqRxNS+jw/7zUVxADnK8=
-X-Google-Smtp-Source: ACHHUZ7dglrnNdSeCZIQSBsgjYjSTe3LSjFgTqSJchshPoXy4Vr4Jx151LniJF1AA47jpF5mynMU7w==
-X-Received: by 2002:a17:902:e810:b0:1ac:5c90:23e with SMTP id u16-20020a170902e81000b001ac5c90023emr71805plg.7.1685048460660;
-        Thu, 25 May 2023 14:01:00 -0700 (PDT)
-Received: from sc2-haas01-esx0118.eng.vmware.com ([66.170.99.1])
-        by smtp.gmail.com with ESMTPSA id j21-20020a170902c3d500b001ae8587d60csm1807673plj.265.2023.05.25.14.00.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 25 May 2023 14:01:00 -0700 (PDT)
-From:   Nadav Amit <nadav.amit@gmail.com>
-X-Google-Original-From: Nadav Amit
-To:     Steven Rostedt <rostedt@goodmis.org>,
-        "Arnd Bergmann" <arnd@arndb.de>,
-        "Thomas Gleixner" <tglx@linutronix.de>
-Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+        with ESMTP id S233494AbjEZC2y (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 25 May 2023 22:28:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B536E13D;
+        Thu, 25 May 2023 19:28:52 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 40E8A64C5C;
+        Fri, 26 May 2023 02:28:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15528C433D2;
+        Fri, 26 May 2023 02:28:47 +0000 (UTC)
+Date:   Thu, 25 May 2023 22:28:44 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Nadav Amit <nadav.amit@gmail.com>
+Cc:     "Arnd Bergmann" <arnd@arndb.de>,
+        "Thomas Gleixner" <tglx@linutronix.de>,
+        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         linux-ia64@vger.kernel.org, linux-um@lists.infradead.org,
         Linux-Arch <linux-arch@vger.kernel.org>, linux-mm@kvack.org,
         "Andy Lutomirski" <luto@kernel.org>,
@@ -63,57 +35,56 @@ Cc:     linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
         "Borislav Petkov" <bp@alien8.de>, x86@kernel.org,
         Peter Zijlstra <peterz@infradead.org>,
         Nadav Amit <namit@vmware.com>
-Subject: [PATCH v2 3/3] lib: Allow traceing of usercopy, xarray, iov_iter, find_bit
-Date:   Thu, 25 May 2023 14:00:40 -0700
-Message-Id: <20230525210040.3637-4-namit@vmware.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230525210040.3637-1-namit@vmware.com>
+Subject: Re: [PATCH v2 2/3] compiler: inline does not imply notrace
+Message-ID: <20230525222844.6a0d84f8@rorschach.local.home>
+In-Reply-To: <20230525210040.3637-3-namit@vmware.com>
 References: <20230525210040.3637-1-namit@vmware.com>
+        <20230525210040.3637-3-namit@vmware.com>
+X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS,
+        T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Nadav Amit <namit@vmware.com>
+On Thu, 25 May 2023 14:00:39 -0700
+Nadav Amit <nadav.amit@gmail.com> wrote:
 
-There is no reason not to allow the use of ftrace for usercopy, xarray
-and iov_iter.  Enable tracing for these compilation unit.
+> From: Nadav Amit <namit@vmware.com>
+> 
+> Functions that are marked as "inline" are currently also not tracable.
+> This limits tracing functionality for many functions for no reason.
+> Apparently, this has been done for two reasons.
+> 
+> First, as described in commit 5963e317b1e9d2a ("ftrace/x86: Do not
+> change stacks in DEBUG when calling lockdep"), it was intended to
+> prevent some functions that cannot be traced from being traced as these
+> functions were marked as inline (among others).
+> 
+> Yet, this change has been done a decade ago, and according to Steven
+> Rostedt, ftrace should have improved and hopefully resolved nested
+> tracing issues by now. Arguably, if functions that should be traced -
+> for instance since they are used during tracing - still exist, they
+> should be marked as notrace explicitly.
+> 
+> The second reason, which Steven raised, is that attaching "notrace" to
+> "inline" prevented tracing differences between different configs, which
+> caused various problem. This consideration is not very strong, and tying
+> "inline" and "notrace" does not seem very beneficial. The "inline"
+> keyword is just a hint, and many functions are currently not tracable
+> due to this reason.
+> 
+> Disconnect "inline" from "notrace".
 
-Signed-off-by: Nadav Amit <namit@vmware.com>
----
- lib/Makefile | 5 +++++
- 1 file changed, 5 insertions(+)
+FYI, I have a patch queued (still needs to go through testing) that
+already does this ;-)
 
-diff --git a/lib/Makefile b/lib/Makefile
-index 876fcdeae34e..00450e1cc97d 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -27,6 +27,9 @@ KASAN_SANITIZE_string.o := n
- CFLAGS_string.o += -fno-stack-protector
- endif
- 
-+CFLAGS_xarray.o += $(CC_FLAGS_FTRACE)
-+CFLAGS_iov_iter.o += $(CC_FLAGS_FTRACE)
-+
- lib-y := ctype.o string.o vsprintf.o cmdline.o \
- 	 rbtree.o radix-tree.o timerqueue.o xarray.o \
- 	 maple_tree.o idr.o extable.o irq_regs.o argv_split.o \
-@@ -42,6 +45,8 @@ lib-$(CONFIG_SMP) += cpumask.o
- lib-y	+= kobject.o klist.o
- obj-y	+= lockref.o
- 
-+CFLAGS_usercopy.o += $(CC_FLAGS_FTRACE)
-+CFLAGS_find_bit.o += $(CC_FLAGS_FTRACE)
- obj-y += bcd.o sort.o parser.o debug_locks.o random32.o \
- 	 bust_spinlocks.o kasprintf.o bitmap.o scatterlist.o \
- 	 list_sort.o uuid.o iov_iter.o clz_ctz.o \
--- 
-2.25.1
+https://lore.kernel.org/all/20230502164102.1a51cdb4@gandalf.local.home/
 
+-- Steve
