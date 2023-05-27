@@ -2,108 +2,123 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AB2D713018
-	for <lists+linux-ia64@lfdr.de>; Sat, 27 May 2023 00:40:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAAED7132CF
+	for <lists+linux-ia64@lfdr.de>; Sat, 27 May 2023 08:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231282AbjEZWkD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 26 May 2023 18:40:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45944 "EHLO
+        id S229563AbjE0G0f (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 27 May 2023 02:26:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231519AbjEZWj7 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 26 May 2023 18:39:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 798429C
-        for <linux-ia64@vger.kernel.org>; Fri, 26 May 2023 15:39:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 16B676546F
-        for <linux-ia64@vger.kernel.org>; Fri, 26 May 2023 22:39:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71CECC433A4
-        for <linux-ia64@vger.kernel.org>; Fri, 26 May 2023 22:39:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685140797;
-        bh=Hk22xJtb3aL8iiExGGCeF1n7/U5a679Gwf0jSwnoAKk=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=MOdzW9BSSmuuTsia6tigttFVDpcMD89kGGkg2s0tHGh0+pdcwWBqAvp6jUfipGKuI
-         j9blmAcj9R6ZhU/wMsmclUwI0ilt0FqdypDvFafdHJX87z6rgrWD3MzyvefMlTwmew
-         IlJt/GlA4m+4rsEvL3LHXZnZA88H3ohduAtgBSacv9apt1/7LAy0OSmPh4/NHKUXJE
-         Ht3RGVXvi1KkC4Rly2C4b2buxU5HTSOR96uY7+qIzx8Tzz6eizPpinHcVwv88Om0a8
-         DzJyYR0qc18FjJJlo8TOVjy0+2jIHTe1RbNgSlgrYhoogoSP4NXgg5GDuB0lIKn8dS
-         /KGcEDFwRwbnA==
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-4f4bdcde899so1342277e87.0
-        for <linux-ia64@vger.kernel.org>; Fri, 26 May 2023 15:39:57 -0700 (PDT)
-X-Gm-Message-State: AC+VfDzSoOv0HX+bKY2XJK7gfrSIHinkG4dg+Zju4jT54L95VD19n2P6
-        7F1r5D6chvMS0nJ+yiUgt9qoiyUMQH6UBzjj88s=
-X-Google-Smtp-Source: ACHHUZ7qJFyap6RCqjibRYKYpczV3j3qQW8Dd6X5M9Onm5fQu9QrtpcI1bv5PdHY0pr4sJ7J+Shje15wVCiNBPm2aJE=
-X-Received: by 2002:ac2:430a:0:b0:4f1:3d9f:1b53 with SMTP id
- l10-20020ac2430a000000b004f13d9f1b53mr806139lfh.50.1685140795366; Fri, 26 May
- 2023 15:39:55 -0700 (PDT)
+        with ESMTP id S229550AbjE0G0e (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 27 May 2023 02:26:34 -0400
+Received: from mout.web.de (mout.web.de [212.227.15.14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE080EC
+        for <linux-ia64@vger.kernel.org>; Fri, 26 May 2023 23:26:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+        t=1685168767; i=frank.scheiner@web.de;
+        bh=knC6k8ksVHsGQOBE/sCT3ZvuznYeg1t5P3Ticwr784M=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=Ykm8M9uvMEogKoswGGEcv05/qq0SeRjQh8f8ZzTYjsznbZviHx72N4yLqtdR7Ci9Q
+         GgrmplxrHWVqJOGh7f9MPhPEuU/bDVVncaoIZuW34M6fULdXmF0/1x/ElZlQQuinnu
+         25PObsMTaVqNxtuNR3GCNdn9os1IXwMsNHNiMO9dz6UVDeNFi+hgGdtIg0td5Fv3zj
+         jSP8gpsF0AZ5oHP9Khvuqs6NZgNFgq10sIeH/vAHfl88VgPkS1OK+uYrZDzVh9Javc
+         DOmzRcwWqemxoPriFc1sbvX2VO5Hss93Kw3jm0XKpFR7EdtaHEXmnxXTwtuJgGOydG
+         kjmueEkDUx6ig==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.30] ([217.247.45.222]) by smtp.web.de (mrweb005
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1N4N98-1qD8yu3S2I-011Ux6; Sat, 27
+ May 2023 08:26:06 +0200
+Message-ID: <0be2c4e1-1fcb-ca84-4c12-d8ecf17b77e6@web.de>
+Date:   Sat, 27 May 2023 08:26:06 +0200
 MIME-Version: 1.0
-References: <abb1166d-27a9-fbae-59cd-841480fba78a@web.de> <ZHErssbUSbSznTVA@bombadil.infradead.org>
- <CAHk-=whuaCqh0RJk1F+SKqdEHPzANoVVP5OU=c9wgogVLCQTVQ@mail.gmail.com>
-In-Reply-To: <CAHk-=whuaCqh0RJk1F+SKqdEHPzANoVVP5OU=c9wgogVLCQTVQ@mail.gmail.com>
-From:   Song Liu <song@kernel.org>
-Date:   Fri, 26 May 2023 15:39:43 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW484GVC9PD-cJu5fxX5E1y6XWHgyv3FvJuyOPbpZQx9cw@mail.gmail.com>
-Message-ID: <CAPhsuW484GVC9PD-cJu5fxX5E1y6XWHgyv3FvJuyOPbpZQx9cw@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
 Subject: Re: Boot regression in Linux v6.4-rc3
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Luis Chamberlain <mcgrof@kernel.org>,
-        Frank Scheiner <frank.scheiner@web.de>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Arnd Bergmann <arnd@arndb.de>, linux-ia64@vger.kernel.org,
+Content-Language: en-US
+To:     Song Liu <song@kernel.org>
+Cc:     linux-ia64@vger.kernel.org, mcgrof@kernel.org,
         debian-ia64 <debian-ia64@lists.debian.org>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Content-Type: text/plain; charset="UTF-8"
+References: <abb1166d-27a9-fbae-59cd-841480fba78a@web.de>
+ <CAPhsuW7phunDnFo8RmqvdZ+fOQmexxhaGdeA086xsOpez65izw@mail.gmail.com>
+ <77175d92-e0fa-d197-07c3-2749dfec79ce@web.de>
+ <CAPhsuW5pwKe-hPKSyrcnF16Z6KTSYk8mSULcQbDBuvzEb6wneQ@mail.gmail.com>
+From:   Frank Scheiner <frank.scheiner@web.de>
+In-Reply-To: <CAPhsuW5pwKe-hPKSyrcnF16Z6KTSYk8mSULcQbDBuvzEb6wneQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Provags-ID: V03:K1:ngD49CmeS7T8l8AuO6ro7oYV3cKj1MZM4SycX61J5bdAz502dFF
+ 3wUcuUkqXAf5IV/iHADlTIustT+lY+wG+uXjRIyjWHKC0xHQKwRLCJmUEQGGWZNjmBjWk1b
+ EbKGi7Z9TZl4SgNEzf1HbmmpCYju8s7zb9sJ2i/ygopwCl6Zwkd9oVnEYzqclSH2d9+GFBr
+ K/udz35+y/v3WVvIvgA3w==
+UI-OutboundReport: notjunk:1;M01:P0:JMd347n5bnk=;v3e12BEfVngIBN2AVs8Gy+sSgxL
+ EO9iVrrcT+LshhRs/vqIQFthBrVkz+VADaaPGMJ4h2ud16ziDdXpYY2I9NOpMdP1VpqKwrVib
+ znKdiHUsGf6jsWAV/zAh7fZLWFPWNA3UsDB9ReqJAx5jHjW4baEzPACsLX8a2pP7bYn5XvFXK
+ 8o7o/VslGjjOxlqTQJmibzcD13/O2reb+Xuf32iATD2+y93AZA1q1ErZm1/IcbIpBum/uvhT7
+ rDvVuy+elGAcE3ftwag2p/vV2NJ+e4tQcQAphY66u/1Fev4HKd26BzW5I65uxEs+PIREu+B8N
+ mt/ZWafNNcohodSJLu8dplunimCje2NLm7WftLCITW/Q8dRZ7Y6+7xpaM4wj+mh8EULdl0bN3
+ EZCYq1cGkTQbb3MQ+L8/09MPhbw0upUmjRx7lx5Zd1+kHRvs/iDovbxGcfTl8Cn86Spdf7XdZ
+ lw0fLmUPKhy925w9UYBgXaa3XQkcE5JbKNxAhYn5Qh6t0mFEW/YCuMLmXh84nmCxbuQykJvsf
+ /krSPailzASYDyySBuEwTFc+0sV/w4c/+YgLJVwis3CjkUPK+xxDclN7amWHsgWInpTZrrH7j
+ snRQEms6K8h/ysaO8NkZ0pXSIzi/BZ48PfUTfFSiKT1SnAG6HdJWXN7mNWwosOjHAbasGX8LP
+ 5at7iWBUJHShmhxDgaweSdGSj1qWF4PVr6849ROpuz8d7aq1se2MUqef4uzMn0GdxUre+dwyl
+ ISp9jSiLgZ6wRjfPVsM+uT4zim9jJ5lKqbm/Nmaco71VzfnqbGm9P5TgtW5Rli+9xYoYKXDv8
+ 6qKz3b3HpGcDB3BKcaQS1qO8cRyr9fOWlSQEskE0sIoxwxzmZSN+9ehURfox83/xyor5/A1Wh
+ 199drmQk3K1GQLyc7PEvcuPJPDzr/jHFPQbYcOcgXHQweguiqBhh/CZv9z1OdCYXtZQeEtDEZ
+ Y9+1pGlCGA1h6y5OzYBlpvePFvc=
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, May 26, 2023 at 3:22=E2=80=AFPM Linus Torvalds
-<torvalds@linux-foundation.org> wrote:
->
-> On Fri, May 26, 2023 at 2:59=E2=80=AFPM Luis Chamberlain <mcgrof@kernel.o=
-rg> wrote:
-> >
-> > Not saying that debugging commit ac3b4328392344 ("module: replace
-> > module_layout with module_memory") is going to be impossible, quite
-> > the contrary I think it would be good to root cause it, if possible,
-> > as perhaps it may also be similar to some other future oddball arch
-> > bug later that may come up.
->
-> I don't have any context - the mailing lists in question that
-> apparently this came in on aren't in lore.
->
-> That said, that commit looks odd for the ia64 part.
->
-> In particular, this part:
->
->   -               if (mod->core_layout.size > MAX_LTOFF)
->   +               struct module_memory *mod_mem;
->   +
->   +               mod_mem =3D &mod->mem[MOD_DATA];
->
-> in apply_relocate_add() (file: arch/ia64/kernel/module.c) seems suspect.
->
-> The previous place that used to look at "mod->core_layout.base"
-> converted that to "mod->mem[MOD_TEXT].base". As do other changes in
-> other architectures.
->
-> So that "MOD_DATA" looks *very* wrong.  Shouldn't core_layout. be
-> translated to use "MOD_TEXT" instead?
+Hi,
 
-MOD_DATA is likely wrong here. But as Frank tested, changing it to MOD_TEXT
-didn't fix the issue. I suspect we missed some special cases when we update=
-d
-layout_sections().
+On 26.05.23 23:01, Song Liu wrote:
+> Thanks for running the test.
 
-Thanks,
-Song
+Thanks for staying with me.
+
+> I am not very familiar with the code, but I think we shouldn't hit that
+> WARN_ON_ONCE. Could you please try with the follow patch to see
+> which section caused this issue?
+>
+> Thanks,
+> Song
+>
+> diff --git i/kernel/module/main.c w/kernel/module/main.c
+> index 0f9183f1ca9f..caf3d30cd133 100644
+> --- i/kernel/module/main.c
+> +++ w/kernel/module/main.c
+> @@ -1537,8 +1537,11 @@ static void __layout_sections(struct module
+> *mod, struct load_info *info, bool i
+>                              || is_init !=3D module_init_layout_section(=
+sname))
+>                                  continue;
+>
+> -                       if (WARN_ON_ONCE(type =3D=3D MOD_INVALID))
+> +                       if (WARN_ON_ONCE(type =3D=3D MOD_INVALID)) {
+> +                               pr_warn("%s: section %s (sh_flags
+> %llx) matched to MOD_INVALID\n", __func__,
+> +                                       sname, s->sh_flags);
+>                                  continue;
+> +                       }
+>
+>                          s->sh_entsize =3D
+> module_get_offset_and_type(mod, type, s, i);
+>                          pr_debug("\t%s\n", sname);
+
+I put that as -patch3 on top of 6.4-rc3, the result is on [1].
+
+[1]: https://pastebin.com/KqnWL2pM
+
+I this time put the whole console messages there, just in case some of
+the earlier messages could be of any help. To jump to the actual oopses,
+search for "Loading, please wait...".
+
+Cheers,
+Frank
