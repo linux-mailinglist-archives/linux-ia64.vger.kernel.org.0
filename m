@@ -2,94 +2,123 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6796B7132D8
-	for <lists+linux-ia64@lfdr.de>; Sat, 27 May 2023 09:02:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 351537135D8
+	for <lists+linux-ia64@lfdr.de>; Sat, 27 May 2023 19:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229678AbjE0HCa (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 27 May 2023 03:02:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53518 "EHLO
+        id S229493AbjE0RIp (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 27 May 2023 13:08:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229472AbjE0HC3 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 27 May 2023 03:02:29 -0400
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA993EB
-        for <linux-ia64@vger.kernel.org>; Sat, 27 May 2023 00:02:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
- s=s29768273; t=1685170905; x=1685775705; i=frank.scheiner@web.de;
- bh=rAryRTxS0T5TuVGbciON9htWPIgfBVBJWk1P4zA/ctU=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=jd2HliAWHq5ad1yzmXPETRgjXNSaKCXddXzvhdisTkhtJd8sceV6khT9/RLnSz1MvoWAFB8
- ED1B4fvMHw8GYxzap0W9B8H1Ot2JaTtQvuUCsHmg2TiYaYx0D/3xy1628kgMBQxu3Zm6vKtdR
- LYlnHuwE3IPJNG0dmjNpRhIbypTHwqYTZ+8zk3FeNoVwHUx35bQNd7DKIWuMnOneDi3pACcWq
- 6MjVwhz9m/DqpzfQWCDbhXWGi2G8gAtpQ+VqAyt96UPNp9Y1qnaT2DuRiggU4AjmUiWKGflB1
- 8nPVxfkabBPgc5n06DOB0WPbu+QhIswcLqgGRaxygy2zOFrp6iPA==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.30] ([217.247.45.222]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MjgXH-1qVUmp3yzD-00lC2D; Sat, 27
- May 2023 09:01:45 +0200
-Message-ID: <c4ef98ad-cc4e-2949-179d-7edbc3c2a1b5@web.de>
-Date:   Sat, 27 May 2023 09:01:42 +0200
+        with ESMTP id S229634AbjE0RIp (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 27 May 2023 13:08:45 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC42BBB
+        for <linux-ia64@vger.kernel.org>; Sat, 27 May 2023 10:08:43 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-514924ca903so697755a12.2
+        for <linux-ia64@vger.kernel.org>; Sat, 27 May 2023 10:08:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1685207322; x=1687799322;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=atVGO+XtPagaU9l7tFVTsPSH9ByZiyTqVK+yq7BkoQs=;
+        b=MHOTDskb9PYErjcfU5gV5Zhcdg4pTOF883/JVLnNy/UIhI2kFM6d3ZG2XWoPiCWaqN
+         54P7IZRH31PA31g8bu0tJMFkapnZp3430jEvUr1nvzCDj2yF4o2WNLWzabFbTe2iz5el
+         viUCV9q5T2xhyLtuDUhoaRTpM8ApJ8B7+Gbzc=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685207322; x=1687799322;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=atVGO+XtPagaU9l7tFVTsPSH9ByZiyTqVK+yq7BkoQs=;
+        b=N0qSY3qBHp16+5fHB5mHoLIbfTGBqa098O9V2dGNZKv0wSs8sXGjVlsnYxkzQXGlAF
+         LYmXupmVWOYANbi02+YoTCThekMpzxiIikJsQPEFdKzTpnTnuQ4RS7Bkb/MU/WR4k/oA
+         cDsIrPmpj/I/JzspZUHQMUB5GtIYk1VqxHPbLgjwCKa/BbfHYPQniP/gBR2pIbeCXLS5
+         pqGreu63+7jbD+W7lZSyz4afwG0AtpBNmAD9kTjJY18HopJabhxkA9dD+NZoxE89jkDi
+         +9sYJr5imxhreCGiZ51TAlUnuihG5/UZ1r/z39orOaZQOmUH3RKvWWm1pTHDmp/lGI1S
+         diuw==
+X-Gm-Message-State: AC+VfDxcZofalg7kzlfuL3AV825lYscOhvNk4Ni3Z/+4yN6Wr/S3FQ8z
+        6HJQ+OikAObkV3KlibagOB+ylH69jQ+VhvQzLxbKVI1v
+X-Google-Smtp-Source: ACHHUZ5e+IcmIqavG+UBm3ydVp/As0LJYEaFaEFSjXn6t4R7JKPCGZIvQjbEkFvH3dzlw+Gf5twp9A==
+X-Received: by 2002:a17:907:d8c:b0:973:d863:f651 with SMTP id go12-20020a1709070d8c00b00973d863f651mr3607240ejc.44.1685207322191;
+        Sat, 27 May 2023 10:08:42 -0700 (PDT)
+Received: from mail-ej1-f48.google.com (mail-ej1-f48.google.com. [209.85.218.48])
+        by smtp.gmail.com with ESMTPSA id a6-20020a170906244600b00965b416585bsm3602702ejb.118.2023.05.27.10.08.41
+        for <linux-ia64@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 27 May 2023 10:08:41 -0700 (PDT)
+Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-969f90d71d4so261781566b.3
+        for <linux-ia64@vger.kernel.org>; Sat, 27 May 2023 10:08:41 -0700 (PDT)
+X-Received: by 2002:a17:906:fd8d:b0:96f:4927:7a96 with SMTP id
+ xa13-20020a170906fd8d00b0096f49277a96mr4773384ejb.70.1685207320929; Sat, 27
+ May 2023 10:08:40 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
+References: <abb1166d-27a9-fbae-59cd-841480fba78a@web.de> <ZHErssbUSbSznTVA@bombadil.infradead.org>
+ <CAHk-=whuaCqh0RJk1F+SKqdEHPzANoVVP5OU=c9wgogVLCQTVQ@mail.gmail.com> <c4ef98ad-cc4e-2949-179d-7edbc3c2a1b5@web.de>
+In-Reply-To: <c4ef98ad-cc4e-2949-179d-7edbc3c2a1b5@web.de>
+From:   Linus Torvalds <torvalds@linux-foundation.org>
+Date:   Sat, 27 May 2023 10:08:24 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whv0Mr_Gnwbm00vi76oTTw16KviVhC33segbjjZbxOswA@mail.gmail.com>
+Message-ID: <CAHk-=whv0Mr_Gnwbm00vi76oTTw16KviVhC33segbjjZbxOswA@mail.gmail.com>
 Subject: Re: Boot regression in Linux v6.4-rc3
-Content-Language: en-US
-To:     Linus Torvalds <torvalds@linux-foundation.org>
+To:     Frank Scheiner <frank.scheiner@web.de>,
+        Konstantin Ryabitsev <konstantin@linuxfoundation.org>
 Cc:     Guenter Roeck <linux@roeck-us.net>, Arnd Bergmann <arnd@arndb.de>,
         linux-ia64@vger.kernel.org, song@kernel.org,
         debian-ia64 <debian-ia64@lists.debian.org>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
         Luis Chamberlain <mcgrof@kernel.org>
-References: <abb1166d-27a9-fbae-59cd-841480fba78a@web.de>
- <ZHErssbUSbSznTVA@bombadil.infradead.org>
- <CAHk-=whuaCqh0RJk1F+SKqdEHPzANoVVP5OU=c9wgogVLCQTVQ@mail.gmail.com>
-From:   Frank Scheiner <frank.scheiner@web.de>
-In-Reply-To: <CAHk-=whuaCqh0RJk1F+SKqdEHPzANoVVP5OU=c9wgogVLCQTVQ@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:yd8+d93OVU0ZLxv9/1gCHTip7cfkMhuRCqrbsyCeNyxid2eaA5/
- g5ZTe3a7A/W8v4kt111glk/OAM3m3N3bzR5AxBn2238YyikoNezCRQ1HOT42s//sK8VD6rt
- YwrO9+/Hdg/fZOJFvPZddoGiDZYJcl58dgLcAmsHLWFOcl5BAxLfvLPyrDCx7miUJIgLNnT
- tK8CgSuO/P7oGXnAeVynQ==
-UI-OutboundReport: notjunk:1;M01:P0:NGRlIucQATA=;9q7LgZHxEAOEFcyLgPrwrmRvB5T
- aDeOl4RAPakBT9dDVtS+DwRuq8/CoLnneb5DqrpSXz77mvP5kHwGjbs2HaPwqXuHMPpdB2jpY
- CKbvXd6zhNjHRyOAbSZdQ6XN0mJD+Joqtq3ssShUrJlzjHwqGasHn7TYN8Ms1UwstHZWOul95
- rt/TnnQcjIV35iGQLc9Yx1AbBi6B3EZmFEJBkI9eQ4q2A+LCee+yQyNRqzzR6kaWfys1sHzu0
- 92s3ypag4HV6h0UoXB7Gq3El4iW7H0196IcQM6o2X7jZP75xjMJXctdtbwpZmxXBbdHQWMEs/
- SmSWN2ZqXi2NgQdfpDj2MBMPYNhs+TM1AkgWlhUg/W6IjGx6L5C1i9zZt4UNeYNgEsaIaJvZ/
- a3/6KxqmTwNvb8V7zBYslGXmyo8cgXlNMbxXgOSxsR0J8ecAak4ohAd1B+wduvCd0yF2wPhWQ
- JB1+bWStwymp2/2sdnZuRbFOX01/0G3jZPbvAcGMAdGonWTL0hVVpRnIYmVrUv9qzQUSTIT1A
- FSS4A2Q6mDt5DAqJC1J8cp8Norp9w7jHzfUX5TPggl+FyQZNAS76fcLYG9XbnIoc71VsbuXMR
- KRupNlxaCw2Pxd9X0CVkfvyr6YwqUAbNR8hQBl8d/6Kc3IBOPhmnE8N57SXwF5DkL9WPmonZx
- Jq8VEqXdHfLsqQ+Z1WlZf9zuzwR71AprfHV8Nhbj0n8WklKOd9jx7qL6PokJgXGvhBCJEslSg
- lTEetDsXKymxl5WJdan9m4qWjytC2gwiSIbZ67IZpncbCsXgCqZAD5Hh2/reMXN68mO6hYHVA
- q19R+aTItGPwF7WuPATUFvQkT8Hf1CcltmghyjjLc3/xYmIhlqn07F0ukVll6GWcEfsyF8evi
- iEj4ndEvsVt58trEGhyEx+0q3h6shWAqaJqt3VHCmPL++KbD5xaDogHioACC697OD6bDWtvdX
- Ht4EOOl46T3OyAulLPSILxo+Hpc=
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 27.05.23 00:22, Linus Torvalds wrote:
-> [...]
-> But this is my "monkey see, monkey do" pattern matching reaction, not
-> from any deeper understanding of the problem (I can't even see the
-> report) or really even the code.
+On Sat, May 27, 2023 at 12:01=E2=80=AFAM Frank Scheiner <frank.scheiner@web=
+.de> wrote:
+>
+> If it is of any help, my initial report is available for example via:
+>
+> https://marc.info/?l=3Dlinux-ia64&m=3D168509859125505&w=3D2
+>
+> ...the whole thread is currently at:
+>
+> https://marc.info/?t=3D168509868200003&r=3D1&w=3D2
 
-If it is of any help, my initial report is available for example via:
+This does make it clear just how great a mailing list archive lore is.
+Konstantin, is there any particular reason why
+linux-ia64@vger.kernel.org isn't in lore? Is it just a rational hatred
+of all things itanium?
 
-https://marc.info/?l=linux-ia64&m=168509859125505&w=2
+Anyway, the WARN_ON() is likely related, but the bug is clearly an
+unexpected page fault in __copy_user() when called by load_module().
 
-...the whole thread is currently at:
+The ia64 oops output is nasty, presumably because ia64 aggressively
+inlines things. It would help a lot if you enabled debug info (maybe
+you already do?) and then run the oops through
+./scripts/decode_stacktrace.sh which will figure out line numbers,
+inlining etc.
 
-https://marc.info/?t=168509868200003&r=1&w=2
+Because I don't even see why it would call __copy_user() in the first
+place. This is 'finit_module()' that loads the module data from a
+file, not user space.
 
-Cheers,
-Frank
+So I guess it must be the strndup_user() in
+
+        mod->args =3D strndup_user(uargs, ~0UL >> 1);
+
+but that doesn't look like it should even care about any module
+layout. Plus I would have expected to see strndup_user() in the call
+trace, but whatever.
+
+End result: that ia64 trace is very hard to read, and _maybe_ running
+it through the decode script might give more information about what it
+is that triggers...
+
+             Linus
