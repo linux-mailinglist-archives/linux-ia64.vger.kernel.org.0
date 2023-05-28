@@ -2,157 +2,152 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 602C0714115
-	for <lists+linux-ia64@lfdr.de>; Mon, 29 May 2023 00:46:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22CE1714125
+	for <lists+linux-ia64@lfdr.de>; Mon, 29 May 2023 01:01:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229562AbjE1Wq3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 28 May 2023 18:46:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52404 "EHLO
+        id S229613AbjE1XBW convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+linux-ia64@lfdr.de>); Sun, 28 May 2023 19:01:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53182 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229499AbjE1Wq2 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 28 May 2023 18:46:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C4A3B9
-        for <linux-ia64@vger.kernel.org>; Sun, 28 May 2023 15:46:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E894C60BEE
-        for <linux-ia64@vger.kernel.org>; Sun, 28 May 2023 22:46:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51061C433D2
-        for <linux-ia64@vger.kernel.org>; Sun, 28 May 2023 22:46:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685313986;
-        bh=VDX4Ee53SnesAdbldnVksOYlAN3O1PI+HY87H5R2XwM=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=K51al30WceQlhfRIOh28oz5DDyuJw66qEB9kKX3YvD9d4vsR9wAqAIXCLWmjVDlCV
-         BeOCz16EceqeHMV6ZdNjC8GcXTLXlaNPIFd1+w8/0YvHUQs83YOe7wzmPKfXROLacF
-         NfSNy1ockfrtctuyjpBqkqKmTr1vqF0wOWE5+hRQ3mEEvJu8M70wJt49VclZmzk8Z7
-         xZguwvIMVTJ6c8r67FI1MzODBFMROertyHMrm6aYLQTruV3R42K+iy766W+PEfWprB
-         5mYPjq2c5smCeKzBYHEvbBYIcfry/2cR8rMgYl2c0/1P10dgI+kRliWVk74TbvNOoU
-         FxqTG1glw0FOw==
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-4f122ff663eso2884835e87.2
-        for <linux-ia64@vger.kernel.org>; Sun, 28 May 2023 15:46:26 -0700 (PDT)
-X-Gm-Message-State: AC+VfDze+dN+YzhjTsiOLgDVMmpjT67tQGVKjXWR0fbv/WQ55+UWR1Z3
-        YvOus0RVn2A1+HzJgmoZ9GyY0MLRa1WY36l5bOY=
-X-Google-Smtp-Source: ACHHUZ594+DnI6vPvFVMOFWw7uzkpxKrxnrLXhgRSQkkOmsV8ARn6a8sHSQBAUAWTFSeO7VNP9Td9QKzA3rM9Hu3tWg=
-X-Received: by 2002:ac2:53a6:0:b0:4f4:b138:e998 with SMTP id
- j6-20020ac253a6000000b004f4b138e998mr3161365lfh.68.1685313984349; Sun, 28 May
- 2023 15:46:24 -0700 (PDT)
-MIME-Version: 1.0
-References: <abb1166d-27a9-fbae-59cd-841480fba78a@web.de> <ZHErssbUSbSznTVA@bombadil.infradead.org>
- <CAHk-=whuaCqh0RJk1F+SKqdEHPzANoVVP5OU=c9wgogVLCQTVQ@mail.gmail.com>
- <c4ef98ad-cc4e-2949-179d-7edbc3c2a1b5@web.de> <CAHk-=whv0Mr_Gnwbm00vi76oTTw16KviVhC33segbjjZbxOswA@mail.gmail.com>
- <b2b47c19-d527-fbd2-1666-801f173b6174@web.de> <CAHk-=wjDQZ8snU__Y8qJ8M5H--1FtAwNq-oHKmY4CJuomWPvDw@mail.gmail.com>
- <CAPhsuW7Gcd7hkrD6RtBdJDMdVnaN8Bv_kVNdpyccUiuD-TqYDw@mail.gmail.com>
- <ea6bb10a-f830-1a9f-19b1-07269a073876@web.de> <42e4fbe4-2b4d-4f9a-222f-1d14d4836da3@web.de>
-In-Reply-To: <42e4fbe4-2b4d-4f9a-222f-1d14d4836da3@web.de>
+        with ESMTP id S229615AbjE1XBV (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 28 May 2023 19:01:21 -0400
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70BCDBB
+        for <linux-ia64@vger.kernel.org>; Sun, 28 May 2023 16:01:16 -0700 (PDT)
+Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
+        by mx0a-00082601.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 34SMUvu4020180
+        for <linux-ia64@vger.kernel.org>; Sun, 28 May 2023 16:01:15 -0700
+Received: from mail.thefacebook.com ([163.114.132.120])
+        by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 3qufd0fcq5-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
+        for <linux-ia64@vger.kernel.org>; Sun, 28 May 2023 16:01:15 -0700
+Received: from twshared34392.14.frc2.facebook.com (2620:10d:c085:108::4) by
+ mail.thefacebook.com (2620:10d:c085:21d::7) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.23; Sun, 28 May 2023 16:01:13 -0700
+Received: by devbig932.frc1.facebook.com (Postfix, from userid 4523)
+        id 930D31E61484C; Sun, 28 May 2023 16:00:55 -0700 (PDT)
 From:   Song Liu <song@kernel.org>
-Date:   Sun, 28 May 2023 15:46:12 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW5VdZiLwAax1Ax3OVD=Kp2y2i-U9Ap3LS3jY6jz59Nawg@mail.gmail.com>
-Message-ID: <CAPhsuW5VdZiLwAax1Ax3OVD=Kp2y2i-U9Ap3LS3jY6jz59Nawg@mail.gmail.com>
-Subject: Re: Boot regression in Linux v6.4-rc3
-To:     Frank Scheiner <frank.scheiner@web.de>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Arnd Bergmann <arnd@arndb.de>, linux-ia64@vger.kernel.org,
-        debian-ia64 <debian-ia64@lists.debian.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+To:     <linux-modules@vger.kernel.org>, <linux-ia64@vger.kernel.org>
+CC:     <debian-ia64@lists.debian.org>, <mcgrof@kernel.org>,
+        <glaubitz@physik.fu-berlin.de>, Song Liu <song@kernel.org>,
+        Frank Scheiner <frank.scheiner@web.de>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH] module: fix module load for ia64
+Date:   Sun, 28 May 2023 16:00:41 -0700
+Message-ID: <20230528230041.2592309-1-song@kernel.org>
+X-Mailer: git-send-email 2.34.1
+X-FB-Internal: Safe
+Content-Type: text/plain
+X-Proofpoint-GUID: w70KUfu8J9X9uFzlaFAxt6edniH_Jvz2
+X-Proofpoint-ORIG-GUID: w70KUfu8J9X9uFzlaFAxt6edniH_Jvz2
+Content-Transfer-Encoding: 8BIT
+X-Proofpoint-UnRewURL: 0 URL was un-rewritten
+MIME-Version: 1.0
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.573,FMLib:17.11.176.26
+ definitions=2023-05-28_18,2023-05-25_03,2023-05-22_02
+X-Spam-Status: No, score=-2.4 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sun, May 28, 2023 at 1:10=E2=80=AFAM Frank Scheiner <frank.scheiner@web.=
-de> wrote:
->
-> Hi again,
->
-> On 28.05.23 09:30, Frank Scheiner wrote:
-> > [...]
-> > Thanks, that patch (as -patch4 on top of v6.4-rc3) fixes the boot
-> > regression for me on the rx2620:
-> >
-> > [...]
-> >
-> > Great! I'll give it a try on my rx2800-i2, too, but assume it wil work
-> > there, too.
->
-> Indeed, -patch4 also makes it work on the rx2800-i2:
+Frank reported boot regression in ia64 as:
 
-Thanks for running the test!
+ELILO v3.16 for EFI/IA-64
+..
+Uncompressing Linux... done
+Loading file AC100221.initrd.img...done
+[    0.000000] Linux version 6.4.0-rc3 (root@x4270) (ia64-linux-gcc
+(GCC) 12.2.0, GNU ld (GNU Binutils) 2.39) #1 SMP Thu May 25 15:52:20
+CEST 2023
+[    0.000000] efi: EFI v1.1 by HP
+[    0.000000] efi: SALsystab=0x3ee7a000 ACPI 2.0=0x3fe2a000
+ESI=0x3ee7b000 SMBIOS=0x3ee7c000 HCDP=0x3fe28000
+[    0.000000] PCDP: v3 at 0x3fe28000
+[    0.000000] earlycon: uart8250 at MMIO 0x00000000f4050000 (options
+'9600n8')
+[    0.000000] printk: bootconsole [uart8250] enabled
+[    0.000000] ACPI: Early table checksum verification disabled
+[    0.000000] ACPI: RSDP 0x000000003FE2A000 000028 (v02 HP    )
+[    0.000000] ACPI: XSDT 0x000000003FE2A02C 0000CC (v01 HP     rx2620
+00000000 HP   00000000)
+[...]
+[    3.793350] Run /init as init process
+Loading, please wait...
+Starting systemd-udevd version 252.6-1
+[    3.951100] ------------[ cut here ]------------
+[    3.951100] WARNING: CPU: 6 PID: 140 at kernel/module/main.c:1547
+__layout_sections+0x370/0x3c0
+[    3.949512] Unable to handle kernel paging request at virtual address
+1000000000000000
+[    3.951100] Modules linked in:
+[    3.951100] CPU: 6 PID: 140 Comm: (udev-worker) Not tainted 6.4.0-rc3 #1
+[    3.956161] (udev-worker)[142]: Oops 11003706212352 [1]
+[    3.951774] Hardware name: hp server rx2620                   , BIOS
+04.29
+11/30/2007
+[    3.951774]
+[    3.951774] Call Trace:
+[    3.958339] Unable to handle kernel paging request at virtual address
+1000000000000000
+[    3.956161] Modules linked in:
+[    3.951774]  [<a0000001000156d0>] show_stack.part.0+0x30/0x60
+[    3.951774]                                 sp=e000000183a67b20
+bsp=e000000183a61628
+[    3.956161]
+[    3.956161]
 
-I will send the official patch.
+which bisect to module_memory change [1].
 
-Thanks,
-Song
+Debug showed that ia64 uses some special sections:
 
->
-> ```
-> ELILO v3.16 for EFI/IA-64
-> ..
-> Uncompressing Linux... done
-> Loading file AC10027B.initrd.img...done
-> [    0.000000] Linux version
-> 6.4.0-rc3-44c026a73be8038f03dbdeef028b642880cf1511-patch4 (root@x4270)
-> (ia64-linux-gcc (GCC) 12.2.0, GNU ld (GNU Binutils) 2.39) #1 SMP Sun May
-> 28 09:08:44 CEST 2023
-> [    0.000000] efi: EFI v2.1 by HP
-> [    0.000000] efi: SALsystab=3D0xdfdd63a18 ESI=3D0xdfdd63f18 ACPI
-> 2.0=3D0x3d3c4014 HCDP=3D0xdffff8798 SMBIOS=3D0x3d368000
-> [    0.000000] PCDP: v3 at 0xdffff8798
-> [    0.000000] earlycon: uart8250 at I/O port 0x4000 (options '115200n8')
-> [    0.000000] printk: bootconsole [uart8250] enabled
-> [    0.000000] ACPI: Early table checksum verification disabled
-> [    0.000000] ACPI: RSDP 0x000000003D3C4014 000024 (v02 HP    )
-> [    0.000000] ACPI: XSDT 0x000000003D3C4580 000124 (v01 HP     RX2800-2
-> 00000001      01000013)
-> [...]
-> [   36.649531] Run /init as init process
-> Loading, please wait...
-> Starting systemd-udevd version 252.6-1
-> [   36.865635] pps_core: LinuxPPS API ver. 1 registered
-> [   36.869321] pps_core: Software ver. 5.3.6 - Copyright 2005-2007
-> Rodolfo Giometti <giometti@linux.it>
-> [   36.885025] PTP clock support registered
-> [   36.910852] ACPI: bus type USB registered
-> [   36.918198] usbcore: registered new interface driver usbfs
-> [   36.924762] usbcore: registered new interface driver hub
-> [   36.922133] igb: Intel(R) Gigabit Ethernet Network Driver
-> [   36.931386] usbcore: registered new device driver usb
-> [   36.938149] igb: Copyright (c) 2007-2014 Intel Corporation.
-> [...]
-> [  OK  ] Finished apt-daily-upgrade=E2=80=A6 apt upgrade and clean activi=
-ties.
->
-> Debian GNU/Linux 12 rx2800-i2 -
->
-> rx2800-i2 login:
-> ```
->
-> I'll try to test this on other machines (rx4640 w/Madison, rx2660
-> w/Montecito/Montvale, rx6600 w/Montvale) as well, starting on Tuesday if
-> possible.
->
-> ****
->
-> There is an issue - only for the rx2800-i2 - seemingly related to it's
-> PCIe NIC(s) and MSIs, but this is already there in 6.3.x (see first part
-> of [1]) and **not related to the problem of this thread (AFAICT)** and -
-> more important - doesn't affect operation: The machine is working
-> diskless using one of those interfaces so it can't be that bad. I'll
-> look into bisecting that issue as well.
->
-> [1]: https://lists.debian.org/debian-ia64/2023/05/msg00010.html
->
-> Cheers,
-> Frank
+__layout_sections: section .got (sh_flags 10000002) matched to MOD_INVALID
+__layout_sections: section .sdata (sh_flags 10000003) matched to MOD_INVALID
+__layout_sections: section .sbss (sh_flags 10000003) matched to MOD_INVALID
+
+All these sections are loaded to module core memory before [1].
+
+Fix ia64 boot by loading these sections to MOD_DATA (core rw data).
+
+[1] commit ac3b43283923 ("module: replace module_layout with module_memory")
+
+Fixes: ac3b43283923 ("module: replace module_layout with module_memory")
+Reported-by: Frank Scheiner <frank.scheiner@web.de>
+Closes: https://lists.debian.org/debian-ia64/2023/05/msg00010.html
+Closes: https://marc.info/?l=linux-ia64&m=168509859125505
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Song Liu <song@kernel.org>
+---
+ kernel/module/main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/module/main.c b/kernel/module/main.c
+index b4c7e925fdb0..9da4b551321e 100644
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -1521,14 +1521,14 @@ static void __layout_sections(struct module *mod, struct load_info *info, bool i
+ 		MOD_RODATA,
+ 		MOD_RO_AFTER_INIT,
+ 		MOD_DATA,
+-		MOD_INVALID,	/* This is needed to match the masks array */
++		MOD_DATA,
+ 	};
+ 	static const int init_m_to_mem_type[] = {
+ 		MOD_INIT_TEXT,
+ 		MOD_INIT_RODATA,
+ 		MOD_INVALID,
+ 		MOD_INIT_DATA,
+-		MOD_INVALID,	/* This is needed to match the masks array */
++		MOD_INIT_DATA,
+ 	};
+ 
+ 	for (m = 0; m < ARRAY_SIZE(masks); ++m) {
+-- 
+2.34.1
+
