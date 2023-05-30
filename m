@@ -2,95 +2,76 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD5AA716F6B
-	for <lists+linux-ia64@lfdr.de>; Tue, 30 May 2023 23:11:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46B46716F90
+	for <lists+linux-ia64@lfdr.de>; Tue, 30 May 2023 23:19:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230154AbjE3VLK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 30 May 2023 17:11:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42048 "EHLO
+        id S232804AbjE3VTe (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 30 May 2023 17:19:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233157AbjE3VLK (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 30 May 2023 17:11:10 -0400
-Received: from mail-qk1-x736.google.com (mail-qk1-x736.google.com [IPv6:2607:f8b0:4864:20::736])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35730C0
-        for <linux-ia64@vger.kernel.org>; Tue, 30 May 2023 14:11:09 -0700 (PDT)
-Received: by mail-qk1-x736.google.com with SMTP id af79cd13be357-75b17b80834so524292285a.1
-        for <linux-ia64@vger.kernel.org>; Tue, 30 May 2023 14:11:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1685481068; x=1688073068;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Xa+N49Nm2tVkLvxrUw1Evt8r7Fe+85kqP6q6OfZAaAI=;
-        b=L409Jf3IOoTWO8LAB0cedEcoyFQhlGXJV3dDWBm3DZ5oS9I4A9kSgIYOnaxfc4sLG9
-         CJ0M1DwqvxQQp465Cr9x9NWIEV6fL7lqIU90HbmMEbu9wt7x29HzSaJKvTeruDlvgXSF
-         NfI5SU5ULa4HKktbC8eY0eAMCMXItXQCO5few=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685481068; x=1688073068;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Xa+N49Nm2tVkLvxrUw1Evt8r7Fe+85kqP6q6OfZAaAI=;
-        b=fM2wQwtpRcHivToHlFnBSF0ssi6jEQFr+VuywF5IRXP/4I1rTuH+6TEBuCNsoU7xLp
-         CmRIqwDhux5kEQZozuVdGShuBGLlBXYoWjxaFBC9BIUWAtImRcuE90adDqFfprigVWRe
-         v2es8iUanobpYeYxwE9KNF474JOxv9MgWfQgiU4rpTm3DhyCar2/koCMbCZGzbpwq4BA
-         WU7jcXai3BER1O09oljRRCcN+UVckAmuUmMdoQh3XLkdRZ59x0be3f6pbEi3Ce2ofe0G
-         zFizGyGZZ0C5fj2mi6t25KpZ3slEdj2Nz0Su7P+TB+O5sEQO9SbZReZvl4Ugpa1YXetO
-         92SQ==
-X-Gm-Message-State: AC+VfDxt2vAKcMnzzADYZRQAbhvyJIKP9kXsgiZq1tzHDxg9+9Ha/Q2T
-        B8DI1+GOeHDIQa8F007zec337w==
-X-Google-Smtp-Source: ACHHUZ72ZYjmYa4iLIi/+OuzxDiJ+FjdOVWtwVrUGRS1JzqbqL5Oe0IaZaJfa5k5Cb63yUhBM41Ssw==
-X-Received: by 2002:a37:a810:0:b0:75c:cc95:671 with SMTP id r16-20020a37a810000000b0075ccc950671mr2815275qke.26.1685481068311;
-        Tue, 30 May 2023 14:11:08 -0700 (PDT)
-Received: from meerkat.local (bras-base-mtrlpq5031w-grc-30-209-226-106-132.dsl.bell.ca. [209.226.106.132])
-        by smtp.gmail.com with ESMTPSA id u22-20020a05620a121600b007579ff44f0dsm4403115qkj.124.2023.05.30.14.11.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 May 2023 14:11:07 -0700 (PDT)
-Date:   Tue, 30 May 2023 17:11:06 -0400
-From:   Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Frank Scheiner <frank.scheiner@web.de>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Arnd Bergmann <arnd@arndb.de>, linux-ia64@vger.kernel.org,
-        song@kernel.org, debian-ia64 <debian-ia64@lists.debian.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: Re: Boot regression in Linux v6.4-rc3
-Message-ID: <20230530-richly-vowed-cbd6d6@meerkat>
-References: <abb1166d-27a9-fbae-59cd-841480fba78a@web.de>
- <ZHErssbUSbSznTVA@bombadil.infradead.org>
- <CAHk-=whuaCqh0RJk1F+SKqdEHPzANoVVP5OU=c9wgogVLCQTVQ@mail.gmail.com>
- <c4ef98ad-cc4e-2949-179d-7edbc3c2a1b5@web.de>
- <CAHk-=whv0Mr_Gnwbm00vi76oTTw16KviVhC33segbjjZbxOswA@mail.gmail.com>
- <20230530-purchase-amber-fa77ba@meerkat>
- <CAHk-=wh=mF941kP0DduTt91V+HSuTqBAU8pXp34wSn6DSMPmrQ@mail.gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAHk-=wh=mF941kP0DduTt91V+HSuTqBAU8pXp34wSn6DSMPmrQ@mail.gmail.com>
-X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232628AbjE3VTd (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 30 May 2023 17:19:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB61AC0;
+        Tue, 30 May 2023 14:19:32 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 45357633B6;
+        Tue, 30 May 2023 21:19:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id AD934C433EF;
+        Tue, 30 May 2023 21:19:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1685481571;
+        bh=niUCWjvGYPfPMSEsThlHQ2cG8bG0laDOcvyHoI/nf58=;
+        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+        b=cpvL0Wle9T34ssE75tJEg6jPoyh/vaiSqI6CqTONVMFoWfUVQyCn1/V1dQZa8QWVS
+         ImorouV/yLw1P3lp73MfxAVKp/O00lMWxhukp60jk+MLTD1iF/TSphziAwNEV1ov4D
+         diKUsRK5iioirix/qf1QXLXidkWg52iXumyvc85xLhQ9Bx7gMsTwUDcKunkAo8onvD
+         xFvHIfg8mPXmxSPnDkvP6yIBhraUDPtDs4YLF7sf8Pp+ILM/BU7yUj1tStufTaJGL+
+         q4y7pj5ECyBk12XoNKQdVOD1XuiQM1/3LhuzcdtVao++snRwGDYiRcRjRMCG5Vr/zK
+         NzEwfsm5gd4tw==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 9A9AAE52BF6;
+        Tue, 30 May 2023 21:19:31 +0000 (UTC)
+Subject: Re: [GIT PULL] Modules changes for v6.4-rc5
+From:   pr-tracker-bot@kernel.org
+In-Reply-To: <ZHYlj7jks1GIxNSn@bombadil.infradead.org>
+References: <ZHYlj7jks1GIxNSn@bombadil.infradead.org>
+X-PR-Tracked-List-Id: <linux-modules.vger.kernel.org>
+X-PR-Tracked-Message-Id: <ZHYlj7jks1GIxNSn@bombadil.infradead.org>
+X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git/ tags/modules-6.4-rc5
+X-PR-Tracked-Commit-Id: db3e33dd8bd956f165436afdbdbf1c653fb3c8e6
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6d86b56f54533025d94df25d77ed324344e02337
+Message-Id: <168548157162.4416.3202071710934741568.pr-tracker-bot@kernel.org>
+Date:   Tue, 30 May 2023 21:19:31 +0000
+To:     Luis Chamberlain <mcgrof@kernel.org>
+Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
+        linux-modules@vger.kernel.org, linux-ia64@vger.kernel.org,
+        debian-ia64@lists.debian.org, glaubitz@physik.fu-berlin.de,
+        Frank Scheiner <frank.scheiner@web.de>,
+        Song Liu <song@kernel.org>, mcgrof@kernel.org
+X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Tue, May 30, 2023 at 05:04:56PM -0400, Linus Torvalds wrote:
-> On Tue, May 30, 2023 at 4:21 PM Konstantin Ryabitsev
-> <konstantin@linuxfoundation.org> wrote:
-> >
-> > We only add things to lore when someone asks, and nobody's asked. :) I guess
-> > I'll consider this an ask and put it on the radar.
-> 
-> Thanks. It would probably be good to see if there are any other
-> vger.kernel.org lists with any appreciable traffic that aren't on
-> lore.
+The pull request you sent on Tue, 30 May 2023 09:34:23 -0700:
 
-Yes, that will auto-fix itself as we continue to migrate things over to
-subspace ("new vger").
+> git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git/ tags/modules-6.4-rc5
 
--K
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6d86b56f54533025d94df25d77ed324344e02337
+
+Thank you!
+
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
