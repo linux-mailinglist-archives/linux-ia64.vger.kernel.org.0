@@ -2,76 +2,97 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 46B46716F90
-	for <lists+linux-ia64@lfdr.de>; Tue, 30 May 2023 23:19:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10C7D717A3F
+	for <lists+linux-ia64@lfdr.de>; Wed, 31 May 2023 10:37:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232804AbjE3VTe (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 30 May 2023 17:19:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46290 "EHLO
+        id S234676AbjEaIhV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 31 May 2023 04:37:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232628AbjE3VTd (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 30 May 2023 17:19:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB61AC0;
-        Tue, 30 May 2023 14:19:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 45357633B6;
-        Tue, 30 May 2023 21:19:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id AD934C433EF;
-        Tue, 30 May 2023 21:19:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685481571;
-        bh=niUCWjvGYPfPMSEsThlHQ2cG8bG0laDOcvyHoI/nf58=;
-        h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-        b=cpvL0Wle9T34ssE75tJEg6jPoyh/vaiSqI6CqTONVMFoWfUVQyCn1/V1dQZa8QWVS
-         ImorouV/yLw1P3lp73MfxAVKp/O00lMWxhukp60jk+MLTD1iF/TSphziAwNEV1ov4D
-         diKUsRK5iioirix/qf1QXLXidkWg52iXumyvc85xLhQ9Bx7gMsTwUDcKunkAo8onvD
-         xFvHIfg8mPXmxSPnDkvP6yIBhraUDPtDs4YLF7sf8Pp+ILM/BU7yUj1tStufTaJGL+
-         q4y7pj5ECyBk12XoNKQdVOD1XuiQM1/3LhuzcdtVao++snRwGDYiRcRjRMCG5Vr/zK
-         NzEwfsm5gd4tw==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id 9A9AAE52BF6;
-        Tue, 30 May 2023 21:19:31 +0000 (UTC)
-Subject: Re: [GIT PULL] Modules changes for v6.4-rc5
-From:   pr-tracker-bot@kernel.org
-In-Reply-To: <ZHYlj7jks1GIxNSn@bombadil.infradead.org>
-References: <ZHYlj7jks1GIxNSn@bombadil.infradead.org>
-X-PR-Tracked-List-Id: <linux-modules.vger.kernel.org>
-X-PR-Tracked-Message-Id: <ZHYlj7jks1GIxNSn@bombadil.infradead.org>
-X-PR-Tracked-Remote: git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git/ tags/modules-6.4-rc5
-X-PR-Tracked-Commit-Id: db3e33dd8bd956f165436afdbdbf1c653fb3c8e6
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 6d86b56f54533025d94df25d77ed324344e02337
-Message-Id: <168548157162.4416.3202071710934741568.pr-tracker-bot@kernel.org>
-Date:   Tue, 30 May 2023 21:19:31 +0000
-To:     Luis Chamberlain <mcgrof@kernel.org>
-Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
-        linux-modules@vger.kernel.org, linux-ia64@vger.kernel.org,
-        debian-ia64@lists.debian.org, glaubitz@physik.fu-berlin.de,
-        Frank Scheiner <frank.scheiner@web.de>,
-        Song Liu <song@kernel.org>, mcgrof@kernel.org
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S234855AbjEaIhR (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 31 May 2023 04:37:17 -0400
+X-Greylist: delayed 823 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 31 May 2023 01:37:16 PDT
+Received: from mail.ettrick.pl (mail.ettrick.pl [141.94.21.111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FD4610B
+        for <linux-ia64@vger.kernel.org>; Wed, 31 May 2023 01:37:16 -0700 (PDT)
+Received: by mail.ettrick.pl (Postfix, from userid 1002)
+        id 32410A970E; Wed, 31 May 2023 08:16:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ettrick.pl; s=mail;
+        t=1685520991; bh=ZOVeXw1jXE9TbyZP9aLdRwM96AORcRfum8b+rry5JMw=;
+        h=Date:From:To:Subject:From;
+        b=sFZ5D1rgwrO6zLliWvUiXYdTyzjVSxRe2M06BF1gLeKUf7MXmlW5yzcaJ/3BWq2SH
+         B/2WIzhM0EYXKCZB6kcv5lULD7llQGHoHw686DYEwxIgTgcvcon7otF91ImpoD9UwH
+         vqcqlkGkPj9r1alvN/8qJ1RmFI2BvR2PP14dVEjT0pzPewlL5ah1rnGCLiTDbNpSoW
+         eid1EW68Gqkdw/LW9w5XuweG+iyYHsjJcPh7af3k6xUyWIndX6t7K8PNnNv9WdxCfN
+         xmCtS4KU7QotOgZ0JlB0JKAHJtvJyU/AA6gxNNGqWYKPfQXQFhhl29CGxxud91/T14
+         rbVrvv5UIy/0Q==
+Received: by mail.ettrick.pl for <linux-ia64@vger.kernel.org>; Wed, 31 May 2023 08:15:40 GMT
+Message-ID: <20230531064500-0.1.ax.4bm3d.0.pbfp10gqb5@ettrick.pl>
+Date:   Wed, 31 May 2023 08:15:40 GMT
+From:   "Norbert Karecki" <norbert.karecki@ettrick.pl>
+To:     <linux-ia64@vger.kernel.org>
+Subject: Fotowoltaika- propozycja instalacji
+X-Mailer: mail.ettrick.pl
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_ABUSE_SURBL,URIBL_BLOCKED,
+        URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
+        *      blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [URIs: ettrick.pl]
+        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: ettrick.pl]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [141.94.21.111 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: ettrick.pl]
+        *  1.2 URIBL_ABUSE_SURBL Contains an URL listed in the ABUSE SURBL
+        *      blocklist
+        *      [URIs: ettrick.pl]
+        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
+        *      [score: 0.0000]
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-The pull request you sent on Tue, 30 May 2023 09:34:23 -0700:
+Dzie=C5=84 dobry,
+=20
+Czy rozwa=C5=BCali Pa=C5=84stwo monta=C5=BC systemu fotowoltaicznego?
+=20
+Instalacja fotowoltaiczna jest najlepszym sposobem na obni=C5=BCenie wyso=
+ko=C5=9Bci rachunk=C3=B3w za pr=C4=85d (pozostaj=C4=85 tylko op=C5=82aty =
+sta=C5=82e) i zabezpieczenie si=C4=99 przed rosn=C4=85cymi cenami energii=
+ elektrycznej. Jest to w pe=C5=82ni odnawialne i bezemisyjne =C5=BAr=C3=B3=
+d=C5=82o energii, dzi=C4=99ki czemu przyczyniamy si=C4=99 do ochrony =C5=9B=
+rodowiska naturalnego.
+=20
+Dzia=C5=82amy od wielu lat na rynku energetycznym. Przygotujemy projekt, =
+wycen=C4=99 oraz kompleksowo wykonamy i zg=C5=82osimy realizacj=C4=99 do =
+zak=C5=82adu energetycznego.=20
+=20
+Czy chc=C4=85 Pa=C5=84stwo pozna=C4=87 nasz=C4=85 propozycj=C4=99? =20
 
-> git://git.kernel.org/pub/scm/linux/kernel/git/mcgrof/linux.git/ tags/modules-6.4-rc5
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/6d86b56f54533025d94df25d77ed324344e02337
-
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Pozdrawiam,
+Norbert Karecki
