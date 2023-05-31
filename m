@@ -2,97 +2,105 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10C7D717A3F
-	for <lists+linux-ia64@lfdr.de>; Wed, 31 May 2023 10:37:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7AFD718930
+	for <lists+linux-ia64@lfdr.de>; Wed, 31 May 2023 20:16:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234676AbjEaIhV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 31 May 2023 04:37:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55612 "EHLO
+        id S229814AbjEaSQK (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 31 May 2023 14:16:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234855AbjEaIhR (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 31 May 2023 04:37:17 -0400
-X-Greylist: delayed 823 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 31 May 2023 01:37:16 PDT
-Received: from mail.ettrick.pl (mail.ettrick.pl [141.94.21.111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FD4610B
-        for <linux-ia64@vger.kernel.org>; Wed, 31 May 2023 01:37:16 -0700 (PDT)
-Received: by mail.ettrick.pl (Postfix, from userid 1002)
-        id 32410A970E; Wed, 31 May 2023 08:16:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ettrick.pl; s=mail;
-        t=1685520991; bh=ZOVeXw1jXE9TbyZP9aLdRwM96AORcRfum8b+rry5JMw=;
-        h=Date:From:To:Subject:From;
-        b=sFZ5D1rgwrO6zLliWvUiXYdTyzjVSxRe2M06BF1gLeKUf7MXmlW5yzcaJ/3BWq2SH
-         B/2WIzhM0EYXKCZB6kcv5lULD7llQGHoHw686DYEwxIgTgcvcon7otF91ImpoD9UwH
-         vqcqlkGkPj9r1alvN/8qJ1RmFI2BvR2PP14dVEjT0pzPewlL5ah1rnGCLiTDbNpSoW
-         eid1EW68Gqkdw/LW9w5XuweG+iyYHsjJcPh7af3k6xUyWIndX6t7K8PNnNv9WdxCfN
-         xmCtS4KU7QotOgZ0JlB0JKAHJtvJyU/AA6gxNNGqWYKPfQXQFhhl29CGxxud91/T14
-         rbVrvv5UIy/0Q==
-Received: by mail.ettrick.pl for <linux-ia64@vger.kernel.org>; Wed, 31 May 2023 08:15:40 GMT
-Message-ID: <20230531064500-0.1.ax.4bm3d.0.pbfp10gqb5@ettrick.pl>
-Date:   Wed, 31 May 2023 08:15:40 GMT
-From:   "Norbert Karecki" <norbert.karecki@ettrick.pl>
-To:     <linux-ia64@vger.kernel.org>
-Subject: Fotowoltaika- propozycja instalacji
-X-Mailer: mail.ettrick.pl
+        with ESMTP id S229668AbjEaSQJ (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 31 May 2023 14:16:09 -0400
+Received: from mout.web.de (mout.web.de [212.227.15.3])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8DC0A98
+        for <linux-ia64@vger.kernel.org>; Wed, 31 May 2023 11:16:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de;
+ s=s29768273; t=1685556936; x=1686161736; i=frank.scheiner@web.de;
+ bh=cGvw9tyWXccQ2Mz8YQVkkf79tK6GfcF5WVkwEahNygE=;
+ h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+ b=PaDmlnDN1qYJ+lyDXh/HcIAqE0zUc/PNvhRYM14SmknPF+bnpuBaI7C1Qbyztj3nUSJsWyU
+ DclcXqsUUhSIV0ig3FAv9WESEk1X5jzRgs2cX3NRA3oRPr4GBnzV4rg6yYrz3LDg65VppX2sB
+ jeH2T6QB6+x3YbVy8dvCMoPepVQM/955DZsDaNIQODSFCCv2zpE62iXD1fEFqjRZxL1KRtx53
+ aFNW1pmFYEkWA+xofF0e7fseAkL8qlZd2Y1F807sIjYebpYwVoactQzXjQRsIRwjw8xEa6W+W
+ AKcpFjk0Ps9lbVl8W5P2YSUTIaN0xA4Kl7jxfsFLqWVmY2UNhk5A==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.30] ([79.200.219.36]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1N6Jxd-1qAiuk3vbt-016bxL; Wed, 31
+ May 2023 20:15:36 +0200
+Message-ID: <b74bda58-8804-4456-eb52-b476e7b29f78@web.de>
+Date:   Wed, 31 May 2023 20:15:35 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
+Subject: Re: Boot regression in Linux v6.4-rc3
+Content-Language: en-US
+To:     Linus Torvalds <torvalds@linux-foundation.org>,
+        Song Liu <song@kernel.org>
+Cc:     linux-ia64@vger.kernel.org,
+        debian-ia64 <debian-ia64@lists.debian.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+References: <abb1166d-27a9-fbae-59cd-841480fba78a@web.de>
+ <ZHErssbUSbSznTVA@bombadil.infradead.org>
+ <CAHk-=whuaCqh0RJk1F+SKqdEHPzANoVVP5OU=c9wgogVLCQTVQ@mail.gmail.com>
+ <c4ef98ad-cc4e-2949-179d-7edbc3c2a1b5@web.de>
+ <CAHk-=whv0Mr_Gnwbm00vi76oTTw16KviVhC33segbjjZbxOswA@mail.gmail.com>
+ <b2b47c19-d527-fbd2-1666-801f173b6174@web.de>
+ <CAHk-=wjDQZ8snU__Y8qJ8M5H--1FtAwNq-oHKmY4CJuomWPvDw@mail.gmail.com>
+ <CAPhsuW7Gcd7hkrD6RtBdJDMdVnaN8Bv_kVNdpyccUiuD-TqYDw@mail.gmail.com>
+ <ea6bb10a-f830-1a9f-19b1-07269a073876@web.de>
+ <42e4fbe4-2b4d-4f9a-222f-1d14d4836da3@web.de>
+ <CAPhsuW5VdZiLwAax1Ax3OVD=Kp2y2i-U9Ap3LS3jY6jz59Nawg@mail.gmail.com>
+From:   Frank Scheiner <frank.scheiner@web.de>
+In-Reply-To: <CAPhsuW5VdZiLwAax1Ax3OVD=Kp2y2i-U9Ap3LS3jY6jz59Nawg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=5.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-        SPF_PASS,T_SCC_BODY_TEXT_LINE,URIBL_ABUSE_SURBL,URIBL_BLOCKED,
-        URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
+X-Provags-ID: V03:K1:Bb2UhP5M4sqBOHjFSekTX6PseiSBpnBO2uWwxA+yzYAD8rttrVx
+ QLdRI8fH0OXOzUcTqzqpEcdDj31AnZnQi32stoAm+xRWjIsADVbu41AVs/WrKS+Ngem59L7
+ /KKYgVX7FKszf7HKSZg0f4vzbADpW/WDSkXGgxbGrpj69JNVcuUQOP4aRU2iIdfNdE1PcOF
+ dAc5rH7RsldaWVwLt2t8A==
+UI-OutboundReport: notjunk:1;M01:P0:FmLlasxcNC0=;ule/R+CSLAWOQqOgkrAQLdzPEdE
+ 4FY64JEDlkU2zKBHhAGSLrHBAJuVuULqjlFBByjrqDDwYnA/g8soFLYJH+nVLrIEq9rPFTqib
+ heXRAfu46co2cG0UZ+MkdRyEXhFkTowBYffY1EWMrgQI141mpBWAvcsA8VnWRKwNMrE3XS72h
+ y9W86cw44avNw2HBPWWPkWn7XYin439FKsGQnczWGuOQfJzciFX+y4y2+eNJPz3M/cVS3zK4S
+ V7iy8Qk406D42+ACUwFkHCApB1ZcQiqcpKHTH14wo3Hc9ElaMxn71289QG/Y2UycJWuBYHLVa
+ OL5Ua9ES1jH8fOJx7Q87nAZKqtb3lJR3xpLnW26i7hpxmS/vMmDt+RKk/fbQ4vU8Ux2pPbb2K
+ gbeAmggDKXfg1NBhFki7Gu0crNBZQ5dfeYaYvY3kEYLAVZmmR+5l1KRI2GdCdOW7c7lus5XAF
+ x2sTfbnHFqvt4lpc7omyC6N5zyjBCRRlN3gnbnyoJu4vYDXMQG3m42r8YZ5pASb3BER0D/uzy
+ P23WTymB3GM8yhVzdGYHWzs93xmSAVTC9QusvGaFMOBogy9cLkxlLz+ODc6/JOsSkMukeZOxe
+ WDmfkDNbsrtESe6dMc1Y5tX1mt1bgUzH++rIrHNK7JYmGWFSm4djIAWd/0Kujpx3mYfpS9/8T
+ Y4ANb+m0AN5J1BJXiTJ1GKyBRRfmQY3AAqE2TYw3MFz+XmuJWrm5LXkNlvBcVbBZt/mdfLRLb
+ LvR5sUGfUoP0fwLI5GcDsNm6kf08NGz0bh0kgP2kcniGBViOLUA0eN2S63dxkcvf8n/Wef9vs
+ EQTKsN8JVl1zvutQbUlGzSkmA3nhZAjH+ZVJcgAa+VOwTD0cYopg4L4JoD5vDf5L/YyhVwEGQ
+ eCLJis/OKNOQTDK1+awYFUtxk4YKXvlL0HSoHu547O5dRSwhl42ryW8cV9mXos7UMXHjH8m4a
+ WZnxJdeH38O8rCIQk4kdRp4V//0=
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no
         version=3.4.6
-X-Spam-Report: *  0.0 URIBL_BLOCKED ADMINISTRATOR NOTICE: The query to URIBL was
-        *      blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [URIs: ettrick.pl]
-        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: ettrick.pl]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [141.94.21.111 listed in zen.spamhaus.org]
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: ettrick.pl]
-        *  1.2 URIBL_ABUSE_SURBL Contains an URL listed in the ABUSE SURBL
-        *      blocklist
-        *      [URIs: ettrick.pl]
-        * -1.9 BAYES_00 BODY: Bayes spam probability is 0 to 1%
-        *      [score: 0.0000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dzie=C5=84 dobry,
-=20
-Czy rozwa=C5=BCali Pa=C5=84stwo monta=C5=BC systemu fotowoltaicznego?
-=20
-Instalacja fotowoltaiczna jest najlepszym sposobem na obni=C5=BCenie wyso=
-ko=C5=9Bci rachunk=C3=B3w za pr=C4=85d (pozostaj=C4=85 tylko op=C5=82aty =
-sta=C5=82e) i zabezpieczenie si=C4=99 przed rosn=C4=85cymi cenami energii=
- elektrycznej. Jest to w pe=C5=82ni odnawialne i bezemisyjne =C5=BAr=C3=B3=
-d=C5=82o energii, dzi=C4=99ki czemu przyczyniamy si=C4=99 do ochrony =C5=9B=
-rodowiska naturalnego.
-=20
-Dzia=C5=82amy od wielu lat na rynku energetycznym. Przygotujemy projekt, =
-wycen=C4=99 oraz kompleksowo wykonamy i zg=C5=82osimy realizacj=C4=99 do =
-zak=C5=82adu energetycznego.=20
-=20
-Czy chc=C4=85 Pa=C5=84stwo pozna=C4=87 nasz=C4=85 propozycj=C4=99? =20
+Hi Linus, hi Song,
 
+On 29.05.23 00:46, Song Liu wrote:
+> [...]
+> Thanks for running the test!
+>
+> I will send the official patch.
+>
+> Thanks,
+> Song
 
-Pozdrawiam,
-Norbert Karecki
+With the fix merged and to conclude this, I'd like to add that it was a
+pleasure to work with you on this problem, although I didn't do much.
+
+Looking forward to the next occasion - for your sake maybe on another
+architecture, but can't promise... ;-)
+
+Cheers,
+Frank
