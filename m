@@ -2,81 +2,96 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D6167189EC
-	for <lists+linux-ia64@lfdr.de>; Wed, 31 May 2023 21:14:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3C257189F7
+	for <lists+linux-ia64@lfdr.de>; Wed, 31 May 2023 21:17:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229459AbjEaTO3 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 31 May 2023 15:14:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48818 "EHLO
+        id S229741AbjEaTRh (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 31 May 2023 15:17:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229648AbjEaTO2 (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 31 May 2023 15:14:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A0B0137
-        for <linux-ia64@vger.kernel.org>; Wed, 31 May 2023 12:14:25 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00B0563E55
-        for <linux-ia64@vger.kernel.org>; Wed, 31 May 2023 19:14:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C779C433A0
-        for <linux-ia64@vger.kernel.org>; Wed, 31 May 2023 19:14:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685560464;
-        bh=9MzZQ+cbGdqSptAfx68yX2N/dEdWtyQDve72+Z9h5m4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=dHpd03nOWZXu+OppVP8cSL7ZkrhIY+Eucma8EZaafxfz7pM4r0EH8fPEfm7MtlkrA
-         IukEeHY77ViddR9yKK+8SxCFhr6vuzPlGGccchRVJKGAHc+tIRe8xElgDhUmuKmGoo
-         Xmz8axJ7cgNLbkBca4E29o0lHZJ9NcwYmA4HhQlicP7GtpYmirADOwU/Ajmq2U+4Im
-         6epcUoy4mq6EVShMJOAu/jHTp1blUFgmkCj4FAsyHc/SzrR5bmmFA0yZlkPCVA5kmZ
-         TedNnYSwS+QlUC+p/cFM74cHmtqBF5C5q7bbRxaVjXQAHkET+WkgV0V2oVpVdngKJH
-         CUfpZteBMsAFg==
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-4f3bb395e69so7515431e87.2
-        for <linux-ia64@vger.kernel.org>; Wed, 31 May 2023 12:14:24 -0700 (PDT)
-X-Gm-Message-State: AC+VfDxRUlou7ZxHL9aZsQn6khGqyk8VTuT3HNTkWCHPt8SEOvtSjqlx
-        AdhqqV0m19fxMz7pdlB7nyu9itNKq9reG94Kz5I=
-X-Google-Smtp-Source: ACHHUZ4CtqBP6HnqMVvsuAwlolc/3M+6RxbQAlW3fMR8i0lGVQpLlagOVbZhWC+xV60Eeo/BNYPHzP/yws/q0exwrJA=
-X-Received: by 2002:a05:6512:247:b0:4f2:74d3:8996 with SMTP id
- b7-20020a056512024700b004f274d38996mr37438lfo.8.1685560462261; Wed, 31 May
- 2023 12:14:22 -0700 (PDT)
+        with ESMTP id S229790AbjEaTRe (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 31 May 2023 15:17:34 -0400
+Received: from mout.web.de (mout.web.de [212.227.15.14])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97B38133
+        for <linux-ia64@vger.kernel.org>; Wed, 31 May 2023 12:17:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
+        t=1685560612; i=frank.scheiner@web.de;
+        bh=mRjVEvt0Y50O/uceHxQFnHYkwTJwSVbFu0vgU8+n9PM=;
+        h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
+        b=cjTiIRU7QeXpHiJCtcufazT+6S++IVBxeykwS5wUhqXN19d8E4xfUhCBIJC6f572A
+         Y5Q0RvRI8xtgLEgJBcMLwq/8GRGCRKtNhRhwI3Nnx1taqjz5G0l9Uk6MdYv+SOeBtC
+         uobsBEnOHhF1FvjJS3UmGIPYr8fTYzV7BFPxwQ2fsjdjrSn6qNazRKJ52cTuJW5uSZ
+         4IRoGHLWjthjoQV9UiTPjz0ogPBsImgH5aUuk8IDy5bIxsvrd+nk9Yviq3hvNdEeVO
+         DjD2z29oKQ6+4OqZdNbcVId5gSQ5cVsoeASSH+XoztaJslKBHANgAv2yAJ9ofLBJOE
+         BsC1kZjkxB1uw==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.30] ([79.200.219.36]) by smtp.web.de (mrweb006
+ [213.165.67.108]) with ESMTPSA (Nemesis) id 1MLijs-1pmuSi2Xia-00Hf8c; Wed, 31
+ May 2023 21:16:52 +0200
+Message-ID: <6a480ba1-0357-3a3b-be8c-5ce5491a40b4@web.de>
+Date:   Wed, 31 May 2023 21:16:51 +0200
 MIME-Version: 1.0
-References: <abb1166d-27a9-fbae-59cd-841480fba78a@web.de> <ZHErssbUSbSznTVA@bombadil.infradead.org>
- <CAHk-=whuaCqh0RJk1F+SKqdEHPzANoVVP5OU=c9wgogVLCQTVQ@mail.gmail.com>
- <c4ef98ad-cc4e-2949-179d-7edbc3c2a1b5@web.de> <CAHk-=whv0Mr_Gnwbm00vi76oTTw16KviVhC33segbjjZbxOswA@mail.gmail.com>
- <b2b47c19-d527-fbd2-1666-801f173b6174@web.de> <CAHk-=wjDQZ8snU__Y8qJ8M5H--1FtAwNq-oHKmY4CJuomWPvDw@mail.gmail.com>
- <CAPhsuW7Gcd7hkrD6RtBdJDMdVnaN8Bv_kVNdpyccUiuD-TqYDw@mail.gmail.com>
- <ea6bb10a-f830-1a9f-19b1-07269a073876@web.de> <42e4fbe4-2b4d-4f9a-222f-1d14d4836da3@web.de>
- <CAPhsuW5VdZiLwAax1Ax3OVD=Kp2y2i-U9Ap3LS3jY6jz59Nawg@mail.gmail.com> <b74bda58-8804-4456-eb52-b476e7b29f78@web.de>
-In-Reply-To: <b74bda58-8804-4456-eb52-b476e7b29f78@web.de>
-From:   Luis Chamberlain <mcgrof@kernel.org>
-Date:   Wed, 31 May 2023 12:14:10 -0700
-X-Gmail-Original-Message-ID: <CAB=NE6UXgiPwBCt-TFM3xvXmFuQUDDqiXgMbv1-xGCNKWiQTwg@mail.gmail.com>
-Message-ID: <CAB=NE6UXgiPwBCt-TFM3xvXmFuQUDDqiXgMbv1-xGCNKWiQTwg@mail.gmail.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.0
 Subject: Re: Boot regression in Linux v6.4-rc3
-To:     Frank Scheiner <frank.scheiner@web.de>
+Content-Language: en-US
+To:     Luis Chamberlain <mcgrof@kernel.org>
 Cc:     Linus Torvalds <torvalds@linux-foundation.org>,
         Song Liu <song@kernel.org>, linux-ia64@vger.kernel.org,
         debian-ia64 <debian-ia64@lists.debian.org>,
         John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-7.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <abb1166d-27a9-fbae-59cd-841480fba78a@web.de>
+ <ZHErssbUSbSznTVA@bombadil.infradead.org>
+ <CAHk-=whuaCqh0RJk1F+SKqdEHPzANoVVP5OU=c9wgogVLCQTVQ@mail.gmail.com>
+ <c4ef98ad-cc4e-2949-179d-7edbc3c2a1b5@web.de>
+ <CAHk-=whv0Mr_Gnwbm00vi76oTTw16KviVhC33segbjjZbxOswA@mail.gmail.com>
+ <b2b47c19-d527-fbd2-1666-801f173b6174@web.de>
+ <CAHk-=wjDQZ8snU__Y8qJ8M5H--1FtAwNq-oHKmY4CJuomWPvDw@mail.gmail.com>
+ <CAPhsuW7Gcd7hkrD6RtBdJDMdVnaN8Bv_kVNdpyccUiuD-TqYDw@mail.gmail.com>
+ <ea6bb10a-f830-1a9f-19b1-07269a073876@web.de>
+ <42e4fbe4-2b4d-4f9a-222f-1d14d4836da3@web.de>
+ <CAPhsuW5VdZiLwAax1Ax3OVD=Kp2y2i-U9Ap3LS3jY6jz59Nawg@mail.gmail.com>
+ <b74bda58-8804-4456-eb52-b476e7b29f78@web.de>
+ <CAB=NE6UXgiPwBCt-TFM3xvXmFuQUDDqiXgMbv1-xGCNKWiQTwg@mail.gmail.com>
+From:   Frank Scheiner <frank.scheiner@web.de>
+In-Reply-To: <CAB=NE6UXgiPwBCt-TFM3xvXmFuQUDDqiXgMbv1-xGCNKWiQTwg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+X-Provags-ID: V03:K1:aCF2ehX49tydRt2mryUqD7c/+0hz+Bzn3pJtWOWLkqkcojRAQBy
+ CGUq41DaeveR6IJAiwJt7pA4P9hrQfHWVuzZE/BZc8j6iNKrI51QdPDy3Njl8dOHR+eBSTa
+ qoolZBlemHBGy37Oktt2z3ZGcwd6vAfc0XB2q4d6WpXin2X7e4Bj+6iIEPMpmsdjo8/UXJV
+ dDZyFYfxynUlPY6Tus3rg==
+UI-OutboundReport: notjunk:1;M01:P0:glW3fMzdfWI=;DqmRqgvOohD/EC5aQ+iW9iMW9hD
+ wCC9hMtLvclU/SBlq/UdF2rtxM5OSIIfkJ6cm3b/ENQIqbkst/+KfPyylqDRhiWe8sfDK2kij
+ trL+/0WzuHWBjE5p0H/f3XqWL4QiIV2+uAh2zKySrjLwFPA4ESOWGYmaBqNvhsmrX8Wo/aWRG
+ kMmMEDXDPUST7MqT8O9sxhFMlr9taAEPL6Bc5IWYGl+eyG5ZyS/mYeIK9HIooCUqClhteZPEO
+ DH/NKBhAmxc5vJyFW32rib4odbseC2N6/w6Nyigm273wE1oryXSZ1h51dgZKJsz5ySAV7Evyp
+ CBQ0aPbHRD/BbwQqoUb8d+A9gGax/NoZaTDsfzNR79yGpK0ueGLsfuLx844foiXJHRNVnb3ob
+ WqWnqqs0ksza0kTmgigxEEjdirN5o8gqQp8KEv+YOBbKT5J42vHTMedtp4YP27j+kHxTd5nHu
+ sEoiA+eS+RP8nZt5ptj+w/9Ezrko03wFaFgVix6zlnpPsRK/NqfeJy/MbXoqVxu4P4wtccpax
+ b1btVP7w3MQpSbhZWmaXUQsd4Zjq99qmnVlxjS91p9YgikoxHYaIBW9XJ5DiP6MNd3Oj2nxsF
+ /S7PdDOJh5vTbYkYUWgT5/rynXzkQOxn96GncA1lAOCbu2xGKGq1h6lWRRHh5sx1lSja9QnKF
+ FKaOH39dekOGjPogVyAdM1Z3bjBnQhKR4Q3hnQVEg5pURWWWBiS4QXjZYdkdhyIfLj8Norf/F
+ icfE2dS2D2mfOyVkHm23kG56xP10FgpAFTcQQ6IuADlhlWqu/dcKbeDm50aaubv0jymW0xk4b
+ 69F18TiiVQVlAq1RVro12uUljJwMJldPnmx1soXJne+2BbL1H07sKqAzKq0KS3E0afVAa960Q
+ fNv6MrbPnfdpBuY88SEnnSqJsRlTd2ntl4xjoj5AfabUH/kqPPWGYJKXW729m/m6VwtwUo89O
+ a0e4r9+7B+3UnA5oA4a6UUq8Dlc=
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Wed, May 31, 2023 at 11:16=E2=80=AFAM Frank Scheiner <frank.scheiner@web=
-.de> wrote:
-> Looking forward to the next occasion - for your sake maybe on another
-> architecture, but can't promise... ;-)
-
-I think it would be prudent for Song to also ask you to test his
-future upcoming modules patches on ia64 given how hard it is to
-procure such hardware too.
-
-  Luis
+T24gMzEuMDUuMjMgMjE6MTQsIEx1aXMgQ2hhbWJlcmxhaW4gd3JvdGU6DQo+IE9uIFdlZCwg
+TWF5IDMxLCAyMDIzIGF0IDExOjE24oCvQU0gRnJhbmsgU2NoZWluZXIgPGZyYW5rLnNjaGVp
+bmVyQHdlYi5kZT4gd3JvdGU6DQo+PiBMb29raW5nIGZvcndhcmQgdG8gdGhlIG5leHQgb2Nj
+YXNpb24gLSBmb3IgeW91ciBzYWtlIG1heWJlIG9uIGFub3RoZXINCj4+IGFyY2hpdGVjdHVy
+ZSwgYnV0IGNhbid0IHByb21pc2UuLi4gOy0pDQo+IA0KPiBJIHRoaW5rIGl0IHdvdWxkIGJl
+IHBydWRlbnQgZm9yIFNvbmcgdG8gYWxzbyBhc2sgeW91IHRvIHRlc3QgaGlzDQo+IGZ1dHVy
+ZSB1cGNvbWluZyBtb2R1bGVzIHBhdGNoZXMgb24gaWE2NCBnaXZlbiBob3cgaGFyZCBpdCBp
+cyB0bw0KPiBwcm9jdXJlIHN1Y2ggaGFyZHdhcmUgdG9vLg0KDQpTdXJlIQ0KDQpDaGVlcnMs
+DQpGcmFuaw0K
