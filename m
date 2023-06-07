@@ -2,186 +2,173 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BEB43721A3F
-	for <lists+linux-ia64@lfdr.de>; Sun,  4 Jun 2023 23:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 767E872722E
+	for <lists+linux-ia64@lfdr.de>; Thu,  8 Jun 2023 00:55:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229680AbjFDVeZ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sun, 4 Jun 2023 17:34:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36870 "EHLO
+        id S233125AbjFGWzD (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 7 Jun 2023 18:55:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229449AbjFDVeY (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sun, 4 Jun 2023 17:34:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A1CDBD;
-        Sun,  4 Jun 2023 14:34:23 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D167560282;
-        Sun,  4 Jun 2023 21:34:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34A8EC4339E;
-        Sun,  4 Jun 2023 21:34:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1685914462;
-        bh=fzDr5c6x/wpGz5MaedKnthfNfy7oxM2Pe1S5Md3YUN0=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=SM2ymvrGVbvFukgI1II4Cl786xUgEXxaZwhyMkNx9XC9HOwlmcemHajWd5dJIw27g
-         K5Q2qVehlAk82g2FMv4oSyqL8JQI0TfHu2kcMDVBQNDbERbPU7namEfIBziRkK/W8R
-         JbStxMfXk2A/FunYVnxJ4utNw1XSfdf4KF75p5p0y1/aZhnE8L2PurFw/r4ZQx+TuE
-         ZGcszb3beRvnnlyPmnxiEV6kA2I5oM6Xbmls711KnBDUMQyRb5P0PmTjK79NSpaAZT
-         ITmN5TIweQFDLI64B+lz7iWFb4O41014HeAfSHZEihfTNJR5hL7kLLjf5gJ2n5obAO
-         JlrczmFnk/O+w==
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2b1bb2fc9c6so18839431fa.0;
-        Sun, 04 Jun 2023 14:34:22 -0700 (PDT)
-X-Gm-Message-State: AC+VfDy0gKu+kujOGrYxF6+Pv+giYp2m5Pkr0wnZHBIA+XOTARloHKBg
-        9c2cZNldqcmaTw60g5wINt3SQsP/N0qHPA1ZAJA=
-X-Google-Smtp-Source: ACHHUZ5kpTPqiGkWbOjSDfKjbBUNnSlkuVliBG/VOgmO/uQAEvxDvM1yhYeRiByxerPsU37VMLC73uEBvJBbh9inhxk=
-X-Received: by 2002:a2e:3102:0:b0:2a8:ae90:83d6 with SMTP id
- x2-20020a2e3102000000b002a8ae9083d6mr3281869ljx.48.1685914460194; Sun, 04 Jun
- 2023 14:34:20 -0700 (PDT)
+        with ESMTP id S233158AbjFGWzB (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 7 Jun 2023 18:55:01 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F24312688
+        for <linux-ia64@vger.kernel.org>; Wed,  7 Jun 2023 15:54:54 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-977d0288fd2so2135766b.1
+        for <linux-ia64@vger.kernel.org>; Wed, 07 Jun 2023 15:54:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1686178493; x=1688770493;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
+        b=ZyieX1JAoOA7e6VkLdF85cS2BY4cQvDbL6o+xYaiiDE75fbNNMeoWverOzT52D4k2S
+         UYxoSJ2sm5xGBh8kGc5D0kAtYSbrkHKN7yaUsJGKRZoZXYrBXYeNkJg7vpsqI0ZjAmch
+         3x4lCBRFtDEICvCdIQ19CxXIxIMp7RqH7HgNNtZzrb+GNtp7UmkWpCYK0Mqw+TGqa2DT
+         Wvk1MhQkef7IdoZAN3IJWtskq7+eTMruF3Uq3kN0Wjfw07kba3wtEsWoMqE1Zay+Onj3
+         n2iJopnA3FIssXaBEX6Uelz+337ycjqTLZUyQ07MpeQf4qzAhsJurfOMFWTBWT4Ke8x2
+         t7lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1686178493; x=1688770493;
+        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lwmqmz3SLTAm/5XHn54kA2Qkz1KiGdBlOiEDAaxIk1A=;
+        b=EDV9w6ttW0dC6vCM6FZJzLqwn6zZt1fjppAleklTeNzsglmfUfB1VcOPYnV2+aixFC
+         89/vWff3EnmLumFDehEYnuYjoZ5yHXEvbi8eIwvTtB6e92NBOt5MZDTSFhmGO30sQBao
+         B8v0AfTrsbSTIEeA3ZWQO591yM3Y20uIkDQwkWRxFQ5MM5lkhJ0BEdJrVSLzVnvfy7b5
+         K/ahT3FjAA/qvowbylNMnCN2io3q1MNjjiVue6eHfmVVZ9ma5Xoi4QHRpQoHehKYOCGx
+         t2eQti5WDE6mEvXxXTABOvO25eQwBPyaH3vAuVqO26ZB7fLAB5Dvbxh1jzzsNLL+04gA
+         dfwA==
+X-Gm-Message-State: AC+VfDxqJqOZh6UoyGtLGLrQ5NRhNz8liyvQ9vxjf77SDWecI00k+BrV
+        oVyk2SU/8U2fOjPaJFH9Jy1AaqwbdAWbEIQjOr8=
+X-Google-Smtp-Source: ACHHUZ5q9v5E8VuN7LGrTh1boUYVANIIUnJnBwlK4YNL8XVT+z7GalrAexguq0b795Op+2qoCUEoHnMN8sFXq0M0ebg=
+X-Received: by 2002:a17:907:8a15:b0:96f:d154:54f7 with SMTP id
+ sc21-20020a1709078a1500b0096fd15454f7mr7113590ejc.42.1686178492570; Wed, 07
+ Jun 2023 15:54:52 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230528230041.2592309-1-song@kernel.org> <5f4a62ad-fc8f-8738-40aa-f97b01898ac5@web.de>
-In-Reply-To: <5f4a62ad-fc8f-8738-40aa-f97b01898ac5@web.de>
-From:   Song Liu <song@kernel.org>
-Date:   Sun, 4 Jun 2023 14:34:08 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW5Udq085+kAmYC+g3BXKgqJVnb1b3ZQabjmme4hqnshgw@mail.gmail.com>
-Message-ID: <CAPhsuW5Udq085+kAmYC+g3BXKgqJVnb1b3ZQabjmme4hqnshgw@mail.gmail.com>
-Subject: Re: [PATCH] module: fix module load for ia64
-To:     Frank Scheiner <frank.scheiner@web.de>
-Cc:     linux-modules@vger.kernel.org, linux-ia64@vger.kernel.org,
-        linux-alpha@vger.kernel.org, debian-ia64@lists.debian.org,
-        mcgrof@kernel.org, glaubitz@physik.fu-berlin.de,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        "debian-alpha@lists.debian.org" <debian-alpha@lists.debian.org>
+Received: by 2002:a54:2409:0:b0:217:72a9:f646 with HTTP; Wed, 7 Jun 2023
+ 15:54:52 -0700 (PDT)
+Reply-To: unitednationcompensationcoordinatortreasury@hotmail.com
+From:   "UNITED NATION DEPUTY SECRETARY-GENERAL (U.N)" 
+        <successikolo@gmail.com>
+Date:   Wed, 7 Jun 2023 15:54:52 -0700
+Message-ID: <CADFNGJ8vkgORi1jPvvhP+FQnPCNqs4cr588+_a-ywDXpqf+qKA@mail.gmail.com>
+Subject: CONTACT DHL OFFICE IMMEDIATELY FOR YOUR ATM MASTER CARD 1.5 MILLION,
+To:     undisclosed-recipients:;
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=6.6 required=5.0 tests=ADVANCE_FEE_3_NEW_FRM_MNY,
+        BAYES_50,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        FILL_THIS_FORM,FORM_FRAUD_5,FREEMAIL_FROM,FREEMAIL_REPLYTO,
+        LOTS_OF_MONEY,MONEY_FORM,MONEY_FRAUD_5,MONEY_FREEMAIL_REPTO,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,SUBJ_ALL_CAPS,
+        T_FILL_THIS_FORM_LOAN,T_SCC_BODY_TEXT_LINE,UNDISC_FREEM,UNDISC_MONEY
+        autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Report: * -0.0 RCVD_IN_DNSWL_NONE RBL: Sender listed at
+        *      https://www.dnswl.org/, no trust
+        *      [2a00:1450:4864:20:0:0:0:633 listed in]
+        [list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  0.0 FREEMAIL_FROM Sender email is commonly abused enduser mail
+        *      provider
+        *      [successikolo[at]gmail.com]
+        *  0.5 SUBJ_ALL_CAPS Subject is all capitals
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.0 LOTS_OF_MONEY Huge... sums of money
+        * -0.0 T_SCC_BODY_TEXT_LINE No description available.
+        *  2.7 UNDISC_FREEM Undisclosed recipients + freemail reply-to
+        *  0.2 MONEY_FREEMAIL_REPTO Lots of money from someone using free
+        *      email?
+        *  1.0 FREEMAIL_REPLYTO Reply-To/From or Reply-To/body contain
+        *      different freemails
+        *  0.0 FILL_THIS_FORM Fill in a form with personal information
+        *  0.0 T_FILL_THIS_FORM_LOAN Answer loan question(s)
+        *  0.0 MONEY_FORM Lots of money if you fill out a form
+        *  1.3 UNDISC_MONEY Undisclosed recipients + money/fraud signs
+        *  0.0 ADVANCE_FEE_3_NEW_FRM_MNY Advance Fee fraud form and lots of
+        *      money
+        *  0.2 MONEY_FRAUD_5 Lots of money and many fraud phrases
+        *  0.0 FORM_FRAUD_5 Fill a form and many fraud phrases
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Sat, Jun 3, 2023 at 6:30=E2=80=AFAM Frank Scheiner <frank.scheiner@web.d=
-e> wrote:
->
-> On 29.05.23 01:00, Song Liu wrote:
-> > Frank reported boot regression in ia64 as:
-> >
-> > ELILO v3.16 for EFI/IA-64
-> > ..
-> > Uncompressing Linux... done
-> > Loading file AC100221.initrd.img...done
-> > [    0.000000] Linux version 6.4.0-rc3 (root@x4270) (ia64-linux-gcc
-> > (GCC) 12.2.0, GNU ld (GNU Binutils) 2.39) #1 SMP Thu May 25 15:52:20
-> > CEST 2023
-> > [    0.000000] efi: EFI v1.1 by HP
-> > [    0.000000] efi: SALsystab=3D0x3ee7a000 ACPI 2.0=3D0x3fe2a000
-> > ESI=3D0x3ee7b000 SMBIOS=3D0x3ee7c000 HCDP=3D0x3fe28000
-> > [    0.000000] PCDP: v3 at 0x3fe28000
-> > [    0.000000] earlycon: uart8250 at MMIO 0x00000000f4050000 (options
-> > '9600n8')
-> > [    0.000000] printk: bootconsole [uart8250] enabled
-> > [    0.000000] ACPI: Early table checksum verification disabled
-> > [    0.000000] ACPI: RSDP 0x000000003FE2A000 000028 (v02 HP    )
-> > [    0.000000] ACPI: XSDT 0x000000003FE2A02C 0000CC (v01 HP     rx2620
-> > 00000000 HP   00000000)
-> > [...]
-> > [    3.793350] Run /init as init process
-> > Loading, please wait...
-> > Starting systemd-udevd version 252.6-1
-> > [    3.951100] ------------[ cut here ]------------
-> > [    3.951100] WARNING: CPU: 6 PID: 140 at kernel/module/main.c:1547
-> > __layout_sections+0x370/0x3c0
-> > [    3.949512] Unable to handle kernel paging request at virtual addres=
-s
-> > 1000000000000000
-> > [    3.951100] Modules linked in:
-> > [    3.951100] CPU: 6 PID: 140 Comm: (udev-worker) Not tainted 6.4.0-rc=
-3 #1
-> > [    3.956161] (udev-worker)[142]: Oops 11003706212352 [1]
-> > [    3.951774] Hardware name: hp server rx2620                   , BIOS
-> > 04.29
-> > 11/30/2007
-> > [    3.951774]
-> > [    3.951774] Call Trace:
-> > [    3.958339] Unable to handle kernel paging request at virtual addres=
-s
-> > 1000000000000000
-> > [    3.956161] Modules linked in:
-> > [    3.951774]  [<a0000001000156d0>] show_stack.part.0+0x30/0x60
-> > [    3.951774]                                 sp=3De000000183a67b20
-> > bsp=3De000000183a61628
-> > [    3.956161]
-> > [    3.956161]
-> >
-> > which bisect to module_memory change [1].
-> >
-> > Debug showed that ia64 uses some special sections:
-> >
-> > __layout_sections: section .got (sh_flags 10000002) matched to MOD_INVA=
-LID
-> > __layout_sections: section .sdata (sh_flags 10000003) matched to MOD_IN=
-VALID
-> > __layout_sections: section .sbss (sh_flags 10000003) matched to MOD_INV=
-ALID
-> >
-> > All these sections are loaded to module core memory before [1].
-> >
-> > Fix ia64 boot by loading these sections to MOD_DATA (core rw data).
-> >
-> > [1] commit ac3b43283923 ("module: replace module_layout with module_mem=
-ory")
-> >
-> > Fixes: ac3b43283923 ("module: replace module_layout with module_memory"=
-)
-> > Reported-by: Frank Scheiner <frank.scheiner@web.de>
-> > Closes: https://lists.debian.org/debian-ia64/2023/05/msg00010.html
-> > Closes: https://marc.info/?l=3Dlinux-ia64&m=3D168509859125505
-> > Cc: Linus Torvalds <torvalds@linux-foundation.org>
-> > Signed-off-by: Song Liu <song@kernel.org>
-> > ---
-> >   kernel/module/main.c | 4 ++--
-> >   1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/kernel/module/main.c b/kernel/module/main.c
-> > index b4c7e925fdb0..9da4b551321e 100644
-> > --- a/kernel/module/main.c
-> > +++ b/kernel/module/main.c
-> > @@ -1521,14 +1521,14 @@ static void __layout_sections(struct module *mo=
-d, struct load_info *info, bool i
-> >               MOD_RODATA,
-> >               MOD_RO_AFTER_INIT,
-> >               MOD_DATA,
-> > -             MOD_INVALID,    /* This is needed to match the masks arra=
-y */
-> > +             MOD_DATA,
-> >       };
-> >       static const int init_m_to_mem_type[] =3D {
-> >               MOD_INIT_TEXT,
-> >               MOD_INIT_RODATA,
-> >               MOD_INVALID,
-> >               MOD_INIT_DATA,
-> > -             MOD_INVALID,    /* This is needed to match the masks arra=
-y */
-> > +             MOD_INIT_DATA,
-> >       };
-> >
-> >       for (m =3D 0; m < ARRAY_SIZE(masks); ++m) {
->
-> Just want to add another observation (though not strictly ia64 but I
-> wanted to keep the context):
->
-> Testing showed that this patch also fixes module loading for alpha
-> (tested on an AlphaServer DS25 w/v6.4-rc4 w/ and w/o the patch applied).
+UNITED NATION DEPUTY SECRETARY-GENERAL.
 
-Thanks for this information!
+This is to official inform you that we have been having meetings for
+the past three (3) weeks which ended two days ago with MR. JIM YONG
+KIM the world bank president and other seven continent presidents on
+the congress we treated on solution to scam victim problems.
 
-I noticed alpha and ia64 are the only two archs to define ARCH_SHF_SMALL.
-Other archs shouldn't see change with this.
+ Note: we have decided to contact you following the reports we
+received from anti-fraud international monitoring group your
+name/email has been submitted to us therefore the united nations have
+agreed to compensate you with the sum of (USD$ 1.5 Million) this
+compensation is also including international business that failed you
+in the past due to government problems etc.
 
-Best,
-Song
+ We have arranged your payment through our ATM Master Card and
+deposited it in DHL Office to deliver it to you which is the latest
+instruction from the World Bank president MR. JIM YONG KIM, For your
+information=E2=80=99s, the delivery charges already paid by U.N treasury, t=
+he
+only money you will send to DHL office south Korea is
+($500). for security keeping fee, U.N coordinator already paid for
+others charges fees for delivery except the security keeping fee, the
+director of DHL refused to collect the security keeping fee from U.N
+coordinator, the Director of DHL office said that they don=E2=80=99t know
+exactly time you will contact them to reconfirm your details to avoid
+counting demur-rage that is why they refused collecting the ($500) .
+for security keeping fee.
+
+ Therefore be advice to contact DHL Office agent south Korea. Rev:John
+Lee Tae-seok
+who is in position to deliver your ATM
+Master Card to your location address, contact DHL Office immediately
+with the bellow email & phone number as listed below.
+
+ Contact name: John Lee Tae-seok
+
+ Email:( dhlgeneralheadquartersrepublic@gmail.com )
+
+ Do not hesitate to Contact Rev: John Lee Tae-seok, as soon as you
+
+ read this message. Email:( dhlgeneralheadquartersrepublic@gmail.com )
+
+ Make sure you reconfirmed DHL Office your details ASAP as stated
+below to avoid wrong delivery.
+
+ Your full name..........
+
+ Home address:.........
+
+ Your country...........
+
+ Your city..............
+
+ Telephone......
+
+ Occupation:.......
+
+ Age:=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6=E2=80=A6..
+
+ Let us know as soon as possible you receive your ATM MasterCard
+for proper verification.
+
+ Regards,
+
+ Mrs Vivian kakadu.
+
+ DEPUTY SECRETARY-GENERAL (U.N)
