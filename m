@@ -2,58 +2,31 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D18E073F50F
-	for <lists+linux-ia64@lfdr.de>; Tue, 27 Jun 2023 09:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07E3673F5AD
+	for <lists+linux-ia64@lfdr.de>; Tue, 27 Jun 2023 09:29:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230052AbjF0HJY (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 27 Jun 2023 03:09:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51814 "EHLO
+        id S231285AbjF0H3g (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 27 Jun 2023 03:29:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229877AbjF0HJS (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 27 Jun 2023 03:09:18 -0400
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B1F01BE2
-        for <linux-ia64@vger.kernel.org>; Tue, 27 Jun 2023 00:09:16 -0700 (PDT)
-Received: by mail-qt1-x835.google.com with SMTP id d75a77b69052e-4007b5bafceso131711cf.1
-        for <linux-ia64@vger.kernel.org>; Tue, 27 Jun 2023 00:09:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1687849755; x=1690441755;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=HieCM9bprQuKzTV5MIdIK9yRrt8+ns3v3zkTmfeSLKc=;
-        b=52XxEQkLZfNDLpT9HTPeOhwHeMUcO2f29g7st6oKFDRLgRJgZOggFrQHqpH5BTCO0l
-         JiyQDR0m2a+yyKPjncLVMV+D7XmYNbJQDN2PHlbjG9NXua2kajsdQFbworKBUGSrXA1K
-         3DtJiI5SVYTOagC5pmHJtRL9YHvXmJwIw5Gxk3XcbYjDmtnHKtOQFG1C0AcTUUnrjrF4
-         gq0Bm0ndRuWGwDD4beBWtg+ML0ILBdznqOXSZHKp/eP+LTLKEvZx4Q3xAeKlCVjYI8Gd
-         eMX8j57znm88QiYubcYdMSC948zjulA+TPATPOWPEnTNb8HW/R/UmZcH01LkBb081EJt
-         Pn5Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1687849755; x=1690441755;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=HieCM9bprQuKzTV5MIdIK9yRrt8+ns3v3zkTmfeSLKc=;
-        b=NSJcSLJFIaINrqO7KKKdQ7f/hzz/zCqAizFpkZFDXB4fKmieb1La8pfv0VINIE8IWz
-         Ld8lLVWzDDyaVLkD9e25BK25WcG9pvVxmVLhVlv/7fJoN++NX8lktTlup/zREpa5yuhO
-         VKk7KNM2idfdPJRel33PEMVDZDhsRcoripeKnYBGjzSMrCmcXSjgGwIFGcaGKEgxR4uQ
-         /dyXKg9WNkeNpjRoG1ugI3LWVnYOdXojAMLpCDT66lTZZso7NDN68gHbMjJ0kP2FMi2/
-         +cunGuuqrU+nHBO1EBfExAAlHDsXdC9NzbDxXztrKoTl7aWK5Gw5s+85K9JQwj+xObXE
-         iOww==
-X-Gm-Message-State: AC+VfDyeZrB7VJATzYHyUIb5gAMWyNaOZEYnt6x0E601/+XamRZmlIv8
-        4cTC1FLNujcuTgCxFVPeg4/XtGThyuwZeFEZqkIyAw==
-X-Google-Smtp-Source: ACHHUZ4PKTvNibPpiBw9Yw6RXxVIG2HKehlwY+KnLEMPY8PhvxrvGj0uBU4UnF9B4YdnnCPTS8uK4kxL+UpjhiOsPPU=
-X-Received: by 2002:a05:622a:285:b0:3f8:5b2:aef2 with SMTP id
- z5-20020a05622a028500b003f805b2aef2mr100813qtw.26.1687849755160; Tue, 27 Jun
- 2023 00:09:15 -0700 (PDT)
+        with ESMTP id S229828AbjF0H3W (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 27 Jun 2023 03:29:22 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 40761F5;
+        Tue, 27 Jun 2023 00:29:06 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A0B162F4;
+        Tue, 27 Jun 2023 00:22:11 -0700 (PDT)
+Received: from [10.57.76.16] (unknown [10.57.76.16])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 26E843F663;
+        Tue, 27 Jun 2023 00:21:24 -0700 (PDT)
+Message-ID: <2ff8ccf6-bf36-48b2-7dc2-e6c0d962f8b7@arm.com>
+Date:   Tue, 27 Jun 2023 08:21:22 +0100
 MIME-Version: 1.0
-References: <20230626171430.3167004-1-ryan.roberts@arm.com> <20230626171430.3167004-5-ryan.roberts@arm.com>
-In-Reply-To: <20230626171430.3167004-5-ryan.roberts@arm.com>
-From:   Yu Zhao <yuzhao@google.com>
-Date:   Tue, 27 Jun 2023 01:08:39 -0600
-Message-ID: <CAOUHufZ0ZzHoJXwbzNyZOv74L=XYdZzcxA8SXxLX0MXdykuWRA@mail.gmail.com>
-Subject: Re: [PATCH v1 04/10] mm: Implement folio_add_new_anon_rmap_range()
-To:     Ryan Roberts <ryan.roberts@arm.com>
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.12.0
+Subject: Re: [PATCH v1 01/10] mm: Expose clear_huge_page() unconditionally
+To:     Yu Zhao <yuzhao@google.com>
 Cc:     Andrew Morton <akpm@linux-foundation.org>,
         "Matthew Wilcox (Oracle)" <willy@infradead.org>,
         "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
@@ -71,104 +44,83 @@ Cc:     Andrew Morton <akpm@linux-foundation.org>,
         linux-mm@kvack.org, linux-alpha@vger.kernel.org,
         linux-arm-kernel@lists.infradead.org, linux-ia64@vger.kernel.org,
         linux-m68k@lists.linux-m68k.org, linux-s390@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS,
-        T_SCC_BODY_TEXT_LINE,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=unavailable autolearn_force=no version=3.4.6
+References: <20230626171430.3167004-1-ryan.roberts@arm.com>
+ <20230626171430.3167004-2-ryan.roberts@arm.com>
+ <CAOUHufacvArJh7NjL_3LT-e3s1X+bazkvbgvEU+KPKGKEoW+dw@mail.gmail.com>
+From:   Ryan Roberts <ryan.roberts@arm.com>
+In-Reply-To: <CAOUHufacvArJh7NjL_3LT-e3s1X+bazkvbgvEU+KPKGKEoW+dw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Mon, Jun 26, 2023 at 11:14=E2=80=AFAM Ryan Roberts <ryan.roberts@arm.com=
-> wrote:
->
-> Like folio_add_new_anon_rmap() but batch-rmaps a range of pages
-> belonging to a folio, for effciency savings. All pages are accounted as
-> small pages.
->
-> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
-> ---
->  include/linux/rmap.h |  2 ++
->  mm/rmap.c            | 43 +++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 45 insertions(+)
->
-> diff --git a/include/linux/rmap.h b/include/linux/rmap.h
-> index a3825ce81102..15433a3d0cbf 100644
-> --- a/include/linux/rmap.h
-> +++ b/include/linux/rmap.h
-> @@ -196,6 +196,8 @@ void page_add_new_anon_rmap(struct page *, struct vm_=
-area_struct *,
->                 unsigned long address);
->  void folio_add_new_anon_rmap(struct folio *, struct vm_area_struct *,
->                 unsigned long address);
-> +void folio_add_new_anon_rmap_range(struct folio *folio, struct page *pag=
-e,
-> +               int nr, struct vm_area_struct *vma, unsigned long address=
-);
+On 27/06/2023 02:55, Yu Zhao wrote:
+> On Mon, Jun 26, 2023 at 11:14 AM Ryan Roberts <ryan.roberts@arm.com> wrote:
+>>
+>> In preparation for extending vma_alloc_zeroed_movable_folio() to
+>> allocate a arbitrary order folio, expose clear_huge_page()
+>> unconditionally, so that it can be used to zero the allocated folio in
+>> the generic implementation of vma_alloc_zeroed_movable_folio().
+>>
+>> Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+>> ---
+>>  include/linux/mm.h | 3 ++-
+>>  mm/memory.c        | 2 +-
+>>  2 files changed, 3 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/include/linux/mm.h b/include/linux/mm.h
+>> index 7f1741bd870a..7e3bf45e6491 100644
+>> --- a/include/linux/mm.h
+>> +++ b/include/linux/mm.h
+>> @@ -3684,10 +3684,11 @@ enum mf_action_page_type {
+>>   */
+>>  extern const struct attribute_group memory_failure_attr_group;
+>>
+>> -#if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLBFS)
+>>  extern void clear_huge_page(struct page *page,
+>>                             unsigned long addr_hint,
+>>                             unsigned int pages_per_huge_page);
+>> +
+>> +#if defined(CONFIG_TRANSPARENT_HUGEPAGE) || defined(CONFIG_HUGETLBFS)
+> 
+> We might not want to depend on THP eventually. Right now, we still
+> have to, unless splitting is optional, which seems to contradict
+> 06/10. (deferred_split_folio()  is a nop without THP.)
 
-We should update folio_add_new_anon_rmap() to support large() &&
-!folio_test_pmd_mappable() folios instead.
+Yes, I agree - for large anon folios to work, we depend on THP. But I don't
+think that helps us here.
 
-I double checked all places currently using folio_add_new_anon_rmap(),
-and as expected, none actually allocates large() &&
-!folio_test_pmd_mappable() and maps it one by one, which makes the
-cases simpler, i.e.,
-  if (!large())
-    // the existing basepage case
-  else if (!folio_test_pmd_mappable())
-    // our new case
-  else
-    // the existing THP case
+In the next patch, I give vma_alloc_zeroed_movable_folio() an extra `order`
+parameter. So the generic/default version of the function now needs a way to
+clear a compound page.
 
->  void page_add_file_rmap(struct page *, struct vm_area_struct *,
->                 bool compound);
->  void folio_add_file_rmap_range(struct folio *, struct page *, unsigned i=
-nt nr,
-> diff --git a/mm/rmap.c b/mm/rmap.c
-> index 1d8369549424..4050bcea7ae7 100644
-> --- a/mm/rmap.c
-> +++ b/mm/rmap.c
-> @@ -1305,6 +1305,49 @@ void folio_add_new_anon_rmap(struct folio *folio, =
-struct vm_area_struct *vma,
->         __page_set_anon_rmap(folio, &folio->page, vma, address, 1);
->  }
->
-> +/**
-> + * folio_add_new_anon_rmap_range - Add mapping to a set of pages within =
-a new
-> + * anonymous potentially large folio.
-> + * @folio:      The folio containing the pages to be mapped
-> + * @page:       First page in the folio to be mapped
-> + * @nr:         Number of pages to be mapped
-> + * @vma:        the vm area in which the mapping is added
-> + * @address:    the user virtual address of the first page to be mapped
-> + *
-> + * Like folio_add_new_anon_rmap() but batch-maps a range of pages within=
- a folio
-> + * using non-THP accounting. Like folio_add_new_anon_rmap(), the inc-and=
--test is
-> + * bypassed and the folio does not have to be locked. All pages in the f=
-olio are
-> + * individually accounted.
-> + *
-> + * As the folio is new, it's assumed to be mapped exclusively by a singl=
-e
-> + * process.
-> + */
-> +void folio_add_new_anon_rmap_range(struct folio *folio, struct page *pag=
-e,
-> +               int nr, struct vm_area_struct *vma, unsigned long address=
-)
-> +{
-> +       int i;
-> +
-> +       VM_BUG_ON_VMA(address < vma->vm_start ||
-> +                     address + (nr << PAGE_SHIFT) > vma->vm_end, vma);
+I guess I could do something like:
 
-BTW, VM_BUG_ON* shouldn't be used in new code:
-Documentation/process/coding-style.rst
+ static inline
+ struct folio *vma_alloc_zeroed_movable_folio(struct vm_area_struct *vma,
+				   unsigned long vaddr, gfp_t gfp, int order)
+ {
+ 	struct folio *folio;
+
+	folio = vma_alloc_folio(GFP_HIGHUSER_MOVABLE | gfp,
+					order, vma, vaddr, false);
+ 	if (folio) {
+#ifdef CONFIG_LARGE_FOLIO
+		clear_huge_page(&folio->page, vaddr, 1U << order);
+#else
+		BUG_ON(order != 0);
+		clear_user_highpage(&folio->page, vaddr);
+#endif
+	}
+
+ 	return folio;
+ }
+
+But that's pretty messy and there's no reason why other users might come along
+that pass order != 0 and will be surprised by the BUG_ON.
