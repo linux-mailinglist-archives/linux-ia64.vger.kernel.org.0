@@ -2,356 +2,263 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CC9D750E1A
-	for <lists+linux-ia64@lfdr.de>; Wed, 12 Jul 2023 18:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3BF3750E6F
+	for <lists+linux-ia64@lfdr.de>; Wed, 12 Jul 2023 18:25:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233262AbjGLQR1 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 12 Jul 2023 12:17:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51452 "EHLO
+        id S232124AbjGLQZT (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 12 Jul 2023 12:25:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233491AbjGLQRE (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 12 Jul 2023 12:17:04 -0400
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57E0910EA;
-        Wed, 12 Jul 2023 09:17:00 -0700 (PDT)
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-        by mx0b-00069f02.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 36CEiBtN020349;
-        Wed, 12 Jul 2023 16:16:39 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references :
- content-transfer-encoding : content-type : mime-version;
- s=corp-2023-03-30; bh=6TvQZHdAS5xKcSb/e8jmjxcPhYuqtvf/21CtwvOY5rE=;
- b=a/CzMeF5peQ8YhQP0Y4ZbexRfIv0zhSQasCOiO4qoxALqNhFmOY2O8G+MiXOe2SFVY0R
- u/l9HWo9++JgVN1swVaxnWoccxMuLaK8Q7fdmLKyeoFNrg8wWrs7GpqPSf7QVBYesTLH
- uRQEk4RZVBiz+szYWwG25l+iMBbzbrmglAStmEbwGLF+HfZ22xQFZRhP0nu5MjTGE6DP
- 4Bq8Ijx5c7oYVWsrTuP2IkENr3TY8mqx1J9afqWqEtiIEI+fx4F+JCGYmYkAxs8bPdG0
- C0AolYjD7EVvmAJJTYlaRHrQO7o6rMw3MBKF0LFqhpNhSdWppPAFxG8yPsbspVwttcVF Zw== 
-Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
-        by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 3rrea2wn6d-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 12 Jul 2023 16:16:39 +0000
-Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.17.1.19/8.17.1.19) with ESMTP id 36CEoomO004281;
-        Wed, 12 Jul 2023 16:16:38 GMT
-Received: from nam10-dm6-obe.outbound.protection.outlook.com (mail-dm6nam10lp2100.outbound.protection.outlook.com [104.47.58.100])
-        by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 3rpx8d4m7a-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-        Wed, 12 Jul 2023 16:16:38 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=fPiDkQzm1PdE6PLGCTmKJ0p8k8qoznPw2OSJQ0L7/fKFbk55immzk+4+cWIGr2Mf23hXxUPXZ+ZkcpRMLPqg5ahcTn/fyvEJ+yaS6pi0a8mrZol6+9C2GNPWYemLMDALfKZWMYfU6b9BePgOcYB9dv4T82vgV2t9pK4CNXSLRlSi6BI6CtDe0uNJIutaTfacDe0WDzvY4I4m7WsenDvSna1eW8nC+ceLsfnwRIRCULnIKBrQOcaG1VTCagZh6fQMlMEboEST2x2ywE5coUWnqsCsKevZnLySDNJp51FN0pSCtEux2UXf3ZGwJDnMbblEKKkkCpkZ/749yU4xrGR08Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6TvQZHdAS5xKcSb/e8jmjxcPhYuqtvf/21CtwvOY5rE=;
- b=Yp6LaQuAnMBqkXSctUDhGloh3E1Fxa8DxNjYe4JxYnXw6rrGBGvhv4scbpBHDgpJOxS9fqduT1oQHOqDPSWO/pjvYUcnKbhzz6tmAiJkdQKwDC2kRFGFdLid6ibivqwvtnBt/yl4azgulGSzyKWrWZzIVNypSE3Z+8TWKNv+70nVHcnrckYmlh1fNZd9NI6WziMLhzwsfeDCRcpO8TvpNJE2XB773iXAKmaTkbArB6C0JkcGGNswNAwPyho8pEzwj2ZbvdyiCSSXx99McS5BbAo7+jmpVQis3J5F9RXz6MS7ml+rXyiM8fUgfMxCglhxAoKBwgJr8Js5jQC1aVMleA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6TvQZHdAS5xKcSb/e8jmjxcPhYuqtvf/21CtwvOY5rE=;
- b=TUKuCravli9QWsrnFQkjnvk4tjvg+k85re83QJHF2I9L1it3CwF2PCAGLeadVFLw7Iy0bz/O+YkWf9Yv/R69+9PSmWlVYvEcdrj6gip5gz15geTEMU2wSqNAySODDGCOCR0i+UQjQSObmRCfcJMl2p/j6aqVA/osfDpzgkQNvVk=
-Received: from CO1PR10MB4531.namprd10.prod.outlook.com (2603:10b6:303:6c::22)
- by BN0PR10MB5304.namprd10.prod.outlook.com (2603:10b6:408:129::22) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.20; Wed, 12 Jul
- 2023 16:16:34 +0000
-Received: from CO1PR10MB4531.namprd10.prod.outlook.com
- ([fe80::4c83:52fa:a398:11a8]) by CO1PR10MB4531.namprd10.prod.outlook.com
- ([fe80::4c83:52fa:a398:11a8%3]) with mapi id 15.20.6565.028; Wed, 12 Jul 2023
- 16:16:33 +0000
-From:   Eric DeVolder <eric.devolder@oracle.com>
-To:     linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
-        chenhuacai@kernel.org, geert@linux-m68k.org,
-        tsbogend@alpha.franken.de, James.Bottomley@HansenPartnership.com,
-        deller@gmx.de, ysato@users.sourceforge.jp, dalias@libc.org,
-        glaubitz@physik.fu-berlin.de, tglx@linutronix.de, mingo@redhat.com,
-        bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-ia64@vger.kernel.org, loongarch@lists.linux.dev,
-        linux-m68k@lists.linux-m68k.org, linux-mips@vger.kernel.org,
-        linux-parisc@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org,
-        linux-sh@vger.kernel.org
-Cc:     kernel@xen0n.name, mpe@ellerman.id.au, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, paul.walmsley@sifive.com,
-        palmer@dabbelt.com, aou@eecs.berkeley.edu, hca@linux.ibm.com,
-        gor@linux.ibm.com, agordeev@linux.ibm.com,
-        borntraeger@linux.ibm.com, svens@linux.ibm.com, hpa@zytor.com,
-        keescook@chromium.org, paulmck@kernel.org, peterz@infradead.org,
-        frederic@kernel.org, akpm@linux-foundation.org, ardb@kernel.org,
-        samitolvanen@google.com, juerg.haefliger@canonical.com,
-        arnd@arndb.de, rmk+kernel@armlinux.org.uk,
-        linus.walleij@linaro.org, sebastian.reichel@collabora.com,
-        rppt@kernel.org, kirill.shutemov@linux.intel.com,
-        anshuman.khandual@arm.com, ziy@nvidia.com, masahiroy@kernel.org,
-        ndesaulniers@google.com, mhiramat@kernel.org, ojeda@kernel.org,
-        thunder.leizhen@huawei.com, xin3.li@intel.com, tj@kernel.org,
-        gregkh@linuxfoundation.org, tsi@tuyoix.net, bhe@redhat.com,
-        hbathini@linux.ibm.com, sourabhjain@linux.ibm.com,
-        eric.devolder@oracle.com, boris.ostrovsky@oracle.com,
-        konrad.wilk@oracle.com
-Subject: [PATCH v6 14/14] kexec: rename ARCH_HAS_KEXEC_PURGATORY
-Date:   Wed, 12 Jul 2023 12:15:45 -0400
-Message-Id: <20230712161545.87870-15-eric.devolder@oracle.com>
-X-Mailer: git-send-email 2.31.1
-In-Reply-To: <20230712161545.87870-1-eric.devolder@oracle.com>
-References: <20230712161545.87870-1-eric.devolder@oracle.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SN7PR04CA0057.namprd04.prod.outlook.com
- (2603:10b6:806:120::32) To CO1PR10MB4531.namprd10.prod.outlook.com
- (2603:10b6:303:6c::22)
+        with ESMTP id S233263AbjGLQZA (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 12 Jul 2023 12:25:00 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.21])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EA161BD6;
+        Wed, 12 Jul 2023 09:24:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1689179055; x=1689783855; i=deller@gmx.de;
+ bh=LNgVsqTps5zVhzXdi1K2riJTjlblK3FNLr1XpLga/Fk=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject:References:In-Reply-To;
+ b=OyNUpA8UJl+6JrAjYnnmWhUZYBTSkEZgHrSxnGTQXM6doYXlLnI0bGoXa2dEASLR00emOAL
+ 4yJuBmD/5v5uz97bMctnvjmaRXm8bzP0pfrzYXo93+JPZpSDIgoV+IoXnEXgvZvNrwaci6p1S
+ 2Icqz/9Zk9di0YqJxaqdGDanB+ILkzm7lEwr3luTwJy3B+A1Eu/vJJ34MDast6aV7oaVTTEzr
+ ZTLfhsiEDOv+eLQ6M8f+PAltU87gKSXg46r3u45ab+HE32S2jx7meMzFMMPsEumX6VocYz/Ng
+ LqmNbB6n5+8AuKntsgjZ8X2EOVv4G9P1v5pQDOK5Pu10w4hPsrJA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from ls3530 ([94.134.144.114]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1Mg6Zq-1pkpW518EY-00heg1; Wed, 12
+ Jul 2023 18:24:15 +0200
+Date:   Wed, 12 Jul 2023 18:24:13 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     matoro <matoro_mailinglist_kernel@matoro.tk>
+Cc:     Jens Axboe <axboe@kernel.dk>, io-uring@vger.kernel.org,
+        Linux Ia64 <linux-ia64@vger.kernel.org>,
+        glaubitz@physik.fu-berlin.de, Sam James <sam@gentoo.org>
+Subject: Re: [PATCH 1/5] io_uring: Adjust mapping wrt architecture aliasing
+ requirements
+Message-ID: <ZK7TrdVXc0O6HMpQ@ls3530>
+References: <20230314171641.10542-1-axboe@kernel.dk>
+ <20230314171641.10542-2-axboe@kernel.dk>
+ <1d5f8f99f39e2769b9c76fbc24e2cf50@matoro.tk>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO1PR10MB4531:EE_|BN0PR10MB5304:EE_
-X-MS-Office365-Filtering-Correlation-Id: d61e4658-810c-4da4-daf7-08db82f35b93
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: lj+u2Kg3MkfXSO9/cBMfsMKeYOl2C+36IZVu9dE3d2Wg2ji8rIYnIDT+eSySNcYz+1ki3D4XcDN9FAP5PtHAJrXX3SrEn4cFiz/w1beAwExB1XhzALPAg66VuMcxLwOtxZYacbMotrkuH9b5a7TirnfwsNNaLIOsyELhY4XWkBYHtsCXIAL4VdRIK3eHhI/GoYWeFWp6tZ/shDeKq1upmQP3sNdvg+/13s7PNqfNIkEoBo0UzwPO0g2q5SE5dVCOuVUkThDnOEVgVodRJIHE10roDqMxwO3g0C1isyiNePa/POJQMoab0xxEPX/2H6mv7lQ4TVBP8ZJWc1VrZGWqJcfn+yu1ZbpDfTaFb4bJ4rbBoNKf++DaNUtV/9PIGvSu+EIS/bgU1CuC1CnDnzy85/Qh6/lNlbwfpQMIyRFHzg7ZDA3xRecct2E3lqe6o04Nwoq1FTc2aKuInho04jy7217QTzl57Fwfh6nJqeWnOQm8hM/OSRrEiRcPqzSSjuWEf+GsNBr8tFGD27hBi0USsLW8kYsvRfjyUsZ7wE6Zjgu7z10lvOuYCwQp7KzdDQt2TUMLaLMY0L1lcrWoYC4bYCcsEJtffiWdeh9Fz/szYLw=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO1PR10MB4531.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(376002)(136003)(39860400002)(346002)(396003)(366004)(451199021)(2906002)(921005)(6512007)(38100700002)(83380400001)(186003)(2616005)(26005)(1076003)(107886003)(86362001)(6506007)(5660300002)(8676002)(36756003)(7366002)(7406005)(7416002)(8936002)(6666004)(478600001)(66556008)(66946007)(41300700001)(66476007)(4326008)(316002)(6486002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?WesIdf3HwIOzrLIrt/+hEFnaTGpffE1D12UGqfF5YJRIWwfiA0dLzLhsVSqZ?=
- =?us-ascii?Q?Kseqg8rTANheGbbCrPQSV5FTSaxEd7Ipw4vUP3Kby972Q0vWXGUVQgHT9lQU?=
- =?us-ascii?Q?7Che0mqSQb1Y3jJEjJv+N4EaygGF4zCOess7su/zXjn55rphDuTjP51tAPme?=
- =?us-ascii?Q?azB23uItJ8XOftiyu7DDlekUsq6BR18OdlRvT5f6KTXMP6byUbm76azhtsV3?=
- =?us-ascii?Q?GVflfKTvRgVfs+tMobTYN4qlPvV2MJbxK9wtvlzrOlmNASgZWfiCUibvNVj9?=
- =?us-ascii?Q?u32ISgzaef/DtVcAyJ3ny/ERWP793T8Z30JZCaaLrzmxD9LE0+b7ApjPNu/S?=
- =?us-ascii?Q?X38UMl7yNCmhaG4TDBkGpff+tPeO0g1iL/7QzSw3BhYtQvYAXVkKatFsMRCj?=
- =?us-ascii?Q?5RjkAUyY+2Iq9TJBhruMhM3gNa6U1+4tWAxlGfmgi6Af1GChKey2ivcEBwlj?=
- =?us-ascii?Q?ttOchdUuOWlYOHKyszGGdmfZT4K2J0iX09ta1NehkSlKgcCFRdcHTN70T+Sz?=
- =?us-ascii?Q?3vAKtJa4BugorO34VN41s/PSrwjAuia/bXU3vY8NAIZUfAbSgkiZ+5dLBx6Z?=
- =?us-ascii?Q?R44Pt7EotkPtwxo5Wk7zViLoxy6jAucsMCSxBeFnTcquDh3lAU5X75APcchI?=
- =?us-ascii?Q?64s/JhPIKmN5Cpgmt9QloF4WrhHrIdpy8xEPUs8smk8g5NuK0srS0gJH2XiH?=
- =?us-ascii?Q?PzdL0zbYmg/lgra33uWFRfjtk5FJRkeDTeGsrDPZgAU5slqFSjM/LPR4435q?=
- =?us-ascii?Q?Euo7MhNUxNXkPy8KAIqHoazR8rJx5dni3lAV1o+uc9ImBw8J2xBh23mE2wub?=
- =?us-ascii?Q?T5w2tElgk6yC+Nney4e3HpQ71kuoSq0B23C3HQsp4y6vjvCis+WJLcBsa1sv?=
- =?us-ascii?Q?7b/mp1PJHODusL/2Okokg5O5PV8PVWGFFzsyT3kwq6KVcG9BfR6mCaCs064r?=
- =?us-ascii?Q?YdTpnVE8Kw7g+IFa8ahHgkC6UsckSFjf+TRLeYbbDr5gyFFc+h4mM2JTB4Gc?=
- =?us-ascii?Q?1RYCsrtE80u8f7+OedFV464bZTwVsfL9BRf7wxkDGMWaMYUQ4yNmtd2mQ11t?=
- =?us-ascii?Q?Ba4XmqW8HlJs/OqDzYyCngkq8S8ux1f/iclQZ6qfWzsDO5skJszWO5SD7xY4?=
- =?us-ascii?Q?3JP6X+bYggAUm7povvwhrZiEF30ooiGd1Z6eSpZqnAyDTR018cVWL1NuwQOI?=
- =?us-ascii?Q?Ccmp06j8SE5xX0JBMt/tt8euMLr3LTLfJN3X0cAMFRgjIkfoUoLQheg4kW9e?=
- =?us-ascii?Q?1BOzex87jnyKJio9x9REmEbneyJDvWVKuQVWPyr47eGncTYkTwMpgzyCL68D?=
- =?us-ascii?Q?NUrOaqfTf2tvMlZLsz7OViN7kbt9IwwBKj0GUg33mWPJYNuOMf7tC8wMlx3s?=
- =?us-ascii?Q?Rk0HTeenfgk8t7z2uFV0rDEp8RnmBrZyqjqMbjeKVrpy7ukNF4rfJTg5Fh51?=
- =?us-ascii?Q?Bal4uJXxNVxrF6TUQiRca0H1cf3y+dFWNBRCiEdVrhF3HuyWWDxjBqmzVIj0?=
- =?us-ascii?Q?M5dQL/h22DGLYuCub35sUKhQaJxQ4A8NB8BlhkYv08VwgRWLfPgT0sPvTVHf?=
- =?us-ascii?Q?Id4VdgmM2Cpn+5CfeTeR6gS2gfxnbmD9OJQOROIg1xg80VNh7AWHWzUnzLBP?=
- =?us-ascii?Q?WQ=3D=3D?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 2
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: =?us-ascii?Q?Uo8/XpB+F1F6H1ylrePPkdnTMb/cV+VySw5fdrBiRPW262ZQUX7Z3iZUxmZC?=
- =?us-ascii?Q?QVJ04LzbpCOkQfBO0GMh9Xe+AYIfu1tz+KnT9I3oAYks9aSTiq0gbtJJbOA0?=
- =?us-ascii?Q?6fOBstj5KPLmIrRpDMKnwBIi+mDiZxZM3sPtfSH+5/RBq7HILtZRokl9wk7g?=
- =?us-ascii?Q?T9PPvo854nV4bGOLw2bSID8DtHW0GmRWo319UxW0QixZxFG4h3Hd6zXpT+IU?=
- =?us-ascii?Q?9ToDKRKFEx+Ff/t4vpjmk1FI4AaMQdQ+YqeocAkc5WiyclNirRURmvrXEDpa?=
- =?us-ascii?Q?j+AeNRkt87Se+vabb8ttF+n50AXTwkt0s1IVGbxD3hr2UbgXGyH7zJMig+6e?=
- =?us-ascii?Q?1whJgQe1dgdJsW6DW13FBaElG3CinfyW5SERlHTE1hkDtS7EwIq0Fc7EANWq?=
- =?us-ascii?Q?8uaQRgr+BMP8oIuWUm7cKjecaiGs9npuJPu4eIk0nDLfie9ZQayJqqMrOPlb?=
- =?us-ascii?Q?KG6LEm3rjwf4iy2k6fETrWGG0JHihTQPQMFAB3quTJ1e//Bh7N20V//3tu1Z?=
- =?us-ascii?Q?HJbbCfNHpsRyXBk8RUQEr6C/iRCHrTxPM8iRvH8v5kg1NQnKakRDasCoxCWv?=
- =?us-ascii?Q?ZqGxVFQacv6UJZdKjwmx/fDJDN8ILNJZYGH37SSdiWuG/OIBwI4ijtDcENOb?=
- =?us-ascii?Q?Lb/p3xu0MTlg6THdfOpNmRe97k5G/1Aqebj7Bc9OUPB7NP6k7RZBGkkEzSAK?=
- =?us-ascii?Q?GeaHvuNb3fF3TVNToqic/1aZrziOLrSrGU0FvzRa9Um+Eljh5ZTMT8ji8Vok?=
- =?us-ascii?Q?IF8bqygQ4gMhWTQs6jB1Qw3qtkq1qAcv62J9l/j2jqltNgYqNAkY3UQ/tVG4?=
- =?us-ascii?Q?6hTCOWmVV088rQLFGhITL7+KXxMxGXTXdcaBrdiYVKfdGQS/qGqGR4r/qT8t?=
- =?us-ascii?Q?LZPsJlFTsyH0ON06/CptVXCraGm6pP1CDO4hJAqEoXtPuKO6X0SFFVDXF0+4?=
- =?us-ascii?Q?QraqwiVhtD94boExMk6FTCirDPqeBWHFgwD9Jh059mAbLMGmyahFWJDi4d/t?=
- =?us-ascii?Q?/qKVBu2sdZItnfxZz9FqS4ggPtkoDNBLx9rlpxS193FeFJXswecqQyXX2SlX?=
- =?us-ascii?Q?NFHvCzj++Anssz3EIAO7OHYXTqGNkZgK4k9W3MK5LxSKIAYV5pBYkTUOAlg/?=
- =?us-ascii?Q?lTAnja9OlW7tYEEWh95wpHkx5fSq6yoHbzTiuny/Vn1QIcVfscwG1txmpLjE?=
- =?us-ascii?Q?9OLto2Wuy+aoDkhZELZCCuzjIIMFw7xdLzCOzt34PkDgFWBYRpxeMgL1/Zu5?=
- =?us-ascii?Q?Miqv+/HWl/v29CJ0/QG60b/5TB0uj6Hx0FbDWd7h4gMByG5BiSD9edpqwTXH?=
- =?us-ascii?Q?/o6UxQmIJ9wJVeL+b6e45UCBFgxyzGwywJLIhmYQU3nw6AhdpBI5+ATL5B3G?=
- =?us-ascii?Q?qiBOqN1/dg/EnUFSXImKCma8oMkF+JDj8I9HycpjaMIncDQPiCcWGMQXoo8d?=
- =?us-ascii?Q?71widge42kk9pSM3bdc2OiwaI2CnU3fVuQXjfdCJJRu0TkChZiZhOcdqyYV+?=
- =?us-ascii?Q?4kc9+H4wModnhWQafH54D0XsHD3ECQ9kfjJFtIxxczppVEQ5hmZ5MInoMGKX?=
- =?us-ascii?Q?S2r0o6f6WGrJlhFiLq9DGwjJOreZnvFHYpp4+Ot6iBq46HFy8p+qNyHKBtyG?=
- =?us-ascii?Q?bFJvPX8twO1zL/xqGkYr5txMR1fnHyF5boQTzx2DXdJbCr5uZF1U8rEChH9m?=
- =?us-ascii?Q?CaunFw/vZcoSXyZiXHcNHygdGPDpUNaVBl/kP3hUYDkSlrorUD3dXU/YjGjy?=
- =?us-ascii?Q?Sr5LIHIh7wm/WoGkGqcffwzCUIkTkxueNiePPTRAgK/2ZczbBdTvLWnfESM0?=
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-1: KykEl35OdakgI6ns5P/Cwhnv6Qk3a18Q4q8/yK0rRbN+lDFE8FnYUkKdi3nnDMSXg9HQ453tRUDgdvm5b5G59HPnwjG5RKlFR6k0pUec6Ye87TD/7ABFTuOswP/KNeXxZSGXZDX2W/YEjC+MYumiEGCNLigQnnJze2F7OIML08jD+KxCI6WjQCEVx2Zivl7Js+zdJWrlVrD8dg8yPpfjAq3RiSxTMQLofSOJPiTaQpWkgO2and1jRWIBI2DJo8pB4fZQLJqFxK2yqDPXDT2i7SVF9yBmz4UhKpGAiR4wqv2FkLdjSirVqkWCT+tOq4lnIaXYIz+SF7XxuEH2B1I7ZTNkIpDaZYo+Vti7Ct2bm1zG4T5XGkFzaXBo/k5eJzICmYmbwBvKZ5CYfAoCMb5RuWrf8wEeS5+gd0s/7RyLEOdQdv2d2dEyypx86dJSXKOwju3rQP6YkszM1Q==
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: d61e4658-810c-4da4-daf7-08db82f35b93
-X-MS-Exchange-CrossTenant-AuthSource: CO1PR10MB4531.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jul 2023 16:16:33.0535
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 8c8fuAhV+VSriiJME4BWXzw1uxcaweckjBle+PwodjIlqgEZxXVoN5UGGUD9xtrkmmEd1iKw/jklcV3nxy880f0krgqK/U4igPkH0hGo6XA=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN0PR10MB5304
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
- definitions=2023-07-12_11,2023-07-11_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxscore=0 malwarescore=0 phishscore=0
- spamscore=0 mlxlogscore=999 suspectscore=0 adultscore=0 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2305260000
- definitions=main-2307120146
-X-Proofpoint-GUID: yizQnSStLbFgEoH2tyXb9Bx0i_xBKPtq
-X-Proofpoint-ORIG-GUID: yizQnSStLbFgEoH2tyXb9Bx0i_xBKPtq
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1d5f8f99f39e2769b9c76fbc24e2cf50@matoro.tk>
+X-Provags-ID: V03:K1:g+GuwCUxidisN/5OR52tKAYke0p1Fqn8eriHq5fDUVsRbjIgWhU
+ Gbu5YAoISLO6am29Owu6acAlWPxG8LcmTu0H7ieBjBDNWnnXAEq42ZFO5Q2YC5ivzHfBLgc
+ EowLQkDYK0XSAwGHjoQbvAHBX7YgNSpeOG5Dn+mx9xw3kfIlXq/o8g/4LxefqMvCsGl3Ddk
+ uOeZy61am8O1vegSQtSSA==
+UI-OutboundReport: notjunk:1;M01:P0:0PHNx0ZWVJE=;BmdDmaqmxplwHugWQskXFZyJl4w
+ dUnwPnveOuceXCZQS+VQzGfLIlaCrdim1LKLmxupxtYTrI8bYjMfYawNFv9a9NsZWk+3qbbPI
+ kIfY8f7ZXpyNeNiwHVtUN4wNHsVKPjRwI2rEyRlSJ6P54/xYQvmS2yFraHLHg/e6X0M6E57VC
+ CRNcdlcj831BX9ybBWGaaYbEgj5dm2ANGS5yR2Sp1hVSqXESRTksNCF71v6qyCIHTxFjsHln9
+ E4tXPJh+Bxk717PDLdSbFXeOUUrkBmFsM2IQ0cGOjyKs3Y8xr+gxZDrStxdBHwxomz1dbXm1K
+ YxRs8IraBGDKIOP23jFaxruvP2Y/0mIx02d626mxV5Hx5npLXJR0tLyvDXW7qz82/vIVEsGvL
+ BeHcy1PCccyDf+kwrEAPG/gCCK/LP4jk9uwO6jf+VSnW5fAaTQHl8sAH4xSORUEPghTytemqR
+ X5GnOV+dKKlVCVGY1umlO6jluIkBhJhHfxbtYDl2dkk6Zvv5kKiatGuHBNrZSwdo4p9JiXDeo
+ xotMVD3PKIMcIfMZRTwX2tOVTp9U1Jm2xwOnZ60tM/9m9fim0umDsyQ/lfSdaVoW0A54ddWNU
+ pVevAsAtovDrVDTkJSJ/y1U2eHcQxX/BPT6bhGraeZOKa4RjDvj/x2ggJnODQoYhHKfVXupC8
+ p3Zz/Hs8fzXwjizug5Dud6MmvypyFCJU+48aFKCdDR0pGfia9/PbtFGhn5nKB3OIdJKGJEppp
+ BxMpuy/333UJylArJulFCmv2OP6bu1lXZc8JdK/o9o+YlfFuopYfRlrErWNA6QaRAM/Z4KcRb
+ idtmCdps0w59x1pezgUCLmV8KrEstxwJPtv1Tvy4TDeROJMv8slDwLd489N6XP+DUU4pfep0Z
+ 0ThWSV/l2akAAo8DSZNi9nw1ULxN4QyAhzL58Yq9ICiPS+hBqMvt5W9V97VFfNBq7Q8t05uMS
+ fYM63K9ugA/tt9qIkbfqrLU+XOo=
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE,
-        T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-The Kconfig refactor to consolidate KEXEC and CRASH options utilized
-option names of the form ARCH_SUPPORTS_<option>. Thus rename the
-ARCH_HAS_KEXEC_PURGATORY to ARCH_SUPPORTS_KEXEC_PURGATORY to follow
-the same.
+Hi Matoro,
 
-Signed-off-by: Eric DeVolder <eric.devolder@oracle.com>
----
- arch/powerpc/Kconfig          | 2 +-
- arch/riscv/Kbuild             | 2 +-
- arch/riscv/Kconfig            | 2 +-
- arch/riscv/kernel/elf_kexec.c | 4 ++--
- arch/s390/Kbuild              | 2 +-
- arch/s390/Kconfig             | 2 +-
- arch/x86/Kconfig              | 2 +-
- kernel/kexec_file.c           | 6 +++---
- 8 files changed, 11 insertions(+), 11 deletions(-)
+* matoro <matoro_mailinglist_kernel@matoro.tk>:
+> On 2023-03-14 13:16, Jens Axboe wrote:
+> > From: Helge Deller <deller@gmx.de>
+> >
+> > Some architectures have memory cache aliasing requirements (e.g. paris=
+c)
+> > if memory is shared between userspace and kernel. This patch fixes the
+> > kernel to return an aliased address when asked by userspace via mmap()=
+.
+> >
+> > Signed-off-by: Helge Deller <deller@gmx.de>
+> > Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> > ---
+> >  io_uring/io_uring.c | 51 ++++++++++++++++++++++++++++++++++++++++++++=
++
+> >  1 file changed, 51 insertions(+)
+> >
+> > diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+> > index 722624b6d0dc..3adecebbac71 100644
+> > --- a/io_uring/io_uring.c
+> > +++ b/io_uring/io_uring.c
+> > @@ -72,6 +72,7 @@
+> >  #include <linux/io_uring.h>
+> >  #include <linux/audit.h>
+> >  #include <linux/security.h>
+> > +#include <asm/shmparam.h>
+> >
+> >  #define CREATE_TRACE_POINTS
+> >  #include <trace/events/io_uring.h>
+> > @@ -3317,6 +3318,54 @@ static __cold int io_uring_mmap(struct file
+> > *file, struct vm_area_struct *vma)
+> >  	return remap_pfn_range(vma, vma->vm_start, pfn, sz,
+> > vma->vm_page_prot);
+> >  }
+> >
+> > +static unsigned long io_uring_mmu_get_unmapped_area(struct file *filp=
+,
+> > +			unsigned long addr, unsigned long len,
+> > +			unsigned long pgoff, unsigned long flags)
+> > +{
+> > +	const unsigned long mmap_end =3D arch_get_mmap_end(addr, len, flags)=
+;
+> > +	struct vm_unmapped_area_info info;
+> > +	void *ptr;
+> > +
+> > +	/*
+> > +	 * Do not allow to map to user-provided address to avoid breaking th=
+e
+> > +	 * aliasing rules. Userspace is not able to guess the offset address
+> > of
+> > +	 * kernel kmalloc()ed memory area.
+> > +	 */
+> > +	if (addr)
+> > +		return -EINVAL;
+> > +
+> > +	ptr =3D io_uring_validate_mmap_request(filp, pgoff, len);
+> > +	if (IS_ERR(ptr))
+> > +		return -ENOMEM;
+> > +
+> > +	info.flags =3D VM_UNMAPPED_AREA_TOPDOWN;
+> > +	info.length =3D len;
+> > +	info.low_limit =3D max(PAGE_SIZE, mmap_min_addr);
+> > +	info.high_limit =3D arch_get_mmap_base(addr, current->mm->mmap_base)=
+;
+> > +#ifdef SHM_COLOUR
+> > +	info.align_mask =3D PAGE_MASK & (SHM_COLOUR - 1UL);
+> > +#else
+> > +	info.align_mask =3D PAGE_MASK & (SHMLBA - 1UL);
+> > +#endif
+> > +	info.align_offset =3D (unsigned long) ptr;
+> > +
+> > +	/*
+> > +	 * A failed mmap() very likely causes application failure,
+> > +	 * so fall back to the bottom-up function here. This scenario
+> > +	 * can happen with large stack limits and large mmap()
+> > +	 * allocations.
+> > +	 */
+> > +	addr =3D vm_unmapped_area(&info);
+> > +	if (offset_in_page(addr)) {
+> > +		info.flags =3D 0;
+> > +		info.low_limit =3D TASK_UNMAPPED_BASE;
+> > +		info.high_limit =3D mmap_end;
+> > +		addr =3D vm_unmapped_area(&info);
+> > +	}
+> > +
+> > +	return addr;
+> > +}
+> > +
+> >  #else /* !CONFIG_MMU */
+> >
+> >  static int io_uring_mmap(struct file *file, struct vm_area_struct *vm=
+a)
+> > @@ -3529,6 +3578,8 @@ static const struct file_operations io_uring_fop=
+s
+> > =3D {
+> >  #ifndef CONFIG_MMU
+> >  	.get_unmapped_area =3D io_uring_nommu_get_unmapped_area,
+> >  	.mmap_capabilities =3D io_uring_nommu_mmap_capabilities,
+> > +#else
+> > +	.get_unmapped_area =3D io_uring_mmu_get_unmapped_area,
+> >  #endif
+> >  	.poll		=3D io_uring_poll,
+> >  #ifdef CONFIG_PROC_FS
+>
+> Hi Jens, Helge - I've bisected a regression with io_uring on ia64 to thi=
+s
+> patch in 6.4.  Unfortunately this breaks userspace programs using io_uri=
+ng,
+> the easiest one to test is cmake with an io_uring enabled libuv (i.e., l=
+ibuv
+> >=3D 1.45.0) which will hang.
+>
+> I am aware that ia64 is in a vulnerable place right now which I why I am
+> keeping this spread limited.  Since this clearly involves
+> architecture-specific changes for parisc,
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 1695a71777f0..7709b62e6843 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -595,7 +595,7 @@ config ARCH_SUPPORTS_KEXEC
- config ARCH_SUPPORTS_KEXEC_FILE
- 	def_bool PPC64 && CRYPTO=y && CRYPTO_SHA256=y
- 
--config ARCH_HAS_KEXEC_PURGATORY
-+config ARCH_SUPPORTS_KEXEC_PURGATORY
- 	def_bool KEXEC_FILE
- 
- config ARCH_SELECTS_KEXEC_FILE
-diff --git a/arch/riscv/Kbuild b/arch/riscv/Kbuild
-index afa83e307a2e..d25ad1c19f88 100644
---- a/arch/riscv/Kbuild
-+++ b/arch/riscv/Kbuild
-@@ -5,7 +5,7 @@ obj-$(CONFIG_BUILTIN_DTB) += boot/dts/
- obj-y += errata/
- obj-$(CONFIG_KVM) += kvm/
- 
--obj-$(CONFIG_ARCH_HAS_KEXEC_PURGATORY) += purgatory/
-+obj-$(CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY) += purgatory/
- 
- # for cleaning
- subdir- += boot
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index 23d0fbbe1367..a39c5d03f59c 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -667,7 +667,7 @@ config ARCH_SELECTS_KEXEC_FILE
- 	select HAVE_IMA_KEXEC if IMA
- 	select KEXEC_ELF
- 
--config ARCH_HAS_KEXEC_PURGATORY
-+config ARCH_SUPPORTS_KEXEC_PURGATORY
- 	def_bool KEXEC_FILE
- 	depends on CRYPTO=y
- 	depends on CRYPTO_SHA256=y
-diff --git a/arch/riscv/kernel/elf_kexec.c b/arch/riscv/kernel/elf_kexec.c
-index 5372b708fae2..cc556beb293a 100644
---- a/arch/riscv/kernel/elf_kexec.c
-+++ b/arch/riscv/kernel/elf_kexec.c
-@@ -260,7 +260,7 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
- 		cmdline = modified_cmdline;
+it isn't so much architecture-specific... (just one ifdef)
+
+> is there any chance of looking at
+> what is required to do the same for ia64?  I looked at
+> 0ef36bd2b37815719e31a72d2beecc28ca8ecd26 ("parisc: change value of SHMLB=
+A
+> from 0x00400000 to PAGE_SIZE") and tried to replicate the SHMLBA ->
+> SHM_COLOUR change, but it made no difference.
+>
+> If hardware is necessary for testing, I can provide it, including remote=
+ BMC
+> access for restarts/kernel debugging.  Any takers?
+
+I won't have time to test myself, but maybe you could test?
+
+Basically we should try to find out why io_uring_mmu_get_unmapped_area()
+doesn't return valid addresses, while arch_get_unmapped_area()
+[in arch/ia64/kernel/sys_ia64.c] does.
+
+You could apply this patch first:
+It introduces a memory leak (as it requests memory twice), but maybe we
+get an idea?
+The ia64 arch_get_unmapped_area() searches for memory from bottom
+(flags=3D0), while io_uring function tries top-down first. Maybe that's
+the problem. And I don't understand the offset_in_page() check right
+now.
+
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 3bca7a79efda..93b1964d2bbb 100644
+=2D-- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -3431,13 +3431,17 @@ static unsigned long io_uring_mmu_get_unmapped_are=
+a(struct file *filp,
+ 	 * can happen with large stack limits and large mmap()
+ 	 * allocations.
+ 	 */
++/* compare to arch_get_unmapped_area() in arch/ia64/kernel/sys_ia64.c */
+ 	addr =3D vm_unmapped_area(&info);
+-	if (offset_in_page(addr)) {
++printk("io_uring_mmu_get_unmapped_area() address 1 is: %px\n", addr);
++	addr =3D NULL;
++	if (!addr) {
+ 		info.flags =3D 0;
+ 		info.low_limit =3D TASK_UNMAPPED_BASE;
+ 		info.high_limit =3D mmap_end;
+ 		addr =3D vm_unmapped_area(&info);
  	}
- 
--#ifdef CONFIG_ARCH_HAS_KEXEC_PURGATORY
-+#ifdef CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY
- 	/* Add purgatory to the image */
- 	kbuf.top_down = true;
- 	kbuf.mem = KEXEC_BUF_MEM_UNKNOWN;
-@@ -274,7 +274,7 @@ static void *elf_kexec_load(struct kimage *image, char *kernel_buf,
- 					     sizeof(kernel_start), 0);
- 	if (ret)
- 		pr_err("Error update purgatory ret=%d\n", ret);
--#endif /* CONFIG_ARCH_HAS_KEXEC_PURGATORY */
-+#endif /* CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY */
- 
- 	/* Add the initrd to the image */
- 	if (initrd != NULL) {
-diff --git a/arch/s390/Kbuild b/arch/s390/Kbuild
-index 76e362277179..48a3588d703c 100644
---- a/arch/s390/Kbuild
-+++ b/arch/s390/Kbuild
-@@ -7,7 +7,7 @@ obj-$(CONFIG_S390_HYPFS_FS)	+= hypfs/
- obj-$(CONFIG_APPLDATA_BASE)	+= appldata/
- obj-y				+= net/
- obj-$(CONFIG_PCI)		+= pci/
--obj-$(CONFIG_ARCH_HAS_KEXEC_PURGATORY) += purgatory/
-+obj-$(CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY) += purgatory/
- 
- # for cleaning
- subdir- += boot tools
-diff --git a/arch/s390/Kconfig b/arch/s390/Kconfig
-index 40beaf1f3d73..ab723218c0fb 100644
---- a/arch/s390/Kconfig
-+++ b/arch/s390/Kconfig
-@@ -257,7 +257,7 @@ config ARCH_SUPPORTS_KEXEC_FILE
- config ARCH_SUPPORTS_KEXEC_SIG
- 	def_bool MODULE_SIG_FORMAT
- 
--config ARCH_HAS_KEXEC_PURGATORY
-+config ARCH_SUPPORTS_KEXEC_PURGATORY
- 	def_bool KEXEC_FILE
- 
- config ARCH_SUPPORTS_CRASH_DUMP
-diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
-index 9767a343f7c2..fedc6dddd743 100644
---- a/arch/x86/Kconfig
-+++ b/arch/x86/Kconfig
-@@ -2051,7 +2051,7 @@ config ARCH_SELECTS_KEXEC_FILE
- 	depends on KEXEC_FILE
- 	select HAVE_IMA_KEXEC if IMA
- 
--config ARCH_HAS_KEXEC_PURGATORY
-+config ARCH_SUPPORTS_KEXEC_PURGATORY
- 	def_bool KEXEC_FILE
- 
- config ARCH_SUPPORTS_KEXEC_SIG
-diff --git a/kernel/kexec_file.c b/kernel/kexec_file.c
-index 881ba0d1714c..dd115571f8fc 100644
---- a/kernel/kexec_file.c
-+++ b/kernel/kexec_file.c
-@@ -685,7 +685,7 @@ static int kexec_calculate_store_digests(struct kimage *image)
- 	struct kexec_sha_region *sha_regions;
- 	struct purgatory_info *pi = &image->purgatory_info;
- 
--	if (!IS_ENABLED(CONFIG_ARCH_HAS_KEXEC_PURGATORY))
-+	if (!IS_ENABLED(CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY))
- 		return 0;
- 
- 	zero_buf = __va(page_to_pfn(ZERO_PAGE(0)) << PAGE_SHIFT);
-@@ -790,7 +790,7 @@ static int kexec_calculate_store_digests(struct kimage *image)
- 	return ret;
- }
- 
--#ifdef CONFIG_ARCH_HAS_KEXEC_PURGATORY
-+#ifdef CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY
- /*
-  * kexec_purgatory_setup_kbuf - prepare buffer to load purgatory.
-  * @pi:		Purgatory to be loaded.
-@@ -1150,7 +1150,7 @@ int kexec_purgatory_get_set_symbol(struct kimage *image, const char *name,
- 
- 	return 0;
- }
--#endif /* CONFIG_ARCH_HAS_KEXEC_PURGATORY */
-+#endif /* CONFIG_ARCH_SUPPORTS_KEXEC_PURGATORY */
- 
- int crash_exclude_mem_range(struct crash_mem *mem,
- 			    unsigned long long mstart, unsigned long long mend)
--- 
-2.31.1
++printk("io_uring_mmu_get_unmapped_area() returns address %px\n", addr);
 
+ 	return addr;
+ }
+
+
+Another option is to disable the call to io_uring_nommu_get_unmapped_area(=
+))
+with the next patch. Maybe you could add printks() to ia64's arch_get_unma=
+pped_area()
+and check what it returns there?
+
+@@ -3654,6 +3658,8 @@ static const struct file_operations io_uring_fops =
+=3D {
+ #ifndef CONFIG_MMU
+ 	.get_unmapped_area =3D io_uring_nommu_get_unmapped_area,
+ 	.mmap_capabilities =3D io_uring_nommu_mmap_capabilities,
++#elif 0    /* IS_ENABLED(CONFIG_IA64) */
++	.get_unmapped_area =3D NULL,
+ #else
+ 	.get_unmapped_area =3D io_uring_mmu_get_unmapped_area,
+ #endif
+
+Helge
