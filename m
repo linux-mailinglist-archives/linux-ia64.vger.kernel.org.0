@@ -2,165 +2,278 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B167E779E1A
-	for <lists+linux-ia64@lfdr.de>; Sat, 12 Aug 2023 10:32:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D3C877B12E
+	for <lists+linux-ia64@lfdr.de>; Mon, 14 Aug 2023 08:08:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235018AbjHLICd (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 12 Aug 2023 04:02:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33358 "EHLO
+        id S233554AbjHNGIJ (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Mon, 14 Aug 2023 02:08:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38920 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229634AbjHLICb (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 12 Aug 2023 04:02:31 -0400
-Received: from out1-smtp.messagingengine.com (out1-smtp.messagingengine.com [66.111.4.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0F591FE6;
-        Sat, 12 Aug 2023 01:02:32 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.nyi.internal (Postfix) with ESMTP id 15CFE5C0056;
-        Sat, 12 Aug 2023 04:02:32 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute6.internal (MEProxy); Sat, 12 Aug 2023 04:02:32 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm3; t=1691827352; x=1691913752; bh=B7
-        pOJdGFDOf/BCasjh0dVOxmA3Mm35lZV2aH6kqC0w8=; b=bWL46N0sK4mIYpWzoj
-        J/+e+b8Mu9CpgyBLRhbmW/TyuCEnsAuKlS4X0lT5efId871OmOj5YcYmYg00NGPd
-        IcAELxQotBSuJ/90jbsZktoCZaBeDjcMja4UE7PY/KJ9BQxHMR8ttw19gadY4pLD
-        wcpu71/4NgDXLZF/K7TzADQEKciG8tdFwEV+hn9mwnLC982sMNooAap2Ahr2ic02
-        OX1TDcc92+mLu+noqL+P1+HfjKrPOssbrzLOWiTlGBYyQ2X6xUoDe8FH5hLbs8Zs
-        FmxsgM31F6ThFZX8SA1a+xBdVxbX9hhX71mg/b6+C5V15wIo2qBJ6zjh3xckiJob
-        8oqQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm3; t=1691827352; x=1691913752; bh=B7pOJdGFDOf/B
-        Casjh0dVOxmA3Mm35lZV2aH6kqC0w8=; b=tJ1h5kA/J6E62tVerAQCZa0aQUiLa
-        dZExElcAFIrHaz4IwM7Ow1ltkUruuCWsOJCyh1z7aQtGI+w5HaBlSmZ+g3sMPCda
-        xubPC3utl1cj6/nHtnBh0zC5LTFR+KNkRg4EMhDLuERXDLZ4Aw4RkebGXJaIBZ2z
-        wqa854o60Ce1tMXNWniimZ3W3nrC3twAjPDF+DoFqhA6k/7W4Q8yP6gpTqTX3H4D
-        A1+7oickvOZ3pG8fapNcg2rld2K7G5tar0BTq01+PtwsrthFpU9JUN88b64SrWxE
-        i+I6EhM3NmuwXev5m6HLAkhNfUxNiuURcXLhz5qvBlOtnzaNWe1YrJFpg==
-X-ME-Sender: <xms:lDzXZLww55is2QMPDYjjRVLtLyoZjTnXsReClk3fNJpNGvX9Yp4KaA>
-    <xme:lDzXZDTEfg0QqMlQN_EwpPTwY-rhr-gEjTSPzFsEPH9b0QutV4uC-Wz-TzUkje1U5
-    ZrIr9BbeyiIc8d0k6k>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrleelgdduvdehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
-    nhguuceuvghrghhmrghnnhdfuceorghrnhgusegrrhhnuggsrdguvgeqnecuggftrfgrth
-    htvghrnhepffehueegteeihfegtefhjefgtdeugfegjeelheejueethfefgeeghfektdek
-    teffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hrnhgusegrrhhnuggsrdguvg
-X-ME-Proxy: <xmx:lDzXZFWakJL6bP1C3CtyxCernVmFFVA4usDlWrWHbJV80fBcqyEDdQ>
-    <xmx:lDzXZFiAeZOhiK_1-3IRnA4TAG5simqdV9x1oAOMfe9e2PDVwrLUpQ>
-    <xmx:lDzXZNB5btGQ4E1l2bsVvCFcQWx3QMH1JlzzDkSwKyzK6IOlyrvoAw>
-    <xmx:mDzXZB1rv3zksY1BwcCii-YiQW0PH8eBdJskrEe3ags7tVQfE3dKGA>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-        id 3DD63B60089; Sat, 12 Aug 2023 04:02:28 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.9.0-alpha0-624-g7714e4406d-fm-20230801.001-g7714e440
-Mime-Version: 1.0
-Message-Id: <13f9c06a-f840-4010-ae2f-97d8b2883e76@app.fastmail.com>
-In-Reply-To: <ZNaVYh2qi0VQQKWf@antec>
-References: <20230810141947.1236730-1-arnd@kernel.org>
- <20230810141947.1236730-17-arnd@kernel.org> <ZNaVYh2qi0VQQKWf@antec>
-Date:   Sat, 12 Aug 2023 10:02:07 +0200
-From:   "Arnd Bergmann" <arnd@arndb.de>
-To:     "Stafford Horne" <shorne@gmail.com>,
-        "Arnd Bergmann" <arnd@kernel.org>
-Cc:     "Andrew Morton" <akpm@linux-foundation.org>,
-        linux-kernel@vger.kernel.org, "Matt Turner" <mattst88@gmail.com>,
-        "Vineet Gupta" <vgupta@kernel.org>,
-        "Russell King" <linux@armlinux.org.uk>,
-        "Catalin Marinas" <catalin.marinas@arm.com>,
-        "Will Deacon" <will@kernel.org>, guoren <guoren@kernel.org>,
-        "Brian Cain" <bcain@quicinc.com>,
-        "Huacai Chen" <chenhuacai@kernel.org>,
-        "WANG Xuerui" <kernel@xen0n.name>,
-        "Geert Uytterhoeven" <geert@linux-m68k.org>,
-        "Michal Simek" <monstr@monstr.eu>,
-        "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
-        "Dinh Nguyen" <dinguyen@kernel.org>,
-        "Jonas Bonn" <jonas@southpole.se>,
-        "James E . J . Bottomley" <James.Bottomley@hansenpartnership.com>,
-        "Helge Deller" <deller@gmx.de>,
-        "Michael Ellerman" <mpe@ellerman.id.au>,
-        "Christophe Leroy" <christophe.leroy@csgroup.eu>,
-        "Palmer Dabbelt" <palmer@dabbelt.com>,
-        "Heiko Carstens" <hca@linux.ibm.com>,
-        "John Paul Adrian Glaubitz" <glaubitz@physik.fu-berlin.de>,
-        x86@kernel.org, "Borislav Petkov" <bp@alien8.de>,
-        "Nathan Chancellor" <nathan@kernel.org>,
-        "Nick Desaulniers" <ndesaulniers@google.com>,
-        "Guenter Roeck" <linux@roeck-us.net>,
-        "Stephen Rothwell" <sfr@canb.auug.org.au>,
-        linux-next <linux-next@vger.kernel.org>,
-        linux-alpha@vger.kernel.org, linux-snps-arc@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        "linux-csky@vger.kernel.org" <linux-csky@vger.kernel.org>,
-        linux-hexagon@vger.kernel.org, linux-ia64@vger.kernel.org,
-        loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org,
-        "linux-openrisc@vger.kernel.org" <linux-openrisc@vger.kernel.org>,
-        sparclinux@vger.kernel.org,
-        "Richard Henderson" <richard.henderson@linaro.org>,
-        "Ivan Kokshaysky" <ink@jurassic.park.msu.ru>,
-        "Stefan Kristiansson" <stefan.kristiansson@saunalahti.fi>,
-        "Yoshinori Sato" <ysato@users.sourceforge.jp>,
-        "Rich Felker" <dalias@libc.org>,
-        "David S . Miller" <davem@davemloft.net>,
-        "Chris Zankel" <chris@zankel.net>,
-        "Max Filippov" <jcmvbkbc@gmail.com>,
-        "Christian Brauner" <brauner@kernel.org>,
-        "Paul Walmsley" <paul.walmsley@sifive.com>,
-        "Albert Ou" <aou@eecs.berkeley.edu>,
-        "Youling Tang" <tangyouling@loongson.cn>,
-        "Tiezhu Yang" <yangtiezhu@loongson.cn>,
-        "Masahiro Yamada" <masahiroy@kernel.org>,
-        "Randy Dunlap" <rdunlap@infradead.org>,
-        "Masami Hiramatsu" <mhiramat@kernel.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        "Miguel Ojeda" <ojeda@kernel.org>,
-        "Zhen Lei" <thunder.leizhen@huawei.com>,
-        "Xin Li" <xin3.li@intel.com>, "Nhat Pham" <nphamcs@gmail.com>,
-        "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
-        =?UTF-8?Q?Marc_Aur=C3=A8le_La_France?= <tsi@tuyoix.net>,
-        "Johannes Weiner" <hannes@cmpxchg.org>,
-        linux-parisc@vger.kernel.org, linux-sh@vger.kernel.org,
-        linux-riscv@lists.infradead.org
-Subject: Re: [PATCH 16/17] [RFC] arch: turn -Wmissing-prototypes off conditionally
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS,
-        URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S233574AbjHNGHl (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Mon, 14 Aug 2023 02:07:41 -0400
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0278810DD;
+        Sun, 13 Aug 2023 23:07:39 -0700 (PDT)
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+        by mx0a-001b2d01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 37E5wFdf008569;
+        Mon, 14 Aug 2023 06:07:25 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from : to : cc : subject
+ : date : message-id : mime-version : content-transfer-encoding; s=pp1;
+ bh=bhQlIJCeGJ0Xx5sPsapHi8I1Ha49xDxR5Spc/HI58fU=;
+ b=gzlW1Oyj/p4UOCGOy+w/uNrsqY4Fkv+mZ9ZCQKySYABR45dfzl///XQElqVCb3YqeANH
+ eS0pfrgVGRetlFzP18JFqftx2vYDM69gB3rWPYgnBwKMTrysmBp+w4SVAczZxIKTyRcQ
+ yLbkBIHXaClMT2JuUf+sy/HMqZ1Gqdi2DeIQYf4JCP/k5k0/oEgZmfZpgjnLrYWaYOZK
+ TSgZmeZCabyiVe23FrwfRsjJKp+KsKw+bJIBZBchenpUJQVv9MFRTN4wfvLgRaWvZqEo
+ H0FCYBnkxrFbhyivPZ+uod/j7MVMFcxVcwNDzOYN5W4FC8IJKFU4L4oUlXPPoA11RNIp cA== 
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+        by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 3sfekc04fu-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Aug 2023 06:07:24 +0000
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+        by ppma21.wdc07v.mail.ibm.com (8.17.1.19/8.17.1.19) with ESMTP id 37E3kAxk002427;
+        Mon, 14 Aug 2023 06:07:23 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+        by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 3sendmsp4y-1
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+        Mon, 14 Aug 2023 06:07:23 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+        by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 37E67L8V61276524
+        (version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+        Mon, 14 Aug 2023 06:07:21 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 590852004B;
+        Mon, 14 Aug 2023 06:07:21 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+        by IMSVA (Postfix) with ESMTP id 5EFE920040;
+        Mon, 14 Aug 2023 06:07:20 +0000 (GMT)
+Received: from ozlabs.au.ibm.com (unknown [9.192.253.14])
+        by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+        Mon, 14 Aug 2023 06:07:20 +0000 (GMT)
+Received: from bgray-lenovo-p15.ozlabs.ibm.com (haven.au.ibm.com [9.192.254.114])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by ozlabs.au.ibm.com (Postfix) with ESMTPSA id A13B1603B6;
+        Mon, 14 Aug 2023 16:07:17 +1000 (AEST)
+From:   Benjamin Gray <bgray@linux.ibm.com>
+To:     linux-kernel@vger.kernel.org, linux-ia64@vger.kernel.org,
+        linux-doc@vger.kernel.org, bpf@vger.kernel.org,
+        linux-pm@vger.kernel.org
+Cc:     abbotti@mev.co.uk, hsweeten@visionengravers.com,
+        jan.kiszka@siemens.com, kbingham@kernel.org, mykolal@fb.com,
+        Benjamin Gray <bgray@linux.ibm.com>
+Subject: [PATCH 0/8] Fix Python string escapes
+Date:   Mon, 14 Aug 2023 16:06:56 +1000
+Message-ID: <20230814060704.79655-1-bgray@linux.ibm.com>
+X-Mailer: git-send-email 2.41.0
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: cvAMhQ-a4Igo_ddui7AYxHwp24O61BbK
+X-Proofpoint-ORIG-GUID: cvAMhQ-a4Igo_ddui7AYxHwp24O61BbK
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.591,FMLib:17.11.176.26
+ definitions=2023-08-13_24,2023-08-10_01,2023-05-22_02
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=999
+ malwarescore=0 adultscore=0 suspectscore=0 spamscore=0 phishscore=0
+ mlxscore=0 clxscore=1015 bulkscore=0 lowpriorityscore=0 priorityscore=1501
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2306200000 definitions=main-2308140055
+X-Spam-Status: No, score=-3.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Fri, Aug 11, 2023, at 22:09, Stafford Horne wrote:
-> On Thu, Aug 10, 2023 at 04:19:34PM +0200, Arnd Bergmann wrote:
->> From: Arnd Bergmann <arnd@arndb.de>
+Python 3.6 introduced a DeprecationWarning for invalid escape sequences.
+This is upgraded to a SyntaxWarning in Python 3.12 (3.12.0rc1), and is
+intended to eventually be a syntax error.
 
->> arch/openrisc/mm/fault.c:44:17: error: no previous prototype for 'do_page_fault' [-Werror=missing-prototypes]
->> arch/openrisc/mm/tlb.c:188:13: error: no previous prototype for 'tlb_init' [-Werror=missing-prototypes]
->
-> I'll try to get these fixed for 6.6.  I was looking at them recently but did not
-> actually make any changes and just put on my TODO.  Your series moves it up in
-> priority and it should be easy to get the fixes out.
+This series aims to fix these now to get ahead of it before it's an error.
 
-Thanks!
+Most of the patches are generated using the below Python script. It
+uses the builtin ast module to parse a Python file, locate all strings,
+find the corresponding source code, and check for bad escape sequences.
 
-Since we already have the majority of architecture maintainers stepping
-in to fix the warnings, I wonder if I should just drop my patch 16/17
-completely and let the others handle it as well rather than shutting up
-the warnings. Only the asm-offsets change is really needed to compile
-test most of the kernel even with CONFIG_WERROR, and without that this
-is just some harmless output.
+If it finds things to fix then it applies the fixes and reparses the
+file into a fixed AST. It finally compares the original and fixed ASTs
+to ensure no semantic difference has been introduced (dumping is done to
+remove node location information, which is expected to be different).
 
-    Arnd
+There are some limitations of the ast module, in particular it throws
+away a lot of information about the string source. f-strings especially
+interact poorly here (the slices between formats are presented as
+separate strings, but the node range of each is the entire f-string),
+so are skipped. f-strings are handled manually in the final patch.
+
+A lot of the fixes are for regex patterns, which could be changed to use
+r-strings instead. But that is less easy to automate, so I avoided doing
+so in this series. AST verification should still be possible though,
+because being a plain or r-string is stripped away in the AST.
+
+---
+#!/usr/bin/env python3
+
+"""
+Fix all bad escape characters in strings
+"""
+
+import ast
+from pathlib import Path
+
+def get_offset(source: str, row: int, col: int) -> int:
+    """
+    Turn a row + column pair into a byte offset
+    """
+    offset = 0
+
+    cur_row = 1  # 1-indexed rows
+    cur_col = 0  # 0-indexed columns
+
+    for c in source:
+        if cur_row == row and cur_col == col:
+            return offset
+
+        offset += 1
+
+        if c == "\n":
+            cur_row += 1
+            cur_col = 0
+        else:
+            cur_col += 1
+
+    raise Exception("Failed to get offset")
+
+
+parse_failures: list[Path] = []
+fix_failures = 0
+bad_escapes = 0
+fstrings: set[Path] = set()
+
+for pyfile in Path(".").glob("**/*.py"):
+    content = pyfile.read_text("utf-8")
+
+    try:
+        syntax = ast.parse(content, filename=pyfile)
+    except:
+        print(f"{pyfile}: ERROR Failed to parse, is it Python3?")
+        parse_failures.append(pyfile)
+        continue
+
+    fixes: list[tuple[int, int, str]] = []
+
+    for node in ast.walk(syntax):
+        if not isinstance(node, ast.Constant):
+            continue
+
+        if not isinstance(node.value, str):
+            continue
+
+        if node.value.count("\\") == 0:
+            continue
+
+        assert(isinstance(node.end_lineno, int))
+        assert(isinstance(node.end_col_offset, int))
+
+        start = get_offset(content, node.lineno, node.col_offset)
+        end = get_offset(content, node.end_lineno, node.end_col_offset)
+        raw = content[start:end]
+
+        # backslashes in r-strings are already literal
+        if raw.startswith("r"):
+            continue
+
+        # f-strings are difficult to handle correctly
+        if raw.startswith("f"):
+            fstrings.add(pyfile)
+            continue
+
+        fixed = ""  # The fixed representation of the string
+        escaped = False  # If the current character is escaped by a previous backslash
+        allowed = '\n\\\'"abfnrtv01234567xNuU'  # characters allowed after a backslash
+
+        for c in raw:
+            if escaped:
+                if c not in allowed:
+                        fixed += '\\'
+
+                fixed += c
+                escaped = False
+                continue
+
+            fixed += c
+
+            if c == '\\':
+                escaped = True
+
+        if fixed != raw:
+            print(f"{pyfile}:{node.lineno}:{node.col_offset}: FOUND {raw}")
+            fixes.append((start, end, fixed))
+
+    if len(fixes) == 0:
+        continue
+
+    bad_escapes += len(fixes)
+
+    # Apply fixes in reverse order to keep offsets valid
+    for start, end, fix in reversed(sorted(fixes, key=lambda k: k[0])):
+        print(f"{pyfile}:[{start}-{end}]: APPLY {fix}")
+        content = content[:start] + fix + content[end:]
+
+    fixed_syntax = ast.parse(content, filename=f"{pyfile}+fixed")
+
+    if ast.dump(syntax) != ast.dump(fixed_syntax):
+        print(f"{pyfile}: ERROR Fixed syntax tree yields different AST")
+        fix_failures += 1
+        continue
+
+    pyfile.write_text(content)
+
+
+print(f"---------------------------------")
+print(f"Parse failures:               {len(parse_failures)}")
+for f in sorted(parse_failures):
+    print(f"  - {f}")
+
+print(f"Bad escapes fixed:            {bad_escapes}")
+print(f"Fixes that broke the AST:     {fix_failures}")
+print(f"Files with skipped f-strings: {len(fstrings)}")
+for f in sorted(fstrings):
+    print(f"  - {f}")
+
+---
+
+Benjamin Gray (8):
+  ia64: fix Python string escapes
+  Documentation/sphinx: fix Python string escapes
+  drivers/comedi: fix Python string escapes
+  scripts: fix Python string escapes
+  tools/perf: fix Python string escapes
+  tools/power: fix Python string escapes
+  selftests/bpf: fix Python string escapes
+  selftests/bpf: fix Python string escapes in f-strings
+
+ Documentation/sphinx/cdomain.py               |  2 +-
+ Documentation/sphinx/kernel_abi.py            |  2 +-
+ Documentation/sphinx/kernel_feat.py           |  2 +-
+ Documentation/sphinx/kerneldoc.py             |  2 +-
+ Documentation/sphinx/maintainers_include.py   |  8 +--
+ arch/ia64/scripts/unwcheck.py                 |  2 +-
+ .../ni_routing/tools/convert_csv_to_c.py      |  2 +-
+ scripts/bpf_doc.py                            | 56 +++++++++----------
+ scripts/clang-tools/gen_compile_commands.py   |  2 +-
+ scripts/gdb/linux/symbols.py                  |  2 +-
+ tools/perf/pmu-events/jevents.py              |  2 +-
+ .../scripts/python/arm-cs-trace-disasm.py     |  4 +-
+ tools/perf/scripts/python/compaction-times.py |  2 +-
+ .../scripts/python/exported-sql-viewer.py     |  4 +-
+ tools/power/pm-graph/bootgraph.py             | 12 ++--
+ .../selftests/bpf/test_bpftool_synctypes.py   | 26 ++++-----
+ tools/testing/selftests/bpf/test_offload.py   |  2 +-
+ 17 files changed, 66 insertions(+), 66 deletions(-)
+
+--
+2.41.0
