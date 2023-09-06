@@ -2,156 +2,287 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CE3279284A
-	for <lists+linux-ia64@lfdr.de>; Tue,  5 Sep 2023 18:43:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D33C079394C
+	for <lists+linux-ia64@lfdr.de>; Wed,  6 Sep 2023 12:04:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345928AbjIEQVS (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 5 Sep 2023 12:21:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44240 "EHLO
+        id S238432AbjIFKEO (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 6 Sep 2023 06:04:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354574AbjIEMoO (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 5 Sep 2023 08:44:14 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23FE01AD;
-        Tue,  5 Sep 2023 05:44:11 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id D1BC51FDB0;
-        Tue,  5 Sep 2023 12:44:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1693917849; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=FkN9fHLyAfRcHsilGUbRusJjN/has0O6CzUMKzXJasI=;
-        b=keVYfmc48mpS4Nt09vnh12VZJSCRjao6bLq8+mD13pxU9x71zSHfdmFp8Kfx0sIOXsaSP1
-        QLaKzvB23hHyKAMtuhTve0e7QYNrA8bdsPZW4JDoFRxpWeBAZBhQKf86/lYvhAs1FAC7Sa
-        J4Fk+xaeTOI5b+kunmcl9yd9y6d2wU4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1693917849;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=FkN9fHLyAfRcHsilGUbRusJjN/has0O6CzUMKzXJasI=;
-        b=vIhIJzxZZmb5DcNB3OjOlwl7lrOhkEIHzE4KHaujlzT60ABsQijnddOVu6k4DIbcF4Ojdb
-        PcktSvBRfw9cC5Aw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 7C3ED13911;
-        Tue,  5 Sep 2023 12:44:09 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id 9K0AHZki92SuHQAAMHmgww
-        (envelope-from <tzimmermann@suse.de>); Tue, 05 Sep 2023 12:44:09 +0000
-Message-ID: <5265f1eb-e1a6-c91e-9bc2-75089d594a0e@suse.de>
-Date:   Tue, 5 Sep 2023 14:44:08 +0200
+        with ESMTP id S238414AbjIFKEN (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 6 Sep 2023 06:04:13 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4413A10C6;
+        Wed,  6 Sep 2023 03:04:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 94ABBC433C7;
+        Wed,  6 Sep 2023 10:04:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693994648;
+        bh=RZlV/34Vua6RtOG2tuKplOnqI0FsyqjllBam2o71Lr0=;
+        h=From:Subject:Date:To:Cc:Reply-To:From;
+        b=ese8C4pRWP6sY3+OCXNcdC9B9Ipym4Ex+ewzusA1Zs0AkrZPJZZY2VICLL4eKVsiI
+         a8TNKVvmiffN6QZJkZY8XSy0dKpBtMBhSZI/CNr48thLuWUBpIVxOOcMopUcuDlANm
+         Kun4QmDOty8OpcB8RepxUa5/x/bzCTcZJzeQOBkolfk7JxJayJD7pBnxvN503nNOUK
+         94iwF1PL+EqNLU8wEGX/wGR9FV4dQk96MRZOydTcwRQ/J+zeHk2Hcd+/FH7YAGni04
+         5VumWZ8CNzAzkKFtDCGxQhL2cO6NEFuhVFRjMUC44nJ3m56DRjdrA3wna1+ry5O2Ka
+         O7320tIeDGr9Q==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by smtp.lore.kernel.org (Postfix) with ESMTP id 6CE12EB8FAD;
+        Wed,  6 Sep 2023 10:04:08 +0000 (UTC)
+From:   Joel Granados via B4 Relay 
+        <devnull+j.granados.samsung.com@kernel.org>
+Subject: [PATCH 0/8] sysctl: Remove sentinel elements from arch
+Date:   Wed, 06 Sep 2023 12:03:21 +0200
+Message-Id: <20230906-jag-sysctl_remove_empty_elem_arch-v1-0-3935d4854248@samsung.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH 0/4] ppc, fbdev: Clean up fbdev mmap helper
-Content-Language: en-US
-To:     Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com,
-        christophe.leroy@csgroup.eu, arnd@arndb.de, deller@gmx.de
-Cc:     linuxppc-dev@lists.ozlabs.org, linux-fbdev@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-arch@vger.kernel.org
-References: <20230901142659.31787-1-tzimmermann@suse.de>
- <874jk9ibf7.fsf@mail.lhotse>
-From:   Thomas Zimmermann <tzimmermann@suse.de>
-In-Reply-To: <874jk9ibf7.fsf@mail.lhotse>
-Content-Type: multipart/signed; micalg=pgp-sha256;
- protocol="application/pgp-signature";
- boundary="------------8cnkOZ3clMojcrflCUVqPiyi"
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAGlO+GQC/x3NWwqDMBBG4a3IPDcQL0jbrZQS0vGvTjEqMyIVc
+ e8NffxezjnIoAKje3GQYhOTecooLwXxEKceTrpsqnxV+5tv3Cf2znbjdQyKNG8ISMu6B4xIISo
+ P7lp2Lx9btMwN5c6ieMv3/3g8z/MHGVjrR3MAAAA=
+To:     Luis Chamberlain <mcgrof@kernel.org>, willy@infradead.org,
+        josh@joshtriplett.org, Kees Cook <keescook@chromium.org>,
+        Iurii Zaikin <yzaikin@google.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
+        Vasily Gorbik <gor@linux.ibm.com>,
+        Alexander Gordeev <agordeev@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Sven Schnelle <svens@linux.ibm.com>,
+        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
+        Russell King <linux@armlinux.org.uk>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Andy Lutomirski <luto@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Guo Ren <guoren@kernel.org>
+Cc:     linux-fsdevel@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
+        linux-ia64@vger.kernel.org, linux-csky@vger.kernel.org,
+        Joel Granados <j.granados@samsung.com>
+X-Mailer: b4 0.13-dev-86aa5
+X-Developer-Signature: v=1; a=openpgp-sha256; l=8530;
+ i=j.granados@samsung.com; h=from:subject:message-id;
+ bh=yV8IUVtpYik//LpZ/IfLgtpn217RZWSw2cuIGmPdr2I=;
+ b=owEB7QES/pANAwAKAbqXzVK3lkFPAcsmYgBk+E6RSaFgJaXIBYPqWoRCs+nSM68bDy7gJkBbN
+ VhSeKZt+2+JAbMEAAEKAB0WIQSuRwlXJeYxJc7LJ5C6l81St5ZBTwUCZPhOkQAKCRC6l81St5ZB
+ T5h2C/0RyAVnXCKcWDruWBXTX/Nondl8NBwULb74ObwLNamHm0CYtKL5NwOozUcq+O0Ukkt2yRg
+ sEgpDscIbsoe+TjDUKn1Sd9YYIasdB7UE4gxOPZydkJvk8sIWRf7knr7PTpBIXqSIEDBfjd2zWJ
+ hqOheXtxPT+ctxIRV8mw5Y9JRlr8ECZcE5rogXAlssFCAM+ICnyGVMvG+vJtu0BRHhL+YJkn+jx
+ o/tNRp5qoIgGNvjQrq+fDNXtIk+q/yn3nMo01ty6KHGYLOV0ingU/pLfSy7ougzV4vwgODMt+gA
+ BG835F3bTbdXaX72HlOw8zGTzdodDr5aCoMtkLENcUrA2J5qBfCANhl22VJxxb3pbpEBm7KehFg
+ e07TDiN+NCXXcLJhPsRedx6yDE75tQu4HJSORbK7wHQzXLwrTSLYdQ50E2fdqwZUk7oFmq3mDx/
+ 0iKUMx/8TtfqRtvuSbp11fWpXo8c2FQa36rdpra2HbhbxqpliJ+Vpv0bDJVgmtRYlPZBQ=
+X-Developer-Key: i=j.granados@samsung.com; a=openpgp;
+ fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
+X-Endpoint-Received: by B4 Relay for j.granados@samsung.com/default with auth_id=70
+X-Original-From: Joel Granados <j.granados@samsung.com>
+Reply-To: <j.granados@samsung.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------------8cnkOZ3clMojcrflCUVqPiyi
-Content-Type: multipart/mixed; boundary="------------vggYL9Fu9Mr0081TqvPYGkw1";
- protected-headers="v1"
-From: Thomas Zimmermann <tzimmermann@suse.de>
-To: Michael Ellerman <mpe@ellerman.id.au>, npiggin@gmail.com,
- christophe.leroy@csgroup.eu, arnd@arndb.de, deller@gmx.de
-Cc: linuxppc-dev@lists.ozlabs.org, linux-fbdev@vger.kernel.org,
- linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
- linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-arch@vger.kernel.org
-Message-ID: <5265f1eb-e1a6-c91e-9bc2-75089d594a0e@suse.de>
-Subject: Re: [PATCH 0/4] ppc, fbdev: Clean up fbdev mmap helper
-References: <20230901142659.31787-1-tzimmermann@suse.de>
- <874jk9ibf7.fsf@mail.lhotse>
-In-Reply-To: <874jk9ibf7.fsf@mail.lhotse>
+From: Joel Granados <j.granados@samsung.com>
 
---------------vggYL9Fu9Mr0081TqvPYGkw1
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: base64
+What?
+These commits remove the sentinel element (last empty element) from the
+sysctl arrays of all the files under the "arch/" directory that use a
+sysctl array for registration. The merging of the preparation patches
+(in https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
+to mainline allows us to just remove sentinel elements without changing
+behavior (more info on how this was done here [1]).
 
-SGkNCg0KQW0gMDUuMDkuMjMgdW0gMDQ6NDcgc2NocmllYiBNaWNoYWVsIEVsbGVybWFuOg0K
-PiBUaG9tYXMgWmltbWVybWFubiA8dHppbW1lcm1hbm5Ac3VzZS5kZT4gd3JpdGVzOg0KPj4g
-UmVmYWN0b3IgZmJfcGdwcm90ZWN0KCkgaW4gUG93ZXJQQyB0byB3b3JrIHdpdGhvdXQgc3Ry
-dWN0IGZpbGUuIFRoZW4NCj4+IGNsZWFuIHVwIGFuZCByZW5hbWUgZmJfcGdwcm90ZWN0KCku
-IFRoaXMgY2hhbmdlIGhhcyBiZWVuIGRpc2N1c3NlZCBhdA0KPj4gWzFdIGluIHRoZSBjb250
-ZXh0IG9mIHJlZmFjdG9yaW5nIGZiZGV2J3MgbW1hcCBjb2RlLg0KPj4NCj4+IFRoZSBmaXJz
-dCB0aHJlZSBwYXRjaGVzIGFkYXB0IFBvd2VyUEMncyBpbnRlcm5hbCBpbnRlcmZhY2VzIHRv
-DQo+PiBwcm92aWRlIGEgcGh5c19tZW1fYWNjZXNzX3Byb3QoKSB0aGF0IHdvcmtzIHdpdGhv
-dXQgc3RydWN0IGZpbGUuIE5laXRoZXINCj4+IHRoZSBhcmNoaXRlY3R1cmUgY29kZSBvciBm
-YmRldiBoZWxwZXJzIG5lZWQgdGhlIHBhcmFtZXRlci4NCj4+DQo+PiBQYXRjaCA0IHJlcGxh
-Y2VzIGZiZGV2J3MgZmJfcGdwcm90ZWN0KCkgd2l0aCBmYl9wZ3Byb3RfZGV2aWNlKCkgb24N
-Cj4+IGFsbCBhcmNoaXRlY3R1cmVzLiBUaGUgbmV3IGhlbHBlciB3aXRoIGl0cyBzdHJlYW0t
-bGluZWQgaW50ZXJmYWNlDQo+PiBlbmFibGVzIG1vcmUgcmVmYWN0b3Jpbmcgd2l0aGluIGZi
-ZGV2J3MgbW1hcCBpbXBsZW1lbnRhdGlvbi4NCj4gDQo+IFRoZSBjb250ZW50IG9mIHRoaXMg
-c2VyaWVzIGlzIE9LLCBidXQgdGhlIHdheSBpdCdzIHN0cnVjdHVyZWQgbWFrZXMgaXQgYQ0K
-PiByZWFsIGhlYWRhY2hlIHRvIG1lcmdlLCBiZWNhdXNlIGl0J3MgbW9zdGx5IHBvd2VycGMg
-Y2hhbmdlcyBhbmQgdGhlbiBhDQo+IGRlcGVuZGFudCBjcm9zcyBhcmNoaXRlY3R1cmUgcGF0
-Y2ggYXQgdGhlIGVuZC4NCj4gDQo+IEl0IHdvdWxkIGJlIHNpbXBsZXIgaWYgcGF0Y2ggNCB3
-YXMgZmlyc3QgYW5kIGp1c3QgcGFzc2VkIGZpbGU9TlVMTCB0bw0KPiB0aGUgcG93ZXJwYyBo
-ZWxwZXIsIHdpdGggYW4gZXhwbGFuYXRpb24gdGhhdCBpdCdzIHVudXNlZCBhbmQgd2lsbCBi
-ZQ0KPiBkcm9wcGVkIGluIGEgZnV0dXJlIGNsZWFudXAuDQo+IA0KPiBXZSBjb3VsZCB0aGVu
-IHB1dCB0aGUgZmlyc3QgcGF0Y2ggKHByZXZpb3VzbHkgcGF0Y2ggNCkgaW4gYSB0b3BpYyBi
-cmFuY2gNCj4gdGhhdCBpcyBzaGFyZWQgYmV0d2VlbiB0aGUgcG93ZXJwYyB0cmVlIGFuZCB0
-aGUgZmJkZXYgdHJlZSwgYW5kIHRoZW4gdGhlDQo+IHBvd2VycGMgY2hhbmdlcyBjb3VsZCBi
-ZSBzdGFnZWQgb24gdG9wIG9mIHRoYXQgdGhyb3VnaCB0aGUgcG93ZXJwYyB0cmVlLg0KDQpP
-aywgdGhhbmtzIGZvciByZXZpZXdpbmcuIFRoZSBmYmRldiBwYXRjaCB3b3VsZCBnbyB0aHJv
-dWdoIHRoZSBkcm0tbWlzYyANCnRyZWUgYXMgYmFzZSBmb3IgZnVydGhlciByZWZhY3Rvcmlu
-Zy4NCg0KSSdsbCB1cGRhdGUgdGhlIHBhdGNoc2V0IGFjY29yZGluZ2x5Lg0KDQpCZXN0IHJl
-Z2FyZHMNClRob21hcw0KDQo+IA0KPiBjaGVlcnMNCg0KLS0gDQpUaG9tYXMgWmltbWVybWFu
-bg0KR3JhcGhpY3MgRHJpdmVyIERldmVsb3Blcg0KU1VTRSBTb2Z0d2FyZSBTb2x1dGlvbnMg
-R2VybWFueSBHbWJIDQpGcmFua2Vuc3RyYXNzZSAxNDYsIDkwNDYxIE51ZXJuYmVyZywgR2Vy
-bWFueQ0KR0Y6IEl2byBUb3RldiwgQW5kcmV3IE15ZXJzLCBBbmRyZXcgTWNEb25hbGQsIEJv
-dWRpZW4gTW9lcm1hbg0KSFJCIDM2ODA5IChBRyBOdWVybmJlcmcpDQo=
+These commits are part of a bigger set (bigger patchset here
+https://github.com/Joelgranados/linux/tree/tag/sysctl_remove_empty_elem_V4)
+that remove the ctl_table sentinel. The idea is to make the review
+process easier by chunking the 52 commits into manageable pieces. By
+sending out one chunk at a time, they can be reviewed separately without
+noise from parallel sets. After the "arch/" commits in this set are
+reviewed, I will continue with drivers/*, fs/*, kernel/*, net/* and
+miscellaneous. The final set will remove the unneeded check for
+->procname == NULL.
 
---------------vggYL9Fu9Mr0081TqvPYGkw1--
+Why?
+By removing the sysctl sentinel elements we avoid kernel bloat as
+ctl_table arrays get moved out of kernel/sysctl.c into their own
+respective subsystems. This move was started long ago to avoid merge
+conflicts; the sentinel removal bit came after Mathew Wilcox suggested
+it to avoid bloating the kernel by one element as arrays moved out. This
+patchset will reduce the overall build time size of the kernel and run
+time memory bloat by about ~64 bytes per declared ctl_table array. I
+have consolidated some links that shed light on the history of this
+effort [2].
 
---------------8cnkOZ3clMojcrflCUVqPiyi
-Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="OpenPGP_signature"
+Testing:
+* Ran sysctl selftests (./tools/testing/selftests/sysctl/sysctl.sh)
+* Ran this through 0-day with no errors or warnings
 
------BEGIN PGP SIGNATURE-----
+Size saving after removing all sentinels:
+  A consequence of eventually removing all the sentinels (64 bytes per
+  sentinel) is the bytes we save. These are *not* numbers that we will
+  get after this patch set; these are the numbers that we will get after
+  removing all the sentinels. I included them here because they are
+  relevant and to get an idea of just how much memory we are talking
+  about.
+    * bloat-o-meter:
+        - The "yesall" configuration results save 9158 bytes (bloat-o-meter output here
+          https://lore.kernel.org/all/20230621091000.424843-1-j.granados@samsung.com/)
+        - The "tiny" config + CONFIG_SYSCTL save 1215 bytes (bloat-o-meter output here
+          https://lore.kernel.org/all/20230809105006.1198165-1-j.granados@samsung.com/)
+    * memory usage:
+        we save some bytes in main memory as well. In my testing kernel
+        I measured a difference of 7296 bytes. I include the way to
+        measure in [3]
 
-wsF5BAABCAAjFiEExndm/fpuMUdwYFFolh/E3EQov+AFAmT3IpgFAwAAAAAACgkQlh/E3EQov+Ar
-2BAAx4GyhqkGBaJfv3puNbbvuB7PEZosJZ/vqe3G59Ue+8wRBHUTSKhDolnDRYRTbKQgZ1SQOrZG
-s6+W76rPXD1Ut4CVvr8k7nTHykj6zZleDub7NrWbfct6eQCj162khf2dJa4gR75GQ2xD+SDj3i4W
-1LGY55I1ufx+7SulJur+5EUbmRBHxru6iU5MYxADPt5aUUbwMNWCr6sobziieqr0IP/20SfispBk
-dUdtMdCkU3Lw2ZK2n9UVUVxmO7XSgRU2UFJEGr3/0BIMhnHMuxkiXPYn/JJlddIgbC24PsKp/gAW
-mcWBqdQnCLya6eb0TYII9VyeJGHISNWx01SprtAnuvp7yuKOwizJEVWC6XclHcSA89RgaRCm0Yx5
-+WPhWrlzgI1Bw9ZwpEP/xRtDXUTFRYBipih65g7Aijb3FiSg3kNTAbE6A4m5agaj28L1ctOaUpz4
-ntRjkcG3o7CyqSKp6sZh6+pvzf7HR1sdFiQuDgG8ySlNND/EJVdu4QS/17JYC0Eo8rdtduUTDhqv
-13/YT17csTxF5EGvFMKS+FXFDansioQxoUsA+Dr+nhakhID6DXmmICnbQSa2f+/4rG1MKN2qxzKe
-3dNq15p4ARLrfNQ6GJsXLOTw+OtJHK4TPzPcP3NaK9UK+HQC3YGExb3Fge10A1SQK1ZJAwfpWaae
-D/g=
-=iHVQ
------END PGP SIGNATURE-----
+Size saving after this patchset:
+  Here I give the values that I measured for the architecture that I'm
+  running (x86_64). This can give an approximation of how many bytes are
+  saved for each arch. I won't publish for all the archs because I don't
+  have access to all of them.
+    * bloat-o-meter
+        - The "yesall" config saves 192 bytes (bloat-o-meter output [4])
+        - The "tiny" config saves 64 bytes (bloat-o-meter output [5])
+    * memory usage:
+        In this case there were no bytes saved. To measure it comment the
+        printk in `new_dir` and uncomment the if conditional in `new_links`
+        [3].
 
---------------8cnkOZ3clMojcrflCUVqPiyi--
+Comments/feedback greatly appreciated
+
+Best
+Joel
+
+[1]
+We are able to remove a sentinel table without behavioral change by
+introducing a table_size argument in the same place where procname is
+checked for NULL. The idea is for it to keep stopping when it hits
+->procname == NULL, while the sentinel is still present. And when the
+sentinel is removed, it will stop on the table_size. You can go to 
+(https://lore.kernel.org/all/20230809105006.1198165-1-j.granados@samsung.com/)
+for more information.
+
+[2]
+Links Related to the ctl_table sentinel removal:
+* Good summary from Luis sent with the "pull request" for the
+  preparation patches.
+  https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/
+* Another very good summary from Luis.
+  https://lore.kernel.org/all/ZMFizKFkVxUFtSqa@bombadil.infradead.org/
+* This is a patch set that replaces register_sysctl_table with register_sysctl
+  https://lore.kernel.org/all/20230302204612.782387-1-mcgrof@kernel.org/
+* Patch set to deprecate register_sysctl_paths()
+  https://lore.kernel.org/all/20230302202826.776286-1-mcgrof@kernel.org/
+* Here there is an explicit expectation for the removal of the sentinel element.
+  https://lore.kernel.org/all/20230321130908.6972-1-frank.li@vivo.com
+* The "ARRAY_SIZE" approach was mentioned (proposed?) in this thread
+  https://lore.kernel.org/all/20220220060626.15885-1-tangmeng@uniontech.com
+
+[3]
+To measure the in memory savings apply this on top of this patchset.
+
+"
+diff --git a/fs/proc/proc_sysctl.c b/fs/proc/proc_sysctl.c
+index c88854df0b62..e0073a627bac 100644
+--- a/fs/proc/proc_sysctl.c
++++ b/fs/proc/proc_sysctl.c
+@@ -976,6 +976,8 @@ static struct ctl_dir *new_dir(struct ctl_table_set *set,
+        table[0].procname = new_name;
+        table[0].mode = S_IFDIR|S_IRUGO|S_IXUGO;
+        init_header(&new->header, set->dir.header.root, set, node, table, 1);
++       // Counts additional sentinel used for each new dir.
++       printk("%ld sysctl saved mem kzalloc \n", sizeof(struct ctl_table));
+
+        return new;
+ }
+@@ -1199,6 +1201,9 @@ static struct ctl_table_header *new_links(struct ctl_dir *dir, struct ctl_table_
+                link_name += len;
+                link++;
+        }
++       // Counts additional sentinel used for each new registration
++       //if ((head->ctl_table + head->ctl_table_size)->procname)
++               printk("%ld sysctl saved mem kzalloc \n", sizeof(struct ctl_table));
+        init_header(links, dir->header.root, dir->header.set, node, link_table,
+                    head->ctl_table_size);
+        links->nreg = nr_entries;
+"
+and then run the following bash script in the kernel:
+
+accum=0
+for n in $(dmesg | grep kzalloc | awk '{print $3}') ; do
+    echo $n
+    accum=$(calc "$accum + $n")
+done
+echo $accum
+
+[4]
+add/remove: 0/0 grow/shrink: 0/3 up/down: 0/-192 (-192)
+Function                                     old     new   delta
+sld_sysctls                                  128      64     -64
+itmt_kern_table                              128      64     -64
+abi_table2                                   128      64     -64
+Total: Before=429173594, After=429173402, chg -0.00%
+
+[5]
+add/remove: 0/0 grow/shrink: 1/0 up/down: 64/0 (64)
+Function                                     old     new   delta
+sld_sysctls                                   64     128     +64
+Total: Before=1886119, After=1886183, chg +0.00%
+
+Signed-off-by: Joel Granados <j.granados@samsung.com>
+
+---
+
+---
+Joel Granados (8):
+      S390: Remove sentinel elem from ctl_table arrays
+      arm: Remove sentinel elem from ctl_table arrays
+      arch/x86: Remove sentinel elem from ctl_table arrays
+      x86 vdso: rm sentinel element from ctl_table array
+      riscv: Remove sentinel element from ctl_table array
+      powerpc: Remove sentinel element from ctl_table arrays
+      ia64: Remove sentinel element from ctl_table array
+      c-sky: rm sentinel element from ctl_talbe array
+
+ arch/arm/kernel/isa.c                     | 4 ++--
+ arch/arm64/kernel/armv8_deprecated.c      | 8 +++-----
+ arch/arm64/kernel/fpsimd.c                | 6 ++----
+ arch/arm64/kernel/process.c               | 3 +--
+ arch/csky/abiv1/alignment.c               | 3 +--
+ arch/ia64/kernel/crash.c                  | 3 +--
+ arch/powerpc/kernel/idle.c                | 3 +--
+ arch/powerpc/platforms/pseries/mobility.c | 3 +--
+ arch/riscv/kernel/vector.c                | 3 +--
+ arch/s390/appldata/appldata_base.c        | 6 ++----
+ arch/s390/kernel/debug.c                  | 3 +--
+ arch/s390/kernel/topology.c               | 3 +--
+ arch/s390/mm/cmm.c                        | 3 +--
+ arch/s390/mm/pgalloc.c                    | 3 +--
+ arch/x86/entry/vdso/vdso32-setup.c        | 3 +--
+ arch/x86/kernel/cpu/intel.c               | 3 +--
+ arch/x86/kernel/itmt.c                    | 3 +--
+ drivers/perf/arm_pmuv3.c                  | 3 +--
+ 18 files changed, 23 insertions(+), 43 deletions(-)
+---
+base-commit: 708283abf896dd4853e673cc8cba70acaf9bf4ea
+change-id: 20230904-jag-sysctl_remove_empty_elem_arch-81db0a6e6cc4
+
+Best regards,
+-- 
+Joel Granados <j.granados@samsung.com>
+
