@@ -2,129 +2,133 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED69279E324
-	for <lists+linux-ia64@lfdr.de>; Wed, 13 Sep 2023 11:11:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D89079ECF6
+	for <lists+linux-ia64@lfdr.de>; Wed, 13 Sep 2023 17:29:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239287AbjIMJLw (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 13 Sep 2023 05:11:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42190 "EHLO
+        id S229819AbjIMP3q (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 13 Sep 2023 11:29:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239301AbjIMJLf (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 13 Sep 2023 05:11:35 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1CC51BC2;
-        Wed, 13 Sep 2023 02:11:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 57508C433C7;
-        Wed, 13 Sep 2023 09:11:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694596291;
-        bh=bOZkXiICk5VZpusCoN35GJ6eTXBzdL14nNNGQMgELT4=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-        b=RlASjPY2GnbaWVrb8C1c2XTqKSCQcR3wM+WD0rWbAqNQa0hrvj4juZxzK7y8tQpjE
-         iGk8MKGIbzVS/F3WrvRjSyh/L8hsZnZZ4p+KlgFQZ8Hwo4whrYU/pKszEWl6fY64OU
-         4YMZekgvBNU/bvXB6Im6rGmLV6zOldi94zZoM4HClQ2UIn2J7jCjctainlXCFSR8XR
-         JHvatfKnc3gPYFDgz+fjr9E6exVWiTEk5a9gWlai7ZAFRWpLMOh/HRCHFfBPtQTm+A
-         c2L6bZwUJmhK5Nk6cWH5Sqo3hwPWlFELEnKgyrHhaD9LzXOx58u8mso+VE6DVKGytv
-         t/hY6M/RQ9j1Q==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.lore.kernel.org (Postfix) with ESMTP id 3E680CA5512;
-        Wed, 13 Sep 2023 09:11:31 +0000 (UTC)
-From:   Joel Granados via B4 Relay 
-        <devnull+j.granados.samsung.com@kernel.org>
-Date:   Wed, 13 Sep 2023 11:11:02 +0200
-Subject: [PATCH v2 8/8] c-sky: Remove now superfluous sentinel element from
- ctl_talbe array
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20230913-jag-sysctl_remove_empty_elem_arch-v2-8-d1bd13a29bae@samsung.com>
-References: <20230913-jag-sysctl_remove_empty_elem_arch-v2-0-d1bd13a29bae@samsung.com>
-In-Reply-To: <20230913-jag-sysctl_remove_empty_elem_arch-v2-0-d1bd13a29bae@samsung.com>
-To:     Luis Chamberlain <mcgrof@kernel.org>, willy@infradead.org,
-        josh@joshtriplett.org, Kees Cook <keescook@chromium.org>,
-        Iurii Zaikin <yzaikin@google.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Guo Ren <guoren@kernel.org>, Alexey Gladkov <legion@kernel.org>
-Cc:     linux-fsdevel@vger.kernel.org, linux-s390@vger.kernel.org,
+        with ESMTP id S229746AbjIMP3c (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 13 Sep 2023 11:29:32 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A9F61BEB;
+        Wed, 13 Sep 2023 08:29:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=XdtCAZyx/MZYsEBg/jFRSdFTbFPWHLuZyAfo/8U5/tw=; b=FKQnCx1yL4RyEEWc6jQCHdQzMK
+        szsOP/bu+Hp+kcV7jfsv1j9W2fK3qrHVMhjiwW3Sv5KUUSSTSuAP9ppITyPWNkSa6GOsWotDD0hxb
+        grFlbm2z2X/FlaUtQqKyYXfOPJzmLZZNI29Yskokx19istLJS7pHSdkbMIWTSma9/50YnAHqtoFXz
+        +du9ZJd2CpX2TaFbf3S8XiUmtfYMWHiiLBKiSIdjUV3LYH0jjF25i2xitRWIsHEztFKiLs74AKyn8
+        ui29Pde6io2w+oPRoE0ORQ495MO5MipHx015n6Q5DbY3l/PQa+T2ru1WA/cVybHgDAqM34yXV92wK
+        zjCw8DCg==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:59522)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.96)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1qgRnY-0002gL-2z;
+        Wed, 13 Sep 2023 16:29:00 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1qgRnT-0003q4-B5; Wed, 13 Sep 2023 16:28:55 +0100
+Date:   Wed, 13 Sep 2023 16:28:55 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Gavin Shan <gshan@redhat.com>
+Cc:     James Morse <james.morse@arm.com>, linux-pm@vger.kernel.org,
+        loongarch@lists.linux.dev, kvmarm@lists.linux.dev,
+        kvm@vger.kernel.org, linux-acpi@vger.kernel.org,
+        linux-arch@vger.kernel.org, linux-ia64@vger.kernel.org,
         linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ia64@vger.kernel.org, linux-csky@vger.kernel.org,
-        Joel Granados <j.granados@samsung.com>
-X-Mailer: b4 0.13-dev-86aa5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1142;
- i=j.granados@samsung.com; h=from:subject:message-id;
- bh=wn/rmW3LIVUgnMCXZeG4YCvpOL/L6xf4mRBtbNQZAbw=;
- b=owEB7QES/pANAwAKAbqXzVK3lkFPAcsmYgBlAXzA5GlVzE7/rd8wut1u+0NMuuB0vDP4Kt9LJ
- CObib6trt2JAbMEAAEKAB0WIQSuRwlXJeYxJc7LJ5C6l81St5ZBTwUCZQF8wAAKCRC6l81St5ZB
- T7gBC/0fKA9pIG80ye+KDiog5k/fFGEVpxa0scNjVDBIe34baOOBslhh9jCq5CeB6uS1kVSU8Zn
- sjCTPhX7uROr2GobSknXdT2qiVTrWtW8NdWR3znWuML6pp2goXpp7VQ5PfPQPNQAIs2ngYHlj9p
- 7FW8hAkzcNwT6mqabdmRJMooE0YrdZsCrd5jPmeEL/99JURiW3raS0VU83iQqdBU57HKiKeaBUy
- 65feFTdijevoe0tiAIAR1yLbNxCRQaIhP5bm9HKReoJ6SafGlqLSgEnuK+DF219m74LC1P8STid
- 2dL95GtrdfAHhnwsPbDzH8tDtS75AInDIQRDRmWXXhDhz1F933gR4hoM5ZuukuU9+Vm0Us46tPN
- oSUTy1W85exYjVAmyyJ+md1EciwwRIgs5r9SReWyR/ztn/tCLNJX4MXiSPVX7P7Ld8m/XPeGx6W
- XvmwG5dS4Rv/dkz7R3snlRwS/qIsk0Cy7ohma1e73jaGvq0kBmcvxntJQTS6I/eu84yrw=
-X-Developer-Key: i=j.granados@samsung.com; a=openpgp;
- fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
-X-Endpoint-Received: by B4 Relay for j.granados@samsung.com/default with auth_id=70
-X-Original-From: Joel Granados <j.granados@samsung.com>
-Reply-To: <j.granados@samsung.com>
+        x86@kernel.org, Marc Zyngier <maz@kernel.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Borislav Petkov <bp@alien8.de>, H Peter Anvin <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Suzuki K Poulose <suzuki.poulose@arm.com>,
+        Oliver Upton <oliver.upton@linux.dev>,
+        Len Brown <lenb@kernel.org>,
+        Rafael Wysocki <rafael@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Salil Mehta <salil.mehta@huawei.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>
+Subject: Re: [RFC PATCH 00/32] ACPI/arm64: add support for virtual cpuhotplug
+Message-ID: <ZQHVN4QqSvx4ndW4@shell.armlinux.org.uk>
+References: <20230203135043.409192-1-james.morse@arm.com>
+ <41dd71ab-a6a7-fd93-73ec-64a6b0ca468e@redhat.com>
+ <1ca1fb8f-1dec-74a3-ee44-94609f6aba2c@arm.com>
+ <5a5fb237-c28b-d6b5-0425-8f8f0fe1ac79@redhat.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5a5fb237-c28b-d6b5-0425-8f8f0fe1ac79@redhat.com>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Joel Granados <j.granados@samsung.com>
+On Wed, Sep 13, 2023 at 08:38:51AM +1000, Gavin Shan wrote:
+> 
+> Hi James,
+> 
+> On 9/13/23 03:01, James Morse wrote:
+> > On 29/03/2023 03:35, Gavin Shan wrote:
+> > > On 2/3/23 9:50 PM, James Morse wrote:
+> > 
+> > > > If folk want to play along at home, you'll need a copy of Qemu that supports this.
+> > > > https://github.com/salil-mehta/qemu.git
+> > > > salil/virt-cpuhp-armv8/rfc-v1-port29092022.psci.present
+> > > > 
+> > > > You'll need to fix the numbers of KVM_CAP_ARM_HVC_TO_USER and KVM_CAP_ARM_PSCI_TO_USER
+> > > > to match your host kernel. Replace your '-smp' argument with something like:
+> > > > | -smp cpus=1,maxcpus=3,cores=3,threads=1,sockets=1
+> > > > 
+> > > > then feed the following to the Qemu montior;
+> > > > | (qemu) device_add driver=host-arm-cpu,core-id=1,id=cpu1
+> > > > | (qemu) device_del cpu1
+> > > > 
+> > > > 
+> > > > This series is based on v6.2-rc3, and can be retrieved from:
+> > > > https://git.kernel.org/pub/scm/linux/kernel/git/morse/linux.git/ virtual_cpu_hotplug/rfc/v1
+> > 
+> > > I give it a try, but the hot-added CPU needs to be put into online
+> > > state manually. I'm not sure if it's expected or not.
+> > 
+> > This is expected. If you want the CPUs to be brought online automatically, you can add
+> > udev rules to do that.
+> > 
+> 
+> Yeah, I usually execute the following command to bring the CPU into online state,
+> after the vCPU is hot added by QMP command.
+> 
+> (qemu) device_add driver=host-arm-cpu,core-id=1,id=cpu1
+> guest# echo 1 > /sys/devices/system/cpu/cpux/online
+> 
+> James, the series was posted a while ago and do you have plan to respin
+> and post RFCv2 in near future? :)
 
-This commit comes at the tail end of a greater effort to remove the
-empty elements at the end of the ctl_table arrays (sentinels) which
-will reduce the overall build time size of the kernel and run time
-memory bloat by ~64 bytes per sentinel (further information Link :
-https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
+I'll pipe up here, because I've been discussing this topic with James
+privately.
 
-Remove sentinel from alignment_tbl ctl_table array. This removal is safe
-because register_sysctl_init implicitly uses ARRAY_SIZE() in addition to
-checking for the sentinel.
+In James' last email to me, he indicated that he's hoping to publish
+the next iteration of the patches towards the end of this week. I
+suspect that's conditional on there being no major issues coming up.
 
-Acked-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Joel Granados <j.granados@samsung.com>
----
- arch/csky/abiv1/alignment.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+One of the things that I think would help this patch set along is if
+people could test it on x86, to make sure that there aren't any
+regressions on random x86 hardware - and report successes and
+failures so confidence in the patch series can be gained.
 
-diff --git a/arch/csky/abiv1/alignment.c b/arch/csky/abiv1/alignment.c
-index b60259daed1b..0d75ce7b0328 100644
---- a/arch/csky/abiv1/alignment.c
-+++ b/arch/csky/abiv1/alignment.c
-@@ -328,8 +328,7 @@ static struct ctl_table alignment_tbl[5] = {
- 		.maxlen = sizeof(align_usr_count),
- 		.mode = 0666,
- 		.proc_handler = &proc_dointvec
--	},
--	{}
-+	}
- };
- 
- static int __init csky_alignment_init(void)
+Thanks.
 
 -- 
-2.30.2
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
