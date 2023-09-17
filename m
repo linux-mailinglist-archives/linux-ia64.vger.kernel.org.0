@@ -2,112 +2,83 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FA1E7A26EB
-	for <lists+linux-ia64@lfdr.de>; Fri, 15 Sep 2023 21:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EAFF7A3572
+	for <lists+linux-ia64@lfdr.de>; Sun, 17 Sep 2023 14:04:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236745AbjIOTJW (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 15 Sep 2023 15:09:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46338 "EHLO
+        id S232861AbjIQMET (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 17 Sep 2023 08:04:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33648 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236950AbjIOTJS (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 15 Sep 2023 15:09:18 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5C9498;
-        Fri, 15 Sep 2023 12:09:13 -0700 (PDT)
-From:   Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694804951;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=FDeIVKTICKDFwpeyMiKeUyQnaEhJj8v8RkRSMefmd/k=;
-        b=AHhoxWCpLqkPmcYu/FFKkCMeN1qFRbSQa9NH06THW5izeby06dvSy8CbZpcnjAln4Y9CZW
-        +YnMsh53yrTYClYKQ2Hlrn0ZSNZRO03YSPFHP9egzWgUldP072yO8kSidxwSx881SkmpUI
-        WXQSiF4ghsDsnDK3I+JS2f6PtOSfiYMNOm2uhITtE8MThM7nvkwzC72foLGnqIHtnlRGbd
-        0LvoKP1quv4a9z6mNqyUp6kuXEDr8HOCl8BHHDMHIoBBrZmVE1EOziz2MKhGUvMTAAAxtA
-        mKU2tks1Qp9J0F0oeB2aYYINw4fyoXMVhmUb4I0Hv6P2deRKSnEoNGyHY9QjaA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694804951;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=FDeIVKTICKDFwpeyMiKeUyQnaEhJj8v8RkRSMefmd/k=;
-        b=ijQ0D6WzikBWYrorxKopMvxIQLmVdcyirOD2bgrPoV6JiJG3+BsxpPmKRUZIYx+Nm78qDP
-        WLkEpJeyJvydd7Bg==
-To:     "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        linux-acpi@vger.kernel.org, James Morse <james.morse@arm.com>
-Cc:     loongarch@lists.linux.dev, linux-arch@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-        linux-pm@vger.kernel.org, Ingo Molnar <mingo@redhat.com>,
-        Jean-Philippe Brucker <jean-philippe@linaro.org>,
-        jianyong.wu@arm.com, justin.he@arm.com,
-        Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Salil Mehta <salil.mehta@huawei.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Peter Zijlstra <peterz@infradead.org>,
-        linux-ia64@vger.kernel.org
-Subject: Re: [PATCH RFC v2] cpu-hotplug: provide prototypes for arch CPU
- registration
-In-Reply-To: <E1qgnh2-007ZRZ-WD@rmk-PC.armlinux.org.uk>
-References: <E1qgnh2-007ZRZ-WD@rmk-PC.armlinux.org.uk>
-Date:   Fri, 15 Sep 2023 21:09:10 +0200
-Message-ID: <871qez1cfd.ffs@tglx>
+        with ESMTP id S229972AbjIQMER (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 17 Sep 2023 08:04:17 -0400
+Received: from shiva.jussieu.fr (shiva.jussieu.fr [134.157.0.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id EFA8112B;
+        Sun, 17 Sep 2023 05:04:11 -0700 (PDT)
+Received: from mailix1.insp.jussieu.fr (mailix1.insp.jussieu.fr [134.157.37.11])
+          by shiva.jussieu.fr (8.15.2/jtpda-5.4) with ESMTP id 38HC40nk026906
+          ; Sun, 17 Sep 2023 14:04:05 +0200 (CEST)
+X-Ids:  168
+Received: from hordix.insp.jussieu.fr (hordix.insp.jussieu.fr [134.157.37.9])
+        by mailix1.insp.jussieu.fr (Postfix-INSP-2.10.1) with ESMTPSA id 78A06C062BC0;
+        Sun, 17 Sep 2023 13:58:50 +0200 (CEST)
+Received: from [105.112.96.211] ([105.112.96.211]) by
+ webmail.insp.jussieu.fr (Horde Framework) with HTTPS; Sun, 17 Sep 2023
+ 11:58:50 +0000
+Date:   Sun, 17 Sep 2023 11:58:50 +0000
+Message-ID: <20230917115850.Horde.nDVhVuZCMbI1tdSrz7hexww@webmail.insp.jussieu.fr>
+From:   Victoria Cleland <wajdi.chaabani@insp.upmc.fr>
+Subject: Hallo
+Reply-to: v.cleland10@aol.com
+User-Agent: Horde Application Framework 5
+Organization: Institut des NanoSciences de Paris
+X-InspUpmcSession: CHAABANI
+Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Miltered: at jchkmail2.reseau.jussieu.fr with ID 6506EB30.005 by Joe's j-chkmail (http : // j-chkmail dot ensmp dot fr)!
+X-j-chkmail-Enveloppe: 6506EB30.005 from mailix1.insp.jussieu.fr/mailix1.insp.jussieu.fr/134.157.37.11/mailix1.insp.jussieu.fr/<wajdi.chaabani@insp.upmc.fr>
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [134.157.0.129 listed in list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 RCVD_IN_MSPIKE_H3 RBL: Good reputation (+3)
+        *      [134.157.0.129 listed in wl.mailspike.net]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [v.cleland10[at]aol.com]
+        *  1.0 MISSING_HEADERS Missing To: header
+        *  0.0 RCVD_IN_MSPIKE_WL Mailspike good senders
+        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On Thu, Sep 14 2023 at 15:51, Russell King wrote:
-> Provide common prototypes for arch_register_cpu() and
-> arch_unregister_cpu(). These are called by acpi_processor.c, with
-> weak versions, so the prototype for this is already set. It is
-> generally not necessary for function prototypes to be conditional
-> on preprocessor macros.
->
-> Some architectures (e.g. Loongarch) are missing the prototype for this,
-> and rather than add it to Loongarch's asm/cpu.h, lets do the job once
-> for everyone.
->
-> Since this covers everyone, remove the now unnecessary prototypes in
-> asm/cpu.h, and we also need to remove the 'static' from one of ia64's
-> arch_register_cpu() definitions.
->
-> Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-> ---
-> Spotted during the review of James Morse's patches, I think rather than
-> adding prototypes for loongarch to its asm/cpu.h, it would make more
-> sense to provide the prototypes in a non-arch specific header file so
-> everyone can benefit, rather than having each architecture do its own
-> thing.
->
-> I'm sending this as RFC as James has yet to comment on my proposal, and
-> also to a wider audience, and although it makes a little more work for
-> James (to respin his series) it does mean that his series should get a
-> little smaller.
 
-And it makes tons of sense.
+17. September 2023.
 
-> See:
->  https://lore.kernel.org/r/20230913163823.7880-2-james.morse@arm.com
->  https://lore.kernel.org/r/20230913163823.7880-4-james.morse@arm.com
->  https://lore.kernel.org/r/20230913163823.7880-23-james.morse@arm.com
->
-> v2: lets try not fat-fingering vim.
+Hallo,
 
-Yeah. I wondered how you managed to mangle that :)
+Ich möchte Ihnen einen Geschäftsvorschlag mitteilen. Für weitere  
+Details antworten Sie auf Englisch.
 
->  arch/ia64/include/asm/cpu.h | 5 -----
->  arch/ia64/kernel/topology.c | 2 +-
+Grüße
+Frau Victoria Cleland
+_________________________
+Sekretär: Wajdi Chaabani
 
-That's moot as ia64 is queued for removal :)
-
-Thanks,
-
-        tglx
