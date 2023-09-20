@@ -2,55 +2,92 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 210B37A5B46
-	for <lists+linux-ia64@lfdr.de>; Tue, 19 Sep 2023 09:38:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 580F37A745B
+	for <lists+linux-ia64@lfdr.de>; Wed, 20 Sep 2023 09:38:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231825AbjISHiW (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 19 Sep 2023 03:38:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35174 "EHLO
+        id S233876AbjITHiP (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 20 Sep 2023 03:38:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231837AbjISHiL (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 19 Sep 2023 03:38:11 -0400
-X-Greylist: delayed 407 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 19 Sep 2023 00:37:59 PDT
-Received: from mail.leeswilly.pl (mail.leeswilly.pl [89.116.26.225])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06C191AE
-        for <linux-ia64@vger.kernel.org>; Tue, 19 Sep 2023 00:37:59 -0700 (PDT)
-Received: by mail.leeswilly.pl (Postfix, from userid 1001)
-        id 184117612D7; Tue, 19 Sep 2023 09:30:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leeswilly.pl; s=mail;
-        t=1695108669; bh=qCQG4c3C0tvkuSSy6okg6Td4OKi9mrw7rI9pE9SwJ9g=;
+        with ESMTP id S233865AbjITHhy (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 20 Sep 2023 03:37:54 -0400
+X-Greylist: delayed 374 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 20 Sep 2023 00:37:48 PDT
+Received: from mail.venturelinkage.com (mail.venturelinkage.com [80.211.143.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4631A3
+        for <linux-ia64@vger.kernel.org>; Wed, 20 Sep 2023 00:37:48 -0700 (PDT)
+Received: by mail.venturelinkage.com (Postfix, from userid 1002)
+        id 375FD826A9; Wed, 20 Sep 2023 09:31:23 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=venturelinkage.com;
+        s=mail; t=1695195093;
+        bh=7iowqdzve/IIiUUjcEwx8j3uMrVqqiE7R9zbOCKRV9Q=;
         h=Date:From:To:Subject:From;
-        b=BeGEQXRRIxbYw0R9OheK5Zg/XhpQJN1gEDbzu1Z5RVkTc5qyoPM1SCpwhbM/ZIBcG
-         nWnuvCuPk476eY4EspWyffUOZcUgRtnvzwG67CEBk9Fs26d/dSl11bOb3W6Brzbg+x
-         DOEcue/RNe61kMOKKXY+2689AaKLrpO+48ZT2kpN9uTTIPklkP9Zy58GvP61IwmjqV
-         6yoz3HCeknxlOGz+AkhpUJxrz+N+1zV5lg/bs0Gb+yC8j/mmKoAhOyN7w5donU46tA
-         NTCAHutZC1jny4S2FloslUaXZiZNIZrxFZddrXZXgcWeuyQfydbNlbpipI2Q886fDR
-         a1ycX7OxnQmrw==
-Received: by mail.leeswilly.pl for <linux-ia64@vger.kernel.org>; Tue, 19 Sep 2023 07:30:18 GMT
-Message-ID: <20230919084500-0.1.3z.bbjj.0.xsmfcd8gec@leeswilly.pl>
-Date:   Tue, 19 Sep 2023 07:30:18 GMT
-From:   "Jakub Lemczak" <jakub.lemczak@leeswilly.pl>
+        b=lRgnmpJQDW3sMH3lt4fc4srFHioh7UwebTNJwf2SAPcrlx6BlJW8hOdSzfXT8efo4
+         eGUcrUZBNHnurdZ0d1snTejLY7mbRc1jQ3NHY/TZn82yh0u4NCoVq6gXYSYiJZcc1r
+         3wpZWnG/cMAuMWudSJJAjPrX6BwxjuMZ868xJJH5jQNzGX2HGwrWiFek2xZCAKxD39
+         FrKjXYFROe46+vvKyb7g1QcDlmizeBRb7AwM2Xg9tP6Cm9zBOckPeSKzUXS//VltrV
+         /vm499q5DnEVglvfniVQKtxwYvXfWUdCVodidP2x3es0I3rKAWsOlmTko21C5PKRCO
+         jTMrVGY84PlKQ==
+Received: by mail.venturelinkage.com for <linux-ia64@vger.kernel.org>; Wed, 20 Sep 2023 07:31:20 GMT
+Message-ID: <20230920084500-0.1.l.114i.0.j51wr3gki7@venturelinkage.com>
+Date:   Wed, 20 Sep 2023 07:31:20 GMT
+From:   "Lukas Varga" <lukas.varga@venturelinkage.com>
 To:     <linux-ia64@vger.kernel.org>
-Subject: =?UTF-8?Q?Pytanie_o_samoch=C3=B3d?=
-X-Mailer: mail.leeswilly.pl
+Subject: =?UTF-8?Q?Popt=C3=A1vka?=
+X-Mailer: mail.venturelinkage.com
 MIME-Version: 1.0
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.6 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_SORBS_DUL,SPF_HELO_NONE,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_20,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_FMBLA_NEWDOM28,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
+        URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
+        version=3.4.6
+X-Spam-Report: * -0.0 BAYES_20 BODY: Bayes spam probability is 5 to 20%
+        *      [score: 0.0759]
+        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
+        *      [80.211.143.151 listed in zen.spamhaus.org]
+        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
+        *      blocklist
+        *      [URIs: venturelinkage.com]
+        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
+        *      blocklist
+        *      [URIs: venturelinkage.com]
+        *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [80.211.143.151 listed in list.dnswl.org]
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
+        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
+        *      envelope-from domain
+        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
+        *      author's domain
+        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
+        *       valid
+        *  0.8 FROM_FMBLA_NEWDOM28 From domain was registered in last 14-28
+        *      days
+X-Spam-Level: ******
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dzie=C5=84 dobry,
+Dobr=C3=A9 r=C3=A1no,
 
-Czy interesuje Pa=C5=84stwa rozwi=C4=85zanie umo=C5=BCliwiaj=C4=85ce moni=
-torowanie samochod=C3=B3w firmowych oraz optymalizacj=C4=99 koszt=C3=B3w =
-ich utrzymania?=20
+Dovolil jsem si V=C3=A1s kontaktovat, proto=C5=BEe m=C3=A1m z=C3=A1jem ov=
+=C4=9B=C5=99it mo=C5=BEnost nav=C3=A1z=C3=A1n=C3=AD spolupr=C3=A1ce.
+
+Podporujeme firmy p=C5=99i z=C3=ADsk=C3=A1v=C3=A1n=C3=AD nov=C3=BDch obch=
+odn=C3=ADch z=C3=A1kazn=C3=ADk=C5=AF.
+
+M=C5=AF=C5=BEeme si promluvit a poskytnout podrobnosti?
+
+V p=C5=99=C3=ADpad=C4=9B z=C3=A1jmu V=C3=A1s bude kontaktovat n=C3=A1=C5=A1=
+ anglicky mluv=C3=ADc=C3=AD z=C3=A1stupce.
 
 
-Pozdrawiam
-Jakub Lemczak
+Pozdravy
+Lukas Varga
