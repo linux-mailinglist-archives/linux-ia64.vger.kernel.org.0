@@ -2,92 +2,121 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 580F37A745B
-	for <lists+linux-ia64@lfdr.de>; Wed, 20 Sep 2023 09:38:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FD397A752D
+	for <lists+linux-ia64@lfdr.de>; Wed, 20 Sep 2023 10:02:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233876AbjITHiP (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Wed, 20 Sep 2023 03:38:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55652 "EHLO
+        id S233071AbjITICV (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Wed, 20 Sep 2023 04:02:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233865AbjITHhy (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Wed, 20 Sep 2023 03:37:54 -0400
-X-Greylist: delayed 374 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 20 Sep 2023 00:37:48 PDT
-Received: from mail.venturelinkage.com (mail.venturelinkage.com [80.211.143.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD4631A3
-        for <linux-ia64@vger.kernel.org>; Wed, 20 Sep 2023 00:37:48 -0700 (PDT)
-Received: by mail.venturelinkage.com (Postfix, from userid 1002)
-        id 375FD826A9; Wed, 20 Sep 2023 09:31:23 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=venturelinkage.com;
-        s=mail; t=1695195093;
-        bh=7iowqdzve/IIiUUjcEwx8j3uMrVqqiE7R9zbOCKRV9Q=;
-        h=Date:From:To:Subject:From;
-        b=lRgnmpJQDW3sMH3lt4fc4srFHioh7UwebTNJwf2SAPcrlx6BlJW8hOdSzfXT8efo4
-         eGUcrUZBNHnurdZ0d1snTejLY7mbRc1jQ3NHY/TZn82yh0u4NCoVq6gXYSYiJZcc1r
-         3wpZWnG/cMAuMWudSJJAjPrX6BwxjuMZ868xJJH5jQNzGX2HGwrWiFek2xZCAKxD39
-         FrKjXYFROe46+vvKyb7g1QcDlmizeBRb7AwM2Xg9tP6Cm9zBOckPeSKzUXS//VltrV
-         /vm499q5DnEVglvfniVQKtxwYvXfWUdCVodidP2x3es0I3rKAWsOlmTko21C5PKRCO
-         jTMrVGY84PlKQ==
-Received: by mail.venturelinkage.com for <linux-ia64@vger.kernel.org>; Wed, 20 Sep 2023 07:31:20 GMT
-Message-ID: <20230920084500-0.1.l.114i.0.j51wr3gki7@venturelinkage.com>
-Date:   Wed, 20 Sep 2023 07:31:20 GMT
-From:   "Lukas Varga" <lukas.varga@venturelinkage.com>
-To:     <linux-ia64@vger.kernel.org>
-Subject: =?UTF-8?Q?Popt=C3=A1vka?=
-X-Mailer: mail.venturelinkage.com
+        with ESMTP id S233419AbjITICS (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Wed, 20 Sep 2023 04:02:18 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 315C1B4
+        for <linux-ia64@vger.kernel.org>; Wed, 20 Sep 2023 01:01:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1695196891;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=rnpCpoK1Qphye/H0at9y+THlkxPvcEo2r5PdFTxqnHY=;
+        b=b6aYi71saap/Q6w8BgWz6mQXiXVwgl0Fs+rUU4R6MWfhjDt9zNt3fGEd7AVhhr8pr9zJre
+        OC2aryCtmSl1R8Z8O+dyOWLwWSn26BY3/LKeLeQC8y8e4mb7iJyL2fQPd1q498UpI3K2uK
+        7w23AtkppUnbnq9ylCYxW3UKmmU65BU=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-541-mBZKPFYNPSOq8z09SB5ABw-1; Wed, 20 Sep 2023 04:01:30 -0400
+X-MC-Unique: mBZKPFYNPSOq8z09SB5ABw-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-31f79595669so238953f8f.0
+        for <linux-ia64@vger.kernel.org>; Wed, 20 Sep 2023 01:01:30 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695196889; x=1695801689;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rnpCpoK1Qphye/H0at9y+THlkxPvcEo2r5PdFTxqnHY=;
+        b=Gg8Zd/b8c0qQVwMQzLm1SRxlZudcVg1TdULw1afbYfS/s7LeXZc90ALEF5/7shJJ8N
+         2YTVBggxzI6kaMVZUQTo1KMOVvc1wlljbWfWTluK6IS4HEW3swF0LfWnl2v5PkSznQK9
+         MvhekQQjsiZBH0OfrcJtpW3u4lL4okgRlDsdv3YFxQtlrVWjum+zYu4cFY8qSGNZWyac
+         TICRTm8K0GTaFvlu3tTmvp+XK5AkJMtwo9esqAJbBN+5bXS0D7Z/6B59y8D/T8XdlVNp
+         imUFk62UejtO1uamZpSVHLl+d5YXkTYvpmsRRja6+KV8jMtHju3+XwKL2kdhR+cUkzZl
+         MB7A==
+X-Gm-Message-State: AOJu0YwGiwDVCExEcPdsxKcy6T5Zrdnj6DPsoycx6ZzV2jCM1NQYMJlk
+        MTclmSXLqSU4VVJaBrNh/6zIdxGYh3pC18PgbAVCky8dfTG7R+IeruC0PEi0sW7zXTEqx9pd/lo
+        7fLziC/t7r6QPZ+CPfwD84A==
+X-Received: by 2002:a5d:4691:0:b0:317:6579:2b9f with SMTP id u17-20020a5d4691000000b0031765792b9fmr1441905wrq.30.1695196888609;
+        Wed, 20 Sep 2023 01:01:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEGjMaHCrb95S6OjzxI7LM9YzqMZD+FHo9V0ilc7E6hmphf8oly7XaHzjchfvY6rdHHetD1Jw==
+X-Received: by 2002:a5d:4691:0:b0:317:6579:2b9f with SMTP id u17-20020a5d4691000000b0031765792b9fmr1441876wrq.30.1695196888277;
+        Wed, 20 Sep 2023 01:01:28 -0700 (PDT)
+Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
+        by smtp.gmail.com with ESMTPSA id a4-20020adffb84000000b0031c5e9c2ed7sm17627845wrr.92.2023.09.20.01.01.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 Sep 2023 01:01:27 -0700 (PDT)
+From:   Javier Martinez Canillas <javierm@redhat.com>
+To:     Thomas Zimmermann <tzimmermann@suse.de>, mpe@ellerman.id.au,
+        npiggin@gmail.com, christophe.leroy@csgroup.eu, arnd@arndb.de,
+        deller@gmx.de
+Cc:     linux-arch@vger.kernel.org, linux-fbdev@vger.kernel.org,
+        linux-ia64@vger.kernel.org, linux-mips@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linux-m68k@lists.linux-m68k.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        sparclinux@vger.kernel.org, linuxppc-dev@lists.ozlabs.org
+Subject: Re: [PATCH v4 1/5] fbdev: Avoid file argument in fb_pgprotect()
+In-Reply-To: <20230912135050.17155-2-tzimmermann@suse.de>
+References: <20230912135050.17155-1-tzimmermann@suse.de>
+ <20230912135050.17155-2-tzimmermann@suse.de>
+Date:   Wed, 20 Sep 2023 10:01:27 +0200
+Message-ID: <87il85l1d4.fsf@minerva.mail-host-address-is-not-set>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: Yes, score=6.5 required=5.0 tests=BAYES_20,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FROM_FMBLA_NEWDOM28,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,
-        URIBL_CSS_A,URIBL_DBL_SPAM autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: * -0.0 BAYES_20 BODY: Bayes spam probability is 5 to 20%
-        *      [score: 0.0759]
-        *  3.3 RCVD_IN_SBL_CSS RBL: Received via a relay in Spamhaus SBL-CSS
-        *      [80.211.143.151 listed in zen.spamhaus.org]
-        *  0.1 URIBL_CSS_A Contains URL's A record listed in the Spamhaus CSS
-        *      blocklist
-        *      [URIs: venturelinkage.com]
-        *  2.5 URIBL_DBL_SPAM Contains a spam URL listed in the Spamhaus DBL
-        *      blocklist
-        *      [URIs: venturelinkage.com]
-        *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [80.211.143.151 listed in list.dnswl.org]
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        *  0.8 FROM_FMBLA_NEWDOM28 From domain was registered in last 14-28
-        *      days
-X-Spam-Level: ******
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Dobr=C3=A9 r=C3=A1no,
+Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-Dovolil jsem si V=C3=A1s kontaktovat, proto=C5=BEe m=C3=A1m z=C3=A1jem ov=
-=C4=9B=C5=99it mo=C5=BEnost nav=C3=A1z=C3=A1n=C3=AD spolupr=C3=A1ce.
+Hello Thomas,
 
-Podporujeme firmy p=C5=99i z=C3=ADsk=C3=A1v=C3=A1n=C3=AD nov=C3=BDch obch=
-odn=C3=ADch z=C3=A1kazn=C3=ADk=C5=AF.
+> Only PowerPC's fb_pgprotect() needs the file argument, although
+> the implementation does not use it. Pass NULL to the internal
 
-M=C5=AF=C5=BEeme si promluvit a poskytnout podrobnosti?
+Can you please mention the function that's the implementation for
+PowerPC ? If I'm looking at the code correctly, that function is
+phys_mem_access_prot() defined in the arch/powerpc/mm/mem.c file:
 
-V p=C5=99=C3=ADpad=C4=9B z=C3=A1jmu V=C3=A1s bude kontaktovat n=C3=A1=C5=A1=
- anglicky mluv=C3=ADc=C3=AD z=C3=A1stupce.
+pgprot_t phys_mem_access_prot(struct file *file, unsigned long pfn,
+			      unsigned long size, pgprot_t vma_prot)
+{
+	if (ppc_md.phys_mem_access_prot)
+		return ppc_md.phys_mem_access_prot(file, pfn, size, vma_prot);
 
+	if (!page_is_ram(pfn))
+		vma_prot = pgprot_noncached(vma_prot);
 
-Pozdravy
-Lukas Varga
+	return vma_prot;
+}
+
+and if set, ppc_md.phys_mem_access_prot is pci_phys_mem_access_prot()
+that is defined in the arch/powerpc/kernel/pci-common.c source file:
+
+https://elixir.bootlin.com/linux/v6.6-rc2/source/arch/powerpc/kernel/pci-common.c#L524
+
+That function indeed doesn't use the file argument. So your patch looks
+correct to me.
+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+
+-- 
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
+
