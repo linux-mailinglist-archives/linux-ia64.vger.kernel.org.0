@@ -2,73 +2,69 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 404D67A9D75
-	for <lists+linux-ia64@lfdr.de>; Thu, 21 Sep 2023 21:37:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28E917AA0F3
+	for <lists+linux-ia64@lfdr.de>; Thu, 21 Sep 2023 22:54:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229606AbjIUThi (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Thu, 21 Sep 2023 15:37:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43724 "EHLO
+        id S232129AbjIUUyN (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Thu, 21 Sep 2023 16:54:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230018AbjIUThS (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Thu, 21 Sep 2023 15:37:18 -0400
-Received: from mout.web.de (mout.web.de [212.227.17.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 532E4EB474
-        for <linux-ia64@vger.kernel.org>; Thu, 21 Sep 2023 12:10:23 -0700 (PDT)
+        with ESMTP id S232168AbjIUUx7 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Thu, 21 Sep 2023 16:53:59 -0400
+Received: from mout.web.de (mout.web.de [217.72.192.78])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A3E344A3
+        for <linux-ia64@vger.kernel.org>; Thu, 21 Sep 2023 13:30:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
- t=1695323421; x=1695928221; i=frank.scheiner@web.de;
- bh=hgvKh8VZrdO3f35U01qaBwm/yh3eR4C0I948GxePHhY=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=KUODIfL/EQqq0vEPCX+bQubSxP8yfN3V46rrQ7fw+D9MlvIojPtVDjcdxw9ddTVgK9G3UE5XNO3
- zyRs68F1VJge0o1iOn1FVyanzRJDpLh4l/m/qTh8hinbWyyTbhyDuIFRUy5K/8vT4KYEMMeqr5eno
- 91lqRNCq4VVGGbrmXGNElD6cdk7elNAnMk9Xpenn7xXeiPqxyZ0aF3kn2IxY+wChmO59y/Ed8Ya/p
- 2tNCrJ6+ry8aArtcPlbsrlhSbraeZy5Bag0pyQHXzsTIEkjpFibqfraQAxZ9bR+S353dooxP1Qoyq
- Q5eLwspwiEYny/EYT7pU9qKpl0FHkHniasYQ==
+ t=1695328233; x=1695933033; i=frank.scheiner@web.de;
+ bh=uqexmd/8/WIuUgbE5S5knmgi50ue2ttB2Ok0/JhVhTo=;
+ h=X-UI-Sender-Class:Date:To:Cc:From:Subject;
+ b=XLW3MtcAVYCdRo0XoUjYAljCSykNHzxaGvqnhj3LCjqrC1YDQCARmBGX6LCt0+C53/D5KskHCZC
+ Ql9oyIA2xAsSprtQTdFcrVWdTLFAmb683zzMwInpMMoJcm2MexorkVsNs1RCksZ3y16c5NDi5BcZ6
+ c77ZlRcABoJC9kMUbVG5+rdZPDdctMAuIbtqdVkXCPNSln6I5H1lf9YVvlU66b4mifUnA8ojHSJpR
+ CgyPU1XlxFaD/TKlwfMeJAVarsjD7zavpG9Qc+IRxqdm9pYeqhoMJnyGCKO5IYFWtNB+51HKZZ5GY
+ XzsWpDxEhIFZgNvF5xboqVorEI7CNzsYb2wQ==
 X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
 Received: from [192.168.178.30] ([79.200.221.18]) by smtp.web.de (mrweb105
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MrOhx-1rVVbK37mJ-00oVpw; Thu, 21
- Sep 2023 14:07:37 +0200
-Message-ID: <cc4e2861-32f6-e063-70ec-e47f88e8de14@web.de>
-Date:   Thu, 21 Sep 2023 14:07:36 +0200
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1McZnj-1rFa761E5d-00cv2s; Thu, 21
+ Sep 2023 12:14:37 +0200
+Message-ID: <adc65a97-2479-8779-0e09-4ec2fe946cb2@web.de>
+Date:   Thu, 21 Sep 2023 12:14:36 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.15.1
-Subject: Re: Build regression since v6.6-rc1
 Content-Language: en-US
-To:     Ard Biesheuvel <ardb@kernel.org>
-Cc:     linux-ia64@vger.kernel.org, rafael.j.wysocki@intel.com,
-        michal.wilczynski@intel.com,
-        debian-ia64 <debian-ia64@lists.debian.org>,
+To:     linux-ia64@vger.kernel.org, rafael.j.wysocki@intel.com,
+        michal.wilczynski@intel.com
+Cc:     debian-ia64 <debian-ia64@lists.debian.org>,
         Linus Torvalds <torvalds@linux-foundation.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Arnd Bergmann <arnd@arndb.de>
-References: <adc65a97-2479-8779-0e09-4ec2fe946cb2@web.de>
- <CAMj1kXGDVWYJMHJay3j8P=EQMMv1cmSLRDoiDBrt1hdvZpOpww@mail.gmail.com>
+        Ard Biesheuvel <ardb@kernel.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
 From:   Frank Scheiner <frank.scheiner@web.de>
-In-Reply-To: <CAMj1kXGDVWYJMHJay3j8P=EQMMv1cmSLRDoiDBrt1hdvZpOpww@mail.gmail.com>
+Subject: Build regression since v6.6-rc1
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:QCuA3yAVK3FfHENFIskwUBDyJauoWY92tAZ/yL3DmC3lPjOOcxr
- PPhsDqdKTIk+eKIaDJBiCH/X9QWAEdd7hRGN+zT9KbCAtlQzbY05lulNCdJzIvGcDrzcKoD
- AIR1OcVlRDzQjNQ8yfjSVjaJ/J5v66N+oW3d3xgsQckG/5nQV5VUjqmG9pOnqsGRjfn67my
- 43TPEOeDaiuiQNa7DwpCg==
-UI-OutboundReport: notjunk:1;M01:P0:Mzrj09DpT1k=;igxF9JR0aQbASO7nmeaOFiRVmtu
- 61GLdILBuKIwf3DlWVn1vcKzE5KY3hbM3nR4Y6xR9fTxZu+PQHukf1P16JXL591xsJIDNZ+Wj
- viFcFhZORlM6eXT6BMoEuTVq3OQCqcLx1/2OcLgtL3alHUc8/poSskWnKnYzpK+g3qeJnnE1a
- zy1L9gLes9/KAQ9o7rMvk2fjvOw/FS2OuwAGuAUIPORfL255wFfiKzdrDMdarIyspcvh9bdmv
- pvQ7zQwVIcgI3ZoTpb9yoTNwB3PLjhgiLOHKkNGC3UzXDr4PK+vM2HU6NN3fCG3J85SGVH5b8
- 98FnPayadPFu37aEaOp8lyaGMpvYUcG4AWjfB5vEHitJ4HSXlD7DNGaTFzfbHaCnxVoUdxDtN
- 87DIMR85CgOymRuA1R+DXqX069Wonkeh87y+s4t762nXNQKrvTWZru1/IkNPiizUtppB+qTok
- XYy6nqvFRHPrbCq9FHJICx6SvL8PC1Fvddn8s/m4UFsOI9Ar04xNev1p089xcR4zOgS9dvB+U
- uMXzRYMQu8Frkc/EJLIRGFyCNxWsktDUypk8onvtocntb0EpYF91uY/4Wu6yVuNtbkEpVgFqf
- uKhMADYZ2twx6nQGK9Lz62TdMZ78t+XZR8gHx3pJPH2EGSV8B6ZqQccDKO2mg+CDEBjYboMbt
- 5PlYfFEM883iP7Q3FWwADrH1RWA1CGORdJKu/jN0QKi94bxr0v253IuOKidkZmGcnZrCYWBbB
- BWEQGAbfgSV+ZBsfcWMPK2ksU7czY9AZXq2ly3x86ljuw9P3/6Za5tfkOPcjV3iFcr8xdQ97A
- 3t3mCWFh2g5b12v3AcnsQg7wOJCBqVjAy+MOKBJtLG7MxOF2WgHZNmdjXNGImtluALKm2x1C+
- 6AErwHzJVYY/+X8BbmureKyLgfqElWLRLEoM/LrFqpoAl1IfoXWfwr6nq1ostvUuoTqf8wU23
- KEX68EmdpyWZe9KB7zZufTPgRWc=
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+X-Provags-ID: V03:K1:/NN9h09uYIPy6adehyzyE8dZxdFKrfX7qndZ1xHqdeem/ydOqtJ
+ YIiccC1v5PCAfN0s7b1vR3reQh5v4ssI4V5Y3/8s7HaKrslTfb5V59Rtj/GzpJ22J9PRdxq
+ aY2PkLpBs+N/gvDkHkbh+Gzb2EWMX9G+g1tuFWBRyrU6GXqLfrJ9GxQcQSSP05ynvMs0YNk
+ itnVEhHFCvxkBp1zn1wSw==
+UI-OutboundReport: notjunk:1;M01:P0:+dc1m2QEjSw=;5lmA29UAAml6jlQ1/QIeDKv3krX
+ rS9/cnNdr+arURhnHtRQVRJ1RfW8mLdH3reLJWtsLAE+4KDVpI1Rr1Wwv7wj8+yuMCLu4qH1h
+ ZmxSQIrivUB0fur/uA1UYrIvBhveG1KcPNN1LjIW04RUA6WFCjmLRll7iWwKNdFqxkh210aNW
+ n2ZIEoyVkzzjDkvOsHiyxdE54ToQSmbCsUsJ6W2arqo9g/upAwDfSZIN7yCvUwOIV1rSCeb54
+ Pdinw870AHn1L3VIIRUYTeiPqXzQjXmS0lEkUumJhmgyGSCNlcmdPeU8scvdDk+E98S3rnQ4O
+ 4qH/A6XleFfCH+aeiZ8585HuIHLtyVwkLaANogZRVmF3emWubwG7CDeByqtodEIgWd9HPKrG6
+ LQWe0vUEw/AmVFFD2NBU0OV5MrhgabwgtxpUkn5hPz0/pPQ5nF4NRWnwfQxdqRWcgvTysrCkE
+ bzDJZaQPfTmuDxFdQYqtjh9SMdi2zdtdes0GTHw4V0kJQEeFxYmczRSKeBL6jsKSPrPOSMc3Q
+ 9NXbU0JjDX+aflEiDizSN7eIgDbXyeauCppDJ87j4Dv5vbW2fxZnA5fM62XFtPvvjiPOzsM04
+ Un3kkT3OHtA0qur17+nLFLe6GS0OQ/BKMMalD7Qi2KZJF+fMA1UBIoqULp5KKUyJsmT2OdQkF
+ imXH2Lgi5tZqd8wFpEOKo39nCb5jc/jcOUvY+aDUdfko1DokbrJd90U5Dx8C7q/NIxf5ecHxu
+ qLLaIFFTPISZI5rQ8IjR9cPujfQ+GZucqtjOLpUTQLdL8/iMWoflMixPfvgR+tNiKqYauewhu
+ GE9AmHX0qPDcGGlz3hG+BL2TMRbs/XOwwP3N78yDT+FNDe9uxT34RU1SkSZdaT9K70phIugMj
+ 9UJMHMe36y5fUeWg2AU+RI63ByXt0ZRX7nusVWE3vVUBkitwbBpsUAjnBzSRxE3sPGA0AY2xF
+ GyiiEt7lYKgzpSMYRJrZRI8CgjU=
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -76,87 +72,102 @@ Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Hi Ard,
+Dear all,
 
-On 21.09.23 13:53, Ard Biesheuvel wrote:
-> Hello Frank,
->
-> On Thu, 21 Sept 2023 at 10:15, Frank Scheiner <frank.scheiner@web.de> wr=
-ote:
->>
->> Dear all,
->>
->> since v6.6-rc1 (actually introduced with [1], specific commit on [2])
->> the kernel build for ia64 fails like that:
->>
->> ```
-> ...
->>
->> Could one ([5]) or the other ([6]) please be included in v6.6 (or
->> earlier) to "fix" the build problem for ia64?
->>
->
-> Do you mean by "fix" that the proposed fixes are just workarounds and
-> not proper fixes?
+since v6.6-rc1 (actually introduced with [1], specific commit on [2])
+the kernel build for ia64 fails like that:
 
-Not really, or maybe a little... :-)
+```
+Making kernel...
+time make -j24
+LOCALVERSION=3D"-0bb80ecc33a8fb5a682236443c1e740d5c917d1d-ia64" ARCH=3Dia6=
+4
+CROSS_COMPILE=3Dia64-linux- all
+Mon Sep 11 06:24:43 PM CEST 2023
+[...]
+   LD [M]  net/sunrpc/sunrpc.ko
+ia64-linux-ld: drivers/acpi/acpi_processor.o: in function
+`acpi_early_processor_osc':
+/usr/src/linux-on-ramdisk/torvalds-linux/drivers/acpi/acpi_processor.c:596=
+:
+undefined reference to `acpi_proc_quirk_mwait_check'
+ia64-linux-ld: drivers/acpi/processor_pdc.o: in function
+`acpi_early_processor_set_pdc':
+/usr/src/linux-on-ramdisk/torvalds-linux/drivers/acpi/processor_pdc.c:113:
+undefined reference to `acpi_proc_quirk_mwait_check'
+make[2]: *** [scripts/Makefile.vmlinux:36: vmlinux] Error 1
+make[1]: *** [/usr/src/linux-on-ramdisk/torvalds-linux/Makefile:1165:
+vmlinux] Error 2
+make: *** [Makefile:234: __sub-make] Error 2
 
-> I don't think that is the case - the function in
-> question does nothing except apply a quirk for one specific x86
-> platform.
+real    3m25.286s
+user    69m26.895s
+sys    6m37.619s
+2
+```
 
-...look, as I assumed and as you also say, the function is to "apply a
-quirk for one specific x86 platform". So wouldn't it be better to make
-that call only on x86 and leave ia64 untouched instead of putting a NOP
-there?
+[1]:
+https://github.com/torvalds/linux/commit/9bd0c413b90c6517b4a2fbedb74f50df3=
+421b50c
 
-I already wondered why no other architecture with ACPI failed to build?
+[2]: https://github.com/torvalds/linux/commit/0a0e2ea642f6
+
+In short, the change introduced a function call ([3]) in effect for ia64
+without providing an implementation for that function for ia64. There's
+a discussion thread on [4] that also includes a patch ([5]) to "fix" the
+problem but that one unfortunately wasn't included in [1] or [2]:
+
+```
+=2D--
+  drivers/acpi/internal.h |   14 ++++----------
+  1 file changed, 4 insertions(+), 10 deletions(-)
+
+Index: linux-pm/drivers/acpi/internal.h
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+=2D-- linux-pm.orig/drivers/acpi/internal.h
++++ linux-pm/drivers/acpi/internal.h
+@@ -148,8 +148,11 @@ int acpi_wakeup_device_init(void);
+  #ifdef CONFIG_ARCH_MIGHT_HAVE_ACPI_PDC
+  void acpi_early_processor_control_setup(void);
+  void acpi_early_processor_set_pdc(void);
+-
++#ifdef CONFIG_X86
+  void acpi_proc_quirk_mwait_check(void);
++#else
++static inline void acpi_proc_quirk_mwait_check(void) {}
++#endif
+  bool processor_physically_present(acpi_handle handle);
+  #else
+  static inline void acpi_early_processor_control_setup(void) {}
+
+```
+
+For me this patch solves the build problem for v6.6-rc1 and -rc2.
+There's also another patch available for that specific problem by Ard
+([6]) but I haven't seen this one included either up until 42dc814 and I
+also haven't tested this one.
+
+Could one ([5]) or the other ([6]) please be included in v6.6 (or
+earlier) to "fix" the build problem for ia64?
 
 Cheers,
 Frank
 
->
-> ...
->> [5]:
->> https://lore.kernel.org/lkml/CAJZ5v0hnNK4O_HyinvTp01YxXR7V4vzpMhf85yW9M=
-2=3D52-O2Fg@mail.gmail.com/
->>
->> [6]:
->> https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?=
-id=3Da0334bf78b95532cec54f56b53e8ae1bfe7e1ca1
->
-> Either Arnd, Rafael or myself should send a PR to Linus to merge [6]
-> as a fix, as it is already queued up in -next for v6.7.
->
-> Or perhaps Linus doesn't mind grabbing it from here:
->
-> ------------8<--------------
->
-> The following changes since commit 0bb80ecc33a8fb5a682236443c1e740d5c917=
-d1d:
->
->    Linux 6.6-rc1 (2023-09-10 16:28:41 -0700)
->
-> are available in the Git repository at:
->
->    git://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git
-> tags/fix-ia64-build-for-v6.6
->
-> for you to fetch changes up to a0334bf78b95532cec54f56b53e8ae1bfe7e1ca1:
->
->    acpi: Provide ia64 dummy implementation of
-> acpi_proc_quirk_mwait_check() (2023-09-11 08:13:17 +0000)
->
-> ----------------------------------------------------------------
-> Build fix for Itanium/ia64:
->
-> - provide dummy implementation of acpi_proc_quirk_mwait_check() which
->    was moved out of generic code into arch/x86, breaking the ia64 build
->
-> ----------------------------------------------------------------
-> Ard Biesheuvel (1):
->        acpi: Provide ia64 dummy implementation of acpi_proc_quirk_mwait_=
-check()
->
->   arch/ia64/kernel/acpi.c | 4 ++++
->   1 file changed, 4 insertions(+)
+
+[3]:
+https://github.com/torvalds/linux/commit/0a0e2ea642f6#diff-80c82874cec85e9=
+c2facf52535b929ec62284c001ab081bfd1c1d164bf2a1d66R179
+
+[4]:
+https://lore.kernel.org/lkml/c7a05a44-c0be-46c2-a21d-b242524d482b@roeck-us=
+.net/T/#u
+
+[5]:
+https://lore.kernel.org/lkml/CAJZ5v0hnNK4O_HyinvTp01YxXR7V4vzpMhf85yW9M2=
+=3D52-O2Fg@mail.gmail.com/
+
+[6]:
+https://git.kernel.org/pub/scm/linux/kernel/git/ardb/linux.git/commit/?id=
+=3Da0334bf78b95532cec54f56b53e8ae1bfe7e1ca1
