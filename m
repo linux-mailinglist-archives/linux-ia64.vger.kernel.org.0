@@ -2,115 +2,83 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10D807AACA2
-	for <lists+linux-ia64@lfdr.de>; Fri, 22 Sep 2023 10:29:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 52AC97ABE98
+	for <lists+linux-ia64@lfdr.de>; Sat, 23 Sep 2023 09:51:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232330AbjIVI34 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 22 Sep 2023 04:29:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54866 "EHLO
+        id S230289AbjIWHvM (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sat, 23 Sep 2023 03:51:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49750 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232328AbjIVI3y (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 22 Sep 2023 04:29:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBF81FB
-        for <linux-ia64@vger.kernel.org>; Fri, 22 Sep 2023 01:29:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1695371343;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=xUT8FtJmdwXZ1XdzLxxJQDSF0F15AqqVAfggCoYwa/o=;
-        b=JQjm1m5Y6NdPRz6o1+yrBAU9eudVCHhMq9LCtrhYC4kEIyOPB2ngin6g7Q1rSkuiUj6wXV
-        JJBVMVDmoN0/qwDBLv8lF5mndDx8wylqRtTAOwCuOle9tXPaSZJIzdjNRXPqmK3PAzUJsj
-        oruXWwnndZpEeO3LjQDJABQyWqGTM3o=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-681-R1du-LPCOGCB87InNPQm0g-1; Fri, 22 Sep 2023 04:29:01 -0400
-X-MC-Unique: R1du-LPCOGCB87InNPQm0g-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-3fe182913c5so14616945e9.0
-        for <linux-ia64@vger.kernel.org>; Fri, 22 Sep 2023 01:29:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1695371340; x=1695976140;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xUT8FtJmdwXZ1XdzLxxJQDSF0F15AqqVAfggCoYwa/o=;
-        b=QlB42jS5KsiAQCvXAfHgptZpT3zE8jBuVavVewrVItcWgLduiiE40RrtpjWR8gREJC
-         1ylGSCMPD2u0kdopo3/1oU41y56xxW//kivma2L0qQZCqC+YD61Oa4dzvrM33/gpQoD6
-         IfN0P/j/a1jou0P1Fkdp+0e6KL/WMxhb/k/YFRvZBRNnWbhZ4Kv7yMhESgVHxPr7pZtD
-         5glkz4DL18CqgF09TUef9WE/yOW4O5RFduakt664KFP0qsI5/MS3BhzHAqtTbedBv2B/
-         H5aCnFzuN+zZNJlgQKthwJgWJe5VNlNGasELir4Hi04jf5wnORrWUojpDJPyJwlmosQX
-         hlgg==
-X-Gm-Message-State: AOJu0YyNj27qw7iJC//ySil6FRjwNA8XYuuWQv2kaLqaK23M7v21b/J1
-        6BOcYDh6SgJ9ZRbLG3zuCf5oNHCCWJFo6QrSGZqM5I5eGpjZLdCGUb5hX6aU/ABE+9bSDRsEFyI
-        rAJ63cuwL+6vBwAj5/IgmLg==
-X-Received: by 2002:a05:600c:1e0b:b0:405:4002:825a with SMTP id ay11-20020a05600c1e0b00b004054002825amr568120wmb.13.1695371340722;
-        Fri, 22 Sep 2023 01:29:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGrR9BIVVw8Y2WgBOUvl/XqDvvu2Yb9s8zAvf4Vn3nfvNA1NNc3OCwyRPJ1UY+bCHomzJ5jcg==
-X-Received: by 2002:a05:600c:1e0b:b0:405:4002:825a with SMTP id ay11-20020a05600c1e0b00b004054002825amr568100wmb.13.1695371340371;
-        Fri, 22 Sep 2023 01:29:00 -0700 (PDT)
-Received: from localhost (205.pool92-176-231.dynamic.orange.es. [92.176.231.205])
-        by smtp.gmail.com with ESMTPSA id x14-20020a05600c21ce00b003fefcbe7fa8sm4004012wmj.28.2023.09.22.01.28.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 Sep 2023 01:29:00 -0700 (PDT)
-From:   Javier Martinez Canillas <javierm@redhat.com>
-To:     Thomas Zimmermann <tzimmermann@suse.de>, mpe@ellerman.id.au,
-        npiggin@gmail.com, christophe.leroy@csgroup.eu, arnd@arndb.de,
-        deller@gmx.de
-Cc:     linuxppc-dev@lists.ozlabs.org, linux-fbdev@vger.kernel.org,
-        linux-ia64@vger.kernel.org, linux-m68k@lists.linux-m68k.org,
-        linux-mips@vger.kernel.org, sparclinux@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linux-arch@vger.kernel.org,
-        Thomas Zimmermann <tzimmermann@suse.de>,
-        Geert Uytterhoeven <geert@linux-m68k.org>
-Subject: Re: [PATCH v5 2/5] fbdev: Replace fb_pgprotect() with
- pgprot_framebuffer()
-In-Reply-To: <20230922080636.26762-3-tzimmermann@suse.de>
-References: <20230922080636.26762-1-tzimmermann@suse.de>
- <20230922080636.26762-3-tzimmermann@suse.de>
-Date:   Fri, 22 Sep 2023 10:28:59 +0200
-Message-ID: <87wmwik3w4.fsf@minerva.mail-host-address-is-not-set>
+        with ESMTP id S229808AbjIWHvM (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sat, 23 Sep 2023 03:51:12 -0400
+Received: from shiva.jussieu.fr (shiva.jussieu.fr [134.157.0.129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E4A0D11D;
+        Sat, 23 Sep 2023 00:51:05 -0700 (PDT)
+Received: from mailix1.insp.jussieu.fr (mailix1.insp.jussieu.fr [134.157.37.11])
+          by shiva.jussieu.fr (8.15.2/jtpda-5.4) with ESMTP id 38N7mEO5035034
+          ; Sat, 23 Sep 2023 09:48:14 +0200 (CEST)
+X-Ids:  164
+Received: from hordix.insp.jussieu.fr (hordix.insp.jussieu.fr [134.157.37.9])
+        by mailix1.insp.jussieu.fr (Postfix-INSP-2.10.1) with ESMTPSA id EE6E9C06B5F6;
+        Sat, 23 Sep 2023 09:48:08 +0200 (CEST)
+Received: from [105.112.214.216] ([105.112.214.216]) by
+ webmail.insp.jussieu.fr (Horde Framework) with HTTPS; Sat, 23 Sep 2023
+ 07:48:08 +0000
+Date:   Sat, 23 Sep 2023 07:48:08 +0000
+Message-ID: <20230923074808.Horde.cbloaD0KutWc0KgVIYXLh1O@webmail.insp.jussieu.fr>
+From:   Victoria Cleland <lamya.essaoui@insp.upmc.fr>
+Subject: Hallo
+Reply-to: v.cleland10@aol.com
+User-Agent: Horde Application Framework 5
+Organization: Institut des NanoSciences de Paris
+X-InspUpmcSession: essaoui
+Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+X-Miltered: at jchkmail2.reseau.jussieu.fr with ID 650E983E.001 by Joe's j-chkmail (http : // j-chkmail dot ensmp dot fr)!
+X-j-chkmail-Enveloppe: 650E983E.001 from mailix1.insp.jussieu.fr/mailix1.insp.jussieu.fr/134.157.37.11/mailix1.insp.jussieu.fr/<lamya.essaoui@insp.upmc.fr>
+X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,
+        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
+        *      DNSWL was blocked.  See
+        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
+        *      for more information.
+        *      [134.157.0.129 listed in list.dnswl.org]
+        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
+        *      [score: 0.5000]
+        *  0.0 RCVD_IN_MSPIKE_H3 RBL: Good reputation (+3)
+        *      [134.157.0.129 listed in wl.mailspike.net]
+        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
+        *      digit
+        *      [v.cleland10[at]aol.com]
+        *  1.0 MISSING_HEADERS Missing To: header
+        * -0.0 SPF_PASS SPF: sender matches SPF record
+        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
+        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
+        *  0.0 RCVD_IN_MSPIKE_WL Mailspike good senders
+        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
+X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-> Rename the fbdev mmap helper fb_pgprotect() to pgprot_framebuffer().
-> The helper sets VMA page-access flags for framebuffers in device I/O
-> memory.
->
-> Also clean up the helper's parameters and return value. Instead of
-> the VMA instance, pass the individial parameters separately: existing
-> page-access flags, the VMAs start and end addresses and the offset
-> in the underlying device memory rsp file. Return the new page-access
-> flags. These changes align pgprot_framebuffer() with other pgprot_()
-> functions.
->
-> v4:
-> 	* fix commit message (Christophe)
-> v3:
-> 	* rename fb_pgprotect() to pgprot_framebuffer() (Arnd)
->
-> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-> Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
-> ---
+23. September 2023.
 
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Hallo,
 
--- 
-Best regards,
+Ich möchte Ihnen einen Geschäftsvorschlag mitteilen. Für weitere  
+Details antworten Sie auf Englisch.
 
-Javier Martinez Canillas
-Core Platforms
-Red Hat
+Grüße
+Frau Victoria Cleland
+_________________________
+Sekretärin: Lamya Essaoui
 
