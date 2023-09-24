@@ -2,83 +2,83 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52AC97ABE98
-	for <lists+linux-ia64@lfdr.de>; Sat, 23 Sep 2023 09:51:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C02BC7ACAFD
+	for <lists+linux-ia64@lfdr.de>; Sun, 24 Sep 2023 19:20:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230289AbjIWHvM (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Sat, 23 Sep 2023 03:51:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49750 "EHLO
+        id S229667AbjIXRUv (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 24 Sep 2023 13:20:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229808AbjIWHvM (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Sat, 23 Sep 2023 03:51:12 -0400
-Received: from shiva.jussieu.fr (shiva.jussieu.fr [134.157.0.129])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E4A0D11D;
-        Sat, 23 Sep 2023 00:51:05 -0700 (PDT)
-Received: from mailix1.insp.jussieu.fr (mailix1.insp.jussieu.fr [134.157.37.11])
-          by shiva.jussieu.fr (8.15.2/jtpda-5.4) with ESMTP id 38N7mEO5035034
-          ; Sat, 23 Sep 2023 09:48:14 +0200 (CEST)
-X-Ids:  164
-Received: from hordix.insp.jussieu.fr (hordix.insp.jussieu.fr [134.157.37.9])
-        by mailix1.insp.jussieu.fr (Postfix-INSP-2.10.1) with ESMTPSA id EE6E9C06B5F6;
-        Sat, 23 Sep 2023 09:48:08 +0200 (CEST)
-Received: from [105.112.214.216] ([105.112.214.216]) by
- webmail.insp.jussieu.fr (Horde Framework) with HTTPS; Sat, 23 Sep 2023
- 07:48:08 +0000
-Date:   Sat, 23 Sep 2023 07:48:08 +0000
-Message-ID: <20230923074808.Horde.cbloaD0KutWc0KgVIYXLh1O@webmail.insp.jussieu.fr>
-From:   Victoria Cleland <lamya.essaoui@insp.upmc.fr>
-Subject: Hallo
-Reply-to: v.cleland10@aol.com
-User-Agent: Horde Application Framework 5
-Organization: Institut des NanoSciences de Paris
-X-InspUpmcSession: essaoui
-Content-Type: text/plain; charset=utf-8; format=flowed; DelSp=Yes
+        with ESMTP id S229710AbjIXRUu (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 24 Sep 2023 13:20:50 -0400
+Received: from mail-lj1-x22b.google.com (mail-lj1-x22b.google.com [IPv6:2a00:1450:4864:20::22b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6951FC;
+        Sun, 24 Sep 2023 10:20:43 -0700 (PDT)
+Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2bffdf50212so79813781fa.1;
+        Sun, 24 Sep 2023 10:20:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695576042; x=1696180842; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NYwWt/Haldb8Z9AhFR/B5mbU054gJ14PDUXSNrrFlQY=;
+        b=SLg28wM7Sq6fZCD79cOLIGqiwlJ5fKmnUkb/iZhFqicttIBD0wFPaIaWTKFrdq75yH
+         n6ogo4muYANW7ItldshUtM9VqQIcDzcNEySRBRaBEEjvPZMKtF+t9Q6hOgqoWWszrNf1
+         hOIv8QVD0wosawdHSfLywHgpHlUpveRR8JzvNgSqXvRokpoD4ysGATx/0kdi3clLye+8
+         2EageKMG+PHlJByAVZLeFKLNXkqnjVIQD3Up5t4VEi/dfHsQmgLAq6LQG58bGqbmi7Tm
+         0bzih3HnCPhKx5ebwL6YjUgI2dIxgV544w70+7mQQLTDtaQpGqPrl/viRY5xv3Shl6LB
+         NTng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695576042; x=1696180842;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NYwWt/Haldb8Z9AhFR/B5mbU054gJ14PDUXSNrrFlQY=;
+        b=AJ640m7anAf+KqqJGaiDwEwrebqSpykJNh/eFnQH6BYI3OuPEd/jYbntYcuSoeq81q
+         W5Yf4n7N1m9VcYk8r8DR+VWTbd6nBuyeJbn8XPmy36NKiZKkXCcRvGKQFLquwmHVajcP
+         cjiGr5e6o8qCs4TYmpsydIOzuOEPnwCTuUSZ21qf7ti9L3EBESZQjacWjlVv9ZAqs+OJ
+         ejXIVwUk22fwpMAcXnmZK8jNZqghWQONSSujZ7FtR9B3mWv2cOsURGmJu92jXCBXiSck
+         lYrSfveCTkQW7jEmSPLU3uuqNx93HnP6tJjf4yAzE2ethj0iGixabYK2X/pj/9I6p5TO
+         cj0A==
+X-Gm-Message-State: AOJu0YxZ5e5F5Agy0tfGPI0TgLjIFcx4p5CcXXE9NNk4xvQcgS3ugTs/
+        Yrh5UrqgIbGDebLPN+3XawK1f9gOjMVsMGUFOEUp6d++gpw=
+X-Google-Smtp-Source: AGHT+IEUXSewh5mor/yQ4TIYsU+GCIGbe7Ycr82z3d+389uXGX/eiZ2hQLEKX6/jK8/y/rn0nCCiZQT76PpKSKhLxE0=
+X-Received: by 2002:a05:651c:19a1:b0:2bf:ee57:f18 with SMTP id
+ bx33-20020a05651c19a100b002bfee570f18mr2922293ljb.16.1695576041711; Sun, 24
+ Sep 2023 10:20:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-X-Miltered: at jchkmail2.reseau.jussieu.fr with ID 650E983E.001 by Joe's j-chkmail (http : // j-chkmail dot ensmp dot fr)!
-X-j-chkmail-Enveloppe: 650E983E.001 from mailix1.insp.jussieu.fr/mailix1.insp.jussieu.fr/134.157.37.11/mailix1.insp.jussieu.fr/<lamya.essaoui@insp.upmc.fr>
-X-Spam-Status: Yes, score=5.7 required=5.0 tests=BAYES_50,
-        FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,MISSING_HEADERS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        REPLYTO_WITHOUT_TO_CC,SPF_HELO_NONE,SPF_PASS autolearn=no
+From:   =?UTF-8?B?VG9tw6HFoSBHbG96YXI=?= <tglozar@gmail.com>
+Date:   Sun, 24 Sep 2023 19:20:30 +0200
+Message-ID: <CAHtyXDfvS4OYLjOqALy74vR4w9DOFjJ9z8UOFeDpyjv7_PHNXw@mail.gmail.com>
+Subject: ia64 maintainership (resend)
+To:     linux-ia64@vger.kernel.org, linux-arch@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
-X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [134.157.0.129 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        *  0.0 RCVD_IN_MSPIKE_H3 RBL: Good reputation (+3)
-        *      [134.157.0.129 listed in wl.mailspike.net]
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [v.cleland10[at]aol.com]
-        *  1.0 MISSING_HEADERS Missing To: header
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.0 SPF_HELO_NONE SPF: HELO does not publish an SPF Record
-        *  1.6 REPLYTO_WITHOUT_TO_CC No description available.
-        *  0.0 RCVD_IN_MSPIKE_WL Mailspike good senders
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-X-Spam-Level: *****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
-To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
+Hello linux-ia64,
 
-23. September 2023.
+I noticed following the news of the proposal to remove ia64 from the
+kernel that the architecture has no maintainer. I'd be happy to
+volunteer to maintain the architecture, should the decision of removal
+be reversed.
 
-Hallo,
+I'm not the ideal candidate, since I never contributed anything to the
+code, but I have an Itanium machine running Linux to test on, some
+spare time, and I've contributed a few patches as a part of my job of
+kernel developer at Red Hat.
 
-Ich möchte Ihnen einen Geschäftsvorschlag mitteilen. Für weitere  
-Details antworten Sie auf Englisch.
+I'm also a contributor to T2 SDE, a source-based community Linux
+distribution supporting various architectures including Alpha, HP
+PA-RISC, and Itanium. I have interest in the architecture, having done
+some experiments on it with code performance.
 
-Grüße
-Frau Victoria Cleland
-_________________________
-Sekretärin: Lamya Essaoui
+Tomas Glozar
 
+PS: Original email got sent in multipart format by mistake, re-sending
+as plain text, sorry about that.
