@@ -2,133 +2,137 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB66C7B5149
-	for <lists+linux-ia64@lfdr.de>; Mon,  2 Oct 2023 13:29:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E063D7B6BC2
+	for <lists+linux-ia64@lfdr.de>; Tue,  3 Oct 2023 16:35:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236664AbjJBL30 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Mon, 2 Oct 2023 07:29:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53876 "EHLO
+        id S234771AbjJCOfR (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 3 Oct 2023 10:35:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236702AbjJBL3W (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Mon, 2 Oct 2023 07:29:22 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BE7FD7;
-        Mon,  2 Oct 2023 04:29:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 5371DC116D2;
-        Mon,  2 Oct 2023 11:29:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1696246157;
-        bh=8Y0OZ+ek4AhIcf8Sjp8fQ2M9HKsNYRF/q4Q31JpOT5o=;
-        h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-        b=HoYlpryWcQZV4xEoh38551sI60gfNK4cNGdEKgXPz9x08VsBC5G/69LBFbXuToEgn
-         BfBDfABhYQMaA/7y4/yMOLRE2yxXFJEEmhWmuOXt9SqvBUrhF02pxsFB+Oy95KS3Uo
-         lMq4M9cbbqTcQLk8Mt0GHY0NkCOn4Jd8OvFimK3fza9rF9VZ+2Ar+cUV7TeEgsIf0n
-         AfN3Z6+zr6tOgqL9qirOQi2pRK98RKq8bt6HNDMvcyBkOvRb/QX5w6hRjj7JYKtuUg
-         tRfO2u8Hi/A7XL6lw6dB721W2W3IWPxGFfSchln4SLcXKRGbevSUs6wqi75teA8l65
-         WpR4VjGman2fA==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by smtp.lore.kernel.org (Postfix) with ESMTP id 3A93FE7849A;
-        Mon,  2 Oct 2023 11:29:17 +0000 (UTC)
-From:   Joel Granados via B4 Relay 
-        <devnull+j.granados.samsung.com@kernel.org>
-Date:   Mon, 02 Oct 2023 13:30:42 +0200
-Subject: [PATCH v3 7/7] c-sky: Remove now superfluous sentinel element from
- ctl_talbe array
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231002-jag-sysctl_remove_empty_elem_arch-v3-7-606da2840a7a@samsung.com>
-References: <20231002-jag-sysctl_remove_empty_elem_arch-v3-0-606da2840a7a@samsung.com>
-In-Reply-To: <20231002-jag-sysctl_remove_empty_elem_arch-v3-0-606da2840a7a@samsung.com>
-To:     Luis Chamberlain <mcgrof@kernel.org>, willy@infradead.org,
-        josh@joshtriplett.org, Kees Cook <keescook@chromium.org>,
-        Iurii Zaikin <yzaikin@google.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
-        Vasily Gorbik <gor@linux.ibm.com>,
-        Alexander Gordeev <agordeev@linux.ibm.com>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Sven Schnelle <svens@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>,
-        Russell King <linux@armlinux.org.uk>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        with ESMTP id S232488AbjJCOfR (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 3 Oct 2023 10:35:17 -0400
+Received: from pandora.armlinux.org.uk (pandora.armlinux.org.uk [IPv6:2001:4d48:ad52:32c8:5054:ff:fe00:142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495E0AD;
+        Tue,  3 Oct 2023 07:35:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=armlinux.org.uk; s=pandora-2019; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+        Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:
+        List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+        bh=XQksk7pyvzZ6898twTFuY7ew23wLu3w3rS0ARfVw3k4=; b=WlrkJSyKlNE8OwZSxon9XsxAdz
+        ASx702dgd0uiF2J3NXC8vaNCH/q+u2wPNN+6oZVHo8cY5V8ZdankY0xk2rou5ypVnd8uNw0lVfgQ0
+        ZnBHFMzGxJDzYFKo23XDs5VZq4WzkkYSKYCNH8u7rErL0Nj+yCGtAgeKAoAdbyWvRJAgRvKu1i4ts
+        ZO+Y1/kFUR+5AfRk65vlNPA9XjR/LB37rlwNrYyDBS67mgDtOEn5IqMpRecIg0GHZej5mVDilaOpU
+        OPsTIE67HUWOn2EcQWB11jsSWIqr9q/XC1tVdmPrkntyomoSbaGo9mN/l0CdlZ4t8HDoJkWt7OJGI
+        9PHLc/CQ==;
+Received: from shell.armlinux.org.uk ([fd8f:7570:feb6:1:5054:ff:fe00:4ec]:39002)
+        by pandora.armlinux.org.uk with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+        (Exim 4.96)
+        (envelope-from <linux@armlinux.org.uk>)
+        id 1qngUG-0001rW-1u;
+        Tue, 03 Oct 2023 15:35:00 +0100
+Received: from linux by shell.armlinux.org.uk with local (Exim 4.94.2)
+        (envelope-from <linux@shell.armlinux.org.uk>)
+        id 1qngUB-0007y5-GX; Tue, 03 Oct 2023 15:34:55 +0100
+Date:   Tue, 3 Oct 2023 15:34:55 +0100
+From:   "Russell King (Oracle)" <linux@armlinux.org.uk>
+To:     Gavin Shan <gshan@redhat.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>, linux-acpi@vger.kernel.org,
+        James Morse <james.morse@arm.com>, loongarch@lists.linux.dev,
+        linux-arch@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-kernel@vger.kernel.org, linux-pm@vger.kernel.org,
+        Ingo Molnar <mingo@redhat.com>,
+        Jean-Philippe Brucker <jean-philippe@linaro.org>,
+        jianyong.wu@arm.com, justin.he@arm.com,
+        Borislav Petkov <bp@alien8.de>,
         Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        Salil Mehta <salil.mehta@huawei.com>,
         "H. Peter Anvin" <hpa@zytor.com>,
-        Andy Lutomirski <luto@kernel.org>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Guo Ren <guoren@kernel.org>, Alexey Gladkov <legion@kernel.org>
-Cc:     linux-fsdevel@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        linux-riscv@lists.infradead.org, linuxppc-dev@lists.ozlabs.org,
-        linux-ia64@vger.kernel.org, linux-csky@vger.kernel.org,
-        Joel Granados <j.granados@samsung.com>
-X-Mailer: b4 0.13-dev-86aa5
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1079;
- i=j.granados@samsung.com; h=from:subject:message-id;
- bh=aVH730u6MpA8SyXSwY+KroDm6RkQOYcUB41QGWJqNpM=;
- b=owEB7QES/pANAwAKAbqXzVK3lkFPAcsmYgBlGqoU5tuFWjnPIMvFbKyN6zHH0cwg/pUFRD/vM
- SfkGU2MIlyJAbMEAAEKAB0WIQSuRwlXJeYxJc7LJ5C6l81St5ZBTwUCZRqqFAAKCRC6l81St5ZB
- TyUKC/0c39WVZtnSe4HAi+KjUVd8v38cq95t+0bYTAm0t4UjG8Lsp3T5G80IFPYLmapvMnK4uVe
- Lyeg6+WlLJagatcnmBtfVxhCU0ewAPcEqiwiP6qZx3c8PLEexEriY2mthOka69yhwr3nKHEnyV8
- Bqp7zzu/E1zwrNE1+/cSzV96Y/lZ/qWZCRPRHR7SuOeWwWTDbyhgveJ+cmUr4q6nwLVv9D8Vj6M
- B7kOycGh+RMxgVTKEAlnSPVgKcwgHE24nlo5RUyuu77WXCMlCIrZdyyNDZrrQykuiXWNxLKiMrj
- XLAE5oYgpIZ9uRGWS1dzT2edeQ+COFGaR51Q/tvQualP2kfj7A2dQzLIAF8fmcWYwWVMj1RN44o
- jz1VmKwvgpAAwhyJL1nlRqp0Dx+iccYp2zBAhv5X8ptE4axnZuJSjdUGQVapPNd/0eA4u87Ubaa
- zmvv90vSv16KKgBYe+ABuMSkfh7iM8iC7eDe4BQqUi7MyRotUfD+EMFwsoiIIw56IZ6Jg=
-X-Developer-Key: i=j.granados@samsung.com; a=openpgp;
- fpr=F1F8E46D30F0F6C4A45FF4465895FAAC338C6E77
-X-Endpoint-Received: by B4 Relay for j.granados@samsung.com/default with auth_id=70
-X-Original-From: Joel Granados <j.granados@samsung.com>
-Reply-To: <j.granados@samsung.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Peter Zijlstra <peterz@infradead.org>,
+        linux-ia64@vger.kernel.org
+Subject: Re: [PATCH] cpu-hotplug: provide prototypes for arch CPU registration
+Message-ID: <ZRwmj/e+jAXFfvCm@shell.armlinux.org.uk>
+References: <E1qkoRr-0088Q8-Da@rmk-PC.armlinux.org.uk>
+ <dd4dee9e-4d75-e1e6-04c8-82d84b28fd35@redhat.com>
+ <ZRIU/yFrbFbIR7zZ@shell.armlinux.org.uk>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZRIU/yFrbFbIR7zZ@shell.armlinux.org.uk>
+Sender: Russell King (Oracle) <linux@armlinux.org.uk>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-From: Joel Granados <j.granados@samsung.com>
+On Tue, Sep 26, 2023 at 12:17:19AM +0100, Russell King (Oracle) wrote:
+> On Tue, Sep 26, 2023 at 09:04:46AM +1000, Gavin Shan wrote:
+> > Hi Russell,
+> > 
+> > On 9/26/23 02:28, Russell King (Oracle) wrote:
+> > > Provide common prototypes for arch_register_cpu() and
+> > > arch_unregister_cpu(). These are called by acpi_processor.c, with
+> > > weak versions, so the prototype for this is already set. It is
+> > > generally not necessary for function prototypes to be conditional
+> > > on preprocessor macros.
+> > > 
+> > > Some architectures (e.g. Loongarch) are missing the prototype for this,
+> > > and rather than add it to Loongarch's asm/cpu.h, lets do the job once
+> > > for everyone.
+> > > 
+> > > Since this covers everyone, remove the now unnecessary prototypes in
+> > > asm/cpu.h, and we also need to remove the 'static' from one of ia64's
+> > > arch_register_cpu() definitions.
+> > > 
+> > > Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+> > > ---
+> > > Changes since RFC v2:
+> > >   - drop ia64 changes, as ia64 has already been removed.
+> > > 
+> > >   arch/x86/include/asm/cpu.h  | 2 --
+> > >   arch/x86/kernel/topology.c  | 2 +-
+> > >   include/linux/cpu.h         | 2 ++
+> > >   3 files changed, 3 insertions(+), 3 deletions(-)
+> > > 
+> > 
+> > In Linux 6.6.rc3, the prototypes are still existing in arch/ia64/include/asm/cpu.h.
+> 
+> Correct, but I have been told that IA64 has been removed, so I removed
+> those changes from my patch.
+> 
+> > They may have been dropped in other ia64 or x86 git repository, which this patch
+> > bases on.
+> 
+> I have no idea which repository they have been dropped from. I only know
+> what tglx told me, and despite asking the question, I never got any
+> answer. So I've done the best I can with this patch. If kernel devs want
+> to state things in vague terms, and then go silent when asked questions
+> to elaborate, then that leads to guessing.
+> 
+> Maybe someone else should adapt this patch to apply to whatever tree it
+> is going to end up being applied to - because I have no idea _which_
+> tree it'll end up being applied to.
 
-This commit comes at the tail end of a greater effort to remove the
-empty elements at the end of the ctl_table arrays (sentinels) which
-will reduce the overall build time size of the kernel and run time
-memory bloat by ~64 bytes per sentinel (further information Link :
-https://lore.kernel.org/all/ZO5Yx5JFogGi%2FcBo@bombadil.infradead.org/)
+So, is this how the Linux community is now dysfunctional?
 
-Remove sentinel from alignment_tbl ctl_table array. This removal is safe
-because register_sysctl_init implicitly uses ARRAY_SIZE() in addition to
-checking for the sentinel.
+Someone sends a patch.
+Thomas reviews, says it's a good idea and provides some feedback.
+Author asks questions, gets ignored.
+Author sends a patch taking in to account that previous feedback.
+Someone else replies, contradicting the previous feedback.
+Nothing else happens.
 
-Acked-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Joel Granados <j.granados@samsung.com>
----
- arch/csky/abiv1/alignment.c | 1 -
- 1 file changed, 1 deletion(-)
+What a bloody sorry state of affairs.
 
-diff --git a/arch/csky/abiv1/alignment.c b/arch/csky/abiv1/alignment.c
-index b60259daed1b..e5b8b4b2109a 100644
---- a/arch/csky/abiv1/alignment.c
-+++ b/arch/csky/abiv1/alignment.c
-@@ -329,7 +329,6 @@ static struct ctl_table alignment_tbl[5] = {
- 		.mode = 0666,
- 		.proc_handler = &proc_dointvec
- 	},
--	{}
- };
- 
- static int __init csky_alignment_init(void)
+Makes me wonder what the point of trying to contribute to the Linux
+kernel outside of the areas I actually maintain anymore is.
 
 -- 
-2.30.2
-
+RMK's Patch system: https://www.armlinux.org.uk/developer/patches/
+FTTP is here! 80Mbps down 10Mbps up. Decent connectivity at last!
