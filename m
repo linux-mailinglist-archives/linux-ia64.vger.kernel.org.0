@@ -2,79 +2,59 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8A887D49B8
-	for <lists+linux-ia64@lfdr.de>; Tue, 24 Oct 2023 10:15:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C3B497D49A8
+	for <lists+linux-ia64@lfdr.de>; Tue, 24 Oct 2023 10:15:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233443AbjJXIP4 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Tue, 24 Oct 2023 04:15:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42014 "EHLO
+        id S233083AbjJXIPg (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Tue, 24 Oct 2023 04:15:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33988 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233548AbjJXIPy (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Tue, 24 Oct 2023 04:15:54 -0400
-Received: from mail.tehinnovacii.ru (mail.tehinnovacii.ru [185.221.212.125])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9027E10D3;
-        Tue, 24 Oct 2023 01:15:50 -0700 (PDT)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.tehinnovacii.ru (Postfix) with ESMTP id 2C40D8454F7B4;
-        Mon, 23 Oct 2023 23:45:20 +0300 (MSK)
-Received: from mail.tehinnovacii.ru ([127.0.0.1])
-        by localhost (mail.tehinnovacii.ru [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id 0nKdqYuhavbS; Mon, 23 Oct 2023 23:45:19 +0300 (MSK)
-Received: from localhost (localhost [127.0.0.1])
-        by mail.tehinnovacii.ru (Postfix) with ESMTP id 15EE68454F806;
-        Mon, 23 Oct 2023 23:45:15 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.10.3 mail.tehinnovacii.ru 15EE68454F806
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tehinnovacii.ru;
-        s=mail; t=1698093915;
-        bh=Ws5TcS6EV4V7aiUY6u9eol5cuGGKUQT0mSrLKF+Le3s=;
-        h=MIME-Version:To:From:Date:Message-Id;
-        b=gEQoxdC6tEYi/Rode5WZ84cSaJpnzxtiabPckmPA8FdOw2kywHYKqKvUwiNkMjdCq
-         q+SIwLawzZqk1KzUc+IdXzVuBuzXLINZEVJ3xBmE9TI7kaLsQ0T2h9ZErTKtOKcDXv
-         aiM6CqHHrn8X7oNVt5BJxxEaFBdmMwqp4PICBznaaBy11QXnlC+ZhUbEjIGVi3ZIpa
-         utdvjowjDN6rsjpVTNezJaRVJ3S50pUn+O7G2r00Rat/RzK9oES9FW6Z2hFxj6bmSj
-         DmUKb7EgDo3CzwrK4qc50EzBRGPseg0I6l3YQ/P9XoYgc2Mep2glFlh6pVAlMJK6L7
-         KQmpVPb8WGgWQ==
-Received: from mail.tehinnovacii.ru ([127.0.0.1])
-        by localhost (mail.tehinnovacii.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id 1I7R8lsob48g; Mon, 23 Oct 2023 23:45:15 +0300 (MSK)
-Received: from DESKTOP-0AG4O9B.lan (unknown [41.157.248.166])
-        by mail.tehinnovacii.ru (Postfix) with ESMTPSA id CA74B85C43E9B;
-        Mon, 23 Oct 2023 23:44:59 +0300 (MSK)
-Content-Type: text/plain; charset="iso-8859-1"
+        with ESMTP id S233755AbjJXIPf (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Tue, 24 Oct 2023 04:15:35 -0400
+Received: from mail.citycodes.pl (mail.citycodes.pl [158.255.215.195])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC4508F
+        for <linux-ia64@vger.kernel.org>; Tue, 24 Oct 2023 01:15:33 -0700 (PDT)
+Received: by mail.citycodes.pl (Postfix, from userid 1001)
+        id 7E57F216F9; Tue, 24 Oct 2023 10:15:30 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=citycodes.pl; s=mail;
+        t=1698135332; bh=fClkhHu/p6gIm8tbpvFwCqGX3kXIMdqjiuDdSiYGEkk=;
+        h=Date:From:To:Subject:From;
+        b=bqh4Yv66aClECplkHsbk1fWS/olilhVt3KAU4Zshm8Agw+Ctg93RIj6Qz5enhH2Xv
+         y7v9IvDa7lQBPMSq+8BlQb4FSQPmXnink166A0q8cavfCRxUCa9dAIZ2PdubHWrLYQ
+         Fx/V1XR8Yt2WVizkTwnjZ1u4jRyndjn/bT0P3SM//eJx5bu0wSh/dTbn7M3gYzguSr
+         Ye6Y4RR010FXvafEyc7ihmRNM8OFXHkZ3IcyIJEhFeCdRKOd/8cmv1jWYpVRmFyzAK
+         EToea85m9h4+9+RDQqEpYLRAQRuWG/ikvdE32Nuc36qeda/CYepITPLeHZbkNS20q/
+         OKGeEKcL+fQmw==
+Received: by mail.citycodes.pl for <linux-ia64@vger.kernel.org>; Tue, 24 Oct 2023 08:15:29 GMT
+Message-ID: <20231024084500-0.1.8a.l8hs.0.bjzjp8p6l6@citycodes.pl>
+Date:   Tue, 24 Oct 2023 08:15:29 GMT
+From:   "Kamil Lasek" <kamil.lasek@citycodes.pl>
+To:     <linux-ia64@vger.kernel.org>
+Subject: Wycena paneli fotowoltaicznych
+X-Mailer: mail.citycodes.pl
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Brauchen Sie einen Kredit?
-To:     Recipients <zp@tehinnovacii.ru>
-From:   Georg Johannes Proksch <zp@tehinnovacii.ru>
-Date:   Mon, 23 Oct 2023 13:44:00 -0700
-Reply-To: kreditschufadeutsch0@gmail.com
-Message-Id: <20231023204459.CA74B85C43E9B@mail.tehinnovacii.ru>
-X-Spam-Status: No, score=4.3 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_BL_SPAMCOP_NET,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-Brauchen Sie einen Kredit?
-Tr=E4umen Sie davon, ein Unternehmen zu gr=FCnden?
-Sie ben=F6tigen Geld f=FCr Ihre Gesch=E4ftsidee, ben=F6tigen aber eine gro=
-=DFe Finanzierung?
-Besitzen Sie ein Unternehmen und m=F6chten expandieren?
+Dzie=C5=84 dobry,
 
-Wir bieten Gesch=E4ftskredite, Privatkredite, Projektkredite und Autokredit=
-e mit einem Zinssatz von 2 % an.
+dostrzegam mo=C5=BCliwo=C5=9B=C4=87 wsp=C3=B3=C5=82pracy z Pa=C5=84stwa f=
+irm=C4=85.
 
-Vollst=E4ndiger Name:
-Kreditbetrag:
-Kreditlaufzeit:
-Land:
-Telefonnummer:
+=C5=9Awiadczymy kompleksow=C4=85 obs=C5=82ug=C4=99 inwestycji w fotowolta=
+ik=C4=99, kt=C3=B3ra obni=C5=BCa koszty energii elektrycznej.
 
-Herr Georg Johannes Proksch
-Kreditberater/Berater
+Czy s=C4=85 Pa=C5=84stwo zainteresowani weryfikacj=C4=85 wst=C4=99pnych p=
+ropozycji?
+
+
+Pozdrawiam,
+Kamil Lasek
