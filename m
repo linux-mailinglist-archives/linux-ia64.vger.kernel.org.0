@@ -2,122 +2,81 @@ Return-Path: <linux-ia64-owner@vger.kernel.org>
 X-Original-To: lists+linux-ia64@lfdr.de
 Delivered-To: lists+linux-ia64@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E2E87E079F
-	for <lists+linux-ia64@lfdr.de>; Fri,  3 Nov 2023 18:40:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EF377E170E
+	for <lists+linux-ia64@lfdr.de>; Sun,  5 Nov 2023 22:59:59 +0100 (CET)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229600AbjKCRke (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
-        Fri, 3 Nov 2023 13:40:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35114 "EHLO
+        id S229807AbjKEV77 (ORCPT <rfc822;lists+linux-ia64@lfdr.de>);
+        Sun, 5 Nov 2023 16:59:59 -0500
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229450AbjKCRkd (ORCPT
-        <rfc822;linux-ia64@vger.kernel.org>); Fri, 3 Nov 2023 13:40:33 -0400
-Received: from mout.web.de (mout.web.de [212.227.15.3])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB146D4D;
-        Fri,  3 Nov 2023 10:40:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=web.de; s=s29768273;
-        t=1699033220; x=1699638020; i=frank.scheiner@web.de;
-        bh=D1Ff6zuwtY98nJgeBbrqLgsy5DKYVpDPHNBFpmWdWPs=;
-        h=X-UI-Sender-Class:Date:From:Subject:To:Cc:References:
-         In-Reply-To;
-        b=KolMr2RrB0nqjWiWmQFiaqd883LRtbgABaHxnUiibfIMQ02t0eLj83+oolt7UR3+
-         sxTQsMd3YccO2b46Jk78FOVQ7IdQaqcbGy2rJVOudP/DxEzSb66Fo9SDL37z71Mto
-         p4+N5smPOwIIK9OOJ8CKTWNCDCxnpm1ET1dhkeIF0KEwXQIHKzAA3Qnti3I8YlXLD
-         gyEYCeIlFHVbkWTMpIM9xpY+q9oz083ymFDhl/3N4qvGENT8O7YE+P9PBRhAvrqkM
-         2bQnox/aunYd+vzRNYH0s2Q51KMmFmAk1PSkUkucsaNB0QRfbR213RO0TYQvYtj7y
-         muzgTdqkxlRutbv82Q==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.30] ([84.152.247.25]) by smtp.web.de (mrweb005
- [213.165.67.108]) with ESMTPSA (Nemesis) id 1MCogm-1r7jb20LBY-009ArV; Fri, 03
- Nov 2023 18:40:20 +0100
-Message-ID: <6e745433-d7eb-45df-b607-5589f1e04e86@web.de>
-Date:   Fri, 3 Nov 2023 18:40:19 +0100
+        with ESMTP id S229852AbjKEV75 (ORCPT
+        <rfc822;linux-ia64@vger.kernel.org>); Sun, 5 Nov 2023 16:59:57 -0500
+X-Greylist: delayed 5172 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 05 Nov 2023 13:59:52 PST
+Received: from SMTP-HCRC-200.brggroup.vn (unknown [42.112.212.144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A6DAD9;
+        Sun,  5 Nov 2023 13:59:52 -0800 (PST)
+Received: from SMTP-HCRC-200.brggroup.vn (localhost [127.0.0.1])
+        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTP id C8309192BC;
+        Mon,  6 Nov 2023 01:58:01 +0700 (+07)
+Received: from zimbra.hcrc.vn (unknown [192.168.200.66])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by SMTP-HCRC-200.brggroup.vn (SMTP-CTTV) with ESMTPS id C2770192B8;
+        Mon,  6 Nov 2023 01:58:01 +0700 (+07)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.hcrc.vn (Postfix) with ESMTP id 5BA2F1B81FC6;
+        Mon,  6 Nov 2023 01:58:03 +0700 (+07)
+Received: from zimbra.hcrc.vn ([127.0.0.1])
+        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10032)
+        with ESMTP id plRKWgTaQDPE; Mon,  6 Nov 2023 01:58:03 +0700 (+07)
+Received: from localhost (localhost [127.0.0.1])
+        by zimbra.hcrc.vn (Postfix) with ESMTP id 197381B824EE;
+        Mon,  6 Nov 2023 01:58:03 +0700 (+07)
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra.hcrc.vn 197381B824EE
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hcrc.vn;
+        s=64D43D38-C7D6-11ED-8EFE-0027945F1BFA; t=1699210683;
+        bh=WOZURJ77pkiMUL2pPLC14ifVPRvyTQIBEQmxuN1ezAA=;
+        h=MIME-Version:To:From:Date:Message-Id;
+        b=Bd8w26tDpDCancNTx6ag5lsmQQ1KGWCZblUPUEgdkSZFhWzIX4UrSnoRsyYu/Dwar
+         6VUUvWlkD8pQicFph9ObNevH+RJ+JXYIVGG5gdy36HVdS0YfnF6YnnMp9bcyUUEE6C
+         Zlm0BkUfb2aYWrjN5YV/xJFuhZksP52yx8/fj43Tbsx1i5uL0rMoUwMDj6LIJD1eGa
+         DodeusItKhJlvBkyWZwmHIGvA3ODaJCyysqInlEQKd9Hl61NRlQAtrla8+au1FkXfy
+         gPF+PLphyYoouq9GDZXG4VmW29tfuB4UEaI04OydrCBBaC+XDwAvloEzdx5/wN2Sgh
+         j/JpgQl0o8h4g==
+X-Virus-Scanned: amavisd-new at hcrc.vn
+Received: from zimbra.hcrc.vn ([127.0.0.1])
+        by localhost (zimbra.hcrc.vn [127.0.0.1]) (amavisd-new, port 10026)
+        with ESMTP id TCWxSypruLBk; Mon,  6 Nov 2023 01:58:03 +0700 (+07)
+Received: from [192.168.1.152] (unknown [51.179.100.52])
+        by zimbra.hcrc.vn (Postfix) with ESMTPSA id B07B81B81FC6;
+        Mon,  6 Nov 2023 01:57:56 +0700 (+07)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From:   Frank Scheiner <frank.scheiner@web.de>
-Subject: Re: [GIT PULL] asm-generic updates for v6.7
-To:     Linus Torvalds <torvalds@linux-foundation.org>
-Cc:     Arnd Bergmann <arnd@arndb.de>,
-        =?UTF-8?B?VG9tw6HFoSBHbG96YXI=?= <tglozar@gmail.com>,
-        linux-ia64@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Linux-Arch <linux-arch@vger.kernel.org>,
-        Ard Biesheuvel <ardb@kernel.org>
-References: <340fc037-c18f-417f-8aaa-9cf88c9052f4@app.fastmail.com>
- <8ff191a0-41fa-4f36-86e8-3d32ff3fe75c@web.de>
- <CAHk-=whFLZ67ffzt1juryCYcYz6eL_XjQF8WucDzwUR5H65+rA@mail.gmail.com>
-Content-Language: en-US
-In-Reply-To: <CAHk-=whFLZ67ffzt1juryCYcYz6eL_XjQF8WucDzwUR5H65+rA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:GZLXJonp3/Hn/EMdh3oIDngRhT+fIAlI6by69124eDw2KgQZdjB
- TQZG0qhKzbqBBg8EuK5WfpbPs8P6NULdXxlK8l7Hvk5p+DcEj/8MAH5T8WoIEzseuoMinlG
- y0OIDBrfhTcgem45x2lv+O0wr9cwGuHmyUNd4deY6Y/3SL/ZnvJ+PgTtq3TEQ4k1ICx9xIw
- ftp/HvEN4fD6i0z8T3lJQ==
-UI-OutboundReport: notjunk:1;M01:P0:Grrv3FJ4CII=;AFX2EHWMSQ1YGNT3TJPPa6KZdxg
- OCSb9XmRrjtAMOYDqY0Vnc40WiJ/PuOZc+6ZZALmXym+8uGA0sUWuyp8WwR4jTNbXaql1KS8t
- tfTQTZrke5/VrFLTRjfz7shfT79/rssSnxP8BCdoObdCk9etlNYPViqRzN4EJKYqLyUaSFj7f
- 4N2Wwtx2LVPbcxXB+gjtJKcDByzkVFaLzvw1aA5wshuqw5rRMQtyebeL1L67/v9QwEKY3emBa
- IEvnwPERBn5+QuMl3vOZI+hEr1KovKk+xKsaU7EU5C1a6pLTfEYeoTmwbCJcPNIPJiJRoBRxq
- fAyBZteRmLTwIrHRoXexMpmGI5PXBJ2eB7nMX8+LVjNwqmKiJFewOVfwlwDhf8UyeaRz41Gpv
- 9JRv7mepKeuOzVdxEqF53xtH8wEssD56MPCCrpXekwAjL+1x8WFHYabJ4ZRjpdH4tJ94Uk1f1
- cqjg1W/iDOCAIjIpakV6FBChx8/kW+O9rgTI4mM2URjUhZYlZpKiwQXaaVxq0MaKrcy2ZMUjv
- bu9whMh31dtXmnZHXiCw/6Uuj4vH2GVhj8sKy7AZLFk+VxuIzAOp9YLlVgPrR23v48ZdmL/zD
- Lfh6eheKvzMGC9Mv10pWlHtPgip2VvKfaRwWHH4tGsb0a/E9Avek/TRBhXz9DdS/yjEUaMgDF
- EJuEC3cfOLGd3Xta2GWu8OvZ4+RoQ4xR6CBAqZvo2tmcDwjsyL6LIKN+FRGhsiGW6OC3PwdfS
- MJtE82fow0J5xgzXs9+d1A4pIOkS0gl2Q/ddz+A08ct6D+/Zcleu9c/D4JDE9g1GCkcxn6OzQ
- YBqRvIlHiFiZT7bZYIrEhgl2lHeseuu7v9jIpqJFxTDoerHh+kdPH83Os6ov3oBbswH+SNGB0
- j+HTU6InCVNrPkd+yGXcHjjNwMkgL5AJSHFUyR7Q2gUyQh9h1Psbft1oP3UzpCuia4dM1fakH
- Re7jCQ==
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Description: Mail message body
+Subject: =?utf-8?b?4oKsIDEwMC4wMDAuMDAwPw==?=
+To:     Recipients <ch.31hamnghi@hcrc.vn>
+From:   ch.31hamnghi@hcrc.vn
+Date:   Sun, 05 Nov 2023 19:57:42 +0100
+Reply-To: joliushk@gmail.com
+Message-Id: <20231105185756.B07B81B81FC6@zimbra.hcrc.vn>
+X-Spam-Status: No, score=2.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_SCC_BODY_TEXT_LINE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: **
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <linux-ia64.vger.kernel.org>
 X-Mailing-List: linux-ia64@vger.kernel.org
 
-On 02.11.23 18:28, Linus Torvalds wrote:
-> On Thu, 2 Nov 2023 at 00:24, Frank Scheiner <frank.scheiner@web.de> wrot=
-e:
->>
->> so the ia64 removal happened despite the efforts - not only from us - t=
-o
->> keep it alive in Linux. That is a - sad - fact now.
->
-> Well, I'd have personally been willing to resurrect it, but I was told
-> several times that other projects were basically just waiting for the
-> kernel support to die.
->
-> Has the itanium situation really changed?
+Goededag,
+Ik ben mevrouw Joanna Liu en een medewerker van Citi Bank Hong Kong.
+Kan ik =E2=82=AC 100.000.000 aan u overmaken? Kan ik je vertrouwen
 
-Well, we definitely made some progress in this regard. But as you wrote,
-this was not a pressing issue as long as ia64 stayed in the kernel.
-Which is why I wanted to concentrate on kernel support first and
-foremost. My thinking was that a working architecture wouldn't be
-dropped*. And with kernel support saved, we could have gone full steam
-ahead into the other projects.
 
-Well, we did proceed with tackling the problems in the other projects
-anyhow from the start, but now the situation is a little different.
+Ik wacht op jullie reacties
+Met vriendelijke groeten
+mevrouw Joanna Liu
 
-*)
-https://lore.kernel.org/linux-ia64/CAHk-=3DwjEmZ19T4XpVb0_Hacm53xJG_w5ygcu=
-orwC0xBoT-myUA@mail.gmail.com/
-
-> So I'd be willing to come back to the "can we resurrect it"
-> discussion, but not immediately - more along the lines of a "look,
-> we've been maintaining it out of tree for a year, the other
-> infrastructure is still alive, there is no impact on the rest of the
-> kernel, can we please try again"?
-
-That is really something.
-
-We'll see where this goes. I always hope for the best. (-:
-
-If you feel like checking on our status, you know where to look (see my
-email to you from 2023-09-23).
-
-Cheers,
-Frank
